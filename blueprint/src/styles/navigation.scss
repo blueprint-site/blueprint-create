@@ -48,3 +48,24 @@ nav {
         font-family: 'Minecraftia', sans-serif;
     }
 }
+
+.dark-mode {
+    nav {
+        background-color: var(--dark-text-color);
+        box-shadow: 0 2px 5px rgba(255, 255, 255, 0.3);
+    }
+
+    >a:hover,
+    >button:hover {
+        background-color: #4e4e4e;
+    }
+
+    nav a {
+        color: var(--text-color);
+    }
+
+    nav>button {
+        color: var(--text-color);
+        background-color: var(--dark-main-background);
+    }
+}
