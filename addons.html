@@ -1,187 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Blueprint - Explore Addons</title>
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-        <link rel="manifest" href="/site.webmanifest">
-        <link rel="stylesheet" href="static/css/style.css">
-        <link rel="stylesheet" href="static/css/addons.css">
-        <meta property="og:type" content="website">
-        <meta property="og:title" content="Blueprint" />
-        <meta property="og:description" content="Your all in one Create website" />
-        <meta property="og:url" content="https://blueprint-site.github.io/" />
-        <meta property="og:image" content="https://blueprint-site.github.io/static/logo.webp" />
-    </head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blueprint - Explore Addons</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="stylesheet" href="static/css/style.css" />
+    <link rel="stylesheet" href="static/css/addons.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Blueprint" />
+    <meta property="og:description" content="Your all in one Create website" />
+    <meta property="og:url" content="https://blueprint-site.github.io/" />
+    <meta
+      property="og:image"
+      content="https://blueprint-site.github.io/static/logo.webp"
+    />
+  </head>
 
-    <body>
-        <nav>
-            <a class="logo" href="/"><img src="/static/logo.webp" alt="Logo">Blueprint</a>
-            <span style="flex-grow: 1;"></span>
-            <a href="/addons.html"><img src="/static/minecart_coupling.webp" alt="">Addons</a>
-            <a href="/schematics.html"><img src="/static/schematic.webp" alt="">Schematics</a>
-            <a href="/about.html"><img src="/static/Clipboard.webp" alt="">About</a>
-        </nav>
-        <main>
-            <div id="dark-mode-toggle"></div>
-            <center>
-                <div class="search-bar">
-                    <input type="text" id="search-input" placeholder="Search addons..." class="search-input">
-                    <button onclick="searchAddons()" class="search-button"><img src="/static/engineers_goggles.webp" alt="" width="60%"></button>
-                </div>
-                <div class="dropdowns">
-                    <div class="custom-select select-loader">
-                        <button
-                            class="select-button"
-                            role="combobox"
-                            aria-labelledby="select button"
-                            aria-haspopup="listbox"
-                            aria-expanded="false"
-                            aria-controls="select-dropdown"
-                        >
-                          <span class="selected-value">Select Loader...</span>
-                          <span class="arrow"></span>
-                        </button>
-                        <ul class="select-dropdown">
-                            <li>
-                                <input type="radio" id="all" name="loader" checked/>
-                                <label for="all">All loaders</label>
-                            </li>
-                          <li>
-                            <input type="radio" id="forge" name="loader" />
-                            <label for="forge">Forge</label>
-                          </li>
-                          <li>
-                            <input type="radio" id="neoforge" name="loader" />
-                            <label for="neoforge">NeoForge</label>
-                          </li>
-                          <li>
-                            <input type="radio" id="fabric" name="loader" />
-                            <label for="fabric">Fabric</label>
-                          </li>
-                          <li>
-                            <input type="radio" id="quilt" name="loader" />
-                            <label for="quilt">Quilt</label>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="custom-select select-version">
-                        <button
-                            class="select-button"
-                            role="combobox"
-                            aria-labelledby="select button"
-                            aria-haspopup="listbox"
-                            aria-expanded="false"
-                            aria-controls="select-dropdown"
-                        >
-                            <span class="selected-value">Select version...</span>
-                            <span class="arrow"></span>
-                        </button>
-                        <ul class="select-dropdown">
-                            <li>
-                                <input type="radio" id="all" name="version" checked/>
-                                <label for="all">All versions</label>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <p class="random-text">Feeling bored? <a href="/random.html">Get a random addon!</a></p>
-            </center>
+  <body>
+    <nav>
+      <a class="logo" href="/"
+        ><img src="/static/logo.webp" alt="Logo" />Blueprint</a
+      >
+      <span style="flex-grow: 1"></span>
+      <a href="/addons.html"
+        ><img src="/static/minecart_coupling.webp" alt="" />Addons</a
+      >
+      <a href="/schematics.html"
+        ><img src="/static/schematic.webp" alt="" />Schematics</a
+      >
+      <a href="/about.html"><img src="/static/Clipboard.webp" alt="" />About</a>
+    </nav>
+    <main>
+      <div id="dark-mode-toggle"></div>
+      <center>
+        <div class="search-bar">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search addons..."
+            class="search-input"
+          />
+          <button onclick="searchAddons()" class="search-button">
+            <img src="/static/engineers_goggles.webp" alt="" width="60%" />
+          </button>
+        </div>
+        <div class="dropdowns">
+          <div class="custom-select select-loader">
+            <button
+              class="select-button"
+              role="combobox"
+              aria-labelledby="select button"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+              aria-controls="select-dropdown"
+            >
+              <span class="selected-value">Select Loader...</span>
+              <span class="arrow"></span>
+            </button>
+            <ul class="select-dropdown">
+              <li>
+                <input type="radio" id="all" name="loader" checked />
+                <label for="all">All loaders</label>
+              </li>
+              <li>
+                <input type="radio" id="forge" name="loader" />
+                <label for="forge">Forge</label>
+              </li>
+              <li>
+                <input type="radio" id="neoforge" name="loader" />
+                <label for="neoforge">NeoForge</label>
+              </li>
+              <li>
+                <input type="radio" id="fabric" name="loader" />
+                <label for="fabric">Fabric</label>
+              </li>
+              <li>
+                <input type="radio" id="quilt" name="loader" />
+                <label for="quilt">Quilt</label>
+              </li>
+            </ul>
+          </div>
+          <div class="custom-select select-version">
+            <button
+              class="select-button"
+              role="combobox"
+              aria-labelledby="select button"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+              aria-controls="select-dropdown"
+            >
+              <span class="selected-value">Select version...</span>
+              <span class="arrow"></span>
+            </button>
+            <ul class="select-dropdown">
+              <li>
+                <input type="radio" id="all" name="version" checked />
+                <label for="all">All versions</label>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <p class="random-text">
+          Feeling bored? <a href="/random.html">Get a random addon!</a>
+        </p>
+      </center>
 
-            <div id="output" class="addon-list">
-
-            </div>
-            <footer>
-                <img src="static/logo.webp" alt="" class="bottom-bar-logo">
-                <h4 class="bottom-bar-sitename">Create Addons</h4>
-                <h6 class="bottom-bar-bug">Found a bug? Report it to blueprint-site@proton.me</h6>
-                <h6 class="bottom-bar-bug">NOT AN OFFICIAL MINECRAFT SERVICE. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT</h6>
-            </footer>
-        </main>
-    </body>
-<script>
+      <div id="output" class="addon-list"></div>
+      <footer>
+        <img src="static/logo.webp" alt="" class="bottom-bar-logo" />
+        <h4 class="bottom-bar-sitename">Create Addons</h4>
+        <h6 class="bottom-bar-bug">
+          Found a bug? Report it to blueprint-site@proton.me
+        </h6>
+        <h6 class="bottom-bar-bug">
+          NOT AN OFFICIAL MINECRAFT SERVICE. NOT APPROVED BY OR ASSOCIATED WITH
+          MOJANG OR MICROSOFT
+        </h6>
+      </footer>
+    </main>
+  </body>
+  <script>
     // Function to fetch JSON data
-    async function fetchJsonData() {
-        try {
-            const response = await fetch('static/data/final_data.json');
-            if (!response.ok) {
-                throw new Error('Failed to fetch JSON');
-            }
-            return await response.json();
-        } catch (error) {
-            console.error(error);
+    async function fetchFromCurseAPI() {
+      const headers = {
+        Accept: "application/json",
+        "x-api-key":
+          "$2a$10$2AoD.UNzvBLXUXHgpBZTdebaXO0nhitedr3YBn/1fah2wGvnf41ta",
+      };
+
+      const addons = await fetch(
+        "https://api.curseforge.com/v1/mods/search?gameId=432&classId=6&searchFilter=Create&sortField=2&sortOrder=desc",
+        {
+          method: "GET",
+          headers: headers,
         }
+      );
+
+      return await addons.json();
+    }
+
+    function getModLoaders(addon) {
+      const modloadersTypes = [];
+      addon.latestFiles.forEach((file) => {
+        file.sortableGameVersions.forEach((version) => {
+          if (version.gameVersionPadded === "0") {
+            modloadersTypes.push(version.gameVersionName);
+          }
+        });
+      });
+      const sanitizedModLoaders = [...new Set(modloadersTypes)];
+
+      let modloaders = [];
+      if (sanitizedModLoaders.includes("Forge"))
+        modloaders.push(
+          '<a class="supports-forge" target="_blank" rel="noopener noreferrer" href="https://forums.minecraftforge.net"><img alt="Forge support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/forge_46h.png"></a>'
+        );
+      if (sanitizedModLoaders.includes("NeoForge"))
+        modloaders.push(
+          `<a class="supports-neoforge" target="_blank" rel="noopener noreferrer" href="https://neoforged.net"><img alt="NeoForge support" height="30" src="/static/neoforge_46h.png"></a>`
+        );
+      if (sanitizedModLoaders.includes("Fabric"))
+        modloaders.push(
+          `<a class="supports-fabric" target="_blank" rel="noopener noreferrer" href="https://fabricmc.net"><img alt="Fabric support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/fabric_46h.png"></a>`
+        );
+      if (sanitizedModLoaders.includes("Quilt"))
+        modloaders.push(
+          `<a class="supports-quilt" target="_blank" rel="noopener noreferrer" href="https://quiltmc.org"><img alt="Quilt support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/quilt_46h.png"></a>`
+        );
+      return modloaders.join("");
+    }
+
+    function getVersions(addon) {
+      return [
+        ...new Set(addon.latestFilesIndexes.map((file) => file.gameVersion)),
+      ]
+        .map((version) => {
+          return `<span class="addon-version supports-${version.replaceAll(
+            ".",
+            "_"
+          )}"">${version}</span>`;
+        })
+        .join("");
+    }
+
+    function addonCardTemplate({
+      modloaders,
+      versions,
+      name,
+      icon_url,
+      short_description,
+      followers,
+      authors,
+      slug,
+      downloads,
+      categories,
+    }) {
+      return `
+                    <h3 class="addon-name">${name}</h3>
+                    <img height="100px" width="100px" src="${icon_url}" alt="${name}">
+                    <div class="modloaders">${modloaders}</div>
+                    <div class="addon-versions">${versions}</div>
+                    <p class="addon-description"><b>Downloads:</b> ${downloads}</p>
+                    <p class="addon-description"><b>Description:</b> ${short_description}</p>
+                    <p class="addon-description"><b>Categories:</b> ${categories.join(
+                      ", "
+                    )}</p>
+                    <p class="addon-description"><b>Followers:</b> ${followers}</p>
+                    <p class="addon-description"><b>Created by:</b> ${authors}</p>
+                    <a target="_blank" rel="noopener noreferrer" class="addon-button" href="${
+                      "https://modrinth.com/mod/" + slug
+                    }"><img class="modrinth-download" alt="Download on Modrinth" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_46h.png"></a>
+                `;
     }
 
     // Function to process JSON data and populate data boxes
     async function processData() {
-        let versionsArray = []
-        const jsonData = await fetchJsonData();
-        if (jsonData) {
-            const outputDiv = document.getElementById('output');
-            for (const key in jsonData) {
-                const addon = jsonData[key];
-                let modloaders = "";
-                if (addon.addon_categories.includes("forge")) modloaders += `<a class="supports-forge" target="_blank" rel="noopener noreferrer" href="https://forums.minecraftforge.net"><img alt="Forge support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/forge_46h.png"></a>`;
-                if (addon.addon_categories.includes("neoforge")) modloaders += `<a class="supports-neoforge" target="_blank" rel="noopener noreferrer" href="https://neoforged.net"><img alt="NeoForge support" height="30" src="/static/neoforge_46h.png"></a>`;
-                if (addon.addon_categories.includes("fabric")) modloaders += `<a class="supports-fabric" target="_blank" rel="noopener noreferrer" href="https://fabricmc.net"><img alt="Fabric support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/fabric_46h.png"></a>`;
-                if (addon.addon_categories.includes("quilt")) modloaders += `<a class="supports-quilt" target="_blank" rel="noopener noreferrer" href="https://quiltmc.org"><img alt="Quilt support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/quilt_46h.png"></a>`;
-                
-                let versions = "";
-                for (const version of addon.addon_versions) {
-                    versions += `<span class="addon-version supports-${version.replaceAll(".", "_")}"">${version}</span>`;
-                    if (!versionsArray.includes(version)) versionsArray.push(version);
-                }
+      const { data } = await fetchFromCurseAPI();
+      if (data) {
+        const outputDiv = document.getElementById("output");
 
-                const addonElement = document.createElement('div');
-                addonElement.classList.add('addon'); // Add 'addon' class to the created div
-                addonElement.innerHTML = `
-                    <h3 class="addon-name">${addon.addon_name}</h3>
-                    <img height="100px" width="100px" src="${addon.addon_icon_url}" alt="${addon.addon_name}">
-                    <div class="modloaders">${modloaders}</div>
-                    <div class="addon-versions">${versions}</div>
-                    <p class="addon-description"><b>Downloads:</b> ${addon.addon_downloads}</p>
-                    <p class="addon-description"><b>Description:</b> ${addon.addon_short_descriptions}</p>
-                    <p class="addon-description"><b>Categories:</b> ${addon.addon_categories.join(', ')}</p>
-                    <p class="addon-description"><b>Followers:</b> ${addon.addon_followers}</p>
-                    <p class="addon-description"><b>Created by:</b> ${addon.addon_authors}</p>
-                    <a target="_blank" rel="noopener noreferrer" class="addon-button" href="${"https://modrinth.com/mod/"+addon.addon_slug}"><img class="modrinth-download" alt="Download on Modrinth" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_46h.png"></a>
-                `;
-                outputDiv.appendChild(addonElement);
-            }
-
-            for (const version of versionsArray.sort().reverse()) {
-                const versionElement = document.createElement("li");
-                versionElement.innerHTML = `
-                    <input type="radio" id="${version.replaceAll(".", "_")}" name="version" />
-                    <label for="${version.replaceAll(".", "_")}">${version}</label>
-                `;
-
-                function versionHandler(e) {
-                    versionSelection = this.children[0].id;
-                    console.log(this.children[0].id);
-                    // Click Events
-                    if (e.type === "click" && e.clientX !== 0 && e.clientY !== 0) {
-                        versionSelectedValue.textContent = this.children[1].textContent;
-                        versionSelect.classList.remove("active");
-                    }
-                    // Key Events
-                    if (e.key === "Enter") {
-                        versionSelectedValue.textContent = this.textContent;
-                        versionSelect.classList.remove("active");
-                    }
-                    searchAddons();
-                }
-
-                versionElement.addEventListener("keyup", versionHandler);
-                versionElement.addEventListener("click", versionHandler);
-
-                document.querySelector(".select-version .select-dropdown").appendChild(versionElement);
-            }
+        for (const addon of data) {
+          const addonElement = document.createElement("div");
+          addonElement.classList.add("addon");
+          addonElement.innerHTML = addonCardTemplate({
+            modloaders: getModLoaders(addon),
+            versions: getVersions(addon),
+            name: addon.name,
+            icon_url: addon.logo.thumbnailUrl,
+            short_description: addon.summary,
+            downloads: addon.downloadCount,
+            categories: addon.categories.map((category) => category.name),
+            followers: addon.followersCount,
+            authors: addon.authors.map((author) => author.name).join(", "),
+            slug: addon.slug,
+          });
+          outputDiv.appendChild(addonElement);
         }
+      }
     }
 
     // Call the processData function when the page loads
@@ -189,67 +248,90 @@
 
     // Function to handle addon search
     function searchAddons() {
-        const searchInput = document.getElementById('search-input').value.toLowerCase();
-        const addons = document.querySelectorAll('.addon');
-        addons.forEach(addon => {
-            const addonName = addon.querySelector('.addon-name').textContent.toLowerCase();
-            const addonDescription = addon.querySelector('.addon-description').textContent.toLowerCase();
-            if ((addonName.includes(searchInput) || addonDescription.includes(searchInput)) && (loaderSelection == "all" || addon.querySelector(`.supports-${loaderSelection}`)) && (versionSelection == "all" || addon.querySelector(`.supports-${versionSelection}`))) {
-                addon.style.display = 'block'; // Show addon if it matches the search query
-            } else {
-                addon.style.display = 'none'; // Hide addon if it doesn't match the search query
-            }
-        });
+      const searchInput = document
+        .getElementById("search-input")
+        .value.toLowerCase();
+      const addons = document.querySelectorAll(".addon");
+      addons.forEach((addon) => {
+        const addonName = addon
+          .querySelector(".addon-name")
+          .textContent.toLowerCase();
+        const addonDescription = addon
+          .querySelector(".addon-description")
+          .textContent.toLowerCase();
+        if (
+          (addonName.includes(searchInput) ||
+            addonDescription.includes(searchInput)) &&
+          (loaderSelection == "all" ||
+            addon.querySelector(`.supports-${loaderSelection}`)) &&
+          (versionSelection == "all" ||
+            addon.querySelector(`.supports-${versionSelection}`))
+        ) {
+          addon.style.display = "block"; // Show addon if it matches the search query
+        } else {
+          addon.style.display = "none"; // Hide addon if it doesn't match the search query
+        }
+      });
     }
 
     // Handle search when Enter key is pressed
-    document.getElementById('search-input').addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-            searchAddons();
+    document
+      .getElementById("search-input")
+      .addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+          searchAddons();
         }
-    });
-</script>
-<script>
+      });
+  </script>
+  <script>
     // Script for custom selector (Loader)
     const loaderSelect = document.querySelector(".select-loader");
-    const loaderSelectBtn = document.querySelector(".select-loader .select-button");
+    const loaderSelectBtn = document.querySelector(
+      ".select-loader .select-button"
+    );
 
     // add a click event to select button
     loaderSelectBtn.addEventListener("click", () => {
-        // add/remove active class on the container element
-        loaderSelect.classList.toggle("active");
-        // update the aria-expanded attribute based on the current state
-        loaderSelectBtn.setAttribute(
-            "aria-expanded",
-            loaderSelectBtn.getAttribute("aria-expanded") === "true" ? "false" : "true"
-        );
+      // add/remove active class on the container element
+      loaderSelect.classList.toggle("active");
+      // update the aria-expanded attribute based on the current state
+      loaderSelectBtn.setAttribute(
+        "aria-expanded",
+        loaderSelectBtn.getAttribute("aria-expanded") === "true"
+          ? "false"
+          : "true"
+      );
     });
 
     const loaderSelectedValue = loaderSelect.querySelector(".selected-value");
-    const loaderOptionsList = loaderSelect.querySelectorAll(".select-dropdown li");
+    const loaderOptionsList = loaderSelect.querySelectorAll(
+      ".select-dropdown li"
+    );
 
-    let loaderSelection = loaderSelect.querySelector('input[name="loader"]:checked').id;
+    let loaderSelection = loaderSelect.querySelector(
+      'input[name="loader"]:checked'
+    ).id;
 
     loaderOptionsList.forEach((option) => {
-        function loaderHandler(e) {
-            loaderSelection = this.children[0].id;
-            console.log(this.children[0].id);
-            
-            // Click Events
-            if (e.type === "click" && e.clientX !== 0 && e.clientY !== 0) {
-                loaderSelectedValue.textContent = this.children[1].textContent;
-                loaderSelect.classList.remove("active");
-            }
-            // Key Events
-            if (e.key === "Enter") {
-                loaderSelectedValue.textContent = this.textContent;
-                loaderSelect.classList.remove("active");
-            }
-            searchAddons();
-        }
+      function loaderHandler(e) {
+        loaderSelection = this.children[0].id;
+        console.log(this.children[0].id);
 
-        option.addEventListener("keyup", loaderHandler);
-        option.addEventListener("click", loaderHandler);
+        // Click Events
+        if (e.type === "click" && e.clientX !== 0 && e.clientY !== 0) {
+          loaderSelectedValue.textContent = this.children[1].textContent;
+          loaderSelect.classList.remove("active");
+        }
+        // Key Events
+        if (e.key === "Enter") {
+          loaderSelectedValue.textContent = this.textContent;
+          loaderSelect.classList.remove("active");
+        }
+        searchAddons();
+      }
+
+      option.addEventListener("keyup", loaderHandler);
+      option.addEventListener("click", loaderHandler);
     });
 
     // Script for custom selector (Version)
@@ -258,51 +340,60 @@
 
     // add a click event to select button
     versionSelectBtn.addEventListener("click", () => {
-        // add/remove active class on the container element
-        versionSelect.classList.toggle("active");
-        // update the aria-expanded attribute based on the current state
-        versionSelectBtn.setAttribute(
-            "aria-expanded",
-            versionSelectBtn.getAttribute("aria-expanded") === "true" ? "false" : "true"
-        );
+      // add/remove active class on the container element
+      versionSelect.classList.toggle("active");
+      // update the aria-expanded attribute based on the current state
+      versionSelectBtn.setAttribute(
+        "aria-expanded",
+        versionSelectBtn.getAttribute("aria-expanded") === "true"
+          ? "false"
+          : "true"
+      );
     });
 
     const versionSelectedValue = versionSelect.querySelector(".selected-value");
-    const versionOptionsList = versionSelect.querySelectorAll(".select-dropdown li");
+    const versionOptionsList = versionSelect.querySelectorAll(
+      ".select-dropdown li"
+    );
 
-    let versionSelection = versionSelect.querySelector('input[name="version"]:checked').id;
+    let versionSelection = versionSelect.querySelector(
+      'input[name="version"]:checked'
+    ).id;
 
     versionOptionsList.forEach((option) => {
-        function versionHandler(e) {
-            versionSelection = this.children[0].id;
-            console.log(this.children[0].id);
+      function versionHandler(e) {
+        versionSelection = this.children[0].id;
+        console.log(this.children[0].id);
 
-            // Click Events
-            if (e.type === "click" && e.clientX !== 0 && e.clientY !== 0) {
-                versionSelectedValue.textContent = this.children[1].textContent;
-                versionSelect.classList.remove("active");
-            }
-            // Key Events
-            if (e.key === "Enter") {
-                versionSelectedValue.textContent = this.textContent;
-                versionSelect.classList.remove("active");
-            }
-            searchAddons();
+        // Click Events
+        if (e.type === "click" && e.clientX !== 0 && e.clientY !== 0) {
+          versionSelectedValue.textContent = this.children[1].textContent;
+          versionSelect.classList.remove("active");
         }
+        // Key Events
+        if (e.key === "Enter") {
+          versionSelectedValue.textContent = this.textContent;
+          versionSelect.classList.remove("active");
+        }
+        searchAddons();
+      }
 
-        option.addEventListener("keyup", versionHandler);
-        option.addEventListener("click", versionHandler);
+      option.addEventListener("keyup", versionHandler);
+      option.addEventListener("click", versionHandler);
     });
-    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    const darkModeToggle = document.getElementById("dark-mode-toggle");
     const body = document.body;
 
-    darkModeToggle.addEventListener('click', () => {
-        body.classList.toggle('dark-mode');
+    darkModeToggle.addEventListener("click", () => {
+      body.classList.toggle("dark-mode");
     });
-    window.addEventListener('load', function() {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark-mode');
-    }
+    window.addEventListener("load", function () {
+      if (
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        document.body.classList.add("dark-mode");
+      }
     });
-</script>
+  </script>
 </html>
