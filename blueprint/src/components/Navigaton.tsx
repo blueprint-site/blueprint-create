@@ -4,6 +4,7 @@ import BlueprintLogo from '../assets/logo.webp';
 import AddonIcon from '../assets/minecart_coupling.webp';
 import SchematicIcon from '../assets/schematic.webp';
 import AboutIcon from '../assets/clipboard.webp'
+
 import NavigationLink from './NavigationLink';
 import { NavLink } from 'react-router-dom';
 

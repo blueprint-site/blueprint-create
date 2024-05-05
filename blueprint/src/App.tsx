@@ -8,17 +8,22 @@ import Loading from "./components/Loading";
 
 
 import EnglishTranslation from './assets/en_us.json';
+import GermanTranslation from './assets/de_de.json';
 
 import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
+import LanguageDetector from 'i18next-browser-languagedetector';
+import XHR from 'i18next-http-backend';
 
 i18n
+    .use(XHR)
+    .use(LanguageDetector)
     .use(initReactI18next) // passes i18n down to react-i18next
     .init({
         resources: {
-            en: EnglishTranslation
+            en: EnglishTranslation,
+            de: GermanTranslation
         },
-        lng: "en", // if you're using a language detector, do not define the lng option
         fallbackLng: "en",
 
         interpolation: {
