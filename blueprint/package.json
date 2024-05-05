@@ -12,6 +12,7 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "i18next": "^23.11.3",
+    "jsx-runtime": "^1.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sass": "^1.76.0",
