@@ -15,7 +15,7 @@ function Layout() {
 
   return (
     <>
-      <div className={"main " + darkmodeState && "dark-mode"}>
+      <div className={"main " + (darkmodeState ? "dark-mode" : "")}>
         <Navigation></Navigation>
         <main>
           <Outlet />
