@@ -1,3 +1,5 @@
+import Carousel from 'react-bootstrap/Carousel';
+
 import Banner1 from "../assets/banners/banner1.webp";
 import Banner2 from "../assets/banners/banner2.webp";
 import Banner3 from "../assets/banners/banner3.webp";
@@ -7,27 +9,29 @@ import Banner6 from "../assets/banners/banner6.webp";
 
 function AddonsSlideshow() {
     return (
-        <div id="carouselExample" className="carousel slide">
-            <div className="carousel-inner">
-                <div className="carousel-item active">
-                    <img src={Banner1} className="d-block w-100" alt="..." />
-                </div>
-                <div className="carousel-item">
-                    <img src={Banner2} className="d-block w-100" alt="..." />
-                </div>
-                <div className="carousel-item">
-                    <img src={Banner3} className="d-block w-100" alt="..." />
-                </div>
-            </div>
-            <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span className="visually-hidden">Previous</span>
-            </button>
-            <button className="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                <span className="visually-hidden">Next</span>
-            </button>
-        </div>
+        <Carousel>
+            <Carousel.Item>
+                <img src={Banner1} className="d-block w-100" alt="..." />
+                <Carousel.Caption>
+                    <h3>First slide</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </Carousel.Caption>
+            </Carousel.Item>
+            <Carousel.Item>
+                <img src={Banner2} className="d-block w-100" alt="..." />
+                <Carousel.Caption>
+                    <h3>Second slide</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </Carousel.Caption>
+            </Carousel.Item>
+            <Carousel.Item>
+                <img src={Banner3} className="d-block w-100" alt="..." />
+                <Carousel.Caption>
+                    <h3>Third slide</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </Carousel.Caption>
+            </Carousel.Item>
+        </Carousel>
     )
 
 }
