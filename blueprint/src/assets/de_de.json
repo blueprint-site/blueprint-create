@@ -3,8 +3,8 @@
         "navigation": {
             "label": {
                 "addons": "Addons",
-                "schematics": "Schematics",
-                "about": "About"
+                "schematics": "Vorlagen",
+                "about": "Über uns"
             }
         }
     }
