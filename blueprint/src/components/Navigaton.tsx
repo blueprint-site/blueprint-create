@@ -8,6 +8,7 @@ import SchematicIcon from '../assets/schematic.webp';
 import AboutIcon from '../assets/clipboard.webp'
 import NavigationLink from './NavigationLink';
 import '../styles/navigation.scss';
+import { NavLink } from 'react-router-dom';
 
 const Navigation = () => {
     i18next.init({
@@ -21,7 +22,7 @@ const Navigation = () => {
     return (
         <>
             <nav>
-                <a className="logo" href="/"><img src={BlueprintLogo} alt="Logo" />Blueprint</a>
+                <NavLink className="logo" to="/"><img src={BlueprintLogo} alt="Logo" />Blueprint</NavLink>
                 <span />
                 <NavigationLink destination={'/addons'} icon={AddonIcon} label={i18next.t("navigation.label.addons")}></NavigationLink>
                 <NavigationLink destination={'/schematics'} icon={SchematicIcon} label={i18next.t("navigation.label.schematics")}></NavigationLink>

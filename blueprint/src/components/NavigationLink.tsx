@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 interface NavigationLinkProps {
     destination: string,
     icon: string,
@@ -7,10 +9,10 @@ interface NavigationLinkProps {
 const NavigationLink = (properties: NavigationLinkProps) => {
     return (
         <>
-            <a href={properties.destination}>
+            <NavLink to={properties.destination}>
                 <img src={properties.icon} alt={properties.label} />
                 {properties.label}
-            </a>
+            </NavLink>
         </>
     );
 }
