@@ -1,0 +1,36 @@
+{
+    "en": {
+        "translation": {
+            "navigation": {
+                "label": {
+                    "addons": "Addons",
+                    "schematics": "Schematics",
+                    "about": "About"
+                }
+            },
+            "awards": {
+                "banner": {
+                    "label": "The Wrench Awards",
+                    "link": "Vote now!"
+                }
+            }
+        }
+    },
+    "de": {
+        "translation": {
+            "navigation": {
+                "label": {
+                    "addons": "Addons",
+                    "schematics": "Vorlagen",
+                    "about": "Über uns"
+                }
+            },
+            "awards": {
+                "banner": {
+                    "label": "Die Wrench Awards",
+                    "link": "Jetzt abstimmen!"
+                }
+            }
+        }
+    }
+}
