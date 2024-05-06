@@ -2,15 +2,14 @@ import LoadingGif from '../assets/loading.gif';
 
 import '../styles/loading.scss';
 
-function Loading() {
+function LoadingAnimation() {
     return (
         <>
-            <div className="loading">
-                <h1>Blueprint</h1>
+            <div className="loader">
                 <img src={LoadingGif} alt="Loading" />
             </div>
         </>
     );
 }
 
-export default Loading;
+export default LoadingAnimation;

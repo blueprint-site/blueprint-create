@@ -3,8 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import NoPage from "./pages/404/NoPage";
 import Home from "./pages/Home/Home";
+import Addons from "./pages/Addons/Addons";
 import { Suspense } from "react";
-import Loading from "./components/Loading";
+import LoadingOverlay from "./components/LoadingOverlay";
 
 import Translations from "./assets/translations.json";
 
@@ -29,10 +30,11 @@ i18n
 const App = () => {
   return (
     <BrowserRouter>
-      <Suspense fallback={<Loading />}>
+      <Suspense fallback={<LoadingOverlay />}>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
+            <Route path="addons" element={<Addons />} />
             <Route path="*" element={<NoPage />} />
           </Route>
         </Routes>
