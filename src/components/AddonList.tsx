@@ -30,11 +30,10 @@ function AddonList() {
     const [isLoading, setIsLoading] = useState(true);
     const [addons, setAddons] = useState<Addon[]>([]);
 
-    const [modloader, setModloader] = useState<"Forge" | "NeoForge" | "Fabric" | "Quilt" | "">("");
-    const [version, setVersion] = useState<string>("");
-
     const [versions, setVersions] = useState<string[]>([]);
 
+    const [modloader, setModloader] = useState<"Forge" | "NeoForge" | "Fabric" | "Quilt" | "">("");
+    const [version, setVersion] = useState<string>("");
     const [query, setQuery] = useState<string>("");
 
     useEffect(() => {
