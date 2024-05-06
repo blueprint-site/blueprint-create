@@ -14,6 +14,28 @@
                     "label": "The Wrench Awards",
                     "link": "Vote now!"
                 }
+            },
+            "addons": {
+                "search": {
+                    "placeholder": "Search Addons..."
+                },
+                "dropdown": {
+                    "modloader": {
+                        "select": "Select Modloader",
+                        "all": "All Modloaders"
+                    },
+                    "version": {
+                        "select": "Select Version",
+                        "all": "All Versions"
+                    }
+                },
+                "label": {
+                    "downloads": "Downloads",
+                    "description": "Description",
+                    "categories": "Categories",
+                    "followers": "Followers",
+                    "authors": "Created by"
+                }
             }
         }
     },
@@ -30,6 +52,28 @@
                 "banner": {
                     "label": "Die Wrench Awards",
                     "link": "Jetzt abstimmen!"
+                }
+            },
+            "addons": {
+                "search": {
+                    "placeholder": "Addons suchen..."
+                },
+                "dropdown": {
+                    "modloader": {
+                        "select": "Modloader wählen",
+                        "all": "Alle Modloader"
+                    },
+                    "version": {
+                        "select": "Version wählen",
+                        "all": "Alle Versionen"
+                    }
+                },
+                "label": {
+                    "downloads": "Downloads",
+                    "description": "Beschreibung",
+                    "categories": "Kategorien",
+                    "followers": "Follower",
+                    "authors": "Erstellt von"
                 }
             }
         }

@@ -25,6 +25,8 @@ import '../styles/addonslist.scss';
 import AddonListItem from "./AddonListItem";
 import { Dropdown } from "react-bootstrap";
 
+import { useTranslation } from "react-i18next";
+
 function AddonList() {
     const [error, setError] = useState<any>();
     const [isLoading, setIsLoading] = useState(true);
@@ -35,6 +37,8 @@ function AddonList() {
     const [modloader, setModloader] = useState<"Forge" | "NeoForge" | "Fabric" | "Quilt" | "">("");
     const [version, setVersion] = useState<string>("");
     const [query, setQuery] = useState<string>("");
+
+    const { t } = useTranslation();
 
     useEffect(() => {
         const compareSemanticVersions = (a: string, b: string) => {
@@ -62,7 +66,12 @@ function AddonList() {
         const fetchAddons = async () => {
             setIsLoading(true);
 
+            function sleep(ms: number) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
             try {
+                await sleep(5000);
 
                 const response = await fetch("https://blueprint-site.github.io/static/data/final_data.json");
                 const data: Addons = await response.json();
@@ -111,15 +120,15 @@ function AddonList() {
         <>
             <div className="form">
                 <div className="search-bar">
-                    <input type="text" placeholder="Search addons..." className="search-input" onChange={(e) => { setQuery(e.target.value) }} />
+                    <input type="text" placeholder={t("addons.search.placeholder")} className="search-input" onChange={(e) => { setQuery(e.target.value) }} />
                 </div>
                 <div className="dropdown-container">
                     <Dropdown>
                         <Dropdown.Toggle>
-                            {modloader == "" ? "Select Modloader" : modloader}
+                            {modloader == "" ? t("addons.dropdown.modloader.select") : modloader}
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => { setModloader("") }}>All modloaders</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setModloader("") }}>{t("addons.dropdown.modloader.all")}</Dropdown.Item>
                             <Dropdown.Item onClick={() => { setModloader("Forge") }}>Forge</Dropdown.Item>
                             <Dropdown.Item onClick={() => { setModloader("NeoForge") }}>NeoForge</Dropdown.Item>
                             <Dropdown.Item onClick={() => { setModloader("Fabric") }}>Fabric</Dropdown.Item>
@@ -128,10 +137,10 @@ function AddonList() {
                     </Dropdown>
                     <Dropdown>
                         <Dropdown.Toggle>
-                            {version == "" ? "Select Version" : version}
+                            {version == "" ? t("addons.dropdown.version.select") : version}
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => { setVersion("") }}>All Versions</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setVersion("") }}>{t("addons.dropdown.version.all")}</Dropdown.Item>
                             {versions.map((version) => {
                                 return <Dropdown.Item onClick={() => { setVersion(version) }}>{version}</Dropdown.Item>
                             })}
