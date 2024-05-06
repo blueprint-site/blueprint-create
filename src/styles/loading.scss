@@ -27,3 +27,17 @@
         color: white;
     }
 }
+
+.loader {
+    height: 150px;
+    width: 150px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: 100%;
+        max-width: 100%;
+    }
+}

@@ -1,0 +1,135 @@
+.addon {
+    width: 100%;
+    /* Adjusted width */
+    height: auto;
+    border-radius: 1.9em;
+    padding: 20px;
+    background-size: cover;
+    /* Ensure the background image covers the entire box */
+    background-position: center;
+    /* Center the background image */
+    align-items: left;
+    position: relative;
+    /* Ensure relative positioning for absolute positioning of child elements */
+    display: flex;
+    /* Use flexbox to control the layout of child elements */
+    flex-direction: column;
+    /* Stack child elements vertically */
+    text-align: left;
+    box-shadow: 10px 10px 10px rgb(0, 0, 0, 0.2);
+    background-color: var(--container-background);
+
+    .addon-name {
+        color: var(--dark-text-color);
+        font-family: Arial, Helvetica, sans-serif;
+        position: relative;
+        /* Ensure text appears above the pseudo-element */
+        z-index: 1;
+        /* Ensure text is on top of the pseudo-element */
+        font-size: 1.4em;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 10px;
+        /* Add margin to separate from other text */
+        text-shadow: 3px 2px 10px rgb(0, 0, 0, 0.3);
+    }
+
+    .modloaders {
+        margin-top: 5px;
+
+        >a {
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+
+        img {
+            height: 40px;
+            width: 40px;
+        }
+    }
+
+    .addon-versions {
+        margin-top: 4px;
+        margin-bottom: 4px;
+        max-width: 100%;
+        overflow-y: hidden;
+        overflow-x: scroll;
+        padding-top: 4px;
+        padding-bottom: 4px;
+    }
+
+    .addon-version {
+        background-color: rgb(85, 85, 255);
+        border: .5px solid blue;
+        border-radius: 6px;
+        color: var(--text-color);
+        padding: 3px;
+        font-size: 13px;
+        margin: 2px;
+        width: auto;
+        white-space: nowrap;
+    }
+
+    .addon-description {
+        color: var(--dark-text-color);
+        font-family: Arial, Helvetica, sans-serif;
+        position: relative;
+        /* Ensure text appears above the pseudo-element */
+        z-index: 1;
+        /* Ensure text is on top of the pseudo-element */
+        font-size: 0.8em;
+        margin-top: 0;
+        /* Adjust margin */
+        margin-bottom: 5px;
+        /* Adjust margin */
+    }
+
+    span {
+        flex-grow: 1;
+        min-height: 10px;
+    }
+
+    .addon-button {
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            width: 90%;
+        }
+    }
+}
+
+.dark-mode {
+    .addon {
+        background-color: var(--dark-container-background);
+        box-shadow: 10px 10px 10px rgb(0, 0, 0, 0.2);
+        color: var(--text-color);
+
+        .addon-name {
+            color: var(--text-color);
+        }
+
+        .addon-description {
+            color: var(--text-color);
+        }
+
+        .addon-version {
+            color: var(--text-color);
+        }
+
+        .addon-loader {
+            color: var(--text-color);
+        }
+
+        .addon-author {
+            color: var(--text-color);
+        }
+
+        .addon-rating {
+            color: var(--text-color);
+        }
+    }
+}
