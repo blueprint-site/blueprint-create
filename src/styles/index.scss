@@ -1,0 +1,33 @@
+@import url('https://fonts.cdnfonts.com/css/minecraftia');
+
+/* Put color variables here */
+:root {
+    --main-background: #E5E7EB;
+    --dark-main-background: black;
+    --text-color: white;
+    --dark-text-color: black;
+}
+
+body {
+    background-color: var(--main-background);
+    margin: 0;
+}
+
+.main {
+    width: 100vw;
+    height: 100vh;
+}
+
+.dark-mode {
+    background-color: var(--dark-main-background);
+    color: white;
+}
+
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+    padding-top: 90px;
+    width: 100vw;
+}
