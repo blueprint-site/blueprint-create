@@ -5,7 +5,6 @@ import SchemeToggle from './SchemeToggle';
 import { Outlet } from 'react-router-dom';
 
 import { useState } from 'react';
-import LoadingOverlay from './LoadingOverlay';
 
 function Layout() {
   const [darkmodeState, setDarkmodeState] = useState(false);

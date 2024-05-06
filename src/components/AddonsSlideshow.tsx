@@ -95,7 +95,7 @@ function AddonsSlideshow() {
     return () => clearInterval(intervalId);
   }, []);
 
-  const updateSideBoxContent = (index) => {
+  const updateSideBoxContent = (index: number) => {
     switch (index) {
       case 0:
         return (
