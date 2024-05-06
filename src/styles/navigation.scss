@@ -1,0 +1,71 @@
+nav {
+    position: fixed;
+    height: 60px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    display: flex;
+    z-index: 9998;
+
+    span {
+        flex-grow: 1;
+    }
+
+    img {
+        max-height: 40px;
+        margin-right: 10px;
+    }
+
+    >a {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        padding: auto;
+        padding-left: 20px;
+        padding-right: 20px;
+        text-decoration: none;
+        color: var(--dark-text-color);
+        font-size: 17px;
+        transition: .1s all;
+
+        img {
+            scale: 1;
+            transition: .5s all;
+        }
+    }
+
+    >a:hover {
+        background-color: #cecece;
+
+        img {
+            scale: 1.07;
+        }
+    }
+
+    >a.logo {
+        font-size: 20px;
+        font-weight: 500;
+        font-family: 'Minecraftia', sans-serif;
+    }
+}
+
+.dark-mode {
+    nav {
+        background-color: var(--dark-text-color);
+        box-shadow: 0 2px 5px rgba(255, 255, 255, 0.3);
+    }
+
+    >a:hover,
+    >button:hover {
+        background-color: #4e4e4e;
+    }
+
+    nav a {
+        color: var(--text-color);
+    }
+
+    nav>button {
+        color: var(--text-color);
+        background-color: var(--dark-main-background);
+    }
+}
