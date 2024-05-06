@@ -34,6 +34,8 @@
 
         background-color: var(--container-background);
         border: none;
+
+        box-shadow: 10px 10px 10px rgb(0, 0, 0, 0.2);
     }
 
     button:active,
@@ -51,6 +53,8 @@
         overflow-y: scroll;
 
         background-color: var(--container-background);
+
+        box-shadow: 10px 10px 10px rgb(0, 0, 0, 0.2);
 
         a {
             color: var(--dark-text-color);
@@ -110,6 +114,8 @@
 
             color: var(--text-color);
 
+            box-shadow: 10px 10px 10px rgb(0, 0, 0, 0.2);
+
             background-color: var(--dark-container-background);
             border: none;
         }
@@ -126,6 +132,8 @@
             width: 100%;
 
             background-color: var(--dark-container-background);
+
+            box-shadow: 10px 10px 10px rgb(0, 0, 0, 0.2);
 
             a {
                 color: var(--text-color);
