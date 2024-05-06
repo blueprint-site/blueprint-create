@@ -97,7 +97,8 @@
         justify-content: center;
 
         img {
-            width: 90%;
+            max-height: 50px;
+            max-width: 90%;
         }
     }
 }

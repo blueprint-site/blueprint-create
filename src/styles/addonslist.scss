@@ -1,3 +1,89 @@
+:root {
+    --main-background: #E5E7EB;
+    --dark-main-background: black;
+    --text-color: white;
+    --dark-text-color: black;
+    --container-background: #B3CAE5;
+    --dark-container-background: #527caf;
+}
+
+.form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+
+    .dropdown-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.dropdown {
+    width: 200px;
+
+    margin: 5px;
+
+    button {
+        width: 100%;
+        height: 50px;
+
+        color: var(--dark-text-color);
+
+        background-color: var(--container-background);
+        border: none;
+    }
+
+    button:active,
+    button:hover,
+    button:focus {
+        background-color: var(--container-background);
+        border: none;
+        color: var(--dark-text-color);
+    }
+
+    .dropdown-menu {
+        width: 100%;
+
+        max-height: 200px;
+        overflow-y: scroll;
+
+        background-color: var(--container-background);
+
+        a {
+            color: var(--dark-text-color);
+        }
+
+        a:hover,
+        a:focus,
+        a:active {
+            color: var(--dark-text-color);
+            background-color: #8b96fe;
+        }
+    }
+}
+
+.dropdown.show {
+    button {
+        width: 100%;
+        height: 50px;
+
+        background-color: var(--container-background);
+
+        color: var(--dark-text-color);
+
+        button:active,
+        button:hover,
+        button:focus {
+            background-color: var(--container-background);
+            border: none;
+            color: var(--dark-text-color);
+        }
+    }
+}
+
 .addons-loading {
     width: 100vw;
     height: calc(100vh - 90px);
@@ -15,20 +101,70 @@
 }
 
 .dark-mode {
+    .dropdown {
+        width: 200px;
+
+        button {
+            width: 100%;
+            height: 50px;
+
+            color: var(--text-color);
+
+            background-color: var(--dark-container-background);
+            border: none;
+        }
+
+        button:active,
+        button:hover,
+        button:focus {
+            background-color: var(--dark-container-background);
+            border: none;
+            color: var(--text-color);
+        }
+
+        .dropdown-menu {
+            width: 100%;
+
+            background-color: var(--dark-container-background);
+
+            a {
+                color: var(--text-color);
+            }
+
+            a:hover,
+            a:focus,
+            a:active {
+                color: var(--text-color);
+                background-color: #4e60ff;
+            }
+        }
+    }
+
+    .dropdown.show {
+        button {
+            width: 100%;
+            height: 50px;
+
+            background-color: var(--dark-container-background);
+
+            color: var(--text-color);
+
+            button:active,
+            button:hover,
+            button:focus {
+                background-color: var(--dark-container-background);
+                border: none;
+                color: var(--text-color);
+            }
+        }
+    }
+
+
     .addons-loading {
         .loader {
             background-color: #527caf;
         }
     }
-}
-
-:root {
-    --main-background: #E5E7EB;
-    --dark-main-background: black;
-    --text-color: white;
-    --dark-text-color: black;
-    --container-background: #B3CAE5;
-    --dark-container-background: #527caf;
 }
 
 .dark-mode {
