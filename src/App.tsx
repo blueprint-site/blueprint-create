@@ -13,6 +13,7 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import XHR from "i18next-http-backend";
+import SchematicsPage from "./pages/Schematics/Schematics";
 
 i18n
   .use(XHR)
@@ -35,6 +36,7 @@ const App = () => {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="addons" element={<Addons />} />
+            <Route path="schematics" element={<SchematicsPage />} />
             <Route path="*" element={<NoPage />} />
           </Route>
         </Routes>
