@@ -15,7 +15,7 @@ export interface Addon {
 interface Addons {
     [key: string]: Addon
 }
-import { Goggles } from "../assets/goggles.webp"
+
 import { useEffect, useState } from "react";
 import LoadingAnimation from "./LoadingAnimation";
 import ErrorAlert from "./ErrorAlert";

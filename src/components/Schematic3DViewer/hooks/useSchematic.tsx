@@ -3,6 +3,8 @@ import { Buffer } from "buffer";
 import nbt from "prismarine-nbt";
 import { SchematicData, useSchematicStore } from "../store/schematic";
 
+import * as fflate from 'fflate';
+
 export function useSchematic() {
   const [file, setFile] = useState<File | null>(null);
   const { setSchematic } = useSchematicStore();
@@ -16,16 +18,18 @@ export function useSchematic() {
         setLoading(true);
         if (file) {
           const buffer = await file.arrayBuffer();
-          const data = await nbt.parse(Buffer.from(buffer));
+          const stringBuffer = new Uint8Array(buffer);
+          const decompressed = fflate.decompressSync(stringBuffer);
+          const data = nbt.parseUncompressed(Buffer.from(decompressed.buffer));
           console.log(data);
           if (
-            data.parsed.value.blocks !== undefined &&
-            data.parsed.value.palette !== undefined
+            data.value.blocks !== undefined &&
+            data.value.palette !== undefined
           ) {
             // @ts-expect-error types from prismarine-nbt are not accurate
-            const blocks = data.parsed.value.blocks.value.value;
+            const blocks = data.value.blocks.value.value;
             // @ts-expect-error types from prismarine-nbt are not accurate
-            const palette = data.parsed.value.palette.value.value;
+            const palette = data.value.palette.value.value;
             // @ts-expect-error types from prismarine-nbt are not accurate
             const refinedData: Array<SchematicData> = blocks.map((block) => {
               const { pos, state } = block;

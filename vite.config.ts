@@ -1,20 +1,26 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { nodePolyfills } from "vite-plugin-node-polyfills";
+import { polyfillNode } from "esbuild-plugin-polyfill-node";
+import nodePolyfills from 'rollup-plugin-polyfill-node';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
-    target: "es2020",
-    sourcemap: true,
+    rollupOptions: {
+      output: {
+        preserveModules: true
+      },
+      treeshake: false,
+      preserveEntrySignatures: "exports-only",
+      plugins: [
+        nodePolyfills()
+      ]
+    }
   },
   optimizeDeps: {
     esbuildOptions: {
-      target: "es2020",
-      supported: {
-        bigint: true,
-      },
+      plugins: [polyfillNode({})],
     },
   },
-  plugins: [react(), nodePolyfills()],
+  plugins: [react({})]
 });
