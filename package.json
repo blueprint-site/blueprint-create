@@ -11,18 +11,29 @@
     "update": "git pull && npm install"
   },
   "dependencies": {
+    "@react-three/cannon": "^6.6.0",
+    "@react-three/drei": "^9.105.6",
+    "@react-three/fiber": "^8.16.3",
     "bootstrap": "^5.3.3",
+    "esbuild-plugin-polyfill-node": "^0.3.0",
+    "fflate": "^0.8.2",
     "i18next": "^23.11.3",
     "i18next-browser-languagedetector": "^7.2.1",
     "i18next-http-backend": "^2.5.1",
     "jsx-runtime": "^1.2.0",
+    "nanoid": "^5.0.7",
+    "prismarine-nbt": "^2.5.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
     "react-i18next": "^14.1.1",
+    "rollup-plugin-polyfill-node": "^0.13.0",
     "sass": "^1.76.0",
     "styled-components": "^6.1.9",
-    "vite-cloudflared-tunnel": "^1.0.2"
+    "three": "^0.164.1",
+    "vite-cloudflared-tunnel": "^1.0.2",
+    "vite-plugin-node-polyfills": "^0.21.0",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

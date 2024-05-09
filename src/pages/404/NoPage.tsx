@@ -1,4 +1,3 @@
-import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import styles from "./NoPage.module.scss";
 
@@ -11,7 +10,7 @@ function NoPage() {
         <a href="mailto:blueprint-site@proton.me">blueprint-site@proton.me</a>
       </h1>
       <Link to="/">
-        <Button size="lg">Go back to homepage</Button>
+        Go back to homepage
       </Link>
     </div>
   );
