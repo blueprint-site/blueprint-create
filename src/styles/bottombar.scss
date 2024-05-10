@@ -1,0 +1,42 @@
+@import url('https://fonts.cdnfonts.com/css/minecraftia');
+
+.bottom-bar-sitename {
+    color: white;
+    position: inherit;
+    margin-left: 1em;
+    margin-top: 1em;
+    font-size: 1em;
+    font-family:"Minecraftia", Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+}
+
+.bottom-bar-logo {
+    margin-top: 1em;
+    width: 2em;
+    position: relative;
+    margin-left: 1em;
+    margin-bottom: -1em;
+}
+
+.bottom-bar-bug {
+    color: white;
+    position: inherit;
+    margin-left: 1.5em;
+    margin-top: -1em;
+    font-size: 0.7em;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 100;
+}
+.bottom-bar {
+    height: auto;
+    margin-top: 40px;
+    width: 100%;
+    background-color: black;
+    display: flex;
+    align-items: left;
+    justify-content: center; /* Center elements horizontally */
+    align-self: center;
+    gap: 10px;
+    flex-direction: column; /* Align items vertically */
+    text-align: left;
+}
