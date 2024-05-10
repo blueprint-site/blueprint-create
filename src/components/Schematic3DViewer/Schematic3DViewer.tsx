@@ -3,8 +3,7 @@ import { Sky } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 
 import { Ground } from "./Entities/Ground";
-import { Player } from "./Entities/Player";
-import { FPV } from "./Entities/FPV";
+import { MinecraftControls } from "./Controls/MinecraftControls";
 import { Cubes } from "./Renders/Cubes";
 import { SchematicLoader } from "./Entities/SchematicLoader";
 import styles from "./Schematic3DViewer.module.scss";
@@ -12,14 +11,13 @@ import { Suspense } from "react";
 
 export function Schematic3DViewer() {
   return (
-    <>
+    <div id="schematic-viewer" className={styles.container}>
       <Suspense fallback={<div>CARGANDO ...</div>}>
         <Canvas>
           <Sky sunPosition={[100, 200, 20]} />
           <ambientLight intensity={1.4} />
-          <FPV />
           <Physics>
-            <Player />
+            <MinecraftControls />
             <Cubes />
             <Ground />
           </Physics>
@@ -27,6 +25,6 @@ export function Schematic3DViewer() {
       </Suspense>
       <SchematicLoader className={styles.schematicLoader} />
       <div className={styles.crosshair}>+</div>
-    </>
+    </div>
   );
 }
