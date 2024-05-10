@@ -11,12 +11,12 @@ const keyActionMap = new Map([
 
 export const useKeyboard = () => {
   const [actions, setActions] = useState({
-    moveForward: false,
-    moveBackward: false,
-    moveLeft: false,
-    moveRight: false,
-    jump: false,
-    shift: false,
+    moveForward: 0,
+    moveBackward: 0,
+    moveLeft: 0,
+    moveRight: 0,
+    jump: 0,
+    shift: 0,
   });
 
   const [actionStr, setActionStr] = useState("");
@@ -26,7 +26,7 @@ export const useKeyboard = () => {
     if (action) {
       setActions((prev) => ({
         ...prev,
-        [action]: true,
+        [action]: 1,
       }));
       setActionStr(action);
     }
@@ -37,7 +37,7 @@ export const useKeyboard = () => {
     if (action) {
       setActions((prev) => ({
         ...prev,
-        [action]: false,
+        [action]: 0,
       }));
       setActionStr(action);
     }
