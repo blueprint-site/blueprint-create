@@ -66,13 +66,7 @@ function AddonList() {
         const fetchAddons = async () => {
             setIsLoading(true);
 
-            function sleep(ms: number) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            }
-
             try {
-                await sleep(5000);
-
                 const response = await fetch("https://blueprint-site.github.io/static/data/final_data.json");
                 const data: Addons = await response.json();
 

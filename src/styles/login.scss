@@ -1,0 +1,39 @@
+:root {
+    --main-background: #E5E7EB;
+    --dark-main-background: black;
+    --text-color: white;
+    --dark-text-color: black;
+    --container-background: #B3CAE5;
+    --dark-container-background: #527caf;
+}
+
+main:has(.login-container) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .login-container {
+        background-color: var(--container-background);
+        display: flex;
+        align-items: center;
+        width: 375px;
+        max-width: 90vw;
+        height: 500px;
+        flex-direction: column;
+        padding: 20px;
+        border-radius: 15px;
+
+        h1 {
+            font-size: 22px;
+            text-align: center;
+        }
+    }
+}
+
+.dark-mode {
+    main:has(.login-container) {
+        .login-container {
+            background-color: var(--dark-container-background);
+        }
+    }
+}
