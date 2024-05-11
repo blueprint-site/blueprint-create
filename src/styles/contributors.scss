@@ -1,3 +1,5 @@
+@import url('https://fonts.cdnfonts.com/css/minecraftia');
+
 .contributor-container {
     display: flex;
     flex-direction: column;
@@ -6,7 +8,6 @@
     justify-content: center;
 
     text-align: center;
-
     .contributors {
         width: 100%;
         display: grid;
@@ -16,5 +17,20 @@
         * {
             text-decoration: none;
         }
+
     }
+    background-color: rgba(255, 217, 0, 0.89);
+}
+Card {
+    background-color: #B3CAE5;
+}
+.big-text {
+    font-size: 2em;
+    font-weight: bold;
+}
+.smol-text {
+    font-size: 1em;
+}
+.card-username {
+    font-family:"Minecraftia", Arial, Helvetica, sans-serif;
 }

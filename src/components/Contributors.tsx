@@ -24,11 +24,8 @@ import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 
 import '../styles/contributors.scss';
-import { useTranslation } from "react-i18next";
 
 function Contributors() {
-    const { t } = useTranslation();
-
     const [frontendContributors, setFrontendContributors] = useState<GitHubUser[]>([]);
     const [apiContributors, setApiContributors] = useState<GitHubUser[]>([]);
 
@@ -54,15 +51,15 @@ function Contributors() {
     return (
         <>
             <div className="contributor-container">
-                <h3>{t("home.contributions.title")}</h3>
-                <span>{t("home.contributions.subtitle.main")}</span>
+                <h3 className="big-text">Contributors</h3>
+                <span className="smol-text">Thanks to our awesome contributors. Without you this wouldn't have been possible ❤️</span>
                 <div className="contributors">
                     {frontendContributors.map((user) => {
                         return user.login == "blueprint-site" ? (<></>) : (
-                            <Card style={{ width: '100%' }}>
+                            <Card style={{ width: '100%', backgroundColor: '#B3CAE5' }}>
                                 <Card.Img variant="top" src={user.avatar_url} />
                                 <Card.Body>
-                                    <Card.Title><a href={`https://github.com/${user.login}`} target="_blank">{user.login}</a></Card.Title>
+                                    <Card.Title className="card-username">{user.login}</Card.Title>
                                     <span>
                                         {user.contributions}{" contributions"}
                                     </span>
@@ -71,14 +68,14 @@ function Contributors() {
                         )
                     })}
                 </div>
-                <span>{t("home.contributions.subtitle.api")}</span>
+                <span className="smol-text">Also a big thaks to those who helped us building the API ❤️</span>
                 <div className="contributors">
                     {apiContributors.map((user) => {
                         return user.login == "blueprint-site" ? (<></>) : (
-                            <Card style={{ width: '100%' }}>
+                            <Card style={{ width: '100%', backgroundColor: '#B3CAE5'}}>
                                 <Card.Img variant="top" src={user.avatar_url} />
                                 <Card.Body>
-                                    <Card.Title><a href={`https://github.com/${user.login}`} target="_blank">{user.login}</a></Card.Title>
+                                    <Card.Title>{user.login}</Card.Title>
                                     <span>
                                         {user.contributions}{" contributions"}
                                     </span>
@@ -88,7 +85,6 @@ function Contributors() {
                     })}
                 </div>
             </div>
-
         </>
     );
 }
