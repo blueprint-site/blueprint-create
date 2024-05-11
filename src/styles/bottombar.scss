@@ -6,7 +6,7 @@
     margin-left: 1em;
     margin-top: 1em;
     font-size: 1em;
-    font-family:"Minecraftia", Arial, Helvetica, sans-serif;
+    font-family: "Minecraftia", Arial, Helvetica, sans-serif;
     font-weight: bolder;
 }
 
@@ -27,16 +27,21 @@
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 100;
 }
+
 .bottom-bar {
     height: auto;
-    margin-top: 40px;
+    margin-top: 20px;
     width: 100%;
     background-color: black;
+    border-top: 1px solid grey;
+    box-shadow: 0px -2px 5px rgba($color: grey, $alpha: 0.4);
     display: flex;
     align-items: left;
-    justify-content: center; /* Center elements horizontally */
+    justify-content: center;
+    /* Center elements horizontally */
     align-self: center;
     gap: 10px;
-    flex-direction: column; /* Align items vertically */
+    flex-direction: column;
+    /* Align items vertically */
     text-align: left;
 }

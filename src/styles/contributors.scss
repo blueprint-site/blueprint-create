@@ -4,33 +4,46 @@
     display: flex;
     flex-direction: column;
 
+    padding-top: 20px;
+    padding-bottom: 20px;
+
     align-items: center;
     justify-content: center;
 
     text-align: center;
+
+    >span {
+        font-size: 18px;
+    }
+
     .contributors {
         width: 100%;
         display: grid;
         gap: 10px;
-        grid-template-columns: calc(100% * 1/6) calc(100% * 1/6) calc(100% * 1/6) calc(100% * 1/6) calc(100% * 1/6) calc(100% * 1/6);
+        grid-template-columns: calc((100% * 1/10) - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9));
 
         * {
             text-decoration: none;
         }
 
     }
+
     background-color: rgba(255, 217, 0, 0.89);
 }
+
 Card {
     background-color: #B3CAE5;
 }
+
 .big-text {
     font-size: 2em;
     font-weight: bold;
 }
+
 .smol-text {
     font-size: 1em;
 }
+
 .card-username {
-    font-family:"Minecraftia", Arial, Helvetica, sans-serif;
+    font-family: "Minecraftia", Arial, Helvetica, sans-serif;
 }

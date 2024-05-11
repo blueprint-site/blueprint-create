@@ -24,10 +24,13 @@ import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 
 import '../styles/contributors.scss';
+import { useTranslation } from "react-i18next";
 
 function Contributors() {
     const [frontendContributors, setFrontendContributors] = useState<GitHubUser[]>([]);
     const [apiContributors, setApiContributors] = useState<GitHubUser[]>([]);
+
+    const { t } = useTranslation();
 
     useEffect(() => {
         (async () => {
@@ -51,8 +54,8 @@ function Contributors() {
     return (
         <>
             <div className="contributor-container">
-                <h3 className="big-text">Contributors</h3>
-                <span className="smol-text">Thanks to our awesome contributors. Without you this wouldn't have been possible ❤️</span>
+                <h3 className="big-text">{t("home.contributions.title")}</h3>
+                <span className="smol-text">{t("home.contributions.subtitle.main")}</span>
                 <div className="contributors">
                     {frontendContributors.map((user) => {
                         return user.login == "blueprint-site" ? (<></>) : (
@@ -68,14 +71,14 @@ function Contributors() {
                         )
                     })}
                 </div>
-                <span className="smol-text">Also a big thaks to those who helped us building the API ❤️</span>
+                <span className="smol-text">{t("home.contributions.subtitle.api")}</span>
                 <div className="contributors">
                     {apiContributors.map((user) => {
                         return user.login == "blueprint-site" ? (<></>) : (
-                            <Card style={{ width: '100%', backgroundColor: '#B3CAE5'}}>
+                            <Card style={{ width: '100%', backgroundColor: '#B3CAE5' }}>
                                 <Card.Img variant="top" src={user.avatar_url} />
                                 <Card.Body>
-                                    <Card.Title>{user.login}</Card.Title>
+                                    <Card.Title className="card-username">{user.login}</Card.Title>
                                     <span>
                                         {user.contributions}{" contributions"}
                                     </span>
