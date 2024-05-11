@@ -1,20 +1,26 @@
 @import url('https://fonts.cdnfonts.com/css/minecraftia');
 
-.useful-links h1{
+.useful-links h1 {
     font-weight: bold;
     font-size: 2em;
 }
-.useful-links{
+
+.useful-links {
+    padding: 30px;
+    padding-left: 0;
+    padding-right: 0;
     background-color: rebeccapurple;
     color: white;
 }
-.useful-links img{
+
+.useful-links img {
     width: 2em;
     margin-right: 0.2em;
 }
-.useful-links a{
+
+.useful-links a {
     color: white;
     font-size: 1.1em;
-    font-family:"Minecraftia", Arial, Helvetica, sans-serif;
+    font-family: "Minecraftia", Arial, Helvetica, sans-serif;
     font-weight: lighter;
 }

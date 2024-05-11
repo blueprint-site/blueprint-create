@@ -15,6 +15,15 @@
                     "link": "Vote now!"
                 }
             },
+            "home": {
+                "contributions": {
+                    "title": "Contributions",
+                    "subtitle": {
+                        "main": "Thanks to our awesome contributors. Without you this wouldn't have been possible ❤️",
+                        "api": "Also a big thaks to those who helped us building the API ❤️"
+                    }
+                }
+            },
             "addons": {
                 "search": {
                     "placeholder": "Search Addons..."
