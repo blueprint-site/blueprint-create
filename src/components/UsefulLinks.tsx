@@ -1,13 +1,16 @@
+import { useTranslation } from "react-i18next";
 import WikiLogo from "../assets/brass_ingot.webp"
 import CreateLogo from "../assets/create_mod_logo.webp"
 
 import '../styles/usefullinks.scss';
 
 function UsefulLinks() {
+    const { t } = useTranslation();
+
     return (
         <div className="useful-links">
             <center>
-                <h1>Here are some useful Create Mod links:</h1>
+                <h1>{t("home.info.links")}</h1>
                 <a href="https://create.fandom.com/wiki/Create_Mod_Wiki" target="_blank"><img src={WikiLogo} alt="" />Create Mod wiki</a>
                 <br />
                 <a href="https://modrinth.com/mod/create" target="_blank"><img src={CreateLogo} alt="" />Create Mod (Forge)</a>
