@@ -1,11 +1,29 @@
+:root {
+    --main-background: #E5E7EB;
+    --dark-main-background: black;
+    --text-color: white;
+    --dark-text-color: black;
+    --container-background: #B3CAE5;
+    --dark-container-background: #527caf;
+}
+
 .what-is-blueprint h1 {
     font-weight: bold;
     font-size: 2em;
 }
 
 .what-is-blueprint {
+    padding: 30px;
+    padding-left: 0;
+    padding-right: 0;
     margin-top: 2em;
-    background-color: #B3CAE5;
+    background-color: var(--container-background);
+}
+
+.dark-mode {
+    .what-is-blueprint {
+        background-color: var(--dark-container-background);
+    }
 }
 
 .what-is-blueprint img {

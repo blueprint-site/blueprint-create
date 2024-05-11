@@ -11,6 +11,10 @@
         width: 100%;
         display: grid;
         gap: 10px;
-        grid-template-columns: auto auto auto auto auto auto;
+        grid-template-columns: calc(100% * 1/6) calc(100% * 1/6) calc(100% * 1/6) calc(100% * 1/6) calc(100% * 1/6) calc(100% * 1/6);
+
+        * {
+            text-decoration: none;
+        }
     }
 }
