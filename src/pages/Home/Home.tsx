@@ -15,9 +15,6 @@ function Home() {
       <WhatIsBlueprint />
       <UsefulLinks />
       <Contributors />
-      <br />
-      <br />
-      <BottomBar />
     </>
   );
 }
