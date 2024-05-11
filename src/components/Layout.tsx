@@ -5,6 +5,7 @@ import SchemeToggle from './SchemeToggle';
 import { Outlet } from 'react-router-dom';
 
 import { useEffect, useState } from 'react';
+import BottomBar from './BottomBar';
 
 function Layout() {
   const [darkmodeState, setDarkmodeState] = useState(false);
@@ -34,8 +35,10 @@ function Layout() {
         <main>
           <Outlet />
         </main>
+        <BottomBar />
         <SchemeToggle onClick={toggleDarkmode} />
       </div>
+
     </>
   );
 }

@@ -26,12 +26,13 @@ import { Card } from "react-bootstrap";
 import '../styles/contributors.scss';
 
 function Contributors() {
-    const [contributors, setContributors] = useState<GitHubUser[]>([]);
+    const [frontendContributors, setFrontendContributors] = useState<GitHubUser[]>([]);
+    const [apiContributors, setApiContributors] = useState<GitHubUser[]>([]);
 
     useEffect(() => {
         (async () => {
-            async function getContributors() {
-                const request = await fetch(`https://api.github.com/repos/blueprint-site/blueprint-site.github.io/contributors?per_page=50`, {
+            async function getContributors(repo: string) {
+                const request = await fetch(`https://api.github.com/repos/blueprint-site/${repo}/contributors?per_page=50`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -42,7 +43,8 @@ function Contributors() {
                 return contributorsList;
             }
 
-            setContributors(await getContributors());
+            setFrontendContributors(await getContributors("blueprint-site.github.io"));
+            setApiContributors(await getContributors("blueprint-api"));
         })();
     }, []);
 
@@ -52,8 +54,24 @@ function Contributors() {
                 <h3>Contributors</h3>
                 <span>Thanks to our awesome contributors. Without you this wouldn't have been possible ❤️</span>
                 <div className="contributors">
-                    {contributors.map((user) => {
-                        return (
+                    {frontendContributors.map((user) => {
+                        return user.login == "blueprint-site" ? (<></>) : (
+                            <Card style={{ width: '100%' }}>
+                                <Card.Img variant="top" src={user.avatar_url} />
+                                <Card.Body>
+                                    <Card.Title>{user.login}</Card.Title>
+                                    <span>
+                                        {user.contributions}{" contributions"}
+                                    </span>
+                                </Card.Body>
+                            </Card>
+                        )
+                    })}
+                </div>
+                <span>Also a big thaks to those who helped us building the API ❤️</span>
+                <div className="contributors">
+                    {apiContributors.map((user) => {
+                        return user.login == "blueprint-site" ? (<></>) : (
                             <Card style={{ width: '100%' }}>
                                 <Card.Img variant="top" src={user.avatar_url} />
                                 <Card.Body>
