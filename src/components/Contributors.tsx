@@ -62,7 +62,7 @@ function Contributors() {
                         {frontendContributors.map((user) => {
                             return user.login == "blueprint-site" ? (<></>) : (
                                 <Card style={{ width: '100%', backgroundColor: '#B3CAE5' }}>
-                                    <Card.Img variant="top" src={user.avatar_url} />
+                                    <Card.Img variant="top" src={`https://avatars.githubusercontent.com/u/${user.id}?size=96`} />
                                     <Card.Body>
                                         <Card.Title className="card-username">{user.login}</Card.Title>
                                         <span>
@@ -80,7 +80,7 @@ function Contributors() {
                         {apiContributors.map((user) => {
                             return user.login == "blueprint-site" ? (<></>) : (
                                 <Card style={{ width: '100%', backgroundColor: '#B3CAE5' }}>
-                                    <Card.Img variant="top" src={user.avatar_url} />
+                                    <Card.Img variant="top" src={`https://avatars.githubusercontent.com/u/${user.id}?size=96`} />
                                     <Card.Body>
                                         <Card.Title className="card-username">{user.login}</Card.Title>
                                         <span>
