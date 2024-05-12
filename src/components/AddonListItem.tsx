@@ -3,6 +3,8 @@ import DevinsBadges from "./DevinsBadges";
 
 import '../styles/addon.scss';
 import { useTranslation } from "react-i18next";
+import LazyImage from "./LazyImage";
+import LazyLoad from 'react-lazyload';
 
 interface AddonListItemProperties {
     addon: Addon;
@@ -15,9 +17,9 @@ function AddonListItem({ addon }: AddonListItemProperties) {
 
     return (
         <>
-            <div className="addon">
+            <LazyLoad className="addon">
                 <h3 className="addon-name">{addon.addon_name}</h3>
-                <img height="100px" width="100px" src={addon.addon_icon_url} alt={addon.addon_name} />
+                <LazyImage height="100px" width="100px" src={addon.addon_icon_url} alt={addon.addon_name} />
                 <div className="modloaders">{addon.addon_categories.map((categorie) => {
                     return (
                         <>{modloaders.includes(categorie) ? <DevinsBadges type="compact-minimal" category="supported" name={categorie} format="png" height={46} /> : null}</>
@@ -35,8 +37,7 @@ function AddonListItem({ addon }: AddonListItemProperties) {
                 <span className="addon-description"><b>{t("addons.label.authors")}:</b> {addon.addon_authors}</span>
                 <span className="spacer" />
                 <a target="_blank" rel="noopener noreferrer" className="addon-button" href={`${" https://modrinth.com/mod/" + addon.addon_slug}`}><DevinsBadges type="compact" category="available" name="modrinth" format="png" height={46} /></a>
-
-            </div >
+            </LazyLoad>
         </>
     )
 }

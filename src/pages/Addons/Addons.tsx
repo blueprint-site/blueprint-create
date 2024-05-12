@@ -1,9 +1,15 @@
-import AddonList from "../../components/AddonList";
+import { Suspense, lazy } from "react";
+
+import LoadingOverlay from "../../components/LoadingOverlay";
+
+const AddonList = lazy(() => import("../../components/AddonList"));
 
 export default function Addons() {
     return (
         <>
-            <AddonList />
+            <Suspense fallback={<LoadingOverlay />}>
+                <AddonList />
+            </Suspense>
         </>
     )
 }

@@ -1,3 +1,5 @@
+import LazyImage from "./LazyImage";
+
 interface DevinsBadgesProperties {
     type: "cozy" | "cozy-minimal" | "compact" | "compact-minimal",
     category: "available" | "built-with" | "documentation" | "donate" | "requires" | "social" | "supported" | "unsupported" | "translate",
@@ -9,7 +11,7 @@ interface DevinsBadgesProperties {
 function DevinsBadges({ type, category, name, height = 0, format }: DevinsBadgesProperties) {
     return (
         <>
-            <img alt={name} src={`https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/${type}/${category}/${name}${format == "png" ? `_${height}h` : ""}.${format}`}></img>
+            <LazyImage alt={name} src={`https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/${type}/${category}/${name}${format == "png" ? `_${height}h` : ""}.${format}`} />
         </>
     );
 }

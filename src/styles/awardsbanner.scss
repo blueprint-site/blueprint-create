@@ -30,8 +30,12 @@
         text-shadow: rgb(0, 0, 0, 0.4) 3px 3px 10px;
     }
 
-    img {
+    .lazyload-wrapper {
         height: 170%;
+
+        img {
+            height: 100%;
+        }
     }
 }
 

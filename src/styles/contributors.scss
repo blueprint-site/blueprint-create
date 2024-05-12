@@ -18,6 +18,10 @@
 
     .contributors {
         width: 100%;
+    }
+
+    .lazyload-wrapper {
+        width: 100%;
         display: grid;
         gap: 10px;
         grid-template-columns: calc((100% * 1/10) - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9));

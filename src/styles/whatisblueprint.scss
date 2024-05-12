@@ -7,25 +7,38 @@
     --dark-container-background: #527caf;
 }
 
-.what-is-blueprint h1 {
-    font-weight: bold;
-    font-size: 2em;
-}
-
 .what-is-blueprint {
     padding: 30px;
     padding-left: 0;
     padding-right: 0;
     margin-top: 2em;
     background-color: var(--container-background);
+
+    img {
+        width: 5em;
+        display: inline;
+    }
+
+    .images {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .lazyload-wrapper {
+        display: inline;
+        padding: 2px;
+    }
+
+    h1 {
+        font-weight: bold;
+        font-size: 2em;
+    }
 }
 
 .dark-mode {
     .what-is-blueprint {
         background-color: var(--dark-container-background);
     }
-}
-
-.what-is-blueprint img {
-    width: 5em;
 }
