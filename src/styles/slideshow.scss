@@ -1,0 +1,44 @@
+.sideboximage {
+    max-height: 200px;
+    height: 7vw;
+    width: 100%;
+    position: relative;
+    transition: opacity 0.5s linear;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        height: 100%;
+        max-width: 200px;
+    }
+
+    &.hidden {
+        opacity: 0;
+    }
+
+    &.visible {
+        opacity: 1;
+    }
+}
+
+.slideshowimage {
+    width: 40vw;
+    height: 22vw;
+    position: relative;
+    border-radius: 1.9em;
+    transition: 0.5s linear;
+
+    img {
+        width: 100%;
+        height: 100%;
+        border-radius: 1.9em;
+    }
+
+    &.hidden {}
+
+    &.visible {
+        opacity: 1;
+    }
+}
