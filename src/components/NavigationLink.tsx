@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import LazyImage from "./LazyImage";
 
 interface NavigationLinkProps {
     destination: string,
@@ -10,7 +11,7 @@ const NavigationLink = (properties: NavigationLinkProps) => {
     return (
         <>
             <NavLink to={properties.destination}>
-                <img src={properties.icon} alt={properties.label} />
+                <LazyImage src={properties.icon} alt={properties.label} />
                 {properties.label}
             </NavLink>
         </>

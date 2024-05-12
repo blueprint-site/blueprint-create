@@ -1,11 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Suspense, lazy } from "react";
 
-import Layout from "./components/Layout";
-import NoPage from "./pages/404/NoPage";
-import Home from "./pages/Home/Home";
-import Addons from "./pages/Addons/Addons";
-import { Suspense } from "react";
 import LoadingOverlay from "./components/LoadingOverlay";
+
+const NoPage = lazy(() => import("./pages/404/NoPage"));
+const Home = lazy(() => import("./pages/Home/Home"));
+const Addons = lazy(() => import("./pages/Addons/Addons"));
+
+const Layout = lazy(() => import('./components/Layout'));
 
 import Translations from "./assets/translations.json";
 

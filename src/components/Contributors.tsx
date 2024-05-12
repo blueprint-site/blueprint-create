@@ -25,6 +25,7 @@ import { Card } from "react-bootstrap";
 
 import '../styles/contributors.scss';
 import { useTranslation } from "react-i18next";
+import LazyLoad from "react-lazyload";
 
 function Contributors() {
     const [frontendContributors, setFrontendContributors] = useState<GitHubUser[]>([]);
@@ -57,35 +58,39 @@ function Contributors() {
                 <h3 className="big-text">{t("home.contributions.title")}</h3>
                 <span className="smol-text">{t("home.contributions.subtitle.main")}</span>
                 <div className="contributors">
-                    {frontendContributors.map((user) => {
-                        return user.login == "blueprint-site" ? (<></>) : (
-                            <Card style={{ width: '100%', backgroundColor: '#B3CAE5' }}>
-                                <Card.Img variant="top" src={user.avatar_url} />
-                                <Card.Body>
-                                    <Card.Title className="card-username">{user.login}</Card.Title>
-                                    <span>
-                                        {user.contributions}{" contributions"}
-                                    </span>
-                                </Card.Body>
-                            </Card>
-                        )
-                    })}
+                    <LazyLoad offset={150}>
+                        {frontendContributors.map((user) => {
+                            return user.login == "blueprint-site" ? (<></>) : (
+                                <Card style={{ width: '100%', backgroundColor: '#B3CAE5' }}>
+                                    <Card.Img variant="top" src={user.avatar_url} />
+                                    <Card.Body>
+                                        <Card.Title className="card-username">{user.login}</Card.Title>
+                                        <span>
+                                            {user.contributions}{" contributions"}
+                                        </span>
+                                    </Card.Body>
+                                </Card>
+                            )
+                        })}
+                    </LazyLoad>
                 </div>
                 <span className="smol-text">{t("home.contributions.subtitle.api")}</span>
                 <div className="contributors">
-                    {apiContributors.map((user) => {
-                        return user.login == "blueprint-site" ? (<></>) : (
-                            <Card style={{ width: '100%', backgroundColor: '#B3CAE5' }}>
-                                <Card.Img variant="top" src={user.avatar_url} />
-                                <Card.Body>
-                                    <Card.Title className="card-username">{user.login}</Card.Title>
-                                    <span>
-                                        {user.contributions}{" contributions"}
-                                    </span>
-                                </Card.Body>
-                            </Card>
-                        )
-                    })}
+                    <LazyLoad offset={150}>
+                        {apiContributors.map((user) => {
+                            return user.login == "blueprint-site" ? (<></>) : (
+                                <Card style={{ width: '100%', backgroundColor: '#B3CAE5' }}>
+                                    <Card.Img variant="top" src={user.avatar_url} />
+                                    <Card.Body>
+                                        <Card.Title className="card-username">{user.login}</Card.Title>
+                                        <span>
+                                            {user.contributions}{" contributions"}
+                                        </span>
+                                    </Card.Body>
+                                </Card>
+                            )
+                        })}
+                    </LazyLoad>
                 </div>
             </div>
         </>

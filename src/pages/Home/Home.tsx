@@ -1,19 +1,23 @@
-import AddonsSlideshow from "../../components/AddonsSlideshow";
-import AwardsBanner from "../../components/AwardsBanner";
-import DiscoverAddonsText from "../../components/DiscoverAddonsText";
-import WhatIsBlueprint from "../../components/WhatIsBlueprint";
-import UsefulLinks from "../../components/UsefulLinks";
-import Contributors from "../../components/Contributors";
+import { Suspense, lazy } from "react";
+
+import LoadingOverlay from "../../components/LoadingOverlay";
+
+const AwardsBanner = lazy(() => import("../../components/AwardsBanner"));
+const DiscoverAddonsText = lazy(() => import("../../components/DiscoverAddonsText"));
+const WhatIsBlueprint = lazy(() => import("../../components/WhatIsBlueprint"));
+const UsefulLinks = lazy(() => import("../../components/UsefulLinks"));
+const Contributors = lazy(() => import("../../components/Contributors"));
 
 function Home() {
   return (
     <>
-      <AwardsBanner />
-      <DiscoverAddonsText />
-      <AddonsSlideshow />
-      <WhatIsBlueprint />
-      <UsefulLinks />
-      <Contributors />
+      <Suspense fallback={<LoadingOverlay />}>
+        <AwardsBanner />
+        <DiscoverAddonsText />
+        <WhatIsBlueprint />
+        <UsefulLinks />
+        <Contributors />
+      </Suspense>
     </>
   );
 }
