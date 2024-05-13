@@ -4,10 +4,10 @@ import { Canvas } from "@react-three/fiber";
 
 import { Ground } from "./Entities/Ground";
 import { MinecraftControls } from "./Controls/MinecraftControls";
-import { Cubes } from "./Renders/Cubes";
 import { SchematicLoader } from "./Entities/SchematicLoader";
 import styles from "./Schematic3DViewer.module.scss";
 import { Suspense } from "react";
+import { Cube } from "./Entities/Cube";
 
 export function Schematic3DViewer() {
   return (
@@ -18,7 +18,7 @@ export function Schematic3DViewer() {
           <ambientLight intensity={1.4} />
           <Physics>
             <MinecraftControls />
-            <Cubes />
+            <Cube />
             <Ground />
           </Physics>
         </Canvas>
