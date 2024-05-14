@@ -20,6 +20,13 @@
     box-shadow: 10px 10px 10px rgb(0, 0, 0, 0.2);
     background-color: var(--container-background);
 
+    .addonimage {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
     .addon-name {
         color: var(--dark-text-color);
         font-family: Arial, Helvetica, sans-serif;
