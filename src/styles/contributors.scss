@@ -1,11 +1,10 @@
 @import url('https://fonts.cdnfonts.com/css/minecraftia');
 
 .contributor-container {
+    padding: 1em;
     display: flex;
     flex-direction: column;
 
-    padding-top: 20px;
-    padding-bottom: 20px;
 
     align-items: center;
     justify-content: center;
@@ -13,7 +12,7 @@
     text-align: center;
 
     >span {
-        font-size: 18px;
+        font-size: 1.1em;
     }
 
     .contributors {
@@ -23,8 +22,9 @@
     .lazyload-wrapper {
         width: 100%;
         display: grid;
-        gap: 10px;
-        grid-template-columns: calc((100% * 1/10) - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9)) calc(100% * 1/10 - (10px / 9));
+        gap: 0.8em;
+        width: 80vw;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 
         * {
             text-decoration: none;

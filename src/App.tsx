@@ -8,6 +8,7 @@ const Home = lazy(() => import("./pages/Home/Home"));
 const Addons = lazy(() => import("./pages/Addons/Addons"));
 const SchematicsPage = lazy(() => import("./pages/Schematics/Schematics"));
 const Login = lazy(() => import("./pages/Login/Login"));
+const About = lazy(() => import("./pages/About/About"));
 
 const Layout = lazy(() => import('./components/Layout'));
 
@@ -41,6 +42,7 @@ const App = () => {
             <Route path="addons" element={<Addons />} />
             <Route path="schematics" element={<SchematicsPage />} />
             <Route path="login" element={<Login />} ></Route>
+            <Route path="about" element={<About />} />
             <Route path="*" element={<NoPage />} />
           </Route>
         </Routes>
