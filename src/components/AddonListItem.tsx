@@ -19,7 +19,7 @@ function AddonListItem({ addon }: AddonListItemProperties) {
         <>
             <LazyLoad className="addon">
                 <h3 className="addon-name">{addon.addon_name}</h3>
-                <LazyImage height="100px" width="100px" src={addon.addon_icon_url} alt={addon.addon_name} />
+                <LazyImage className={"addonimage"} height="100px" width="100px" src={addon.addon_icon_url} alt={addon.addon_name} />
                 <div className="modloaders">{addon.addon_categories.map((categorie) => {
                     return (
                         <>{modloaders.includes(categorie) ? <DevinsBadges type="compact-minimal" category="supported" name={categorie} format="png" height={46} /> : null}</>
