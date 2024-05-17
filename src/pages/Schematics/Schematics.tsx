@@ -1,9 +1,12 @@
-import { Schematic3DViewer } from "../../components/Schematic3DViewer/Schematic3DViewer";
+import { useTranslation } from "react-i18next";
+import ExploreSchematicsTitle from "../../components/ExploreSchematicsTitle";
+import ExploreSchematicsSearch from "../../components/ExploreSchematicsSearch";
 
 function SchematicsPage() {
   return (
     <div>
-      <Schematic3DViewer />
+      <ExploreSchematicsTitle />
+      <ExploreSchematicsSearch />
     </div>
   );
 }

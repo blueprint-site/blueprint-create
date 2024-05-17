@@ -9,6 +9,7 @@ const Addons = lazy(() => import("./pages/Addons/Addons"));
 const SchematicsPage = lazy(() => import("./pages/Schematics/Schematics"));
 const Login = lazy(() => import("./pages/Login/Login"));
 const About = lazy(() => import("./pages/About/About"));
+const Schematic3DViewer = lazy(() => import("./pages/Schematics/Schematic3DViewer/Schematic3DViewer"));
 
 const Layout = lazy(() => import('./components/Layout'));
 
@@ -44,6 +45,7 @@ const App = () => {
             <Route path="login" element={<Login />} ></Route>
             <Route path="about" element={<About />} />
             <Route path="*" element={<NoPage />} />
+            <Route path="schematics/3dviewer" element={<Schematic3DViewer />} />
           </Route>
         </Routes>
       </Suspense>
