@@ -4,10 +4,10 @@
     font-family: Arial, Helvetica, sans-serif;
     border-radius: 1.9em;
     border-width: 0px;
-    height: 1.5em;
+    height: auto;
     width: 20em;
     box-shadow: 3px 2px 5px rgb(0, 0, 0, 0.5);
-    font-size: 1.5vw;
+    font-size: 1em;
 }
 .search-bar {
     display: flex;
@@ -35,4 +35,18 @@
 }
 
 .dropdown {
+    width: auto
+}
+.dropdown-menu {
+    background-color: #B3CAE5
+}
+.dropdown-toggle {
+    background-color: #B3CAE5;
+    border: none;
+    color: black;
+    border-radius: 0.5em;
+    margin-left: 1em;
+}
+button:hover {
+    background-color: #B3CAE5
 }
