@@ -6,11 +6,11 @@ export type SchematicData = {
 };
 
 type SchematicState = {
-  schematic: Array<SchematicData>;
-  setSchematic: (schematic: Array<SchematicData>) => void;
+  schematic: Record<string, Array<Array<number>>>;
+  setSchematic: (schematic: Record<string, Array<Array<number>>>) => void;
 };
 
 export const useSchematicStore = create<SchematicState>((set) => ({
-  schematic: [],
+  schematic: {},
   setSchematic: (schematic) => set({ schematic }),
 }));
