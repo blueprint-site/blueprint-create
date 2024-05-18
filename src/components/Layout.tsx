@@ -1,14 +1,15 @@
-import Navigation from './Navigaton';
+import Navigation from "./Navigaton";
 
-import '../styles/index.scss';
-import SchemeToggle from './SchemeToggle';
-import { Outlet } from 'react-router-dom';
+import "../styles/index.scss";
+import SchemeToggle from "./SchemeToggle";
+import { Outlet, useLocation } from "react-router-dom";
 
-import { useEffect, useState } from 'react';
-import BottomBar from './BottomBar';
+import { useEffect, useState } from "react";
+import BottomBar from "./BottomBar";
 
 function Layout() {
   const [darkmodeState, setDarkmodeState] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     if (localStorage.getItem("darkmode")) {
@@ -26,7 +27,7 @@ function Layout() {
 
   const toggleDarkmode = () => {
     setDarkmodeState(!darkmodeState);
-  }
+  };
 
   return (
     <>
@@ -35,10 +36,9 @@ function Layout() {
         <main>
           <Outlet />
         </main>
-        <BottomBar />
+        {location.pathname !== "/schematics/3dviewer" && <BottomBar />}
         <SchemeToggle onClick={toggleDarkmode} />
       </div>
-
     </>
   );
 }

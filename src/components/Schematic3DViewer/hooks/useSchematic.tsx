@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Buffer } from "buffer";
 import nbt from "prismarine-nbt";
-import { SchematicData, useSchematicStore } from "../store/schematic";
+import { useSchematicStore } from "../store/schematic";
 
-import * as fflate from 'fflate';
+import * as fflate from "fflate";
 
 export function useSchematic() {
   const [file, setFile] = useState<File | null>(null);
@@ -14,7 +14,7 @@ export function useSchematic() {
   useEffect(() => {
     async function loadNbt() {
       try {
-        setSchematic([]);
+        setSchematic({});
         setLoading(true);
         if (file) {
           const buffer = await file.arrayBuffer();
@@ -26,21 +26,26 @@ export function useSchematic() {
             data.value.blocks !== undefined &&
             data.value.palette !== undefined
           ) {
+            const blocksMap: Record<string, Array<Array<number>>> = {};
             // @ts-expect-error types from prismarine-nbt are not accurate
             const blocks = data.value.blocks.value.value;
             // @ts-expect-error types from prismarine-nbt are not accurate
             const palette = data.value.palette.value.value;
             // @ts-expect-error types from prismarine-nbt are not accurate
-            const refinedData: Array<SchematicData> = blocks.map((block) => {
+            blocks.forEach((block) => {
               const { pos, state } = block;
               const { Name } = palette[state.value];
-              return {
-                pos: pos.value.value,
-                block: Name.value,
-              };
+              const blockName = Name.value.split(":")[1];
+              const blockPosition = pos.value.value;
+
+              if (blocksMap[blockName]) {
+                blocksMap[blockName] = [...blocksMap[blockName], blockPosition];
+              } else {
+                blocksMap[blockName] = [blockPosition];
+              }
             });
-            console.log(refinedData);
-            setSchematic(refinedData);
+            console.log(blocksMap);
+            setSchematic(blocksMap);
           }
         }
       } catch (error) {

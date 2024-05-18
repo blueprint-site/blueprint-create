@@ -7,7 +7,7 @@ import { MinecraftControls } from "./Controls/MinecraftControls";
 import { SchematicLoader } from "./Entities/SchematicLoader";
 import styles from "./Schematic3DViewer.module.scss";
 import { Suspense } from "react";
-import { Cube } from "./Entities/Cube";
+import { Cubes } from "./Entities/Cubes";
 
 export function Schematic3DViewer() {
   return (
@@ -18,7 +18,7 @@ export function Schematic3DViewer() {
           <ambientLight intensity={1.4} />
           <Physics>
             <MinecraftControls />
-            <Cube />
+            <Cubes />
             <Ground />
           </Physics>
         </Canvas>
