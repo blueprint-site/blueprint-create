@@ -4,49 +4,60 @@
     gap: 20px;
     margin: 20px auto;
     max-width: 80vw;
-}
-
-.schematic {
+  }
+  
+  .schematic {
     background-color: #B3CAE5;
-    width: auto;
-    padding: 10px;
+    padding: 10px; /* Padding around the content */
     box-shadow: 3px 2px 5px rgba(0, 0, 0, 0.5);
     border-radius: 1.9em;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: flex-start; /* Align items to the start (left) */
-}
-
-.schematic img {
-    width: 100%;
+    box-sizing: border-box; /* Include padding in the total width */
+    text-align: left;
+  }
+  
+  .schematic img {
+    width: calc(100% - 20px); /* Image takes full width of the container minus padding */
     height: auto;
     border-radius: 1.9em;
-}
-
-.schematic h1, .schematic h3 {
+    box-sizing: border-box; /* Include padding in the total width */
+    padding: 0 10px; /* 10px padding on left and right */
+  }
+  
+  .schematic h1, .schematic h3, .schematic p {
     margin: 10px 0;
     text-align: left; /* Ensure text is aligned to the left */
     width: 100%; /* Ensure the text element takes full width of the container */
-}
-
-.download-button {
-    background: linear-gradient(120deg, rgba(48,133,93,1) 0%, rgba(46,213,134,1) 100%);;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: flex-start; /* Align buttons to the left */
+    width: 100%; /* Ensure the container takes full width */
+  }
+  
+  .download-button {
+    background: linear-gradient(120deg, rgba(48,133,93,1) 0%, rgba(46,213,134,1) 100%);
     border: none;
     border-radius: 0.4em;
-    margin-left: 0.5em;
-    color: white;
-    padding: 0.2em;
-}
-.ThreeD-button {
-    background: linear-gradient(120deg, rgba(48,133,93,1) 0%, rgba(46,213,134,1) 100%);;
-    border: none;
-    border-radius: 0.4em;
-    margin-left: 0.5em;
     color: white;
     padding: 0.2em;
     transition: background 0.8s ease-in-out;
-}
-.ThreeD-button:hover {
-    background: linear-gradient(120deg, rgba(46,213,134,1) 0%, rgba(38,99,71,1) 100%);;
-}
+  }
+  .ThreeD-button {
+    background: linear-gradient(120deg, rgba(48,133,93,1) 0%, rgba(46,213,134,1) 100%);
+    border: none;
+    border-radius: 0.4em;
+    color: white;
+    padding: 0.2em;
+    transition: background 0.8s ease-in-out;
+    margin-left: 0.3em;
+  }
+  
+  .download-button:first-child {
+    margin-left: 0; /* Remove left margin for the first button */
+  }
+  
