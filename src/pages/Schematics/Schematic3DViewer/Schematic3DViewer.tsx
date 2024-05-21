@@ -1,7 +1,10 @@
+import React, { useEffect } from 'react';
 import { Schematic3DViewer } from "../../../components/Schematic3DViewer/Schematic3DViewer";
 
 function Schematic3DViewerPage() {
-    return <Schematic3DViewer />;
+    return (
+        <Schematic3DViewer />
+    );
 }
 
 export default Schematic3DViewerPage;

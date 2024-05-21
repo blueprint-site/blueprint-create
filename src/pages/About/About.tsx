@@ -1,6 +1,6 @@
 import { Suspense, lazy } from "react";
 
-import LoadingOverlay from "../../components/LoadingOverlay";
+import LoadingOverlay from "../../components/LoadingOverlays/LoadingOverlay";
 import Contributors from "../../components/Contributors";
 import AboutPageTitle from "../../components/AboutPageTitle";
 function About() {

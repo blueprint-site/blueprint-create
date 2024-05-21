@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 
-import LoadingOverlay from "./components/LoadingOverlay";
+import LoadingOverlay from "./components/LoadingOverlays/LoadingOverlay";
+import SchematicsPageLoadingOverlay from "./components/LoadingOverlays/SchematicPageLoadingOverlay";
 
 const NoPage = lazy(() => import("./pages/404/NoPage"));
 const Home = lazy(() => import("./pages/Home/Home"));
@@ -45,7 +46,7 @@ const App = () => {
             <Route path="login" element={<Login />} ></Route>
             <Route path="about" element={<About />} />
             <Route path="*" element={<NoPage />} />
-            <Route path="schematics/3dviewer" element={<Schematic3DViewer />} />
+            <Route path="schematics/3dviewer" element={<Schematics3DViewerWithLoading />} />
           </Route>
         </Routes>
       </Suspense>
@@ -54,3 +55,11 @@ const App = () => {
 };
 
 export default App;
+
+const Schematics3DViewerWithLoading = () => {
+  return (
+    <Suspense fallback={<SchematicsPageLoadingOverlay />}>
+      <Schematic3DViewer />
+    </Suspense>
+  );
+};

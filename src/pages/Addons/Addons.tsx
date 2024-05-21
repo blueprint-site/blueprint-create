@@ -1,6 +1,6 @@
 import { Suspense, lazy } from "react";
 
-import LoadingOverlay from "../../components/LoadingOverlay";
+import LoadingOverlay from "../../components/LoadingOverlays/LoadingOverlay";
 
 const AddonList = lazy(() => import("../../components/AddonList"));
 
