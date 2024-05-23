@@ -20,7 +20,7 @@
   }
   
   .schematic img {
-    width: calc(100% - 20px); /* Image takes full width of the container minus padding */
+    width: 100%; /* Image takes full width of the container minus padding */
     height: auto;
     border-radius: 1.9em;
     box-sizing: border-box; /* Include padding in the total width */

@@ -7,6 +7,7 @@ const AwardsBanner = lazy(() => import("../../components/AwardsBanner"));
 const DiscoverAddonsText = lazy(() => import("../../components/DiscoverAddonsText"));
 const WhatIsBlueprint = lazy(() => import("../../components/WhatIsBlueprint"));
 const UsefulLinks = lazy(() => import("../../components/UsefulLinks"));
+const HomeExploreSchematics = lazy(() => import("../../components/HomeExploreSchematics"));
 
 function Home() {
   return (
@@ -15,6 +16,7 @@ function Home() {
         <AwardsBanner />
         <DiscoverAddonsText />
         <AddonsSlideshow />
+        <HomeExploreSchematics />
         <WhatIsBlueprint />
         <UsefulLinks />
       </Suspense>
