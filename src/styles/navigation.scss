@@ -42,7 +42,7 @@ nav {
         }
     }
 
-    >a.logo {
+    >a.logo span {
         font-size: 20px;
         font-weight: 500;
         font-family: 'Minecraftia', sans-serif;
@@ -67,5 +67,14 @@ nav {
     nav>button {
         color: var(--text-color);
         background-color: var(--dark-main-background);
+    }
+}
+
+@media only screen and (max-width: 650px) {
+    nav {
+        a span {
+            display: none;
+            width: 0;
+        }
     }
 }

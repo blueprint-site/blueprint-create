@@ -435,3 +435,31 @@
 .addon:hover {
     background-color: #a4c2e4;
 }
+
+@media only screen and (max-width: 650px) {
+    .dropdown-container {
+        flex-direction: column;
+        width: 80vw;
+
+        .dropdown {
+            width: 100%;
+        }
+    }
+
+    .search-bar {
+        width: 80vw;
+
+        input {
+            width: 100%;
+        }
+    }
+
+    .addon-list {
+        grid-template-columns: 100% !important;
+
+        .addon {
+            width: 100% !important;
+            max-width: 100%;
+        }
+    }
+}

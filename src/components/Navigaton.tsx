@@ -17,7 +17,7 @@ const Navigation = () => {
     return (
         <>
             <nav>
-                <NavLink className="logo" to="/"><LazyImage src={BlueprintLogo} alt="Logo" />Blueprint</NavLink>
+                <NavLink className="logo" to="/"><LazyImage src={BlueprintLogo} alt="Logo" /><span>Blueprint</span></NavLink>
                 <span />
                 <NavigationLink destination={'/addons'} icon={AddonIcon} label={t("navigation.label.addons")}></NavigationLink>
                 <NavigationLink destination={'/schematics'} icon={SchematicIcon} label={t("navigation.label.schematics")}></NavigationLink>

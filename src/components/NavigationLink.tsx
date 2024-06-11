@@ -12,7 +12,7 @@ const NavigationLink = (properties: NavigationLinkProps) => {
         <>
             <NavLink to={properties.destination}>
                 <LazyImage src={properties.icon} alt={properties.label} />
-                {properties.label}
+                <span>{properties.label}</span>
             </NavLink>
         </>
     );
