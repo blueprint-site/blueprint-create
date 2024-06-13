@@ -8,6 +8,8 @@ const DiscoverAddonsText = lazy(() => import("../../components/DiscoverAddonsTex
 const WhatIsBlueprint = lazy(() => import("../../components/WhatIsBlueprint"));
 const UsefulLinks = lazy(() => import("../../components/UsefulLinks"));
 const HomeExploreSchematics = lazy(() => import("../../components/HomeExploreSchematics"));
+const HomeRandomAddon = lazy(() => import("../../components/HomeRandomAddon"));
+const HomeForCreators = lazy(() => import("../../components/HomeForCreators"));
 
 function Home() {
   return (
@@ -16,7 +18,8 @@ function Home() {
         <AwardsBanner />
         <DiscoverAddonsText />
         <AddonsSlideshow />
-        <HomeExploreSchematics />
+        <HomeRandomAddon />
+        <HomeForCreators />
         <WhatIsBlueprint />
         <UsefulLinks />
       </Suspense>

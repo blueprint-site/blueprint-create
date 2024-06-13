@@ -48,7 +48,7 @@ const SideBoxText = styled.h3`
 `;
 
 const SideBoxDescription = styled.h4`
-    margin-top: -0.5vw;
+    
     font-size: 1.05vw;
     font-family: Arial, Helvetica, sans-serif;
     color: black;
