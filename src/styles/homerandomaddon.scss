@@ -1,0 +1,37 @@
+.random-addon {
+    display: flex;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: var(--container-background);
+    width: fit-content;
+    margin: 0 auto;
+    border-radius: 1.9em;
+    padding: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.random-addon h3, h4, a{
+    color: black;
+}
+.random-addon-logo {
+    align-content: center;
+    width: 4em;
+}
+.modloaders {
+    display: inline;
+}
+.random-addon-header {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.6em;
+    margin-top: 1em;
+}
+.random-addon-name {
+    font-weight: bold;
+    font-size: 1.3em;
+}
+.random-addon-description {
+    font-size: 1em;
+    margin-top: -0.2em;
+}
