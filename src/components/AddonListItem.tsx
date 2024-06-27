@@ -35,6 +35,7 @@ function AddonListItem({ addon }: AddonListItemProperties) {
                 <span className="addon-description"><b>{t("addons.label.categories")}:</b> {addon.addon_categories.join(', ')}</span>
                 <span className="addon-description"><b>{t("addons.label.followers")}:</b> {addon.addon_followers}</span>
                 <span className="addon-description"><b>{t("addons.label.authors")}:</b> {addon.addon_authors}</span>
+                {addon.note && <span className="addon-note"><b>{t("addons.label.note")}:</b> {addon.note}</span>}
                 <span className="spacer" />
                 <a target="_blank" rel="noopener noreferrer" className="addon-button" href={`${" https://modrinth.com/mod/" + addon.addon_slug}`}><DevinsBadges type="compact" category="available" name="modrinth" format="png" height={46} /></a>
             </LazyLoad>

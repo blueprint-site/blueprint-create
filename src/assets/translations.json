@@ -50,7 +50,8 @@
           "description": "Description",
           "categories": "Categories",
           "followers": "Followers",
-          "authors": "Created by"
+          "authors": "Created by",
+          "note": "Note"
         }
       }
     }

@@ -10,6 +10,7 @@ export interface Addon {
     addon_followers: number;
     manual_check: string;
     addon_authors: string;
+    note: string;
 };
 
 interface Addons {
