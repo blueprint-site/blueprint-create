@@ -1,5 +1,7 @@
 import "../styles/exploreschematicssearch.scss";
 import { Dropdown } from "react-bootstrap";
+import SchematicPNG from "../assets/schematic.png";
+import Badge from 'react-bootstrap/Badge';
 
 function ExploreSchematicsSearch() {
     return (
@@ -31,6 +33,7 @@ function ExploreSchematicsSearch() {
                     </Dropdown.Menu>
                 </Dropdown>
             </div>
+            <div className="button-div"><a href="/schematics/upload" className="upload-button">Upload a Schematic <img src={SchematicPNG} className="schematic-image" alt="" /><Badge pill bg="primary">Alpha</Badge></a></div>
         </div>
     );
 }

@@ -11,6 +11,7 @@ const SchematicsPage = lazy(() => import("./pages/Schematics/Schematics"));
 const Login = lazy(() => import("./pages/Login/Login"));
 const About = lazy(() => import("./pages/About/About"));
 const Schematic3DViewer = lazy(() => import("./pages/Schematics/Schematic3DViewer/Schematic3DViewer"));
+const SchematicsUploadPage = lazy(() => import("./pages/Schematics/SchematicsUpload/SchematicsUpload"));
 
 const Layout = lazy(() => import('./components/Layout'));
 
@@ -47,6 +48,7 @@ const App = () => {
             <Route path="about" element={<About />} />
             <Route path="*" element={<NoPage />} />
             <Route path="schematics/3dviewer" element={<Schematics3DViewerWithLoading />} />
+            <Route path="schematics/upload" element={<SchematicsUploadPage />} />
           </Route>
         </Routes>
       </Suspense>

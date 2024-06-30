@@ -50,3 +50,24 @@
 button:hover {
     background-color: #B3CAE5
 }
+.upload-button {
+    padding: 0.3em;
+    background-color: rebeccapurple;
+    border-radius: 0.5em;
+    color: white;
+    text-decoration: none;
+    margin-left: 1em;
+    text-align: center;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+.schematic-image {
+    width: 1.3em;
+    display: inline-block;
+}
+.button-div {
+ display: flex;
+ align-content: center;
+ text-align: center;
+ 
+}

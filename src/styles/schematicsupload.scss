@@ -1,0 +1,101 @@
+:root {
+    --main-background: #E5E7EB;
+    --dark-main-background: black;
+    --text-color: white;
+    --dark-text-color: black;
+    --container-background: #B3CAE5;
+    --dark-container-background: #527caf;
+}
+
+h1 {
+    font-weight: bold;
+    text-align: center;
+    font-size: 2em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.boxes {
+    display: flex;
+}
+.upload-screenshot {
+    background-color: var(--container-background);
+    padding: 1em;
+    width: fit-content;
+    border-radius: 0.5em;
+    margin-top: 1em;
+    display: block;
+    margin-right: 1em;
+}
+.upload-schematic {
+    background-color: var(--container-background);
+    padding: 1em;
+    width: fit-content;
+    border-radius: 0.5em;
+    margin-top: 1em;
+}
+.upload-text {
+    background-color: var(--container-background);
+    padding: 1em;
+    width: fit-content;
+    border-radius: 0.5em;
+    margin-top: 1em;
+}
+.blocks-needed {
+    background-color: var(--container-background);
+    padding: 1em;
+    width: fit-content;
+    border-radius: 0.5em;
+    margin-top: 1em;
+    display: block;
+}
+.schematic-author {
+    background-color: var(--container-background);
+    padding: 1em;
+    width: fit-content;
+    border-radius: 0.5em;
+    margin-top: 1em;
+    display: block;
+}
+
+
+.schematic-uploaded-image{ 
+    width: 100%;
+}
+.schematic-choose-text {
+    width: 100%;
+    margin-bottom: 0.3em;
+    border-radius: 0.3em;
+    border-style: none;
+    color: black;
+}
+.schematic-box-title {
+    font-weight: bold;
+}
+.upload-schematic-button {
+    background-color: #6e9fff;
+    padding: 0.3em;
+    border-radius: 0.3em;
+    color: black;
+    cursor: pointer;
+}
+
+.upload-screenshot-button{
+    background-color: #6e7cff;
+    padding: 0.3em;
+    border-radius: 0.3em;
+    color: black;
+    cursor: pointer;
+    margin-top: 0.3em;
+}
+.upload-schematic .checkmark.visible {
+    display: inline;
+}
+.upload-schematic .checkmark {
+    display: none;
+    margin-left: 10px;
+    width: 20px; /* Adjust size as needed */
+    height: 20px; /* Adjust size as needed */
+}
