@@ -28,7 +28,12 @@ h1 {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
 .boxes {
     display: flex;
 }
