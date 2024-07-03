@@ -473,3 +473,19 @@
         }
     }
 }
+.addon-count {
+    text-align: center;
+    font-family: "Minecraftia", Arial, Helvetica, sans-serif;
+    color: black;
+    font-size: 1.2em;
+    padding-top: 0.3em;
+}
+.addon-count-div {
+    justify-content: center;
+    text-align: center;
+    background-color: var(--container-background);
+    width: 100%;
+}
+.addon-isnt-here {
+    padding-bottom: 0.3em;
+}

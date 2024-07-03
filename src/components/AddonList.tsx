@@ -27,6 +27,8 @@ import AddonListItem from "./AddonListItem";
 import { Dropdown } from "react-bootstrap";
 
 import { useTranslation } from "react-i18next";
+import { GithubLoginButton, GoogleLoginButton, LinkedInLoginButton, ZaloLoginButton } from "react-social-login-buttons";
+import { DefaultLoadingManager } from "three";
 
 function AddonList() {
     const [error, setError] = useState<any>();
@@ -38,6 +40,8 @@ function AddonList() {
     const [modloader, setModloader] = useState<"Forge" | "NeoForge" | "Fabric" | "Quilt" | "">("");
     const [version, setVersion] = useState<string>("");
     const [query, setQuery] = useState<string>("");
+
+    const [addonCount, setAddonCount] = useState<number>(0);
 
     const { t } = useTranslation();
 
@@ -86,6 +90,7 @@ function AddonList() {
 
                 setVersions(versions.sort(compareSemanticVersions).reverse());
                 setAddons(addons);
+                setAddonCount(addons.length); // Set the addon count here
             } catch (e) {
                 setError(e);
             } finally {
@@ -113,6 +118,10 @@ function AddonList() {
 
     return (
         <>
+            <div className="addon-count-div">
+                <h3 className="addon-count">There are {addonCount} Addons on Blueprint!</h3>
+                <h5 className="addon-isnt-here">Your addon isn't here?</h5>
+            </div>
             <div className="form">
                 <div className="search-bar">
                     <input type="text" placeholder={t("addons.search.placeholder")} className="search-input" onChange={(e) => { setQuery(e.target.value) }} />

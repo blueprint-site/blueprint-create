@@ -6,7 +6,19 @@
     --container-background: #B3CAE5;
     --dark-container-background: #527caf;
 }
-
+.dark-mode {
+    .upload-schematic, .upload-screenshot, .upload-text, .blocks-needed, .schematic-author {
+        background-color: var(--dark-container-background);
+    }
+    .schematic-choose-text {
+        background-color: black;
+        color: white;
+    }
+}
+.loading h4{
+    font-family: "Minecraftia", Arial, Helvetica, sans-serif;
+    color: white;
+}
 h1 {
     font-weight: bold;
     text-align: center;
@@ -98,4 +110,32 @@ h1 {
     margin-left: 10px;
     width: 20px; /* Adjust size as needed */
     height: 20px; /* Adjust size as needed */
+}
+.nevermind {
+    background-color: #EE4B2B;
+    padding: 0.7em;
+    border-radius: 1.9em;
+    color: whitesmoke;
+    cursor: pointer;
+    margin-top: 0.3em;
+    border-style: solid;
+    text-decoration: none;
+}
+.upload {
+    background-color: #1bd96a;
+    padding: 0.7em;
+    border-radius: 1.9em;
+    color: black;
+    cursor: pointer;
+    margin-top: 0.3em;
+    border-style: solid;
+    border-color: white;
+    text-decoration: none;
+}
+.button-div {
+    display: flex;
+    justify-content: center;
+}
+.button-image {
+    width: 1.5em;
 }
