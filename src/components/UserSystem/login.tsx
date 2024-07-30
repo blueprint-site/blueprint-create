@@ -5,6 +5,8 @@ import DiscordLogo from "../../assets/icons/discord-mark-blue.png";
 
 function Login() {
     
+    
+
     return (
         <div className="logins">
             <div className="login-container">
@@ -14,19 +16,25 @@ function Login() {
                 <button className="login-button" onClick={() => alert("This needs to be done!")}>Log In!</button>
                 <div className="signup"><h5>No account? <a href="/signup">Sign Up</a></h5></div>
             </div>
+            
             <div className="oauth-container">
                 <h1 className="oauth-header">Or log in with:</h1>
                 <div className="oauth">
-                    <img src={GoogleLogo} alt="" className="oauth-image"/>
+                    <a href="/loginwith/google"><img src={GoogleLogo} alt="" className="oauth-image"/>
                     <h4>Log In with Google</h4>
+                    </a>
                 </div>
                 <div className="oauth">
+                    <a href="/loginwith/github">
                     <img src={GithubLogo} alt="" className="oauth-image"/>
                     <h4>Log In with Github</h4>
+                    </a>
                 </div>
                 <div className="oauth">
+                    <a href="/loginwith/discord">
                     <img src={DiscordLogo} alt="" className="oauth-image"/>
                     <h4>Log In with Discord</h4>
+                    </a>
                 </div>
             </div>
         </div>

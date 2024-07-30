@@ -22,6 +22,7 @@ const Navigation = () => {
                 <NavigationLink destination={'/addons'} icon={AddonIcon} label={t("navigation.label.addons")}></NavigationLink>
                 <NavigationLink destination={'/schematics'} icon={SchematicIcon} label={t("navigation.label.schematics")}></NavigationLink>
                 <NavigationLink destination={'/about'} icon={AboutIcon} label={t("navigation.label.about")}></NavigationLink>
+                <NavigationLink destination={'/login'} icon={AboutIcon} label={t("navigation.label.about")}></NavigationLink>
             </nav>
         </>
     );

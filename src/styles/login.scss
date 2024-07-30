@@ -65,7 +65,7 @@
 
 .login-button:hover {
     cursor: pointer;
-    background-color: var(--dark-container-background);
+    background-color: #7594f0;
     color: white;
 }
 
@@ -75,7 +75,7 @@
     margin-bottom: 0.6em;
 }
 
-.oauth {
+.oauth a{
     background-color: black;
     border-radius: 1.9em;
     width: auto;
@@ -89,8 +89,14 @@
     padding-right: 0.8em;
     margin-bottom: 1em;
     box-shadow: 3px 2px 5px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+    transition: 0.2s ease-in-out;
 }
-
+.oauth a:hover {
+    cursor: pointer;
+    background-color: #7594f0;
+    color: white;
+}
 .oauth-image {
     width: 1.5em;
     margin-right: 0.5em; /* Add some space between the image and the text */
@@ -100,6 +106,7 @@
     margin: 0; /* Remove any default margin */
     line-height: 1.5em; /* Adjust line-height to match the image size */
     font-weight: bold;
+    color: white;
 }
 .signup {
     margin-top: 0.5em;

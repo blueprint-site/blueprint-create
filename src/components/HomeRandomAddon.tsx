@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/homerandomaddon.scss";
-import { neoForgeIcon } from "../assets/neoforge_46h.png";
+import neoForgeIcon from "../assets/neoforge_46h.png";
 
 function HomeRandomAddon() {
     const [randomAddon, setRandomAddon] = useState(null);
@@ -24,22 +24,20 @@ function HomeRandomAddon() {
             };
 
             try {
-                const response = await fetch("https://blueprint-site.github.io/static/data/final_data.json");
+                const response = await fetch("http://5.39.223.27:6555/api/Blueprint/FinalModList");
                 const data = await response.json();
 
-                let addons = [];
-                let versions = [];
+                const addons = data.map(addon => ({
+                    id: addon.id,
+                    icon_url: addon.icon_url,
+                    name: addon.title,
+                    description: addon.description,
+                    categories: addon.categories,
+                    versions: addon.versions,
+                    slug: addon.slug
+                }));
 
-                for (const key in data) {
-                    addons.push(data[key]);
-                }
-
-                for (const addon of addons) {
-                    addon.addon_versions.forEach((version) => {
-                        if (!versions.includes(version)) versions.push(version);
-                    });
-                }
-
+                const versions = [...new Set(addons.flatMap(addon => addon.versions))];
                 versions.sort(compareSemanticVersions).reverse();
 
                 const randomId = Math.floor(Math.random() * addons.length);
@@ -56,21 +54,20 @@ function HomeRandomAddon() {
 
     const displayAddon = (addon) => {
         let modloaders = "";
-        // TODO: NEOFORGE ICON IS BROKEN SOMEONE PLS FIX IT
-        if (addon.addon_categories.includes("forge")) modloaders += `<a className="supports-forge" target="_blank" rel="noopener noreferrer" href="https://forums.minecraftforge.net"><img alt="Forge support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/forge_46h.png"></a>`;
-        if (addon.addon_categories.includes("neoforge")) modloaders += `<a className="supports-neoforge" target="_blank" rel="noopener noreferrer" href="https://neoforged.net"><img alt="NeoForge support" height="30" src={ neoForgeIcon }></a>`;
-        if (addon.addon_categories.includes("fabric")) modloaders += `<a className="supports-fabric" target="_blank" rel="noopener noreferrer" href="https://fabricmc.net"><img alt="Fabric support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/fabric_46h.png"></a>`;
-        if (addon.addon_categories.includes("quilt")) modloaders += `<a className="supports-quilt" target="_blank" rel="noopener noreferrer" href="https://quiltmc.org"><img alt="Quilt support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/quilt_46h.png"></a>`;
+        if (addon.categories.includes("forge")) modloaders += `<a className="supports-forge" target="_blank" rel="noopener noreferrer" href="https://forums.minecraftforge.net"><img alt="Forge support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/forge_46h.png"></a>`;
+        if (addon.categories.includes("neoforge")) modloaders += `<a className="supports-neoforge" target="_blank" rel="noopener noreferrer" href="https://neoforged.net"><img alt="NeoForge support" height="30" src=${neoForgeIcon}></a>`;
+        if (addon.categories.includes("fabric")) modloaders += `<a className="supports-fabric" target="_blank" rel="noopener noreferrer" href="https://fabricmc.net"><img alt="Fabric support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/fabric_46h.png"></a>`;
+        if (addon.categories.includes("quilt")) modloaders += `<a className="supports-quilt" target="_blank" rel="noopener noreferrer" href="https://quiltmc.org"><img alt="Quilt support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/quilt_46h.png"></a>`;
 
         return (
             <div className="random-addon">
-                <img className="random-addon-logo" src={addon.addon_icon_url} alt="" />
+                <img className="random-addon-logo" src={addon.icon_url} alt="" />
                 <div className="modloaders"><center dangerouslySetInnerHTML={{ __html: modloaders }} /></div>
                 <div className="random-addon-text-box">
-                    <h3 className="random-addon-name">{addon.addon_name}</h3>
-                    <h4 className="random-addon-description">{addon.addon_short_descriptions}</h4>
+                    <h3 className="random-addon-name">{addon.name}</h3>
+                    <h4 className="random-addon-description">{addon.description}</h4>
                 </div>
-                <a target="_blank" rel="noopener noreferrer" className="addon-button" href={`https://modrinth.com/mod/${addon.addon_slug}`}>
+                <a target="_blank" rel="noopener noreferrer" className="addon-button" href={`https://modrinth.com/mod/${addon.slug}`}>
                     <img alt="Download on Modrinth" height="35" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_46h.png" />
                 </a>
             </div>
