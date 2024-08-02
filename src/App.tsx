@@ -15,6 +15,7 @@ const SchematicsUploadPage = lazy(() => import("./pages/Schematics/SchematicsUpl
 // Login
 const LoginPage = lazy(() => import("./pages/Login/Login"));
 import ProtectedComponent from './components/UserSystem/ProtectedComponent';
+const RegisterPage = lazy(() => import("./pages/Register/Register"));
 
 const Layout = lazy(() => import('./components/Layout'));
 
@@ -51,11 +52,11 @@ const App = () => {
             <Route path="addons" element={<Addons />} />
             <Route path="schematics" element={<SchematicsPage />} />
             <Route path="login" element={<LoginPage />} ></Route>
+            <Route path="register" element={<RegisterPage />} ></Route>
             <Route path="about" element={<About />} />
             <Route path="*" element={<NoPage />} />
             <Route path="schematics/3dviewer" element={<Schematics3DViewerWithLoading />} />
             <Route path="schematics/upload" element={<SchematicsUploadPage />} />
-            <Route path="/protected" element={isAuthenticated() ? <ProtectedComponent /> : <Navigate to="/login" />} />
           </Route>
         </Routes>
       </Suspense>
