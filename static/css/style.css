@@ -189,7 +189,7 @@ footer {
     content: '';
     width: 100px;
     height: 100px;
-    background-image: url("/static/dark_mode.webp");
+    background-image: url("/images/dark_mode.webp");
     background-size: cover;
     position: absolute;
     bottom: 0;
@@ -206,5 +206,5 @@ footer {
 }
 
 .dark-mode #dark-mode-toggle::after {
-    background-image: url("/static/light_mode.webp");
+    background-image: url("/images/light_mode.webp");
 }
