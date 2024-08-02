@@ -1,5 +1,4 @@
 @import url('https://fonts.cdnfonts.com/css/minecraftia');
-
 .bottom-bar-sitename {
     color: white;
     position: inherit;
@@ -44,4 +43,8 @@
     flex-direction: column;
     /* Align items vertically */
     text-align: left;
+}
+
+.bottom-bar a {
+    color: white;
 }
