@@ -4,9 +4,9 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Blueprint - Download, Read, Explore</title>
-	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
 	<link rel="manifest" href="/site.webmanifest">
 	<link rel="stylesheet" href="static/css/style.css">
 	<link rel="stylesheet" href="static/css/index.css">
@@ -14,16 +14,16 @@
 	<meta property="og:title" content="Blueprint"/>
 	<meta property="og:description" content="Your all in one Create website"/>
 	<meta property="og:url" content="https://blueprint-site.github.io/"/>
-	<meta property="og:image" content="https://blueprint-site.github.io/static/logo.webp"/>
+	<meta property="og:image" content="https://blueprint-site.github.io/images/logo.webp"/>
 	<script src="/static/js/darkmode.js" defer></script>
 </head>
 <body>
 <nav>
-	<a class="logo" href="/"><img src="/static/logo.webp" alt="Logo">Blueprint</a>
+	<a class="logo" href="/"><img src="/images/logo.webp" alt="Logo">Blueprint</a>
 	<span style="flex-grow: 1;"></span>
-	<a href="/addons.html"><img src="/static/minecart_coupling.webp" alt="">Addons</a>
-	<a href="/schematics.html"><img src="/static/schematic.webp" alt="">Schematics</a>
-	<a href="/about.html"><img src="/static/Clipboard.webp" alt="">About</a>
+	<a href="/addons.html"><img src="/images/minecart_coupling.webp" alt="">Addons</a>
+	<a href="/schematics.html"><img src="/images/schematic.webp" alt="">Schematics</a>
+	<a href="/about.html"><img src="/images/Clipboard.webp" alt="">About</a>
 </nav>
 <main>
 	<div id="dark-mode-toggle"><span>Change theme</span></div>
@@ -33,7 +33,7 @@
 				<h2 class="home-discover-addons-text">Discover Addons</h2>
 			</div>
 			<div class="home-slideshow-container">
-				<img src="static/banner1.webp" alt="" class="home-slideshow-image" id="home-slideshow-image">
+				<img src="images/banner1.webp" alt="" class="home-slideshow-image" id="home-slideshow-image">
 				<div class="side-box" id="side-box">(w)
 				</div>
 			</center>
@@ -68,12 +68,12 @@
 		</div>
         
         <div class="for-creators-imagebox">
-            <img src="/static/addon_image1.webp" alt="" class="for-creators-image">
-            <img src="/static/addon_image2.webp" alt="" class="for-creators-image">
-            <img src="/static/addon_image3.webp" alt="" class="for-creators-image">
-            <img src="/static/addon_image4.webp" alt="" class="for-creators-image">
-            <img src="/static/addon_image5.webp" alt="" class="for-creators-image">
-            <img src="/static/addon_image6.webp" alt="" class="for-creators-image">
+            <img src="/images/addon_image1.webp" alt="" class="for-creators-image">
+            <img src="/images/addon_image2.webp" alt="" class="for-creators-image">
+            <img src="/images/addon_image3.webp" alt="" class="for-creators-image">
+            <img src="/images/addon_image4.webp" alt="" class="for-creators-image">
+            <img src="/images/addon_image5.webp" alt="" class="for-creators-image">
+            <img src="/images/addon_image6.webp" alt="" class="for-creators-image">
         </div>
 	</div>
 
@@ -93,7 +93,7 @@
 			<br>
 	</dir>
 	<footer>
-		<img src="static/logo.webp" alt="" class="bottom-bar-logo">
+		<img src="images/logo.webp" alt="" class="bottom-bar-logo">
 		<h4 class="bottom-bar-sitename">Blueprint Site</h4>
 		<h6 class="bottom-bar-bug">Found a bug? Report it to blueprint-site@proton.me</h6>
 		<h6 class="bottom-bar-bug">NOT AN OFFICIAL MINECRAFT SERVICE. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR
@@ -106,7 +106,7 @@
 <script>
 
     // JavaScript code for slideshow functionality
-    var images = ["static/banner1.webp", "static/banner2.webp", "static/banner3.webp", "static/banner4.webp", "static/banner11.webp"]; // Array of image paths
+    var images = ["images/banner1.webp", "images/banner2.webp", "images/banner3.webp", "images/banner4.webp", "images/banner11.webp"]; // Array of image paths
     var currentIndex = 0; // Index of the current image
     var imageElement = document.getElementById("home-slideshow-image");
     var sideBox = document.getElementById("side-box");
@@ -188,7 +188,7 @@
     function displayAddon(addon) {
         let modloaders = "";
         if (addon.addon_categories.includes("forge")) modloaders += `<a class="supports-forge" target="_blank" rel="noopener noreferrer" href="https://forums.minecraftforge.net"><img alt="Forge support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/forge_46h.png"></a>`;
-        if (addon.addon_categories.includes("neoforge")) modloaders += `<a class="supports-neoforge" target="_blank" rel="noopener noreferrer" href="https://neoforged.net"><img alt="NeoForge support" height="30" src="/static/neoforge_46h.png"></a>`;
+        if (addon.addon_categories.includes("neoforge")) modloaders += `<a class="supports-neoforge" target="_blank" rel="noopener noreferrer" href="https://neoforged.net"><img alt="NeoForge support" height="30" src="/images/neoforge_46h.png"></a>`;
         if (addon.addon_categories.includes("fabric")) modloaders += `<a class="supports-fabric" target="_blank" rel="noopener noreferrer" href="https://fabricmc.net"><img alt="Fabric support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/fabric_46h.png"></a>`;
         if (addon.addon_categories.includes("quilt")) modloaders += `<a class="supports-quilt" target="_blank" rel="noopener noreferrer" href="https://quiltmc.org"><img alt="Quilt support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/quilt_46h.png"></a>`;
 
