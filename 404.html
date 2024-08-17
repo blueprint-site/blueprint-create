@@ -8,52 +8,94 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 	<link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="static/css/style.css">
 	<style>
-        body {
-            background-image: url("/images/blueprint_medium.webp");
-            background-size: cover;
-            background-repeat: repeat;
-            background-position: center;
-            background-size: 30em
+        :root {
+            --main-background: #E5E7EB;
+            --dark-main-background: black;
+            --text-color: white;
+            --dark-text-color: black;
+            --container-background: #B3CAE5;
+            --dark-container-background: #527caf;
+            --addon-color: #7594f0;
         }
-
-        h1 {
-            color: black;
-            font-family: Arial, Helvetica, sans-serif;
-            position: relative;
-            text-shadow: 10px 10px 10px rgb(0, 0, 0, 0.5);
-
+        .four04-container {
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            
         }
-
-        .email {
-            color: black;
-            text-shadow: 10px 10px 10px rgb(0, 0, 0, 0.5);
+        .fourr {
+            font-size: 8em;
+            transition: 0.5s ease;
         }
-
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
+        .fourr:hover, .zeroo:hover {
+            transform: rotate3d(2, 2, 2, 360deg);
+            transform: scale3d(1.5, 0.1, 1.5);
+        }
+        .zeroo {
+            color: var(--addon-color);
+            font-size: 8em;
+            transition: 0.5s ease;
+        }
+        .subtitle {
+            justify-content: center;
+            text-align: center;
+            font-size: xx-large;
+            font-family: "Minecraftia", Arial, Helvetica, sans-serif;
+            transition: 0.5s ease;
+        }
+        .subtitlee {
+            justify-content: center;
+            text-align: center;
+            font-size: large;
+            font-family: "Minecraftia", Arial, Helvetica, sans-serif;
+            transition: 0.5s ease;
+        }
+        .back-link {
             text-decoration: none;
-            cursor: pointer;
+            font-size: x-large;
+            font-family: "Minecraftia", Arial, Helvetica, sans-serif;
+            color: var(--addon-color);
+            font-weight: bold;
+            transition: 0.5s ease;
+            background-color: black;
+            width: auto;
+            padding: 0.6em;
+            border-radius: 19px;
         }
+        .back-link:hover {
+            box-shadow: 0em 0em 0em 0.5em var(--addon-color);
 
-        .button:hover {
-            background-color: #0056b3;
+        }
+        .back-container {
+            justify-content: center;
+            text-align: center;
+            transition: 0.5s ease;
+        }
+        .back-container:hover {
+            transform: scale(1.1);
+            
         }
 	</style>
 </head>
 <body>
+    <nav>
+        <a class="logo" href="/"><img src="/images/logo.webp" alt="Logo">Blueprint</a>
+        <span style="flex-grow: 1;"></span>
+        <a href="/addons.html"><img src="/images/minecart_coupling.webp" alt="">Addons</a>
+        <a href="/schematics.html"><img src="/images/schematic.webp" alt="">Schematics</a>
+        <a href="/about.html"><img src="/images/Clipboard.webp" alt="">About</a>
+    </nav>
 <div class="404-box">
-	<center>
-		<h1>Whoops! This page is unavailable or it doesn't exist!</h1>
-		<h1>Check the url for errors or contact: </h1>
-		<h1 class="email">blueprint-site@proton.me</h1>
-		<a href="/index.html" class="button">Back to the Homepage</a>
-	</center>
+    <div class="four04-container">
+        <h1 class="fourr">4</h1><h1 class="zeroo">0</h1><h1 class="fourr">4</h1>
+    </div>
+    <h2 class="subtitle">Looks like the page is not found!</h2>
+    <h5 class="subtitlee">If You believe this is an error please contact <a class="subtitlee" href="mailto:blueprint-site@proton.me">blueprint-site@proton.me</a></h5>
+    <div class="back-container">
+        <a href="/index.html" class="back-link">Go back to Homepage</a>
+</div>
 </div>
 </body>
 </html>
