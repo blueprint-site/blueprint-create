@@ -76,16 +76,34 @@ body.dark-mode.blogpost:visited {
 }
 
 body.dark-mode .h3-blueprint, .h4-blueprint, .h2-blueprint {
-    color: white;
+    color: black;
 }
 
 body.dark-mode .site-info h4 {
     color: white;
 }
-
+body.dark-mode .site-info h2, h3, h4, .h3-blueprint {
+    color: white;
+}
+body.dark-mode .random-addon {
+    background-color: #527CAF;
+}
 .twa-banner-text * {
     font-family: 'Minecraftia', Arial, Helvetica, sans-serif;
 }
+body.dark-mode .for-creators-imagebox {
+    background-color: #527CAF;
+}
+body.dark-mode .for-creators-textbox {
+    background-color: #527CAF;
+}
+body.dark-mode .for-creators h2 {
+    color: white;
+}
+body.dark-mode .for-creators h1 {
+    color: white;
+}
+
 
 .twa-banner-text {
     font-family: 'Minecraftia', Arial, Helvetica, sans-serif;
@@ -208,7 +226,7 @@ body.dark-mode .site-info h4 {
     width: 11em;
 }
 .for-creators-imagebox {
-    background-color: var(--container-background);
+    background-color: #B3CAE5;
     width: fit-content;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -222,7 +240,7 @@ body.dark-mode .site-info h4 {
     align-items: center;
     position: relative;
     border-radius: 1.9em;
-    background-color: var(--container-background);
+    background-color: #B3CAE5;
     text-align: left;
     vertical-align: sub;
     padding: 20px;
