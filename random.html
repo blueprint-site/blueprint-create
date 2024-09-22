@@ -56,19 +56,19 @@
 
     function displayAddon(addon) {
         let modloaders = "";
-        if (addon.addon_categories.includes("forge")) modloaders += `<a class="supports-forge" target="_blank" rel="noopener noreferrer" href="https://forums.minecraftforge.net"><img alt="Forge support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/forge_46h.png"></a>`;
-        if (addon.addon_categories.includes("neoforge")) modloaders += `<a class="supports-neoforge" target="_blank" rel="noopener noreferrer" href="https://neoforged.net"><img alt="NeoForge support" height="30" src="/static/neoforge_46h.png"></a>`;
-        if (addon.addon_categories.includes("fabric")) modloaders += `<a class="supports-fabric" target="_blank" rel="noopener noreferrer" href="https://fabricmc.net"><img alt="Fabric support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/fabric_46h.png"></a>`;
-        if (addon.addon_categories.includes("quilt")) modloaders += `<a class="supports-quilt" target="_blank" rel="noopener noreferrer" href="https://quiltmc.org"><img alt="Quilt support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/quilt_46h.png"></a>`;
+        if (addon.categories.includes("forge")) modloaders += `<a class="supports-forge" target="_blank" rel="noopener noreferrer" href="https://forums.minecraftforge.net"><img alt="Forge support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/forge_46h.png"></a>`;
+        if (addon.categories.includes("neoforge")) modloaders += `<a class="supports-neoforge" target="_blank" rel="noopener noreferrer" href="https://neoforged.net"><img alt="NeoForge support" height="30" src="/static/neoforge_46h.png"></a>`;
+        if (addon.categories.includes("fabric")) modloaders += `<a class="supports-fabric" target="_blank" rel="noopener noreferrer" href="https://fabricmc.net"><img alt="Fabric support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/fabric_46h.png"></a>`;
+        if (addon.categories.includes("quilt")) modloaders += `<a class="supports-quilt" target="_blank" rel="noopener noreferrer" href="https://quiltmc.org"><img alt="Quilt support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/quilt_46h.png"></a>`;
 
         const randomAddonDiv = document.getElementById('random-addon');
         randomAddonDiv.innerHTML = `
             <center>
-            <img class="random-addon-logo" src="${addon.addon_icon_url}" alt="">
+            <img class="random-addon-logo" src="${addon.icon_url}" alt="">
             <div class="modloaders"><center>${modloaders}</center></div>
-            <h3 class="random-addon-name">${addon.addon_name}</h3>
-            <h4 class="random-addon-description">${addon.addon_short_descriptions}</h4>
-            <a target="_blank" rel="noopener noreferrer" class="addon-button" href="${"https://modrinth.com/mod/" + addon.addon_slug}"><img alt="Download on Modrinth" height="35" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_46h.png"></a>
+            <h3 class="random-addon-name">${addon.title}</h3>
+            <h4 class="random-addon-description">${addon.description}</h4>
+            <a target="_blank" rel="noopener noreferrer" class="addon-button" href="${"https://modrinth.com/mod/" + addon.slug}"><img alt="Download on Modrinth" height="35" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_46h.png"></a>
             </center>
         `;
     }
