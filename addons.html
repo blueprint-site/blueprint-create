@@ -4,9 +4,9 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Blueprint - Explore Addons</title>
-	<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 	<link rel="manifest" href="/site.webmanifest">
 	<link rel="stylesheet" href="static/css/style.css">
 	<link rel="stylesheet" href="static/css/addons.css">
@@ -14,24 +14,24 @@
 	<meta property="og:title" content="Blueprint"/>
 	<meta property="og:description" content="Your all in one Create website"/>
 	<meta property="og:url" content="https://blueprint-site.github.io/"/>
-	<meta property="og:image" content="https://blueprint-site.github.io/images/logo.webp"/>
+	<meta property="og:image" content="https://blueprint-site.github.io/static/logo.webp"/>
 	<script src="/static/js/darkmode.js" defer></script>
 </head>
 
 <body>
 <nav>
-	<a class="logo" href="/"><img src="/images/logo.webp" alt="Logo">Blueprint</a>
+	<a class="logo" href="/"><img src="/static/logo.webp" alt="Logo">Blueprint</a>
 	<span style="flex-grow: 1;"></span>
-	<a href="/addons.html"><img src="/images/minecart_coupling.webp" alt="">Addons</a>
-	<a href="/schematics.html"><img src="/images/schematic.webp" alt="">Schematics</a>
-	<a href="/about.html"><img src="/images/Clipboard.webp" alt="">About</a>
+	<a href="/addons.html"><img src="/static/minecart_coupling.webp" alt="">Addons</a>
+	<a href="/schematics.html"><img src="/static/schematic.webp" alt="">Schematics</a>
+	<a href="/about.html"><img src="/static/Clipboard.webp" alt="">About</a>
 </nav>
 <main>
 	<div id="dark-mode-toggle"></div>
 	<center>
 		<div class="search-bar">
 			<input type="text" id="search-input" placeholder="Search addons..." class="search-input">
-			<button onclick="searchAddons()" class="search-button"><img src="/images/engineers_goggles.webp" alt=""
+			<button onclick="searchAddons()" class="search-button"><img src="/static/engineers_goggles.webp" alt=""
 			                                                            width="60%"></button>
 		</div>
 		<div class="dropdowns">
@@ -97,7 +97,7 @@
 
 	</div>
 	<footer>
-		<img src="images/logo.webp" alt="" class="bottom-bar-logo">
+		<img src="static/logo.webp" alt="" class="bottom-bar-logo">
 		<h4 class="bottom-bar-sitename">Create Addons</h4>
 		<h6 class="bottom-bar-bug">Found a bug? Report it to blueprint-site@proton.me</h6>
 		<h6 class="bottom-bar-bug">NOT AN OFFICIAL MINECRAFT SERVICE. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR
@@ -121,79 +121,82 @@
 
     // Function to process JSON data and populate data boxes
     async function processData() {
-    let versionsArray = [];
-    const jsonData = await fetchJsonData();
-    if (jsonData) {
-        const outputDiv = document.getElementById('output');
-        for (const key in jsonData) {
-            const addon = jsonData[key];
-            let modloaders = "";
-            if (addon.addon_categories.includes("forge")) modloaders += `<a class="supports-forge" target="_blank" rel="noopener noreferrer" href="https://files.minecraftforge.net"><img alt="Forge support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/forge_46h.png"></a>`;
-            if (addon.addon_categories.includes("neoforge")) modloaders += `<a class="supports-neoforge" target="_blank" rel="noopener noreferrer" href="https://neoforged.net"><img alt="NeoForge support" height="30" src="/images/neoforge_46h.png"></a>`;
-            if (addon.addon_categories.includes("fabric")) modloaders += `<a class="supports-fabric" target="_blank" rel="noopener noreferrer" href="https://fabricmc.net"><img alt="Fabric support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/fabric_46h.png"></a>`;
-            if (addon.addon_categories.includes("quilt")) modloaders += `<a class="supports-quilt" target="_blank" rel="noopener noreferrer" href="https://quiltmc.org"><img alt="Quilt support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/quilt_46h.png"></a>`;
+        let versionsArray = []
+        const jsonData = await fetchJsonData();
+        if (jsonData) {
+            const outputDiv = document.getElementById('output');
+            for (const key in jsonData) {
+                const addon = jsonData[key];
+                let modloaders = "";
+                if (addon.categories.includes("forge")) modloaders += `<a class="supports-forge" target="_blank" rel="noopener noreferrer" href="https://files.minecraftforge.net"><img alt="Forge support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/forge_46h.png"></a>`;
+                if (addon.categories.includes("neoforge")) modloaders += `<a class="supports-neoforge" target="_blank" rel="noopener noreferrer" href="https://neoforged.net"><img alt="NeoForge support" height="30" src="/static/neoforge_46h.png"></a>`;
+                if (addon.categories.includes("fabric")) modloaders += `<a class="supports-fabric" target="_blank" rel="noopener noreferrer" href="https://fabricmc.net"><img alt="Fabric support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/fabric_46h.png"></a>`;
+                if (addon.categories.includes("quilt")) modloaders += `<a class="supports-quilt" target="_blank" rel="noopener noreferrer" href="https://quiltmc.org"><img alt="Quilt support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/quilt_46h.png"></a>`;
 
-            let versions = "";
-            for (const version of addon.addon_versions) {
-                versions += `<span class="addon-version supports-${version.replaceAll(".", "_")}"">${version}</span>`;
-                if (!versionsArray.includes(version)) versionsArray.push(version);
+                let versions = "";
+                for (const version of addon.versions) {
+                    versions += `<span class="addon-version supports-${version.replaceAll(".", "_")}">${version}</span>`;
+                    if (!versionsArray.includes(version)) versionsArray.push(version);
+                }
+
+                const addonElement = document.createElement('div');
+                addonElement.classList.add('addon'); // Add 'addon' class to the created div
+                addonElement.innerHTML = `
+                    <h3 class="addon-name">${addon.title}</h3>
+                    <img height="100px" width="100px" src="${addon.icon_url}" alt="${addon.title}">
+                    <div class="modloaders">${modloaders}</div>
+                    <div class="addon-versions">${versions}</div>
+                    <p class="addon-description"><b>Downloads:</b> ${addon.downloads}</p>
+                    <p class="addon-description"><b>Description:</b> ${addon.description}</p>
+                    <p class="addon-description"><b>Categories:</b> ${addon.categories.join(', ')}</p>
+                    <p class="addon-description"><b>Followers:</b> ${addon.follows}</p>
+                    <p class="addon-description"><b>Created by:</b> ${addon.author}</p>
+                    <a target="_blank" rel="noopener noreferrer" class="addon-button" href="${"https://modrinth.com/mod/" + addon.slug}"><img class="modrinth-download" alt="Download on Modrinth" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_46h.png"></a>
+                `;
+                outputDiv.appendChild(addonElement);
             }
 
-            const addonElement = document.createElement('div');
-            addonElement.classList.add('addon'); // Add 'addon' class to the created div
-            addonElement.innerHTML = `
-                <h3 class="addon-name">${addon.addon_name}</h3>
-                <img height="100px" width="100px" src="${addon.addon_icon_url}" alt="${addon.addon_name}">
-                <div class="modloaders">${modloaders}</div>
-                <div class="addon-versions">${versions}</div>
-                <p class="addon-description"><b>Downloads:</b> ${addon.addon_downloads}</p>
-                <p class="addon-description"><b>Description:</b> ${addon.addon_short_descriptions}</p>
-                <p class="addon-description"><b>Categories:</b> ${addon.addon_categories.join(', ')}</p>
-                <p class="addon-description"><b>Followers:</b> ${addon.addon_followers}</p>
-                <p class="addon-description"><b>Created by:</b> ${addon.addon_authors}</p>
-                <a target="_blank" rel="noopener noreferrer" class="addon-button" href="${"https://modrinth.com/mod/" + addon.addon_slug}"><img class="modrinth-download" alt="Download on Modrinth" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_46h.png"></a>
-            `;
-            
-            if (addon.note) {
-                const noteElement = document.createElement('p');
-                noteElement.classList.add('addon-note');
-                noteElement.innerHTML = `<b>Note:</b> ${addon.note}`;
-                addonElement.appendChild(noteElement);
-            }
-
-            outputDiv.appendChild(addonElement);
+            populateVersionDropdown(versionsArray.sort().reverse());  // Populate version dropdown
         }
+    }
 
-        for (const version of versionsArray.sort().reverse()) {
-            const versionElement = document.createElement("li");
+    // Function to filter addons by version
+    function filterByVersion(version) {
+        const addons = document.querySelectorAll('.addon');
+        addons.forEach(addon => {
+            const versionTags = addon.querySelectorAll('.addon-version');
+            let isVisible = false;
+            versionTags.forEach(tag => {
+                if (tag.textContent === version || version === 'all') {
+                    isVisible = true;
+                }
+            });
+            addon.style.display = isVisible ? 'block' : 'none';
+        });
+    }
+
+    // Function to populate the version dropdown
+    function populateVersionDropdown(versionsArray) {
+        const versionDropdown = document.querySelector('.select-version .select-dropdown');
+        
+        versionsArray.forEach(version => {
+            const versionElement = document.createElement('li');
             versionElement.innerHTML = `
                 <input type="radio" id="${version.replaceAll(".", "_")}" name="version" />
                 <label for="${version.replaceAll(".", "_")}">${version}</label>
             `;
 
-            function versionHandler(e) {
-                versionSelection = this.children[0].id;
-                console.log(this.children[0].id);
-                // Click Events
-                if (e.type === "click" && e.clientX !== 0 && e.clientY !== 0) {
-                    versionSelectedValue.textContent = this.children[1].textContent;
-                    versionSelect.classList.remove("active");
-                }
-                // Key Events
-                if (e.key === "Enter") {
-                    versionSelectedValue.textContent = this.textContent;
-                    versionSelect.classList.remove("active");
-                }
-                searchAddons();
-            }
+            // Add event listeners for version selection
+            versionElement.addEventListener('click', () => {
+                filterByVersion(version);
+                const selectedValue = document.querySelector('.select-version .selected-value');
+                selectedValue.textContent = version;
+                versionSelect.classList.remove('active');
+            });
 
-            versionElement.addEventListener("keyup", versionHandler);
-            versionElement.addEventListener("click", versionHandler);
-
-            document.querySelector(".select-version .select-dropdown").appendChild(versionElement);
-        }
+            versionDropdown.appendChild(versionElement);
+        });
     }
-}
 
     // Call the processData function when the page loads
     window.onload = processData;
@@ -205,7 +208,7 @@
         addons.forEach(addon => {
             const addonName = addon.querySelector('.addon-name').textContent.toLowerCase();
             const addonDescription = addon.querySelector('.addon-description').textContent.toLowerCase();
-            if ((addonName.includes(searchInput) || addonDescription.includes(searchInput)) && (loaderSelection == "all" || addon.querySelector(`.supports-${loaderSelection}`)) && (versionSelection == "all" || addon.querySelector(`.supports-${versionSelection}`))) {
+            if ((addonName.includes(searchInput) || addonDescription.includes(searchInput))) {
                 addon.style.display = 'block'; // Show addon if it matches the search query
             } else {
                 addon.style.display = 'none'; // Hide addon if it doesn't match the search query
@@ -219,8 +222,7 @@
             searchAddons();
         }
     });
-</script>
-<script>
+
     // Script for custom selector (Loader)
     const loaderSelect = document.querySelector(".select-loader");
     const loaderSelectBtn = document.querySelector(".select-loader .select-button");
@@ -279,30 +281,18 @@
     });
 
     const versionSelectedValue = versionSelect.querySelector(".selected-value");
-    const versionOptionsList = versionSelect.querySelectorAll(".select-dropdown li");
 
-    let versionSelection = versionSelect.querySelector('input[name="version"]:checked').id;
+    // Initialize loader selection
+    let versionSelection = 'all'; // Default to 'all' versions
 
-    versionOptionsList.forEach((option) => {
-        function versionHandler(e) {
+    document.querySelectorAll('.select-version .select-dropdown li').forEach(option => {
+        option.addEventListener('click', function() {
             versionSelection = this.children[0].id;
-            console.log(this.children[0].id);
-
-            // Click Events
-            if (e.type === "click" && e.clientX !== 0 && e.clientY !== 0) {
-                versionSelectedValue.textContent = this.children[1].textContent;
-                versionSelect.classList.remove("active");
-            }
-            // Key Events
-            if (e.key === "Enter") {
-                versionSelectedValue.textContent = this.textContent;
-                versionSelect.classList.remove("active");
-            }
-            searchAddons();
-        }
-
-        option.addEventListener("keyup", versionHandler);
-        option.addEventListener("click", versionHandler);
+            versionSelectedValue.textContent = this.children[1].textContent;
+            versionSelect.classList.remove('active');
+            searchAddons(); // Refilter the addons based on the new version selection
+        });
     });
 </script>
+
 </html>
