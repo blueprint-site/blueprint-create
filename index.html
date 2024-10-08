@@ -132,39 +132,48 @@
     function updateSideBoxContent(index) {
         if (index === 0) {
             sideBox.innerHTML = `
-			<img src="https://cdn.modrinth.com/data/FTeXqI9v/fe75695f6f2e085ac9fb56204de7f88b6d716e8d.png" alt="">
+			<img src="https://cdn.modrinth.com/data/FTeXqI9v/fe75695f6f2e085ac9fb56204de7f88b6d716e8d.png" alt="Create new age icon">
                 <h3 class="side-box-text">Create: New Age</h3>
                 <h4 class="side-box-dsc">Create: New Age is an addon for the Create mod that adds integration with electricity.</h4>
             `;
+            sideBox.onclick = function() {openLink("https://modrinth.com/mod/create-new-age")}
         } else if (index === 1) {
             // Add content for the second image
             sideBox.innerHTML = `
-			<img src="https://cdn.modrinth.com/data/ihpnEd80/1b6e859ac168a44ad383e36252ad6c563a245056.png" alt="">
+			<img src="https://cdn.modrinth.com/data/ihpnEd80/1b6e859ac168a44ad383e36252ad6c563a245056.png" alt="Create Cobblestone icon">
                 <h3 class="side-box-text">Create Cobblestone</h3>
                 <h4 class="side-box-dsc">Adds a block generating cobblestone using SU, stopping cobblestone generators from eating your frames.</h4>
             `;
+            sideBox.onclick = function() {openLink("https://modrinth.com/mod/create-cobblestone");}
         } else if (index === 2) {
             // Add content for the third image
             sideBox.innerHTML = `
-                <img src="https://cdn.modrinth.com/data/sMvUb4Rb/568feacea08ddad4bf91f5e5c396b76a7cba3e30.png" alt="">
+                <img src="https://cdn.modrinth.com/data/sMvUb4Rb/568feacea08ddad4bf91f5e5c396b76a7cba3e30.png" alt="Create Deco icon">
                 <h3 class="side-box-text">Create Deco</h3>
                 <h4 class="side-box-dsc">Industrial decoration themed around the aesthetics of the Create mod</h4>
             `;
+            sideBox.onclick = function() {openLink("https://modrinth.com/mod/create-deco");}
         } else if (index === 3) {
             // Add content for the third image
             sideBox.innerHTML = `
-                <img src="https://cdn.modrinth.com/data/gxoNIjg6/a67aa736ddbd20c45cca55d1dc5ef03c2caf841f.png" alt="">
+                <img src="https://cdn.modrinth.com/data/gxoNIjg6/a67aa736ddbd20c45cca55d1dc5ef03c2caf841f.png" alt="Create Track Map icon">
                 <h3 class="side-box-text">Create Track Map</h3>
                 <h4 class="side-box-dsc">A web-based track map of your world's Create train system, complete with signals, stations, and trains moving in real time.</h4>
             `;
+            sideBox.onclick = function() {("https://modrinth.com/mod/create-track-map");}
         } else if (index === 4) {
             // Add content for the third image
             sideBox.innerHTML = `
-                <img src="https://cdn.modrinth.com/data/j6Zt3N7W/7695e7967fd8386954b8b2f13e579b99c7839650.png" alt="">
+                <img src="https://cdn.modrinth.com/data/j6Zt3N7W/7695e7967fd8386954b8b2f13e579b99c7839650.png" alt="Create: Factory icon">
                 <h3 class="side-box-text">Create: Factory</h3>
                 <h4 class="side-box-dsc">🍬 A lot of new foods added to Create!</h4>
             `;
+            sideBox.onclick = function() {("https://modrinth.com/mod/create-factory")}
         }
+    }
+
+    function openLink(url) {
+        window.location.href = url;
     }
 
     // Call nextSlide() immediately to ensure content is loaded for the first image
