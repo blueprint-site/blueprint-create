@@ -6,7 +6,7 @@
     --container-background: #B3CAE5;
     --dark-container-background: #527caf;
 }
-body.dark-mode .search-input {
+body.dark-mode .search-input::placeholder {
     color: var(--dark-text-color);
 }
 body.dark-mode {
@@ -174,6 +174,10 @@ body.dark-mode .select-dropdown {
     font-size: 1.5vw;
 }
 
+.search-input::placeholder {
+    color: var(--dark-text-color);
+}
+
 .search-button {
     font-size: 1.5vw;
     background-color: var(--container-background);
@@ -189,6 +193,10 @@ body.dark-mode .select-dropdown {
     align-items: center;
     font-family: Arial, Helvetica, sans-serif;
     color: rgb(0, 0, 0, 0.6);
+}
+
+.search-button:hover {
+    filter: brightness(1.2);
 }
 
 .search-bar a {
