@@ -29,7 +29,7 @@
 	<div id="dark-mode-toggle"></div>
 	<center>
 		<h1>Schematic Viewer</h1>
-		<input id="schematic-input" type="file" style="position: fixed; top: -100em">
+		<input id="schematic-input" type="file" accept=".nbt" style="position: fixed; top: -100em">
 		<label for="schematic-input">
 			<div class="drop-zone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event)">
 				Drag and drop file here, or click to select one
@@ -54,6 +54,12 @@
 <script>
     const nbt = require('prismarine-nbt');
     const {Buffer} = require('buffer');
+
+    //When a file is selected, parse it
+    document.getElementById('schematic-input').addEventListener('change', function(e) {
+        parseFile(e.target.files[0]);
+    });
+
 
     const dropHandler = async (ev) => {
         console.log("File(s) dropped");
