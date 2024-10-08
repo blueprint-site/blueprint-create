@@ -6,7 +6,7 @@
     --container-background: #B3CAE5;
     --dark-container-background: #527caf;
 }
-body.dark-mode .search-input {
+body.dark-mode .search-input::placeholder {
     color: var(--dark-text-color);
 }
 body.dark-mode {
@@ -172,6 +172,10 @@ body.dark-mode .select-dropdown {
     width: 23vw;
     box-shadow: 3px 2px 5px rgb(0, 0, 0, 0.5);
     font-size: 1.5vw;
+}
+
+.search-input::placeholder {
+    color: var(--dark-text-color);
 }
 
 .search-button {
