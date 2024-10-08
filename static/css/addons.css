@@ -195,6 +195,10 @@ body.dark-mode .select-dropdown {
     color: rgb(0, 0, 0, 0.6);
 }
 
+.search-button:hover {
+    filter: brightness(1.2);
+}
+
 .search-bar a {
     font-size: 1.5vw;
     background-color: var(--container-background);
