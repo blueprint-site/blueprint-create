@@ -221,10 +221,12 @@ body.dark-mode .for-creators h1 {
     width: 10em;
     border-radius: 1.9em;
     padding: 0.2em;
-    transition: width 0.1s linear;
+    transition: transform .1s;
 }
 .for-creators-image:hover {
-    width: 11em;
+  -ms-transform: scale(1.2);
+  -webkit-transform: scale(1.2);
+  transform: scale(1.2); 
 }
 .for-creators-imagebox {
     background-color: #B3CAE5;
