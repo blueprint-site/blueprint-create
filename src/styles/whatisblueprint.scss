@@ -6,8 +6,11 @@
     --container-background: #B3CAE5;
     --dark-container-background: #527caf;
 }
-
+.what-is-blueprint h4 {
+    color: black;
+}
 .what-is-blueprint {
+    color: black;
     padding: 30px;
     padding-left: 0;
     padding-right: 0;
@@ -34,11 +37,5 @@
     h1 {
         font-weight: bold;
         font-size: 2em;
-    }
-}
-
-.dark-mode {
-    .what-is-blueprint {
-        background-color: var(--dark-container-background);
     }
 }

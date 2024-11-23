@@ -5,7 +5,9 @@
     --dark-text-color: black;
     --container-background: #B3CAE5;
     --dark-container-background: #527caf;
+    --addon-color: #7594f0;
 }
+
 .dark-mode {
     color: black;
 }
@@ -60,13 +62,14 @@
     background-color: black;
     color: white;
     font-weight: bold;
-    transition: linear 0.2s;
+    transition: 0.3s ease;
 }
 
 .login-button:hover {
     cursor: pointer;
-    background-color: #7594f0;
+
     color: white;
+    box-shadow: 0em 0em 1em 0.4em var(--addon-color);
 }
 
 .oauth-header {
@@ -75,23 +78,49 @@
     margin-bottom: 0.6em;
 }
 
-.oauth a{
+.oauth{
     background-color: black;
     border-radius: 1.9em;
-    width: auto;
-    padding: 0.4em;
+    width: 100%;
     color: white;
     display: flex; /* Change from inline-block to flex */
     align-items: center; /* Center the items vertically */
     justify-content: center; /* Center the items horizontally */
     text-align: center;
+    padding: 0.3em;
     padding-left: 0.8em;
     padding-right: 0.8em;
     margin-bottom: 1em;
     box-shadow: 3px 2px 5px rgba(0, 0, 0, 0.3);
     text-decoration: none;
     transition: 0.2s ease-in-out;
+    border: none;
 }
+.oauth:hover {
+    cursor: pointer;
+
+    color: white;
+    box-shadow: 0em 0em 1em 0.4em var(--addon-color);
+}
+// TEMPORARY GRAYSCALE FOR THE BOXES
+// REMOVE WHEN OAUTH GETS IMPLEMENTED
+// .oauth-container {
+//     filter: grayscale(100%) contrast(0.7);
+//     opacity: 0.6;
+// }
+
+// temporary text
+.verysmoltext {
+    font-size: small;
+}
+
+// TEMPORARY GRAYSCALE
+// REMOVE WHEN OAUTH GETS IMPLEMENTED
+// .oauth a {
+//     filter: grayscale(100%) contrast(0.7);
+// }
+
+
 .oauth a:hover {
     cursor: pointer;
     background-color: #7594f0;

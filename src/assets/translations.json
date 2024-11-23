@@ -6,7 +6,8 @@
           "addons": "Addons",
           "schematics": "Schematics",
           "about": "About",
-          "login": "Login"
+          "login": "Login",
+          "blog": "Blog"
         }
       },
       "awards": {
@@ -53,6 +54,10 @@
           "followers": "Followers",
           "authors": "Created by",
           "note": "Note"
+        },
+        "random": {
+          "title": "Feeling bored?",
+          "link": "Get a random addon!"
         }
       }
     }

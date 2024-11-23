@@ -1,10 +1,10 @@
 :root {
     --main-background: #E5E7EB;
-    --dark-main-background: black;
+    --main-background: black;
     --text-color: white;
-    --dark-text-color: black;
+    --text-color: black;
     --container-background: #B3CAE5;
-    --dark-container-background: #527caf;
+    --container-background: #527caf;
 }
 
 .form {
@@ -30,12 +30,13 @@
         width: 100%;
         height: 50px;
 
-        color: var(--dark-text-color);
+        color: black;
 
         background-color: var(--container-background);
         border: none;
 
-        box-shadow: 10px 10px 10px rgb(0, 0, 0, 0.2);
+        box-shadow: 0.5em 0.5em 0.7em rgb(0, 0, 0, 0.1);
+        border-radius: 1.9em;
     }
 
     button:active,
@@ -43,7 +44,7 @@
     button:focus {
         background-color: var(--container-background);
         border: none;
-        color: var(--dark-text-color);
+        color: black;
     }
 
     .dropdown-menu {
@@ -57,13 +58,13 @@
         box-shadow: 10px 10px 10px rgb(0, 0, 0, 0.2);
 
         a {
-            color: var(--dark-text-color);
+            color: var(--text-color);
         }
 
         a:hover,
         a:focus,
         a:active {
-            color: var(--dark-text-color);
+            color: var(--text-color);
             background-color: #8b96fe;
         }
     }
@@ -76,14 +77,14 @@
 
         background-color: var(--container-background);
 
-        color: var(--dark-text-color);
+        color: var(--text-color);
 
         button:active,
         button:hover,
         button:focus {
             background-color: var(--container-background);
             border: none;
-            color: var(--dark-text-color);
+            color: var(--text-color);
         }
     }
 }
@@ -103,7 +104,21 @@
         padding: 20px;
     }
 }
-
+.random-addon-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+}
+.random-addon-bg {
+    background-color: var(--container-background);
+    padding: 0.8em;
+    border-radius: 1.9em;
+    text-align: center;
+    padding-left: 2em;
+    padding-right: 2em;
+    box-shadow: 0.5em 0.5em 0.7em rgb(0, 0, 0, 0.1);
+}
 .dark-mode {
     .dropdown {
         width: 200px;
@@ -112,26 +127,26 @@
             width: 100%;
             height: 50px;
 
-            color: var(--text-color);
+            color: black;
 
             box-shadow: 10px 10px 10px rgb(0, 0, 0, 0.2);
 
-            background-color: var(--dark-container-background);
+            background-color: var(--container-background);
             border: none;
         }
 
         button:active,
         button:hover,
         button:focus {
-            background-color: var(--dark-container-background);
+            background-color: var(--container-background);
             border: none;
-            color: var(--text-color);
+            color: black;
         }
 
         .dropdown-menu {
             width: 100%;
 
-            background-color: var(--dark-container-background);
+            background-color: var(--container-background);
 
             box-shadow: 10px 10px 10px rgb(0, 0, 0, 0.2);
 
@@ -153,14 +168,14 @@
             width: 100%;
             height: 50px;
 
-            background-color: var(--dark-container-background);
+            background-color: var(--container-background);
 
             color: var(--text-color);
 
             button:active,
             button:hover,
             button:focus {
-                background-color: var(--dark-container-background);
+                background-color: var(--container-background);
                 border: none;
                 color: var(--text-color);
             }
@@ -170,38 +185,38 @@
 
     .addons-loading {
         .loader {
-            background-color: #527caf;
+            background-color: var(--container-background);
         }
     }
 }
 
-.dark-mode {
-    background-color: var(--dark-main-background);
+.mode {
+    background-color: var(--main-background);
     color: var(--text-color);
 }
 
-.dark-mode .random-text {
-    color: var(--dark-text-color);
+.mode .random-text {
+    color: var(--text-color);
 }
 
-.dark-mode input {
-    background-color: var(--dark-container-background);
+.mode input {
+    background-color: var(--container-background);
 }
 
-.dark-mode .select-button {
-    background-color: var(--dark-container-background);
+.mode .select-button {
+    background-color: var(--container-background);
 }
 
-.dark-mode p {
-    background-color: var(--dark-container-background);
+.mode p {
+    background-color: var(--container-background);
 }
 
-.dark-mode .search-button {
-    background-color: var(--dark-container-background);
+.mode .search-button {
+    background-color: var(--container-background);
 }
 
-.dark-mode .select-dropdown {
-    background-color: var(--dark-container-background);
+.mode .select-dropdown {
+    background-color: var(--container-background);
 }
 
 
@@ -226,7 +241,10 @@
     box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.2);
     border-radius: 5px;
 }
-
+.experience {
+    height: 1.7em;
+    margin-left: 0.2em;
+}
 .search-bar {
     display: flex;
     /* Add flex display */
@@ -236,6 +254,7 @@
     /* Center vertically */
     margin-bottom: 20px;
     /* Add margin to separate from the addon list */
+    padding: 0.5em;
 }
 .addon-note {
     color: black;
@@ -257,6 +276,7 @@
     width: 20em;
     box-shadow: 3px 2px 5px rgb(0, 0, 0, 0.5);
     font-size: 1.3em;
+    padding: 1em;
 }
 
 .search-button {
@@ -298,7 +318,7 @@
 .search-container {
     width: 10vw;
     height: 2vw;
-    background-color: var(--dark-main-background);
+    background-color: var(--main-background);
     display: flex;
 }
 
@@ -488,4 +508,5 @@
 }
 .addon-isnt-here {
     padding-bottom: 0.3em;
+    color: black;
 }

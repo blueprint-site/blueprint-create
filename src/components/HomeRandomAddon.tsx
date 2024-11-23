@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "../styles/homerandomaddon.scss";
 import neoForgeIcon from "../assets/neoforge_46h.png";
+import { Link } from "react-router-dom";
+import Updater from "./Updater";
 
 function HomeRandomAddon() {
     const [randomAddon, setRandomAddon] = useState(null);
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-
+    Updater();
     useEffect(() => {
         const fetchAddons = async () => {
             const compareSemanticVersions = (a, b) => {
@@ -24,24 +26,18 @@ function HomeRandomAddon() {
             };
 
             try {
-                const response = await fetch("http://5.39.223.27:6555/api/Blueprint/FinalModList");
-                const data = await response.json();
-
+                const response = localStorage.getItem("addonList");
+                const data = response ? JSON.parse(response) : [];                
                 const addons = data.map(addon => ({
-                    id: addon.id,
-                    icon_url: addon.icon_url,
-                    name: addon.title,
-                    description: addon.description,
-                    categories: addon.categories,
-                    versions: addon.versions,
-                    slug: addon.slug
+                  id: addon.id,
+                  icon_url: addon.icon_url,
+                  name: addon.title,
+                  description: addon.description,
+                  categories: addon.categories,
+                  versions: addon.versions,
+                  slug: addon.slug
                 }));
-
-                const versions = [...new Set(addons.flatMap(addon => addon.versions))];
-                versions.sort(compareSemanticVersions).reverse();
-
-                const randomId = Math.floor(Math.random() * addons.length);
-                setRandomAddon(addons[randomId]);
+                setRandomAddon(addons[Math.floor(Math.random() * addons.length)]);;
             } catch (e) {
                 setError(e);
             } finally {
@@ -60,6 +56,7 @@ function HomeRandomAddon() {
         if (addon.categories.includes("quilt")) modloaders += `<a className="supports-quilt" target="_blank" rel="noopener noreferrer" href="https://quiltmc.org"><img alt="Quilt support" height="30" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/quilt_46h.png"></a>`;
 
         return (
+            <Link to={`/addons/${addon?.slug}`} className="addon-link" style={{ textDecoration: "none" }}>
             <div className="random-addon">
                 <img className="random-addon-logo" src={addon.icon_url} alt="" />
                 <div className="modloaders"><center dangerouslySetInnerHTML={{ __html: modloaders }} /></div>
@@ -71,6 +68,7 @@ function HomeRandomAddon() {
                     <img alt="Download on Modrinth" height="35" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_46h.png" />
                 </a>
             </div>
+            </Link>
         );
     };
 

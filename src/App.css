@@ -1,0 +1,17 @@
+html, body {
+    height: 100%; /* Ensure full height */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#root {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1; /* Pushes the footer to the bottom when content is less than viewport height */
+}

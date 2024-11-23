@@ -1,7 +1,6 @@
 import "../../styles/register.scss";
 import React, { useState } from 'react';
 import axios from 'axios';
-import crypto from 'crypto';
 
 function Register() {
     const [username, setUsername] = React.useState('');
@@ -11,7 +10,7 @@ function Register() {
     
     const handleRegister = async () => {
         try {
-            const response = await axios.post('http://5.39.223.27:6555/api/users', {
+            const response = await axios.post('https://blueprintapi.timiliris.be/api/users', {
                 username,
                 email,
                 password

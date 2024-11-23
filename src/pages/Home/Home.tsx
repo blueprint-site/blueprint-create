@@ -11,6 +11,8 @@ const HomeExploreSchematics = lazy(() => import("../../components/HomeExploreSch
 const HomeRandomAddon = lazy(() => import("../../components/HomeRandomAddon"));
 const HomeForCreators = lazy(() => import("../../components/HomeForCreators"));
 
+import Updater from "../../components/Updater";
+
 function Home() {
   return (
     <>

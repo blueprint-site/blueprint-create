@@ -51,12 +51,12 @@ function Contributors() {
             setApiContributors(await getContributors("blueprint-api"));
         })();
     }, []);
-
     return (
         <>
             <div className="contributor-container">
                 <h3 className="big-text">{t("home.contributions.title")}</h3>
                 <span className="smol-text">{t("home.contributions.subtitle.main")}</span>
+                <br />
                 <div className="contributors">
                     <LazyLoad offset={150}>
                         {frontendContributors.map((user) => {
@@ -65,25 +65,7 @@ function Contributors() {
                                     <Card.Img alt={`${user.login}'s profile picture`} variant="top" src={`https://avatars.githubusercontent.com/u/${user.id}?size=96`} />
                                     <Card.Body>
                                         <Card.Title className="card-username">{user.login}</Card.Title>
-                                        <span>
-                                            {user.contributions}{" contributions"}
-                                        </span>
-                                    </Card.Body>
-                                </Card>
-                            )
-                        })}
-                    </LazyLoad>
-                </div>
-                <span className="smol-text">{t("home.contributions.subtitle.api")}</span>
-                <div className="contributors">
-                    <LazyLoad offset={150}>
-                        {apiContributors.map((user) => {
-                            return user.login == "blueprint-site" ? (<></>) : (
-                                <Card style={{ width: '100%', backgroundColor: '#B3CAE5' }}>
-                                    <Card.Img alt={`${user.login}'s profile picture`} variant="top" src={`https://avatars.githubusercontent.com/u/${user.id}?size=96`} />
-                                    <Card.Body>
-                                        <Card.Title className="card-username">{user.login}</Card.Title>
-                                        <span>
+                                        <span className="contributions">
                                             {user.contributions}{" contributions"}
                                         </span>
                                     </Card.Body>

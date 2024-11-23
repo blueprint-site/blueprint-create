@@ -1,13 +1,13 @@
 import ExploreSchematicsMain from "../../components/ExploreSchematicsTitle";
 import ExploreSchematicsSearch from "../../components/ExploreSchematicsSearch";
-import ExploreSchematicsSchematics from "../../components/ExploreSchematicsSchematics";
+import SchematicsList from "../../components/SchematicsList";
 
 function SchematicsPage() {
   return (
     <div>
       <ExploreSchematicsMain />
       <ExploreSchematicsSearch />
-      <ExploreSchematicsSchematics />
+      <SchematicsList />
     </div>
   );
 }

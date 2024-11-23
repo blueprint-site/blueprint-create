@@ -60,14 +60,20 @@ button:hover {
     text-align: center;
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
+    transition: 0.3s ease;
+}
+.upload-button:hover {
+    cursor: pointer;
+    background-color: #7594f0;
+    color: white;
+    border-radius: 3px;
 }
 .schematic-image {
-    width: 1.3em;
+    width: 1em;
     display: inline-block;
 }
 .button-div {
  display: flex;
  align-content: center;
  text-align: center;
- 
 }

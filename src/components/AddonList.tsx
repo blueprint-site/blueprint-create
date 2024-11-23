@@ -5,6 +5,8 @@ import '../styles/addonslist.scss';
 import AddonListItem from "./AddonListItem";
 import { Dropdown } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import Experience from "../assets/block_of_experience.webp";
+
 
 // Define the Addon interface
 interface Addon {
@@ -52,8 +54,8 @@ function AddonList() {
             setIsLoading(true);
 
             try {
-                const response = await fetch("http://5.39.223.27:6555/api/Blueprint/FinalModList");
-                const data = await response.json();
+                const response = localStorage.getItem("addonList");
+                const data = response ? JSON.parse(response) : [];
 
                 let addons: Addon[] = [];
                 let versions: string[] = [];
@@ -111,11 +113,14 @@ function AddonList() {
         <>
             <div className="addon-count-div">
                 <h3 className="addon-count">There are {addonCount} Addons on Blueprint!</h3>
-                <h5 className="addon-isnt-here">Your addon isn't here?</h5>
+                <h5 className="addon-isnt-here">Your addon isn't here? <a href="https://blueprint-site.github.io/blueprint-blog/posts/whyisntmyaddonhere.html">Read why</a></h5>
             </div>
             <div className="form">
                 <div className="search-bar">
                     <input type="text" placeholder={t("addons.search.placeholder")} className="search-input" onChange={(e) => { setQuery(e.target.value.toLowerCase()) }} />
+                </div>
+                <div className="random-addon-bar">
+                    <p className="random-addon-bg">{t("addons.random.title")} <a href="/addons/random">{t("addons.random.link")} <img className="experience" src={Experience} alt="" /></a></p>
                 </div>
                 <div className="dropdown-container">
                     <Dropdown>

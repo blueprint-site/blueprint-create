@@ -1,61 +1,117 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import "../../styles/login.scss";
 import GoogleLogo from "../../assets/icons/google-mark-color.png";
 import GithubLogo from "../../assets/icons/github-mark-white.png";
 import DiscordLogo from "../../assets/icons/discord-mark-blue.png";
+import supabase from '../Supabase';
+import { Router } from 'react-router-dom';
+
+var client = supabase;
 
 function Login() {
-    const [username, setUsername] = React.useState('');
-    const [password, setPassword] = React.useState('');
+    const [userEmail, setEmail] = React.useState('');
+    const [userPassword, setPassword] = React.useState('');
     const [error, setError] = React.useState('');
-    
-    const handleLogin = async () => {
-        try {
-            const response = await axios.post('http://5.39.223.27:6555/api/users/login', {
-                username,
-                password
-            });
-            const token = response.data.token;
-            localStorage.setItem('token', token);
-            alert('Login successful!');
 
-            window.location.href = '/protected';
+
+    const handleGithubLogin = async () => {
+        try {
+            const { data, error } = await client.auth.signInWithOAuth({
+                provider: 'github',
+                options: {
+                    redirectTo: 'http://localhost:5173/user'
+                }
+            });
+            if (error) {
+                console.error('Error signing in with GitHub:', error);
+                setError(error.message); // Assuming you have an setError function to update the error state
+            } else {
+                console.log('Signed in with GitHub:');
+                localStorage.setItem("isSignedIn", "true");
+                localStorage.setItem("userData", JSON.stringify(data));
+                // You can also update the state with the user data here
+            }
         } catch (error) {
-            setError('Login failed. Please check your credentials.');
+            console.error('Unexpected error signing in with GitHub:', error);
+            setError('An unexpected error occurred');
         }
-    };
+    }
+    const handleGoogleLogin = async () => {
+        try {
+            const { data, error } = await client.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: 'http://localhost:5173/user'
+                }
+            });
+            if (error) {
+                console.error('Error signing in with Google:', error);
+                setError(error.message); // Assuming you have an setError function to update the error state
+            } else {
+                console.log('Signed in with Google:');
+                localStorage.setItem("isSignedIn", "true");
+                localStorage.setItem("userData", JSON.stringify(data));
+                // You can also update the state with the user data here
+            }
+        } catch (error) {
+            console.error('Unexpected error signing in with Google:', error);
+            setError('An unexpected error occurred');
+        }
+    }
+    const handleDiscordLogin = async () => {
+        try {
+            const { data, error } = await client.auth.signInWithOAuth({
+                provider: 'discord',
+                options: {
+                    redirectTo: 'http://localhost:5173/user'
+                }
+            });
+            if (error) {
+                console.error('Error signing in with Discord:', error);
+                setError(error.message); // Assuming you have an setError function to update the error state
+            } else {
+                console.log('Signed in with Discord:');
+                localStorage.setItem("isSignedIn", "true");
+                localStorage.setItem("userData", JSON.stringify(data));
+                // You can also update the state with the user data here
+            }
+        } catch (error) {
+            console.error('Unexpected error signing in with Discord:', error);
+            setError('An unexpected error occurred');
+        }
+    }
 
     return (
         <div className="logins">
-            <div className="login-container">
+            {/* <div className="login-container">
                 <h1 className="login-header">Let's log you in!</h1>
-                {{error} && <p className="error-message">{error}</p>}
-                <input type="username" onChange={(e) => setUsername(e.target.value)} placeholder="Username" className="input-email"/>
-                <input type="password" onChange={(e) => setPassword(e.target.value)} placeholder="Your password 🤫" className="input-password"/>
-                <button className="login-button" onClick={handleLogin}>Log In!</button>
-                <div className="signup"><h5>No account? <a href="/signup">Sign Up</a></h5></div>
-            </div>
-            
+                {{ error } && <p className="error-message">{error}</p>}
+                <input type="username" onChange={(e) => setEmail(e.target.value)} placeholder="Username" className="input-email" />
+                <input type="password" onChange={(e) => setPassword(e.target.value)} placeholder="Your password 🤫" className="input-password" />
+                <button className="login-button" onClick={handlePasswordLogin}>Log In!</button>
+                <div className="signup"><h5>No account? <a href="/register">Register</a></h5></div>
+            </div> */}
+
             <div className="oauth-container">
-                <h1 className="oauth-header">Or log in with:</h1>
-                <div className="oauth">
-                    <a href="/loginwith/google"><img src={GoogleLogo} alt="" className="oauth-image"/>
-                    <h4>Log In with Google</h4>
-                    </a>
-                </div>
-                <div className="oauth">
-                    <a href="/loginwith/github">
-                    <img src={GithubLogo} alt="" className="oauth-image"/>
-                    <h4>Log In with Github</h4>
-                    </a>
-                </div>
-                <div className="oauth">
-                    <a href="/loginwith/discord">
-                    <img src={DiscordLogo} alt="" className="oauth-image"/>
-                    <h4>Log In with Discord</h4>
-                    </a>
-                </div>
+                <h1 className="oauth-header">Login using:</h1>
+                {/* GOOGLE OAUTH*/}
+                <button onClick={handleGoogleLogin} className='oauth'>
+                    <img src={GoogleLogo} alt="" className="oauth-image" />
+                    <h4>Google</h4>
+                </button>
+                {/* GITHUB OAUTH*/}
+                <button onClick={handleGithubLogin} className='oauth'>
+                    <img src={GithubLogo} alt="" className="oauth-image" />
+                    <h4>Github</h4>
+                </button>
+                {/* DISCORD OAUTH*/}
+                <button onClick={handleDiscordLogin} className='oauth'>
+                    <img src={DiscordLogo} alt="" className="oauth-image" />
+                    <h4>Discord</h4>
+                </button>
+            <h6 className='verysmoltext'>Account will be created automatically</h6>
+            <h6 className='verysmoltext'>Why no password email option? <a href="">Read here</a></h6>
             </div>
         </div>
     )

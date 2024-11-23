@@ -1,14 +1,13 @@
 import { Suspense, lazy } from "react";
 
 import LoadingOverlay from "../../components/LoadingOverlays/LoadingOverlay";
+const AboutPageContent = lazy(() => import("../../components/AboutPageContent"));
 const Contributors = lazy(() => import("../../components/Contributors"));
-const AboutPageTitle = lazy(() => import("../../components/AboutPageTitle"));
-
 function About() {
     return (
         <>
             <Suspense fallback={<LoadingOverlay />}>
-                <AboutPageTitle />
+                <AboutPageContent />
                 <Contributors />
             </Suspense>
         </>

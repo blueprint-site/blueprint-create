@@ -1,3 +1,16 @@
+:root {
+    --main-background: #E5E7EB;
+    --dark-main-background: black;
+    --text-color: white;
+    --dark-text-color: black;
+    --container-background: #B3CAE5;
+    --dark-container-background: #527caf;
+    --addon-color: #7594f0;
+}
+
+.addon-link {
+    text-decoration: none;
+}
 .addon {
     width: 100%;
     /* Adjusted width */
@@ -28,7 +41,7 @@
     }
 
     .addon-name {
-        color: var(--dark-text-color);
+        color: black;
         font-family: Arial, Helvetica, sans-serif;
         position: relative;
         /* Ensure text appears above the pseudo-element */
@@ -43,6 +56,7 @@
     }
 
     .modloaders {
+        
         margin-top: 5px;
 
         >a {
@@ -65,7 +79,6 @@
         margin-bottom: 4px;
         max-width: 100%;
         overflow-y: hidden;
-        overflow-x: scroll;
         padding-top: 4px;
         padding-bottom: 4px;
     }
@@ -74,7 +87,7 @@
         background-color: rgb(85, 85, 255);
         border: .5px solid blue;
         border-radius: 6px;
-        color: var(--text-color);
+        color: white;
         padding: 3px;
         font-size: 13px;
         margin: 2px;
@@ -83,7 +96,7 @@
     }
 
     .addon-description {
-        color: var(--dark-text-color);
+        color: black;
         font-family: Arial, Helvetica, sans-serif;
         position: relative;
         /* Ensure text appears above the pseudo-element */
@@ -102,12 +115,12 @@
     }
 
     .addon-button {
+        margin-top: 0.5em;
         width: 100%;
-
         display: flex;
         align-items: center;
         justify-content: center;
-
+        transition: 0.5s ease;
         .lazyload-wrapper {
             display: flex;
             align-items: center;
@@ -119,39 +132,59 @@
             max-width: 90%;
         }
     }
+    
 }
-
+.addon-button:hover {
+    transform: scale(0.95);
+}
+.addon:hover {
+    transform: scale(1.05);
+}
 .dark-mode {
     .addon {
-        background-color: var(--dark-container-background);
+        background-color: var(--container-background);
         box-shadow: 10px 10px 10px rgb(0, 0, 0, 0.2);
-        color: var(--text-color);
+        color: black;
 
         .addon-name {
-            color: var(--text-color);
+            color: black;
         }
 
         .addon-description {
-            color: var(--text-color);
+            color: black;
         }
 
         .addon-version {
-            color: var(--text-color);
+            color: white;
         }
 
         .addon-loader {
-            color: var(--text-color);
+            color: black;
         }
 
         .addon-author {
-            color: var(--text-color);
+            color: black;
         }
 
         .addon-rating {
-            color: var(--text-color);
+            color: black;
         }
         .addon-note {
             color: white;
         }
     }
+}
+.collection-button {
+    border: none;
+    margin-top: 5px;
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+    transition: 0.3s ease;
+    opacity: 0.7;
+    padding: 0.25em 0em;
+}
+.collection-button:hover {
+    transform: scale(0.95);
+    opacity: 1;
 }

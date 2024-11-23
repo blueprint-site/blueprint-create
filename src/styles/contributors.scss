@@ -1,18 +1,27 @@
 @import url('https://fonts.cdnfonts.com/css/minecraftia');
 
+:root {
+    --main-background: #e5e7eb;
+    --dark-main-background: black;
+    --text-color: white;
+    --dark-text-color: black;
+    --container-background: #b3cae5;
+    --dark-container-background: #527caf;
+    --addon-color: #7594f0;
+    --modrinth-green: #00d771;
+    --modrinth-pink: #ff7474;
+}
 .contributor-container {
     padding: 1em;
     display: flex;
     flex-direction: column;
 
+    justify-content: left;
 
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
+    text-align: left;
 
     >span {
-        font-size: 1.1em;
+        font-size: 1em;
     }
 
     .contributors {
@@ -23,8 +32,10 @@
         width: 100%;
         display: grid;
         gap: 0.8em;
-        width: 80vw;
+        width: 90vw;
+        max-width: 80em;
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        font-size: 2vw;
 
         * {
             text-decoration: none;
@@ -32,7 +43,7 @@
 
     }
 
-    background-color: #ffd900e3;
+    background-color: #fae279;
 }
 
 Card {
@@ -40,7 +51,7 @@ Card {
 }
 
 .big-text {
-    font-size: 2em;
+    font-size: xx-large;
     font-weight: bold;
 }
 

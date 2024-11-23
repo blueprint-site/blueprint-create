@@ -22,5 +22,6 @@ export default defineConfig({
       plugins: [polyfillNode({})],
     },
   },
-  plugins: [react({})]
+  plugins: [react({})],
+  envPrefix: "APP"
 });
