@@ -1,4 +1,4 @@
-import "./chunk-624QZG55.js";
+import "./chunk-PLDDJCW6.js";
 
 // node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 function _classCallCheck(instance, Constructor) {
@@ -19,13 +19,11 @@ function _typeof(o) {
 
 // node_modules/@babel/runtime/helpers/esm/toPrimitive.js
 function toPrimitive(t, r) {
-  if ("object" != _typeof(t) || !t)
-    return t;
+  if ("object" != _typeof(t) || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
     var i = e.call(t, r || "default");
-    if ("object" != _typeof(i))
-      return i;
+    if ("object" != _typeof(i)) return i;
     throw new TypeError("@@toPrimitive must return a primitive value.");
   }
   return ("string" === r ? String : Number)(t);
@@ -43,16 +41,13 @@ function _defineProperties(target, props) {
     var descriptor = props[i];
     descriptor.enumerable = descriptor.enumerable || false;
     descriptor.configurable = true;
-    if ("value" in descriptor)
-      descriptor.writable = true;
+    if ("value" in descriptor) descriptor.writable = true;
     Object.defineProperty(target, toPropertyKey(descriptor.key), descriptor);
   }
 }
 function _createClass(Constructor, protoProps, staticProps) {
-  if (protoProps)
-    _defineProperties(Constructor.prototype, protoProps);
-  if (staticProps)
-    _defineProperties(Constructor, staticProps);
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
   Object.defineProperty(Constructor, "prototype", {
     writable: false
   });
@@ -67,8 +62,7 @@ function defaults(obj) {
   each.call(slice.call(arguments, 1), function(source) {
     if (source) {
       for (var prop in source) {
-        if (obj[prop] === void 0)
-          obj[prop] = source[prop];
+        if (obj[prop] === void 0) obj[prop] = source[prop];
       }
     }
   });
@@ -82,8 +76,7 @@ var serializeCookie = function serializeCookie2(name, val, options) {
   var str = "".concat(name, "=").concat(value);
   if (opt.maxAge > 0) {
     var maxAge = opt.maxAge - 0;
-    if (Number.isNaN(maxAge))
-      throw new Error("maxAge should be a Number");
+    if (Number.isNaN(maxAge)) throw new Error("maxAge should be a Number");
     str += "; Max-Age=".concat(Math.floor(maxAge));
   }
   if (opt.domain) {
@@ -104,10 +97,8 @@ var serializeCookie = function serializeCookie2(name, val, options) {
     }
     str += "; Expires=".concat(opt.expires.toUTCString());
   }
-  if (opt.httpOnly)
-    str += "; HttpOnly";
-  if (opt.secure)
-    str += "; Secure";
+  if (opt.httpOnly) str += "; HttpOnly";
+  if (opt.secure) str += "; Secure";
   if (opt.sameSite) {
     var sameSite = typeof opt.sameSite === "string" ? opt.sameSite.toLowerCase() : opt.sameSite;
     switch (sameSite) {
@@ -139,8 +130,7 @@ var cookie = {
       cookieOptions.expires = /* @__PURE__ */ new Date();
       cookieOptions.expires.setTime(cookieOptions.expires.getTime() + minutes * 60 * 1e3);
     }
-    if (domain)
-      cookieOptions.domain = domain;
+    if (domain) cookieOptions.domain = domain;
     document.cookie = serializeCookie(name, encodeURIComponent(value), cookieOptions);
   },
   read: function read(name) {
@@ -148,10 +138,8 @@ var cookie = {
     var ca = document.cookie.split(";");
     for (var i = 0; i < ca.length; i++) {
       var c = ca[i];
-      while (c.charAt(0) === " ")
-        c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) === 0)
-        return c.substring(nameEQ.length, c.length);
+      while (c.charAt(0) === " ") c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
     }
     return null;
   },
@@ -165,8 +153,7 @@ var cookie$1 = {
     var found;
     if (options.lookupCookie && typeof document !== "undefined") {
       var c = cookie.read(options.lookupCookie);
-      if (c)
-        found = c;
+      if (c) found = c;
     }
     return found;
   },
@@ -202,8 +189,7 @@ var querystring = {
 };
 var hasLocalStorageSupport = null;
 var localStorageAvailable = function localStorageAvailable2() {
-  if (hasLocalStorageSupport !== null)
-    return hasLocalStorageSupport;
+  if (hasLocalStorageSupport !== null) return hasLocalStorageSupport;
   try {
     hasLocalStorageSupport = window !== "undefined" && window.localStorage !== null;
     var testKey = "i18next.translate.boo";
@@ -220,8 +206,7 @@ var localStorage = {
     var found;
     if (options.lookupLocalStorage && localStorageAvailable()) {
       var lng = window.localStorage.getItem(options.lookupLocalStorage);
-      if (lng)
-        found = lng;
+      if (lng) found = lng;
     }
     return found;
   },
@@ -233,8 +218,7 @@ var localStorage = {
 };
 var hasSessionStorageSupport = null;
 var sessionStorageAvailable = function sessionStorageAvailable2() {
-  if (hasSessionStorageSupport !== null)
-    return hasSessionStorageSupport;
+  if (hasSessionStorageSupport !== null) return hasSessionStorageSupport;
   try {
     hasSessionStorageSupport = window !== "undefined" && window.sessionStorage !== null;
     var testKey = "i18next.translate.boo";
@@ -251,8 +235,7 @@ var sessionStorage = {
     var found;
     if (options.lookupSessionStorage && sessionStorageAvailable()) {
       var lng = window.sessionStorage.getItem(options.lookupSessionStorage);
-      if (lng)
-        found = lng;
+      if (lng) found = lng;
     }
     return found;
   },
@@ -318,8 +301,7 @@ var subdomain = {
   lookup: function lookup8(options) {
     var lookupFromSubdomainIndex = typeof options.lookupFromSubdomainIndex === "number" ? options.lookupFromSubdomainIndex + 1 : 1;
     var language = typeof window !== "undefined" && window.location && window.location.hostname && window.location.hostname.match(/^(\w{2,5})\.(([a-z0-9-]{1,63}\.[a-z]{2,6})|localhost)/i);
-    if (!language)
-      return void 0;
+    if (!language) return void 0;
     return language[lookupFromSubdomainIndex];
   }
 };
@@ -362,8 +344,7 @@ var Browser = function() {
           return l.replace("-", "_");
         };
       }
-      if (this.options.lookupFromUrlIndex)
-        this.options.lookupFromPathIndex = this.options.lookupFromUrlIndex;
+      if (this.options.lookupFromUrlIndex) this.options.lookupFromPathIndex = this.options.lookupFromUrlIndex;
       this.i18nOptions = i18nOptions;
       this.addDetector(cookie$1);
       this.addDetector(querystring);
@@ -384,38 +365,30 @@ var Browser = function() {
     key: "detect",
     value: function detect(detectionOrder) {
       var _this = this;
-      if (!detectionOrder)
-        detectionOrder = this.options.order;
+      if (!detectionOrder) detectionOrder = this.options.order;
       var detected = [];
       detectionOrder.forEach(function(detectorName) {
         if (_this.detectors[detectorName]) {
           var lookup9 = _this.detectors[detectorName].lookup(_this.options);
-          if (lookup9 && typeof lookup9 === "string")
-            lookup9 = [lookup9];
-          if (lookup9)
-            detected = detected.concat(lookup9);
+          if (lookup9 && typeof lookup9 === "string") lookup9 = [lookup9];
+          if (lookup9) detected = detected.concat(lookup9);
         }
       });
       detected = detected.map(function(d) {
         return _this.options.convertDetectedLanguage(d);
       });
-      if (this.services.languageUtils.getBestMatchFromCodes)
-        return detected;
+      if (this.services.languageUtils.getBestMatchFromCodes) return detected;
       return detected.length > 0 ? detected[0] : null;
     }
   }, {
     key: "cacheUserLanguage",
     value: function cacheUserLanguage4(lng, caches) {
       var _this2 = this;
-      if (!caches)
-        caches = this.options.caches;
-      if (!caches)
-        return;
-      if (this.options.excludeCacheFor && this.options.excludeCacheFor.indexOf(lng) > -1)
-        return;
+      if (!caches) caches = this.options.caches;
+      if (!caches) return;
+      if (this.options.excludeCacheFor && this.options.excludeCacheFor.indexOf(lng) > -1) return;
       caches.forEach(function(cacheName) {
-        if (_this2.detectors[cacheName])
-          _this2.detectors[cacheName].cacheUserLanguage(lng, _this2.options);
+        if (_this2.detectors[cacheName]) _this2.detectors[cacheName].cacheUserLanguage(lng, _this2.options);
       });
     }
   }]);

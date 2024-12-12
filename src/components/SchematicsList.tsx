@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import supabase from "./Supabase"; // Your Supabase client instance
 import "../styles/schematicslist.scss";
+import { Link } from "react-router-dom";
 
 interface Schematic {
   id: string;
@@ -28,7 +29,8 @@ function SchematicsList() {
       .from("schematics") // Your table name
       .select(
         "id, title, description, created_at, schematic_url, image_url, author, user_id, game_versions, create_versions"
-      );
+      )
+      .order("created_at", { ascending: false });
 
     if (error) {
       setError("Failed to fetch schematics.");
@@ -58,7 +60,7 @@ function SchematicsList() {
         <h3>No schematics uploaded yet. Be the first!</h3>
       ) : (
         schematics.map((schematic) => (
-          <div key={schematic.id} className="schematic-card">
+          <Link to={schematic.id} className="schematic-card">
             <div className="schematic-card-bottom">
               <img
                 alt={schematic.title}
@@ -68,7 +70,11 @@ function SchematicsList() {
               <h3 className="schematic-title">
                 <b>{schematic.title}</b>
               </h3>
-              <p>{schematic.description}</p>
+              <p>
+                {schematic.description.length > 150
+                  ? `${schematic.description.slice(0, 147)}...`
+                  : schematic.description}
+              </p>
               <p className="schematic-author">
                 Author: {schematic.author}
               </p>
@@ -80,7 +86,7 @@ function SchematicsList() {
                 Download Schematic
               </a>
             </div>
-          </div>
+          </Link>
         ))
       )}
     </div>
@@ -88,3 +94,4 @@ function SchematicsList() {
 };
 
 export default SchematicsList;
+

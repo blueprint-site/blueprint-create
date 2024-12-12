@@ -8,9 +8,6 @@ import LoadingAnimation from "./LoadingAnimation";
 import LoadingSuccess from "../components/LoadingOverlays/LoadingSuccess";
 import { useNavigate } from "react-router-dom";
 import supabase from "./Supabase";
-
-var client = supabase;
-
 function SchematicsUpload() {
     const [uploadedImage, setUploadedImage] = useState<string>();
     const [title, setTitle] = useState<string>('');
@@ -25,7 +22,7 @@ function SchematicsUpload() {
     const [userdata, setUserdata] = useState<any>();
 
     const getUserData = async () => {
-        const { data: { user } } = await client.auth.getUser()
+        const { data: { user } } = await supabase.auth.getUser()
         setUserdata(user) // Store the user data in the state
     }
 
@@ -67,7 +64,6 @@ function SchematicsUpload() {
         }
     }
 
-
     function handleSchematicChange(e: React.ChangeEvent<HTMLInputElement>) {
         if (e.target.files) {
             const file = e.target.files[0];
@@ -101,10 +97,10 @@ function SchematicsUpload() {
                 .from('schematics')
                 .upload(filePath, file);
 
-            
             if (fileError) {
                 console.log("FILE ERROR",fileError);
             }
+
             // Upload image to bucket
             const imagePath = `images/${Date.now()}_${image.name}`;
             const { data: imageData, error: imageError } = await supabase.storage
@@ -114,6 +110,7 @@ function SchematicsUpload() {
             if (imageError) { 
                 console.log("IMAGE ERROR",imageError);
             }
+
             // Get public URLs
             const fileUrl = supabase.storage.from('schematics').getPublicUrl(filePath).data.publicUrl;
             const imageUrl = supabase.storage.from('schematics').getPublicUrl(imagePath).data.publicUrl;
@@ -198,6 +195,7 @@ function SchematicsUpload() {
                     <input
                         id="title"
                         type="text"
+                        maxLength={100}
                         placeholder="Title"
                         className="title-input"
                         value={title}
@@ -207,14 +205,12 @@ function SchematicsUpload() {
                 <div className="input-group">
                     <h6>Tell others what is inside it</h6>
                     <textarea
-                        placeholder="Description"
-                        maxLength={300}
-                        name="description"
                         id="description"
+                        placeholder="Description"
                         className="desc-input"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                    ></textarea>
+                    />
                 </div>
             </div>
             <br />
@@ -229,3 +225,4 @@ function SchematicsUpload() {
 }
 
 export default SchematicsUpload;
+

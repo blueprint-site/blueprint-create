@@ -15,6 +15,7 @@ const Schematic3DViewer = lazy(() => import("./pages/Schematics/Schematic3DViewe
 const SchematicsUploadPage = lazy(() => import("./pages/Schematics/SchematicsUpload/SchematicsUpload"));
 const RandomAddon = lazy(() => import("./components/RandomAddon"));
 const AddonDetails = lazy(() => import("./components/AddonDetails"));
+const SchematicExpanded = lazy(() => import("./components/SchematicExpanded"));
 
 // Login
 const LoginPage = lazy(() => import("./pages/Login/Login"));
@@ -69,6 +70,7 @@ const App = () => {
             <Route path="schematics/upload" element={<SchematicsUploadPage />} />
             <Route path="addons/random" element={<RandomAddon />} />
             <Route path="/addons/:slug" element={<AddonDetails />} />
+            <Route path="/schematics/:id" element={<SchematicExpanded />} />
 
             {/* Protect the UserPage route */}
             <Route

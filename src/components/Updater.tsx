@@ -1,8 +1,10 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
+import supabase from './Supabase';
 
 const Updater = () => {
     const [status, setStatus] = useState<string | null>();
+
     useEffect(() => {
         const addonsLastUpdated = localStorage.getItem("addonsLastUpdated");
         const lastUpdatedTime = addonsLastUpdated ? new Date(addonsLastUpdated) : null;
@@ -29,7 +31,12 @@ const Updater = () => {
                     })
 
             } catch (error) {
-                console.error("Failed to fetch addon list:", error);
+                if (error instanceof AxiosError) {
+                    console.error(error.message);
+                }
+                else {
+                    console.error("Failed to fetch addon list:", error);
+                }
             }
         }
         else {
@@ -37,6 +44,7 @@ const Updater = () => {
             console.log("Doing nothing...");
         }
 
+        getUserData();
     }, []);
 
     const addonsLastUpdated = localStorage.getItem("addonsLastUpdated");
@@ -50,10 +58,18 @@ const Updater = () => {
 
         return;
     }
-    return (
-        <>
-        </>
-    );
-};
+    const getUserData = async () => {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+            // Store the authentication session in local storage
+            localStorage.setItem('supabase.auth.token', JSON.stringify(session));
+        }
+
+        return (
+            <>
+            </>
+        );
+    };
+}
 
 export default Updater;

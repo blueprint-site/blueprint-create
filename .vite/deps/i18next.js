@@ -1,4 +1,4 @@
-import "./chunk-624QZG55.js";
+import "./chunk-PLDDJCW6.js";
 
 // node_modules/i18next/dist/esm/i18next.js
 var consoleLogger = {
@@ -13,8 +13,7 @@ var consoleLogger = {
     this.output("error", args);
   },
   output(type, args) {
-    if (console && console[type])
-      console[type].apply(console, args);
+    if (console && console[type]) console[type].apply(console, args);
   }
 };
 var Logger = class _Logger {
@@ -54,10 +53,8 @@ var Logger = class _Logger {
     return this.forward(args, "warn", "WARNING DEPRECATED: ", true);
   }
   forward(args, lvl, prefix, debugOnly) {
-    if (debugOnly && !this.debug)
-      return null;
-    if (typeof args[0] === "string")
-      args[0] = `${prefix}${this.prefix} ${args[0]}`;
+    if (debugOnly && !this.debug) return null;
+    if (typeof args[0] === "string") args[0] = `${prefix}${this.prefix} ${args[0]}`;
     return this.logger[lvl](args);
   }
   create(moduleName) {
@@ -81,16 +78,14 @@ var EventEmitter = class {
   }
   on(events, listener) {
     events.split(" ").forEach((event) => {
-      if (!this.observers[event])
-        this.observers[event] = /* @__PURE__ */ new Map();
+      if (!this.observers[event]) this.observers[event] = /* @__PURE__ */ new Map();
       const numListeners = this.observers[event].get(listener) || 0;
       this.observers[event].set(listener, numListeners + 1);
     });
     return this;
   }
   off(event, listener) {
-    if (!this.observers[event])
-      return;
+    if (!this.observers[event]) return;
     if (!listener) {
       delete this.observers[event];
       return;
@@ -133,14 +128,12 @@ function defer() {
   return promise;
 }
 function makeString(object) {
-  if (object == null)
-    return "";
+  if (object == null) return "";
   return "" + object;
 }
 function copy(a, s, t2) {
   a.forEach((m) => {
-    if (s[m])
-      t2[m] = s[m];
+    if (s[m]) t2[m] = s[m];
   });
 }
 var lastOfPathSeparatorRegExp = /###/g;
@@ -154,11 +147,9 @@ function getLastOfPath(object, path, Empty) {
   const stack = typeof path !== "string" ? path : path.split(".");
   let stackIndex = 0;
   while (stackIndex < stack.length - 1) {
-    if (canNotTraverseDeeper())
-      return {};
+    if (canNotTraverseDeeper()) return {};
     const key = cleanKey(stack[stackIndex]);
-    if (!object[key] && Empty)
-      object[key] = new Empty();
+    if (!object[key] && Empty) object[key] = new Empty();
     if (Object.prototype.hasOwnProperty.call(object, key)) {
       object = object[key];
     } else {
@@ -166,8 +157,7 @@ function getLastOfPath(object, path, Empty) {
     }
     ++stackIndex;
   }
-  if (canNotTraverseDeeper())
-    return {};
+  if (canNotTraverseDeeper()) return {};
   return {
     obj: object,
     k: cleanKey(stack[stackIndex])
@@ -201,18 +191,15 @@ function pushPath(object, path, newValue, concat) {
     k
   } = getLastOfPath(object, path, Object);
   obj[k] = obj[k] || [];
-  if (concat)
-    obj[k] = obj[k].concat(newValue);
-  if (!concat)
-    obj[k].push(newValue);
+  if (concat) obj[k] = obj[k].concat(newValue);
+  if (!concat) obj[k].push(newValue);
 }
 function getPath(object, path) {
   const {
     obj,
     k
   } = getLastOfPath(object, path);
-  if (!obj)
-    return void 0;
+  if (!obj) return void 0;
   return obj[k];
 }
 function getPathWithDefaults(data, defaultData, key) {
@@ -227,8 +214,7 @@ function deepExtend(target, source, overwrite) {
     if (prop !== "__proto__" && prop !== "constructor") {
       if (prop in target) {
         if (typeof target[prop] === "string" || target[prop] instanceof String || typeof source[prop] === "string" || source[prop] instanceof String) {
-          if (overwrite)
-            target[prop] = source[prop];
+          if (overwrite) target[prop] = source[prop];
         } else {
           deepExtend(target[prop], source[prop], overwrite);
         }
@@ -282,8 +268,7 @@ function looksLikeObjectPath(key, nsSeparator, keySeparator) {
   nsSeparator = nsSeparator || "";
   keySeparator = keySeparator || "";
   const possibleChars = chars.filter((c) => nsSeparator.indexOf(c) < 0 && keySeparator.indexOf(c) < 0);
-  if (possibleChars.length === 0)
-    return true;
+  if (possibleChars.length === 0) return true;
   const r = looksLikeObjectPathRegExpCache.getRegExp(`(${possibleChars.map((c) => c === "?" ? "\\?" : c).join("|")})`);
   let matched = !r.test(key);
   if (!matched) {
@@ -296,10 +281,8 @@ function looksLikeObjectPath(key, nsSeparator, keySeparator) {
 }
 function deepFind(obj, path) {
   let keySeparator = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : ".";
-  if (!obj)
-    return void 0;
-  if (obj[path])
-    return obj[path];
+  if (!obj) return void 0;
+  if (obj[path]) return obj[path];
   const tokens = path.split(keySeparator);
   let current = obj;
   for (let i = 0; i < tokens.length; ) {
@@ -327,8 +310,7 @@ function deepFind(obj, path) {
   return current;
 }
 function getCleanedCode(code) {
-  if (code && code.indexOf("_") > 0)
-    return code.replace("_", "-");
+  if (code && code.indexOf("_") > 0) return code.replace("_", "-");
   return code;
 }
 var ResourceStore = class extends EventEmitter {
@@ -383,8 +365,7 @@ var ResourceStore = class extends EventEmitter {
       ns = path[1];
       key = path.slice(2).join(".");
     }
-    if (result || !ignoreJSONStructure || typeof key !== "string")
-      return result;
+    if (result || !ignoreJSONStructure || typeof key !== "string") return result;
     return deepFind(this.data && this.data[lng] && this.data[lng][ns], key, keySeparator);
   }
   addResource(lng, ns, key, value) {
@@ -393,8 +374,7 @@ var ResourceStore = class extends EventEmitter {
     };
     const keySeparator = options.keySeparator !== void 0 ? options.keySeparator : this.options.keySeparator;
     let path = [lng, ns];
-    if (key)
-      path = path.concat(keySeparator ? key.split(keySeparator) : key);
+    if (key) path = path.concat(keySeparator ? key.split(keySeparator) : key);
     if (lng.indexOf(".") > -1) {
       path = lng.split(".");
       value = ns;
@@ -402,21 +382,18 @@ var ResourceStore = class extends EventEmitter {
     }
     this.addNamespaces(ns);
     setPath(this.data, path, value);
-    if (!options.silent)
-      this.emit("added", lng, ns, key, value);
+    if (!options.silent) this.emit("added", lng, ns, key, value);
   }
   addResources(lng, ns, resources) {
     let options = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : {
       silent: false
     };
     for (const m in resources) {
-      if (typeof resources[m] === "string" || Object.prototype.toString.apply(resources[m]) === "[object Array]")
-        this.addResource(lng, ns, m, resources[m], {
-          silent: true
-        });
+      if (typeof resources[m] === "string" || Object.prototype.toString.apply(resources[m]) === "[object Array]") this.addResource(lng, ns, m, resources[m], {
+        silent: true
+      });
     }
-    if (!options.silent)
-      this.emit("added", lng, ns, resources);
+    if (!options.silent) this.emit("added", lng, ns, resources);
   }
   addResourceBundle(lng, ns, resources, deep, overwrite) {
     let options = arguments.length > 5 && arguments[5] !== void 0 ? arguments[5] : {
@@ -432,8 +409,7 @@ var ResourceStore = class extends EventEmitter {
     }
     this.addNamespaces(ns);
     let pack = getPath(this.data, path) || {};
-    if (!options.skipCopy)
-      resources = JSON.parse(JSON.stringify(resources));
+    if (!options.skipCopy) resources = JSON.parse(JSON.stringify(resources));
     if (deep) {
       deepExtend(pack, resources, overwrite);
     } else {
@@ -443,8 +419,7 @@ var ResourceStore = class extends EventEmitter {
       };
     }
     setPath(this.data, path, pack);
-    if (!options.silent)
-      this.emit("added", lng, ns, resources);
+    if (!options.silent) this.emit("added", lng, ns, resources);
   }
   removeResourceBundle(lng, ns) {
     if (this.hasResourceBundle(lng, ns)) {
@@ -457,13 +432,11 @@ var ResourceStore = class extends EventEmitter {
     return this.getResource(lng, ns) !== void 0;
   }
   getResourceBundle(lng, ns) {
-    if (!ns)
-      ns = this.options.defaultNS;
-    if (this.options.compatibilityAPI === "v1")
-      return {
-        ...{},
-        ...this.getResource(lng, ns)
-      };
+    if (!ns) ns = this.options.defaultNS;
+    if (this.options.compatibilityAPI === "v1") return {
+      ...{},
+      ...this.getResource(lng, ns)
+    };
     return this.getResource(lng, ns);
   }
   getDataByLanguage(lng) {
@@ -485,8 +458,7 @@ var postProcessor = {
   },
   handle(processors, value, key, options, translator) {
     processors.forEach((processor) => {
-      if (this.processors[processor])
-        value = this.processors[processor].process(value, key, options, translator);
+      if (this.processors[processor]) value = this.processors[processor].process(value, key, options, translator);
     });
     return value;
   }
@@ -504,8 +476,7 @@ var Translator = class _Translator extends EventEmitter {
     this.logger = baseLogger.create("translator");
   }
   changeLanguage(lng) {
-    if (lng)
-      this.language = lng;
+    if (lng) this.language = lng;
   }
   exists(key) {
     let options = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {
@@ -519,8 +490,7 @@ var Translator = class _Translator extends EventEmitter {
   }
   extractFromKey(key, options) {
     let nsSeparator = options.nsSeparator !== void 0 ? options.nsSeparator : this.options.nsSeparator;
-    if (nsSeparator === void 0)
-      nsSeparator = ":";
+    if (nsSeparator === void 0) nsSeparator = ":";
     const keySeparator = options.keySeparator !== void 0 ? options.keySeparator : this.options.keySeparator;
     let namespaces = options.ns || this.options.defaultNS || [];
     const wouldCheckForNsInKey = nsSeparator && key.indexOf(nsSeparator) > -1;
@@ -534,12 +504,10 @@ var Translator = class _Translator extends EventEmitter {
         };
       }
       const parts = key.split(nsSeparator);
-      if (nsSeparator !== keySeparator || nsSeparator === keySeparator && this.options.ns.indexOf(parts[0]) > -1)
-        namespaces = parts.shift();
+      if (nsSeparator !== keySeparator || nsSeparator === keySeparator && this.options.ns.indexOf(parts[0]) > -1) namespaces = parts.shift();
       key = parts.join(keySeparator);
     }
-    if (typeof namespaces === "string")
-      namespaces = [namespaces];
+    if (typeof namespaces === "string") namespaces = [namespaces];
     return {
       key,
       namespaces
@@ -549,16 +517,12 @@ var Translator = class _Translator extends EventEmitter {
     if (typeof options !== "object" && this.options.overloadTranslationOptionHandler) {
       options = this.options.overloadTranslationOptionHandler(arguments);
     }
-    if (typeof options === "object")
-      options = {
-        ...options
-      };
-    if (!options)
-      options = {};
-    if (keys === void 0 || keys === null)
-      return "";
-    if (!Array.isArray(keys))
-      keys = [String(keys)];
+    if (typeof options === "object") options = {
+      ...options
+    };
+    if (!options) options = {};
+    if (keys === void 0 || keys === null) return "";
+    if (!Array.isArray(keys)) keys = [String(keys)];
     const returnDetails = options.returnDetails !== void 0 ? options.returnDetails : this.options.returnDetails;
     const keySeparator = options.keySeparator !== void 0 ? options.keySeparator : this.options.keySeparator;
     const {
@@ -634,16 +598,14 @@ var Translator = class _Translator extends EventEmitter {
                 ns: namespaces
               }
             });
-            if (copy2[m] === deepKey)
-              copy2[m] = res[m];
+            if (copy2[m] === deepKey) copy2[m] = res[m];
           }
         }
         res = copy2;
       }
     } else if (handleAsObjectInI18nFormat && typeof joinArrays === "string" && resType === "[object Array]") {
       res = res.join(joinArrays);
-      if (res)
-        res = this.extendTranslation(res, keys, options, lastKey);
+      if (res) res = this.extendTranslation(res, keys, options, lastKey);
     } else {
       let usedDefault = false;
       let usedKey = false;
@@ -673,8 +635,7 @@ var Translator = class _Translator extends EventEmitter {
             ...options,
             keySeparator: false
           });
-          if (fk && fk.res)
-            this.logger.warn("Seems the loaded translations were in flat JSON format instead of nested. Either set keySeparator: false on init or make sure your translations are published in nested format.");
+          if (fk && fk.res) this.logger.warn("Seems the loaded translations were in flat JSON format instead of nested. Either set keySeparator: false on init or make sure your translations are published in nested format.");
         }
         let lngs = [];
         const fallbackLngs = this.languageUtils.getFallbackCodes(this.options.fallbackLng, options.lng || this.language);
@@ -713,8 +674,7 @@ var Translator = class _Translator extends EventEmitter {
         }
       }
       res = this.extendTranslation(res, keys, options, resolved, lastKey);
-      if (usedKey && res === key && this.options.appendNamespaceToMissingKey)
-        res = `${namespace}:${key}`;
+      if (usedKey && res === key && this.options.appendNamespaceToMissingKey) res = `${namespace}:${key}`;
       if ((usedKey || usedDefault) && this.options.parseMissingKeyHandler) {
         if (this.options.compatibilityAPI !== "v1") {
           res = this.options.parseMissingKeyHandler(this.options.appendNamespaceToMissingKey ? `${namespace}:${key}` : key, usedDefault ? res : void 0);
@@ -740,16 +700,15 @@ var Translator = class _Translator extends EventEmitter {
         resolved
       });
     } else if (!options.skipInterpolation) {
-      if (options.interpolation)
-        this.interpolator.init({
-          ...options,
-          ...{
-            interpolation: {
-              ...this.options.interpolation,
-              ...options.interpolation
-            }
+      if (options.interpolation) this.interpolator.init({
+        ...options,
+        ...{
+          interpolation: {
+            ...this.options.interpolation,
+            ...options.interpolation
           }
-        });
+        }
+      });
       const skipOnVariables = typeof res === "string" && (options && options.interpolation && options.interpolation.skipOnVariables !== void 0 ? options.interpolation.skipOnVariables : this.options.interpolation.skipOnVariables);
       let nestBef;
       if (skipOnVariables) {
@@ -757,33 +716,28 @@ var Translator = class _Translator extends EventEmitter {
         nestBef = nb && nb.length;
       }
       let data = options.replace && typeof options.replace !== "string" ? options.replace : options;
-      if (this.options.interpolation.defaultVariables)
-        data = {
-          ...this.options.interpolation.defaultVariables,
-          ...data
-        };
+      if (this.options.interpolation.defaultVariables) data = {
+        ...this.options.interpolation.defaultVariables,
+        ...data
+      };
       res = this.interpolator.interpolate(res, data, options.lng || this.language, options);
       if (skipOnVariables) {
         const na = res.match(this.interpolator.nestingRegexp);
         const nestAft = na && na.length;
-        if (nestBef < nestAft)
-          options.nest = false;
+        if (nestBef < nestAft) options.nest = false;
       }
-      if (!options.lng && this.options.compatibilityAPI !== "v1" && resolved && resolved.res)
-        options.lng = resolved.usedLng;
-      if (options.nest !== false)
-        res = this.interpolator.nest(res, function() {
-          for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-          }
-          if (lastKey && lastKey[0] === args[0] && !options.context) {
-            _this.logger.warn(`It seems you are nesting recursively key: ${args[0]} in key: ${key[0]}`);
-            return null;
-          }
-          return _this.translate(...args, key);
-        }, options);
-      if (options.interpolation)
-        this.interpolator.reset();
+      if (!options.lng && this.options.compatibilityAPI !== "v1" && resolved && resolved.res) options.lng = resolved.usedLng;
+      if (options.nest !== false) res = this.interpolator.nest(res, function() {
+        for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+        if (lastKey && lastKey[0] === args[0] && !options.context) {
+          _this.logger.warn(`It seems you are nesting recursively key: ${args[0]} in key: ${key[0]}`);
+          return null;
+        }
+        return _this.translate(...args, key);
+      }, options);
+      if (options.interpolation) this.interpolator.reset();
     }
     const postProcess = options.postProcess || this.options.postProcess;
     const postProcessorNames = typeof postProcess === "string" ? [postProcess] : postProcess;
@@ -805,40 +759,34 @@ var Translator = class _Translator extends EventEmitter {
     let exactUsedKey;
     let usedLng;
     let usedNS;
-    if (typeof keys === "string")
-      keys = [keys];
+    if (typeof keys === "string") keys = [keys];
     keys.forEach((k) => {
-      if (this.isValidLookup(found))
-        return;
+      if (this.isValidLookup(found)) return;
       const extracted = this.extractFromKey(k, options);
       const key = extracted.key;
       usedKey = key;
       let namespaces = extracted.namespaces;
-      if (this.options.fallbackNS)
-        namespaces = namespaces.concat(this.options.fallbackNS);
+      if (this.options.fallbackNS) namespaces = namespaces.concat(this.options.fallbackNS);
       const needsPluralHandling = options.count !== void 0 && typeof options.count !== "string";
       const needsZeroSuffixLookup = needsPluralHandling && !options.ordinal && options.count === 0 && this.pluralResolver.shouldUseIntlApi();
       const needsContextHandling = options.context !== void 0 && (typeof options.context === "string" || typeof options.context === "number") && options.context !== "";
       const codes = options.lngs ? options.lngs : this.languageUtils.toResolveHierarchy(options.lng || this.language, options.fallbackLng);
       namespaces.forEach((ns) => {
-        if (this.isValidLookup(found))
-          return;
+        if (this.isValidLookup(found)) return;
         usedNS = ns;
         if (!checkedLoadedFor[`${codes[0]}-${ns}`] && this.utils && this.utils.hasLoadedNamespace && !this.utils.hasLoadedNamespace(usedNS)) {
           checkedLoadedFor[`${codes[0]}-${ns}`] = true;
           this.logger.warn(`key "${usedKey}" for languages "${codes.join(", ")}" won't get resolved as namespace "${usedNS}" was not yet loaded`, "This means something IS WRONG in your setup. You access the t function before i18next.init / i18next.loadNamespace / i18next.changeLanguage was done. Wait for the callback or Promise to resolve before accessing it!!!");
         }
         codes.forEach((code) => {
-          if (this.isValidLookup(found))
-            return;
+          if (this.isValidLookup(found)) return;
           usedLng = code;
           const finalKeys = [key];
           if (this.i18nFormat && this.i18nFormat.addLookupKeys) {
             this.i18nFormat.addLookupKeys(finalKeys, key, code, ns, options);
           } else {
             let pluralSuffix;
-            if (needsPluralHandling)
-              pluralSuffix = this.pluralResolver.getSuffix(code, options.count, options);
+            if (needsPluralHandling) pluralSuffix = this.pluralResolver.getSuffix(code, options.count, options);
             const zeroSuffix = `${this.options.pluralSeparator}zero`;
             const ordinalPrefix = `${this.options.pluralSeparator}ordinal${this.options.pluralSeparator}`;
             if (needsPluralHandling) {
@@ -887,8 +835,7 @@ var Translator = class _Translator extends EventEmitter {
   }
   getResource(code, ns, key) {
     let options = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : {};
-    if (this.i18nFormat && this.i18nFormat.getResource)
-      return this.i18nFormat.getResource(code, ns, key, options);
+    if (this.i18nFormat && this.i18nFormat.getResource) return this.i18nFormat.getResource(code, ns, key, options);
     return this.resourceStore.getResource(code, ns, key, options);
   }
   getUsedParamsDetails() {
@@ -936,20 +883,16 @@ var LanguageUtil = class {
   }
   getScriptPartFromCode(code) {
     code = getCleanedCode(code);
-    if (!code || code.indexOf("-") < 0)
-      return null;
+    if (!code || code.indexOf("-") < 0) return null;
     const p = code.split("-");
-    if (p.length === 2)
-      return null;
+    if (p.length === 2) return null;
     p.pop();
-    if (p[p.length - 1].toLowerCase() === "x")
-      return null;
+    if (p[p.length - 1].toLowerCase() === "x") return null;
     return this.formatLanguageCode(p.join("-"));
   }
   getLanguagePartFromCode(code) {
     code = getCleanedCode(code);
-    if (!code || code.indexOf("-") < 0)
-      return code;
+    if (!code || code.indexOf("-") < 0) return code;
     const p = code.split("-");
     return this.formatLanguageCode(p[0]);
   }
@@ -962,18 +905,13 @@ var LanguageUtil = class {
       } else if (p.length === 2) {
         p[0] = p[0].toLowerCase();
         p[1] = p[1].toUpperCase();
-        if (specialCases.indexOf(p[1].toLowerCase()) > -1)
-          p[1] = capitalize(p[1].toLowerCase());
+        if (specialCases.indexOf(p[1].toLowerCase()) > -1) p[1] = capitalize(p[1].toLowerCase());
       } else if (p.length === 3) {
         p[0] = p[0].toLowerCase();
-        if (p[1].length === 2)
-          p[1] = p[1].toUpperCase();
-        if (p[0] !== "sgn" && p[2].length === 2)
-          p[2] = p[2].toUpperCase();
-        if (specialCases.indexOf(p[1].toLowerCase()) > -1)
-          p[1] = capitalize(p[1].toLowerCase());
-        if (specialCases.indexOf(p[2].toLowerCase()) > -1)
-          p[2] = capitalize(p[2].toLowerCase());
+        if (p[1].length === 2) p[1] = p[1].toUpperCase();
+        if (p[0] !== "sgn" && p[2].length === 2) p[2] = p[2].toUpperCase();
+        if (specialCases.indexOf(p[1].toLowerCase()) > -1) p[1] = capitalize(p[1].toLowerCase());
+        if (specialCases.indexOf(p[2].toLowerCase()) > -1) p[2] = capitalize(p[2].toLowerCase());
       }
       return p.join("-");
     }
@@ -986,67 +924,47 @@ var LanguageUtil = class {
     return !this.supportedLngs || !this.supportedLngs.length || this.supportedLngs.indexOf(code) > -1;
   }
   getBestMatchFromCodes(codes) {
-    if (!codes)
-      return null;
+    if (!codes) return null;
     let found;
     codes.forEach((code) => {
-      if (found)
-        return;
+      if (found) return;
       const cleanedLng = this.formatLanguageCode(code);
-      if (!this.options.supportedLngs || this.isSupportedCode(cleanedLng))
-        found = cleanedLng;
+      if (!this.options.supportedLngs || this.isSupportedCode(cleanedLng)) found = cleanedLng;
     });
     if (!found && this.options.supportedLngs) {
       codes.forEach((code) => {
-        if (found)
-          return;
+        if (found) return;
         const lngOnly = this.getLanguagePartFromCode(code);
-        if (this.isSupportedCode(lngOnly))
-          return found = lngOnly;
+        if (this.isSupportedCode(lngOnly)) return found = lngOnly;
         found = this.options.supportedLngs.find((supportedLng) => {
-          if (supportedLng === lngOnly)
-            return supportedLng;
-          if (supportedLng.indexOf("-") < 0 && lngOnly.indexOf("-") < 0)
-            return;
-          if (supportedLng.indexOf("-") > 0 && lngOnly.indexOf("-") < 0 && supportedLng.substring(0, supportedLng.indexOf("-")) === lngOnly)
-            return supportedLng;
-          if (supportedLng.indexOf(lngOnly) === 0 && lngOnly.length > 1)
-            return supportedLng;
+          if (supportedLng === lngOnly) return supportedLng;
+          if (supportedLng.indexOf("-") < 0 && lngOnly.indexOf("-") < 0) return;
+          if (supportedLng.indexOf("-") > 0 && lngOnly.indexOf("-") < 0 && supportedLng.substring(0, supportedLng.indexOf("-")) === lngOnly) return supportedLng;
+          if (supportedLng.indexOf(lngOnly) === 0 && lngOnly.length > 1) return supportedLng;
         });
       });
     }
-    if (!found)
-      found = this.getFallbackCodes(this.options.fallbackLng)[0];
+    if (!found) found = this.getFallbackCodes(this.options.fallbackLng)[0];
     return found;
   }
   getFallbackCodes(fallbacks, code) {
-    if (!fallbacks)
-      return [];
-    if (typeof fallbacks === "function")
-      fallbacks = fallbacks(code);
-    if (typeof fallbacks === "string")
-      fallbacks = [fallbacks];
-    if (Object.prototype.toString.apply(fallbacks) === "[object Array]")
-      return fallbacks;
-    if (!code)
-      return fallbacks.default || [];
+    if (!fallbacks) return [];
+    if (typeof fallbacks === "function") fallbacks = fallbacks(code);
+    if (typeof fallbacks === "string") fallbacks = [fallbacks];
+    if (Object.prototype.toString.apply(fallbacks) === "[object Array]") return fallbacks;
+    if (!code) return fallbacks.default || [];
     let found = fallbacks[code];
-    if (!found)
-      found = fallbacks[this.getScriptPartFromCode(code)];
-    if (!found)
-      found = fallbacks[this.formatLanguageCode(code)];
-    if (!found)
-      found = fallbacks[this.getLanguagePartFromCode(code)];
-    if (!found)
-      found = fallbacks.default;
+    if (!found) found = fallbacks[this.getScriptPartFromCode(code)];
+    if (!found) found = fallbacks[this.formatLanguageCode(code)];
+    if (!found) found = fallbacks[this.getLanguagePartFromCode(code)];
+    if (!found) found = fallbacks.default;
     return found || [];
   }
   toResolveHierarchy(code, fallbackCode) {
     const fallbackCodes = this.getFallbackCodes(fallbackCode || this.options.fallbackLng || [], code);
     const codes = [];
     const addCode = (c) => {
-      if (!c)
-        return;
+      if (!c) return;
       if (this.isSupportedCode(c)) {
         codes.push(c);
       } else {
@@ -1054,18 +972,14 @@ var LanguageUtil = class {
       }
     };
     if (typeof code === "string" && (code.indexOf("-") > -1 || code.indexOf("_") > -1)) {
-      if (this.options.load !== "languageOnly")
-        addCode(this.formatLanguageCode(code));
-      if (this.options.load !== "languageOnly" && this.options.load !== "currentOnly")
-        addCode(this.getScriptPartFromCode(code));
-      if (this.options.load !== "currentOnly")
-        addCode(this.getLanguagePartFromCode(code));
+      if (this.options.load !== "languageOnly") addCode(this.formatLanguageCode(code));
+      if (this.options.load !== "languageOnly" && this.options.load !== "currentOnly") addCode(this.getScriptPartFromCode(code));
+      if (this.options.load !== "currentOnly") addCode(this.getLanguagePartFromCode(code));
     } else if (typeof code === "string") {
       addCode(this.formatLanguageCode(code));
     }
     fallbackCodes.forEach((fc) => {
-      if (codes.indexOf(fc) < 0)
-        addCode(this.formatLanguageCode(fc));
+      if (codes.indexOf(fc) < 0) addCode(this.formatLanguageCode(fc));
     });
     return codes;
   }
@@ -1328,10 +1242,8 @@ var PluralResolver = class {
     }
     const returnSuffix = () => this.options.prepend && suffix.toString() ? this.options.prepend + suffix.toString() : suffix.toString();
     if (this.options.compatibilityJSON === "v1") {
-      if (suffix === 1)
-        return "";
-      if (typeof suffix === "number")
-        return `_plural_${suffix.toString()}`;
+      if (suffix === 1) return "";
+      if (typeof suffix === "number") return `_plural_${suffix.toString()}`;
       return returnSuffix();
     } else if (this.options.compatibilityJSON === "v2") {
       return returnSuffix();
@@ -1350,8 +1262,7 @@ function deepFindWithDefaults(data, defaultData, key) {
   let path = getPathWithDefaults(data, defaultData, key);
   if (!path && ignoreJSONStructure && typeof key === "string") {
     path = deepFind(data, key, keySeparator);
-    if (path === void 0)
-      path = deepFind(defaultData, key, keySeparator);
+    if (path === void 0) path = deepFind(defaultData, key, keySeparator);
   }
   return path;
 }
@@ -1365,10 +1276,9 @@ var Interpolator = class {
   }
   init() {
     let options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-    if (!options.interpolation)
-      options.interpolation = {
-        escapeValue: true
-      };
+    if (!options.interpolation) options.interpolation = {
+      escapeValue: true
+    };
     const iOpts = options.interpolation;
     this.escape = iOpts.escape !== void 0 ? iOpts.escape : escape;
     this.escapeValue = iOpts.escapeValue !== void 0 ? iOpts.escapeValue : true;
@@ -1386,8 +1296,7 @@ var Interpolator = class {
     this.resetRegExp();
   }
   reset() {
-    if (this.options)
-      this.init(this.options);
+    if (this.options) this.init(this.options);
   }
   resetRegExp() {
     const getOrResetRegExp = (existingRegExp, pattern) => {
@@ -1481,8 +1390,7 @@ var Interpolator = class {
     let clonedOptions;
     function handleHasOptions(key, inheritedOptions) {
       const sep = this.nestingOptionsSeparator;
-      if (key.indexOf(sep) < 0)
-        return key;
+      if (key.indexOf(sep) < 0) return key;
       const c = key.split(new RegExp(`${sep}[ ]*{`));
       let optionsString = `{${c[1]}`;
       key = c[0];
@@ -1494,17 +1402,15 @@ var Interpolator = class {
       }
       try {
         clonedOptions = JSON.parse(optionsString);
-        if (inheritedOptions)
-          clonedOptions = {
-            ...inheritedOptions,
-            ...clonedOptions
-          };
+        if (inheritedOptions) clonedOptions = {
+          ...inheritedOptions,
+          ...clonedOptions
+        };
       } catch (e) {
         this.logger.warn(`failed parsing options string in nesting for key ${key}`, e);
         return `${key}${sep}${optionsString}`;
       }
-      if (clonedOptions.defaultValue && clonedOptions.defaultValue.indexOf(this.prefix) > -1)
-        delete clonedOptions.defaultValue;
+      if (clonedOptions.defaultValue && clonedOptions.defaultValue.indexOf(this.prefix) > -1) delete clonedOptions.defaultValue;
       return key;
     }
     while (match = this.nestingRegexp.exec(str)) {
@@ -1523,10 +1429,8 @@ var Interpolator = class {
         doReduce = true;
       }
       value = fc(handleHasOptions.call(this, match[1].trim(), clonedOptions), clonedOptions);
-      if (value && match[0] === str && typeof value !== "string")
-        return value;
-      if (typeof value !== "string")
-        value = makeString(value);
+      if (value && match[0] === str && typeof value !== "string") return value;
+      if (typeof value !== "string") value = makeString(value);
       if (!value) {
         this.logger.warn(`missed to resolve ${match[1]} for nesting ${str}`);
         value = "";
@@ -1551,26 +1455,19 @@ function parseFormatStr(formatStr) {
     formatName = p[0].toLowerCase().trim();
     const optStr = p[1].substring(0, p[1].length - 1);
     if (formatName === "currency" && optStr.indexOf(":") < 0) {
-      if (!formatOptions.currency)
-        formatOptions.currency = optStr.trim();
+      if (!formatOptions.currency) formatOptions.currency = optStr.trim();
     } else if (formatName === "relativetime" && optStr.indexOf(":") < 0) {
-      if (!formatOptions.range)
-        formatOptions.range = optStr.trim();
+      if (!formatOptions.range) formatOptions.range = optStr.trim();
     } else {
       const opts = optStr.split(";");
       opts.forEach((opt) => {
-        if (!opt)
-          return;
+        if (!opt) return;
         const [key, ...rest] = opt.split(":");
         const val = rest.join(":").trim().replace(/^'+|'+$/g, "");
-        if (!formatOptions[key.trim()])
-          formatOptions[key.trim()] = val;
-        if (val === "false")
-          formatOptions[key.trim()] = false;
-        if (val === "true")
-          formatOptions[key.trim()] = true;
-        if (!isNaN(val))
-          formatOptions[key.trim()] = parseInt(val, 10);
+        if (!formatOptions[key.trim()]) formatOptions[key.trim()] = val;
+        if (val === "false") formatOptions[key.trim()] = false;
+        if (val === "true") formatOptions[key.trim()] = true;
+        if (!isNaN(val)) formatOptions[key.trim()] = parseInt(val, 10);
       });
     }
   }
@@ -1712,24 +1609,18 @@ var Connector = class extends EventEmitter {
         const name = `${lng}|${ns}`;
         if (!options.reload && this.store.hasResourceBundle(lng, ns)) {
           this.state[name] = 2;
-        } else if (this.state[name] < 0)
-          ;
+        } else if (this.state[name] < 0) ;
         else if (this.state[name] === 1) {
-          if (pending[name] === void 0)
-            pending[name] = true;
+          if (pending[name] === void 0) pending[name] = true;
         } else {
           this.state[name] = 1;
           hasAllNamespaces = false;
-          if (pending[name] === void 0)
-            pending[name] = true;
-          if (toLoad[name] === void 0)
-            toLoad[name] = true;
-          if (toLoadNamespaces[ns] === void 0)
-            toLoadNamespaces[ns] = true;
+          if (pending[name] === void 0) pending[name] = true;
+          if (toLoad[name] === void 0) toLoad[name] = true;
+          if (toLoadNamespaces[ns] === void 0) toLoadNamespaces[ns] = true;
         }
       });
-      if (!hasAllNamespaces)
-        toLoadLanguages[lng] = true;
+      if (!hasAllNamespaces) toLoadLanguages[lng] = true;
     });
     if (Object.keys(toLoad).length || Object.keys(pending).length) {
       this.queue.push({
@@ -1751,8 +1642,7 @@ var Connector = class extends EventEmitter {
     const s = name.split("|");
     const lng = s[0];
     const ns = s[1];
-    if (err)
-      this.emit("failedLoading", lng, ns, err);
+    if (err) this.emit("failedLoading", lng, ns, err);
     if (data) {
       this.store.addResourceBundle(lng, ns, data, void 0, void 0, {
         skipCopy: true
@@ -1763,17 +1653,14 @@ var Connector = class extends EventEmitter {
     this.queue.forEach((q) => {
       pushPath(q.loaded, [lng], ns);
       removePending(q, name);
-      if (err)
-        q.errors.push(err);
+      if (err) q.errors.push(err);
       if (q.pendingCount === 0 && !q.done) {
         Object.keys(q.loaded).forEach((l) => {
-          if (!loaded[l])
-            loaded[l] = {};
+          if (!loaded[l]) loaded[l] = {};
           const loadedKeys = q.loaded[l];
           if (loadedKeys.length) {
             loadedKeys.forEach((n) => {
-              if (loaded[l][n] === void 0)
-                loaded[l][n] = true;
+              if (loaded[l][n] === void 0) loaded[l][n] = true;
             });
           }
         });
@@ -1792,8 +1679,7 @@ var Connector = class extends EventEmitter {
     let tried = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : 0;
     let wait = arguments.length > 4 && arguments[4] !== void 0 ? arguments[4] : this.retryTimeout;
     let callback = arguments.length > 5 ? arguments[5] : void 0;
-    if (!lng.length)
-      return callback(null, {});
+    if (!lng.length) return callback(null, {});
     if (this.readingCalls >= this.maxParallelReads) {
       this.waitingReads.push({
         lng,
@@ -1843,14 +1729,11 @@ var Connector = class extends EventEmitter {
       this.logger.warn("No backend was added via i18next.use. Will not load resources.");
       return callback && callback();
     }
-    if (typeof languages === "string")
-      languages = this.languageUtils.toResolveHierarchy(languages);
-    if (typeof namespaces === "string")
-      namespaces = [namespaces];
+    if (typeof languages === "string") languages = this.languageUtils.toResolveHierarchy(languages);
+    if (typeof namespaces === "string") namespaces = [namespaces];
     const toLoad = this.queueLoad(languages, namespaces, options, callback);
     if (!toLoad.toLoad.length) {
-      if (!toLoad.pending.length)
-        callback();
+      if (!toLoad.pending.length) callback();
       return null;
     }
     toLoad.toLoad.forEach((name) => {
@@ -1871,10 +1754,8 @@ var Connector = class extends EventEmitter {
     const lng = s[0];
     const ns = s[1];
     this.read(lng, ns, "read", void 0, void 0, (err, data) => {
-      if (err)
-        this.logger.warn(`${prefix}loading namespace ${ns} for language ${lng} failed`, err);
-      if (!err && data)
-        this.logger.log(`${prefix}loaded namespace ${ns} for language ${lng}`, data);
+      if (err) this.logger.warn(`${prefix}loading namespace ${ns} for language ${lng} failed`, err);
+      if (!err && data) this.logger.log(`${prefix}loaded namespace ${ns} for language ${lng}`, data);
       this.loaded(name, err, data);
     });
   }
@@ -1886,8 +1767,7 @@ var Connector = class extends EventEmitter {
       this.logger.warn(`did not save key "${key}" as the namespace "${namespace}" was not yet loaded`, "This means something IS WRONG in your setup. You access the t function before i18next.init / i18next.loadNamespace / i18next.changeLanguage was done. Wait for the callback or Promise to resolve before accessing it!!!");
       return;
     }
-    if (key === void 0 || key === null || key === "")
-      return;
+    if (key === void 0 || key === null || key === "") return;
     if (this.backend && this.backend.create) {
       const opts = {
         ...options,
@@ -1914,8 +1794,7 @@ var Connector = class extends EventEmitter {
         fc(languages, namespace, key, fallbackValue, clb, opts);
       }
     }
-    if (!languages || !languages[0])
-      return;
+    if (!languages || !languages[0]) return;
     this.store.addResource(languages[0], namespace, key, fallbackValue);
   }
 };
@@ -1955,12 +1834,9 @@ function get() {
     appendNamespaceToCIMode: false,
     overloadTranslationOptionHandler: function handle(args) {
       let ret = {};
-      if (typeof args[1] === "object")
-        ret = args[1];
-      if (typeof args[1] === "string")
-        ret.defaultValue = args[1];
-      if (typeof args[2] === "string")
-        ret.tDescription = args[2];
+      if (typeof args[1] === "object") ret = args[1];
+      if (typeof args[1] === "string") ret.defaultValue = args[1];
+      if (typeof args[2] === "string") ret.tDescription = args[2];
       if (typeof args[2] === "object" || typeof args[3] === "object") {
         const options = args[3] || args[2];
         Object.keys(options).forEach((key) => {
@@ -1985,12 +1861,9 @@ function get() {
   };
 }
 function transformOptions(options) {
-  if (typeof options.ns === "string")
-    options.ns = [options.ns];
-  if (typeof options.fallbackLng === "string")
-    options.fallbackLng = [options.fallbackLng];
-  if (typeof options.fallbackNS === "string")
-    options.fallbackNS = [options.fallbackNS];
+  if (typeof options.ns === "string") options.ns = [options.ns];
+  if (typeof options.fallbackLng === "string") options.fallbackLng = [options.fallbackLng];
+  if (typeof options.fallbackNS === "string") options.fallbackNS = [options.fallbackNS];
   if (options.supportedLngs && options.supportedLngs.indexOf("cimode") < 0) {
     options.supportedLngs = options.supportedLngs.concat(["cimode"]);
   }
@@ -2063,10 +1936,8 @@ var I18n = class _I18n extends EventEmitter {
       this.options.userDefinedNsSeparator = options.nsSeparator;
     }
     function createClassOnDemand(ClassOrObject) {
-      if (!ClassOrObject)
-        return null;
-      if (typeof ClassOrObject === "function")
-        return new ClassOrObject();
+      if (!ClassOrObject) return null;
+      if (typeof ClassOrObject === "function") return new ClassOrObject();
       return ClassOrObject;
     }
     if (!this.options.isClone) {
@@ -2110,13 +1981,11 @@ var I18n = class _I18n extends EventEmitter {
       });
       if (this.modules.languageDetector) {
         s.languageDetector = createClassOnDemand(this.modules.languageDetector);
-        if (s.languageDetector.init)
-          s.languageDetector.init(s, this.options.detection, this.options);
+        if (s.languageDetector.init) s.languageDetector.init(s, this.options.detection, this.options);
       }
       if (this.modules.i18nFormat) {
         s.i18nFormat = createClassOnDemand(this.modules.i18nFormat);
-        if (s.i18nFormat.init)
-          s.i18nFormat.init(this);
+        if (s.i18nFormat.init) s.i18nFormat.init(this);
       }
       this.translator = new Translator(this.services, this.options);
       this.translator.on("*", function(event) {
@@ -2126,17 +1995,14 @@ var I18n = class _I18n extends EventEmitter {
         _this.emit(event, ...args);
       });
       this.modules.external.forEach((m) => {
-        if (m.init)
-          m.init(this);
+        if (m.init) m.init(this);
       });
     }
     this.format = this.options.interpolation.format;
-    if (!callback)
-      callback = noop;
+    if (!callback) callback = noop;
     if (this.options.fallbackLng && !this.services.languageDetector && !this.options.lng) {
       const codes = this.services.languageUtils.getFallbackCodes(this.options.fallbackLng);
-      if (codes.length > 0 && codes[0] !== "dev")
-        this.options.lng = codes[0];
+      if (codes.length > 0 && codes[0] !== "dev") this.options.lng = codes[0];
     }
     if (!this.services.languageDetector && !this.options.lng) {
       this.logger.warn("init: no languageDetector is used and no lng is defined");
@@ -2158,17 +2024,14 @@ var I18n = class _I18n extends EventEmitter {
     const load = () => {
       const finish = (err, t2) => {
         this.isInitializing = false;
-        if (this.isInitialized && !this.initializedStoreOnce)
-          this.logger.warn("init: i18next is already initialized. You should call init just once!");
+        if (this.isInitialized && !this.initializedStoreOnce) this.logger.warn("init: i18next is already initialized. You should call init just once!");
         this.isInitialized = true;
-        if (!this.options.isClone)
-          this.logger.log("initialized", this.options);
+        if (!this.options.isClone) this.logger.log("initialized", this.options);
         this.emit("initialized", this.options);
         deferred.resolve(t2);
         callback(err, t2);
       };
-      if (this.languages && this.options.compatibilityAPI !== "v1" && !this.isInitialized)
-        return finish(null, this.t.bind(this));
+      if (this.languages && this.options.compatibilityAPI !== "v1" && !this.isInitialized) return finish(null, this.t.bind(this));
       this.changeLanguage(this.options.lng, finish);
     };
     if (this.options.resources || !this.options.initImmediate) {
@@ -2182,23 +2045,17 @@ var I18n = class _I18n extends EventEmitter {
     let callback = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : noop;
     let usedCallback = callback;
     const usedLng = typeof language === "string" ? language : this.language;
-    if (typeof language === "function")
-      usedCallback = language;
+    if (typeof language === "function") usedCallback = language;
     if (!this.options.resources || this.options.partialBundledLanguages) {
-      if (usedLng && usedLng.toLowerCase() === "cimode" && (!this.options.preload || this.options.preload.length === 0))
-        return usedCallback();
+      if (usedLng && usedLng.toLowerCase() === "cimode" && (!this.options.preload || this.options.preload.length === 0)) return usedCallback();
       const toLoad = [];
       const append = (lng) => {
-        if (!lng)
-          return;
-        if (lng === "cimode")
-          return;
+        if (!lng) return;
+        if (lng === "cimode") return;
         const lngs = this.services.languageUtils.toResolveHierarchy(lng);
         lngs.forEach((l) => {
-          if (l === "cimode")
-            return;
-          if (toLoad.indexOf(l) < 0)
-            toLoad.push(l);
+          if (l === "cimode") return;
+          if (toLoad.indexOf(l) < 0) toLoad.push(l);
         });
       };
       if (!usedLng) {
@@ -2211,8 +2068,7 @@ var I18n = class _I18n extends EventEmitter {
         this.options.preload.forEach((l) => append(l));
       }
       this.services.backendConnector.load(toLoad, this.options.ns, (e) => {
-        if (!e && !this.resolvedLanguage && this.language)
-          this.setResolvedLanguage(this.language);
+        if (!e && !this.resolvedLanguage && this.language) this.setResolvedLanguage(this.language);
         usedCallback(e);
       });
     } else {
@@ -2221,12 +2077,9 @@ var I18n = class _I18n extends EventEmitter {
   }
   reloadResources(lngs, ns, callback) {
     const deferred = defer();
-    if (!lngs)
-      lngs = this.languages;
-    if (!ns)
-      ns = this.options.ns;
-    if (!callback)
-      callback = noop;
+    if (!lngs) lngs = this.languages;
+    if (!ns) ns = this.options.ns;
+    if (!callback) callback = noop;
     this.services.backendConnector.reload(lngs, ns, (err) => {
       deferred.resolve();
       callback(err);
@@ -2234,10 +2087,8 @@ var I18n = class _I18n extends EventEmitter {
     return deferred;
   }
   use(module) {
-    if (!module)
-      throw new Error("You are passing an undefined module! Please check the object you are passing to i18next.use()");
-    if (!module.type)
-      throw new Error("You are passing a wrong module! Please check the object you are passing to i18next.use()");
+    if (!module) throw new Error("You are passing an undefined module! Please check the object you are passing to i18next.use()");
+    if (!module.type) throw new Error("You are passing a wrong module! Please check the object you are passing to i18next.use()");
     if (module.type === "backend") {
       this.modules.backend = module;
     }
@@ -2262,14 +2113,11 @@ var I18n = class _I18n extends EventEmitter {
     return this;
   }
   setResolvedLanguage(l) {
-    if (!l || !this.languages)
-      return;
-    if (["cimode", "dev"].indexOf(l) > -1)
-      return;
+    if (!l || !this.languages) return;
+    if (["cimode", "dev"].indexOf(l) > -1) return;
     for (let li = 0; li < this.languages.length; li++) {
       const lngInLngs = this.languages[li];
-      if (["cimode", "dev"].indexOf(lngInLngs) > -1)
-        continue;
+      if (["cimode", "dev"].indexOf(lngInLngs) > -1) continue;
       if (this.store.hasLanguageSomeTranslations(lngInLngs)) {
         this.resolvedLanguage = lngInLngs;
         break;
@@ -2300,23 +2148,19 @@ var I18n = class _I18n extends EventEmitter {
       deferred.resolve(function() {
         return _this2.t(...arguments);
       });
-      if (callback)
-        callback(err, function() {
-          return _this2.t(...arguments);
-        });
+      if (callback) callback(err, function() {
+        return _this2.t(...arguments);
+      });
     };
     const setLng = (lngs) => {
-      if (!lng && !lngs && this.services.languageDetector)
-        lngs = [];
+      if (!lng && !lngs && this.services.languageDetector) lngs = [];
       const l = typeof lngs === "string" ? lngs : this.services.languageUtils.getBestMatchFromCodes(lngs);
       if (l) {
         if (!this.language) {
           setLngProps(l);
         }
-        if (!this.translator.language)
-          this.translator.changeLanguage(l);
-        if (this.services.languageDetector && this.services.languageDetector.cacheUserLanguage)
-          this.services.languageDetector.cacheUserLanguage(l);
+        if (!this.translator.language) this.translator.changeLanguage(l);
+        if (this.services.languageDetector && this.services.languageDetector.cacheUserLanguage) this.services.languageDetector.cacheUserLanguage(l);
       }
       this.loadResources(l, (err) => {
         done(err, l);
@@ -2393,69 +2237,55 @@ var I18n = class _I18n extends EventEmitter {
     const lng = options.lng || this.resolvedLanguage || this.languages[0];
     const fallbackLng = this.options ? this.options.fallbackLng : false;
     const lastLng = this.languages[this.languages.length - 1];
-    if (lng.toLowerCase() === "cimode")
-      return true;
+    if (lng.toLowerCase() === "cimode") return true;
     const loadNotPending = (l, n) => {
       const loadState = this.services.backendConnector.state[`${l}|${n}`];
       return loadState === -1 || loadState === 2;
     };
     if (options.precheck) {
       const preResult = options.precheck(this, loadNotPending);
-      if (preResult !== void 0)
-        return preResult;
+      if (preResult !== void 0) return preResult;
     }
-    if (this.hasResourceBundle(lng, ns))
-      return true;
-    if (!this.services.backendConnector.backend || this.options.resources && !this.options.partialBundledLanguages)
-      return true;
-    if (loadNotPending(lng, ns) && (!fallbackLng || loadNotPending(lastLng, ns)))
-      return true;
+    if (this.hasResourceBundle(lng, ns)) return true;
+    if (!this.services.backendConnector.backend || this.options.resources && !this.options.partialBundledLanguages) return true;
+    if (loadNotPending(lng, ns) && (!fallbackLng || loadNotPending(lastLng, ns))) return true;
     return false;
   }
   loadNamespaces(ns, callback) {
     const deferred = defer();
     if (!this.options.ns) {
-      if (callback)
-        callback();
+      if (callback) callback();
       return Promise.resolve();
     }
-    if (typeof ns === "string")
-      ns = [ns];
+    if (typeof ns === "string") ns = [ns];
     ns.forEach((n) => {
-      if (this.options.ns.indexOf(n) < 0)
-        this.options.ns.push(n);
+      if (this.options.ns.indexOf(n) < 0) this.options.ns.push(n);
     });
     this.loadResources((err) => {
       deferred.resolve();
-      if (callback)
-        callback(err);
+      if (callback) callback(err);
     });
     return deferred;
   }
   loadLanguages(lngs, callback) {
     const deferred = defer();
-    if (typeof lngs === "string")
-      lngs = [lngs];
+    if (typeof lngs === "string") lngs = [lngs];
     const preloaded = this.options.preload || [];
     const newLngs = lngs.filter((lng) => preloaded.indexOf(lng) < 0 && this.services.languageUtils.isSupportedCode(lng));
     if (!newLngs.length) {
-      if (callback)
-        callback();
+      if (callback) callback();
       return Promise.resolve();
     }
     this.options.preload = preloaded.concat(newLngs);
     this.loadResources((err) => {
       deferred.resolve();
-      if (callback)
-        callback(err);
+      if (callback) callback(err);
     });
     return deferred;
   }
   dir(lng) {
-    if (!lng)
-      lng = this.resolvedLanguage || (this.languages && this.languages.length > 0 ? this.languages[0] : this.language);
-    if (!lng)
-      return "rtl";
+    if (!lng) lng = this.resolvedLanguage || (this.languages && this.languages.length > 0 ? this.languages[0] : this.language);
+    if (!lng) return "rtl";
     const rtlLngs = ["ar", "shu", "sqr", "ssh", "xaa", "yhd", "yud", "aao", "abh", "abv", "acm", "acq", "acw", "acx", "acy", "adf", "ads", "aeb", "aec", "afb", "ajp", "apc", "apd", "arb", "arq", "ars", "ary", "arz", "auz", "avl", "ayh", "ayl", "ayn", "ayp", "bbz", "pga", "he", "iw", "ps", "pbt", "pbu", "pst", "prp", "prd", "ug", "ur", "ydd", "yds", "yih", "ji", "yi", "hbo", "men", "xmn", "fa", "jpr", "peo", "pes", "prs", "dv", "sam", "ckb"];
     const languageUtils = this.services && this.services.languageUtils || new LanguageUtil(get());
     return rtlLngs.indexOf(languageUtils.getLanguagePartFromCode(lng)) > -1 || lng.toLowerCase().indexOf("-arab") > 1 ? "rtl" : "ltr";
@@ -2469,8 +2299,7 @@ var I18n = class _I18n extends EventEmitter {
     let options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
     let callback = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : noop;
     const forkResourceStore = options.forkResourceStore;
-    if (forkResourceStore)
-      delete options.forkResourceStore;
+    if (forkResourceStore) delete options.forkResourceStore;
     const mergedOptions = {
       ...this.options,
       ...options,

@@ -2,7 +2,7 @@ import {
   __commonJS,
   __require,
   __toESM
-} from "./chunk-624QZG55.js";
+} from "./chunk-PLDDJCW6.js";
 
 // node_modules/cross-fetch/dist/browser-ponyfill.js
 var require_browser_ponyfill = __commonJS({
@@ -540,8 +540,7 @@ var require_getFetch = __commonJS({
     }
     if (typeof __require !== "undefined" && typeof window === "undefined") {
       f = fetchApi2 || require_browser_ponyfill();
-      if (f.default)
-        f = f.default;
+      if (f.default) f = f.default;
       exports.default = f;
       module.exports = exports.default;
     }
@@ -611,13 +610,11 @@ function _toPropertyKey(t) {
   return "symbol" == _typeof2(i) ? i : String(i);
 }
 function _toPrimitive(t, r) {
-  if ("object" != _typeof2(t) || !t)
-    return t;
+  if ("object" != _typeof2(t) || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
     var i = e.call(t, r || "default");
-    if ("object" != _typeof2(i))
-      return i;
+    if ("object" != _typeof2(i)) return i;
     throw new TypeError("@@toPrimitive must return a primitive value.");
   }
   return ("string" === r ? String : Number)(t);
@@ -656,28 +653,24 @@ if (typeof ActiveXObject === "function") {
     ActiveXObjectApi = window.ActiveXObject;
   }
 }
-if (!fetchApi && fetchNode && !XmlHttpRequestApi && !ActiveXObjectApi)
-  fetchApi = fetchNode.default || fetchNode;
-if (typeof fetchApi !== "function")
-  fetchApi = void 0;
+if (!fetchApi && fetchNode && !XmlHttpRequestApi && !ActiveXObjectApi) fetchApi = fetchNode.default || fetchNode;
+if (typeof fetchApi !== "function") fetchApi = void 0;
 var addQueryString = function addQueryString2(url, params) {
   if (params && _typeof2(params) === "object") {
     var queryString = "";
     for (var paramName in params) {
       queryString += "&" + encodeURIComponent(paramName) + "=" + encodeURIComponent(params[paramName]);
     }
-    if (!queryString)
-      return url;
+    if (!queryString) return url;
     url = url + (url.indexOf("?") !== -1 ? "&" : "?") + queryString.slice(1);
   }
   return url;
 };
 var fetchIt = function fetchIt2(url, fetchOptions, callback, altFetch) {
   var resolver = function resolver2(response) {
-    if (!response.ok)
-      return callback(response.statusText || "Error", {
-        status: response.status
-      });
+    if (!response.ok) return callback(response.statusText || "Error", {
+      status: response.status
+    });
     response.text().then(function(data) {
       callback(null, {
         status: response.status,
@@ -707,8 +700,7 @@ var requestWithFetch = function requestWithFetch2(options, url, payload, callbac
   if (typeof window === "undefined" && typeof global !== "undefined" && typeof global.process !== "undefined" && global.process.versions && global.process.versions.node) {
     headers["User-Agent"] = "i18next-http-backend (node/".concat(global.process.version, "; ").concat(global.process.platform, " ").concat(global.process.arch, ")");
   }
-  if (payload)
-    headers["Content-Type"] = "application/json";
+  if (payload) headers["Content-Type"] = "application/json";
   var reqOptions = typeof options.requestOptions === "function" ? options.requestOptions(payload) : options.requestOptions;
   var fetchOptions = _objectSpread({
     method: payload ? "POST" : "GET",
@@ -833,16 +825,13 @@ function _defineProperties(target, props) {
     var descriptor = props[i];
     descriptor.enumerable = descriptor.enumerable || false;
     descriptor.configurable = true;
-    if ("value" in descriptor)
-      descriptor.writable = true;
+    if ("value" in descriptor) descriptor.writable = true;
     Object.defineProperty(target, _toPropertyKey2(descriptor.key), descriptor);
   }
 }
 function _createClass(Constructor, protoProps, staticProps) {
-  if (protoProps)
-    _defineProperties(Constructor.prototype, protoProps);
-  if (staticProps)
-    _defineProperties(Constructor, staticProps);
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
   Object.defineProperty(Constructor, "prototype", { writable: false });
   return Constructor;
 }
@@ -860,13 +849,11 @@ function _toPropertyKey2(t) {
   return "symbol" == _typeof3(i) ? i : String(i);
 }
 function _toPrimitive2(t, r) {
-  if ("object" != _typeof3(t) || !t)
-    return t;
+  if ("object" != _typeof3(t) || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
     var i = e.call(t, r || "default");
-    if ("object" != _typeof3(i))
-      return i;
+    if ("object" != _typeof3(i)) return i;
     throw new TypeError("@@toPrimitive must return a primitive value.");
   }
   return ("string" === r ? String : Number)(t);
@@ -945,8 +932,7 @@ var Backend = function() {
       }
       loadPath = makePromise(loadPath);
       loadPath.then(function(resolvedLoadPath) {
-        if (!resolvedLoadPath)
-          return callback(null, {});
+        if (!resolvedLoadPath) return callback(null, {});
         var url = _this2.services.interpolator.interpolate(resolvedLoadPath, {
           lng: languages.join("+"),
           ns: namespaces.join("+")
@@ -962,14 +948,10 @@ var Backend = function() {
       var ns = typeof namespaces === "string" ? [namespaces] : namespaces;
       var payload = this.options.parseLoadPayload(lng, ns);
       this.options.request(this.options, url, payload, function(err, res) {
-        if (res && (res.status >= 500 && res.status < 600 || !res.status))
-          return callback("failed loading " + url + "; status code: " + res.status, true);
-        if (res && res.status >= 400 && res.status < 500)
-          return callback("failed loading " + url + "; status code: " + res.status, false);
-        if (!res && err && err.message && err.message.indexOf("Failed to fetch") > -1)
-          return callback("failed loading " + url + ": " + err.message, true);
-        if (err)
-          return callback(err, false);
+        if (res && (res.status >= 500 && res.status < 600 || !res.status)) return callback("failed loading " + url + "; status code: " + res.status, true);
+        if (res && res.status >= 400 && res.status < 500) return callback("failed loading " + url + "; status code: " + res.status, false);
+        if (!res && err && err.message && err.message.indexOf("Failed to fetch") > -1) return callback("failed loading " + url + ": " + err.message, true);
+        if (err) return callback(err, false);
         var ret, parseErr;
         try {
           if (typeof res.data === "string") {
@@ -980,8 +962,7 @@ var Backend = function() {
         } catch (e) {
           parseErr = "failed parsing " + url + " to json";
         }
-        if (parseErr)
-          return callback(parseErr, false);
+        if (parseErr) return callback(parseErr, false);
         callback(null, ret);
       });
     }
@@ -989,10 +970,8 @@ var Backend = function() {
     key: "create",
     value: function create(languages, namespace, key, fallbackValue, callback) {
       var _this4 = this;
-      if (!this.options.addPath)
-        return;
-      if (typeof languages === "string")
-        languages = [languages];
+      if (!this.options.addPath) return;
+      if (typeof languages === "string") languages = [languages];
       var payload = this.options.parsePayload(namespace, key, fallbackValue);
       var finished = 0;
       var dataArray = [];
@@ -1011,8 +990,7 @@ var Backend = function() {
           dataArray.push(data);
           resArray.push(res);
           if (finished === languages.length) {
-            if (typeof callback === "function")
-              callback(dataArray, resArray);
+            if (typeof callback === "function") callback(dataArray, resArray);
           }
         });
       });
@@ -1023,28 +1001,23 @@ var Backend = function() {
       var _this5 = this;
       var _this$services = this.services, backendConnector = _this$services.backendConnector, languageUtils = _this$services.languageUtils, logger = _this$services.logger;
       var currentLanguage = backendConnector.language;
-      if (currentLanguage && currentLanguage.toLowerCase() === "cimode")
-        return;
+      if (currentLanguage && currentLanguage.toLowerCase() === "cimode") return;
       var toLoad = [];
       var append = function append2(lng) {
         var lngs = languageUtils.toResolveHierarchy(lng);
         lngs.forEach(function(l) {
-          if (toLoad.indexOf(l) < 0)
-            toLoad.push(l);
+          if (toLoad.indexOf(l) < 0) toLoad.push(l);
         });
       };
       append(currentLanguage);
-      if (this.allOptions.preload)
-        this.allOptions.preload.forEach(function(l) {
-          return append(l);
-        });
+      if (this.allOptions.preload) this.allOptions.preload.forEach(function(l) {
+        return append(l);
+      });
       toLoad.forEach(function(lng) {
         _this5.allOptions.ns.forEach(function(ns) {
           backendConnector.read(lng, ns, "read", null, null, function(err, data) {
-            if (err)
-              logger.warn("loading namespace ".concat(ns, " for language ").concat(lng, " failed"), err);
-            if (!err && data)
-              logger.log("loaded namespace ".concat(ns, " for language ").concat(lng), data);
+            if (err) logger.warn("loading namespace ".concat(ns, " for language ").concat(lng, " failed"), err);
+            if (!err && data) logger.log("loaded namespace ".concat(ns, " for language ").concat(lng), data);
             backendConnector.loaded("".concat(lng, "|").concat(ns), err, data);
           });
         });

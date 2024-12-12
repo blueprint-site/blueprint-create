@@ -1,0 +1,57 @@
+:root {
+    --main-background: #e5e7eb;
+    --dark-main-background: black;
+    --text-color: white;
+    --dark-text-color: black;
+    --container-background: #b3cae5;
+    --dark-container-background: #527caf;
+    --addon-color: #7594f0;
+    --modrinth-green: #00d771;
+    --modrinth-pink: #ff7474;
+}
+
+.debug-text {
+    opacity: 0.7;
+    font-size: small;
+}
+.top-part {
+    background-color: var(--container-background);
+    padding: 1em;
+}
+.cover {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto;
+}
+.main-body {
+    background-color: var(--container-background);
+    padding: 1em;
+}
+.download-schematic {
+    background-color: green;
+    color: white;
+    text-decoration: none;
+    padding: 0.3em 0.8em;
+    border-radius: 0.7em;
+    transition: 0.3s ease;
+}
+.download-schematic:hover {
+    cursor: pointer;
+    color: white;
+    box-shadow: 0em 0em 1em 0.4em var(--addon-color);
+}
+.view-schematic {
+    background: linear-gradient(45deg, #5b0745, #64045a, #6a0272, #6f018c, #7003a8, #6e0ac5, #6915e3, #5d23ff); /* made at https://learnui.design/tools/gradient-generator.html */
+    color: white;
+    text-decoration: none;
+    padding: 0.3em 0.8em;
+    border-radius: 0.7em;
+    margin-left: 0.3em;
+    transition: 0.3s ease;
+}
+.view-schematic:hover {
+    cursor: pointer;
+    color: white;
+    box-shadow: 0em 0em 1em 0.4em rgba(91, 7, 69, 0.5);
+}

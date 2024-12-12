@@ -14,12 +14,12 @@
     align-items: center;
     justify-content: center;
 }
-h1 {
+.four04 {
     font-size: 6em;
     font-family: Arial, Helvetica, sans-serif;
     color: var(--addon-color);
     transition: 0.5s ease;
 }
-h1:hover {
+.four04:hover {
     transform: rotateX(80deg);
 }

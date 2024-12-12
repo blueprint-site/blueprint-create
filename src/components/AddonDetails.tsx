@@ -87,7 +87,7 @@ const AddonDetails = () => {
   }, [slug]);
 
   return (
-    <div>
+    <div className="container">
       <span className="debug-info">Addon Details for <b>{slug}</b></span>
       {addon && (
         <div>

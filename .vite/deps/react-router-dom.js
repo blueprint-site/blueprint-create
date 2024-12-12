@@ -1,12 +1,12 @@
 import {
   require_react_dom
-} from "./chunk-RHWLDYV3.js";
+} from "./chunk-AGL3XMSE.js";
 import {
   require_react
-} from "./chunk-WFDAN2ZR.js";
+} from "./chunk-KL4SNAOQ.js";
 import {
   __toESM
-} from "./chunk-624QZG55.js";
+} from "./chunk-PLDDJCW6.js";
 
 // node_modules/react-router-dom/dist/index.js
 var React2 = __toESM(require_react());
@@ -211,8 +211,7 @@ function invariant(value, message) {
 }
 function warning(cond, message) {
   if (!cond) {
-    if (typeof console !== "undefined")
-      console.warn(message);
+    if (typeof console !== "undefined") console.warn(message);
     try {
       throw new Error(message);
     } catch (e) {
@@ -253,10 +252,8 @@ function createPath(_ref) {
     search = "",
     hash = ""
   } = _ref;
-  if (search && search !== "?")
-    pathname += search.charAt(0) === "?" ? search : "?" + search;
-  if (hash && hash !== "#")
-    pathname += hash.charAt(0) === "#" ? hash : "#" + hash;
+  if (search && search !== "?") pathname += search.charAt(0) === "?" ? search : "?" + search;
+  if (hash && hash !== "#") pathname += hash.charAt(0) === "#" ? hash : "#" + hash;
   return pathname;
 }
 function parsePath(path) {
@@ -318,8 +315,7 @@ function getUrlBasedHistory(getLocation, createHref, validateLocation, options) 
   function push(to, state) {
     action = Action.Push;
     let location = createLocation(history.location, to, state);
-    if (validateLocation)
-      validateLocation(location, to);
+    if (validateLocation) validateLocation(location, to);
     index = getIndex() + 1;
     let historyState = getHistoryState(location, index);
     let url = history.createHref(location);
@@ -342,8 +338,7 @@ function getUrlBasedHistory(getLocation, createHref, validateLocation, options) 
   function replace(to, state) {
     action = Action.Replace;
     let location = createLocation(history.location, to, state);
-    if (validateLocation)
-      validateLocation(location, to);
+    if (validateLocation) validateLocation(location, to);
     index = getIndex();
     let historyState = getHistoryState(location, index);
     let url = history.createHref(location);
@@ -530,8 +525,7 @@ function flattenRoutes(routes, branches, parentsMeta, parentPath) {
 }
 function explodeOptionalSegments(path) {
   let segments = path.split("/");
-  if (segments.length === 0)
-    return [];
+  if (segments.length === 0) return [];
   let [first, ...rest] = segments;
   let isOptional = first.endsWith("?");
   let required = first.replace(/\?$/, "");
@@ -597,8 +591,7 @@ function matchRouteBranch(branch, pathname) {
       caseSensitive: meta.caseSensitive,
       end
     }, remainingPathname);
-    if (!match)
-      return null;
+    if (!match) return null;
     Object.assign(matchedParams, match.params);
     let route = meta.route;
     matches.push({
@@ -652,8 +645,7 @@ function matchPath(pattern, pathname) {
   }
   let [matcher, compiledParams] = compilePath(pattern.path, pattern.caseSensitive, pattern.end);
   let match = pathname.match(matcher);
-  if (!match)
-    return null;
+  if (!match) return null;
   let matchedPathname = match[0];
   let pathnameBase = matchedPathname.replace(/(.)\/+$/, "$1");
   let captureGroups = match.slice(1);
@@ -706,8 +698,7 @@ function compilePath(path, caseSensitive, end) {
     regexpSource += "\\/*$";
   } else if (path !== "" && path !== "/") {
     regexpSource += "(?:(?=\\/|$))";
-  } else
-    ;
+  } else ;
   let matcher = new RegExp(regexpSource, caseSensitive ? void 0 : "i");
   return [matcher, params];
 }
@@ -720,8 +711,7 @@ function decodePath(value) {
   }
 }
 function stripBasename(pathname, basename) {
-  if (basename === "/")
-    return pathname;
+  if (basename === "/") return pathname;
   if (!pathname.toLowerCase().startsWith(basename.toLowerCase())) {
     return null;
   }
@@ -753,8 +743,7 @@ function resolvePathname(relativePath, fromPathname) {
   let relativeSegments = relativePath.split("/");
   relativeSegments.forEach((segment) => {
     if (segment === "..") {
-      if (segments.length > 1)
-        segments.pop();
+      if (segments.length > 1) segments.pop();
     } else if (segment !== ".") {
       segments.push(segment);
     }
@@ -1293,10 +1282,8 @@ function createRouter(init) {
       dataRoutes = inFlightDataRoutes;
       inFlightDataRoutes = void 0;
     }
-    if (isUninterruptedRevalidation)
-      ;
-    else if (pendingAction === Action.Pop)
-      ;
+    if (isUninterruptedRevalidation) ;
+    else if (pendingAction === Action.Pop) ;
     else if (pendingAction === Action.Push) {
       init.history.push(location, location.state);
     } else if (pendingAction === Action.Replace) {
@@ -1370,8 +1357,7 @@ function createRouter(init) {
     let historyAction = Action.Push;
     if (userReplace === true) {
       historyAction = Action.Replace;
-    } else if (userReplace === false)
-      ;
+    } else if (userReplace === false) ;
     else if (submission != null && isMutationMethod(submission.formMethod) && submission.formAction === state.location.pathname + state.location.search) {
       historyAction = Action.Replace;
     }
@@ -1703,8 +1689,7 @@ function createRouter(init) {
     if (isServer) {
       throw new Error("router.fetch() was called during the server render, but it shouldn't be. You are likely calling a useFetcher() method in the body of your component. Try moving it to a useEffect or a callback.");
     }
-    if (fetchControllers.has(key))
-      abortFetcher(key);
+    if (fetchControllers.has(key)) abortFetcher(key);
     let flushSync = (opts && opts.unstable_flushSync) === true;
     let routesToUse = inFlightDataRoutes || dataRoutes;
     let normalizedPath = normalizeTo(state.location, state.matches, basename, future.v7_prependBasename, href, future.v7_relativeSplatPath, routeId, opts == null ? void 0 : opts.relative);
@@ -3447,8 +3432,7 @@ function useNavigateUnstable() {
       options = {};
     }
     true ? warning(activeRef.current, navigateEffectWarning) : void 0;
-    if (!activeRef.current)
-      return;
+    if (!activeRef.current) return;
     if (typeof to === "number") {
       navigator.go(to);
       return;
@@ -3928,8 +3912,7 @@ function useNavigateStable() {
       options = {};
     }
     true ? warning(activeRef.current, navigateEffectWarning) : void 0;
-    if (!activeRef.current)
-      return;
+    if (!activeRef.current) return;
     if (typeof to === "number") {
       router.navigate(to);
     } else {
@@ -4311,15 +4294,13 @@ function _extends3() {
   return _extends3.apply(this, arguments);
 }
 function _objectWithoutPropertiesLoose(source, excluded) {
-  if (source == null)
-    return {};
+  if (source == null) return {};
   var target = {};
   var sourceKeys = Object.keys(source);
   var key, i;
   for (i = 0; i < sourceKeys.length; i++) {
     key = sourceKeys[i];
-    if (excluded.indexOf(key) >= 0)
-      continue;
+    if (excluded.indexOf(key) >= 0) continue;
     target[key] = source[key];
   }
   return target;
@@ -4499,8 +4480,7 @@ function parseHydrationData() {
   return state;
 }
 function deserializeErrors(errors) {
-  if (!errors)
-    return null;
+  if (!errors) return null;
   let entries = Object.entries(errors);
   let serialized = {};
   for (let [key, val] of entries) {
@@ -4917,8 +4897,7 @@ var Link = React2.forwardRef(function LinkWithRef(_ref7, ref) {
     unstable_viewTransition
   });
   function handleClick(event) {
-    if (onClick)
-      onClick(event);
+    if (onClick) onClick(event);
     if (!event.defaultPrevented) {
       internalOnClick(event);
     }
@@ -5019,8 +4998,7 @@ var Form = React2.forwardRef((_ref9, forwardedRef) => {
   let formMethod = method.toLowerCase() === "get" ? "get" : "post";
   let submitHandler = (event) => {
     onSubmit && onSubmit(event);
-    if (event.defaultPrevented)
-      return;
+    if (event.defaultPrevented) return;
     event.preventDefault();
     let submitter = event.nativeEvent.submitter;
     let submitMethod = (submitter == null ? void 0 : submitter.getAttribute("formmethod")) || method;

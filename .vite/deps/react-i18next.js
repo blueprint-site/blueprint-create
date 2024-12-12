@@ -1,10 +1,10 @@
 import {
   require_react
-} from "./chunk-WFDAN2ZR.js";
+} from "./chunk-KL4SNAOQ.js";
 import {
   __commonJS,
   __toESM
-} from "./chunk-624QZG55.js";
+} from "./chunk-PLDDJCW6.js";
 
 // node_modules/void-elements/index.js
 var require_void_elements = __commonJS({
@@ -43,13 +43,10 @@ function n(n2) {
     var s2 = n2.indexOf("-->");
     return { type: "comment", comment: -1 !== s2 ? n2.slice(4, s2) : "" };
   }
-  for (var a2 = new RegExp(t), c2 = null; null !== (c2 = a2.exec(n2)); )
-    if (c2[0].trim())
-      if (c2[1]) {
-        var o = c2[1].trim(), l = [o, ""];
-        o.indexOf("=") > -1 && (l = o.split("=")), r2.attrs[l[0]] = l[1], a2.lastIndex--;
-      } else
-        c2[2] && (r2.attrs[c2[2]] = c2[3].trim().substring(1, c2[3].length - 1));
+  for (var a2 = new RegExp(t), c2 = null; null !== (c2 = a2.exec(n2)); ) if (c2[0].trim()) if (c2[1]) {
+    var o = c2[1].trim(), l = [o, ""];
+    o.indexOf("=") > -1 && (l = o.split("=")), r2.attrs[l[0]] = l[1], a2.lastIndex--;
+  } else c2[2] && (r2.attrs[c2[2]] = c2[3].trim().substring(1, c2[3].length - 1));
   return r2;
 }
 var r = /<[a-zA-Z0-9\-\!\/](?:"[^"]*"|'[^']*'|[^'">])*>/g;
@@ -62,8 +59,7 @@ function a(e2, t2) {
     case "tag":
       return e2 += "<" + t2.name + (t2.attrs ? function(e3) {
         var t3 = [];
-        for (var n2 in e3)
-          t3.push(n2 + '="' + e3[n2] + '"');
+        for (var n2 in e3) t3.push(n2 + '="' + e3[n2] + '"');
         return t3.length ? " " + t3.join(" ") : "";
       }(t2.attrs) : "") + (t2.voidElement ? "/>" : ">"), t2.voidElement ? e2 : e2 + t2.children.reduce(a, "") + "</" + t2.name + ">";
     case "comment":
@@ -79,8 +75,7 @@ var c = { parse: function(e2, t2) {
   }
   return e2.replace(r, function(r2, s2) {
     if (m) {
-      if (r2 !== "</" + a2.name + ">")
-        return;
+      if (r2 !== "</" + a2.name + ">") return;
       m = false;
     }
     var u2, f = "/" !== r2.charAt(1), h = r2.startsWith("<!--"), p = s2 + r2.length, d = e2.charAt(p);
@@ -107,8 +102,7 @@ function warn() {
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
-    if (typeof args[0] === "string")
-      args[0] = `react-i18next:: ${args[0]}`;
+    if (typeof args[0] === "string") args[0] = `react-i18next:: ${args[0]}`;
     console.warn(...args);
   }
 }
@@ -117,10 +111,8 @@ function warnOnce() {
   for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
     args[_key2] = arguments[_key2];
   }
-  if (typeof args[0] === "string" && alreadyWarned[args[0]])
-    return;
-  if (typeof args[0] === "string")
-    alreadyWarned[args[0]] = /* @__PURE__ */ new Date();
+  if (typeof args[0] === "string" && alreadyWarned[args[0]]) return;
+  if (typeof args[0] === "string") alreadyWarned[args[0]] = /* @__PURE__ */ new Date();
   warn(...args);
 }
 var loadedClb = (i18n, cb) => () => {
@@ -140,11 +132,9 @@ function loadNamespaces(i18n, ns, cb) {
   i18n.loadNamespaces(ns, loadedClb(i18n, cb));
 }
 function loadLanguages(i18n, lng, ns, cb) {
-  if (typeof ns === "string")
-    ns = [ns];
+  if (typeof ns === "string") ns = [ns];
   ns.forEach((n2) => {
-    if (i18n.options.ns.indexOf(n2) < 0)
-      i18n.options.ns.push(n2);
+    if (i18n.options.ns.indexOf(n2) < 0) i18n.options.ns.push(n2);
   });
   i18n.loadLanguages(lng, loadedClb(i18n, cb));
 }
@@ -153,20 +143,15 @@ function oldI18nextHasLoadedNamespace(ns, i18n) {
   const lng = i18n.languages[0];
   const fallbackLng = i18n.options ? i18n.options.fallbackLng : false;
   const lastLng = i18n.languages[i18n.languages.length - 1];
-  if (lng.toLowerCase() === "cimode")
-    return true;
+  if (lng.toLowerCase() === "cimode") return true;
   const loadNotPending = (l, n2) => {
     const loadState = i18n.services.backendConnector.state[`${l}|${n2}`];
     return loadState === -1 || loadState === 2;
   };
-  if (options.bindI18n && options.bindI18n.indexOf("languageChanging") > -1 && i18n.services.backendConnector.backend && i18n.isLanguageChangingTo && !loadNotPending(i18n.isLanguageChangingTo, ns))
-    return false;
-  if (i18n.hasResourceBundle(lng, ns))
-    return true;
-  if (!i18n.services.backendConnector.backend || i18n.options.resources && !i18n.options.partialBundledLanguages)
-    return true;
-  if (loadNotPending(lng, ns) && (!fallbackLng || loadNotPending(lastLng, ns)))
-    return true;
+  if (options.bindI18n && options.bindI18n.indexOf("languageChanging") > -1 && i18n.services.backendConnector.backend && i18n.isLanguageChangingTo && !loadNotPending(i18n.isLanguageChangingTo, ns)) return false;
+  if (i18n.hasResourceBundle(lng, ns)) return true;
+  if (!i18n.services.backendConnector.backend || i18n.options.resources && !i18n.options.partialBundledLanguages) return true;
+  if (loadNotPending(lng, ns) && (!fallbackLng || loadNotPending(lastLng, ns))) return true;
   return false;
 }
 function hasLoadedNamespace(ns, i18n) {
@@ -182,8 +167,7 @@ function hasLoadedNamespace(ns, i18n) {
   return i18n.hasLoadedNamespace(ns, {
     lng: options.lng,
     precheck: (i18nInstance2, loadNotPending) => {
-      if (options.bindI18n && options.bindI18n.indexOf("languageChanging") > -1 && i18nInstance2.services.backendConnector.backend && i18nInstance2.isLanguageChangingTo && !loadNotPending(i18nInstance2.isLanguageChangingTo, ns))
-        return false;
+      if (options.bindI18n && options.bindI18n.indexOf("languageChanging") > -1 && i18nInstance2.services.backendConnector.backend && i18nInstance2.isLanguageChangingTo && !loadNotPending(i18nInstance2.isLanguageChangingTo, ns)) return false;
     }
   });
 }
@@ -251,22 +235,18 @@ function getI18n() {
 
 // node_modules/react-i18next/dist/es/TransWithoutContext.js
 function hasChildren(node, checkLength) {
-  if (!node)
-    return false;
+  if (!node) return false;
   const base = node.props ? node.props.children : node.children;
-  if (checkLength)
-    return base.length > 0;
+  if (checkLength) return base.length > 0;
   return !!base;
 }
 function getChildren(node) {
-  if (!node)
-    return [];
+  if (!node) return [];
   const children = node.props ? node.props.children : node.children;
   return node.props && node.props.i18nIsDynamicList ? getAsArray(children) : children;
 }
 function hasValidReactChildren(children) {
-  if (Object.prototype.toString.call(children) !== "[object Array]")
-    return false;
+  if (Object.prototype.toString.call(children) !== "[object Array]") return false;
   return children.every((child) => (0, import_react.isValidElement)(child));
 }
 function getAsArray(data) {
@@ -280,8 +260,7 @@ function mergeProps(source, target) {
   return newTarget;
 }
 function nodesToString(children, i18nOptions) {
-  if (!children)
-    return "";
+  if (!children) return "";
   let stringNode = "";
   const childrenArray = getAsArray(children);
   const keepArray = i18nOptions.transSupportBasicHtmlNodes && i18nOptions.transKeepBasicHtmlNodesFor ? i18nOptions.transKeepBasicHtmlNodesFor : [];
@@ -325,22 +304,17 @@ function nodesToString(children, i18nOptions) {
   return stringNode;
 }
 function renderNodes(children, targetString, i18n, i18nOptions, combinedTOpts, shouldUnescape) {
-  if (targetString === "")
-    return [];
+  if (targetString === "") return [];
   const keepArray = i18nOptions.transKeepBasicHtmlNodesFor || [];
   const emptyChildrenButNeedsHandling = targetString && new RegExp(keepArray.map((keep) => `<${keep}`).join("|")).test(targetString);
-  if (!children && !emptyChildrenButNeedsHandling && !shouldUnescape)
-    return [targetString];
+  if (!children && !emptyChildrenButNeedsHandling && !shouldUnescape) return [targetString];
   const data = {};
   function getData(childs) {
     const childrenArray = getAsArray(childs);
     childrenArray.forEach((child) => {
-      if (typeof child === "string")
-        return;
-      if (hasChildren(child))
-        getData(getChildren(child));
-      else if (typeof child === "object" && !(0, import_react.isValidElement)(child))
-        Object.assign(data, child);
+      if (typeof child === "string") return;
+      if (hasChildren(child)) getData(getChildren(child));
+      else if (typeof child === "object" && !(0, import_react.isValidElement)(child)) Object.assign(data, child);
     });
   }
   getData(children);
@@ -381,10 +355,8 @@ function renderNodes(children, targetString, i18n, i18nOptions, combinedTOpts, s
       const translationContent = node.children && node.children[0] && node.children[0].content && i18n.services.interpolator.interpolate(node.children[0].content, opts, i18n.language);
       if (node.type === "tag") {
         let tmp = reactNodes[parseInt(node.name, 10)];
-        if (rootReactNode.length === 1 && !tmp)
-          tmp = rootReactNode[0][node.name];
-        if (!tmp)
-          tmp = {};
+        if (rootReactNode.length === 1 && !tmp) tmp = rootReactNode[0][node.name];
+        if (!tmp) tmp = {};
         const child = Object.keys(node.attrs).length !== 0 ? mergeProps({
           props: node.attrs
         }, tmp) : tmp;
@@ -424,8 +396,7 @@ function renderNodes(children, targetString, i18n, i18nOptions, combinedTOpts, s
           }
         } else if (typeof child === "object" && !isElement) {
           const content = node.children[0] ? translationContent : null;
-          if (content)
-            mem.push(content);
+          if (content) mem.push(content);
         } else {
           pushTranslatedJSX(child, translationContent, mem, i2, node.children.length !== 1 || !translationContent);
         }
@@ -504,8 +475,7 @@ function Trans(_ref) {
   if (components) {
     Object.keys(components).forEach((c2) => {
       const comp = components[c2];
-      if (typeof comp.type === "function" || !comp.props || !comp.props.children || translation.indexOf(`${c2}/>`) < 0 && translation.indexOf(`${c2} />`) < 0)
-        return;
+      if (typeof comp.type === "function" || !comp.props || !comp.props.children || translation.indexOf(`${c2}/>`) < 0 && translation.indexOf(`${c2} />`) < 0) return;
       function Componentized() {
         return (0, import_react.createElement)(import_react.Fragment, null, comp);
       }
@@ -537,8 +507,7 @@ var ReportNamespaces = class {
   }
   addUsedNamespaces(namespaces) {
     namespaces.forEach((ns) => {
-      if (!this.usedNamespaces[ns])
-        this.usedNamespaces[ns] = true;
+      if (!this.usedNamespaces[ns]) this.usedNamespaces[ns] = true;
     });
   }
   getUsedNamespaces() {
@@ -643,15 +612,12 @@ function useTranslation(ns) {
     defaultNS: defaultNSFromContext
   } = (0, import_react4.useContext)(I18nContext) || {};
   const i18n = i18nFromProps || i18nFromContext || getI18n();
-  if (i18n && !i18n.reportNamespaces)
-    i18n.reportNamespaces = new ReportNamespaces();
+  if (i18n && !i18n.reportNamespaces) i18n.reportNamespaces = new ReportNamespaces();
   if (!i18n) {
     warnOnce("You will need to pass in an i18next instance by using initReactI18next");
     const notReadyT = (k, optsOrDefaultValue) => {
-      if (typeof optsOrDefaultValue === "string")
-        return optsOrDefaultValue;
-      if (optsOrDefaultValue && typeof optsOrDefaultValue === "object" && typeof optsOrDefaultValue.defaultValue === "string")
-        return optsOrDefaultValue.defaultValue;
+      if (typeof optsOrDefaultValue === "string") return optsOrDefaultValue;
+      if (optsOrDefaultValue && typeof optsOrDefaultValue === "object" && typeof optsOrDefaultValue.defaultValue === "string") return optsOrDefaultValue.defaultValue;
       return Array.isArray(k) ? k[k.length - 1] : k;
     };
     const retNotReady = [notReadyT, {}, false];
@@ -660,8 +626,7 @@ function useTranslation(ns) {
     retNotReady.ready = false;
     return retNotReady;
   }
-  if (i18n.options.react && i18n.options.react.wait !== void 0)
-    warnOnce("It seems you are still using the old wait option, you may migrate to the new useSuspense behaviour.");
+  if (i18n.options.react && i18n.options.react.wait !== void 0) warnOnce("It seems you are still using the old wait option, you may migrate to the new useSuspense behaviour.");
   const i18nOptions = {
     ...getDefaults(),
     ...i18n.options.react,
@@ -673,16 +638,14 @@ function useTranslation(ns) {
   } = i18nOptions;
   let namespaces = ns || defaultNSFromContext || i18n.options && i18n.options.defaultNS;
   namespaces = typeof namespaces === "string" ? [namespaces] : namespaces || ["translation"];
-  if (i18n.reportNamespaces.addUsedNamespaces)
-    i18n.reportNamespaces.addUsedNamespaces(namespaces);
+  if (i18n.reportNamespaces.addUsedNamespaces) i18n.reportNamespaces.addUsedNamespaces(namespaces);
   const ready = (i18n.isInitialized || i18n.initializedStoreOnce) && namespaces.every((n2) => hasLoadedNamespace(n2, i18n, i18nOptions));
   const memoGetT = useMemoizedT(i18n, props.lng || null, i18nOptions.nsMode === "fallback" ? namespaces : namespaces[0], keyPrefix);
   const getT = () => memoGetT;
   const getNewT = () => alwaysNewT(i18n, props.lng || null, i18nOptions.nsMode === "fallback" ? namespaces : namespaces[0], keyPrefix);
   const [t2, setT] = (0, import_react4.useState)(getT);
   let joinedNS = namespaces.join();
-  if (props.lng)
-    joinedNS = `${props.lng}${joinedNS}`;
+  if (props.lng) joinedNS = `${props.lng}${joinedNS}`;
   const previousJoinedNS = usePrevious(joinedNS);
   const isMounted = (0, import_react4.useRef)(true);
   (0, import_react4.useEffect)(() => {
@@ -694,13 +657,11 @@ function useTranslation(ns) {
     if (!ready && !useSuspense) {
       if (props.lng) {
         loadLanguages(i18n, props.lng, namespaces, () => {
-          if (isMounted.current)
-            setT(getNewT);
+          if (isMounted.current) setT(getNewT);
         });
       } else {
         loadNamespaces(i18n, namespaces, () => {
-          if (isMounted.current)
-            setT(getNewT);
+          if (isMounted.current) setT(getNewT);
         });
       }
     }
@@ -708,19 +669,14 @@ function useTranslation(ns) {
       setT(getNewT);
     }
     function boundReset() {
-      if (isMounted.current)
-        setT(getNewT);
+      if (isMounted.current) setT(getNewT);
     }
-    if (bindI18n && i18n)
-      i18n.on(bindI18n, boundReset);
-    if (bindI18nStore && i18n)
-      i18n.store.on(bindI18nStore, boundReset);
+    if (bindI18n && i18n) i18n.on(bindI18n, boundReset);
+    if (bindI18nStore && i18n) i18n.store.on(bindI18nStore, boundReset);
     return () => {
       isMounted.current = false;
-      if (bindI18n && i18n)
-        bindI18n.split(" ").forEach((e2) => i18n.off(e2, boundReset));
-      if (bindI18nStore && i18n)
-        bindI18nStore.split(" ").forEach((e2) => i18n.store.off(e2, boundReset));
+      if (bindI18n && i18n) bindI18n.split(" ").forEach((e2) => i18n.off(e2, boundReset));
+      if (bindI18nStore && i18n) bindI18nStore.split(" ").forEach((e2) => i18n.store.off(e2, boundReset));
     };
   }, [i18n, joinedNS]);
   (0, import_react4.useEffect)(() => {
@@ -732,10 +688,8 @@ function useTranslation(ns) {
   ret.t = t2;
   ret.i18n = i18n;
   ret.ready = ready;
-  if (ready)
-    return ret;
-  if (!ready && !useSuspense)
-    return ret;
+  if (ready) return ret;
+  if (!ready && !useSuspense) return ret;
   throw new Promise((resolve) => {
     if (props.lng) {
       loadLanguages(i18n, props.lng, namespaces, () => resolve());
@@ -826,14 +780,12 @@ function useSSR(initialI18nStore, initialLanguage) {
     i18n: i18nFromContext
   } = (0, import_react7.useContext)(I18nContext) || {};
   const i18n = i18nFromProps || i18nFromContext || getI18n();
-  if (i18n.options && i18n.options.isClone)
-    return;
+  if (i18n.options && i18n.options.isClone) return;
   if (initialI18nStore && !i18n.initializedStoreOnce) {
     i18n.services.resourceStore.data = initialI18nStore;
     i18n.options.ns = Object.values(initialI18nStore).reduce((mem, lngResources) => {
       Object.keys(lngResources).forEach((ns) => {
-        if (mem.indexOf(ns) < 0)
-          mem.push(ns);
+        if (mem.indexOf(ns) < 0) mem.push(ns);
       });
       return mem;
     }, i18n.options.ns);
