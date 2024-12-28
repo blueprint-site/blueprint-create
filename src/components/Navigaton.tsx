@@ -1,17 +1,13 @@
 import { useTranslation } from "react-i18next";
-
 import BlueprintLogo from '../assets/logo.webp';
 import AddonIcon from '../assets/minecart_coupling.webp';
 import SchematicIcon from '../assets/schematic.webp';
 import AboutIcon from '../assets/clipboard.webp'
 import Goggles from '../assets/goggles.webp'
 import Blog from "../assets/blueprint-blog.png";
-
 import NavigationLink from './NavigationLink';
 import { NavLink } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-
-
 import '../styles/navigation.scss';
 import LazyImage from "./LazyImage";
 import { useEffect, useRef, useState } from "react";
@@ -27,10 +23,11 @@ const Navigation = () => {
     const [userName, setUserName] = useState<string | null>(null);
     const [linkDestination, setLinkDestination] = useState<string | null>(null);
 
-    const location = useLocation();
-
     useEffect(() => {
         getUserData();
+    }, []);
+
+    useEffect(() => {
         setUserIcon(userdata?.user_metadata?.avatar_url ?? null);
         setUserName(userdata?.user_metadata?.custom_claims?.global_name ?? null);
         if (userdata) {
@@ -39,7 +36,7 @@ const Navigation = () => {
         else {
             setLinkDestination('/login');
         }
-    }, [location]);
+    }, [userdata]);
 
 
     const getUserData = async () => {

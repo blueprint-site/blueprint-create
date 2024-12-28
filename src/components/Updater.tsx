@@ -6,6 +6,10 @@ const Updater = () => {
     const [status, setStatus] = useState<string | null>();
 
     useEffect(() => {
+        // Retrieve the session
+        const { data, error } = supabase.auth.getSession()
+        console.log(data)
+
         const addonsLastUpdated = localStorage.getItem("addonsLastUpdated");
         const lastUpdatedTime = addonsLastUpdated ? new Date(addonsLastUpdated) : null;
         const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000); // 1 hour ago
@@ -44,7 +48,6 @@ const Updater = () => {
             console.log("Doing nothing...");
         }
 
-        getUserData();
     }, []);
 
     const addonsLastUpdated = localStorage.getItem("addonsLastUpdated");
@@ -58,18 +61,6 @@ const Updater = () => {
 
         return;
     }
-    const getUserData = async () => {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-            // Store the authentication session in local storage
-            localStorage.setItem('supabase.auth.token', JSON.stringify(session));
-        }
-
-        return (
-            <>
-            </>
-        );
-    };
 }
 
 export default Updater;

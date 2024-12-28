@@ -88,7 +88,6 @@ function UserPage() {
             </center>
 
             <br />
-            <button className='' onClick={getUserData}>See current user</button><br />
         </div>
     )
 }

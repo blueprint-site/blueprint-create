@@ -35,6 +35,8 @@ import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import XHR from "i18next-http-backend";
 
+// Updater 
+import Updater from "./components/Updater";
 
 i18n
   .use(XHR)
@@ -53,6 +55,8 @@ const App = () => {
   const isAuthenticated = () => {
     return !!localStorage.getItem('token');
   };
+
+  Updater();
 
   return (
     <BrowserRouter>
