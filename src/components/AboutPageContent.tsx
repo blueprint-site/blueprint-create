@@ -20,6 +20,27 @@ const AboutPageContent = () => {
                     Or email us at: <a href="mailto:blueprint-site@proton.me">blueprint-site@proton.me</a>
                 </p>
             </div>
+            <br />
+            <div className="body">
+                <h2 className="paragraph-section">
+                    GitHub
+                </h2>
+                <p>
+                    Our github Link: <a href="https://github.com/blueprint-site">https://github.com/blueprint-site</a>. <br />
+                    <b>Instructions</b> for <b>running locally</b> are included in the <b>Readme.md</b> file on <b>"react-refactor" branch</b>.
+                </p>
+            </div>
+            <br />
+            <div className="body">
+                <h2 className="paragraph-section">
+                    Discord
+                </h2>
+                <p>
+                    Our Discord: <a href="https://discord.gg/ZF7bwgatrT">https://discord.gg/ZF7bwgatrT</a>. <br />
+                    Here we post updates, sneak peeks, and you can report issues.
+                </p>
+            </div>
+            <br />
         </div>
     );
 }

@@ -75,6 +75,7 @@ function Contributors() {
                     </LazyLoad>
                 </div>
             </div>
+            <br />
         </>
     );
 }
