@@ -40,9 +40,10 @@ const SchematicExpanded = () => {
             </div>
             <div className="main-body">
                 <span className="debug-text">Description:</span>
-                <h5>{schematicData[0].description}</h5>
-                <h6>Available for Minecraft version: {schematicData[0].game_versions ? schematicData[0].game_versions.join(', ') : 'unknown'}</h6>
-                <h6>Compatible with Create: {schematicData[0].create_versions ? schematicData[0].create_versions.join(', ') : 'unknown'}</h6>
+                <h5 className="expanded-schematic-description">{schematicData[0].description}</h5>
+                <h6>Available for Minecraft version: {schematicData[0].game_versions ? schematicData[0].game_versions : 'unknown'}</h6>
+                <h6>Compatible with Create: {schematicData[0].create_versions ? schematicData[0].create_versions : 'unknown'}</h6>
+                <h6>Made for Create on: {schematicData[0].modloader ? schematicData[0].modloader : 'unknown'}</h6>
                 <h6>Created by: {schematicData[0].author}</h6>
                 <br />
                 <span>Uploaded on: {new Intl.DateTimeFormat(undefined, { dateStyle: 'short', timeStyle: 'short' }).format(new Date(schematicData[0].created_at))}</span>

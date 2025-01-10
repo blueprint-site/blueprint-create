@@ -28,11 +28,17 @@
     background-color: var(--container-background);
     padding: 1em;
 }
+.expanded-schematic-description {
+    white-space: pre-wrap;
+    margin-bottom: 1em;
+    font-weight: 500;
+    font-size: 1.1em;
+}
 .download-schematic {
     background-color: green;
     color: white;
     text-decoration: none;
-    padding: 0.3em 0.8em;
+    padding: 0.4em 2.2em;
     border-radius: 0.7em;
     transition: 0.3s ease;
 }
@@ -45,7 +51,7 @@
     background: linear-gradient(45deg, #5b0745, #64045a, #6a0272, #6f018c, #7003a8, #6e0ac5, #6915e3, #5d23ff); /* made at https://learnui.design/tools/gradient-generator.html */
     color: white;
     text-decoration: none;
-    padding: 0.3em 0.8em;
+    padding: 0.4em 1.4em;
     border-radius: 0.7em;
     margin-left: 0.3em;
     transition: 0.3s ease;

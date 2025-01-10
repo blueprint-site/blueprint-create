@@ -21,6 +21,7 @@ const SchematicExpanded = lazy(() => import("./components/SchematicExpanded"));
 const LoginPage = lazy(() => import("./pages/Login/Login"));
 const RegisterPage = lazy(() => import("./pages/Register/Register"));
 const UserPage = lazy(() => import("./pages/User/UserPage"));
+const UserSettings = lazy(() => import("./pages/User/Settings/UserSettings"));
 
 // Protected Routes
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -76,15 +77,19 @@ const App = () => {
             <Route path="/addons/:slug" element={<AddonDetails />} />
             <Route path="/schematics/:id" element={<SchematicExpanded />} />
 
+            {/* Users */}
+            <Route path="/user/:username" element={<UserPage />} />
+            <Route path="/user" element={<UserPage />} />
             {/* Protect the UserPage route */}
             <Route
-              path="user"
+              path="usersettings"
               element={
                 <ProtectedRoute>
-                  <UserPage />
+                  <UserSettings />
                 </ProtectedRoute>
               }
             />
+
           </Route>
         </Routes>
       </Suspense>

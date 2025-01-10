@@ -23,6 +23,7 @@
     "i18next": "^23.11.3",
     "i18next-browser-languagedetector": "^7.2.1",
     "i18next-http-backend": "^2.5.1",
+    "jquery": "^3.7.1",
     "jsx-runtime": "^1.2.0",
     "lodash": "^4.17.21",
     "marked": "^14.1.2",
@@ -45,6 +46,7 @@
   },
   "devDependencies": {
     "@types/dompurify": "^3.0.5",
+    "@types/jquery": "^3.5.32",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@types/react-lazyload": "^3.2.3",

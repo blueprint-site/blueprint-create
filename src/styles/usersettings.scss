@@ -1,0 +1,83 @@
+:root {
+    --main-background: #E5E7EB;
+    --dark-main-background: black;
+    --text-color: white;
+    --dark-text-color: black;
+    --container-background: #B3CAE5;
+    --dark-container-background: #527caf;
+    --addon-color: #7594f0;
+}
+
+.avatar {
+    width: 10em;
+    border-radius: 15px;
+    box-shadow: 0.2em 0.2em 0.3em rgba(0, 0, 0, 0.3);
+}
+.name {
+    font-family: "Minecraftia", Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow: 0.2em 0.2em 0.3em rgba(0, 0, 0, 0.3);
+}
+.welcomeback {
+    text-shadow: 0.2em 0.2em 0.3em rgba(0, 0, 0, 0.3);
+    color: white;
+}
+.top-container{
+    padding: 0.3em;
+    // background-image: url("../assets/backgrounds/abstract-bg.png");
+    display: inline-flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+    border-radius: 10px;
+    // background: linear-gradient(180deg, #b3cae5, #bbc2f4, #d3b5f7, #f5a4ea, #ff91c9, #ff8599, #ff8860, #ff9913);
+    background: linear-gradient(180deg, #b3cae5, #b3cae5, #b1c8e5, #abc4e6, #9fbbe7, #8dabea, #7f9eed, #7897ef, #7594f0, #7594f0);
+}
+.databox-1 {
+    background-color: white;
+    padding: 1em;
+    margin: 0em 10% 0em 10%;
+    border-radius: 30px;
+}
+.data-row-diagnostic {
+    opacity: 0.7;
+    font-size: medium   ;
+}
+.data-row-dangerous {
+    color: rgb(207, 49, 49);
+}
+.dangerous-button {
+    border: none;
+    background-color: rgb(231, 70, 70);
+    color: white;
+    padding: 0.2em 1em;
+    border-radius: 10px;
+    transition: 0.3s ease;
+    margin-bottom: 5px;
+}
+.dangerous-button:hover {
+    border-radius: 0px;
+    border-color: red;
+    cursor: pointer;
+
+    box-shadow: 0em 0em 1em 0.1em red;
+}
+.dark-mode {
+    .data-row {
+        color: white;
+    }
+    .data-row-diagnostic {
+        opacity: 0.7;
+        color: white;
+    }
+    .databox-1 {
+        background-color: rgb(71, 71, 71);
+    }
+    .data-row-dangerous {
+        color: rgb(247, 109, 109);
+    }
+    .top-container {
+        background: linear-gradient(180deg, #679cdc, #669bdb, #6094d2, #5684bc, #527db1, #527caf);
+    }
+}
