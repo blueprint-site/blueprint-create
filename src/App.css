@@ -1,5 +1,7 @@
-html, body {
-    height: 100%; /* Ensure full height */
+html,
+body {
+
+    height: 100%;
     margin: 0;
     padding: 0;
     display: flex;
@@ -13,5 +15,5 @@ html, body {
 }
 
 main {
-    flex: 1; /* Pushes the footer to the bottom when content is less than viewport height */
+    flex: 1;
 }

@@ -9,7 +9,8 @@ import DevinsBadges from "./DevinsBadges";
 const AddonDetails = () => {
   const { slug } = useParams();
   const [addonBody, setAddonBody] = useState<string | null>(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);  // State for current image index
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const [isAnimating, setIsAnimating] = useState<boolean>(false);
 
   type Addon = {
     id: number;
@@ -41,9 +42,129 @@ const AddonDetails = () => {
 
   const sanitizeHtml = (htmlContent: string) => {
     return DOMPurify.sanitize(htmlContent, {
-      ALLOWED_TAGS: ['iframe', 'h2', 'p', 'a', 'img', 'br', 'div', 'span', 'h1', 'ul', 'li', 'h4'],
-      ALLOWED_ATTR: ['src', 'width', 'height', 'allowfullscreen', 'frameborder', 'class', 'alt', 'href'],
-      ADD_ATTR: ['allowfullscreen'],
+      ALLOWED_TAGS: [
+        "a",
+        "abbr",
+        "acronym",
+        "address",
+        "article",
+        "aside",
+        "audio",
+        "b",
+        "blockquote",
+        "body",
+        "br",
+        "button",
+        "canvas",
+        "caption",
+        "cite",
+        "code",
+        "col",
+        "colgroup",
+        "dd",
+        "del",
+        "details",
+        "dfn",
+        "div",
+        "dl",
+        "dt",
+        "em",
+        "embed",
+        "fieldset",
+        "figcaption",
+        "figure",
+        "footer",
+        "form",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "head",
+        "header",
+        "hgroup",
+        "hr",
+        "html",
+        "i",
+        "iframe",
+        "img",
+        "input",
+        "ins",
+        "kbd",
+        "label",
+        "legend",
+        "li",
+        "link",
+        "main",
+        "map",
+        "mark",
+        "menu",
+        "menuitem",
+        "meta",
+        "meter",
+        "nav",
+        "noscript",
+        "object",
+        "ol",
+        "optgroup",
+        "option",
+        "output",
+        "p",
+        "param",
+        "picture",
+        "pre",
+        "progress",
+        "q",
+        "rb",
+        "rp",
+        "rt",
+        "rtc",
+        "ruby",
+        "s",
+        "samp",
+        "script",
+        "section",
+        "select",
+        "slot",
+        "small",
+        "source",
+        "span",
+        "strong",
+        "style",
+        "sub",
+        "summary",
+        "sup",
+        "table",
+        "tbody",
+        "td",
+        "template",
+        "textarea",
+        "tfoot",
+        "th",
+        "thead",
+        "time",
+        "title",
+        "tr",
+        "track",
+        "u",
+        "ul",
+        "var",
+        "video",
+        "wbr",
+      ],
+      ALLOWED_ATTR: [
+        "href",
+        "src",
+        "width",
+        "height",
+        "alt",
+        "title",
+        "style",
+        "class",
+        "id",
+        "data-*",
+      ]
     });
   };
 
@@ -71,17 +192,19 @@ const AddonDetails = () => {
   const addons: Addon[] = data ? JSON.parse(data) : [];
   const addon = getAddonDetails(addons, slug);
 
-  const nextImage = () => {
-    if (addon && currentImageIndex < addon.gallery.length - 1) {
-      setCurrentImageIndex(currentImageIndex + 1);
-    }
+  const changeImage = (direction: 'next' | 'prev') => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setTimeout(() => {
+      if (direction === 'next' && addon && currentImageIndex < addon.gallery.length - 1) {
+        setCurrentImageIndex(currentImageIndex + 1);
+      } else if (direction === 'prev' && currentImageIndex > 0) {
+        setCurrentImageIndex(currentImageIndex - 1);
+      }
+      setIsAnimating(false)
+    }, 200); // duration of animation
   };
 
-  const prevImage = () => {
-    if (currentImageIndex > 0) {
-      setCurrentImageIndex(currentImageIndex - 1);
-    }
-  };
   useEffect(() => {
     getAddonDescription();
   }, [slug]);
@@ -99,17 +222,17 @@ const AddonDetails = () => {
               <span className="downloads-tag">Downloads: {addon.downloads}</span>
               &nbsp;<span className="likes-tag">Likes: {addon.follows}</span>
             </div>
-            <a target="_blank" rel="noopener noreferrer" className="addon-button"
+            <a target="_blank" rel="noopener noreferrer" className=""
               href={`${" https://modrinth.com/mod/" + addon?.slug
                 }`}
             >
-              <DevinsBadges
+              <label htmlFor="" className="modrinth-addon-button"><DevinsBadges
                 type="compact"
                 category="available"
                 name="modrinth"
                 format="png"
                 height={46}
-              />
+              /></label>
             </a>
           </div>
 
@@ -120,11 +243,15 @@ const AddonDetails = () => {
           <div className="gallery">
             {addon.gallery.length > 0 ? (
               <div className="gallery-container">
-                <button className="back-button" onClick={prevImage} disabled={currentImageIndex === 0}>
+                <button className="back-button" onClick={() => changeImage('prev')} disabled={currentImageIndex === 0}>
                   &#9664; Back
                 </button>
-                <img src={addon.gallery[currentImageIndex]} alt={`Gallery Image ${currentImageIndex + 1}`} />
-                <button className="forward-button" onClick={nextImage} disabled={currentImageIndex === addon.gallery.length - 1}>
+                <img
+                  src={addon.gallery[currentImageIndex]}
+                  alt={`Gallery Image ${currentImageIndex + 1}`}
+                  className={`gallery-image ${isAnimating ? 'animating' : ''}`}
+                />
+                <button className="forward-button" onClick={() => changeImage('next')} disabled={currentImageIndex === addon.gallery.length - 1}>
                   Forward &#9654;
                 </button>
               </div>
@@ -133,7 +260,6 @@ const AddonDetails = () => {
               )}
               <span className="debug-info">{`Image ${currentImageIndex + 1} of ${addon.gallery.length}`}</span>
           </div>
-
 
           <br />
 
@@ -153,3 +279,4 @@ const AddonDetails = () => {
 };
 
 export default AddonDetails;
+

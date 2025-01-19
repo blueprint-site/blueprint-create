@@ -4,7 +4,7 @@ import "../styles/bottombar.scss"
 function BottomBar() {
 	
 	return (
-		<div className="bottom-bar">
+		<footer className="bottom-bar">
 			<div className="bottom-bar-content">
 				<img src={Logo} alt="" className="bottom-bar-logo" />
 				<h4 className="bottom-bar-sitename">Blueprint Site</h4>
@@ -12,7 +12,7 @@ function BottomBar() {
 				<h6 className="bottom-bar-bug">NOT AN OFFICIAL MINECRAFT SERVICE. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.</h6>
 				<h6 className="bottom-bar-bug">Not affiliated with Create Mod team or one of the addons in any way.</h6>
 			</div>
-		</div>
+		</footer>
 	);
 }
 

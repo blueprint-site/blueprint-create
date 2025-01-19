@@ -79,7 +79,7 @@ const App = () => {
 
             {/* Users */}
             <Route path="/user/:username" element={<UserPage />} />
-            <Route path="/user" element={<UserPage />} />
+            <Route path="/user" element={<UserPage />}/>
             {/* Protect the UserPage route */}
             <Route
               path="usersettings"

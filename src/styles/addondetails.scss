@@ -115,11 +115,11 @@
     cursor: pointer;
     border-radius: 100px;
     z-index: 1;
-    /* Ensure buttons stay on top of the image */
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    /* Center text vertically in the button */
     justify-content: center;
+    white-space: nowrap; /* Ensure text stays on one line */
+    transition: 0.2s ease;
 }
 
 /* Center the button vertically relative to the image */
@@ -130,16 +130,30 @@
 .forward-button {
     margin-left: 10px;
 }
-
+.back-button:hover,
+.forward-button:hover {
+    box-shadow: 0em 0em 1em rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+}
 /* Disable button styling */
 .back-button:disabled,
 .forward-button:disabled {
     background-color: rgba(0, 0, 0, 0.2);
     cursor: not-allowed;
 }
-.addon-button {
+.modrinth-addon-button {
     margin-top: 1em;
+    transition: 0.1s ease;
 }
-.addon-button:hover {
-    box-shadow: 0 0 10em rgba(0, 0, 0, 0.2);
+.modrinth-addon-button:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
 }
+.gallery-image {
+    transition: opacity 0.5s ease;
+  }
+  
+  .gallery-image.animating {
+    opacity: 0.5;
+
+  }

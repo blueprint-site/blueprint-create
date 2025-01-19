@@ -4,7 +4,6 @@ import "../styles/schematicslist.scss";
 import { Link } from "react-router-dom";
 import DevinsBadges from "./DevinsBadges";
 import LoadingAnimation from "./LoadingAnimation";
-
 interface Schematic {
   id: string;
   title: string;
@@ -18,6 +17,10 @@ interface Schematic {
   create_versions: string;
   modloader: string;
 }
+
+// const categoryMap = JSON.parse(localStorage.getItem('categoryMap') || '{}');
+// const categoryName = categoryMap['someId']; // Replace 'someId' with the actual ID.
+
 
 function SchematicsList() {
   const [schematics, setSchematics] = useState<Schematic[]>([]);
