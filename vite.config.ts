@@ -1,9 +1,8 @@
-import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { polyfillNode } from "esbuild-plugin-polyfill-node";
-import nodePolyfills from 'rollup-plugin-polyfill-node';
+import path from "path";
+import { defineConfig } from "vite";
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   build: {
     rollupOptions: {
@@ -11,17 +10,24 @@ export default defineConfig({
         preserveModules: true
       },
       treeshake: false,
-      preserveEntrySignatures: "exports-only",
-      plugins: [
-        nodePolyfills()
-      ]
+      preserveEntrySignatures: "exports-only"
     }
   },
-  optimizeDeps: {
-    esbuildOptions: {
-      plugins: [polyfillNode({})],
+  plugins: [
+    react({}),
+    nodePolyfills({
+      globals: {
+        Buffer: true,
+        global: true,
+        process: true,
+      },
+      protocolImports: true,
+    })
+  ],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
     },
   },
-  plugins: [react({})],
   envPrefix: "APP"
 });

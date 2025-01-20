@@ -14,11 +14,19 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* Source Maps */
+    "sourceMap": true,
+    "inlineSourceMap": false,
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src", "fuckadblock.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
