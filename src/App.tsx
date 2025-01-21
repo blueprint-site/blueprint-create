@@ -1,5 +1,5 @@
-import { BrowserRouter, Routes, Route, Router, Navigate } from "react-router-dom";
-import { Suspense, lazy, useEffect } from "react";
+import { Suspense, lazy } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 // Loading Overlays
 import LoadingOverlay from "./components/LoadingOverlays/LoadingOverlay";
@@ -30,11 +30,11 @@ import ProtectedRoute from "./components/ProtectedRoute";
 const Layout = lazy(() => import('./components/Layout'));
 
 // Translations
-import Translations from "./assets/translations.json";
 import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import XHR from "i18next-http-backend";
+import { initReactI18next } from "react-i18next";
+import Translations from "./assets/translations.json";
 
 // Updater 
 import Updater from "./components/Updater";
@@ -52,16 +52,15 @@ i18n
     },
   });
 
-const App = () => {
-  const isAuthenticated = () => {
-    return !!localStorage.getItem('token');
-  };
-
-  Updater();
-
-  return (
-    <BrowserRouter>
-      <Suspense fallback={<LoadingOverlay />}>
+  const App = () => {
+    const isAuthenticated = () => {
+      return !!localStorage.getItem('token');
+    };
+  
+    return (
+      <BrowserRouter>
+        <Suspense fallback={<LoadingOverlay />}>
+          <Updater />  {/* Proper JSX usage */}
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
