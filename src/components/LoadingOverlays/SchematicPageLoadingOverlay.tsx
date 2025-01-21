@@ -1,6 +1,6 @@
-import LoadingGif from '../../assets/loading.gif';
+import LoadingGif from '@/assets/loading.gif';
 
-import '../../styles/schematicpageloadingoverlay.scss';
+import '@/styles/schematicpageloadingoverlay.scss';
 
 function SchematicPageLoadingOverlay() {
     return (

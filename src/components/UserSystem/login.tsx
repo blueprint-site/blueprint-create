@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import "../../styles/login.scss";
-import GoogleLogo from "../../assets/icons/google-mark-color.png";
-import GithubLogo from "../../assets/icons/github-mark-white.png";
-import DiscordLogo from "../../assets/icons/discord-mark-blue.png";
+import DiscordLogo from "@/assets/icons/discord-mark-blue.png";
+import GithubLogo from "@/assets/icons/github-mark-white.png";
+import GoogleLogo from "@/assets/icons/google-mark-color.png";
+import "@/styles/login.scss";
+import React from 'react';
 import supabase from '../Supabase';
-import { Router } from 'react-router-dom';
 
 var client = supabase;
 

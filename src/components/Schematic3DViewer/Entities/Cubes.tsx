@@ -1,6 +1,6 @@
-import { useSchematicStore } from "../store/schematic";
-import { Cube } from "./Cube";
+import { useSchematicStore } from "@/store/schematic";
 import { nanoid } from "nanoid";
+import { Cube } from "./Cube";
 export function Cubes() {
   const { schematic } = useSchematicStore();
 

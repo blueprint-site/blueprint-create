@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useSchematicStore } from "@/store/schematic";
 import { Buffer } from "buffer";
 import nbt from "prismarine-nbt";
-import { useSchematicStore } from "../store/schematic";
+import { useEffect, useState } from "react";
 
 import * as fflate from "fflate";
 

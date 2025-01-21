@@ -1,5 +1,5 @@
+import "@/styles/discoveraddonstext.scss";
 import { useTranslation } from "react-i18next";
-import "../styles/discoveraddonstext.scss"
 
 function DiscoverAddonsText() {
     const { t } = useTranslation();

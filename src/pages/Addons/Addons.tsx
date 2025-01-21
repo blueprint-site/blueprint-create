@@ -1,10 +1,10 @@
+import LoadingOverlay from "@/components/LoadingOverlays/LoadingOverlay";
+import Updater from "@/components/Updater";
 import { Suspense, lazy, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import LoadingOverlay from "../../components/LoadingOverlays/LoadingOverlay";
-import Updater from "../../components/Updater";
 
-const AddonList = lazy(() => import("../../components/AddonList"));
-const CollectionComponent = lazy(() => import("../../components/Collections"));
+const AddonList = lazy(() => import("@/components/AddonList"));
+const CollectionComponent = lazy(() => import("@/components/Collections"));
 
 export default function Addons() {
   const location = useLocation(); // To detect location change

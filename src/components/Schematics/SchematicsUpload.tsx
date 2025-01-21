@@ -1,15 +1,10 @@
-import "../styles/schematicsupload.scss";
-import React, { useState, useEffect } from "react";
-import checkmark from "../assets/nugget_of_experience.webp";
-import xmark from "../assets/polished_rose_quartz.webp";
-import paper_checkmark from "../assets/paper_checkmark.png";
-import arrow_left from "../assets/ui_arrow_left.png";
-import LoadingAnimation from "./LoadingAnimation";
-import LoadingSuccess from "../components/LoadingOverlays/LoadingSuccess";
+import noImageSelected from "@/assets/backgrounds/noimage.png";
+import "@/styles/schematicsupload.scss";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import supabase from "./Supabase";
-import noImageSelected from "../assets/backgrounds/noimage.png";
-import { Alert } from "react-bootstrap";
+import LoadingAnimation from "../LoadingAnimation";
+import LoadingSuccess from "../LoadingOverlays/LoadingSuccess";
+import supabase from "../Supabase";
 
 function SchematicsUpload() {
     const [uploadedImage, setUploadedImage] = useState<string>();

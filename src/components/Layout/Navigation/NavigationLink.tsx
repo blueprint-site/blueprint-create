@@ -1,6 +1,9 @@
-import LazyImage from "@/components/LazyImage";
+// src/components/Navigation/NavigationLink.tsx
+
 import { NavLink } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
+
+import LazyImage from "@/components/LazyImage";
 
 interface NavigationLinkProps {
   destination: string;

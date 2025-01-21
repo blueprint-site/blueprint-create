@@ -1,7 +1,7 @@
-import { useParams } from "react-router-dom";
-import "../styles/schematicexpanded.scss";
-import supabase from "./Supabase"; // Your Supabase client instance
+import "@/styles/schematicexpanded.scss";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import supabase from "./Supabase"; // Your Supabase client instance
 
 const SchematicExpanded = () => {
     const { id } = useParams();

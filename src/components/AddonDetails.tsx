@@ -1,9 +1,8 @@
-import { useParams } from "react-router-dom";
-import "../styles/addondetails.scss";
-import DOMPurify from "dompurify";
-import { marked } from "marked";
+import "@/styles/addondetails.scss";
 import axios from "axios";
+import DOMPurify from "dompurify";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import DevinsBadges from "./DevinsBadges";
 
 const AddonDetails = () => {

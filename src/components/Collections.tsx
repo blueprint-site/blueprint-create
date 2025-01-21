@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Collections from './CollectionHandler';
-import Badge from 'react-bootstrap/Badge';
 
-import "../styles/collections.scss";
+import "@/styles/collections.scss";
 
 const CollectionComponent: React.FC = () => {
     const [collection, setCollection] = useState<string[]>([]);

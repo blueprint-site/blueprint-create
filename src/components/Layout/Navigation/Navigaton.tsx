@@ -1,12 +1,13 @@
-import LazyImage from "@/components/LazyImage";
-import supabase from "@/components/Supabase";
-import NavigationLink from "./NavigationLink";
+// src/components/Navigation/Navigation.tsx
 
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink } from 'react-router-dom';
 
-// Import images
+import LazyImage from "@/components/LazyImage";
+import supabase from "@/components/Supabase";
+import NavigationLink from "./NavigationLink";
+
 import Blog from "@/assets/blueprint-blog.png";
 import AboutIcon from '@/assets/clipboard.webp';
 import Goggles from '@/assets/goggles.webp';

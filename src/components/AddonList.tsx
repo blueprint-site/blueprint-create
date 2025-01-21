@@ -1,11 +1,11 @@
+import Experience from "@/assets/block_of_experience.webp";
 import { useEffect, useState } from "react";
-import LoadingAnimation from "./LoadingAnimation";
-import ErrorAlert from "./ErrorAlert";
-import '../styles/addonslist.scss';
-import AddonListItem from "./AddonListItem";
 import { Dropdown } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import Experience from "../assets/block_of_experience.webp";
+import '../styles/addonslist.scss';
+import AddonListItem from "./AddonListItem";
+import ErrorAlert from "./ErrorAlert";
+import LoadingAnimation from "./LoadingAnimation";
 
 
 // Define the Addon interface

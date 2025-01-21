@@ -1,4 +1,4 @@
-import Login from "../../components/UserSystem/login";
+import Login from "@/components/UserSystem/login";
 import "./Login.module.scss";
 
 function LoginPage() {

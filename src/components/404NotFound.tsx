@@ -1,4 +1,4 @@
-import "../styles/404notfound.scss";
+import "@/styles/404notfound.scss";
 
 function Error404Page() {
     return (

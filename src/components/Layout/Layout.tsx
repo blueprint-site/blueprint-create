@@ -1,9 +1,11 @@
-// Layout.tsx
+// src/components/Layout/Layout.tsx
+
 import { useThemeStore } from "@/stores/themeStore";
 import { Outlet, useLocation } from "react-router-dom";
-import BottomBar from "./BottomBar";
-import Navigation from "./Navigation/Navigaton";
-import SchemeToggle from "./SchemeToggle";
+
+import BottomBar from "@/components/Layout/BottomBar";
+import Navigation from "@/components/Layout/Navigation/Navigaton";
+import SchemeToggle from "@/components/SchemeToggle";
 
 function Layout() {
   const location = useLocation();

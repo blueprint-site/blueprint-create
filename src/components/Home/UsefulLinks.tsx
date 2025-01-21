@@ -1,9 +1,11 @@
 // /src/components/UsefulLinks.tsx
 
 import { useTranslation } from "react-i18next";
-import WikiLogo from "../assets/brass_ingot.webp";
-import CreateLogo from "../assets/create_mod_logo.webp";
-import LazyImage from "./LazyImage";
+
+import WikiLogo from "@/assets/brass_ingot.webp";
+import CreateLogo from "@/assets/create_mod_logo.webp";
+
+import LazyImage from "@/components/LazyImage";
 
 const UsefulLinks = () => {
   const { t } = useTranslation();

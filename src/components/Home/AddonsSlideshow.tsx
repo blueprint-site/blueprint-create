@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Banner1 from "../assets/banners/banner1.webp";
-import Banner2 from "../assets/banners/banner2.webp";
-import Banner3 from "../assets/banners/banner3.webp";
-import Banner4 from "../assets/banners/banner4.webp";
-import Banner5 from "../assets/banners/banner5.webp";
-import LazyImage from './LazyImage';
 
-// Styled components for transitions
-const SlideImage = styled(LazyImage)`
+import Banner1 from "@/assets/banners/banner1.webp";
+import Banner2 from "@/assets/banners/banner2.webp";
+import Banner3 from "@/assets/banners/banner3.webp";
+import Banner4 from "@/assets/banners/banner4.webp";
+import Banner5 from "@/assets/banners/banner5.webp";
+
+import LazyImage from '@/components/LazyImage';
+
+interface SlideImageProps {
+  $isVisible: boolean;
+}
+
+const SlideImage = styled(LazyImage)<SlideImageProps>`
   position: absolute;
   top: 0;
   left: 0;

@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next";
 
 import LoadingOverlay from "@/components/LoadingOverlays/LoadingOverlay";
 
-const AddonsSlideshow = lazy(() => import("@/components/AddonsSlideshow"));
-const WhatIsBlueprint = lazy(() => import("@/components/WhatIsBlueprint"));
-const UsefulLinks = lazy(() => import("@/components/UsefulLinks"));
-const HomeForCreators = lazy(() => import("@/components/HomeForCreators"));
+const AddonsSlideshow = lazy(() => import("@/components/Home/AddonsSlideshow"));
+const WhatIsBlueprint = lazy(() => import("@/components/Home/WhatIsBlueprint"));
+const UsefulLinks = lazy(() => import("@/components/Home/UsefulLinks"));
+const HomeForCreators = lazy(() => import("@/components/Home/ForCreators"));
 
 function Home() {
   const { t } = useTranslation();

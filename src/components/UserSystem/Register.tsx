@@ -1,6 +1,6 @@
-import "../../styles/register.scss";
-import React, { useState } from 'react';
+import "@/styles/register.scss";
 import axios from 'axios';
+import React from 'react';
 
 function Register() {
     const [username, setUsername] = React.useState('');

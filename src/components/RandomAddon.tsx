@@ -1,11 +1,9 @@
-import { useState, useEffect } from "react";
-import LoadingAnimation from "./LoadingAnimation";
-import axios from "axios";
-import "../styles/randomaddon.scss";
-import { random } from "nanoid";
-import DevinsBadges from "./DevinsBadges";
-import Updater from "./Updater";
+import "@/styles/randomaddon.scss";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import DevinsBadges from "./DevinsBadges";
+import LoadingAnimation from "./LoadingAnimation";
+import Updater from "./Updater";
 
 function RandomAddon() {
     Updater();

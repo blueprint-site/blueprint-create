@@ -9,7 +9,7 @@ import { schematicRoutes } from '@/routes/schematicRoutes';
 const Home = lazy(() => import('@/pages/Home/Home'));
 const About = lazy(() => import('@/pages/About/About'));
 const NoPage = lazy(() => import('@/pages/404/NoPage'));
-const Layout = lazy(() => import('@/components/Layout'));
+const Layout = lazy(() => import('@/components/Layout/Layout'));
 
 export const routes: RouteObject[] = [
   {

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import supabase from "./Supabase"; // Your Supabase client instance
-import "../styles/schematicslist.scss";
 import { Link } from "react-router-dom";
-import DevinsBadges from "./DevinsBadges";
-import LoadingAnimation from "./LoadingAnimation";
+
+import supabase from "@/components/Supabase";
+
+import LoadingAnimation from "@/components/LoadingAnimation";
+import "@/styles/schematicslist.scss";
+
 interface Schematic {
   id: string;
   title: string;
@@ -133,6 +135,6 @@ function SchematicsList() {
       </div>
     </div>
   );
-};
+}
 
 export default SchematicsList;

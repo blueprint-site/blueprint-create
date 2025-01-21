@@ -1,10 +1,11 @@
-import AddonIcon from "../assets/minecart_coupling.webp"
-import SchematicIcon from "../assets/schematic.webp"
-import BlueprintLogo from "../assets/logo.webp"
-
-import "../styles/whatisblueprint.scss"
 import { useTranslation } from "react-i18next"
-import LazyImage from "./LazyImage"
+
+import BlueprintLogo from "@/assets/logo.webp"
+import AddonIcon from "@/assets/minecart_coupling.webp"
+import SchematicIcon from "@/assets/schematic.webp"
+
+import LazyImage from "@/components/LazyImage"
+import "@/styles/whatisblueprint.scss"
 
 function WhatIsBlueprint() {
     const { t } = useTranslation();

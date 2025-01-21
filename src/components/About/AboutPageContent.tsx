@@ -1,6 +1,4 @@
-import Contributors from "./Contributors";
-import "../styles/aboutpagecontent.scss"
-import NoiseImage from "../assets/backgrounds/noise.png";
+import "@/styles/aboutpagecontent.scss";
 
 const AboutPageContent = () => {
     return (

@@ -1,7 +1,7 @@
+import { useKeyboard } from "@/hooks/useKeyboard";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useMemo } from "react";
 import { Vector3 } from "three";
-import { useKeyboard } from "../hooks/useKeyboard";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls.js";
 
 const velocity = new Vector3();

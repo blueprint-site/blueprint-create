@@ -1,8 +1,8 @@
 import { Suspense, lazy } from "react";
 
-import LoadingOverlay from "../../components/LoadingOverlays/LoadingOverlay";
-const AboutPageContent = lazy(() => import("../../components/AboutPageContent"));
-const Contributors = lazy(() => import("../../components/Contributors"));
+import LoadingOverlay from "@/components/LoadingOverlays/LoadingOverlay";
+const AboutPageContent = lazy(() => import("@/components/AboutPageContent"));
+const Contributors = lazy(() => import("@/components/Contributors"));
 function About() {
     return (
         <>
