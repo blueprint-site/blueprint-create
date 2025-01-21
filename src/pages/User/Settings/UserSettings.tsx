@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import "../../../styles/usersettings.scss";
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import supabase from '../../../components/Supabase';
+import "../../../styles/usersettings.scss";
 
-var client = supabase;
+const client = supabase;
 
 function UserPage() {
     const [userdata, setUserdata] = useState<User | null>(null);
