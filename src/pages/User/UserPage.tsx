@@ -46,36 +46,35 @@ const UserPage = () => {
   if (error) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-destructive">Error: {error}</p>
+        <p className="text-destructive">{error}</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* User Profile Header */}
-      <div className="container mx-auto pt-8">
-        <div className="flex items-start space-x-6">
+    <div className="min-h-screen bg-background text-foreground">
+      <div className="container mx-auto pt-8 sm:px-6 lg:px-8">
+        <div className="flex flex-col border-b border-divider pb-3 sm:flex-row items-start gap-6">
           {/* Avatar */}
           <div className="flex-shrink-0">
             {userData?.user_metadata?.avatar_url ? (
               <img 
                 src={userData.user_metadata.avatar_url} 
                 alt="Profile" 
-                className="w-16 h-16 rounded-full object-cover"
+                className="w-16 h-16 rounded-full object-cover ring-2 ring-border"
               />
             ) : (
-              <div className="w-16 h-16 rounded-full bg-container-dark flex items-center justify-center">
-                <User className="w-8 h-8 text-white" />
+              <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center ring-2 ring-border">
+                <User className="w-8 h-8 text-secondary-foreground" />
               </div>
             )}
           </div>
 
           {/* User Info */}
-          <div className="flex-grow">
-            <div className="flex items-center justify-between">
+          <div className="flex-grow w-full">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h2 className="text-2xl font-bold">
+                <h2 className="text-2xl font-bold text-foreground">
                   {userData?.user_metadata?.custom_claims?.global_name || 
                    userData?.user_metadata?.preferred_username || 
                    'Anonymous User'}
@@ -87,18 +86,19 @@ const UserPage = () => {
                   Joined {new Date(userData?.created_at || '').toLocaleDateString()}
                 </p>
               </div>
-              <div className="flex items-center space-x-2">
+              <div>
                 <Button 
                   variant="outline" 
                   size="sm"
                   onClick={() => navigate("/usersettings")}
+                  className="w-full sm:w-auto"
                 >
                   Edit Profile
                 </Button>
               </div>
             </div>
             
-            <div className="flex items-center space-x-6 mt-4 text-sm text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-6 mt-4 text-sm text-muted-foreground">
               <div className="flex items-center">
                 <span>Provider: {userData?.app_metadata?.provider || 'None'}</span>
               </div>
@@ -114,20 +114,20 @@ const UserPage = () => {
           </div>
         </div>
 
-        {/* Projects Section - Placeholder for now */}
+        {/* Projects Section */}
         <div className="mt-8">
-          <Card className="bg-container hover:bg-container-dark transition-colors">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div className="flex items-center space-x-4">
+          <Card className="bg-card hover:bg-accent/50 transition-colors duration-200">
+            <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-lg bg-primary flex items-center justify-center">
-                  <span className="text-primary-foreground">BP</span>
+                  <span className="text-primary-foreground font-medium">BP</span>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold">Test Project</h3>
+                  <h3 className="text-lg font-semibold text-card-foreground">Test Project</h3>
                   <p className="text-sm text-muted-foreground">Just a test project so I can see how this works</p>
                 </div>
               </div>
-              <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+              <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center">
                   <Download className="w-4 h-4 mr-1" />
                   <span>0</span>
@@ -139,12 +139,12 @@ const UserPage = () => {
         </div>
 
         {/* Bottom Banner */}
-        <div className="mt-8 p-6 rounded-lg bg-container">
-          <div className="flex justify-between items-center">
-            <div className="text-lg font-semibold">
+        <div className="mt-8 p-6 rounded-lg bg-card">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div className="text-lg font-semibold text-card-foreground">
               Lorem ipsum dolor
             </div>
-            <Button className="bg-addon hover:bg-addon/90">
+            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
               Click Here
             </Button>
           </div>
