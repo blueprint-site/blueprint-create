@@ -1,11 +1,10 @@
-// /src/components/UsefulLinks.tsx
-
 import { useTranslation } from "react-i18next";
 
 import WikiLogo from "@/assets/brass_ingot.webp";
 import CreateLogo from "@/assets/create_mod_logo.webp";
 
 import LazyImage from "@/components/LazyImage";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const UsefulLinks = () => {
   const { t } = useTranslation();
@@ -14,47 +13,70 @@ const UsefulLinks = () => {
     {
       href: "https://create.fandom.com/wiki/Create_Mod_Wiki",
       icon: WikiLogo,
-      text: "Create Mod wiki"
+      text: "Create Mod wiki",
+      description: "Complete documentation and guides"
     },
     {
       href: "https://modrinth.com/mod/create",
       icon: CreateLogo,
-      text: "Create Mod (Forge)"
+      text: "Create Mod (Forge)",
+      description: "Download for Forge modloader"
     },
     {
       href: "https://modrinth.com/mod/create-fabric",
       icon: CreateLogo,
-      text: "Create Mod (Fabric)"
+      text: "Create Mod (Fabric)",
+      description: "Download for Fabric modloader"
     }
   ];
 
   return (
-    <section className="py-12 bg-background">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center text-foreground mb-8">
+    <div className="flex flex-col items-center space-y-4 text-center">
+      <div className="space-y-2">
+        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
           {t("home.info.links")}
         </h2>
-        
-        <div className="flex flex-col items-center gap-4">
+        <p className="mx-auto max-w-[700px] text-muted-foreground">
+          Essential resources for Create mod developers and users
+        </p>
+      </div>
+
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle>Useful Resources</CardTitle>
+          <CardDescription>
+            Documentation, downloads, and community links
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-4">
           {links.map((link, index) => (
             <a
               key={index}
               href={link.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center hover:bg-secondary rounded-lg p-2 transition-colors duration-200 text-foreground font-minecraft text-lg"
+              className="flex items-center p-4 rounded-lg hover:bg-secondary transition-colors duration-200"
             >
-              <LazyImage
-                src={link.icon}
-                alt=""
-                className="w-8 h-8 mr-2 object-contain"
-              />
-              <span>{link.text}</span>
+              <div className="flex-shrink-0">
+                <LazyImage
+                  src={link.icon}
+                  alt=""
+                  className="w-10 h-10 object-contain"
+                />
+              </div>
+              <div className="ml-4 text-left">
+                <h3 className="font-minecraft text-lg text-foreground">
+                  {link.text}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {link.description}
+                </p>
+              </div>
             </a>
           ))}
-        </div>
-      </div>
-    </section>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
