@@ -1,15 +1,11 @@
-// src/components/Layout/Layout.tsx
-
+import Footer from "@/components/Layout/Footer";
+import Navigation from "@/components/Layout/Navigation/Navigaton";
 import { useThemeStore } from "@/stores/themeStore";
 import { Outlet, useLocation } from "react-router-dom";
 
-import BottomBar from "@/components/Layout/BottomBar";
-import Navigation from "@/components/Layout/Navigation/Navigaton";
-import SchemeToggle from "@/components/SchemeToggle";
-
-function Layout() {
+const Layout = () => {
   const location = useLocation();
-  const { isDarkMode, toggleTheme } = useThemeStore();
+  const { isDarkMode } = useThemeStore();
 
   return (
     <div className={`min-h-screen w-full ${isDarkMode ? 'dark' : ''}`}>
@@ -20,12 +16,10 @@ function Layout() {
           <Outlet />
         </main>
 
-        {location.pathname !== "/schematics/3dviewer" && <BottomBar />}
-        
-        <SchemeToggle onClick={toggleTheme} />
+        {location.pathname !== "/schematics/3dviewer" && <Footer />}
       </div>
     </div>
   );
-}
+};
 
 export default Layout;
