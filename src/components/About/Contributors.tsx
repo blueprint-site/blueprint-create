@@ -23,7 +23,7 @@ interface GitHubUser {
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 
-import '../styles/contributors.scss';
+import '@/styles/contributors.scss';
 import { useTranslation } from "react-i18next";
 import LazyLoad from "react-lazyload";
 

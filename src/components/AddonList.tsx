@@ -1,8 +1,8 @@
 import Experience from "@/assets/block_of_experience.webp";
+import '@/styles/addonslist.scss';
 import { useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import '../styles/addonslist.scss';
 import AddonListItem from "./AddonListItem";
 import ErrorAlert from "./ErrorAlert";
 import LoadingAnimation from "./LoadingAnimation";

@@ -1,6 +1,6 @@
 
 import Experience_Block from "@/assets/block_of_experience.webp";
-import '../styles/exploreschematicstitle.scss';
+import '@/styles/exploreschematicstitle.scss';
 
 function ExploreSchematicsTitle() {
     return (

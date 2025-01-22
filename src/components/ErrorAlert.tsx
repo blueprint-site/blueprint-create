@@ -6,7 +6,7 @@ interface ErrorAlertProperties {
 import { useEffect, useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 
-import '../styles/alert.scss';
+import '@/styles/alert.scss';
 
 function ErrorAlert({ heading, body }: ErrorAlertProperties) {
     const [show, setShow] = useState(true);

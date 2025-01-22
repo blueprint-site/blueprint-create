@@ -1,15 +1,15 @@
-import { Addon } from "./AddonList";
-import DevinsBadges from "./DevinsBadges";
-import { Link } from 'react-router-dom';
-import Collections from './CollectionHandler';
-import '../styles/addon.scss';
-import { useTranslation } from "react-i18next";
-import LazyImage from "./LazyImage";
-import LazyLoad from 'react-lazyload';
 import { useEffect, useState } from "react";
-import handleAddAddon from "./Collections";
+import { useTranslation } from "react-i18next";
+import LazyLoad from 'react-lazyload';
+import { Link } from 'react-router-dom';
+
+import '@/styles/addon.scss';
+import Addon from "./AddonList";
+import Collections from './CollectionHandler';
+import DevinsBadges from "./DevinsBadges";
+import LazyImage from "./LazyImage";
 interface AddonListItemProperties {
-    addon: Addon;
+    addon: typeof Addon;
 }
 
 function AddonListItem({ addon }: AddonListItemProperties) {

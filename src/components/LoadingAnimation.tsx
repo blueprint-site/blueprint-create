@@ -1,6 +1,6 @@
 import LoadingGif from '../assets/loading.gif';
 
-import '../styles/loading.scss';
+import '@/styles/loading.scss';
 
 function LoadingAnimation() {
     return (
