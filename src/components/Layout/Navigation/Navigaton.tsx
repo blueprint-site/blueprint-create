@@ -1,12 +1,17 @@
-// src/components/Navigation/Navigation.tsx
-
-import { useEffect, useState } from "react";
+import { Menu } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { NavLink } from 'react-router-dom';
 
 import LazyImage from "@/components/LazyImage";
 import supabase from "@/components/Supabase";
-import NavigationLink from "./NavigationLink";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 
 import Blog from "@/assets/blueprint-blog.png";
 import AboutIcon from '@/assets/clipboard.webp';
@@ -16,109 +21,146 @@ import AddonIcon from '@/assets/minecart_coupling.webp';
 import SchematicIcon from '@/assets/schematic.webp';
 
 interface NavigationProps {
-  wrap?: boolean;
   className?: string;
 }
 
-interface UserMetadata {
-  avatar_url?: string;
-  custom_claims?: {
-    global_name?: string;
+interface UserData {
+  id: string;
+  email?: string;
+  user_metadata: {
+    avatar_url?: string;
+    custom_claims?: {
+      global_name?: string;
+    };
   };
 }
 
-interface User {
-  id: string;
-  email?: string;
-  user_metadata: UserMetadata;
-  created_at: string;
-}
-
-const Navigation = ({ wrap = false, className = '' }: NavigationProps) => {
+const ResponsiveNavigation = ({ className = '' }: NavigationProps) => {
   const { t } = useTranslation();
-  const [userdata, setUserdata] = useState<User | null>(null);
-  const [userIcon, setUserIcon] = useState<string | null>(null);
-  const [userName, setUserName] = useState<string | null>(null);
-  const [linkDestination, setLinkDestination] = useState<string | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     getUserData();
-  }, []);
+    
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
 
-  useEffect(() => {
-    setUserIcon(userdata?.user_metadata?.avatar_url ?? null);
-    setUserName(userdata?.user_metadata?.custom_claims?.global_name ?? null);
-    setLinkDestination(userdata ? '/user' : '/login');
-  }, [userdata]);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const getUserData = async () => {
     const { data: { user } } = await supabase.auth.getUser();
-    setUserdata(user as User | null);
+    setUserData(user as UserData | null);
   };
 
-  const navClasses = `
-    fixed 
-    ${wrap ? 'h-auto min-h-[60px]' : 'h-[60px]'} 
-    bg-background 
-    shadow-md 
-    w-full 
-    flex 
-    ${wrap ? 'flex-wrap justify-center' : 'flex-nowrap'} 
-    z-[9998]
-    ${className}
-  `.trim().replace(/\s+/g, ' ');
+  const navigationItems = [
+    {
+      href: "/addons",
+      icon: AddonIcon,
+      label: t("navigation.label.addons")
+    },
+    {
+      href: "/schematics",
+      icon: SchematicIcon,
+      label: t("navigation.label.schematics")
+    },
+    {
+      href: "https://blueprint-site.github.io/blueprint-blog/",
+      icon: Blog,
+      label: t("navigation.label.blog"),
+      external: true
+    },
+    {
+      href: "/about",
+      icon: AboutIcon,
+      label: t("navigation.label.about")
+    },
+    {
+      href: userData ? '/user' : '/login',
+      icon: userData?.user_metadata?.avatar_url ?? Goggles,
+      label: userData?.user_metadata?.custom_claims?.global_name ?? t("navigation.label.login")
+    }
+  ];
+
+  const NavItem = ({ item }: { item: typeof navigationItems[0] }) => {
+    const content = (
+      <>
+        <div className="w-8 h-8 flex items-center justify-center">
+          <LazyImage 
+            src={item.icon} 
+            alt={item.label} 
+            className="max-h-8 w-auto object-contain transform scale-100 transition-transform duration-500 hover:scale-105" 
+          />
+        </div>
+        <span className="ml-2">{item.label}</span>
+      </>
+    );
+
+    return item.external ? (
+      <a 
+        href={item.href} 
+        className="flex items-center px-2 md:px-4 py-2 text-foreground hover:bg-secondary transition-colors duration-200"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {content}
+      </a>
+    ) : (
+      <NavLink 
+        to={item.href}
+        className="flex items-center px-2 md:px-4 py-2 text-foreground hover:bg-secondary transition-colors duration-200"
+      >
+        {content}
+      </NavLink>
+    );
+  };
 
   return (
-    <nav className={navClasses}>
-      <div className="container mx-auto flex flex-wrap justify-center sm:justify-between">
-        <div className={`flex ${wrap ? 'w-full justify-center sm:w-auto sm:justify-start' : ''}`}>
-          <NavLink 
-            to="/" 
-            className="logo flex items-center text-foreground hover:bg-secondary transition-colors duration-100 no-underline h-[60px]"
-          >
-            <div className="w-10 h-10 flex items-center justify-center">
-              <LazyImage 
-                src={BlueprintLogo} 
-                alt="Logo" 
-                className="max-h-10 w-auto object-contain" 
-              />
-            </div>
-            <span className="font-minecraft text-xl font-medium ml-2">Blueprint</span>
-          </NavLink>
-          
-          {!wrap && <span className="flex-grow" />}
-        </div>
-        
-        <div className={`flex flex-wrap gap-4 justify-center ${wrap ? 'w-full sm:w-auto' : ''}`}>
-          <NavigationLink 
-            destination="/addons" 
-            icon={AddonIcon} 
-            label={t("navigation.label.addons")} 
-          />
-          <NavigationLink 
-            destination="/schematics" 
-            icon={SchematicIcon} 
-            label={t("navigation.label.schematics")} 
-          />
-          <NavigationLink 
-            destination="https://blueprint-site.github.io/blueprint-blog/" 
-            icon={Blog} 
-            label={t("navigation.label.blog")} 
-          />
-          <NavigationLink 
-            destination="/about" 
-            icon={AboutIcon} 
-            label={t("navigation.label.about")} 
-          />
-          <NavigationLink 
-            destination={linkDestination ?? '/login'} 
-            icon={userIcon ?? Goggles} 
-            label={userName ?? t("navigation.label.login")} 
-          />
-        </div>
+    <nav className={`fixed h-16 bg-background shadow-md w-full z-50 ${className}`}>
+      <div className="md:container mx-auto h-full px-4 flex items-center justify-between">
+        <NavLink to="/" className="flex items-center text-foreground hover:bg-secondary transition-colors duration-200">
+          <div className="w-10 h-10 flex items-center justify-center">
+            <LazyImage src={BlueprintLogo} alt="Logo" className="max-h-10 w-auto object-contain" />
+          </div>
+          <span className="font-minecraft text-xl font-medium ml-2">Blueprint</span>
+        </NavLink>
+
+        {isMobile ? (
+          <div className="flex items-center">
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger 
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="bg-transparent hover:bg-secondary"
+                  >
+                    <Menu className="w-6 h-6" />
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent className="w-screen sm:w-80">
+                    <div className="flex flex-col p-2 bg-background">
+                      {navigationItems.map((item, index) => (
+                        <NavItem key={index} item={item} />
+                      ))}
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
+        ) : (
+          <div className="flex items-center space-x-4">
+            {navigationItems.map((item, index) => (
+              <NavItem key={index} item={item} />
+            ))}
+          </div>
+        )}
       </div>
     </nav>
   );
 };
 
-export default Navigation;
+export default ResponsiveNavigation;
