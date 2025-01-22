@@ -4,11 +4,11 @@
  
 @layer base {
   :root {
-    --background: 220 13% 99%;
+    --background: 220 13% 100%;    /* Slightly lighter background */
     --foreground: 220 13% 3.9%;
     
-    /* Base surface colors remain the same for light mode */
-    --surface-0: 220 13% 98%;
+    /* Adjusted surface colors for better contrast */
+    --surface-0: 220 13% 96%; 
     --surface-10: 220 13% 96%;
     --surface-20: 220 13% 94%;
     --surface-30: 220 13% 92%;
