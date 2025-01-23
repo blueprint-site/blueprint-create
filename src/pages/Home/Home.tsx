@@ -3,6 +3,7 @@
 import LoadingOverlay from "@/components/LoadingOverlays/LoadingOverlay";
 import { Suspense, lazy } from "react";
 import { useTranslation } from "react-i18next";
+import "./Home.module.scss";
 
 const AddonsSlideshow = lazy(() => import("@/components/Home/AddonsSlideshow"));
 const WhatIsBlueprint = lazy(() => import("@/components/Home/WhatIsBlueprint"));
@@ -13,18 +14,20 @@ function Home() {
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col gap-12">
+    <div className="flex flex-col">
       <Suspense fallback={<LoadingOverlay />}>
         {/* Hero Section */}
-        <section className="py-6 bg-background">
-          <h2 className="text-3xl font-semibold text-center">
-            {t('home.discover')}
-          </h2>
-          <AddonsSlideshow />
+        <section className="connected-texture deep-shadow">
+          <div className="container mx-auto py-12">
+              <div className="text-4xl font-minecraft font-bold text-surface-text text-center pb-4">
+                {t("home.discover")}
+              </div>
+              <AddonsSlideshow />
+          </div>
         </section>
 
         {/* What is Blueprint Section */}
-        <section className="py-12 bg-background">
+        <section className="py-12 bg-card">
           <WhatIsBlueprint />
         </section>
 

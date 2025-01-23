@@ -26,29 +26,37 @@ const AddonsCarousel = () => {
 
   const sideboxContent = [
     {
-      image: "https://cdn.modrinth.com/data/Dq3STxps/10e1b3796f2fcf5b70bb77110e68b59c750310ac_96.webp",
+      image:
+        "https://cdn.modrinth.com/data/Dq3STxps/10e1b3796f2fcf5b70bb77110e68b59c750310ac_96.webp",
       title: "Create Railways navigator",
-      description: "Get train connections in your world from one station to another using the Create Railways Navigator.",
+      description:
+        "Get train connections in your world from one station to another using the Create Railways Navigator.",
     },
     {
-      image: "https://cdn.modrinth.com/data/ZzjhlDgM/efac0150d612ab52768620dd53a7e8c27ce2fb0d_96.webp",
+      image:
+        "https://cdn.modrinth.com/data/ZzjhlDgM/efac0150d612ab52768620dd53a7e8c27ce2fb0d_96.webp",
       title: "Create: Steam 'n' Rails",
       description: "Adding depth to Create's rail network & steam system",
     },
     {
-      image: "https://cdn.modrinth.com/data/IAnP4np7/694d235f12ba11b0c6e6cd9428dab3cfcf233d10_96.webp",
+      image:
+        "https://cdn.modrinth.com/data/IAnP4np7/694d235f12ba11b0c6e6cd9428dab3cfcf233d10_96.webp",
       title: "Create: Structures",
-      description: "Add-on for Create that implements naturally generating structures containing early-game Create contraptions and items.",
+      description:
+        "Add-on for Create that implements naturally generating structures containing early-game Create contraptions and items.",
     },
     {
-      image: "https://cdn.modrinth.com/data/GmjmRQ0A/d2d4a1a5cfc7f1ececf50dc977021c62654ccdc8_96.webp",
+      image:
+        "https://cdn.modrinth.com/data/GmjmRQ0A/d2d4a1a5cfc7f1ececf50dc977021c62654ccdc8_96.webp",
       title: "Create Slice & Dice",
       description: "Making automation for Farmers Delight more sensible",
     },
     {
-      image: "https://cdn.modrinth.com/data/GWp4jCJj/39d228c7abac7bb782db7d3f203a24beb164455f_96.webp",
+      image:
+        "https://cdn.modrinth.com/data/GWp4jCJj/39d228c7abac7bb782db7d3f203a24beb164455f_96.webp",
       title: "Create Big Cannons",
-      description: "A Minecraft mod for building large cannons with the Create mod.",
+      description:
+        "A Minecraft mod for building large cannons with the Create mod.",
     },
   ];
 
@@ -63,72 +71,62 @@ const AddonsCarousel = () => {
   }, [api]);
 
   return (
-    <div className="max-w-6xl mx-auto h-96">
-      <div className="flex items-start justify-center h-full gap-4">
-        {/* Main carousel container */}
-        <div className="relative flex-1 h-full bg-background rounded-lg overflow-hidden">
-          <Carousel
-            setApi={setApi}
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            plugins={[
-              Autoplay({
-                delay: 5000,
-              }),
-            ]}
-            className="w-full h-full"
-          >
-            <CarouselContent className="h-full">
-              {images.map((image, index) => (
-                <CarouselItem key={index} className="h-full">
-                  <div className="h-full w-full flex items-center justify-center">
-                    <LazyImage
-                      src={image}
-                      alt=""
-                      className="flex items-center justify-center"
-                      imgClassName="max-h-full w-auto"
-                      height="100%"
-                    />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-        </div>
-
-        {/* Featured addon card */}
-        <div className="w-72 h-full">
-        <Card className="h-full">
-            <CardHeader>
-              <CardTitle 
-                className="text-xl align-middle"
-              >Featured Addons</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="overflow-hidden rounded-lg">
+    <div className="container mx-auto">
+      <Carousel
+        setApi={setApi}
+        opts={{
+          align: "start",
+          loop: true,
+        }}
+        plugins={[
+          Autoplay({
+            delay: 5000,
+          }),
+        ]}
+      >
+        <CarouselContent>
+          {images.map((image, index) => (
+            <CarouselItem key={index}>
+              <div className="flex items-center justify-center gap-4">
                 <LazyImage
-                  className="flex items-center justify-center"
-                  imgClassName="h-full w-auto object-contain"
-                  src={sideboxContent[current].image}
+                  src={image}
                   alt=""
+                  className="flex items-center justify-center overflow-hidden"
+                  imgClassName="h-96 w-auto"
+                  height="100%"
+                  width="100%"
                 />
+                <div className="w-80 h-full">
+                  <Card className="h-full">
+                    <CardHeader>
+                      <CardTitle className="text-2xl text-center underline">
+                        {sideboxContent[current].title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="overflow-hidden">
+                        <LazyImage
+                          className="flex items-center justify-center"
+                          imgClassName="h-full w-auto object-contain"
+                          src={sideboxContent[current].image}
+                          alt=""
+                        />
+                      </div>
+                      <div className="mt-4 overflow-hidden">
+                        <p className="text-sm line-clamp-4">
+                          {sideboxContent[current].description}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               </div>
-              <div className="mt-4 overflow-hidden">
-                <h3 className="text-xl font-bold mb-2 truncate">
-                  {sideboxContent[current].title}
-                </h3>
-                <p className="text-sm line-clamp-4">
-                  {sideboxContent[current].description}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
     </div>
   );
 };

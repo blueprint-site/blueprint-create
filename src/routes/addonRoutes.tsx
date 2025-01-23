@@ -4,7 +4,7 @@ import { RouteObject } from 'react-router-dom';
 
 const Addons = lazy(() => import('@/pages/Addons/Addons'));
 const RandomAddon = lazy(() => import('@/components/RandomAddon'));
-const AddonDetails = lazy(() => import('@/components/AddonDetails'));
+const AddonDetails = lazy(() => import('@/components/Addons/AddonDetails'));
 
 export const addonRoutes: RouteObject[] = [
   {

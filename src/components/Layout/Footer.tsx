@@ -3,7 +3,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 
 const BottomBar = () => {
   return (
-    <footer className="w-full bg-container dark:bg-container-dark">
+    <footer className="w-full bg-container dark:bg-container-dark py-4">
       <div className="container mx-auto">
         <div className="flex items-center gap-4">
           {/* Logo and Title Row */}
@@ -51,7 +51,7 @@ const BottomBar = () => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-1 text-xs font-normal text-foreground text-center mt-4">
+        <div className="flex flex-col gap-1 text-xs font-normal text-foreground text-center mt-5">
           <div>
             NOT AN OFFICIAL MINECRAFT SERVICE. NOT APPROVED BY OR ASSOCIATED
             WITH MOJANG OR MICROSOFT.

@@ -1,40 +1,78 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Minecraft';
+  src: url('/src/assets/fonts/MinecraftRegular/MinecraftRegular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Minecraft';
+  src: url('/src/assets/fonts/MinecraftRegular/MinecraftBold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Minecraft';
+  src: url('/src/assets/fonts/MinecraftRegular/MinecraftItalic.otf') format('opentype');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Minecraft';
+  src: url('/src/assets/fonts/MinecraftRegular/MinecraftBoldItalic.otf') format('opentype');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
  
 @layer base {
   :root {
-    --background: 220 13% 100%;    /* Slightly lighter background */
+    --background: 220 13% 98%;
     --foreground: 220 13% 3.9%;
-    
-    /* Adjusted surface colors for better contrast */
-    --surface-0: 220 13% 96%; 
-    --surface-10: 220 13% 96%;
-    --surface-20: 220 13% 94%;
-    --surface-30: 220 13% 92%;
-    --surface-40: 220 13% 90%;
-    --surface-50: 220 13% 88%;
 
-    --card: var(--surface-0);
-    --card-foreground: 220 13% 3.9%;
+    --surface-text: 51 33% 88%;
+
+    --blueprint: 239 93% 84%;
+    --extended: 242 91% 75%;
+    
+    --surface-1: 220 13% 96%;
+    --surface-2: 220 13% 94%;
+    --surface-3: 220 13% 92%;
+
+    --card: var(--blueprint);
+    --card-foreground: var(--surface-text);
+    --card-foreground-muted: var(--muted);
  
     --popover: var(--surface-0);
     --popover-foreground: 220 13% 3.9%;
  
     --primary: 220 13% 9%;
-    --primary-foreground: 220 13% 98%;
+    --primary-foreground: var(--surface-text);
  
-    --secondary: 220 13% 95%;
-    --secondary-foreground: 220 13% 9%;
+    --secondary: 90 36% 38%;
+    --secondary-foreground: var(--surface-text);
+
+    --warning: 49 100% 38%;
+    --warning-foreground: var(--surface-text);
  
+    --destructive: 3 57% 36%;
+    --destructive-foreground: var(--surface-text);
+    
     --muted: 220 13% 95%;
     --muted-foreground: 220 13% 45.1%;
  
-    --accent: 220 13% 95%;
-    --accent-foreground: 220 13% 9%;
+    --accent: 265, 44%, 32%;
+    --accent-foreground: var(--surface-text);
  
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
 
     --border: 220 13% 91%;
     --input: 220 13% 91%;
@@ -44,48 +82,41 @@
   }
  
   .dark {
-    /* Dark theme surface colors for layering */
-    --surface-0: 0 0% 7%;      /* #121212 */
-    --surface-10: 0 0% 16%;    /* #282828 */
-    --surface-20: 0 0% 25%;    /* #3f3f3f */
-    --surface-30: 0 0% 34%;    /* #575757 */
-    --surface-40: 0 0% 44%;    /* #717171 */
-    --surface-50: 0 0% 55%;    /* #8b8b8b */
-
-    /* Tonal surface variants for more depth */
-    --surface-tonal-0: 222 18% 15%;   /* #20252e */
-    --surface-tonal-10: 222 18% 20%;  /* #353942 */
-    --surface-tonal-20: 222 18% 25%;  /* #4b4f57 */
-    --surface-tonal-30: 222 18% 30%;  /* #62666d */
-    --surface-tonal-40: 222 18% 35%;  /* #7a7d84 */
-    --surface-tonal-50: 222 18% 40%;  /* #94969b */
-
-    --background: var(--surface-0);
+    --background: 0, 0%, 10%;
     --foreground: 0 0% 98%;
+
+    --blueprint: 239, 93%, 84%;
+
+    --surface-1: 0 0% 17%;
+    --surface-2: 0 0% 25%;
+    --surface-3: 0 0% 32%;
     
-    --card: var(--surface-10);
+    --card: var(--surface-1);
     --card-foreground: 0 0% 98%;
     
-    --popover: var(--surface-20);
+    --popover: var(--surface-2);
     --popover-foreground: 0 0% 98%;
     
-    --primary: 213 36% 50%;  /* #527caf */
-    --primary-foreground: 0 0% 98%;
+    --primary: 220 13% 9%;
+    --primary-foreground: var(--surface-text);
+ 
+    --secondary: 90 36% 38%;
+    --secondary-foreground: var(--surface-text);
+
+    --warning: 49 100% 38%;
+    --warning-foreground: var(--surface-text);
+ 
+    --destructive: 3 57% 36%;
+    --destructive-foreground: var(--surface-text);
     
-    --secondary: var(--surface-tonal-20);
-    --secondary-foreground: 0 0% 98%;
-    
-    --muted: var(--surface-tonal-30);
+    --muted: var(--surface-3);
     --muted-foreground: 0 0% 70%;
     
-    --accent: var(--surface-tonal-10);
+    --accent: var(--surface-1);
     --accent-foreground: 0 0% 98%;
     
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    
-    --border: var(--surface-tonal-20);
-    --input: var(--surface-tonal-20);
+    --border: var(--surface-3);
+    --input: var(--surface-2);
     --ring: 213 36% 50%;
   }
 }
@@ -97,4 +128,25 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.bg-andesite-casing {
+  background: 
+    url('src/assets/backgrounds/andesite_casing/top_left.png') top left no-repeat, 
+    url('src/assets/backgrounds/andesite_casing/top_right.png') top right no-repeat,
+    url('src/assets/backgrounds/andesite_casing/bottom_left.png') bottom left no-repeat,
+    url('src/assets/backgrounds/andesite_casing/bottom_right.png') bottom right no-repeat, 
+    url('src/assets/backgrounds/andesite_casing/top.png') top left repeat-x, 
+    url('src/assets/backgrounds/andesite_casing/bottom.png') bottom left repeat-x, 
+    url('src/assets/backgrounds/andesite_casing/left.png') top left repeat-y, 
+    url('src/assets/backgrounds/andesite_casing/right.png') top right repeat-y,
+    url('src/assets/backgrounds/andesite_casing/middle.png') top left repeat;
+  image-rendering: pixelated;
+  background-size: 64px 64px;
+}
+
+.deep-shadow {
+  box-shadow:
+    inset 0 0 100px rgba(0, 0, 0, 0.3),
+    inset 0 0 300px rgba(0, 0, 0, 0.6);
 }

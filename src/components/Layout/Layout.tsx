@@ -11,12 +11,12 @@ const Layout = () => {
     <div className={`min-h-screen w-full ${isDarkMode ? 'dark' : ''}`}>
       <div className="flex flex-col min-h-screen bg-background text-foreground transition-colors duration-200">
         <Navigation />
-        
-        <main className="flex-1 w-full pt-[60px]">
+        <main className="flex-1 w-full pt-[64px]">
           <Outlet />
         </main>
-
-        {location.pathname !== "/schematics/3dviewer" && <Footer />}
+        {location.pathname !== "/schematics/3dviewer" && 
+          <Footer />
+        }
       </div>
     </div>
   );

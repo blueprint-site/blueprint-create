@@ -11,6 +11,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        minecraft: ['Minecraft', 'system-ui', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -18,24 +21,13 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         
-        // Add surface variants
-        surface: {
-          0: "hsl(var(--surface-0))",
-          10: "hsl(var(--surface-10))",
-          20: "hsl(var(--surface-20))",
-          30: "hsl(var(--surface-30))",
-          40: "hsl(var(--surface-40))",
-          50: "hsl(var(--surface-50))",
-        },
-        // Add tonal surface variants
-        "surface-tonal": {
-          0: "hsl(var(--surface-tonal-0))",
-          10: "hsl(var(--surface-tonal-10))",
-          20: "hsl(var(--surface-tonal-20))",
-          30: "hsl(var(--surface-tonal-30))",
-          40: "hsl(var(--surface-tonal-40))",
-          50: "hsl(var(--surface-tonal-50))",
-        },
+        blueprint: "hsl(var(--blueprint))",
+        extended: "hsl(var(--extended))",
+        
+        'surface-text': "hsl(var(--surface-text))",
+        'surface-1': "hsl(var(--surface-1))",
+        'surface-2': "hsl(var(--surface-2))",
+        'surface-3': "hsl(var(--surface-3))",
         
         primary: {
           DEFAULT: "hsl(var(--primary))",
@@ -44,6 +36,10 @@ export default {
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -64,6 +60,7 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+          'foreground-muted': "hsl(var(--card-foreground-muted))",
         },
       },
       borderRadius: {

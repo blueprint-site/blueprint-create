@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 import LazyImage from "@/components/LazyImage";
 import supabase from "@/components/Supabase";
+import ThemeToggle from "@/components/ThemeToggle";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -35,7 +36,7 @@ interface UserData {
   };
 }
 
-const ResponsiveNavigation = ({ className = '' }: NavigationProps) => {
+const NavigationBar = ({ className = '' }: NavigationProps) => {
   const { t } = useTranslation();
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -130,7 +131,8 @@ const ResponsiveNavigation = ({ className = '' }: NavigationProps) => {
         </NavLink>
 
         {isMobile ? (
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
+            <ThemeToggle icon={true} />
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
@@ -156,6 +158,7 @@ const ResponsiveNavigation = ({ className = '' }: NavigationProps) => {
             {navigationItems.map((item, index) => (
               <NavItem key={index} item={item} />
             ))}
+            <ThemeToggle icon={true} />
           </div>
         )}
       </div>
@@ -163,4 +166,4 @@ const ResponsiveNavigation = ({ className = '' }: NavigationProps) => {
   );
 };
 
-export default ResponsiveNavigation;
+export default NavigationBar;

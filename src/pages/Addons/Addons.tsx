@@ -3,7 +3,7 @@ import Updater from "@/components/Updater";
 import { Suspense, lazy, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-const AddonList = lazy(() => import("@/components/AddonList"));
+const AddonList = lazy(() => import("@/components/Addons/AddonList"));
 const CollectionComponent = lazy(() => import("@/components/Collections"));
 
 export default function Addons() {
