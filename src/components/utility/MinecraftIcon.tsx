@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { useThemeStore } from "@/stores/themeStore";
 
 interface MinecraftIconProps {
   name: keyof typeof iconPositions;
@@ -110,7 +111,14 @@ const iconPositions = {
 
 } as const;
 
+
 const MinecraftIcon = ({ name, size = 16, className }: MinecraftIconProps) => {
+  const lightIcons = 'src/assets/icons/create_icons.png';
+  const darkIcons = 'src/assets/icons/create_icons_dark.png';
+  const { isDarkMode } = useThemeStore();
+  
+  console.log('Theme state:', { isDarkMode, lightIcons, darkIcons });
+
   const [x, y] = iconPositions[name];
   
   return (
@@ -119,7 +127,7 @@ const MinecraftIcon = ({ name, size = 16, className }: MinecraftIconProps) => {
       style={{
         width: size,
         height: size,
-        backgroundImage: "url('src/assets/icons/create_icons.png')",
+        backgroundImage: `url(${isDarkMode ? darkIcons : lightIcons})`,
         backgroundSize: `${size * 16}px ${size * 16}px`,
         backgroundPosition: `-${x * size}px -${y * size}px`,
         imageRendering: "pixelated"

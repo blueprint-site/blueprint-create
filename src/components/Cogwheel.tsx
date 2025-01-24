@@ -1,8 +1,33 @@
 import CogwheelImage from '@/assets/cogwheel.png';
 import { useEffect, useState } from 'react';
 
+const useWindowSize = () => {
+  const [size, setSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return size;
+};
+
 const RotatingCogwheel = () => {
   const [rotation, setRotation] = useState(0);
+  const { width } = useWindowSize();
+
+  const size = Math.min(width * 0.28, 400);
+  const offset = size / 2.35;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -13,11 +38,19 @@ const RotatingCogwheel = () => {
   }, []);
 
   return (
-    <div className="fixed -bottom-[175px] -right-[175px] w-[400px] h-[400px]">
+    <div 
+      className="fixed"
+      style={{
+        width: size,
+        height: size,
+        bottom: -offset,
+        right: -offset,
+      }}
+    >
       <img
         src={CogwheelImage}
         alt="Rotating cogwheel"
-        className="w-[400px] h-[400px]"
+        className="w-full h-full"
         style={{
           transform: `rotate(${rotation}deg)`,
           transformOrigin: 'center',
