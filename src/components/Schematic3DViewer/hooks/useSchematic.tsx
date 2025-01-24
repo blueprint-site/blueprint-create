@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
 import { Buffer } from "buffer";
-import nbt from "prismarine-nbt";
-import { useSchematicStore } from "../store/schematic";
-
 import * as fflate from "fflate";
+import nbt from "prismarine-nbt";
+import { useEffect, useState } from "react";
+
+import { useSchematicStore } from "../store/schematic";
 
 export function useSchematic() {
   const [file, setFile] = useState<File | null>(null);

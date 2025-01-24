@@ -1,6 +1,6 @@
-import LoadingCheckmark from '../../assets/loading_checkmark.png';
+import LoadingCheckmark from '@/assets/loading_checkmark.png';
 
-import '../../styles/loading.scss';
+import '@/styles/loading.scss';
 
 function LoadingOverlay() {
     return (

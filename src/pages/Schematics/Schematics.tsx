@@ -1,10 +1,10 @@
-import ExploreSchematicsMain from "../../components/ExploreSchematicsTitle";
-import SchematicsList from "../../components/SchematicsList";
+import ExploreSchematicsTitle from "@/components/Schematics/ExploreSchematicsTitle";
+import SchematicsList from "@/components/Schematics/SchematicsList";
 
 function SchematicsPage() {
   return (
     <div>
-      <ExploreSchematicsMain />
+      <ExploreSchematicsTitle />
       <SchematicsList />
     </div>
   );

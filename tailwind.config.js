@@ -11,17 +11,21 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        minecraft: ["Minecraft", "system-ui", "sans-serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        container: {
-          DEFAULT: "#B3CAE5",
-          dark: "#527caf",
-        },
-        addon: "#7594f0",
+        blueprint: "hsl(var(--blueprint))",
+        extended: "hsl(var(--extended))",
+        "surface-text": "hsl(var(--surface-text))",
+        "surface-1": "hsl(var(--surface-1))",
+        "surface-2": "hsl(var(--surface-2))",
+        "surface-3": "hsl(var(--surface-3))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -29,6 +33,14 @@ export default {
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -49,28 +61,23 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+          "foreground-muted": "hsl(var(--card-foreground-muted))",
         },
-        chart: {
-          1: "hsl(var(--chart-1))",
-          2: "hsl(var(--chart-2))",
-          3: "hsl(var(--chart-3))",
-          4: "hsl(var(--chart-4))",
-          5: "hsl(var(--chart-5))",
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar-background))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          primary: "hsl(var(--sidebar-primary))",
+          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
+          accent: "hsl(var(--sidebar-accent))",
+          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+          border: "hsl(var(--sidebar-border))",
+          ring: "hsl(var(--sidebar-ring))",
         },
-      },
-      boxShadow: {
-        custom: "3px 2px 5px rgba(0, 0, 0, 0.3)",
-        hover: "0 0 1em 0.4em #7594f0",
       },
       borderRadius: {
-        custom: "1.9em",
-        button: "0.9em",
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-      },
-      fontFamily: {
-        sans: ["Arial", "Helvetica", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {
@@ -96,5 +103,5 @@ export default {
       },
     },
   },
-  plugins: [import("tailwindcss-animate"), import("tailwindcss-animate")],
+  plugins: [import("tailwindcss-animate")],
 };

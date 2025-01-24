@@ -1,31 +1,49 @@
+// src/pages/Home/Home.tsx
+
+import LoadingOverlay from "@/components/LoadingOverlays/LoadingOverlay";
 import { Suspense, lazy } from "react";
+import { useTranslation } from "react-i18next";
+import "./Home.module.scss";
 
-import LoadingOverlay from "../../components/LoadingOverlays/LoadingOverlay";
-
-const AddonsSlideshow = lazy(() => import("../../components/AddonsSlideshow"));
-const AwardsBanner = lazy(() => import("../../components/AwardsBanner"));
-const DiscoverAddonsText = lazy(() => import("../../components/DiscoverAddonsText"));
-const WhatIsBlueprint = lazy(() => import("../../components/WhatIsBlueprint"));
-const UsefulLinks = lazy(() => import("../../components/UsefulLinks"));
-const HomeExploreSchematics = lazy(() => import("../../components/HomeExploreSchematics"));
-const HomeRandomAddon = lazy(() => import("../../components/HomeRandomAddon"));
-const HomeForCreators = lazy(() => import("../../components/HomeForCreators"));
-
-import Updater from "../../components/Updater";
+const AddonsSlideshow = lazy(() => import("@/components/Home/AddonsSlideshow"));
+const WhatIsBlueprint = lazy(() => import("@/components/Home/WhatIsBlueprint"));
+const UsefulLinks = lazy(() => import("@/components/Home/UsefulLinks"));
+const ForCreators = lazy(() => import("@/components/Home/ForCreators"));
 
 function Home() {
+  const { t } = useTranslation();
+
   return (
-    <>
+    <div className="flex flex-col">
       <Suspense fallback={<LoadingOverlay />}>
-        <AwardsBanner />
-        <DiscoverAddonsText />
-        <AddonsSlideshow />
-        <HomeRandomAddon />
-        <HomeForCreators />
-        <WhatIsBlueprint />
-        <UsefulLinks />
+        {/* Hero Section */}
+        <section className="bg-andesite-casing deep-shadow py-12">
+          <div className="container mx-auto">
+              <div className="text-4xl font-minecraft font-bold text-white/90 text-center drop-shadow-lg">
+                {t("home.discover")}
+              </div>
+              <div className="my-5">
+                <AddonsSlideshow />
+              </div>
+          </div>
+        </section>
+
+        {/* What is Blueprint Section */}
+        <section className="py-12 bg-blueprint">
+          <WhatIsBlueprint />
+        </section>
+
+        {/* Two Column Section */}
+        <section className="py-12 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="grid md:grid-cols-2 gap-8">
+              <ForCreators />
+              <UsefulLinks />
+            </div>
+          </div>
+        </section>
       </Suspense>
-    </>
+    </div>
   );
 }
 

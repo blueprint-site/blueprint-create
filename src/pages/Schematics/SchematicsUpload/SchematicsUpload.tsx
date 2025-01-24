@@ -1,4 +1,4 @@
-import SchematicsUpload from "../../../components/SchematicsUpload";
+import SchematicsUpload from "@/components/Schematics/SchematicsUpload";
 
 function SchematicsUploadPage() {
   return (

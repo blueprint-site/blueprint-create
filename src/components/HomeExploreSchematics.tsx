@@ -1,10 +1,10 @@
 
-import "../styles/homeexploreschematics.scss";
-import "../styles/exploreschematicsschematics.scss";
-import WorldDestroyer from "../assets/schematic-images/world_destroyer.webp"
-import IndustrialBuildings from "../assets/schematic-images/industrial_buildings.webp"
-import InsideFactory from "../assets/schematic-images/inside_factory.webp"
-import BulkProcessing from "../assets/schematic-images/bulk_processing.webp"
+import BulkProcessing from "@/assets/schematic-images/bulk_processing.webp";
+import IndustrialBuildings from "@/assets/schematic-images/industrial_buildings.webp";
+import InsideFactory from "@/assets/schematic-images/inside_factory.webp";
+import WorldDestroyer from "@/assets/schematic-images/world_destroyer.webp";
+import "@/styles/exploreschematicsschematics.scss";
+import "@/styles/homeexploreschematics.scss";
 import Card from 'react-bootstrap/Card';
 
 function HomeExploreSchematics() {
