@@ -4,10 +4,10 @@ import NightVisionIcon from '/src/assets/sprite-icons/night_vision.png';
 
 interface ThemeToggleProps {
   onClick?: () => void;
-  icon?: boolean;
+  variant?: 'outline' | 'ghost';
 }
 
-const ThemeToggle = ({ onClick, icon = false }: ThemeToggleProps) => {
+const ThemeToggle = ({ onClick, variant = 'outline' }: ThemeToggleProps) => {
   const { toggleTheme } = useThemeStore();
 
   const handleClick = () => {
@@ -18,8 +18,8 @@ const ThemeToggle = ({ onClick, icon = false }: ThemeToggleProps) => {
   return (
     <Button
       onClick={handleClick}
-      variant={icon ? 'ghost' : 'default'}
-      className={`${icon ? 'p-2' : 'rounded-full p-2 hover:bg-secondary transition-colors duration-200 shadow-lg'} flex items-center gap-2`}
+      variant={variant}
+      className='rounded-full flex items-center p-2'
       aria-label="Change theme"
     >
       <img 
@@ -27,7 +27,7 @@ const ThemeToggle = ({ onClick, icon = false }: ThemeToggleProps) => {
         alt=""
         className="w-6 h-6 object-contain"
       />
-      {!icon && "Change theme"}
+      {variant === 'outline' && "Change theme"}
     </Button>
   );
 };

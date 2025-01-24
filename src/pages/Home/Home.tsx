@@ -19,7 +19,7 @@ function Home() {
         {/* Hero Section */}
         <section className="bg-andesite-casing deep-shadow py-12">
           <div className="container mx-auto">
-              <div className="text-4xl font-minecraft font-bold text-white text-center drop-shadow-lg">
+              <div className="text-4xl font-minecraft font-bold text-white/90 text-center drop-shadow-lg">
                 {t("home.discover")}
               </div>
               <div className="my-5">

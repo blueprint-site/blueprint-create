@@ -13,10 +13,10 @@ const WhatIsBlueprint = () => {
   return (
     <div className="container font-minecraft py-6">
       <div className="flex flex-col gap-5 items-center text-center">
-        <h1 className="my-2 font-bold tracking-tighter text-3xl sm:text-4xl md:text-5xl ">
+        <h1 className="my-2 font-bold tracking-tighter text-white/90 text-3xl sm:text-4xl md:text-5xl ">
           {t("home.info.about.title")}
         </h1>
-        <div className="text-xl text-blueprint-foreground font-italic">
+        <div className="text-xl text-white/80 font-italic">
           {t("home.info.about.description")}
         </div>
         <div className="flex items-center justify-center gap-5 ">

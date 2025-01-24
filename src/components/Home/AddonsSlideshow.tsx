@@ -1,5 +1,4 @@
 import Autoplay from "embla-carousel-autoplay";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -8,8 +7,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
 import LazyImage from "@/components/utility/LazyImage";
@@ -20,6 +17,7 @@ import Banner2 from "@/assets/banners/banner2.webp";
 import Banner3 from "@/assets/banners/banner3.webp";
 import Banner4 from "@/assets/banners/banner4.webp";
 import Banner5 from "@/assets/banners/banner5.webp";
+import MinecraftIcon from "../utility/MinecraftIcon";
 
 const AddonsCarousel = () => {
   const [api, setApi] = useState<CarouselApi>();
@@ -74,7 +72,7 @@ const AddonsCarousel = () => {
       api.off("select", () => {
         setCurrent(api.selectedScrollSnap());
       });
-    }
+    };
   }, [api]);
 
   const scrollToIndex = (index: number) => {
@@ -82,81 +80,66 @@ const AddonsCarousel = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto h-96">
-      <div className="flex items-start justify-center h-full gap-4">
-        <div className="relative flex-1 h-full bg-background rounded-lg overflow-hidden">
-          <Carousel
-            setApi={setApi}
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            plugins={[
-              Autoplay({
-                delay: 5000,
-              }),
-            ]}
-            className="w-full h-full"
-          >
-            <CarouselContent className="h-full">
-              {images.map((image, index) => (
-                <CarouselItem key={index} className="h-full">
-                  <div className="h-full w-full flex items-center justify-center">
-                    <LazyImage
-                      src={image}
-                      alt=""
-                      className="flex items-center justify-center"
-                      imgClassName="max-h-full w-auto"
-                      height="100%"
-                    />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-        </div>
+    <div className="max-w-6xl mx-auto flex items-center justify-center h-full gap-4">
+      <Button
+        onClick={() => scrollToIndex(current + 1)}
+        className="rounded-full p-0"
+        variant="icon"
+      >
+        <MinecraftIcon name="chevron-left" size={32} />
+      </Button>
 
-        <div className="w-80 h-full">
-          <Card className="h-full">
-            <CardHeader>
-              <CardTitle className="text-2xl text-center underline">
-                {sideboxContent[current].title}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="overflow-hidden">
+      <div className="relative flex-1">
+        <Carousel
+          setApi={setApi}
+          opts={{ align: "start", loop: true }}
+          plugins={[Autoplay({ delay: 5000 })]}
+        >
+          <CarouselContent>
+            {images.map((image, index) => (
+              <CarouselItem key={index}>
                 <LazyImage
-                  className="flex items-center justify-center"
-                  imgClassName="h-full w-auto object-contain"
-                  src={sideboxContent[current].image}
+                  src={image}
                   alt=""
+                  imgClassName="max-h-full h-96 rounded-lg object-contain"
                 />
-              </div>
-              <div className="mt-4 overflow-hidden">
-                <p className="text-sm line-clamp-4">
-                  {sideboxContent[current].description}
-                </p>
-              </div>
-              <div className="absolute inset-0 z-20 flex items-center justify-between px-3 pointer-events-none">
-                <Button
-                  onClick={() => scrollToIndex(current - 1)}
-                  className="pointer-events-auto rounded-full w-32 h-32 p-0 bg-transparent shadow-none hover:bg-transparent"
-                >
-                  <ChevronLeft className="size-32" strokeWidth={0.5} />
-                </Button>
-                <Button
-                  onClick={() => scrollToIndex(current + 1)}
-                  className="pointer-events-auto rounded-full w-32 h-32 p-0 bg-transparent shadow-none hover:bg-transparent"
-                >
-                  <ChevronRight className="size-32" strokeWidth={0.5} />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
       </div>
+
+      <div className="w-80 h-96">
+        <Card className="h-full bg-background">
+          <CardHeader>
+            <CardTitle className="text-2xl text-center underline">
+              {sideboxContent[current].title}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-hidden">
+              <LazyImage
+                className="flex items-center justify-center"
+                imgClassName="h-full w-auto object-contain"
+                src={sideboxContent[current].image}
+                alt=""
+              />
+            </div>
+            <div className="mt-4 overflow-hidden">
+              <p className="text-sm line-clamp-4">
+                {sideboxContent[current].description}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+      <Button
+        onClick={() => scrollToIndex(current - 1)}
+        className="rounded-full p-0"
+        variant="icon"
+      >
+        <MinecraftIcon name="chevron-right" size={32} />
+      </Button>
     </div>
   );
 };

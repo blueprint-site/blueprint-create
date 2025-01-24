@@ -22,27 +22,18 @@ const ForCreators = () => {
 
       <Card className="w-full h-full">
         <CardHeader>
-          <CardTitle>Can't find your addon?</CardTitle>
+          <CardTitle className="text-xl">Can't find your addon?</CardTitle>
           <CardDescription>
             Let us know and we'll help get your addon listed
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
-          <p className="text-xs text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             Our addon scanning process is fully automated. Contact us to request
             a rescan and get your addon included in our directory.
           </p>
 
           <div className="grid gap-4 mt-4 md:grid-cols-2">
-            {/* <Button
-              className="w-full text-white"
-              onClick={() =>
-                window.open("https://discord.gg/ZF7bwgatrT", "_blank")
-              }
-            >
-              <MessageSquare className="mr-2 h-4 w-4" />
-              Join our Discord
-            </Button> */}
             <div className="flex items-center justify-center">
               <DevinsBadges
                 type="cozy"
@@ -58,7 +49,7 @@ const ForCreators = () => {
                 (window.location.href = "mailto:blueprint-site@proton.me")
               }
             >
-              <Mail size={32} className="mr-2" />
+              <Mail className="mr-2" scale={1.5} />
               Email Us
             </Button>
           </div>

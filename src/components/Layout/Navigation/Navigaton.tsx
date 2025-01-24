@@ -135,7 +135,7 @@ const NavigationBar = ({ className = '' }: NavigationProps) => {
 
         {isMobile ? (
           <div className="flex items-center gap-2">
-            <ThemeToggle icon={true} />
+            <ThemeToggle variant="icon" />
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
@@ -161,7 +161,7 @@ const NavigationBar = ({ className = '' }: NavigationProps) => {
             {navigationItems.map((item, index) => (
               <NavItem key={index} item={item} />
             ))}
-            <ThemeToggle icon={true} />
+            <ThemeToggle variant="icon" />
           </div>
         )}
       </div>

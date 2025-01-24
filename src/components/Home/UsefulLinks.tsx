@@ -6,10 +6,7 @@ import WikiLogo from "@/assets/sprite-icons/brass_ingot.webp";
 
 import {
   Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+  CardContent
 } from "@/components/ui/card";
 import LazyImage from "@/components/utility/LazyImage";
 
@@ -52,13 +49,7 @@ const UsefulLinks = () => {
       </div>
 
       <Card className="w-full">
-        <CardHeader>
-          <CardTitle>Useful Resources</CardTitle>
-          <CardDescription>
-            Documentation, downloads, and community links
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-4">
+        <CardContent className="flex flex-col p-6 gap-4">
           {links.map((link, index) => (
             <a
               key={index}
