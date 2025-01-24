@@ -3,9 +3,6 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { NavLink } from 'react-router-dom';
 
-import LazyImage from "@/components/LazyImage";
-import supabase from "@/components/Supabase";
-import ThemeToggle from "@/components/ThemeToggle";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -13,13 +10,16 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import LazyImage from "@/components/utility/LazyImage";
+import supabase from "@/components/utility/Supabase";
+import ThemeToggle from "@/components/utility/ThemeToggle";
 
-import Blog from "@/assets/blueprint-blog.png";
-import AboutIcon from '@/assets/clipboard.webp';
-import Goggles from '@/assets/goggles.webp';
 import BlueprintLogo from '@/assets/logo.webp';
-import AddonIcon from '@/assets/minecart_coupling.webp';
-import SchematicIcon from '@/assets/schematic.webp';
+import Blog from "@/assets/sprite-icons/clipboard_and_quill.png";
+import AboutIcon from '@/assets/sprite-icons/crafting_blueprint.png';
+import Goggles from '@/assets/sprite-icons/goggles.webp';
+import AddonIcon from '@/assets/sprite-icons/minecart_coupling.webp';
+import SchematicIcon from '@/assets/sprite-icons/schematic.webp';
 
 interface NavigationProps {
   className?: string;
@@ -90,11 +90,14 @@ const NavigationBar = ({ className = '' }: NavigationProps) => {
   const NavItem = ({ item }: { item: typeof navigationItems[0] }) => {
     const content = (
       <>
-        <div className="w-8 h-8 flex items-center justify-center">
+        <div className="w-8 h-8 flex items-center justify-center transition-transform duration-500 hover:scale-105">
           <LazyImage 
             src={item.icon} 
             alt={item.label} 
-            className="max-h-8 w-auto object-contain transform scale-100 transition-transform duration-500 hover:scale-105" 
+            width={32}
+            height={32}
+            pixelated
+            className="max-h-8 w-auto object-contain transform scale-100" 
           />
         </div>
         <span className="ml-2">{item.label}</span>
@@ -104,7 +107,7 @@ const NavigationBar = ({ className = '' }: NavigationProps) => {
     return item.external ? (
       <a 
         href={item.href} 
-        className="flex items-center px-2 md:px-4 py-2 text-foreground hover:bg-secondary transition-colors duration-200"
+        className="flex items-center px-2 md:px-4 py-2 text-foreground hover:bg-foreground/10 hover:text-muted transition-colors duration-200"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -113,7 +116,7 @@ const NavigationBar = ({ className = '' }: NavigationProps) => {
     ) : (
       <NavLink 
         to={item.href}
-        className="flex items-center px-2 md:px-4 py-2 text-foreground hover:bg-secondary transition-colors duration-200"
+        className="flex items-center px-2 md:px-4 py-2 text-foreground hover:bg-foreground/10 transition-colors duration-200"
       >
         {content}
       </NavLink>
@@ -123,7 +126,7 @@ const NavigationBar = ({ className = '' }: NavigationProps) => {
   return (
     <nav className={`fixed h-16 bg-background shadow-md w-full z-50 ${className}`}>
       <div className="md:container mx-auto h-full px-4 flex items-center justify-between">
-        <NavLink to="/" className="flex items-center text-foreground hover:bg-secondary transition-colors duration-200">
+        <NavLink to="/" className="flex items-center text-foreground hover:bg-foreground/10 transition-colors duration-200">
           <div className="w-10 h-10 flex items-center justify-center">
             <LazyImage src={BlueprintLogo} alt="Logo" className="max-h-10 w-auto object-contain" />
           </div>

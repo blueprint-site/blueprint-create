@@ -10,6 +10,7 @@ const Home = lazy(() => import('@/pages/Home/Home'));
 const About = lazy(() => import('@/pages/About/About'));
 const NoPage = lazy(() => import('@/pages/404/NoPage'));
 const Layout = lazy(() => import('@/components/Layout/Layout'));
+const Design = lazy(() => import('@/pages/Design/Design'));
 
 export const routes: RouteObject[] = [
   {
@@ -19,6 +20,7 @@ export const routes: RouteObject[] = [
       { index: true, element: <Home /> },
       { path: 'about', element: <About /> },
       { path: '*', element: <NoPage /> },
+      { path: 'design', element: <Design /> },
       ...addonRoutes,
       ...authRoutes,
       ...schematicRoutes

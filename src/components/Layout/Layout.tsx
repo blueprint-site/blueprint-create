@@ -1,7 +1,10 @@
+import { Outlet, useLocation } from "react-router-dom";
+
+import RotatingCogwheel from "@/components/Cogwheel";
 import Footer from "@/components/Layout/Footer";
 import Navigation from "@/components/Layout/Navigation/Navigaton";
+
 import { useThemeStore } from "@/stores/themeStore";
-import { Outlet, useLocation } from "react-router-dom";
 
 const Layout = () => {
   const location = useLocation();
@@ -17,6 +20,7 @@ const Layout = () => {
         {location.pathname !== "/schematics/3dviewer" && 
           <Footer />
         }
+        <RotatingCogwheel />
       </div>
     </div>
   );

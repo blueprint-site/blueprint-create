@@ -1,4 +1,8 @@
-import LazyImage from "@/components/LazyImage";
+import Autoplay from "embla-carousel-autoplay";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
+
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Carousel,
@@ -8,8 +12,7 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
-import { useEffect, useState } from "react";
+import LazyImage from "@/components/utility/LazyImage";
 
 // Import your banner images here
 import Banner1 from "@/assets/banners/banner1.webp";
@@ -61,72 +64,99 @@ const AddonsCarousel = () => {
   ];
 
   useEffect(() => {
-    if (!api) {
-      return;
-    }
+    if (!api) return;
 
     api.on("select", () => {
       setCurrent(api.selectedScrollSnap());
     });
+
+    return () => {
+      api.off("select", () => {
+        setCurrent(api.selectedScrollSnap());
+      });
+    }
   }, [api]);
 
+  const scrollToIndex = (index: number) => {
+    api?.scrollTo(index);
+  };
+
   return (
-    <div className="container mx-auto">
-      <Carousel
-        setApi={setApi}
-        opts={{
-          align: "start",
-          loop: true,
-        }}
-        plugins={[
-          Autoplay({
-            delay: 5000,
-          }),
-        ]}
-      >
-        <CarouselContent>
-          {images.map((image, index) => (
-            <CarouselItem key={index}>
-              <div className="flex items-center justify-center gap-4">
+    <div className="max-w-6xl mx-auto h-96">
+      <div className="flex items-start justify-center h-full gap-4">
+        <div className="relative flex-1 h-full bg-background rounded-lg overflow-hidden">
+          <Carousel
+            setApi={setApi}
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            plugins={[
+              Autoplay({
+                delay: 5000,
+              }),
+            ]}
+            className="w-full h-full"
+          >
+            <CarouselContent className="h-full">
+              {images.map((image, index) => (
+                <CarouselItem key={index} className="h-full">
+                  <div className="h-full w-full flex items-center justify-center">
+                    <LazyImage
+                      src={image}
+                      alt=""
+                      className="flex items-center justify-center"
+                      imgClassName="max-h-full w-auto"
+                      height="100%"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        </div>
+
+        <div className="w-80 h-full">
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle className="text-2xl text-center underline">
+                {sideboxContent[current].title}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-hidden">
                 <LazyImage
-                  src={image}
+                  className="flex items-center justify-center"
+                  imgClassName="h-full w-auto object-contain"
+                  src={sideboxContent[current].image}
                   alt=""
-                  className="flex items-center justify-center overflow-hidden"
-                  imgClassName="h-96 w-auto"
-                  height="100%"
-                  width="100%"
                 />
-                <div className="w-80 h-full">
-                  <Card className="h-full">
-                    <CardHeader>
-                      <CardTitle className="text-2xl text-center underline">
-                        {sideboxContent[current].title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="overflow-hidden">
-                        <LazyImage
-                          className="flex items-center justify-center"
-                          imgClassName="h-full w-auto object-contain"
-                          src={sideboxContent[current].image}
-                          alt=""
-                        />
-                      </div>
-                      <div className="mt-4 overflow-hidden">
-                        <p className="text-sm line-clamp-4">
-                          {sideboxContent[current].description}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
               </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
+              <div className="mt-4 overflow-hidden">
+                <p className="text-sm line-clamp-4">
+                  {sideboxContent[current].description}
+                </p>
+              </div>
+              <div className="absolute inset-0 z-20 flex items-center justify-between px-3 pointer-events-none">
+                <Button
+                  onClick={() => scrollToIndex(current - 1)}
+                  className="pointer-events-auto rounded-full w-32 h-32 p-0 bg-transparent shadow-none hover:bg-transparent"
+                >
+                  <ChevronLeft className="size-32" strokeWidth={0.5} />
+                </Button>
+                <Button
+                  onClick={() => scrollToIndex(current + 1)}
+                  className="pointer-events-auto rounded-full w-32 h-32 p-0 bg-transparent shadow-none hover:bg-transparent"
+                >
+                  <ChevronRight className="size-32" strokeWidth={0.5} />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };

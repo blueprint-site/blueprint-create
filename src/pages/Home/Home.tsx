@@ -17,17 +17,19 @@ function Home() {
     <div className="flex flex-col">
       <Suspense fallback={<LoadingOverlay />}>
         {/* Hero Section */}
-        <section className="connected-texture deep-shadow">
-          <div className="container mx-auto py-12">
-              <div className="text-4xl font-minecraft font-bold text-surface-text text-center pb-4">
+        <section className="bg-andesite-casing deep-shadow py-12">
+          <div className="container mx-auto">
+              <div className="text-4xl font-minecraft font-bold text-white text-center drop-shadow-lg">
                 {t("home.discover")}
               </div>
-              <AddonsSlideshow />
+              <div className="my-5">
+                <AddonsSlideshow />
+              </div>
           </div>
         </section>
 
         {/* What is Blueprint Section */}
-        <section className="py-12 bg-card">
+        <section className="py-12 bg-blueprint">
           <WhatIsBlueprint />
         </section>
 

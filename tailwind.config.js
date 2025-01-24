@@ -12,7 +12,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        minecraft: ['Minecraft', 'system-ui', 'sans-serif'],
+        minecraft: ["Minecraft", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -20,15 +20,12 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        
         blueprint: "hsl(var(--blueprint))",
         extended: "hsl(var(--extended))",
-        
-        'surface-text': "hsl(var(--surface-text))",
-        'surface-1': "hsl(var(--surface-1))",
-        'surface-2': "hsl(var(--surface-2))",
-        'surface-3': "hsl(var(--surface-3))",
-        
+        "surface-text": "hsl(var(--surface-text))",
+        "surface-1": "hsl(var(--surface-1))",
+        "surface-2": "hsl(var(--surface-2))",
+        "surface-3": "hsl(var(--surface-3))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -36,6 +33,10 @@ export default {
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
         },
         warning: {
           DEFAULT: "hsl(var(--warning))",
@@ -60,7 +61,17 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
-          'foreground-muted': "hsl(var(--card-foreground-muted))",
+          "foreground-muted": "hsl(var(--card-foreground-muted))",
+        },
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar-background))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          primary: "hsl(var(--sidebar-primary))",
+          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
+          accent: "hsl(var(--sidebar-accent))",
+          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+          border: "hsl(var(--sidebar-border))",
+          ring: "hsl(var(--sidebar-ring))",
         },
       },
       borderRadius: {
@@ -70,12 +81,20 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+          from: {
+            height: "0",
+          },
+          to: {
+            height: "var(--radix-accordion-content-height)",
+          },
         },
         "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+          from: {
+            height: "var(--radix-accordion-content-height)",
+          },
+          to: {
+            height: "0",
+          },
         },
       },
       animation: {
@@ -85,4 +104,4 @@ export default {
     },
   },
   plugins: [import("tailwindcss-animate")],
-}
+};

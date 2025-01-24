@@ -7,21 +7,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Mail, MessageSquare } from 'lucide-react';
+import { Mail } from "lucide-react";
+import DevinsBadges from "../utility/DevinsBadges";
 
 const ForCreators = () => {
   return (
     <div className="flex flex-col items-center space-y-4 text-center">
       <div className="space-y-2 font-minecraft">
-        <h2 className="text-3xl font-bold sm:text-4xl">
-          For Creators
-        </h2>
+        <h2 className="text-3xl font-bold sm:text-4xl">For Creators</h2>
         <p className="mx-auto max-w-[700px] text-muted-foreground">
           We're here to help showcase your addons to the Blueprint community
         </p>
       </div>
 
-      <Card className="w-full">
+      <Card className="w-full h-full">
         <CardHeader>
           <CardTitle>Can't find your addon?</CardTitle>
           <CardDescription>
@@ -30,11 +29,12 @@ const ForCreators = () => {
         </CardHeader>
         <CardContent className="grid gap-4">
           <p className="text-xs text-muted-foreground">
-            Our addon scanning process is fully automated. Contact us to request a rescan and get your addon included in our directory.
+            Our addon scanning process is fully automated. Contact us to request
+            a rescan and get your addon included in our directory.
           </p>
 
           <div className="grid gap-4 mt-4 md:grid-cols-2">
-            <Button
+            {/* <Button
               className="w-full text-white"
               onClick={() =>
                 window.open("https://discord.gg/ZF7bwgatrT", "_blank")
@@ -42,15 +42,23 @@ const ForCreators = () => {
             >
               <MessageSquare className="mr-2 h-4 w-4" />
               Join our Discord
-            </Button>
+            </Button> */}
+            <div className="flex items-center justify-center">
+              <DevinsBadges
+                type="cozy"
+                category="social"
+                name="discord-plural_64h"
+                format="png"
+              />
+            </div>
 
             <Button
-              className="w-full"
+              className="h-[64px] text-white/90 text-xl"
               onClick={() =>
                 (window.location.href = "mailto:blueprint-site@proton.me")
               }
             >
-              <Mail className="mr-2 h-4 w-4" />
+              <Mail size={32} className="mr-2" />
               Email Us
             </Button>
           </div>

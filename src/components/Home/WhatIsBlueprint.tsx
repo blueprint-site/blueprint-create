@@ -1,45 +1,57 @@
-import BlueprintLogo from "@/assets/logo.webp";
-import AddonIcon from "@/assets/minecart_coupling.webp";
-import SchematicIcon from "@/assets/schematic.webp";
-import LazyImage from "@/components/LazyImage";
 import { useTranslation } from "react-i18next";
+
+import BlueprintLogo from "@/assets/logo.webp";
+import AddonIcon from "@/assets/sprite-icons/minecart_coupling.webp";
+import SchematicIcon from "@/assets/sprite-icons/schematic.webp";
+import LazyImage from "@/components/utility/LazyImage";
+import MinecraftIcon from "@/components/utility/MinecraftIcon";
+
 
 const WhatIsBlueprint = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="container font-minecraft">
-      <div className="flex flex-col items-center text-center space-y-6">
-        <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-bold">
+    <div className="container font-minecraft py-6">
+      <div className="flex flex-col gap-5 items-center text-center">
+        <h1 className="my-2 font-bold tracking-tighter text-3xl sm:text-4xl md:text-5xl ">
           {t("home.info.about.title")}
         </h1>
-
-        <h4 className="text-xl text-muted-foreground max-w-[700px] font-italic">
+        <div className="text-xl text-blueprint-foreground font-italic">
           {t("home.info.about.description")}
-        </h4>
-
-        <div className="flex items-center justify-center space-x-4 mt-6">
-          <LazyImage
-            src={AddonIcon}
-            alt="Addon Icon"
-            className="w-16 h-16 object-contain transition-transform hover:scale-110"
-          />
-
-          <span className="text-2xl font-bold text-muted-foreground">+</span>
-
-          <LazyImage
-            src={SchematicIcon}
-            alt="Schematic Icon"
-            className="w-16 h-16 object-contain transition-transform hover:scale-110"
-          />
-
-          <span className="text-2xl font-bold text-muted-foreground">=</span>
-
-          <LazyImage
-            src={BlueprintLogo}
-            alt="Blueprint Logo"
-            className="w-16 h-16 object-contain transition-transform hover:scale-110"
-          />
+        </div>
+        <div className="flex items-center justify-center gap-5 ">
+          <div className="flex flex-col items-center transition-transform hover:scale-110">
+            <LazyImage
+              src={AddonIcon}
+              alt="Addon Icon"
+              width={92}
+              height={92}
+              className="object-contain"
+            />
+            <div className="text-lg">Addons</div>
+          </div>
+          <MinecraftIcon name="plus" size={44} />
+          <div className="flex flex-col items-center transition-transform hover:scale-110">
+            <LazyImage
+              src={SchematicIcon}
+              alt="Schematic Icon"
+              width={92}
+              height={92}
+              className="object-contain"
+            />
+            <div className="text-lg">Schematics</div>
+          </div>
+          <MinecraftIcon name="equals" size={44} />
+          <div className="flex flex-col items-center transition-transform hover:scale-110">
+            <LazyImage
+              src={BlueprintLogo}
+              alt="Blueprint Logo"
+              width={92}
+              height={92}
+              className="object-contain"
+            />
+            <div className="text-lg">Blueprint</div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,10 +1,17 @@
 import { useTranslation } from "react-i18next";
 
-import WikiLogo from "@/assets/brass_ingot.webp";
+import CreateFabricLogo from "@/assets/create_fabric.webp";
 import CreateLogo from "@/assets/create_mod_logo.webp";
+import WikiLogo from "@/assets/sprite-icons/brass_ingot.webp";
 
-import LazyImage from "@/components/LazyImage";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import LazyImage from "@/components/utility/LazyImage";
 
 const UsefulLinks = () => {
   const { t } = useTranslation();
@@ -14,20 +21,23 @@ const UsefulLinks = () => {
       href: "https://create.fandom.com/wiki/Create_Mod_Wiki",
       icon: WikiLogo,
       text: "Create Mod wiki",
-      description: "Complete documentation and guides"
+      description: "Complete documentation and guides",
+      color: "success",
     },
     {
       href: "https://modrinth.com/mod/create",
       icon: CreateLogo,
       text: "Create Mod (Forge)",
-      description: "Download for Forge modloader"
+      description: "Download for Forge modloader",
+      color: "warning",
     },
     {
       href: "https://modrinth.com/mod/create-fabric",
-      icon: CreateLogo,
+      icon: CreateFabricLogo,
       text: "Create Mod (Fabric)",
-      description: "Download for Fabric modloader"
-    }
+      description: "Download for Fabric modloader",
+      color: "destructive",
+    },
   ];
 
   return (
@@ -55,23 +65,24 @@ const UsefulLinks = () => {
               href={link.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center p-4 rounded-lg hover:bg-secondary transition-colors duration-200"
+              className={`bg-${link.color} flex items-center justify-center p-4 rounded-lg gap-5 hover:bg-${link.color}/80 transition-colors duration-200`}
             >
-              <div className="flex-shrink-0">
                 <LazyImage
                   src={link.icon}
-                  alt=""
-                  className="w-10 h-10 object-contain"
+                  alt={link.icon}
+                  width={64}
+                  height={64}
+                  pixelated={link.icon === WikiLogo ? true : false}
+                  className="object-contain"
                 />
-              </div>
-              <div className="ml-4 text-left">
-                <h3 className="font-minecraft text-lg text-foreground">
-                  {link.text}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  {link.description}
-                </p>
-              </div>
+                <div className="text-center">
+                  <div className="font-minecraft text-xl font-bold text-white/90">
+                    {link.text}
+                  </div>
+                  <div className="text-sm text-white/80">
+                    {link.description}
+                  </div>
+                </div>
             </a>
           ))}
         </CardContent>
