@@ -5,6 +5,7 @@ import supabase from './Supabase';
 const Updater = () => {
     const [status, setStatus] = useState<string | null>(null);
     const [categories, setCategories] = useState<{ [key: string]: string } | null>(null);
+    const [needsReload, setNeedsReload] = useState(false);
 
     async function fetchCategories() {
         try {
@@ -58,16 +59,19 @@ const Updater = () => {
                 // Fetch categories after updating addons
                 await fetchCategories();
 
-                // Update UI state if needed
+                // Update UI state
                 setStatus('Addons and categories updated.');
+                
+                // Instead of forcing a page reload, set a flag
+                setNeedsReload(true);
             } catch (error) {
                 if (error instanceof AxiosError) {
                     console.error('Failed to fetch addon list:', error.message);
                 } else {
                     console.error('Failed to fetch addon list:', error);
                 }
+                setStatus('Error updating addons.');
             }
-            window.location.reload();
         } else {
             console.log('Addons were updated less than an hour ago. Skipping updates.');
             setStatus('No updates needed.');
@@ -88,13 +92,30 @@ const Updater = () => {
         fetchAddonsAndCategories();
     }, []);
 
-    return (
-        <div>
-            <h1>Updater</h1>
-            <p>Status: {status || 'Idle'}</p>
-            <pre>{JSON.stringify(categories, null, 2)}</pre>
-        </div>
-    );
+    // Handle the reload notification
+    useEffect(() => {
+        if (needsReload) {
+            // Show a notification to the user that new content is available
+            const shouldReload = window.confirm('New content is available. Would you like to reload the page to see the updates?');
+            if (shouldReload) {
+                window.location.reload();
+            }
+            setNeedsReload(false);
+        }
+    }, [needsReload]);
+
+    // Don't render anything if being used as a hook
+    if (typeof window !== 'undefined' && window.location.pathname === '/updater') {
+        return (
+            <div>
+                <h1>Updater</h1>
+                <p>Status: {status || 'Idle'}</p>
+                <pre>{JSON.stringify(categories, null, 2)}</pre>
+            </div>
+        );
+    }
+
+    return null;
 };
 
 export default Updater;
