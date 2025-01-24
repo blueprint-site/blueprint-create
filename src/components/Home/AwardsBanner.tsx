@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from 'react-router-dom';
 
 import WrenchIcon from '@/assets/wrench.webp';
-import LazyImage from '@/components/LazyImage';
+import LazyImage from '@/components/utility/LazyImage';
 import '@/styles/awardsbanner.scss';
 
 

@@ -4,9 +4,9 @@ import { Calendar, Info, Key, LogOut, Mail, Phone, Shield, User } from 'lucide-r
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import supabase from '@/components/Supabase';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import supabase from '@/components/utility/Supabase';
 
 interface UserMetadata {
   avatar_url?: string;

@@ -1,6 +1,6 @@
-import supabase from '@/components/Supabase';
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
+import supabase from '@/components/utility/Supabase';
 import { Download, User, Users } from "lucide-react";
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';

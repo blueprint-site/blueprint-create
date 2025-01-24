@@ -2,9 +2,9 @@ import noImageSelected from "@/assets/backgrounds/noimage.png";
 import "@/styles/schematicsupload.scss";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import LoadingAnimation from "../LoadingAnimation";
 import LoadingSuccess from "../LoadingOverlays/LoadingSuccess";
-import supabase from "../Supabase";
+import LoadingAnimation from "../utility/LoadingAnimation";
+import supabase from "../utility/Supabase";
 
 function SchematicsUpload() {
     const [uploadedImage, setUploadedImage] = useState<string>();

@@ -3,7 +3,7 @@
 import { NavLink } from 'react-router-dom';
 import { twMerge } from 'tailwind-merge';
 
-import LazyImage from "@/components/LazyImage";
+import LazyImage from "@/components/utility/LazyImage";
 
 interface NavigationLinkProps {
   destination: string;

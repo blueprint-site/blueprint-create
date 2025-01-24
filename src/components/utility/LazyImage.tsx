@@ -7,6 +7,7 @@ interface LazyImageProperties {
   imgClassName?: string;
   height?: number | string;
   width?: number | string;
+  pixelated?: boolean;
 }
 
 const LazyImage = ({ 
@@ -15,7 +16,8 @@ const LazyImage = ({
   className,
   imgClassName,
   height, 
-  width 
+  width,
+  pixelated = false
 }: LazyImageProperties) => {
   return (
     <LazyLoad 
@@ -33,7 +35,8 @@ const LazyImage = ({
           maxHeight: '100%',
           maxWidth: '100%',
           objectFit: 'contain',
-          objectPosition: 'center'
+          objectPosition: 'center',
+          imageRendering: pixelated ? 'pixelated' : 'auto'
         }}
       />
     </LazyLoad>

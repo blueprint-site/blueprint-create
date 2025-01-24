@@ -3,7 +3,7 @@ import GithubLogo from "@/assets/icons/github-mark-white.png";
 import GoogleLogo from "@/assets/icons/google-mark-color.png";
 import "@/styles/login.scss";
 import React from 'react';
-import supabase from '../Supabase';
+import supabase from '../utility/Supabase';
 
 var client = supabase;
 

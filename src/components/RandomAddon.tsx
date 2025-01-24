@@ -1,9 +1,9 @@
 import "@/styles/randomaddon.scss";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import DevinsBadges from "./DevinsBadges";
-import LoadingAnimation from "./LoadingAnimation";
-import Updater from "./Updater";
+import DevinsBadges from "./utility/DevinsBadges";
+import LoadingAnimation from "./utility/LoadingAnimation";
+import Updater from "./utility/Updater";
 
 function RandomAddon() {
     Updater();

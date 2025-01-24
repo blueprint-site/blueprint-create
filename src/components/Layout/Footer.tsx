@@ -1,5 +1,5 @@
 import Logo from "@/assets/logo.webp";
-import ThemeToggle from "@/components/ThemeToggle";
+import ThemeToggle from "@/components/utility/ThemeToggle";
 
 const BottomBar = () => {
   return (

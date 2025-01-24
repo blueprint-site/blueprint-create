@@ -1,13 +1,10 @@
-// src/components/Home/RandomAddon.tsx
-
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import neoForgeIcon from "@/assets/neoforge_46h.png";
+import DevinsBadges from "@/components/utility/DevinsBadges";
+import LazyImage from "@/components/utility/LazyImage";
+import Updater from "@/components/utility/Updater";
 import "@/styles/homerandomaddon.scss";
-
-import Updater from "../Updater";
-
 interface Addon {
   id: string;
   icon_url: string;
@@ -28,12 +25,11 @@ interface StoredAddon {
   slug: string;
 }
 
-const HomeRandomAddon: React.FC = () => {
+const HomeRandomAddon = () => {
   const [randomAddon, setRandomAddon] = useState<Addon | null>(null);
   const [error, setError] = useState<Error | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Call Updater as a component
   Updater();
 
   useEffect(() => {
@@ -41,15 +37,15 @@ const HomeRandomAddon: React.FC = () => {
       try {
         const response = localStorage.getItem("addonList");
         const data: StoredAddon[] = response ? JSON.parse(response) : [];
-        
-        const addons: Addon[] = data.map(addon => ({
+
+        const addons: Addon[] = data.map((addon) => ({
           id: addon.id,
           icon_url: addon.icon_url,
           name: addon.title,
           description: addon.description,
           categories: addon.categories,
           versions: addon.versions,
-          slug: addon.slug
+          slug: addon.slug,
         }));
 
         if (addons.length > 0) {
@@ -57,7 +53,7 @@ const HomeRandomAddon: React.FC = () => {
           setRandomAddon(addons[randomIndex]);
         }
       } catch (e) {
-        setError(e instanceof Error ? e : new Error('Failed to fetch addons'));
+        setError(e instanceof Error ? e : new Error("Failed to fetch addons"));
       } finally {
         setIsLoading(false);
       }
@@ -69,30 +65,28 @@ const HomeRandomAddon: React.FC = () => {
   const displayAddon = (addon: Addon): JSX.Element => {
     const modloaderBadges = {
       forge: {
-        url: 'https://forums.minecraftforge.net',
-        img: 'https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/forge_46h.png',
-        alt: 'Forge support'
+        url: "https://forums.minecraftforge.net",
+        label: "Forge support",
       },
       neoforge: {
-        url: 'https://neoforged.net',
-        img: neoForgeIcon,
-        alt: 'NeoForge support'
+        url: "https://neoforged.net",
+        label: "NeoForge support",
       },
       fabric: {
-        url: 'https://fabricmc.net',
-        img: 'https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/fabric_46h.png',
-        alt: 'Fabric support'
+        url: "https://fabricmc.net",
+        label: "Fabric support",
       },
       quilt: {
-        url: 'https://quiltmc.org',
-        img: 'https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/quilt_46h.png',
-        alt: 'Quilt support'
-      }
+        url: "https://quiltmc.org",
+        label: "Quilt support",
+      },
     };
 
     const modloaders = addon.categories
-      .filter(category => ['forge', 'neoforge', 'fabric', 'quilt'].includes(category))
-      .map(loader => {
+      .filter((category) =>
+        ["forge", "neoforge", "fabric", "quilt"].includes(category)
+      )
+      .map((loader) => {
         const badge = modloaderBadges[loader as keyof typeof modloaderBadges];
         return (
           <a
@@ -102,17 +96,27 @@ const HomeRandomAddon: React.FC = () => {
             rel="noopener noreferrer"
             href={badge.url}
           >
-            <img alt={badge.alt} height={30} src={badge.img} />
+            <DevinsBadges
+              type="compact-minimal"
+              category="supported"
+              name={loader}
+              format="png"
+              height={46}
+            />
           </a>
         );
       });
 
     return (
-      <Link to={`/addons/${addon.slug}`} className="addon-link" style={{ textDecoration: "none" }}>
+      <Link to={`/addons/${addon.slug}`} className="addon-link">
         <div className="random-addon">
-          <img className="random-addon-logo" src={addon.icon_url} alt="" />
+          <LazyImage
+            className="random-addon-logo"
+            src={addon.icon_url}
+            alt=""
+          />
           <div className="modloaders">
-            <center>{modloaders}</center>
+            <div className="flex justify-center gap-2">{modloaders}</div>
           </div>
           <div className="random-addon-text-box">
             <h3 className="random-addon-name">{addon.name}</h3>
@@ -124,10 +128,12 @@ const HomeRandomAddon: React.FC = () => {
             className="addon-button"
             href={`https://modrinth.com/mod/${addon.slug}`}
           >
-            <img
-              alt="Download on Modrinth"
-              height={35}
-              src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact/available/modrinth_46h.png"
+            <DevinsBadges
+              type="compact"
+              category="available"
+              name="modrinth"
+              format="png"
+              height={46}
             />
           </a>
         </div>
@@ -135,17 +141,14 @@ const HomeRandomAddon: React.FC = () => {
     );
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error loading addon data: {error.message}</div>;
-  }
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading addon data: {error.message}</div>;
 
   return (
     <div className="random-addons">
-      <h1 className="random-addon-header">Here is a Random Addon for you to enjoy!</h1>
+      <h1 className="random-addon-header">
+        Here is a Random Addon for you to enjoy!
+      </h1>
       <div className="random-addon" id="random-addon">
         {randomAddon ? displayAddon(randomAddon) : <p>No addon available</p>}
       </div>

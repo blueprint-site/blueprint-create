@@ -1,6 +1,6 @@
 // src/App.tsx
 import LoadingOverlay from '@/components/LoadingOverlays/LoadingOverlay';
-import Updater from '@/components/Updater';
+import Updater from '@/components/utility/Updater';
 import '@/config/i18n';
 import { routes } from '@/routes/index';
 import { Suspense } from 'react';

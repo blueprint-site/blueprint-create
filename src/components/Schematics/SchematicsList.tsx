@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import supabase from "@/components/Supabase";
+import supabase from "@/components/utility/Supabase";
 
-import LoadingAnimation from "@/components/LoadingAnimation";
+import LoadingAnimation from "@/components/utility/LoadingAnimation";
 import "@/styles/schematicslist.scss";
 
 interface Schematic {

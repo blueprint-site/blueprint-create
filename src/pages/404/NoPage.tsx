@@ -1,4 +1,4 @@
-import Error404Page from "@/components/404NotFound";
+import Error404Page from "@/components/utility/404NotFound";
 
 function NoPage() {
   return (

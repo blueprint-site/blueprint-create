@@ -3,7 +3,7 @@ import axios from "axios";
 import DOMPurify from "dompurify";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import DevinsBadges from "../DevinsBadges";
+import DevinsBadges from "../utility/DevinsBadges";
 
 const AddonDetails = () => {
   const { slug } = useParams();
