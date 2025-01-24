@@ -3,7 +3,6 @@
 import LoadingOverlay from "@/components/LoadingOverlays/LoadingOverlay";
 import { Suspense, lazy } from "react";
 import { useTranslation } from "react-i18next";
-import "./Home.module.scss";
 
 const AddonsSlideshow = lazy(() => import("@/components/Home/AddonsSlideshow"));
 const WhatIsBlueprint = lazy(() => import("@/components/Home/WhatIsBlueprint"));
@@ -16,7 +15,6 @@ function Home() {
   return (
     <div className="flex flex-col">
       <Suspense fallback={<LoadingOverlay />}>
-        {/* Hero Section */}
         <section className="bg-andesite-casing deep-shadow py-12">
           <div className="container mx-auto">
               <div className="text-4xl font-minecraft font-bold text-white/90 text-center drop-shadow-lg">
@@ -28,12 +26,10 @@ function Home() {
           </div>
         </section>
 
-        {/* What is Blueprint Section */}
         <section className="py-12 bg-blueprint">
           <WhatIsBlueprint />
         </section>
 
-        {/* Two Column Section */}
         <section className="py-12 bg-background">
           <div className="container mx-auto px-4">
             <div className="grid md:grid-cols-2 gap-8">
