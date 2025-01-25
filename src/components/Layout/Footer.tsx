@@ -1,9 +1,14 @@
 import Logo from "@/assets/logo.webp";
 import ThemeToggle from "@/components/utility/ThemeToggle";
+import { cn } from "@/lib/utils";
 
-const BottomBar = () => {
+interface FooterProps {
+  className?: string;
+}
+
+const Footer = ({ className }: FooterProps) => {
   return (
-    <footer className="w-full bg-container dark:bg-container-dark py-4">
+    <footer className={cn("w-full bg-container dark:bg-container-dark pb-4 pt-24", className)}>
       <div className="container mx-auto">
         <div className="flex items-center gap-4">
           {/* Logo and Title Row */}
@@ -65,4 +70,4 @@ const BottomBar = () => {
   );
 };
 
-export default BottomBar;
+export default Footer;

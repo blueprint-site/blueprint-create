@@ -23,7 +23,7 @@ interface UserData {
   };
 }
 
-const UserPage = () => {
+const Profile = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ const UserPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="bg-background text-foreground">
       <div className="container mx-auto pt-8 sm:px-6 lg:px-8">
         <div className="flex flex-col border-b border-divider pb-3 sm:flex-row items-start gap-6">
           {/* Avatar */}
@@ -154,4 +154,4 @@ const UserPage = () => {
   );
 };
 
-export default UserPage;
+export default Profile;

@@ -111,9 +111,7 @@ const NavigationBar = ({ className = "" }: NavigationProps) => {
   };
 
   return (
-    <nav
-      className={`fixed h-16 bg-background shadow-md w-full z-50 ${className}`}
-    >
+    <nav className={`fixed h-16 bg-background shadow-md w-full z-50 ${className}`}>
       <div className="md:container mx-auto h-full px-4 flex items-center justify-between">
         <NavLink
           to="/"
