@@ -23,7 +23,7 @@ interface UserData {
   };
 }
 
-const UserPage = () => {
+const Profile = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -154,4 +154,4 @@ const UserPage = () => {
   );
 };
 
-export default UserPage;
+export default Profile;
