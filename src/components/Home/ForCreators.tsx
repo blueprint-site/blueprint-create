@@ -40,6 +40,7 @@ const ForCreators = () => {
                 category="social"
                 name="discord-plural"
                 height={64}
+
                 format="png"
               />
             </div>
