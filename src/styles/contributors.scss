@@ -1,0 +1,68 @@
+@import url('https://fonts.cdnfonts.com/css/minecraftia');
+
+:root {
+    --main-background: #e5e7eb;
+    --dark-main-background: black;
+    --text-color: white;
+    --dark-text-color: black;
+    --container-background: #b3cae5;
+    --dark-container-background: #527caf;
+    --addon-color: #7594f0;
+    --modrinth-green: #00d771;
+    --modrinth-pink: #ff7474;
+}
+.contributor-container {
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+
+    justify-content: left;
+
+    text-align: left;
+
+    >span {
+        font-size: 1em;
+    }
+
+    .contributors {
+        width: 100%;
+    }
+
+    .lazyload-wrapper {
+        width: 100%;
+        display: grid;
+        gap: 0.5em;
+        width: 55rem;
+        max-width: 60em;
+        font-size: 1em;
+
+        * {
+            text-decoration: none;
+        }
+
+        @media (min-width: 100px) {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+    }
+
+    background-color: #fae279;
+}
+
+Card {
+    background-color: #B3CAE5;
+}
+
+.big-text {
+    font-size: xx-large;
+    font-weight: bold;
+    font-family: "Minecraftia", Arial, Helvetica, sans-serif;
+}
+
+.smol-text {
+    font-size: 1em;
+    margin-bottom: 1em;
+}
+
+.card-username {
+    font-family: "Minecraftia", Arial, Helvetica, sans-serif;
+}

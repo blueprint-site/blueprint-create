@@ -1,0 +1,116 @@
+:root {
+    --main-background: #e5e7eb;
+    --dark-main-background: black;
+    --text-color: white;
+    --dark-text-color: black;
+    --container-background: #b3cae5;
+    --dark-container-background: #527caf;
+    --addon-color: #7594f0;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.get-an-addon {
+    background-color: var(--container-background);
+    padding: 1em;
+    border-radius: 1.9em;
+    font-family: "Minecraftia", Arial, Helvetica, sans-serif;
+    border: none;
+    transition: ease 0.5s;
+    box-shadow: 0.2em 0.2em 1em rgba(0, 0, 0, 0.1);
+}
+
+.get-an-addon:hover {
+    background-color: var(--dark-container-background);
+    color: white;
+    transform: scale(1.1);
+    border-radius: 1em;
+    box-shadow: 0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+}
+.random-addon {
+    width: fit-content;
+    margin: 0 auto;
+    background-color: var(--container-background);
+    padding: 1em;
+    border-radius: 1.9em;
+    font-family: "Minecraftia", Arial, Helvetica, sans-serif;
+    border: none;
+    transition: ease 0.5s;
+    box-shadow: 0.2em 0.2em 1em rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.addon-title {
+    font-family: "Minecraftia", Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+    font-size: large;
+    color: black;
+    filter: invert(100%);
+    
+}
+.addon-text {
+    color: black;
+    filter: invert(100%);
+    font-size: medium;
+}
+.addon-image {
+    width: 10em;
+    border-radius: 1000px;
+}
+.text-div {
+    text-align: left;
+}
+
+.loader {
+    width: 10em;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--container-background);
+    border-radius: 1.9em;
+    font-family: "Minecraftia", Arial, Helvetica, sans-serif;
+    border: none;
+    transition: ease 0.5s;
+    box-shadow: 0.2em 0.2em 1em rgba(0, 0, 0, 0.1);
+}
+.loading-text {
+    font-family: "Minecraftia", Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+    margin: 1em;
+}
+
+@keyframes rotate {
+    to {
+        --angle: 360deg;
+    }
+}
+
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.addon-button {
+    width: 100%;
+    display: flex;
+    transition: ease 0.4s;
+    img {
+        max-height: 50px;
+        max-width: 90%;
+    }
+}
+.addon-button:hover {
+    transform: rotate3d(0, 0, 0, 10deg);
+}

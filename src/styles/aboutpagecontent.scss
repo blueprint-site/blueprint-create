@@ -1,0 +1,48 @@
+:root {
+    --main-background: #e5e7eb;
+    --dark-main-background: black;
+    --text-color: white;
+    --dark-text-color: black;
+    --container-background: #b3cae5;
+    --dark-container-background: #527caf;
+    --addon-color: #7594f0;
+    --modrinth-green: #00d771;
+    --modrinth-pink: #ff7474;
+}
+
+.header-box {
+    text-align: center;
+}
+.header {
+    font-family: "Minecraftia", Arial, Helvetica, sans-serif;
+}
+.description-title {
+    opacity: 0.8;
+}
+.header-box {
+    background: linear-gradient(
+        180deg,
+        #a3b7f8,
+        #a2b6f8,
+        #9cb2f7,
+        #8ca5f4,
+        #7c99f1,
+        #7695f0,
+        #7594f0
+    ); /* made at https://learnui.design/tools/gradient-generator.html */
+    padding: 10em;
+    color: white;
+    filter: saturate(3);
+    text-shadow: 0.2em 0.2em 0.3em rgba(0, 0, 0, 0.3);
+}
+.body {
+    padding: 1em;
+    background-color: var(--container-background);
+}
+.paragraph-section {
+    font-family: "Minecraftia", Arial, Helvetica, sans-serif;
+    font-size: x-large;
+}
+.dark-mode {
+    color: black;
+}

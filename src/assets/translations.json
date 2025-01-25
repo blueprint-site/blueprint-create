@@ -1,0 +1,177 @@
+{
+  "en": {
+    "translation": {
+      "navigation": {
+        "label": {
+          "addons": "Addons",
+          "schematics": "Schematics",
+          "about": "About",
+          "login": "Login",
+          "blog": "Blog"
+        }
+      },
+      "awards": {
+        "banner": {
+          "label": "The Wrench Awards",
+          "link": "Vote now!"
+        }
+      },
+      "home": {
+        "discover": "Featured Addons",
+        "info": {
+          "about": {
+            "title": "What is Blueprint?",
+            "description": "Blueprint is a Create Mod themed site to find addons, schematics and more!"
+          },
+          "links": "Useful links:"
+        },
+        "contributions": {
+          "title": "Contributors",
+          "subtitle": {
+            "main": "Thanks to our awesome contributors. Without you this wouldn't have been possible ❤️",
+            "api": "Also a big thanks to those who helped us building the API ❤️"
+          }
+        }
+      },
+      "addons": {
+        "search": {
+          "placeholder": "Search Addons..."
+        },
+        "dropdown": {
+          "modloader": {
+            "select": "Select Modloader",
+            "all": "All Modloaders"
+          },
+          "version": {
+            "select": "Select Version",
+            "all": "All Versions"
+          }
+        },
+        "label": {
+          "downloads": "Downloads",
+          "description": "Description",
+          "categories": "Categories",
+          "followers": "Followers",
+          "authors": "Created by",
+          "note": "Note"
+        },
+        "random": {
+          "title": "Feeling bored?",
+          "link": "Get a random addon!"
+        }
+      }
+    }
+  },
+  "de": {
+    "translation": {
+      "navigation": {
+        "label": {
+          "addons": "Addons",
+          "schematics": "Vorlagen",
+          "about": "Über uns"
+        }
+      },
+      "awards": {
+        "banner": {
+          "label": "Die Wrench Awards",
+          "link": "Jetzt abstimmen!"
+        }
+      },
+      "home": {
+        "discover": "Entdecke Addons",
+        "info": {
+          "about": {
+            "title": "Was ist Blueprint?",
+            "description": "Blueprint ist eine Website zur Create Mod, auf der du Add-ons, Vorlagen und mehr findest!"
+          },
+          "links": "Hier sind einige nütliche Links zur Create Mod:"
+        },
+        "contributions": {
+          "title": "Mitwirkende",
+          "subtitle": {
+            "main": "Vielen Dank an unsere großartigen Mitwirkenden ❤️",
+            "api": "Ein großes Dankeschön geht auch an diejenigen, die uns beim Aufbau der API geholfen haben ❤️"
+          }
+        }
+      },
+      "addons": {
+        "search": {
+          "placeholder": "Addons suchen..."
+        },
+        "dropdown": {
+          "modloader": {
+            "select": "Modloader wählen",
+            "all": "Alle Modloader"
+          },
+          "version": {
+            "select": "Version wählen",
+            "all": "Alle Versionen"
+          }
+        },
+        "label": {
+          "downloads": "Downloads",
+          "description": "Beschreibung",
+          "categories": "Kategorien",
+          "followers": "Follower",
+          "authors": "Erstellt von"
+        }
+      }
+    }
+  },
+  "es": {
+    "translation": {
+      "navigation": {
+        "label": {
+          "addons": "Addons",
+          "schematics": "Schematics",
+          "about": "Acerca de"
+        }
+      },
+      "awards": {
+        "banner": {
+          "label": "The Wrench Awards",
+          "link": "Vota Ahora!"
+        }
+      },
+      "home": {
+        "discover": "Descubre nuevos Addons",
+        "info": {
+          "about": {
+            "title": "¿Qué es Blueprint?",
+            "description": "Blueprint es un sitio sobre Create Mod donde puedes encontrar addons, schematics y más!"
+          },
+          "links": "Algunos links de utilidad:"
+        },
+        "contributions": {
+          "title": "Contribuidores",
+          "subtitle": {
+            "main": "Gracias a nuestros asombrosos contribuidores. Sin su ayuda esto no sería posible ❤️",
+            "api": "También muchas gracias a aquellos que nos ayudan a crear la API ❤️"
+          }
+        }
+      },
+      "addons": {
+        "search": {
+          "placeholder": "Buscar Addons..."
+        },
+        "dropdown": {
+          "modloader": {
+            "select": "Selecciona el Modloader",
+            "all": "Todos los Modloaders"
+          },
+          "version": {
+            "select": "Selecciona la versión",
+            "all": "Todas las versiones"
+          }
+        },
+        "label": {
+          "downloads": "Descargas",
+          "description": "Descripción",
+          "categories": "Categorías",
+          "followers": "Seguidores",
+          "authors": "Creado por"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+.crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 100;
+  color: white;
+  font-size: 25px;
+}
+
+.schematicLoader {
+  position: absolute !important;
+  top: 100px;
+  left: 25px;
+  z-index: 101;
+}
+
+.container {
+  height: calc(100vh - 100px);
+}
