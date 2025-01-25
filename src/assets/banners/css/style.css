@@ -1,0 +1,210 @@
+@import url('https://fonts.cdnfonts.com/css/minecraftia');
+
+/* Put color variables here */
+:root {
+    --main-background: #E5E7EB;
+    --dark-main-background: black;
+    --text-color: white;
+    --dark-text-color: black;
+}
+
+body {
+    background-color: var(--main-background);
+    margin: 0;
+}
+
+body.dark-mode {
+    background-color: var(--dark-main-background);
+    color: white; /* Set text color to white for better readability */
+}
+
+body.dark-mode nav {
+    background-color: var(--dark-text-color);
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.3);
+}
+
+body.dark-mode nav > a:hover, nav > button:hover {
+    background-color: #4e4e4e;
+}
+
+body.dark-mode nav a {
+    color: var(--text-color);
+}
+
+body.dark-mode nav > button {
+    color: var(--text-color);
+    background-color: var(--dark-main-background);
+}
+
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+nav {
+    position: fixed;
+    height: 60px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    display: flex;
+    z-index: 9999;
+}
+
+nav img {
+    max-height: 40px;
+    margin-right: 10px;
+}
+
+nav > a {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-decoration: none;
+    color: var(--dark-text-color);
+    font-size: 17px;
+    transition: .1s all;
+}
+
+nav > button {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-decoration: none;
+    color: var(--dark-text-color);
+    font-size: 17px;
+    transition: .1s all;
+    background-color: white;
+    border: none;
+}
+
+nav > a:hover,
+nav > button:hover {
+    background-color: #cecece;
+}
+
+nav > a.logo {
+    font-size: 20px;
+    font-weight: 500;
+    font-family: 'Minecraftia', sans-serif;
+}
+
+nav > a img {
+    scale: 1;
+    transition: .5s all;
+}
+
+nav > a:hover img {
+    scale: 1.07;
+}
+
+main {
+    padding-top: 90px;
+    width: 100vw;
+}
+
+footer {
+    height: auto;
+    margin-top: 40px;
+    width: 100%;
+    background-color: black;
+    display: flex;
+    align-items: left;
+    justify-content: center; /* Center elements horizontally */
+    align-self: center;
+    gap: 10px;
+    flex-direction: column; /* Align items vertically */
+    text-align: left;
+}
+
+.bottom-bar-sitename {
+    color: white;
+    position: inherit;
+    margin-left: 1em;
+    margin-top: 1em;
+    font-size: 1em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.bottom-bar-logo {
+    margin-top: 1em;
+    width: 2em;
+    position: relative;
+    margin-left: 1em;
+    margin-bottom: -1em;
+}
+
+.bottom-bar-bug {
+    color: white;
+    position: inherit;
+    margin-left: 1.5em;
+    margin-top: -2.5em;
+    font-size: 0.7em;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 100;
+}
+
+#dark-mode-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 100px;
+    height: 100px;
+    border-radius: 15px;
+    background-color: #527caf;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9998;
+    transition: all .5s;
+}
+
+#dark-mode-toggle:hover {
+    height: 130px;
+}
+
+#dark-mode-toggle span {
+    position: absolute;
+    top: 0;
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0px;
+}
+
+#dark-mode-toggle:hover span {
+    position: absolute;
+    top: 0;
+    font-size: 14px;
+}
+
+#dark-mode-toggle::after {
+    content: '';
+    width: 100px;
+    height: 100px;
+    background-image: url("/static/dark_mode.webp");
+    background-size: cover;
+    position: absolute;
+    bottom: 0;
+    transition: all .5s;
+}
+
+#dark-mode-toggle:hover::after {
+    scale: 1.2;
+}
+
+.dark-mode #dark-mode-toggle {
+    background-color: #B3CAE5;
+    color: black;
+}
+
+.dark-mode #dark-mode-toggle::after {
+    background-image: url("/static/light_mode.webp");
+}
