@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import LazyLoad from "react-lazyload";
 
 interface LazyImageProperties {
@@ -10,6 +11,16 @@ interface LazyImageProperties {
   pixelated?: boolean;
 }
 
+interface LazyImageProperties {
+  src: string;
+  alt: string;
+  className?: string;
+  imgClassName?: string;
+  height?: number | string;
+  width?: number | string;
+  objectFit?: 'contain' | 'cover' | 'fill' | 'none' | 'scale-down';
+}
+
 const LazyImage = ({ 
   src, 
   alt, 
@@ -17,7 +28,7 @@ const LazyImage = ({
   imgClassName,
   height, 
   width,
-  pixelated = false
+  objectFit = 'cover'
 }: LazyImageProperties) => {
   return (
     <LazyLoad 
@@ -28,15 +39,12 @@ const LazyImage = ({
       <img 
         src={src} 
         alt={alt} 
-        className={imgClassName}
+        className={cn(imgClassName, "w-full h-full")}
         height={height}
         width={width}
         style={{ 
-          maxHeight: '100%',
-          maxWidth: '100%',
-          objectFit: 'contain',
-          objectPosition: 'center',
-          imageRendering: pixelated ? 'pixelated' : 'auto'
+          objectFit,
+          objectPosition: 'center'
         }}
       />
     </LazyLoad>
