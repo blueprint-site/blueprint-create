@@ -38,7 +38,8 @@ const ForCreators = () => {
               <DevinsBadges
                 type="cozy"
                 category="social"
-                name="discord-plural_64h"
+                name="discord-plural"
+                height={64}
                 format="png"
               />
             </div>
@@ -55,7 +56,7 @@ const ForCreators = () => {
           </div>
 
           <div className="flex items-center justify-center mt-4">
-            <p className="text-xs text-muted-foreground text-center">
+            <p className="text-xs text-muted-foreground text-center tracking-wide">
               Email: blueprint-site@proton.me
             </p>
           </div>
