@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import LazyLoad from "react-lazyload";
 
 interface LazyImageProperties {
@@ -28,7 +27,7 @@ const LazyImage = ({
   imgClassName,
   height, 
   width,
-  objectFit = 'cover'
+  objectFit = 'contain'
 }: LazyImageProperties) => {
   return (
     <LazyLoad 
@@ -39,7 +38,7 @@ const LazyImage = ({
       <img 
         src={src} 
         alt={alt} 
-        className={cn(imgClassName, "w-full h-full")}
+        className={imgClassName}
         height={height}
         width={width}
         style={{ 
