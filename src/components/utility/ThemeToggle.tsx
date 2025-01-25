@@ -4,7 +4,7 @@ import NightVisionIcon from '/src/assets/sprite-icons/night_vision.png';
 
 interface ThemeToggleProps {
   onClick?: () => void;
-  variant?: 'outline' | 'ghost';
+  variant?: 'outline' | 'ghost' | 'icon';
 }
 
 const ThemeToggle = ({ onClick, variant = 'outline' }: ThemeToggleProps) => {
@@ -27,7 +27,7 @@ const ThemeToggle = ({ onClick, variant = 'outline' }: ThemeToggleProps) => {
         alt=""
         className="w-6 h-6 object-contain"
       />
-      {variant === 'outline' && "Change theme"}
+      {variant !== 'icon' && "Change theme"}
     </Button>
   );
 };

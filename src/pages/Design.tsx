@@ -251,6 +251,7 @@ const DesignSystem = () => {
           <h2 className="text-2xl font-semibold">Inputs</h2>
           <div className="grid gap-4 max-w-sm">
             <Input placeholder="Default input" />
+            <Input placeholder="Outlined input" startIcon={Search} />
             <Input placeholder="Disabled input" disabled />
             <div className="flex gap-2">
               <Input placeholder="With button" />

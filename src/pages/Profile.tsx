@@ -90,7 +90,7 @@ const UserPage = () => {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  onClick={() => navigate("/usersettings")}
+                  onClick={() => navigate("/settings/profile")}
                   className="w-full sm:w-auto"
                 >
                   Edit Profile

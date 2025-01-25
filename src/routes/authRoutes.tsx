@@ -3,23 +3,19 @@ import ProtectedRoute from '@/components/utility/ProtectedRoute';
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-const LoginPage = lazy(() => import('@/pages/Login'));
-const RegisterPage = lazy(() => import('@/pages/Register'));
 const AuthPage = lazy(() => import('@/pages/Auth'));
-const UserPage = lazy(() => import('@/pages/User/UserPage'));
-const UserSettings = lazy(() => import('@/pages/User/UserSettings'));
+const Profile = lazy(() => import('@/pages/Profile'));
+const Settings = lazy(() => import('@/pages/Settings'));
 
 export const authRoutes: RouteObject[] = [
-  { path: 'login', element: <LoginPage /> },
-  { path: 'register', element: <RegisterPage /> },
-  { path: 'user/:username', element: <UserPage /> },
-  { path: 'user', element: <UserPage /> },
-  { path: 'auth', element: <AuthPage /> },
+  { path: 'user/:username', element: <Profile /> },
+  { path: 'user', element: <Profile /> },
+  { path: 'login', element: <AuthPage /> },
   {
-    path: 'usersettings',
+    path: 'settings',
     element: (
       <ProtectedRoute>
-        <UserSettings />
+        <Settings />
       </ProtectedRoute>
     )
   }
