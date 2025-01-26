@@ -12,6 +12,7 @@ import Home from '@/pages/Home';
 import NotFound from '@/pages/NotFound';
 import Privacy from '@/pages/Privacy';
 import Terms from '@/pages/Terms';
+import Stats from '@/pages/Stats';
 
 import SchematicLayout from '@/layouts/3DViewerLayout';
 import BaseLayout from '@/layouts/BaseLayout';
@@ -26,6 +27,7 @@ export const routes: RouteObject[] = [
       { path: 'design', element: <Design /> },
       { path: 'terms', element: <Terms /> },
       { path: 'privacy', element: <Privacy /> },
+      { path: 'stats', element: <Stats /> },
       ...authRoutes,
       ...settingsRoutes,
       { path: '*', element: <NotFound /> },
