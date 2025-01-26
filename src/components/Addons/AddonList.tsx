@@ -55,10 +55,8 @@ const AddonList = () => {
     <div className="container mx-auto px-4 py-8">
       {/* Header Section */}
       <header className="flex flex-col font-minecraft items-center space-y-4 mb-8">
-        <h1 className="text-4xl font-bold text-foreground">
-          Create Mod Addons
-        </h1>
-        <p className="text-lg text-muted-foreground">
+        <h1 className="text-4xl font-bold text-foreground mb-2">Create Mod Addons</h1>
+        <p className="text-lg text-foreground-muted">
           Discover and explore addons for the Create mod
         </p>
       </header>
@@ -73,18 +71,15 @@ const AddonList = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-col md:flex-row gap-4">
-            {/* Search Input */}
-            <div className="flex-1">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search addons..."
-                  className="pl-10"
-                  value={query}
-                  startIcon={Search}
-                  onChange={(e) => setQuery(e.target.value)}
-                />
-              </div>
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground-muted" />
+              <Input
+                placeholder="Search addons..."
+                className="pl-10"
+                value={query}
+                startIcon={Search}
+                onChange={(e) => setQuery(e.target.value)}
+              />
             </div>
 
             {/* Modloader Filter */}
@@ -122,7 +117,7 @@ const AddonList = () => {
       {/* Loading and Error States */}
       {isLoading && (
         <div className="text-center py-8">
-          <p className="text-muted-foreground">Loading addons...</p>
+          <p className="text-foreground-muted">Loading addons...</p>
         </div>
       )}
 

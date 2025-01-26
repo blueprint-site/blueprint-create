@@ -1,11 +1,11 @@
-import { lazy } from "react";
 
-const AboutPageContent = lazy(() => import("@/components/About/AboutPageContent"));
-const Contributors = lazy(() => import("@/components/About/Contributors"));
+// const AboutPageContent = lazy(() => import("@/components/About/AboutPageContent"));
+// const Contributors = lazy(() => import("@/components/About/Contributors"));
+export default function About() {
   return (
     <>
-      <AboutPageContent />
-      <Contributors />
+      {/* <AboutPageContent />
+      <Contributors /> */}
     </>
   );
 }
