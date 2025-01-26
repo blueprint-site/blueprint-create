@@ -1,5 +1,4 @@
 // src/routes/index.tsx
-import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
 import { addonRoutes } from '@/routes/addonRoutes';
@@ -7,17 +6,16 @@ import { authRoutes } from '@/routes/authRoutes';
 import { schematicRoutes } from '@/routes/schematicRoutes';
 import { settingsRoutes } from '@/routes/settings';
 
-const Home = lazy(() => import('@/pages/Home'));
-const About = lazy(() => import('@/pages/About'));
-const NoPage = lazy(() => import('@/pages/NotFound'));
-const Design = lazy(() => import('@/pages/Design'));
-const Terms = lazy(() => import('@/pages/Terms'));
-const Privacy = lazy(() => import('@/pages/Privacy'));
+import About from '@/pages/About';
+import Design from '@/pages/Design';
+import Home from '@/pages/Home';
+import NotFound from '@/pages/NotFound';
+import Privacy from '@/pages/Privacy';
+import Terms from '@/pages/Terms';
 
-const BaseLayout = lazy(() => import('@/layouts/BaseLayout'));
-const SidebarLayout = lazy(() => import('@/layouts/SidebarLayout'));
-const SchematicLayout = lazy(() => import('@/layouts/3DViewerLayout'));
-
+import SchematicLayout from '@/layouts/3DViewerLayout';
+import BaseLayout from '@/layouts/BaseLayout';
+import SidebarLayout from '@/layouts/SidebarLayout';
 
 export const routes: RouteObject[] = [
   {
@@ -30,7 +28,7 @@ export const routes: RouteObject[] = [
       { path: 'privacy', element: <Privacy /> },
       ...authRoutes,
       ...settingsRoutes,
-      { path: '*', element: <NoPage /> },
+      { path: '*', element: <NotFound /> },
     ]
   },
   {
