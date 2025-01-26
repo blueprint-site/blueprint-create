@@ -2,7 +2,7 @@
 import { RouteObject } from 'react-router-dom';
 
 import AddonDetails from '@/components/Addons/AddonDetails';
-import RandomAddon from '@/components/Addons/RandomAddon';
+import RandomAddon from '@/components/RandomAddon';
 import Addons from '@/pages/Addons';
 
 export const addonRoutes: RouteObject[] = [
