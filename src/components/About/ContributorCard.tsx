@@ -66,4 +66,3 @@ export const ContributorCard = ({ contributor, isLoading }: ContributorCardProps
     </Card>
   );
 };
-
