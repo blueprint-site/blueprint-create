@@ -18,11 +18,18 @@ export default {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
+
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        "foreground-muted": "hsl(var(--foreground-muted))",
+
         blueprint: "hsl(var(--blueprint))",
-        extended: "hsl(var(--extended))",
-        "surface-text": "hsl(var(--surface-text))",
+        "blueprint-foreground": "hsl(var(--blueprint-foreground))",
+        "blueprint-foreground-muted": "hsl(var(--blueprint-foreground-muted))",
+
+        "semantic-foreground": "hsl(var(--semantic-foreground))",
+        "semantic-foreground-muted": "hsl(var(--semantic-foreground-muted))",
+
         "surface-1": "hsl(var(--surface-1))",
         "surface-2": "hsl(var(--surface-2))",
         "surface-3": "hsl(var(--surface-3))",

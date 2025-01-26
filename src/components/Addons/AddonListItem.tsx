@@ -1,5 +1,5 @@
 import { Plus, User, Users, X } from "lucide-react";
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -21,11 +21,11 @@ interface AddonListItemProps {
 const AddonListItem = ({ addon }: AddonListItemProps) => {
   const { collection, addAddon, removeAddon } = useCollectionStore();
   const isInCollection = collection.includes(addon.slug);
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const modloaders = ["forge", "fabric", "quilt"];
 
   return (
-    <Card className="overflow-hidden bg-blueprint flex flex-col">
+    <Card className="flex flex-col overflow-hidden bg-blueprint shadow-lg">
       <CardHeader className="flex flex-row gap-4">
         <div className="flex-shrink-0 w-16 h-16">
           <LazyImage
@@ -36,10 +36,10 @@ const AddonListItem = ({ addon }: AddonListItemProps) => {
           />
         </div>
         <div className="flex-1 min-w-0 space-y-1">
-          <h3 className="text-xl font-semibold text-white/80 truncate">
+          <h3 className="text-xl font-semibold truncate">
             {addon.title}
           </h3>
-          <p className="text-sm text-white/70 line-clamp-2">
+          <p className="text-sm line-clamp-4">
             {addon.description}
           </p>
         </div>
@@ -50,11 +50,12 @@ const AddonListItem = ({ addon }: AddonListItemProps) => {
           {modloaders.map(
             (loader) =>
               addon.categories.includes(loader) && (
-                <DevinsBadges 
+                <DevinsBadges
                   type="compact-minimal"
                   category="supported"
                   name={loader}
                   format="svg"
+                  height={32}
                 />
               )
           )}
@@ -62,11 +63,15 @@ const AddonListItem = ({ addon }: AddonListItemProps) => {
 
         <div className="flex-grow self-start">
           <div className="flex flex-wrap gap-2">
-          {addon.versions.map((version) => (
-            <Badge key={version} variant="outline">
-              {version}
-            </Badge>
-          ))}
+            {addon.versions.map((version) => (
+              <Badge
+                key={version}
+                variant="outline"
+                className="text-blueprint-foreground border-blueprint-foreground"
+              >
+                {version}
+              </Badge>
+            ))}
           </div>
         </div>
 
