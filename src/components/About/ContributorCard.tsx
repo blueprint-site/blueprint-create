@@ -14,7 +14,10 @@ interface ContributorCardProps {
   isLoading?: boolean;
 }
 
-export const ContributorCard = ({ contributor, isLoading }: ContributorCardProps) => {
+export const ContributorCard = ({
+  contributor,
+  isLoading,
+}: ContributorCardProps) => {
   if (isLoading) {
     return (
       <Card className="overflow-hidden">
@@ -45,7 +48,7 @@ export const ContributorCard = ({ contributor, isLoading }: ContributorCardProps
       </CardHeader>
       <CardContent className="p-4">
         <CardTitle className="text-lg mb-1">
-          <a 
+          <a
             href={`https://github.com/${contributor.login}`}
             target="_blank"
             rel="noopener noreferrer"
@@ -66,4 +69,3 @@ export const ContributorCard = ({ contributor, isLoading }: ContributorCardProps
     </Card>
   );
 };
-export default ContributorCard;
