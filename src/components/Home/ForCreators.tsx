@@ -15,7 +15,7 @@ const ForCreators = () => {
     <div className="flex flex-col items-center space-y-4 text-center">
       <div className="space-y-2 font-minecraft">
         <h2 className="text-3xl font-bold sm:text-4xl">For Creators</h2>
-        <p className="mx-auto max-w-[700px] text-muted-foreground">
+        <p className="mx-auto max-w-[700px] text-foreground-muted">
           We're here to help showcase your addons to the Blueprint community
         </p>
       </div>
@@ -28,7 +28,7 @@ const ForCreators = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-foreground-muted">
             Our addon scanning process is fully automated. Contact us to request
             a rescan and get your addon included in our directory.
           </p>
@@ -57,7 +57,7 @@ const ForCreators = () => {
           </div>
 
           <div className="flex items-center justify-center mt-4">
-            <p className="text-xs text-muted-foreground text-center tracking-wide">
+            <p className="text-xs text-foreground-muted text-center tracking-wide">
               Email: blueprint-site@proton.me
             </p>
           </div>

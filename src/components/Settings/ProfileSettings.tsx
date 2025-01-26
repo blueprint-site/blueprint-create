@@ -132,7 +132,7 @@ export default function ProfileSettings() {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold mb-2">Profile information</h2>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-foreground-muted">
           Your profile information is publicly viewable on Blueprint and through the Blueprint API.
         </p>
       </div>
@@ -168,7 +168,7 @@ export default function ProfileSettings() {
 
         <div>
           <Label htmlFor="username">Username</Label>
-          <p className="text-sm text-muted-foreground mb-2">
+          <p className="text-sm text-foreground-muted mb-2">
             A unique case-insensitive name to identify your profile.
           </p>
           <Input
@@ -181,7 +181,7 @@ export default function ProfileSettings() {
 
         <div>
           <Label htmlFor="bio">Bio</Label>
-          <p className="text-sm text-muted-foreground mb-2">
+          <p className="text-sm text-foreground-muted mb-2">
             A short description to tell everyone a little bit about you.
           </p>
           <Textarea

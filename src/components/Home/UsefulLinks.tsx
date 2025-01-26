@@ -43,7 +43,7 @@ const UsefulLinks = () => {
         <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
           {t("home.info.links")}
         </h2>
-        <p className="mx-auto max-w-[700px] text-muted-foreground">
+        <p className="mx-auto max-w-[700px] text-foreground-muted">
           Essential resources for Create mod developers and users
         </p>
       </div>
