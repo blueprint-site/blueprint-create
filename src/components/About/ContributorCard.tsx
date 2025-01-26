@@ -48,7 +48,7 @@ export const ContributorCard = ({
       </CardHeader>
       <CardContent className="p-4">
         <CardTitle className="text-lg mb-1">
-          <a
+          <a 
             href={`https://github.com/${contributor.login}`}
             target="_blank"
             rel="noopener noreferrer"
