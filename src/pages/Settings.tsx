@@ -2,7 +2,7 @@ import { Lock, Monitor, User } from "lucide-react";
 import { Suspense, lazy } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import LoadingOverlay from "@/components/LoadingOverlays/LoadingOverlay";
+import { LoadingOverlay } from "@/components/LoadingOverlays/LoadingOverlay";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 

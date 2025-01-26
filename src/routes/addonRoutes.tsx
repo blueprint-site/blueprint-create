@@ -1,10 +1,9 @@
 // src/routes/addonRoutes.tsx
-import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-const Addons = lazy(() => import('@/pages/Addons'));
-const RandomAddon = lazy(() => import('@/components/RandomAddon'));
-const AddonDetails = lazy(() => import('@/components/Addons/AddonDetails'));
+import AddonDetails from '@/components/Addons/AddonDetails';
+import RandomAddon from '@/components/RandomAddon';
+import Addons from '@/pages/Addons';
 
 export const addonRoutes: RouteObject[] = [
   {

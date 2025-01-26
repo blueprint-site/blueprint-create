@@ -99,7 +99,7 @@ export default function About() {
             <h2 id="mission" className="text-2xl font-semibold">
               Our Mission
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-foreground-muted">
               Blueprint is the central hub for Create Mod content, bringing
               together community-made addons and player-designed schematics in
               one place. Our{" "}
@@ -128,7 +128,7 @@ export default function About() {
                   name="discord-plural"
                   format="svg"
                 />
-                <p className="text-muted-foreground">
+                <p className="text-foreground-muted">
                   For updates, sneak peeks, and issue reporting.
                 </p>
               </div>
@@ -141,7 +141,7 @@ export default function About() {
                   name="github-plural"
                   format="svg"
                 />
-                <p className="text-muted-foreground">
+                <p className="text-foreground-muted">
                   Check the README.md on the "develop" branch for local setup
                   instructions.
                 </p>
@@ -149,7 +149,7 @@ export default function About() {
 
               <div>
                 <h3 className="text-xl font-minecraft font-semibold">Email</h3>
-                <p className="text-muted-foreground">
+                <p className="text-foreground-muted">
                   Contact us at{" "}
                   <ContactLink href="mailto:blueprint-site@proton.me">
                     blueprint-site@proton.me
@@ -166,7 +166,7 @@ export default function About() {
           <h2 id="contributors" className="text-3xl font-bold">
             {t("home.contributions.title")}
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-lg text-foreground-muted">
             {t("home.contributions.subtitle.main")}
           </p>
         </div>

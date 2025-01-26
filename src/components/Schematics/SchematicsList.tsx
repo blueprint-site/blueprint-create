@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import supabase from "@/components/utility/Supabase";
 
-import LoadingAnimation from "@/components/utility/LoadingAnimation";
+import { LoadingSpinner } from "@/components/LoadingOverlays/LoadingSpinner";
 import "@/styles/schematicslist.scss";
 
 interface Schematic {
@@ -74,8 +74,12 @@ function SchematicsList() {
   };
 
   if (loading) {
-    LoadingAnimation();
-    return <div className="loading">Loading schematics for you...</div>;
+    return (
+      <div className="flex flex-col items-center gap-4 p-4">
+        <LoadingSpinner size="lg" />
+        <p className="text-muted-foreground">Loading schematics for you...</p>
+      </div>
+    );
   }
 
   if (error) {
