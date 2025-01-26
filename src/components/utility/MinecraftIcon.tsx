@@ -117,8 +117,6 @@ const MinecraftIcon = ({ name, size = 16, className }: MinecraftIconProps) => {
   const darkIcons = 'src/assets/icons/create_icons_dark.png';
   const { isDarkMode } = useThemeStore();
   
-  console.log('Theme state:', { isDarkMode, lightIcons, darkIcons });
-
   const [x, y] = iconPositions[name];
   
   return (
