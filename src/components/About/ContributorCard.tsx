@@ -14,10 +14,7 @@ interface ContributorCardProps {
   isLoading?: boolean;
 }
 
-export const ContributorCard = ({
-  contributor,
-  isLoading,
-}: ContributorCardProps) => {
+export const ContributorCard = ({ contributor, isLoading }: ContributorCardProps) => {
   if (isLoading) {
     return (
       <Card className="overflow-hidden">
