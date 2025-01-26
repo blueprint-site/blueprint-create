@@ -2,8 +2,8 @@ import noImageSelected from "@/assets/backgrounds/noimage.png";
 import "@/styles/schematicsupload.scss";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import LoadingSuccess from "../LoadingOverlays/LoadingSuccess";
-import LoadingAnimation from "../utility/LoadingAnimation";
+import { LoadingSpinner } from "../LoadingOverlays/LoadingSpinner";
+import { LoadingSuccess } from "../LoadingOverlays/LoadingSuccess";
 import supabase from "../utility/Supabase";
 
 function SchematicsUpload() {
@@ -194,7 +194,7 @@ function SchematicsUpload() {
     if (loading && !showFinalMessage) {
         return (
             <div className="loading">
-                <LoadingAnimation />
+                <LoadingSpinner />
                 <h1>Your schematic is being uploaded!</h1>
                 <h4>Wait some time</h4>
             </div>
