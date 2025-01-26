@@ -1,7 +1,6 @@
-import { Suspense, lazy, useEffect } from "react";
+import { lazy, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-import LoadingOverlay from "@/components/LoadingOverlays/LoadingOverlay";
 import Updater from "@/components/utility/Updater";
 
 const AddonList = lazy(() => import("@/components/Addons/AddonList"));
@@ -28,9 +27,9 @@ export default function Addons() {
   }, [location]);
 
   return (
-    <Suspense fallback={<LoadingOverlay />}>
+    <>
       <AddonList />
       <CollectionSidebar />
-    </Suspense>
+    </>
   );
 }

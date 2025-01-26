@@ -1,16 +1,29 @@
+// src/components/LoadingOverlays/LoadingSuccess.tsx
 import LoadingCheckmark from '@/assets/loading_checkmark.png';
+import { cn } from '@/lib/utils';
 
-import '@/styles/loading.scss';
-
-function LoadingOverlay() {
-    return (
-        <>
-            <div className="loading">
-                <h1>Blueprint</h1>
-                <img src={LoadingCheckmark} alt="Loading" />
-            </div>
-        </>
-    );
+interface LoadingSuccessProps {
+  message?: string;
+  className?: string;
 }
 
-export default LoadingOverlay;
+export function LoadingSuccess({ 
+  message = "Blueprint",
+  className 
+}: LoadingSuccessProps) {
+  return (
+    <div className={cn(
+      "fixed inset-0 z-50 flex flex-col items-center justify-center bg-surface-1",
+      className
+    )}>
+      <h1 className="mb-6 text-4xl font-minecraft text-foreground">
+        {message}
+      </h1>
+      <img 
+        src={LoadingCheckmark}
+        alt="Success checkmark" 
+        className="w-48 max-w-[80vw]"
+      />
+    </div>
+  );
+}
