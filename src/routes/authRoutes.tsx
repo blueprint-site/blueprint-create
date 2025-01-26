@@ -1,11 +1,10 @@
 // src/routes/authRoutes.tsx
-import ProtectedRoute from '@/components/utility/ProtectedRoute';
-import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-const AuthPage = lazy(() => import('@/pages/Auth'));
-const Profile = lazy(() => import('@/pages/Profile'));
-const Settings = lazy(() => import('@/pages/Settings'));
+import ProtectedRoute from '@/components/utility/ProtectedRoute';
+import AuthPage from '@/pages/Auth';
+import Profile from '@/pages/Profile';
+import Settings from '@/pages/Settings';
 
 export const authRoutes: RouteObject[] = [
   { path: 'user/:username', element: <Profile /> },
