@@ -14,7 +14,7 @@ export default function AccountSettings() {
           <ShieldCheck className="w-5 h-5" />
           <div className="text-lg font-semibold">Two-factor authentication</div>
         </div>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-foreground-muted">
           Add an additional layer of security to your account during login.
         </p>
         <div className="flex gap-4">
@@ -28,7 +28,7 @@ export default function AccountSettings() {
           <UserCog className="w-5 h-5" />
           <div className="text-lg font-semibold">Manage authentication providers</div>
         </div>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-foreground-muted">
           Add or remove sign-on methods from your account, including GitHub, GitLab, Microsoft, 
           Discord, Steam, and Google.
         </p>

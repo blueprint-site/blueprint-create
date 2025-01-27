@@ -79,10 +79,10 @@ const Profile = () => {
                    userData?.user_metadata?.preferred_username || 
                    'Anonymous User'}
                 </h2>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-foreground-muted">
                   {userData?.user_metadata?.full_name}
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-foreground-muted">
                   Joined {new Date(userData?.created_at || '').toLocaleDateString()}
                 </p>
               </div>
@@ -98,7 +98,7 @@ const Profile = () => {
               </div>
             </div>
             
-            <div className="flex flex-wrap items-center gap-6 mt-4 text-sm text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-6 mt-4 text-sm text-foreground-muted">
               <div className="flex items-center">
                 <span>Provider: {userData?.app_metadata?.provider || 'None'}</span>
               </div>
@@ -124,10 +124,10 @@ const Profile = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-card-foreground">Test Project</h3>
-                  <p className="text-sm text-muted-foreground">Just a test project so I can see how this works</p>
+                  <p className="text-sm text-foreground-muted">Just a test project so I can see how this works</p>
                 </div>
               </div>
-              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <div className="flex items-center gap-4 text-sm text-foreground-muted">
                 <div className="flex items-center">
                   <Download className="w-4 h-4 mr-1" />
                   <span>0</span>

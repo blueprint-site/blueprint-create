@@ -77,7 +77,7 @@ function SchematicsList() {
     return (
       <div className="flex flex-col items-center gap-4 p-4">
         <LoadingSpinner size="lg" />
-        <p className="text-muted-foreground">Loading schematics for you...</p>
+        <p className="text-foreground-muted">Loading schematics for you...</p>
       </div>
     );
   }
