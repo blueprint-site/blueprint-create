@@ -117,7 +117,7 @@ const ColorsSection = () => {
     <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-semibold mb-4">Color System</h2>
-        <p className="text-muted-foreground mb-8">
+        <p className="text-foreground-muted mb-8">
           A comprehensive color system designed for Blueprint's UI components
           and brand identity.
         </p>

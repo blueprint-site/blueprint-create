@@ -29,7 +29,7 @@ export default function DisplaySettings() {
           </Label>
         </div>
         
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-foreground-muted">
           Choose between light and dark mode for the site interface.
         </p>
       </div>

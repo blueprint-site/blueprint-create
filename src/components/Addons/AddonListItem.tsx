@@ -21,7 +21,6 @@ interface AddonListItemProps {
 const AddonListItem = ({ addon }: AddonListItemProps) => {
   const { collection, addAddon, removeAddon } = useCollectionStore();
   const isInCollection = collection.includes(addon.slug);
-  // const { t } = useTranslation();
   const modloaders = ["forge", "fabric", "quilt"];
 
   return (
@@ -36,12 +35,8 @@ const AddonListItem = ({ addon }: AddonListItemProps) => {
           />
         </div>
         <div className="flex-1 min-w-0 space-y-1">
-          <h3 className="text-xl font-semibold truncate">
-            {addon.title}
-          </h3>
-          <p className="text-sm line-clamp-4">
-            {addon.description}
-          </p>
+          <h3 className="text-xl font-semibold truncate">{addon.title}</h3>
+          <p className="text-sm line-clamp-4">{addon.description}</p>
         </div>
       </CardHeader>
 
@@ -51,6 +46,7 @@ const AddonListItem = ({ addon }: AddonListItemProps) => {
             (loader) =>
               addon.categories.includes(loader) && (
                 <DevinsBadges
+                  key={loader}
                   type="compact-minimal"
                   category="supported"
                   name={loader}
@@ -75,7 +71,7 @@ const AddonListItem = ({ addon }: AddonListItemProps) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 text-sm text-black/30">
+        <div className="grid grid-cols-2 gap-4 text-sm text-foreground-muted">
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-3 border-b border-black/30 hover:text-black/50 px-2 pb-1">
               <User className="h-4 w-4" />
