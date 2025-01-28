@@ -14,7 +14,6 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import LazyImage from "@/components/utility/LazyImage";
 import supabase from "@/components/utility/Supabase";
 import ThemeToggle from "@/components/utility/ThemeToggle";
 
@@ -112,7 +111,8 @@ const NavigationBar = ({ className }: NavigationProps) => {
           className="flex items-center text-foreground hover:text-foreground transition-colors duration-200"
         >
           <div className="w-10 h-10 flex items-center justify-center">
-            <LazyImage
+            <img
+              loading="lazy"
               src={BlueprintLogo}
               alt="Logo"
               className="max-h-10 w-auto object-contain"

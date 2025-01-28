@@ -1,24 +1,22 @@
-import { cn } from "@/lib/utils";
-import LazyImage from "./LazyImage";
 
 // Define the available badge types as const to enable type inference
 const BADGE_TYPES = {
   cozy: {
     recommendedHeight: 56, // Default SVG height
-    heightRange: { min: 48, max: 64 }
+    heightRange: { min: 48, max: 64 },
   },
   "cozy-minimal": {
     recommendedHeight: 56,
-    heightRange: { min: 48, max: 64 }
+    heightRange: { min: 48, max: 64 },
   },
   compact: {
     recommendedHeight: 40,
-    heightRange: { min: 32, max: 46 }
-  }, 
+    heightRange: { min: 32, max: 46 },
+  },
   "compact-minimal": {
     recommendedHeight: 40,
-    heightRange: { min: 32, max: 46 }
-  }
+    heightRange: { min: 32, max: 46 },
+  },
 } as const;
 
 // Badge categories with descriptions for better DX
@@ -30,26 +28,26 @@ const BADGE_CATEGORIES = {
   requires: "Required tools and software for your project",
   social: "Social platforms and communities",
   supported: "Platforms/software supported by your project",
-  unsupported: "Platforms/software not supported by your project", 
-  translate: "Translation platforms and resources"
+  unsupported: "Platforms/software not supported by your project",
+  translate: "Translation platforms and resources",
 } as const;
 
 interface DevinsBadgesProps {
   /** Badge style type */
   type: keyof typeof BADGE_TYPES;
-  
+
   /** Badge category */
   category: keyof typeof BADGE_CATEGORIES;
-  
+
   /** Badge name/identifier */
   name: string;
-  
+
   /** Optional custom height (must be within type's recommended range) */
   height?: number;
-  
+
   /** Image format - SVG recommended for better quality */
   format: "svg" | "png";
-  
+
   /** Optional className for the image wrapper */
   className?: string;
 }
@@ -60,14 +58,17 @@ const DevinsBadges = ({
   name,
   height,
   format = "svg",
-  className
+  className,
 }: DevinsBadgesProps) => {
   // Get badge type configuration
   const typeConfig = BADGE_TYPES[type];
-  
+
   // Validate and normalize height
-  const finalHeight = height 
-    ? Math.min(Math.max(height, typeConfig.heightRange.min), typeConfig.heightRange.max)
+  const finalHeight = height
+    ? Math.min(
+        Math.max(height, typeConfig.heightRange.min),
+        typeConfig.heightRange.max
+      )
     : typeConfig.recommendedHeight;
 
   // Construct badge URL
@@ -76,10 +77,11 @@ const DevinsBadges = ({
   }.${format}`;
 
   return (
-    <LazyImage
+    <img
+      loading="lazy"
       src={badgeSrc}
       alt={`${name} badge`}
-      className={cn("inline-block", className)}
+      className={className}
       height={finalHeight}
     />
   );

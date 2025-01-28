@@ -5,9 +5,7 @@ import { useIsMobile } from "@/hooks/useBreakpoints";
 import BlueprintLogo from "@/assets/logo.webp";
 import AddonIcon from "@/assets/sprite-icons/minecart_coupling.webp";
 import SchematicIcon from "@/assets/sprite-icons/schematic.webp";
-import LazyImage from "@/components/utility/LazyImage";
-import MinecraftIcon from "@/components/utility/MinecraftIcon";
-
+import { Equal, Plus } from 'lucide-react';
 
 const WhatIsBlueprint = () => {
   const { t } = useTranslation();
@@ -24,28 +22,31 @@ const WhatIsBlueprint = () => {
         </div>
         <div className="flex items-center justify-center gap-5 ">
           <div className="flex flex-col items-center transition-transform hover:scale-110">
-            <LazyImage
+            <img
+              loading="lazy"
               src={AddonIcon}
               alt="Addon Icon"
-              className="w-10 lg:w-24 object-contain"
+              className="object-contain w-8 sm:w-10 md:w-14 lg:w-24"
             />
             <div className="text-base md:text-lg">Addons</div>
           </div>
-          <MinecraftIcon name="plus" size={isMobile ? 24 : 44} /> 
+          <Plus className="h-8 sm:h-10 md:h-14 lg:h-24" />
           <div className="flex flex-col items-center transition-transform hover:scale-110">
-            <LazyImage
+            <img
+              loading="lazy"
               src={SchematicIcon}
               alt="Schematic Icon"
-              className="w-10 lg:w-24 object-contain"
+              className="object-contain w-8 sm:w-10 md:w-14 lg:w-24"
             />
             <div className="text-base md:text-lg">Schematics</div>
           </div>
-          <MinecraftIcon name="equals" size={isMobile ? 24 : 44} /> 
+          <Equal className="h-8 sm:h-10 md:h-14 lg:h-24" />        
           <div className="flex flex-col items-center transition-transform hover:scale-110">
-            <LazyImage
+            <img
+              loading="lazy"
               src={BlueprintLogo}
               alt="Blueprint Logo"
-              className="w-10 lg:w-24 object-contain"
+              className="object-contain w-8 sm:w-10 md:w-14 lg:w-24"
             />
             <div className="text-base md:text-lg">Blueprint</div>
           </div>
