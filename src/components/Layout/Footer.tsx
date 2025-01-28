@@ -8,16 +8,19 @@ interface FooterProps {
 
 const Footer = ({ className }: FooterProps) => {
   return (
-    <footer className={cn("w-full bg-container dark:bg-container-dark pb-4 pt-24", className)}>
+    <footer
+      className={cn(
+        "w-full bg-container dark:bg-container-dark pb-4 pt-24",
+        className
+      )}
+    >
       <div className="container mx-auto">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           {/* Logo and Title Row */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
               <img src={Logo} alt="Blueprint Site Logo" className="w-8" />
-              <h4 className="font-bold text-lg">
-                Blueprint Site
-              </h4>
+              <h4 className="font-bold text-lg">Blueprint</h4>
             </div>
 
             <h6 className="text-xs font-normal">
@@ -33,11 +36,14 @@ const Footer = ({ className }: FooterProps) => {
           </div>
           <div className="flex-1">
             {/* Links to site pages */}
-            <div className="flex justify-center gap-4">
+            <div className="flex flex-wrap sm:justify-center gap-4">
               <a href="/addons" className="text-xs font-normal hover:underline">
                 Addons
               </a>
-              <a href="/schematics" className="text-xs font-normal hover:underline">
+              <a
+                href="/schematics"
+                className="text-xs font-normal hover:underline"
+              >
                 Schematics
               </a>
               <a

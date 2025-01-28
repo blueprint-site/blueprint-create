@@ -6,6 +6,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import NavItem from "@/components/Layout/Navigation/NavItem";
 import UserMenu from "@/components/Layout/Navigation/UserMenu";
 
+import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -21,7 +22,7 @@ import Blog from "@/assets/sprite-icons/clipboard_and_quill.png";
 import AboutIcon from "@/assets/sprite-icons/crafting_blueprint.png";
 import AddonIcon from "@/assets/sprite-icons/minecart_coupling.webp";
 import SchematicIcon from "@/assets/sprite-icons/schematic.webp";
-import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/hooks/useBreakpoints";
 
 interface NavigationProps {
   className?: string;
@@ -38,22 +39,15 @@ interface UserData {
   };
 }
 
-const NavigationBar = ({ className = "" }: NavigationProps) => {
+const NavigationBar = ({ className }: NavigationProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     getUserData();
-
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const getUserData = async () => {
@@ -114,7 +108,7 @@ const NavigationBar = ({ className = "" }: NavigationProps) => {
       <div className="md:container mx-auto h-full px-4 flex items-center justify-between">
         <NavLink
           to="/"
-          className="flex items-center text-foreground hover:bg-foreground/10 transition-colors duration-200"
+          className="flex items-center text-foreground hover:text-foreground transition-colors duration-200"
         >
           <div className="w-10 h-10 flex items-center justify-center">
             <img
@@ -137,11 +131,11 @@ const NavigationBar = ({ className = "" }: NavigationProps) => {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="bg-transparent hover:bg-secondary"
+                    className="bg-background hover:bg-background:/10"
                   >
                     <Menu className="w-6 h-6" />
                   </NavigationMenuTrigger>
-                  <NavigationMenuContent className="w-screen sm:w-80">
+                  <NavigationMenuContent className="w-screen sm:w-80 left-10">
                     <div className="flex flex-col p-2 bg-background">
                       {baseNavigationItems.map((item, index) => (
                         <NavItem
@@ -152,12 +146,12 @@ const NavigationBar = ({ className = "" }: NavigationProps) => {
                           external={item.external}
                         />
                       ))}
-                      <div className="mt-2 px-2">{renderUserSection()}</div>
                     </div>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
+            <div className="mt-2 px-2">{renderUserSection()}</div>
           </div>
         ) : (
           <div className="flex items-center space-x-4">

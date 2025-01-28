@@ -58,6 +58,7 @@
     "supabase": "^2.1.1",
     "tailwind-merge": "^2.6.0",
     "three": "^0.164.1",
+    "use-debounce": "^10.0.4",
     "vite-cloudflared-tunnel": "^1.0.2",
     "vite-plugin-node-polyfills": "^0.21.0",
     "zustand": "^4.5.2"
