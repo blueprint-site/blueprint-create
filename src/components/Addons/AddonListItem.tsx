@@ -1,5 +1,5 @@
 import { Plus, User, Users, X } from "lucide-react";
-// import { useTranslation } from "react-i18next";
+import { memo } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,19 +9,29 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+
 import DevinsBadges from "@/components/utility/DevinsBadges";
 import LazyImage from "@/components/utility/LazyImage";
-import { Addon } from "@/stores/addonStore";
+
 import { useCollectionStore } from "@/stores/collectionStore";
+import { Addon } from "@/types";
 
 interface AddonListItemProps {
   addon: Addon;
 }
 
-const AddonListItem = ({ addon }: AddonListItemProps) => {
+const AddonListItem = memo(({ addon }: AddonListItemProps) => {
   const { collection, addAddon, removeAddon } = useCollectionStore();
   const isInCollection = collection.includes(addon.slug);
   const modloaders = ["forge", "fabric", "quilt"];
+
+  const handleCollectionAction = () => {
+    if (isInCollection) {
+      removeAddon(addon.slug);
+    } else {
+      addAddon(addon.slug);
+    }
+  };
 
   return (
     <Card className="flex flex-col overflow-hidden bg-blueprint shadow-lg">
@@ -60,11 +70,7 @@ const AddonListItem = ({ addon }: AddonListItemProps) => {
         <div className="flex-grow self-start">
           <div className="flex flex-wrap gap-2">
             {addon.versions.map((version) => (
-              <Badge
-                key={version}
-                variant="outline"
-                className="text-blueprint-foreground border-blueprint-foreground"
-              >
+              <Badge key={version} variant="outline">
                 {version}
               </Badge>
             ))}
@@ -87,30 +93,9 @@ const AddonListItem = ({ addon }: AddonListItemProps) => {
         </div>
       </CardContent>
 
-      <CardFooter className="grid grid-cols-2 flex-grow-0 gap-4">
-        <Button
-          variant={isInCollection ? "success" : "default"}
-          size="sm"
-          className="py-0 h-full"
-          onClick={() =>
-            isInCollection ? removeAddon(addon.slug) : addAddon(addon.slug)
-          }
-        >
-          {isInCollection ? (
-            <>
-              <X className="h-4 w-4 mr-2" />
-              Remove from Collection
-            </>
-          ) : (
-            <>
-              <Plus className="h-4 w-4 mr-2" />
-              Add to Collection
-            </>
-          )}
-        </Button>
-
+      <CardFooter className="grid sm:grid-cols-2 grid-cols-1 flex-grow-0 gap-4 align-center">
         <a
-          className="flex items-center justify-end"
+          className="flex items-center justify-center sm:justify-start"
           target="_blank"
           rel="noopener noreferrer"
           href={`https://modrinth.com/mod/${addon.slug}`}
@@ -123,9 +108,22 @@ const AddonListItem = ({ addon }: AddonListItemProps) => {
             height={46}
           />
         </a>
+        <Button
+          variant={isInCollection ? "success" : "default"}
+          size="sm"
+          className="sm:py-0 sm:h-full h-[46px]"
+          onClick={handleCollectionAction}
+        >
+          {isInCollection ? (
+            <X className="h-4 w-4" />
+          ) : (
+            <Plus className="h-4 w-4" />
+          )}
+          {isInCollection ? "Remove from" : "Add to"} Collection
+        </Button>
       </CardFooter>
     </Card>
   );
-};
+});
 
 export default AddonListItem;

@@ -35,14 +35,23 @@ export interface UserData {
 
 // Addon Types
 export interface Addon {
-  id: string;
-  icon_url: string;
+  id: number;
+  project_id: string;
+  slug: string;
+  author: string;
   title: string;
   description: string;
   categories: string[];
+  display_categories: string[];
   versions: string[];
-  slug: string;
   downloads: number;
   follows: number;
-  author: string;
+  icon_url: string;
+  date_created: string;
+  date_modified: string;
+  latest_version: string;
+  license: string;
+  gallery: string[];
+  featured_gallery: string | null;
+  color: string;
 }
