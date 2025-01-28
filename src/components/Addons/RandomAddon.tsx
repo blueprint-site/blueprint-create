@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import DevinsBadges from "@/components/utility/DevinsBadges";
-import { type Addon } from "@/stores/addonStore";
+import { Addon } from "@/types";
 
 const RandomAddon = () => {
   const [addon, setAddon] = useState<Addon | null>(null);

@@ -1,7 +1,5 @@
 import { useTranslation } from "react-i18next";
 
-import { useIsMobile } from "@/hooks/useBreakpoints";
-
 import BlueprintLogo from "@/assets/logo.webp";
 import AddonIcon from "@/assets/sprite-icons/minecart_coupling.webp";
 import SchematicIcon from "@/assets/sprite-icons/schematic.webp";
@@ -9,7 +7,6 @@ import { Equal, Plus } from 'lucide-react';
 
 const WhatIsBlueprint = () => {
   const { t } = useTranslation();
-  const { isMobile } = useIsMobile();
 
   return (
     <div className="container font-minecraft py-6">

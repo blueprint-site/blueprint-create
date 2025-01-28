@@ -1,7 +1,5 @@
 import { NavLink } from "react-router-dom";
 
-import LazyImage from '@/components/utility/LazyImage';
-
 interface NavItemProps {
   href: string;
   icon: string;

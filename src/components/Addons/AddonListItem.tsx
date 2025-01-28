@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/card";
 
 import DevinsBadges from "@/components/utility/DevinsBadges";
-import { Addon } from "@/stores/addonStore";
 import { useCollectionStore } from "@/stores/collectionStore";
 import { Addon } from "@/types";
 
@@ -43,6 +42,7 @@ const AddonListItem = memo(({ addon }: AddonListItemProps) => {
         />
         <div className="flex-1 min-w-0 space-y-1">
           <h3 className="text-xl font-semibold truncate">{addon.title}</h3>
+          <h3 className="text-xl font-semibold truncate">{addon.slug}</h3>
           <p className="text-sm line-clamp-4">{addon.description}</p>
         </div>
       </CardHeader>

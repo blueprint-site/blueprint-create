@@ -1,485 +1,357 @@
 import noImageSelected from "@/assets/backgrounds/noimage.png";
-import "@/styles/schematicsupload.scss";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Textarea } from "@/components/ui/textarea";
+import { User } from "@supabase/supabase-js";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoadingSpinner } from "../LoadingOverlays/LoadingSpinner";
 import { LoadingSuccess } from "../LoadingOverlays/LoadingSuccess";
 import supabase from "../utility/Supabase";
 
-function SchematicsUpload() {
-    const [uploadedImage, setUploadedImage] = useState<string>();
-    const [title, setTitle] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
-    const [gameVersion, setGameVersion] = useState<string>("");
-    const [createVersion, setCreateVersion] = useState<string>("");
-    const [loader, setLoader] = useState<string>("");
-    const [uploadedImageFile, setUploadedImageFile] = useState<File | null>(
-        null
-    );
-    const [uploadedSchematic, setUploadedSchematic] = useState<File | null>(
-        null
-    );
-    const [isSchematicUploaded, setIsSchematicUploaded] = useState<boolean>(
-        false
-    );
-    const [isSchematicError, setIsSchematicError] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [showFinalMessage, setShowFinalMessage] = useState<boolean>(false);
-    const [loggedIn, setLoggedIn] = useState<boolean>(false);
-    const navigate = useNavigate();
-    const [userdata, setUserdata] = useState<any>();
+interface SchematicFormData {
+  title: string;
+  description: string;
+  gameVersion: string;
+  createVersion: string;
+  loader: string;
+  uploadedImage: string;
+  uploadedImageFile: File | null;
+  uploadedSchematic: File | null;
+}
 
+const INITIAL_FORM_DATA: SchematicFormData = {
+  title: "",
+  description: "",
+  gameVersion: "",
+  createVersion: "",
+  loader: "",
+  uploadedImage: noImageSelected,
+  uploadedImageFile: null,
+  uploadedSchematic: null
+};
+
+const GAME_VERSIONS = ["1.20.1", "1.19.2", "1.18.2"];
+const CREATE_VERSIONS = ["0.5.1 (a-j)", "0.5.0 (a-i)"];
+const LOADERS = ["Forge", "Fabric", "Quilt", "NeoForge"];
+
+export function SchematicsUpload() {
+  const [formData, setFormData] = useState<SchematicFormData>(INITIAL_FORM_DATA);
+  const [isSchematicUploaded, setIsSchematicUploaded] = useState(false);
+  const [isSchematicError, setIsSchematicError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showFinalMessage, setShowFinalMessage] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
     const getUserData = async () => {
-        const {
-            data: { user },
-        } = await supabase.auth.getUser();
-        setUserdata(user); // Store the user data in the state
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
     };
+    getUserData();
+  }, []);
 
-    useEffect(() => {
-        if (loading) {
-            const timer = setTimeout(() => {
-                setShowFinalMessage(true);
-            }, 3000);
-
-            return () => clearTimeout(timer);
-        }
-        if (uploadedImage) {
-            return;
-        } else {
-            setUploadedImage(noImageSelected);
-        }
-    }, [loading]);
-
-    useEffect(() => {
-        if (showFinalMessage) {
-            const redirectTimer = setTimeout(() => {
-                navigate("/schematics");
-            }, 500);
-
-            return () => clearTimeout(redirectTimer);
-        }
-    }, [showFinalMessage, navigate]);
-
-    useEffect(() => {
-        getUserData();
-        if (userdata) {
-            setLoggedIn(true);
-        } else {
-            setLoggedIn(false);
-        }
-    }, []);
-
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-        if (e.target.files) {
-            const file = e.target.files[0];
-            setUploadedImageFile(file);
-            setUploadedImage(URL.createObjectURL(file));
-        }
+  useEffect(() => {
+    if (loading) {
+      const timer = setTimeout(() => {
+        setShowFinalMessage(true);
+      }, 3000);
+      return () => clearTimeout(timer);
     }
+  }, [loading]);
 
-    function handleSchematicChange(e: React.ChangeEvent<HTMLInputElement>) {
-        if (e.target.files) {
-            const file = e.target.files[0];
-            const fileExtension = file.name.split(".").pop()?.toLowerCase();
-
-            if (fileExtension === "nbt") {
-                setIsSchematicUploaded(true);
-                setIsSchematicError(false);
-                setUploadedSchematic(file);
-                // Add further logic to handle the file upload if necessary
-            } else {
-                setIsSchematicUploaded(false);
-                setIsSchematicError(true);
-            }
-        }
-    }
-
-    function handleUpload() {
-        const missingFields = [];
-        if (!uploadedImageFile) missingFields.push("Image File");
-        if (!uploadedSchematic) missingFields.push("Schematic File");
-        if (isSchematicError) missingFields.push("Valid Schematic File");
-        if (!gameVersion) missingFields.push("Game Version");
-        if (!createVersion) missingFields.push("Create Version");
-        if (!loader) missingFields.push("Loader");
-        if (!loggedIn) missingFields.push("Login");
-        if (!description) missingFields.push("Description");
-        if (!title) missingFields.push("Title");
-
-        if (missingFields.length > 0) {
-            alert(`Please fill in the following fields: ${missingFields.join(", ")}`);
-        } else {
-            setLoading(true);
-            handleSchematicUpload(
-                uploadedSchematic,
-                uploadedImageFile,
-                title,
-                description,
-                userdata?.user_metadata?.custom_claims?.global_name
-            );
-        }
-    }
-
-    function handleCancel() {
-        navigate("/schematics");
-    }
-    async function handleSchematicUpload(
-        file: File,
-        image: File,
-        title: string,
-        description: string,
-        author: string
-    ) {
-        try {
-            // Upload file to bucket
-            const filePath = `files/${Date.now()}_${file.name}`;
-            const {
-                data: fileData,
-                error: fileError,
-            } = await supabase.storage
-                .from("schematics")
-                .upload(filePath, file);
-
-            if (fileError) {
-                console.log("FILE ERROR", fileError);
-            }
-
-            // Upload image to bucket
-            const imagePath = `images/${Date.now()}_${image.name}`;
-            const {
-                data: imageData,
-                error: imageError,
-            } = await supabase.storage
-                .from("schematics")
-                .upload(imagePath, image);
-
-            if (imageError) {
-                console.log("IMAGE ERROR", imageError);
-            }
-
-            // Get public URLs
-            const fileUrl = supabase.storage
-                .from("schematics")
-                .getPublicUrl(filePath).data.publicUrl;
-            const imageUrl = supabase.storage
-                .from("schematics")
-                .getPublicUrl(imagePath).data.publicUrl;
-
-            // Insert metadata into the table
-            const {
-                data: blueprintData,
-                error: insertError,
-            } = await supabase.from("schematics").insert([
-                {
-                    title: title,
-                    description: description,
-                    schematic_url: fileUrl,
-                    image_url: imageUrl,
-                    author: userdata?.user_metadata?.custom_claims?.global_name,
-                    game_versions: gameVersion,
-                    create_versions: createVersion,
-                    modloader: loader,
-                },
-            ]);
-
-            if (insertError) throw insertError;
-
-            console.log("Blueprint uploaded successfully:", blueprintData);
-        } catch (error) {
-            console.error("Error uploading blueprint:", error);
-        }
-    }
-
-    if (loading && !showFinalMessage) {
-        return (
-            <div className="loading">
-                <LoadingSpinner />
-                <h1>Your schematic is being uploaded!</h1>
-                <h4>Wait some time</h4>
-            </div>
-        );
-    }
-
+  useEffect(() => {
     if (showFinalMessage) {
-        return (
-            <div className="final-message">
-                <LoadingSuccess />
-            </div>
-        );
+      const redirectTimer = setTimeout(() => {
+        navigate("/schematics");
+      }, 500);
+      return () => clearTimeout(redirectTimer);
+    }
+  }, [showFinalMessage, navigate]);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFormData(prev => ({
+        ...prev,
+        uploadedImageFile: file,
+        uploadedImage: URL.createObjectURL(file)
+      }));
+    }
+  };
+
+  const handleSchematicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const fileExtension = file.name.split(".").pop()?.toLowerCase();
+      const isValidSchematic = fileExtension === "nbt";
+
+      setIsSchematicUploaded(isValidSchematic);
+      setIsSchematicError(!isValidSchematic);
+      
+      if (isValidSchematic) {
+        setFormData(prev => ({
+          ...prev,
+          uploadedSchematic: file
+        }));
+      }
+    }
+  };
+
+  const validateForm = (): string[] => {
+    const missingFields: string[] = [];
+    const requiredFields: Array<[keyof SchematicFormData, string]> = [
+      ["uploadedImageFile", "Image File"],
+      ["uploadedSchematic", "Schematic File"],
+      ["gameVersion", "Game Version"],
+      ["createVersion", "Create Version"],
+      ["loader", "Loader"],
+      ["description", "Description"],
+      ["title", "Title"]
+    ];
+
+    requiredFields.forEach(([field, label]) => {
+      if (!formData[field]) missingFields.push(label);
+    });
+
+    if (isSchematicError) missingFields.push("Valid Schematic File");
+    if (!user) missingFields.push("Login");
+
+    return missingFields;
+  };
+
+  const handleUpload = async () => {
+    const missingFields = validateForm();
+    if (missingFields.length > 0) {
+      alert(`Please fill in the following fields: ${missingFields.join(", ")}`);
+      return;
     }
 
+    setLoading(true);
+    
+    try {
+      if (!formData.uploadedSchematic || !formData.uploadedImageFile) {
+        throw new Error("Missing required files");
+      }
+
+      // Upload schematic file
+      const filePath = `files/${Date.now()}_${formData.uploadedSchematic.name}`;
+      const { error: fileError } = await supabase.storage
+        .from("schematics")
+        .upload(filePath, formData.uploadedSchematic);
+
+      if (fileError) throw fileError;
+
+      // Upload image
+      const imagePath = `images/${Date.now()}_${formData.uploadedImageFile.name}`;
+      const { error: imageError } = await supabase.storage
+        .from("schematics")
+        .upload(imagePath, formData.uploadedImageFile);
+
+      if (imageError) throw imageError;
+
+      // Get public URLs
+      const fileUrl = supabase.storage
+        .from("schematics")
+        .getPublicUrl(filePath).data.publicUrl;
+      const imageUrl = supabase.storage
+        .from("schematics")
+        .getPublicUrl(imagePath).data.publicUrl;
+
+      // Insert metadata
+      const { error: insertError } = await supabase.from("schematics").insert([{
+        title: formData.title,
+        description: formData.description,
+        schematic_url: fileUrl,
+        image_url: imageUrl,
+        author: user?.user_metadata?.custom_claims?.global_name,
+        game_versions: formData.gameVersion,
+        create_versions: formData.createVersion,
+        modloader: formData.loader,
+      }]);
+
+      if (insertError) throw insertError;
+
+    } catch (error) {
+      console.error("Error uploading schematic:", error);
+      alert("Failed to upload schematic. Please try again.");
+      setLoading(false);
+      return;
+    }
+  };
+
+  if (loading && !showFinalMessage) {
     return (
-        <div className="container">
-            <div className="top-text-box">
-                <h1 className="page-title">Let's upload a schematic!</h1>
-            </div>
-            <br />
-            <div className="element-box">
-                <img
-                    src={uploadedImage}
-                    alt="Image uploaded by the user"
-                    className="uploaded-image"
-                />
-                <h2>Upload a screenshot for the schematic (1920x1080px)</h2>
-                <h6 className="smol-text">
-                    Suggestion: It should feature what is inside the schematic
-                </h6>
-                <label
-                    htmlFor="uploadScreenshotButton"
-                    className="upload-label"
-                >
-                    Choose File
-                </label>
-                <input
-                    type="file"
-                    id="uploadScreenshotButton"
-                    hidden
-                    onChange={handleChange}
-                />
-            </div>
-            <br />
-            <div className="element-box">
-                <h2>Upload a schematic (.nbt)</h2>
-                <h6 className="smol-text">
-                    The exciting part! This is where you upload your .nbt file
-                </h6>
-                <label htmlFor="uploadSchematicButton" className="upload-label">
-                    Choose File
-                </label>
-                <input
-                    type="file"
-                    id="uploadSchematicButton"
-                    hidden
-                    onChange={handleSchematicChange}
-                />
-                {isSchematicError && (
-                    <h6 className="schematic-status-bad">
-                        Remember! Only .nbt files are allowed
-                    </h6>
-                )}
-                {isSchematicUploaded && (
-                    <h6 className="schematic-status">Schematic uploaded!</h6>
-                )}
-            </div>
-            <br />
-            <div className="element-box">
-                <h2>
-                    Schematic autor:{" "}
-                    <i>{userdata?.user_metadata?.custom_claims?.global_name}</i>
-                </h2>
-                <h6 className="smol-text">
-                    The name of the person who uploaded the schematic. Set
-                    automatically acording to your account
-                </h6>
-            </div>
-            <br />
-            <div className="element-box">
-                <h2>Choose a title and a description</h2>
-                <div className="input-group">
-                    <h6>Choose a title for your schematic</h6>
-                    <input
-                        id="title"
-                        type="text"
-                        maxLength={100}
-                        placeholder="Title"
-                        className="title-input"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
-                </div>
-                <div className="input-group">
-                    <h6>Tell others what is inside it</h6>
-                    <textarea
-                        id="description"
-                        placeholder="Description"
-                        className="desc-input"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
-                </div>
-            </div>
-            <br />
-            <div className="element-box">
-                <h2>
-                    Choose what version of <b>Minecraft</b> it is for
-                </h2>
-                <h6 className="smol-text">
-                    The version of Minecraft the schematic is made for (the
-                    minimum version it needs to run)
-                </h6>
-                <div className="input-group">
-                    <div className="radio">
-                        <input
-                            type="radio"
-                            id="1.20.1-mcversion"
-                            name="mcversion"
-                            value="1.20.1"
-                            onChange={(e) => setGameVersion(e.target.value)}
-                        />
-                        <label
-                            htmlFor="1.20.1-mcversion"
-                            className="radio-version-label"
-                        >
-                            1.20.1
-                        </label>
-                    </div>
-                    <div className="radio">
-                        <input
-                            type="radio"
-                            id="1.19.2-mcversion"
-                            name="mcversion"
-                            value="1.19.2"
-                            onChange={(e) => setGameVersion(e.target.value)}
-                        />
-                        <label
-                            htmlFor="1.19.2-mcversion"
-                            className="radio-version-label"
-                        >
-                            1.19.2
-                        </label>
-                    </div>
-                    <div className="radio">
-                        <input
-                            type="radio"
-                            id="1.18.2-mcversion"
-                            name="mcversion"
-                            value="1.18.2"
-                            onChange={(e) => setGameVersion(e.target.value)}
-                        />
-                        <label
-                            htmlFor="1.18.2-mcversion"
-                            className="radio-version-label"
-                        >
-                            1.18.2
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div className="element-box">
-                <h2>
-                    Choose what version of <b>Create</b> it is for
-                </h2>
-                <h6 className="smol-text">
-                    Create has different versions, choose one that the schematic
-                    was made in (not sure?)
-                </h6>
-                <div className="input-group">
-                    <div className="radio">
-                        <input
-                            type="radio"
-                            id="0.5.1-createversion"
-                            name="createversion"
-                            value="0.5.1 (a-j)"
-                            onChange={(e) => setCreateVersion(e.target.value)}
-                        />
-                        <label
-                            htmlFor="0.5.1-createversion"
-                            className="radio-version-label"
-                        >
-                            0.5.1 (a-j)
-                        </label>
-                    </div>
-                    <div className="radio">
-                        <input
-                            type="radio"
-                            id="0.5.0-createversion"
-                            name="createversion"
-                            value="0.5.0 (a-i)"
-                            onChange={(e) => setCreateVersion(e.target.value)}
-                        />
-                        <label
-                            htmlFor="0.5.0-createversion"
-                            className="radio-version-label"
-                        >
-                            0.5.0 (a-i)
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div className="element-box">
-                <h2>What mod loader is it for?</h2>
-                <h6 className="smol-text">
-                    Loader is a thing that allows your mods to run
-                </h6>
-                <div className="input-group">
-                    <div className="radio">
-                        <input
-                            type="radio"
-                            id="forge-loader"
-                            name="loader"
-                            value="Forge"
-                            onChange={(e) => setLoader(e.target.value)}
-                        />
-                        <label
-                            htmlFor="forge-loader"
-                            className="radio-version-label"
-                        >
-                            Forge
-                        </label>
-                    </div>
-                    <div className="radio">
-                        <input
-                            type="radio"
-                            id="fabric-loader"
-                            name="loader"
-                            value="Fabric"
-                            onChange={(e) => setLoader(e.target.value)}
-                        />
-                        <label
-                            htmlFor="fabric-loader"
-                            className="radio-version-label"
-                        >
-                            Fabric
-                        </label>
-                    </div>
-                    <div className="radio">
-                        <input
-                            type="radio"
-                            id="quilt-loader"
-                            name="loader"
-                            value="Quilt"
-                            onChange={(e) => setLoader(e.target.value)}
-                        />
-                        <label
-                            htmlFor="quilt-loader"
-                            className="radio-version-label"
-                        >
-                            Quilt
-                        </label>
-                    </div>
-                    <div className="radio">
-                        <input
-                            type="radio"
-                            id="neo-forge-loader"
-                            name="loader"
-                            value="NeoForge"
-                            onChange={(e) => setLoader(e.target.value)}
-                        />
-                        <label
-                            htmlFor="neo-forge-loader"
-                            className="radio-version-label"
-                        >
-                            NeoForge
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div className="element-box-buttons">
-                <center>
-                    <button className="cancel" onClick={handleCancel}>
-                        Cancel
-                    </button>
-                    <button className="upload" onClick={handleUpload}>
-                        Upload!
-                    </button>
-                </center>
-            </div>
-        </div>
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <LoadingSpinner />
+        <h1 className="text-2xl font-bold mt-4">Your schematic is being uploaded!</h1>
+        <p className="text-muted-foreground">Please wait...</p>
+      </div>
     );
+  }
+
+  if (showFinalMessage) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <LoadingSuccess />
+      </div>
+    );
+  }
+
+  return (
+    <div className="container max-w-4xl mx-auto px-4 py-8">
+      <CardHeader className="text-center">
+        <CardTitle className="text-3xl">Let's upload a schematic!</CardTitle>
+      </CardHeader>
+
+      <Card className="mt-8">
+        <CardContent className="space-y-6 p-6">
+          {/* Image Upload Section */}
+          <div className="space-y-4">
+            <img 
+              src={formData.uploadedImage} 
+              alt="Preview"
+              className="w-full max-h-96 object-contain rounded-lg border"
+            />
+            
+            <div>
+              <h3 className="text-lg font-semibold mb-2">Upload a screenshot (1920x1080px)</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Suggestion: It should feature what is inside the schematic
+              </p>
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="cursor-pointer"
+              />
+            </div>
+          </div>
+
+          {/* Schematic Upload Section */}
+          <div className="space-y-2">
+            <Label htmlFor="schematic">Upload Schematic (.nbt)</Label>
+            <Input
+              id="schematic"
+              type="file"
+              accept=".nbt"
+              onChange={handleSchematicChange}
+              className="cursor-pointer"
+            />
+            {isSchematicError && (
+              <p className="text-destructive text-sm">Only .nbt files are allowed</p>
+            )}
+            {isSchematicUploaded && (
+              <p className="text-success text-sm">Schematic uploaded successfully!</p>
+            )}
+          </div>
+
+          {/* Author Section */}
+          <div>
+            <h3 className="text-lg font-semibold">
+              Schematic author: <span className="italic">{user?.user_metadata?.custom_claims?.global_name}</span>
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Set automatically according to your account
+            </p>
+          </div>
+
+          {/* Title and Description */}
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="title">Title</Label>
+              <Input
+                id="title"
+                value={formData.title}
+                onChange={e => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                maxLength={100}
+                placeholder="Enter a title for your schematic"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="description">Description</Label>
+              <Textarea
+                id="description"
+                value={formData.description}
+                onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                placeholder="Tell others what is inside it"
+                className="min-h-[100px]"
+              />
+            </div>
+          </div>
+
+          {/* Version Selectors */}
+          <div className="space-y-6">
+            <div>
+              <Label>Minecraft Version</Label>
+              <RadioGroup
+                value={formData.gameVersion}
+                onValueChange={value => setFormData(prev => ({ ...prev, gameVersion: value }))}
+              >
+                {GAME_VERSIONS.map(version => (
+                  <div key={version} className="flex items-center space-x-2">
+                    <RadioGroupItem value={version} id={`mc-${version}`} />
+                    <Label htmlFor={`mc-${version}`}>{version}</Label>
+                  </div>
+                ))}
+              </RadioGroup>
+            </div>
+
+            <div>
+              <Label>Create Version</Label>
+              <RadioGroup
+                value={formData.createVersion}
+                onValueChange={value => setFormData(prev => ({ ...prev, createVersion: value }))}
+              >
+                {CREATE_VERSIONS.map(version => (
+                  <div key={version} className="flex items-center space-x-2">
+                    <RadioGroupItem value={version} id={`create-${version}`} />
+                    <Label htmlFor={`create-${version}`}>{version}</Label>
+                  </div>
+                ))}
+              </RadioGroup>
+            </div>
+
+            <div>
+              <Label>Mod Loader</Label>
+              <RadioGroup
+                value={formData.loader}
+                onValueChange={value => setFormData(prev => ({ ...prev, loader: value }))}
+              >
+                {LOADERS.map(loader => (
+                  <div key={loader} className="flex items-center space-x-2">
+                    <RadioGroupItem value={loader} id={`loader-${loader}`} />
+                    <Label htmlFor={`loader-${loader}`}>{loader}</Label>
+                  </div>
+                ))}
+              </RadioGroup>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex justify-end space-x-4 pt-4">
+            <Button
+              variant="outline"
+              onClick={() => navigate("/schematics")}
+            >
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleUpload}
+              disabled={loading}
+            >
+              Upload
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }
 
 export default SchematicsUpload;
