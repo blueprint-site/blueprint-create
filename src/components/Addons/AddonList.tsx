@@ -1,6 +1,3 @@
-import { Search } from "lucide-react";
-import { useEffect, useState } from "react";
-
 import {
   Card,
   CardContent,
@@ -17,10 +14,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAddonStore } from "@/stores/addonStore";
-
+import { Addon } from "@/types";
+import { Search } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { useDebounce } from "use-debounce";
 import AddonListItem from "./AddonListItem";
 
-// Available modloader options
 const MODLOADER_OPTIONS = [
   { value: "all", label: "All Modloaders" },
   { value: "forge", label: "Forge" },
@@ -31,29 +30,46 @@ const MODLOADER_OPTIONS = [
 type ModloaderType = (typeof MODLOADER_OPTIONS)[number]["value"];
 
 const AddonList = () => {
-  // State management with proper typing
   const [query, setQuery] = useState<string>("");
   const [modloader, setModloader] = useState<ModloaderType>("all");
   const [version, setVersion] = useState<string>("all");
+  const [debouncedQuery] = useDebounce(query, 300);
 
-  // Type-safe handlers for select changes
+  const { addons, versions, isLoading, error, fetchAddons } = useAddonStore();
+
+  useEffect(() => {
+    fetchAddons();
+  }, [fetchAddons]);
+
+  const queryFilteredAddons = useMemo(() => {
+    if (!debouncedQuery) return addons;
+    return addons.filter((addon: Addon) => 
+      addon.title.toLowerCase().includes(debouncedQuery.toLowerCase())
+    );
+  }, [addons, debouncedQuery]);
+  
+  const modloaderFilteredAddons = useMemo(() => {
+    if (modloader === 'all') return queryFilteredAddons;
+    return queryFilteredAddons.filter((addon: Addon) => 
+      addon.categories.includes(modloader)
+    );
+  }, [queryFilteredAddons, modloader]);
+  
+  const filteredAddons = useMemo(() => {
+    if (version === 'all') return modloaderFilteredAddons;
+    return modloaderFilteredAddons.filter((addon: Addon) => 
+      addon.versions.includes(version)
+    );
+  }, [modloaderFilteredAddons, version]);
+
   const handleModloaderChange = (value: string) => {
-    // Validate that the value is a valid ModloaderType
     if (value === "all" || value === "forge" || value === "fabric" || value === "quilt") {
       setModloader(value);
     }
   };
-  
-  const { addons, versions, isLoading, error, fetchAddons } = useAddonStore();
-
-  // Fetch addons on mount
-  useEffect(() => {
-    fetchAddons();
-  }, [fetchAddons]); // Add fetchAddons to dependency array
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Header Section */}
       <header className="flex flex-col font-minecraft items-center space-y-4 mb-8">
         <h1 className="text-4xl font-bold text-foreground mb-2">Create Mod Addons</h1>
         <p className="text-lg text-foreground-muted">
@@ -61,7 +77,6 @@ const AddonList = () => {
         </p>
       </header>
 
-      {/* Search and Filter Section */}
       <Card className="mb-8">
         <CardHeader>
           <CardTitle>Search Addons</CardTitle>
@@ -82,7 +97,6 @@ const AddonList = () => {
               />
             </div>
 
-            {/* Modloader Filter */}
             <Select value={modloader} onValueChange={handleModloaderChange}>
               <SelectTrigger className="w-full md:w-[200px]">
                 <SelectValue placeholder="Modloader" />
@@ -96,7 +110,6 @@ const AddonList = () => {
               </SelectContent>
             </Select>
 
-            {/* Version Filter */}
             <Select value={version} onValueChange={setVersion}>
               <SelectTrigger className="w-full md:w-[200px]">
                 <SelectValue placeholder="Version" />
@@ -114,7 +127,6 @@ const AddonList = () => {
         </CardContent>
       </Card>
 
-      {/* Loading and Error States */}
       {isLoading && (
         <div className="text-center py-8">
           <p className="text-foreground-muted">Loading addons...</p>
@@ -123,13 +135,12 @@ const AddonList = () => {
 
       {error && (
         <div className="text-center py-8">
-          <p className="text-destructive">Failed to load addons</p>
+          <p className="text-destructive">{error}</p>
         </div>
       )}
 
-      {/* Addons Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {addons.map((addon) => (
+        {filteredAddons.map((addon) => (
           <AddonListItem key={addon.id} addon={addon} />
         ))}
       </div>
