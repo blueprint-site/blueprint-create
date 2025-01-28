@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import DevinsBadges from "@/components/utility/DevinsBadges";
-import LazyImage from "@/components/utility/LazyImage";
 import { type Addon } from "@/stores/addonStore";
 
 const RandomAddon = () => {
@@ -71,9 +70,10 @@ const RandomAddon = () => {
         <Card className="max-w-2xl mx-auto hover:shadow-lg transition-shadow" 
               style={{ backgroundColor }}>
           <CardContent className="p-6 space-y-4">
-            <LazyImage
+            <img
               src={addon.icon_url}
               alt={addon.title}
+              loading="lazy"
               className="w-32 h-32 mx-auto rounded-lg"
             />
             

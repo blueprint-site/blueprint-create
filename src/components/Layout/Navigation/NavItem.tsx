@@ -1,5 +1,4 @@
-import LazyImage from "@/components/utility/LazyImage";
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 
 interface NavItemProps {
   href: string;
@@ -10,26 +9,22 @@ interface NavItemProps {
 
 const NavItem = ({ href, icon, label, external }: NavItemProps) => {
   const content = (
-    <>
-      <div className="w-8 h-8 flex items-center justify-center transition-transform duration-500 hover:scale-105">
-        <LazyImage 
-          src={icon} 
-          alt={label} 
-          width={32}
-          height={32}
-          pixelated
-          className="max-h-8 w-auto object-contain transform scale-100" 
-        />
-      </div>
+    <div className="flex items-center justify-center transition-transform duration-100 hover:scale-105">
+      <img
+        src={icon}
+        alt={label}
+        className="w-8 h-8 pixelated object-cover"
+      />
       <span className="ml-2">{label}</span>
-    </>
+    </div>
   );
 
-  const className = "flex items-center px-2 md:px-4 py-2 text-foreground hover:bg-foreground/10 hover:text-foreground transition-colors duration-200";
+  const className =
+    "flex items-center px-2 md:px-4 py-2 text-foreground hover:bg-foreground/10 hover:text-foreground transition-colors duration-200";
 
   return external ? (
-    <a 
-      href={href} 
+    <a
+      href={href}
       className={className}
       target="_blank"
       rel="noopener noreferrer"
@@ -37,10 +32,7 @@ const NavItem = ({ href, icon, label, external }: NavItemProps) => {
       {content}
     </a>
   ) : (
-    <NavLink 
-      to={href}
-      className={className}
-    >
+    <NavLink to={href} className={className}>
       {content}
     </NavLink>
   );

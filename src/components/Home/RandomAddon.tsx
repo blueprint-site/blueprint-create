@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import DevinsBadges from "@/components/utility/DevinsBadges";
-import LazyImage from "@/components/utility/LazyImage";
 import Updater from "@/components/utility/Updater";
 import "@/styles/homerandomaddon.scss";
 interface Addon {
@@ -110,7 +109,8 @@ const HomeRandomAddon = () => {
     return (
       <Link to={`/addons/${addon.slug}`} className="addon-link">
         <div className="random-addon">
-          <LazyImage
+          <img
+            loading="lazy"
             className="random-addon-logo"
             src={addon.icon_url}
             alt=""

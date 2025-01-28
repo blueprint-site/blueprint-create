@@ -10,7 +10,6 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import DevinsBadges from "@/components/utility/DevinsBadges";
-import LazyImage from "@/components/utility/LazyImage";
 import { Addon } from "@/stores/addonStore";
 import { useCollectionStore } from "@/stores/collectionStore";
 
@@ -25,15 +24,13 @@ const AddonListItem = ({ addon }: AddonListItemProps) => {
 
   return (
     <Card className="flex flex-col overflow-hidden bg-blueprint shadow-lg">
-      <CardHeader className="flex flex-row gap-4">
-        <div className="flex-shrink-0 w-16 h-16">
-          <LazyImage
-            src={addon.icon_url}
-            alt={addon.title}
-            className="w-full h-full rounded-lg overflow-hidden"
-            objectFit="cover"
-          />
-        </div>
+      <CardHeader className="flex flex-row gap-4 items-center p-4">
+        <img
+          src={addon.icon_url}
+          alt={addon.title}
+          loading="lazy"
+          className="flex-shrink-0 w-16 h-16 overflow-hidden object-cover"
+        />
         <div className="flex-1 min-w-0 space-y-1">
           <h3 className="text-xl font-semibold truncate">{addon.title}</h3>
           <p className="text-sm line-clamp-4">{addon.description}</p>

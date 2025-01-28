@@ -3,9 +3,7 @@ import { useTranslation } from "react-i18next";
 import BlueprintLogo from "@/assets/logo.webp";
 import AddonIcon from "@/assets/sprite-icons/minecart_coupling.webp";
 import SchematicIcon from "@/assets/sprite-icons/schematic.webp";
-import LazyImage from "@/components/utility/LazyImage";
-import MinecraftIcon from "@/components/utility/MinecraftIcon";
-
+import { Equal, Plus } from 'lucide-react';
 
 const WhatIsBlueprint = () => {
   const { t } = useTranslation();
@@ -21,34 +19,31 @@ const WhatIsBlueprint = () => {
         </div>
         <div className="flex items-center justify-center gap-5 ">
           <div className="flex flex-col items-center transition-transform hover:scale-110">
-            <LazyImage
+            <img
+              loading="lazy"
               src={AddonIcon}
               alt="Addon Icon"
-              width={92}
-              height={92}
-              className="object-contain"
+              className="object-contain w-8 sm:w-10 md:w-14 lg:w-24"
             />
             <div className="text-lg">Addons</div>
           </div>
-          <MinecraftIcon name="plus" size={44} />
+          <Plus className="h-8 sm:h-10 md:h-14 lg:h-24" />
           <div className="flex flex-col items-center transition-transform hover:scale-110">
-            <LazyImage
+            <img
+              loading="lazy"
               src={SchematicIcon}
               alt="Schematic Icon"
-              width={92}
-              height={92}
-              className="object-contain"
+              className="object-contain w-8 sm:w-10 md:w-14 lg:w-24"
             />
             <div className="text-lg">Schematics</div>
           </div>
-          <MinecraftIcon name="equals" size={44} />
+          <Equal className="h-8 sm:h-10 md:h-14 lg:h-24" />        
           <div className="flex flex-col items-center transition-transform hover:scale-110">
-            <LazyImage
+            <img
+              loading="lazy"
               src={BlueprintLogo}
               alt="Blueprint Logo"
-              width={92}
-              height={92}
-              className="object-contain"
+              className="object-contain w-8 sm:w-10 md:w-14 lg:w-24"
             />
             <div className="text-lg">Blueprint</div>
           </div>

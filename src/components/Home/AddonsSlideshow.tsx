@@ -9,7 +9,6 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import LazyImage from "@/components/utility/LazyImage";
 
 // Import your banner images here
 import Banner1 from "@/assets/banners/banner1.webp";
@@ -98,10 +97,11 @@ const AddonsCarousel = () => {
           <CarouselContent>
             {images.map((image, index) => (
               <CarouselItem key={index}>
-                <LazyImage
+                <img 
+                  loading="lazy"
                   src={image}
                   alt=""
-                  imgClassName="max-h-full h-96 rounded-lg object-contain"
+                  className="max-h-full h-96 rounded-lg object-contain"
                 />
               </CarouselItem>
             ))}
@@ -116,15 +116,13 @@ const AddonsCarousel = () => {
               {sideboxContent[current].title}
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="overflow-hidden">
-              <LazyImage
-                className="flex items-center justify-center"
-                imgClassName="h-full w-auto object-contain"
-                src={sideboxContent[current].image}
-                alt=""
-              />
-            </div>
+          <CardContent className="flex flex-col items-center justify-center p-4">
+            <img 
+              loading="lazy"
+              className="h-full w-auto object-contain"
+              src={sideboxContent[current].image}
+              alt=""
+            />
             <div className="mt-4 overflow-hidden">
               <p className="text-sm line-clamp-4">
                 {sideboxContent[current].description}

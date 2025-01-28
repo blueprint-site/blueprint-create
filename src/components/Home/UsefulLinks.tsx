@@ -8,7 +8,6 @@ import {
   Card,
   CardContent
 } from "@/components/ui/card";
-import LazyImage from "@/components/utility/LazyImage";
 
 const UsefulLinks = () => {
   const { t } = useTranslation();
@@ -58,13 +57,11 @@ const UsefulLinks = () => {
               rel="noopener noreferrer"
               className={`bg-${link.color} flex items-center justify-center p-4 rounded-lg gap-5 hover:bg-${link.color}/80 transition-colors duration-200`}
             >
-                <LazyImage
+                <img
                   src={link.icon}
                   alt={link.icon}
-                  width={64}
-                  height={64}
-                  pixelated={link.icon === WikiLogo ? true : false}
-                  className="object-contain"
+                  loading="lazy"
+                  className="w-16 h-16 object-contain pixelated"
                 />
                 <div className="text-center">
                   <div className="font-minecraft text-xl font-bold text-white/90">
