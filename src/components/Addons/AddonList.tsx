@@ -41,14 +41,26 @@ const AddonList = () => {
     fetchAddons();
   }, [fetchAddons]);
 
+  const queryFilteredAddons = useMemo(() => {
+    if (!debouncedQuery) return addons;
+    return addons.filter((addon: Addon) => 
+      addon.title.toLowerCase().includes(debouncedQuery.toLowerCase())
+    );
+  }, [addons, debouncedQuery]);
+  
+  const modloaderFilteredAddons = useMemo(() => {
+    if (modloader === 'all') return queryFilteredAddons;
+    return queryFilteredAddons.filter((addon: Addon) => 
+      addon.categories.includes(modloader)
+    );
+  }, [queryFilteredAddons, modloader]);
+  
   const filteredAddons = useMemo(() => {
-    return addons.filter((addon: Addon) => {
-      const matchesQuery = addon.title.toLowerCase().includes(debouncedQuery.toLowerCase());
-      const matchesModloader = modloader === "all" || addon.categories.includes(modloader);
-      const matchesVersion = version === "all" || addon.versions.includes(version);
-      return matchesQuery && matchesModloader && matchesVersion;
-    });
-  }, [addons, debouncedQuery, modloader, version]);
+    if (version === 'all') return modloaderFilteredAddons;
+    return modloaderFilteredAddons.filter((addon: Addon) => 
+      addon.versions.includes(version)
+    );
+  }, [modloaderFilteredAddons, version]);
 
   const handleModloaderChange = (value: string) => {
     if (value === "all" || value === "forge" || value === "fabric" || value === "quilt") {
