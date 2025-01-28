@@ -89,7 +89,7 @@ const AuthPage = () => {
             </Button>
           </div>
 
-          <p className="px-4 text-center text-sm text-muted-foreground">
+          <p className="px-4 text-center text-sm text-foreground-muted">
             By continuing, you agree to our{" "}
             <a href="/terms" className="underline underline-offset-4 hover:text-primary">
               Terms of Service

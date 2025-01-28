@@ -79,7 +79,7 @@ const RandomAddon = () => {
             
             <div className="space-y-2">
               <h2 className="text-2xl font-bold">{addon.title}</h2>
-              <p className="text-muted-foreground">{addon.description}</p>
+              <p className="text-foreground-muted">{addon.description}</p>
               <p className="text-sm">Author: {addon.author}</p>
               <p className="text-sm">Versions: {addon.versions.join(", ")}</p>
             </div>

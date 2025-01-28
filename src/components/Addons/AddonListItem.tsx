@@ -12,47 +12,43 @@ interface AddonListItemProps {
 }
 
 const AddonListItem = ({ addon }: AddonListItemProps) => {
- const { collection, addAddon, removeAddon } = useCollectionStore();
- const isInCollection = collection.includes(addon.slug);
- const modloaders = ["forge", "fabric", "quilt"];
+  const { collection, addAddon, removeAddon } = useCollectionStore();
+  const isInCollection = collection.includes(addon.slug);
+  const modloaders = ["forge", "fabric", "quilt"];
 
- return (
-   <Card className="flex flex-col overflow-hidden bg-blueprint shadow-lg">
-     <CardHeader className="flex flex-row gap-4">
-       <div className="flex-shrink-0 w-16 h-16">
-         <LazyImage
-           src={addon.icon_url}
-           alt={addon.title}
-           className="w-full h-full rounded-lg overflow-hidden"
-           objectFit="cover"
-         />
-       </div>
-       <div className="flex-1 min-w-0 space-y-1">
-         <h3 className="text-xl font-semibold truncate text-foreground">
-           {addon.title}
-         </h3>
-         <p className="text-sm line-clamp-2 text-muted-foreground">
-           {addon.description}
-         </p>
-       </div>
-     </CardHeader>
+  return (
+    <Card className="flex flex-col overflow-hidden bg-blueprint shadow-lg">
+      <CardHeader className="flex flex-row gap-4">
+        <div className="flex-shrink-0 w-16 h-16">
+          <LazyImage
+            src={addon.icon_url}
+            alt={addon.title}
+            className="w-full h-full rounded-lg overflow-hidden"
+            objectFit="cover"
+          />
+        </div>
+        <div className="flex-1 min-w-0 space-y-1">
+          <h3 className="text-xl font-semibold truncate">{addon.title}</h3>
+          <p className="text-sm line-clamp-4">{addon.description}</p>
+        </div>
+      </CardHeader>
 
-     <CardContent className="flex flex-col flex-grow gap-4">
-       <div className="flex flex-wrap gap-2">
-         {modloaders.map(
-           (loader) =>
-             addon.categories.includes(loader) && (
-               <DevinsBadges
-                 key={loader}
-                 type="compact-minimal"
-                 category="supported"
-                 name={loader}
-                 format="svg"
-                 height={32}
-               />
-             )
-         )}
-       </div>
+      <CardContent className="flex flex-col flex-grow gap-4">
+        <div className="flex flex-wrap gap-2">
+          {modloaders.map(
+            (loader) =>
+              addon.categories.includes(loader) && (
+                <DevinsBadges
+                  key={loader}
+                  type="compact-minimal"
+                  category="supported"
+                  name={loader}
+                  format="svg"
+                  height={32}
+                />
+              )
+          )}
+        </div>
 
        <div className="flex-grow self-start">
          <div className="flex flex-wrap gap-2">
@@ -64,21 +60,21 @@ const AddonListItem = ({ addon }: AddonListItemProps) => {
          </div>
        </div>
 
-       <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
-         <div className="flex items-center gap-2">
-           <div className="flex items-center gap-3 border-b border-muted hover:text-foreground px-2 pb-1">
-             <User className="h-4 w-4" />
-             <span>{addon.author}</span>
-           </div>
-         </div>
-         <div className="flex items-center gap-2">
-           <div className="flex items-center gap-3 border-b border-muted hover:text-foreground px-2 pb-1">
-             <Users className="h-4 w-4" />
-             <span>{addon.follows.toLocaleString()} followers</span>
-           </div>
-         </div>
-       </div>
-     </CardContent>
+        <div className="grid grid-cols-2 gap-4 text-sm text-foreground-muted">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3 border-b border-black/30 hover:text-black/50 px-2 pb-1">
+              <User className="h-4 w-4" />
+              <span>{addon.author}</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3 border-b border-black/30 hover:text-black/50 px-2 pb-1">
+              <Users className="h-4 w-4" />
+              <span>{addon.follows.toLocaleString()} followers</span>
+            </div>
+          </div>
+        </div>
+      </CardContent>
 
      <CardFooter className="grid grid-cols-2 flex-grow-0 gap-4">
        <Button

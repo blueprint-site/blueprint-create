@@ -8,7 +8,7 @@ const NotFound = () => {
       <div className="space-y-4">
         <h1 className="text-6xl font-bold text-primary">404</h1>
         <h2 className="text-2xl font-minecraft">Page Not Found</h2>
-        <div className="text-muted-foreground max-w-lg">
+        <div className="text-foreground-muted max-w-lg">
           <p>
             Oops! The page you're looking for doesn't exist or has been moved.
           </p>
