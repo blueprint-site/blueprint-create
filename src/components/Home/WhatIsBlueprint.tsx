@@ -1,5 +1,7 @@
 import { useTranslation } from "react-i18next";
 
+import { useIsMobile } from "@/hooks/useBreakpoints";
+
 import BlueprintLogo from "@/assets/logo.webp";
 import AddonIcon from "@/assets/sprite-icons/minecart_coupling.webp";
 import SchematicIcon from "@/assets/sprite-icons/schematic.webp";
@@ -9,6 +11,7 @@ import MinecraftIcon from "@/components/utility/MinecraftIcon";
 
 const WhatIsBlueprint = () => {
   const { t } = useTranslation();
+  const { isMobile } = useIsMobile();
 
   return (
     <div className="container font-minecraft py-6">
@@ -24,33 +27,27 @@ const WhatIsBlueprint = () => {
             <LazyImage
               src={AddonIcon}
               alt="Addon Icon"
-              width={92}
-              height={92}
-              className="object-contain"
+              className="w-10 lg:w-24 object-contain"
             />
-            <div className="text-lg">Addons</div>
+            <div className="text-base md:text-lg">Addons</div>
           </div>
-          <MinecraftIcon name="plus" size={44} />
+          <MinecraftIcon name="plus" size={isMobile ? 24 : 44} /> 
           <div className="flex flex-col items-center transition-transform hover:scale-110">
             <LazyImage
               src={SchematicIcon}
               alt="Schematic Icon"
-              width={92}
-              height={92}
-              className="object-contain"
+              className="w-10 lg:w-24 object-contain"
             />
-            <div className="text-lg">Schematics</div>
+            <div className="text-base md:text-lg">Schematics</div>
           </div>
-          <MinecraftIcon name="equals" size={44} />
+          <MinecraftIcon name="equals" size={isMobile ? 24 : 44} /> 
           <div className="flex flex-col items-center transition-transform hover:scale-110">
             <LazyImage
               src={BlueprintLogo}
               alt="Blueprint Logo"
-              width={92}
-              height={92}
-              className="object-contain"
+              className="w-10 lg:w-24 object-contain"
             />
-            <div className="text-lg">Blueprint</div>
+            <div className="text-base md:text-lg">Blueprint</div>
           </div>
         </div>
       </div>
