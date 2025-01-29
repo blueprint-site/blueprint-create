@@ -29,13 +29,16 @@ const Profile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getUserData();
+    getUserData().then();
   }, []);
 
   const getUserData = async () => {
     try {
       const { data: { user }, error } = await supabase.auth.getUser();
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching user data:", error);
+        return; // Exit function instead of throwing
+      }
       setUserData(user);
     } catch (error) {
       console.error("Error fetching user data:", error);

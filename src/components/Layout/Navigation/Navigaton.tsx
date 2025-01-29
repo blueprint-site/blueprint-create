@@ -47,7 +47,7 @@ const NavigationBar = ({ className }: NavigationProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
-    getUserData();
+    getUserData().then();
   }, []);
 
   const getUserData = async () => {

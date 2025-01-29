@@ -38,13 +38,13 @@ const AddonList = () => {
   const { addons, versions, isLoading, error, fetchAddons } = useAddonStore();
 
   useEffect(() => {
-    fetchAddons();
+    fetchAddons().then();
   }, [fetchAddons]);
 
   const queryFilteredAddons = useMemo(() => {
     if (!debouncedQuery) return addons;
     return addons.filter((addon: Addon) => 
-      addon.title.toLowerCase().includes(debouncedQuery.toLowerCase())
+      addon.name.toLowerCase().includes(debouncedQuery.toLowerCase())
     );
   }, [addons, debouncedQuery]);
   
@@ -140,8 +140,8 @@ const AddonList = () => {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredAddons.map((addon) => (
-          <AddonListItem key={addon.id} addon={addon} />
+        {filteredAddons.map((addon, index) => (
+          <AddonListItem key={index} addon={addon} />
         ))}
       </div>
     </div>

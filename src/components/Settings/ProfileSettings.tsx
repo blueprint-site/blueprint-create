@@ -45,7 +45,10 @@ export default function ProfileSettings() {
   const getUserData = async () => {
     try {
       const { data: { user }, error } = await supabase.auth.getUser();
-      if (error) throw error;
+      if (error) {
+        console.error("Error getting user data:", error);
+        return; // Exit function instead of throwing
+      }
       setUserData(user as User);
       
       // Initialize profile with user data
@@ -61,7 +64,7 @@ export default function ProfileSettings() {
   };
 
   useEffect(() => {
-    getUserData();
+    getUserData().then();
   }, []);
 
   const onUploadImage = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,8 +79,11 @@ export default function ProfileSettings() {
         .from('avatars')
         .upload(fileName, file);
 
-      if (uploadError) throw uploadError;
 
+      if (uploadError) {
+        console.error("Error uploading data:", uploadError);
+        return; // Exit function instead of throwing
+      }
       const { data: { publicUrl } } = supabase.storage
         .from('avatars')
         .getPublicUrl(fileName);
@@ -111,7 +117,10 @@ export default function ProfileSettings() {
 
       console.log(data);
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error saving data:", error);
+        return; // Exit function instead of throwing
+      }
     } catch (error) {
       console.error('Error saving profile:', error);
       setError('Failed to save profile changes');

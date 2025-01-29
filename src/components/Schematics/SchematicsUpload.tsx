@@ -5,6 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { LoadingSpinner } from "../LoadingOverlays/LoadingSpinner";
 import { LoadingSuccess } from "../LoadingOverlays/LoadingSuccess";
 import supabase from "../utility/Supabase";
+import {UserData} from "@/types";
+import {Button} from "@/components/ui/button.tsx";
+import {useTranslation} from "react-i18next";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group.tsx";
+import {Label} from "@/components/ui/label.tsx";
+import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger} from "@/components/ui/sheet.tsx";
 
 function SchematicsUpload() {
     const [uploadedImage, setUploadedImage] = useState<string>();
@@ -28,12 +35,19 @@ function SchematicsUpload() {
     const [loggedIn, setLoggedIn] = useState<boolean>(false);
     const navigate = useNavigate();
     const [userdata, setUserdata] = useState<any>();
-
+    const { t } = useTranslation();
     const getUserData = async () => {
         const {
             data: { user },
         } = await supabase.auth.getUser();
-        setUserdata(user); // Store the user data in the state
+        if(user){
+            setLoggedIn(true);
+            setUserdata(user);// Store the user data in the state
+        }
+        else{
+            setLoggedIn(false)
+            console.log('Error while fetching user data');
+        }
     };
 
     useEffect(() => {
@@ -62,7 +76,7 @@ function SchematicsUpload() {
     }, [showFinalMessage, navigate]);
 
     useEffect(() => {
-        getUserData();
+        getUserData().then();
         if (userdata) {
             setLoggedIn(true);
         } else {
@@ -103,21 +117,20 @@ function SchematicsUpload() {
         if (!gameVersion) missingFields.push("Game Version");
         if (!createVersion) missingFields.push("Create Version");
         if (!loader) missingFields.push("Loader");
-        if (!loggedIn) missingFields.push("Login");
         if (!description) missingFields.push("Description");
         if (!title) missingFields.push("Title");
 
         if (missingFields.length > 0) {
             alert(`Please fill in the following fields: ${missingFields.join(", ")}`);
-        } else {
+        } else if(uploadedSchematic && uploadedImageFile) {
             setLoading(true);
             handleSchematicUpload(
                 uploadedSchematic,
                 uploadedImageFile,
                 title,
                 description,
-                userdata?.user_metadata?.custom_claims?.global_name
-            );
+                userdata?.user_metadata?.custom_claims?.global_name,
+            ).then();
         }
     }
 
@@ -129,7 +142,7 @@ function SchematicsUpload() {
         image: File,
         title: string,
         description: string,
-        author: string
+        userdata: UserData
     ) {
         try {
             // Upload file to bucket
@@ -140,6 +153,7 @@ function SchematicsUpload() {
             } = await supabase.storage
                 .from("schematics")
                 .upload(filePath, file);
+            console.log(fileData)
 
             if (fileError) {
                 console.log("FILE ERROR", fileError);
@@ -153,7 +167,7 @@ function SchematicsUpload() {
             } = await supabase.storage
                 .from("schematics")
                 .upload(imagePath, image);
-
+            console.log(imageData)
             if (imageError) {
                 console.log("IMAGE ERROR", imageError);
             }
@@ -183,12 +197,31 @@ function SchematicsUpload() {
                 },
             ]);
 
-            if (insertError) throw insertError;
+            if (insertError) {
+                console.error("Error insertig data:", insertError);
+                return; // Exit function instead of throwing
+            }
 
             console.log("Blueprint uploaded successfully:", blueprintData);
         } catch (error) {
             console.error("Error uploading blueprint:", error);
         }
+    }
+    if(!loggedIn){
+        return(
+            <div className="loginDisclaimer">
+                <div className="loginDisclaimerContent">
+                    <h2> You need to be logged in for be able to upload shematics </h2>
+                    <Button
+                        onClick={() => navigate("/login")}
+                        variant="default"
+                    >
+                        <span>{t("navigation.label.login")}</span>
+                    </Button>
+                </div>
+
+            </div>
+        )
     }
 
     if (loading && !showFinalMessage) {
@@ -211,273 +244,278 @@ function SchematicsUpload() {
 
     return (
         <div className="container">
-            <div className="top-text-box">
-                <h1 className="page-title">Let's upload a schematic!</h1>
-            </div>
-            <br />
-            <div className="element-box">
-                <img
-                    src={uploadedImage}
-                    alt="Image uploaded by the user"
-                    className="uploaded-image"
-                />
-                <h2>Upload a screenshot for the schematic (1920x1080px)</h2>
-                <h6 className="smol-text">
-                    Suggestion: It should feature what is inside the schematic
-                </h6>
-                <label
-                    htmlFor="uploadScreenshotButton"
-                    className="upload-label"
-                >
-                    Choose File
-                </label>
-                <input
-                    type="file"
-                    id="uploadScreenshotButton"
-                    hidden
-                    onChange={handleChange}
-                />
-            </div>
-            <br />
-            <div className="element-box">
-                <h2>Upload a schematic (.nbt)</h2>
-                <h6 className="smol-text">
-                    The exciting part! This is where you upload your .nbt file
-                </h6>
-                <label htmlFor="uploadSchematicButton" className="upload-label">
-                    Choose File
-                </label>
-                <input
-                    type="file"
-                    id="uploadSchematicButton"
-                    hidden
-                    onChange={handleSchematicChange}
-                />
-                {isSchematicError && (
-                    <h6 className="schematic-status-bad">
-                        Remember! Only .nbt files are allowed
-                    </h6>
-                )}
-                {isSchematicUploaded && (
-                    <h6 className="schematic-status">Schematic uploaded!</h6>
-                )}
-            </div>
-            <br />
-            <div className="element-box">
-                <h2>
-                    Schematic autor:{" "}
-                    <i>{userdata?.user_metadata?.custom_claims?.global_name}</i>
-                </h2>
-                <h6 className="smol-text">
-                    The name of the person who uploaded the schematic. Set
-                    automatically acording to your account
-                </h6>
-            </div>
-            <br />
-            <div className="element-box">
-                <h2>Choose a title and a description</h2>
-                <div className="input-group">
-                    <h6>Choose a title for your schematic</h6>
+            <br/>
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-center"><h1> Let's upload a shematic </h1></CardTitle>
+                </CardHeader>
+            </Card>
+            <br/>
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-center"><h2> Upload a schematic (.nbt) </h2></CardTitle>
+                    <CardDescription className="text-center">The exciting part! This is where you upload your .nbt
+                        file</CardDescription>
+                </CardHeader>
+                <CardFooter>
+                    <label htmlFor="uploadSchematicButton" className="upload-label">
+                        Choose File
+                    </label>
                     <input
-                        id="title"
-                        type="text"
-                        maxLength={100}
-                        placeholder="Title"
-                        className="title-input"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        type="file"
+                        id="uploadSchematicButton"
+                        hidden
+                        onChange={handleSchematicChange}
                     />
-                </div>
-                <div className="input-group">
-                    <h6>Tell others what is inside it</h6>
-                    <textarea
-                        id="description"
-                        placeholder="Description"
-                        className="desc-input"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
+                    {isSchematicError && (
+                        <h6 className="schematic-status-bad">
+                            Remember! Only .nbt files are allowed
+                        </h6>
+                    )}
+                    {isSchematicUploaded && (
+                        <h6 className="schematic-status">Schematic uploaded!</h6>
+                    )}
+                </CardFooter>
+            </Card>
+            <br/>
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-center"><h2>Upload a screenshot for the schematic</h2></CardTitle>
+                    <CardDescription className="text-center">(1920x1080px)</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <img
+                        src={uploadedImage}
+                        alt="Image uploaded by the user"
+                        className="uploaded-image"
                     />
-                </div>
-            </div>
-            <br />
-            <div className="element-box">
-                <h2>
-                    Choose what version of <b>Minecraft</b> it is for
-                </h2>
-                <h6 className="smol-text">
-                    The version of Minecraft the schematic is made for (the
-                    minimum version it needs to run)
-                </h6>
-                <div className="input-group">
-                    <div className="radio">
+                    <h6 className="smol-text">
+                        Suggestion: It should feature what is inside the schematic
+                    </h6>
+                </CardContent>
+                <CardFooter className="align-content-lg-end">
+                    <label
+                        htmlFor="uploadScreenshotButton"
+                        className="upload-label"
+                    >
+                        Choose File
+                    </label>
+                    <input
+                        type="file"
+                        id="uploadScreenshotButton"
+                        hidden
+                        onChange={handleChange}
+                    />
+                </CardFooter>
+            </Card>
+            <br/>
+            <Card>
+                <CardHeader>
+                    <CardTitle>
+                        <h2>
+                            Schematic author:{" "}
+                            <i>{userdata?.user_metadata?.custom_claims?.global_name}</i>
+                        </h2>
+                    </CardTitle>
+                    <CardDescription>The name of the person who uploaded the schematic. Set
+                        automatically acording to your account</CardDescription>
+                </CardHeader>
+            </Card>
+            <br/>
+            <Card>
+                <CardHeader>
+                    <CardTitle><h2>Choose a title and a description</h2></CardTitle>
+                </CardHeader>
+                <CardContent className="flex items-center gap-4">
+                    <div>
+                        <h6>Choose a title for your schematic</h6>
                         <input
-                            type="radio"
-                            id="1.20.1-mcversion"
-                            name="mcversion"
-                            value="1.20.1"
-                            onChange={(e) => setGameVersion(e.target.value)}
+                            id="title"
+                            type="text"
+                            maxLength={100}
+                            placeholder="Title"
+                            className="title-input"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
                         />
-                        <label
-                            htmlFor="1.20.1-mcversion"
-                            className="radio-version-label"
-                        >
-                            1.20.1
-                        </label>
                     </div>
-                    <div className="radio">
-                        <input
-                            type="radio"
-                            id="1.19.2-mcversion"
-                            name="mcversion"
-                            value="1.19.2"
-                            onChange={(e) => setGameVersion(e.target.value)}
+                    <div>
+                        <h6>Tell others what is inside it</h6>
+                        <textarea
+                            id="description"
+                            placeholder="Description"
+                            className="desc-input"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                         />
-                        <label
-                            htmlFor="1.19.2-mcversion"
-                            className="radio-version-label"
-                        >
-                            1.19.2
-                        </label>
                     </div>
-                    <div className="radio">
-                        <input
-                            type="radio"
-                            id="1.18.2-mcversion"
-                            name="mcversion"
-                            value="1.18.2"
-                            onChange={(e) => setGameVersion(e.target.value)}
-                        />
-                        <label
-                            htmlFor="1.18.2-mcversion"
-                            className="radio-version-label"
-                        >
-                            1.18.2
-                        </label>
+                </CardContent>
+            </Card>
+            <Sheet>
+                <SheetTrigger>Open</SheetTrigger>
+                <SheetContent>
+                    <SheetHeader>
+                        <SheetTitle>Are you absolutely sure?</SheetTitle>
+                        <SheetDescription>
+                            This action cannot be undone. This will permanently delete your account
+                            and remove your data from our servers.
+                        </SheetDescription>
+                    </SheetHeader>
+                </SheetContent>
+            </Sheet>
+            <br/>
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-center"><h2> Choose what version of Minecraft </h2></CardTitle>
+                    <CardDescription className="text-center">The version of Minecraft the schematic is made for (the
+                        minimum version it needs to run)</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <RadioGroup defaultValue="option-one" onValueChange={(value) => setGameVersion(value) }>
+                        <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="1.20.1" id="option-one"/>
+                            <Label htmlFor="option-one">1.20.1</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="1.19.2" id="option-two"/>
+                            <Label htmlFor="option-two">1.19.2</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="1.18.2" id="option-two"/>
+                            <Label htmlFor="option-two">1.18.2</Label>
+                        </div>
+                    </RadioGroup>
+                </CardContent>
+            </Card>
+            <br/>
+            <Card>
+                <CardHeader>
+                    <CardTitle><h2>Choose what version of <b>Create</b></h2></CardTitle>
+                    <CardDescription>Create has different versions, choose one that the schematic was made in (not
+                        sure?)</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="input-group">
+                        <div className="radio">
+                            <input
+                                type="radio"
+                                id="0.5.1-createversion"
+                                name="createversion"
+                                value="0.5.1 (a-j)"
+                                onChange={(e) => setCreateVersion(e.target.value)}
+                            />
+                            <label
+                                htmlFor="0.5.1-createversion"
+                                className="radio-version-label"
+                            >
+                                0.5.1 (a-j)
+                            </label>
+                        </div>
+                        <div className="radio">
+                            <input
+                                type="radio"
+                                id="0.5.0-createversion"
+                                name="createversion"
+                                value="0.5.0 (a-i)"
+                                onChange={(e) => setCreateVersion(e.target.value)}
+                            />
+                            <label
+                                htmlFor="0.5.0-createversion"
+                                className="radio-version-label"
+                            >
+                                0.5.0 (a-i)
+                            </label>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <br />
-            <div className="element-box">
-                <h2>
-                    Choose what version of <b>Create</b> it is for
-                </h2>
-                <h6 className="smol-text">
-                    Create has different versions, choose one that the schematic
-                    was made in (not sure?)
-                </h6>
-                <div className="input-group">
-                    <div className="radio">
-                        <input
-                            type="radio"
-                            id="0.5.1-createversion"
-                            name="createversion"
-                            value="0.5.1 (a-j)"
-                            onChange={(e) => setCreateVersion(e.target.value)}
-                        />
-                        <label
-                            htmlFor="0.5.1-createversion"
-                            className="radio-version-label"
-                        >
-                            0.5.1 (a-j)
-                        </label>
+                </CardContent>
+
+            </Card>
+            <br/>
+            <Card>
+                <CardHeader>
+                    <CardTitle><h2>What mod loader is it for?</h2></CardTitle>
+                    <CardDescription>Loader is a thing that allows your mods to run</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="input-group">
+                        <div className="radio">
+                            <input
+                                type="radio"
+                                id="forge-loader"
+                                name="loader"
+                                value="Forge"
+                                onChange={(e) => setLoader(e.target.value)}
+                            />
+                            <label
+                                htmlFor="forge-loader"
+                                className="radio-version-label"
+                            >
+                                Forge
+                            </label>
+                        </div>
+                        <div className="radio">
+                            <input
+                                type="radio"
+                                id="fabric-loader"
+                                name="loader"
+                                value="Fabric"
+                                onChange={(e) => setLoader(e.target.value)}
+                            />
+                            <label
+                                htmlFor="fabric-loader"
+                                className="radio-version-label"
+                            >
+                                Fabric
+                            </label>
+                        </div>
+                        <div className="radio">
+                            <input
+                                type="radio"
+                                id="quilt-loader"
+                                name="loader"
+                                value="Quilt"
+                                onChange={(e) => setLoader(e.target.value)}
+                            />
+                            <label
+                                htmlFor="quilt-loader"
+                                className="radio-version-label"
+                            >
+                                Quilt
+                            </label>
+                        </div>
+                        <div className="radio">
+                            <input
+                                type="radio"
+                                id="neo-forge-loader"
+                                name="loader"
+                                value="NeoForge"
+                                onChange={(e) => setLoader(e.target.value)}
+                            />
+                            <label
+                                htmlFor="neo-forge-loader"
+                                className="radio-version-label"
+                            >
+                                NeoForge
+                            </label>
+                        </div>
                     </div>
-                    <div className="radio">
-                        <input
-                            type="radio"
-                            id="0.5.0-createversion"
-                            name="createversion"
-                            value="0.5.0 (a-i)"
-                            onChange={(e) => setCreateVersion(e.target.value)}
-                        />
-                        <label
-                            htmlFor="0.5.0-createversion"
-                            className="radio-version-label"
-                        >
-                            0.5.0 (a-i)
-                        </label>
+                </CardContent>
+
+            </Card>
+            <br/>
+            <Card>
+                <CardContent>
+                    <div className="flex items-center justify-end gap-4 mt-4">
+                        <Button className="mt-4" variant="destructive" onClick={handleCancel}>
+                            Cancel
+                        </Button>
+                        <Button className="mt-4" variant="success" onClick={handleUpload}>
+                            Upload!
+                        </Button>
                     </div>
-                </div>
-            </div>
-            <br />
-            <div className="element-box">
-                <h2>What mod loader is it for?</h2>
-                <h6 className="smol-text">
-                    Loader is a thing that allows your mods to run
-                </h6>
-                <div className="input-group">
-                    <div className="radio">
-                        <input
-                            type="radio"
-                            id="forge-loader"
-                            name="loader"
-                            value="Forge"
-                            onChange={(e) => setLoader(e.target.value)}
-                        />
-                        <label
-                            htmlFor="forge-loader"
-                            className="radio-version-label"
-                        >
-                            Forge
-                        </label>
-                    </div>
-                    <div className="radio">
-                        <input
-                            type="radio"
-                            id="fabric-loader"
-                            name="loader"
-                            value="Fabric"
-                            onChange={(e) => setLoader(e.target.value)}
-                        />
-                        <label
-                            htmlFor="fabric-loader"
-                            className="radio-version-label"
-                        >
-                            Fabric
-                        </label>
-                    </div>
-                    <div className="radio">
-                        <input
-                            type="radio"
-                            id="quilt-loader"
-                            name="loader"
-                            value="Quilt"
-                            onChange={(e) => setLoader(e.target.value)}
-                        />
-                        <label
-                            htmlFor="quilt-loader"
-                            className="radio-version-label"
-                        >
-                            Quilt
-                        </label>
-                    </div>
-                    <div className="radio">
-                        <input
-                            type="radio"
-                            id="neo-forge-loader"
-                            name="loader"
-                            value="NeoForge"
-                            onChange={(e) => setLoader(e.target.value)}
-                        />
-                        <label
-                            htmlFor="neo-forge-loader"
-                            className="radio-version-label"
-                        >
-                            NeoForge
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div className="element-box-buttons">
-                <center>
-                    <button className="cancel" onClick={handleCancel}>
-                        Cancel
-                    </button>
-                    <button className="upload" onClick={handleUpload}>
-                        Upload!
-                    </button>
-                </center>
-            </div>
+                </CardContent>
+            </Card>
+            <br/>
         </div>
     );
 }

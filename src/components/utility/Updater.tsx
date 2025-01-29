@@ -1,6 +1,6 @@
-import axios, { AxiosError } from 'axios';
+
 import { useEffect, useState } from 'react';
-import supabase from './Supabase';
+import supabase from "@/components/utility/Supabase";
 
 const Updater = () => {
     const [status, setStatus] = useState<string | null>(null);
@@ -40,33 +40,48 @@ const Updater = () => {
     async function fetchAddonsAndCategories() {
         const addonsLastUpdated = localStorage.getItem('addonsLastUpdated');
         const lastUpdatedTime = addonsLastUpdated ? new Date(parseInt(addonsLastUpdated)) : null;
-        const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000); // 1 hour ago
+        const oneHourAgo = new Date(Date.now() - 60 * 60 * 10); // 1 hour ago
         const addonList = localStorage.getItem('addonList');
 
         if (!lastUpdatedTime || lastUpdatedTime < oneHourAgo || !addonList) {
             console.log('[Updater]: Fetching new addons and categories...');
             try {
-                // Fetch the addon list
-                const response = await axios.get(import.meta.env.APP_ADDONSAPI_URL);
-                const addonData = response.data;
 
-                // Update localStorage
-                localStorage.setItem('addonList', JSON.stringify(addonData));
-                localStorage.setItem('addonsLastUpdated', Date.now().toString());
-
-                console.log('Addon list updated:', addonData);
-
-                // Fetch categories after updating addons
-                await fetchCategories();
-
-                // Update UI state
-                setStatus('Addons and categories updated.');
-                
-                // Instead of forcing a page reload, set a flag
-                setNeedsReload(true);
+                const { data, error } = await supabase
+                .from('mods')
+                .select('*')
+                .eq('isValid', 'true')
+                    .eq('isChecked', 'true')
+        
+              if (error) {
+                console.error('Error fetching addons:', error);
+                return;
+              }
+        
+              // Vérifier si les données existent et les typer explicitement
+              if (data) {
+                  // Fetch the addon list
+                  const addonData = data;
+  
+                  // Update localStorage
+                  localStorage.setItem('addonList', JSON.stringify(addonData));
+                  localStorage.setItem('addonsLastUpdated', Date.now().toString());
+  
+                  console.log('Addon list updated:', addonData);
+  
+                  // Fetch categories after updating addons
+                  await fetchCategories();
+  
+                  // Update UI state
+                  setStatus('Addons and categories updated.');
+                  
+                  // Instead of forcing a page reload, set a flag
+                  setNeedsReload(true);
+              }
+              
             } catch (error) {
-                if (error instanceof AxiosError) {
-                    console.error('Failed to fetch addon list:', error.message);
+                if (error) {
+                    console.error('Failed to fetch addon list:', error);
                 } else {
                     console.error('Failed to fetch addon list:', error);
                 }
@@ -82,14 +97,14 @@ const Updater = () => {
         const categoriesLocal = localStorage.getItem('categories');
         if (!categoriesLocal) {
             console.log('Categories not found in localStorage. Fetching...');
-            fetchCategories();
+            fetchCategories().then();
         } else {
             setCategories(JSON.parse(categoriesLocal));
             console.log('Loaded categories from localStorage.');
         }
 
         // Fetch addons and categories
-        fetchAddonsAndCategories();
+        fetchAddonsAndCategories().then();
     }, []);
 
     // Handle the reload notification

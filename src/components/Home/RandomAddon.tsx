@@ -58,7 +58,7 @@ const HomeRandomAddon = () => {
       }
     };
 
-    fetchAddons();
+    fetchAddons().then();
   }, []);
 
   const displayAddon = (addon: Addon): JSX.Element => {

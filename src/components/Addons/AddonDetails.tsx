@@ -189,7 +189,7 @@ const AddonDetails = () => {
 
   const data = localStorage.getItem("addonList");
   const addons: Addon[] = data ? JSON.parse(data) : [];
-  const addon = getAddonDetails(addons, slug);
+  const addon = getAddonDetails(addons, slug || "");
 
   const changeImage = (direction: 'next' | 'prev') => {
     if (isAnimating) return;
@@ -264,7 +264,7 @@ const AddonDetails = () => {
 
           <span className="debug-info">Description:</span>
           <div className="addon-body-section">
-            <span dangerouslySetInnerHTML={{ __html: addonBody }} />
+            <span dangerouslySetInnerHTML={{ __html: addonBody || "" }} />
             <br />
             <span className="body-warning">
               Warning! Some markdown features such as badges may or may not render correctly
