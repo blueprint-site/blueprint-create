@@ -56,7 +56,7 @@ export function useSchematic() {
       }
     }
     if (file !== null) {
-      loadNbt();
+      loadNbt().then();
     }
   }, [file]);
 

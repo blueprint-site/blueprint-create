@@ -35,14 +35,13 @@ const AddonListItem = memo(({ addon }: AddonListItemProps) => {
     <Card className="flex flex-col overflow-hidden bg-blueprint shadow-lg">
       <CardHeader className="flex flex-row gap-4 items-center p-4">
         <img
-          src={addon.icon_url}
-          alt={addon.title}
+          src={addon.icon}
+          alt={addon.name}
           loading="lazy"
           className="flex-shrink-0 w-16 h-16 overflow-hidden object-cover"
         />
         <div className="flex-1 min-w-0 space-y-1">
-          <h3 className="text-xl font-semibold truncate">{addon.title}</h3>
-          <h3 className="text-xl font-semibold truncate">{addon.slug}</h3>
+          <h3 className="text-xl font-semibold truncate">{addon.name}</h3>
           <p className="text-sm line-clamp-4">{addon.description}</p>
         </div>
       </CardHeader>
@@ -66,8 +65,8 @@ const AddonListItem = memo(({ addon }: AddonListItemProps) => {
 
         <div className="flex-grow self-start">
           <div className="flex flex-wrap gap-2">
-            {addon.versions.map((version) => (
-              <Badge key={version} variant="outline">
+            {addon.versions?.map((version,index) => (
+              <Badge key={index} variant="outline">
                 {version}
               </Badge>
             ))}
@@ -84,7 +83,7 @@ const AddonListItem = memo(({ addon }: AddonListItemProps) => {
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-3 border-b border-black/30 hover:text-black/50 px-2 pb-1">
               <Users className="h-4 w-4" />
-              <span>{addon.follows.toLocaleString()} followers</span>
+              <span>{addon.downloads.toLocaleString()} download</span>
             </div>
           </div>
         </div>

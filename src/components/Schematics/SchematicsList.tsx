@@ -62,11 +62,11 @@ function SchematicsList() {
   };
 
   useEffect(() => {
-    fetchSchematics();
+    fetchSchematics().then();
   }, []);
 
   const handleSearch = () => {
-    fetchSchematics(searchQuery);
+    fetchSchematics(searchQuery).then();
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

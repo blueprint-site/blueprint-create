@@ -95,6 +95,6 @@ async function loadModelsAndTextures() {
   });
 }
 
-loadModelsAndTextures();
+loadModelsAndTextures().then();
 
 export { textures, materialsMap };

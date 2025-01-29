@@ -5,6 +5,7 @@ import { addonRoutes } from '@/routes/addonRoutes';
 import { authRoutes } from '@/routes/authRoutes';
 import { schematicRoutes } from '@/routes/schematicRoutes';
 import { settingsRoutes } from '@/routes/settings';
+import { AdminRoutes } from './adminRoutes';
 
 import About from '@/pages/About';
 import Design from '@/pages/Design';
@@ -16,6 +17,7 @@ import Terms from '@/pages/Terms';
 import SchematicLayout from '@/layouts/3DViewerLayout';
 import BaseLayout from '@/layouts/BaseLayout';
 import SidebarLayout from '@/layouts/SidebarLayout';
+import AdminPanelLayout from "@/layouts/AdminPanelLayout.tsx";
 
 export const routes: RouteObject[] = [
   {
@@ -31,6 +33,13 @@ export const routes: RouteObject[] = [
       { path: '*', element: <NotFound /> },
     ]
   },
+  {
+    element: <AdminPanelLayout />,
+    children:[
+        ...AdminRoutes,
+    ]
+  },
+
   {
     element: <SidebarLayout />,
     children: [

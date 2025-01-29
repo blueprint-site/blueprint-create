@@ -5,6 +5,7 @@ import supabase from "./utility/Supabase"; // Your Supabase client instance
 
 const SchematicExpanded = () => {
     const { id } = useParams();
+    // GONNA NEED A TYPE
     const [schematicData, setSchematicData] = useState<any[] | null>(null);
 
     const getSchematicData = async (id: string) => {
@@ -18,7 +19,7 @@ const SchematicExpanded = () => {
             const data = await getSchematicData(id ?? '');
             setSchematicData(data.data); // Extract the actual data from the response
         };
-        fetchData();
+        fetchData().then();
     }, [id]);
 
     if (!schematicData) {
