@@ -15,8 +15,8 @@ export const AddonStatsDisplayScanned = () => {
                 <CheckCircle className="w-6 h-6 text-green-500" />
             </CardHeader>
             <CardContent>
-                <p className="text-3xl font-bold">{addons ? addons.length : <LoadingSpinner/>}</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Number of addons Scanned</p>
+                <div className="text-3xl font-bold">{addons ? addons.length : <LoadingSpinner/>}</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">Number of addons Scanned</div>
             </CardContent>
         </Card>
     );
@@ -40,8 +40,8 @@ export const AddonStatsDisplayValidated = () => {
                 <CheckCircle className="w-6 h-6 text-green-500" />
             </CardHeader>
             <CardContent>
-                <p className="text-3xl font-bold">{nbrOfAddonsValidated ? nbrOfAddonsValidated : <LoadingSpinner/>}</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Number of addons in Validated</p>
+                <div className="text-3xl font-bold">{nbrOfAddonsValidated ? nbrOfAddonsValidated : <LoadingSpinner/>}</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">Number of addons in Validated</div>
             </CardContent>
         </Card>
     );

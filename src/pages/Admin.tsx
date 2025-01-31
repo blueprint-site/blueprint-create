@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { BarChart, LayoutDashboard, Users, Package, FileText } from "lucide-react";
+import {BarChart, LayoutDashboard, Users, Package, FileText, Files} from "lucide-react";
 import AdminAddonsTable from "@/components/admin/components/addons/AdminAddonsTable.tsx";
 import AddonStatsWrapper from "@/components/admin/components/stats/AddonStatsWrapper.tsx";
 import AdminUsersDisplay from "@/components/admin/components/users/AdminUsersDisplay.tsx";
+
 
 const AdminPage = () => {
     const [activePage, setActivePage] = useState("dashboard");
@@ -22,8 +23,18 @@ const AdminPage = () => {
                         )}
                         onClick={() => setActivePage("dashboard")}
                     >
-                        <LayoutDashboard className="w-5 h-5" />
+                        <LayoutDashboard className="w-5 h-5"/>
                         <span>Dashboard</span>
+                    </div>
+                    <div
+                        className={cn(
+                            "flex items-center space-x-2 p-2 rounded cursor-pointer",
+                            activePage === "blog" ? "bg-gray-700" : "hover:bg-gray-800"
+                        )}
+                        onClick={() => setActivePage("blog")}
+                    >
+                        <Files className="w-5 h-5"/>
+                        <span>Blog</span>
                     </div>
                     <div
                         className={cn(
@@ -32,7 +43,7 @@ const AdminPage = () => {
                         )}
                         onClick={() => setActivePage("users")}
                     >
-                        <Users className="w-5 h-5" />
+                        <Users className="w-5 h-5"/>
                         <span>Users</span>
                     </div>
                     <div
@@ -42,7 +53,7 @@ const AdminPage = () => {
                         )}
                         onClick={() => setActivePage("stats")}
                     >
-                        <BarChart className="w-5 h-5" />
+                        <BarChart className="w-5 h-5"/>
                         <span>Stats</span>
                     </div>
                     <div
@@ -52,7 +63,7 @@ const AdminPage = () => {
                         )}
                         onClick={() => setActivePage("addons")}
                     >
-                        <Package className="w-5 h-5" />
+                        <Package className="w-5 h-5"/>
                         <span>Addons</span>
                     </div>
                     <div
@@ -62,7 +73,7 @@ const AdminPage = () => {
                         )}
                         onClick={() => setActivePage("schematics")}
                     >
-                        <FileText className="w-5 h-5" />
+                        <FileText className="w-5 h-5"/>
                         <span>Schematics</span>
                     </div>
                 </div>

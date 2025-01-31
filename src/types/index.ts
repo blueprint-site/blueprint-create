@@ -223,3 +223,18 @@ export interface ServerAffiliation {
   defaultBannerCustomTitle: string // Custom title for the default banner
   affiliationLink: string // URL link to the affiliation page
 }
+
+export interface Schematic {
+  id: string;
+  title: string;
+  description: string;
+  created_at: string;
+  schematic_url: string;
+  image_url: string;
+  authors: string[];
+  user_id: string;
+  game_versions: string[];
+  create_versions: string[];
+  modloaders: string[];
+  categories: string[];
+}

@@ -14,8 +14,8 @@ export const UsersStatsDisplayRegistered = () => {
                 <CheckCircle className="w-6 h-6 text-green-500" />
             </CardHeader>
             <CardContent>
-                <p className="text-3xl font-bold">{users ? users.length : <LoadingSpinner/>}</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Number of users registered</p>
+                <div className="text-3xl font-bold">{users ? users.length : <LoadingSpinner/>}</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">Number of users registered</div>
             </CardContent>
         </Card>
     );
