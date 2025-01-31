@@ -1,148 +1,76 @@
-import noImageSelected from "@/assets/backgrounds/noimage.png";
-import "@/styles/schematicsupload.scss";
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Button } from "@/components/ui/button.tsx";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card.tsx";
+import { Label } from "@/components/ui/label.tsx";
 import { LoadingSpinner } from "../LoadingOverlays/LoadingSpinner";
 import { LoadingSuccess } from "../LoadingOverlays/LoadingSuccess";
-import supabase from "../utility/Supabase";
-import {UserData} from "@/types";
-import {Button} from "@/components/ui/button.tsx";
-import {useTranslation} from "react-i18next";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group.tsx";
-import {Label} from "@/components/ui/label.tsx";
-import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger} from "@/components/ui/sheet.tsx";
+import { Progress } from "@/components/ui/progress";
+import { Input } from "@/components/ui/input.tsx";
+import { Textarea } from "@/components/ui/textarea.tsx";
+import supabase from "@/components/utility/Supabase.tsx";
+import {LoggedUserContextType, useLoggedUser} from "@/context/users/logedUserContext.tsx";
+import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group.tsx";
 
 function SchematicsUpload() {
-    const [uploadedImage, setUploadedImage] = useState<string>();
+    const [step, setStep] = useState(1);
+    const [progress, setProgress] = useState(0);
+    const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+    const [uploadedSchematic, setUploadedSchematic] = useState<File | null>(null);
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
-    const [gameVersion, setGameVersion] = useState<string>("");
-    const [createVersion, setCreateVersion] = useState<string>("");
-    const [loader, setLoader] = useState<string>("");
-    const [uploadedImageFile, setUploadedImageFile] = useState<File | null>(
-        null
-    );
-    const [uploadedSchematic, setUploadedSchematic] = useState<File | null>(
-        null
-    );
-    const [isSchematicUploaded, setIsSchematicUploaded] = useState<boolean>(
-        false
-    );
-    const [isSchematicError, setIsSchematicError] = useState<boolean>(false);
+    const [gameVersions, setGameVersions] = useState<string[]>([]);
+    const [createVersions, setCreateVersions] = useState<string[]>([]);
+    const [loaders, setLoaders] = useState<string[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [showFinalMessage, setShowFinalMessage] = useState<boolean>(false);
-    const [loggedIn, setLoggedIn] = useState<boolean>(false);
-    const navigate = useNavigate();
-    const [userdata, setUserdata] = useState<any>();
-    const { t } = useTranslation();
-    const getUserData = async () => {
-        const {
-            data: { user },
-        } = await supabase.auth.getUser();
-        if(user){
-            setLoggedIn(true);
-            setUserdata(user);// Store the user data in the state
+    const [uploadedImageUrl, setUploadedImageUrl] = useState<string>();
+    const minecraftVersions = [
+
+        // 1.19.x
+        "1.19.1", "1.19.2",
+
+        // 1.20.x
+        "1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4",
+
+        // 1.21.x
+        "1.21", "1.21.1", "1.21.2"
+    ];
+    const  LoggedUser  = useLoggedUser()
+
+
+    // Navigation entre les étapes
+    const nextStep = () => {
+        if (step < 4) {
+            setStep(step + 1);
+            setProgress(progress + 25);
         }
-        else{
-            setLoggedIn(false)
-            console.log('Error while fetching user data');
+    };
+    const prevStep = () => {
+        if (step > 1) {
+            setStep(step - 1);
+            setProgress(progress - 25);
         }
     };
 
-    useEffect(() => {
-        if (loading) {
-            const timer = setTimeout(() => {
-                setShowFinalMessage(true);
-            }, 3000);
-
-            return () => clearTimeout(timer);
-        }
-        if (uploadedImage) {
+    // Vérification des champs requis avant validation finale
+    const validateAndUpload = () => {
+        if (!uploadedSchematic || !uploadedImage || !title || !description || gameVersions.length === 0 || createVersions.length === 0 || loaders.length === 0) {
+            console.log(uploadedSchematic, uploadedImage ,title, description, gameVersions, createVersions, loaders);
+            alert("Veuillez remplir tous les champs avant de soumettre.");
             return;
-        } else {
-            setUploadedImage(noImageSelected);
         }
-    }, [loading]);
-
-    useEffect(() => {
-        if (showFinalMessage) {
-            const redirectTimer = setTimeout(() => {
-                navigate("/schematics");
-            }, 500);
-
-            return () => clearTimeout(redirectTimer);
-        }
-    }, [showFinalMessage, navigate]);
-
-    useEffect(() => {
-        getUserData().then();
-        if (userdata) {
-            setLoggedIn(true);
-        } else {
-            setLoggedIn(false);
-        }
-    }, []);
-
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-        if (e.target.files) {
-            const file = e.target.files[0];
-            setUploadedImageFile(file);
-            setUploadedImage(URL.createObjectURL(file));
-        }
-    }
-
-    function handleSchematicChange(e: React.ChangeEvent<HTMLInputElement>) {
-        if (e.target.files) {
-            const file = e.target.files[0];
-            const fileExtension = file.name.split(".").pop()?.toLowerCase();
-
-            if (fileExtension === "nbt") {
-                setIsSchematicUploaded(true);
-                setIsSchematicError(false);
-                setUploadedSchematic(file);
-                // Add further logic to handle the file upload if necessary
-            } else {
-                setIsSchematicUploaded(false);
-                setIsSchematicError(true);
-            }
-        }
-    }
-
-    function handleUpload() {
-        const missingFields = [];
-        if (!uploadedImageFile) missingFields.push("Image File");
-        if (!uploadedSchematic) missingFields.push("Schematic File");
-        if (isSchematicError) missingFields.push("Valid Schematic File");
-        if (!gameVersion) missingFields.push("Game Version");
-        if (!createVersion) missingFields.push("Create Version");
-        if (!loader) missingFields.push("Loader");
-        if (!description) missingFields.push("Description");
-        if (!title) missingFields.push("Title");
-
-        if (missingFields.length > 0) {
-            alert(`Please fill in the following fields: ${missingFields.join(", ")}`);
-        } else if(uploadedSchematic && uploadedImageFile) {
-            setLoading(true);
-            handleSchematicUpload(
-                uploadedSchematic,
-                uploadedImageFile,
-                title,
-                description,
-                userdata?.user_metadata?.custom_claims?.global_name,
-            ).then();
-        }
-    }
-
-    function handleCancel() {
-        navigate("/schematics");
-    }
+        setLoading(true);
+        handleSchematicUpload(uploadedSchematic, uploadedImage, title, description, LoggedUser)
+        setTimeout(() => {
+            setShowFinalMessage(true);
+        }, 3000);
+    };
     async function handleSchematicUpload(
         file: File,
         image: File,
         title: string,
         description: string,
-        userdata: UserData
+        userdata: LoggedUserContextType
     ) {
         try {
             // Upload file to bucket
@@ -190,10 +118,10 @@ function SchematicsUpload() {
                     description: description,
                     schematic_url: fileUrl,
                     image_url: imageUrl,
-                    author: userdata?.user_metadata?.custom_claims?.global_name,
-                    game_versions: gameVersion,
-                    create_versions: createVersion,
-                    modloader: loader,
+                    authors: [userdata.user?.id] ,
+                    game_versions: gameVersions,
+                    create_versions: createVersions,
+                    modloaders: loaders,
                 },
             ]);
 
@@ -207,33 +135,16 @@ function SchematicsUpload() {
             console.error("Error uploading blueprint:", error);
         }
     }
-    if(!loggedIn){
-        return(
-            <div className="loginDisclaimer">
-                <div className="loginDisclaimerContent">
-                    <h2> You need to be logged in for be able to upload shematics </h2>
-                    <Button
-                        onClick={() => navigate("/login")}
-                        variant="default"
-                    >
-                        <span>{t("navigation.label.login")}</span>
-                    </Button>
-                </div>
 
-            </div>
-        )
-    }
-
+    // Affichage du message de fin
     if (loading && !showFinalMessage) {
         return (
             <div className="loading">
                 <LoadingSpinner />
                 <h1>Your schematic is being uploaded!</h1>
-                <h4>Wait some time</h4>
             </div>
         );
     }
-
     if (showFinalMessage) {
         return (
             <div className="final-message">
@@ -244,278 +155,134 @@ function SchematicsUpload() {
 
     return (
         <div className="container">
-            <br/>
-            <Card>
+            <Card className="mt-8">
                 <CardHeader>
-                    <CardTitle className="text-center"><h1> Let's upload a shematic </h1></CardTitle>
+                    <CardTitle className="text-center">Let's upload a schematic</CardTitle>
                 </CardHeader>
-            </Card>
-            <br/>
-            <Card>
-                <CardHeader>
-                    <CardTitle className="text-center"><h2> Upload a schematic (.nbt) </h2></CardTitle>
-                    <CardDescription className="text-center">The exciting part! This is where you upload your .nbt
-                        file</CardDescription>
-                </CardHeader>
-                <CardFooter>
-                    <label htmlFor="uploadSchematicButton" className="upload-label">
-                        Choose File
-                    </label>
-                    <input
-                        type="file"
-                        id="uploadSchematicButton"
-                        hidden
-                        onChange={handleSchematicChange}
-                    />
-                    {isSchematicError && (
-                        <h6 className="schematic-status-bad">
-                            Remember! Only .nbt files are allowed
-                        </h6>
+                <CardContent>
+                    <Progress value={progress} className="mb-4" />
+
+                    {step === 1 && (
+                        <div className="container mx-auto p-4">
+                            <div className="flex flex-col items-center space-y-6">
+                                <div className="w-full max-w-lg">
+                                    <h2 className="text-center text-2xl font-semibold">Upload your schematic (.nbt)</h2>
+                                    <Input
+                                        type="file"
+                                        accept=".nbt"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) {
+                                                setUploadedSchematic(file);
+                                            } else {
+                                                setUploadedSchematic(null);
+                                            }
+                                        }}
+                                        className="w-full py-2 px-4 border border-gray-300 rounded-lg"
+                                    />
+                                    {uploadedSchematic && (
+                                        <div className="file-preview text-center mt-2">
+                                            <p className="text-gray-600">{uploadedSchematic.name}</p>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="w-full max-w-lg">
+                                    <h2 className="text-center text-2xl font-semibold">Upload an image</h2>
+                                    <Input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) {
+                                                setUploadedImage(file);
+                                                setUploadedImageUrl(URL.createObjectURL(file));
+                                            }
+                                        }}
+                                        className="w-full py-2 px-4 border border-gray-300 rounded-lg"
+                                    />
+                                    {uploadedImageUrl ? (
+                                        <div className="image-preview text-center mt-4">
+                                            <img
+                                                src={uploadedImageUrl}
+                                                alt="Uploaded preview"
+                                                className="max-w-full h-auto rounded-lg shadow-md"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="image-preview-placeholder text-center mt-4">
+                                            <p className="text-gray-500">No image selected</p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
                     )}
-                    {isSchematicUploaded && (
-                        <h6 className="schematic-status">Schematic uploaded!</h6>
+
+                    {step === 2 && (
+                        <>
+                            <h2 className="text-center">Title & Description</h2>
+                            <Input type="text" placeholder="Title" value={title}
+                                   onChange={(e) => setTitle(e.target.value)} className="mb-2 w-full p-2 border"/>
+                            <Textarea placeholder="Description" value={description}
+                                      onChange={(e) => setDescription(e.target.value)} className="w-full p-2 border"/>
+                        </>
                     )}
-                </CardFooter>
-            </Card>
-            <br/>
-            <Card>
-                <CardHeader>
-                    <CardTitle className="text-center"><h2>Upload a screenshot for the schematic</h2></CardTitle>
-                    <CardDescription className="text-center">(1920x1080px)</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <img
-                        src={uploadedImage}
-                        alt="Image uploaded by the user"
-                        className="uploaded-image"
-                    />
-                    <h6 className="smol-text">
-                        Suggestion: It should feature what is inside the schematic
-                    </h6>
-                </CardContent>
-                <CardFooter className="align-content-lg-end">
-                    <label
-                        htmlFor="uploadScreenshotButton"
-                        className="upload-label"
-                    >
-                        Choose File
-                    </label>
-                    <input
-                        type="file"
-                        id="uploadScreenshotButton"
-                        hidden
-                        onChange={handleChange}
-                    />
-                </CardFooter>
-            </Card>
-            <br/>
-            <Card>
-                <CardHeader>
-                    <CardTitle>
-                        <h2>
-                            Schematic author:{" "}
-                            <i>{userdata?.user_metadata?.custom_claims?.global_name}</i>
-                        </h2>
-                    </CardTitle>
-                    <CardDescription>The name of the person who uploaded the schematic. Set
-                        automatically acording to your account</CardDescription>
-                </CardHeader>
-            </Card>
-            <br/>
-            <Card>
-                <CardHeader>
-                    <CardTitle><h2>Choose a title and a description</h2></CardTitle>
-                </CardHeader>
-                <CardContent className="flex items-center gap-4">
-                    <div>
-                        <h6>Choose a title for your schematic</h6>
-                        <input
-                            id="title"
-                            type="text"
-                            maxLength={100}
-                            placeholder="Title"
-                            className="title-input"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <h6>Tell others what is inside it</h6>
-                        <textarea
-                            id="description"
-                            placeholder="Description"
-                            className="desc-input"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                        />
-                    </div>
-                </CardContent>
-            </Card>
-            <Sheet>
-                <SheetTrigger>Open</SheetTrigger>
-                <SheetContent>
-                    <SheetHeader>
-                        <SheetTitle>Are you absolutely sure?</SheetTitle>
-                        <SheetDescription>
-                            This action cannot be undone. This will permanently delete your account
-                            and remove your data from our servers.
-                        </SheetDescription>
-                    </SheetHeader>
-                </SheetContent>
-            </Sheet>
-            <br/>
-            <Card>
-                <CardHeader>
-                    <CardTitle className="text-center"><h2> Choose what version of Minecraft </h2></CardTitle>
-                    <CardDescription className="text-center">The version of Minecraft the schematic is made for (the
-                        minimum version it needs to run)</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <RadioGroup defaultValue="option-one" onValueChange={(value) => setGameVersion(value) }>
-                        <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="1.20.1" id="option-one"/>
-                            <Label htmlFor="option-one">1.20.1</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="1.19.2" id="option-two"/>
-                            <Label htmlFor="option-two">1.19.2</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="1.18.2" id="option-two"/>
-                            <Label htmlFor="option-two">1.18.2</Label>
-                        </div>
-                    </RadioGroup>
-                </CardContent>
-            </Card>
-            <br/>
-            <Card>
-                <CardHeader>
-                    <CardTitle><h2>Choose what version of <b>Create</b></h2></CardTitle>
-                    <CardDescription>Create has different versions, choose one that the schematic was made in (not
-                        sure?)</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="input-group">
-                        <div className="radio">
-                            <input
-                                type="radio"
-                                id="0.5.1-createversion"
-                                name="createversion"
-                                value="0.5.1 (a-j)"
-                                onChange={(e) => setCreateVersion(e.target.value)}
-                            />
-                            <label
-                                htmlFor="0.5.1-createversion"
-                                className="radio-version-label"
-                            >
-                                0.5.1 (a-j)
-                            </label>
-                        </div>
-                        <div className="radio">
-                            <input
-                                type="radio"
-                                id="0.5.0-createversion"
-                                name="createversion"
-                                value="0.5.0 (a-i)"
-                                onChange={(e) => setCreateVersion(e.target.value)}
-                            />
-                            <label
-                                htmlFor="0.5.0-createversion"
-                                className="radio-version-label"
-                            >
-                                0.5.0 (a-i)
-                            </label>
-                        </div>
-                    </div>
+
+                    {step === 3 && (
+                        <>
+                            <h2 className="text-center">Game Versions</h2>
+                            <ToggleGroup variant="outline" type="multiple" value={gameVersions} onValueChange={setGameVersions} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 grid-flow-row-dense">
+                                {minecraftVersions.map((version, index) => (
+                                    <ToggleGroupItem  key={index} value={version} className="flex items-center space-x-2">
+                                        <Label>{version}</Label>
+                                    </ToggleGroupItem>
+                                ))}
+                            </ToggleGroup>
+
+                            <h3 className="mt-4">Create Mod Versions</h3>
+                            <ToggleGroup variant="outline" type="multiple" value={createVersions} onValueChange={setCreateVersions} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 grid-flow-row-dense">
+                                {["0.5", "0.4"].map((version, index) => (
+                                    <ToggleGroupItem key={index} value={version} className="flex items-center space-x-2">
+                                        <Label>{version}</Label>
+                                    </ToggleGroupItem>
+                                ))}
+                            </ToggleGroup>
+
+                            <h3 className="mt-4">Select Loaders</h3>
+                            <ToggleGroup variant="outline" type="multiple" value={loaders} onValueChange={setLoaders} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 grid-flow-row-dense">
+                                {["fabric", "forge", "quilt"].map((loader, index) => (
+                                    <ToggleGroupItem key={index} value={loader} className="flex items-center space-x-2">
+                                        <Label>{loader}</Label>
+                                    </ToggleGroupItem>
+                                ))}
+                            </ToggleGroup>
+                        </>
+                    )}
+
+                    {step === 4 && (
+                        <>
+                            <h2 className="text-center">Confirm and Upload</h2>
+                            <div className="flex items-center justify-center">
+                                <img src={uploadedImageUrl} alt="Preview"
+                                     className="w-1/4 items-center h-32 object-cover mt-2"/>
+                            </div>
+                            <p><strong>Title:</strong> {title}</p>
+                            <p><strong>Description:</strong> {description}</p>
+                            <p><strong>Game Versions:</strong> {gameVersions.join(", ")}</p>
+                            <p><strong>Create Versions:</strong> {createVersions.join(", ")}</p>
+                            <p><strong>Loaders:</strong> {loaders.join(", ")}</p>
+
+
+                        </>
+                    )}
                 </CardContent>
 
+                <CardFooter className="flex justify-end gap-2">
+                    {step > 1 && <Button onClick={prevStep}>Back</Button>}
+                    {step < 4 ? <Button onClick={nextStep}>Next</Button> : <Button onClick={validateAndUpload}>Upload</Button>}
+                </CardFooter>
             </Card>
-            <br/>
-            <Card>
-                <CardHeader>
-                    <CardTitle><h2>What mod loader is it for?</h2></CardTitle>
-                    <CardDescription>Loader is a thing that allows your mods to run</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="input-group">
-                        <div className="radio">
-                            <input
-                                type="radio"
-                                id="forge-loader"
-                                name="loader"
-                                value="Forge"
-                                onChange={(e) => setLoader(e.target.value)}
-                            />
-                            <label
-                                htmlFor="forge-loader"
-                                className="radio-version-label"
-                            >
-                                Forge
-                            </label>
-                        </div>
-                        <div className="radio">
-                            <input
-                                type="radio"
-                                id="fabric-loader"
-                                name="loader"
-                                value="Fabric"
-                                onChange={(e) => setLoader(e.target.value)}
-                            />
-                            <label
-                                htmlFor="fabric-loader"
-                                className="radio-version-label"
-                            >
-                                Fabric
-                            </label>
-                        </div>
-                        <div className="radio">
-                            <input
-                                type="radio"
-                                id="quilt-loader"
-                                name="loader"
-                                value="Quilt"
-                                onChange={(e) => setLoader(e.target.value)}
-                            />
-                            <label
-                                htmlFor="quilt-loader"
-                                className="radio-version-label"
-                            >
-                                Quilt
-                            </label>
-                        </div>
-                        <div className="radio">
-                            <input
-                                type="radio"
-                                id="neo-forge-loader"
-                                name="loader"
-                                value="NeoForge"
-                                onChange={(e) => setLoader(e.target.value)}
-                            />
-                            <label
-                                htmlFor="neo-forge-loader"
-                                className="radio-version-label"
-                            >
-                                NeoForge
-                            </label>
-                        </div>
-                    </div>
-                </CardContent>
-
-            </Card>
-            <br/>
-            <Card>
-                <CardContent>
-                    <div className="flex items-center justify-end gap-4 mt-4">
-                        <Button className="mt-4" variant="destructive" onClick={handleCancel}>
-                            Cancel
-                        </Button>
-                        <Button className="mt-4" variant="success" onClick={handleUpload}>
-                            Upload!
-                        </Button>
-                    </div>
-                </CardContent>
-            </Card>
-            <br/>
         </div>
     );
 }

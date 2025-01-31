@@ -1,33 +1,34 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import DevinsBadges from "@/components/utility/DevinsBadges";
 import {Addon} from "@/types";
+import {useAppStore} from "@/stores/useAppStore.ts";
 
 const RandomAddon = () => {
   const [addon, setAddon] = useState<Addon | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const getRandomAddon = useCallback(async () => {
+  const [addonsList, setAddonsList] = useState<Addon[] | null>(null);
+  const { addons } = useAppStore();
+  setAddonsList(addons)
+  const getRandomAddon = useCallback( async() => {
     setIsLoading(true);
     try {
-      const stored = localStorage.getItem("addonList");
-      if (!stored) {
+
+      if (!addonsList) {
         console.error("No addons found");
         return; // Exit function instead of throwing
       }
-      const addons = JSON.parse(stored);
-      if (!addons?.length) {
+      if (!addonsList?.length) {
         console.error("Addon list is empty");
         return; // Exit function instead of throwing
       }
 
-      const randomIndex = Math.floor(Math.random() * addons.length);
-      setAddon(addons[randomIndex]);
+      const randomIndex = Math.floor(Math.random() * addonsList.length);
+      setAddon(addonsList[randomIndex]);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load addon");
       console.error(err);

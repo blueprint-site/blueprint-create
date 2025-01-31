@@ -18,6 +18,7 @@ import SchematicLayout from '@/layouts/3DViewerLayout';
 import BaseLayout from '@/layouts/BaseLayout';
 import SidebarLayout from '@/layouts/SidebarLayout';
 import AdminPanelLayout from "@/layouts/AdminPanelLayout.tsx";
+import {blogRoutes} from "@/routes/blogRoutes.tsx";
 
 export const routes: RouteObject[] = [
   {
@@ -30,6 +31,7 @@ export const routes: RouteObject[] = [
       { path: 'privacy', element: <Privacy /> },
       ...authRoutes,
       ...settingsRoutes,
+      ...blogRoutes ,
       { path: '*', element: <NotFound /> },
     ]
   },

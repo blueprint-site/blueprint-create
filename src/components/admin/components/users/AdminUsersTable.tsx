@@ -10,8 +10,8 @@ import {
 import {Button} from "@/components/ui/button.tsx";
 import {ArrowUpDown, MoreHorizontal} from "lucide-react";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
-import {DataTable} from "@/components/tables/addonChecks/data-table.tsx";
 import {Users, useUsers} from "@/context/users/usersContext.tsx";
+import {AdminUsersDataTable} from "@/components/tables/users/Admin-users-data-table.tsx";
 
 
 const AdminUsersTable =  () => {
@@ -106,7 +106,7 @@ const AdminUsersTable =  () => {
 
     return (
         <div className="px-4 md:px-8">
-            <DataTable columns={columns} data={users ||  [] }></DataTable>
+            <AdminUsersDataTable columns={columns} data={users ||  [] }></AdminUsersDataTable>
         </div>
     );
 }
