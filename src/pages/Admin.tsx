@@ -115,7 +115,14 @@ const AdminPage = () => {
 
 
                 )}
-
+                {activePage === "blog" && (
+                    <Card className="shadow-lg border border-gray-200 dark:border-gray-700">
+                        <CardContent className="p-6">
+                            <h3 className="text-xl font-bold">Blog Management</h3>
+                            <p>Manage blog inside the app.</p>
+                        </CardContent>
+                    </Card>
+                )}
                 {activePage === "schematics" && (
                     <Card className="shadow-lg border border-gray-200 dark:border-gray-700">
                         <CardContent className="p-6">
