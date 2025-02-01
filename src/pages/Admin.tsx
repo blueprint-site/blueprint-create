@@ -5,6 +5,8 @@ import {BarChart, LayoutDashboard, Users, Package, FileText, Files} from "lucide
 import AdminAddonsTable from "@/components/admin/components/addons/AdminAddonsTable.tsx";
 import AddonStatsWrapper from "@/components/admin/components/stats/AddonStatsWrapper.tsx";
 import AdminUsersDisplay from "@/components/admin/components/users/AdminUsersDisplay.tsx";
+import AdminBlogDisplay from "@/components/admin/components/blog/AdminBlogDisplay.tsx";
+import AdminSchematicsDisplay from "@/components/admin/components/schematics/AdminSchematicsDisplay.tsx";
 
 
 const AdminPage = () => {
@@ -116,20 +118,28 @@ const AdminPage = () => {
 
                 )}
                 {activePage === "blog" && (
-                    <Card className="shadow-lg border border-gray-200 dark:border-gray-700">
-                        <CardContent className="p-6">
-                            <h3 className="text-xl font-bold">Blog Management</h3>
-                            <p>Manage blog inside the app.</p>
-                        </CardContent>
-                    </Card>
+                    <>
+                        <Card className="shadow-lg border border-gray-200 dark:border-gray-700">
+                            <CardContent className="p-6">
+                                <h3 className="text-xl font-bold">Blog Management</h3>
+                                <p>Manage blog inside the app.</p>
+                            </CardContent>
+                        </Card>
+                        <AdminBlogDisplay/>
+                    </>
+
                 )}
                 {activePage === "schematics" && (
-                    <Card className="shadow-lg border border-gray-200 dark:border-gray-700">
-                        <CardContent className="p-6">
-                            <h3 className="text-xl font-bold">Schematics</h3>
-                            <p>Manage and generate schematics for your application.</p>
-                        </CardContent>
-                    </Card>
+                    <>
+                        <Card className="shadow-lg border border-gray-200 dark:border-gray-700">
+                            <CardContent className="p-6">
+                                <h3 className="text-xl font-bold">Schematics</h3>
+                                <p>Manage and generate schematics for your application.</p>
+                            </CardContent>
+                        </Card>
+                        <AdminSchematicsDisplay/>
+                    </>
+
                 )}
             </div>
         </div>
