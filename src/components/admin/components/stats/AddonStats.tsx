@@ -1,8 +1,8 @@
-import { useAddons } from "@/context/addons/addonsContext.tsx";
-import {useEffect, useState} from "react";
+
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {CheckCircle} from "lucide-react";
 import {LoadingSpinner} from "@/components/LoadingOverlays/LoadingSpinner.tsx";
+import {useAddons} from "@/hooks/useAddons.ts";
 
 
 export const AddonStatsDisplayScanned = () => {
@@ -15,7 +15,7 @@ export const AddonStatsDisplayScanned = () => {
                 <CheckCircle className="w-6 h-6 text-green-500" />
             </CardHeader>
             <CardContent>
-                <div className="text-3xl font-bold">{addons ? addons.length : <LoadingSpinner/>}</div>
+                <div className="text-3xl font-bold">{addons.totalAddons ?  addons.totalAddons : <LoadingSpinner/>}</div>
                 <div className="text-sm text-gray-500 dark:text-gray-400">Number of addons Scanned</div>
             </CardContent>
         </Card>
@@ -24,15 +24,6 @@ export const AddonStatsDisplayScanned = () => {
 
 export const AddonStatsDisplayValidated = () => {
     const addons = useAddons();
-    const [nbrOfAddonsValidated, setNbr] = useState(0);
-
-    useEffect(() => {
-        if (addons) {
-            const count = addons.filter(addon => addon.isValid).length;
-            setNbr(count);
-        }
-    }, [addons]);
-
     return (
         <Card className="w-full max-w-sm shadow-lg border border-gray-200 dark:border-gray-700">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -40,7 +31,7 @@ export const AddonStatsDisplayValidated = () => {
                 <CheckCircle className="w-6 h-6 text-green-500" />
             </CardHeader>
             <CardContent>
-                <div className="text-3xl font-bold">{nbrOfAddonsValidated ? nbrOfAddonsValidated : <LoadingSpinner/>}</div>
+                <div className="text-3xl font-bold">{addons.totalValidAddons ? addons.totalValidAddons : <LoadingSpinner/>}</div>
                 <div className="text-sm text-gray-500 dark:text-gray-400">Number of addons in Validated</div>
             </CardContent>
         </Card>
