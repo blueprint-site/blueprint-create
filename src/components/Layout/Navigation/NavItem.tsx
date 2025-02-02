@@ -1,24 +1,34 @@
 import { NavLink } from "react-router-dom";
+import {cn} from "@/lib/utils.ts";
 
-import LazyImage from '@/components/utility/LazyImage';
 
 interface NavItemProps {
   href: string;
   icon: string;
   label: string;
   external?: boolean;
+  isActive?: boolean;
 }
 
-const NavItem = ({ href, icon, label, external }: NavItemProps) => {
+const NavItem = ({ href, icon, label, external, isActive }: NavItemProps) => {
+
   const content = (
-    <div className="flex items-center justify-center transition-transform duration-100 hover:scale-105">
-      <img
-        src={icon}
-        alt={label}
-        className="w-8 h-8 pixelated object-cover"
-      />
-      <span className="ml-2">{label}</span>
-    </div>
+      <NavLink
+          to={href}
+          className={cn(
+              "font-minecraft flex items-center justify-center transition-all duration-300 transform  cursor-pointer rounded-md px-4 py-2",
+              isActive
+                  ? "bg-blue-600 bg-opacity-10 font-bold "
+                  : "text-gray-500 hover:bg-gray-700 hover:text-white hover:shadow-md"
+          )}
+      >
+        <img
+            src={icon}
+            alt={label}
+            className="w-8 h-8 object-cover rounded-full shadow-sm transition-all duration-300"
+        />
+        <div className="ml-3 font-minecraft decoration-from-font"> {label}</div>
+      </NavLink>
   );
 
   const className =

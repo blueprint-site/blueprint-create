@@ -80,7 +80,7 @@ export default function About() {
       }
     };
 
-    fetchContributors();
+    fetchContributors().then();
     return () => controller.abort();
   }, []);
 

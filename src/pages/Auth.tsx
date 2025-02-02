@@ -14,6 +14,7 @@ const AuthPage = () => {
 
   const handleOAuthLogin = async (provider: "google" | "github" | "discord") => {
     try {
+    
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
@@ -24,7 +25,10 @@ const AuthPage = () => {
         },
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error while logging", error);
+        return; // Exit function instead of throwing
+      }
 
       localStorage.setItem("isSignedIn", "true");
       localStorage.setItem("userData", JSON.stringify(data));
