@@ -3,7 +3,7 @@ const CollectionHandler = {
     collectionAdded: (addonName: string): void => {
       const savedCollection = localStorage.getItem("savedAddonCollection");
   
-      let collection: string[] = savedCollection ? JSON.parse(savedCollection) : [];
+      const collection: string[] = savedCollection ? JSON.parse(savedCollection) : [];
   
       collection.push(addonName);
   

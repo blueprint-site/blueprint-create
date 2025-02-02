@@ -16,7 +16,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
       setIsAuthenticated(!!session);  // Sets to true if a session exists, false otherwise
     };
 
-    checkSession();
+    checkSession().then();
 
     // Listen for auth state changes (login, logout)
     const { data: authListener } = supabase.auth.onAuthStateChange((_, session) => {

@@ -1,52 +1,20 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
 import DevinsBadges from "@/components/utility/DevinsBadges";
-import Updater from "@/components/utility/Updater";
 import "@/styles/homerandomaddon.scss";
-interface Addon {
-  id: string;
-  icon_url: string;
-  name: string;
-  description: string;
-  categories: string[];
-  versions: string[];
-  slug: string;
-}
+import {useAppStore} from "@/stores/useAppStore.ts";
+import {Addon} from "@/types";
 
-interface StoredAddon {
-  id: string;
-  icon_url: string;
-  title: string;
-  description: string;
-  categories: string[];
-  versions: string[];
-  slug: string;
-}
 
 const HomeRandomAddon = () => {
   const [randomAddon, setRandomAddon] = useState<Addon | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  Updater();
+  const { addons } = useAppStore();
 
   useEffect(() => {
     const fetchAddons = async () => {
       try {
-        const response = localStorage.getItem("addonList");
-        const data: StoredAddon[] = response ? JSON.parse(response) : [];
-
-        const addons: Addon[] = data.map((addon) => ({
-          id: addon.id,
-          icon_url: addon.icon_url,
-          name: addon.title,
-          description: addon.description,
-          categories: addon.categories,
-          versions: addon.versions,
-          slug: addon.slug,
-        }));
-
         if (addons.length > 0) {
           const randomIndex = Math.floor(Math.random() * addons.length);
           setRandomAddon(addons[randomIndex]);
@@ -58,7 +26,7 @@ const HomeRandomAddon = () => {
       }
     };
 
-    fetchAddons();
+    fetchAddons().then();
   }, []);
 
   const displayAddon = (addon: Addon): JSX.Element => {
@@ -112,7 +80,7 @@ const HomeRandomAddon = () => {
           <img
             loading="lazy"
             className="random-addon-logo"
-            src={addon.icon_url}
+            src={addon.icon}
             alt=""
           />
           <div className="modloaders">

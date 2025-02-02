@@ -1,28 +1,34 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import DevinsBadges from "@/components/utility/DevinsBadges";
-import { Addon } from "@/types";
+import {Addon} from "@/types";
+import {useAppStore} from "@/stores/useAppStore.ts";
 
 const RandomAddon = () => {
   const [addon, setAddon] = useState<Addon | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const getRandomAddon = useCallback(async () => {
+  const [addonsList, setAddonsList] = useState<Addon[] | null>(null);
+  const { addons } = useAppStore();
+  setAddonsList(addons)
+  const getRandomAddon = useCallback( async() => {
     setIsLoading(true);
     try {
-      const stored = localStorage.getItem("addonList");
-      if (!stored) throw new Error("No addons found");
 
-      const addons = JSON.parse(stored);
-      if (!addons?.length) throw new Error("Addon list is empty");
+      if (!addonsList) {
+        console.error("No addons found");
+        return; // Exit function instead of throwing
+      }
+      if (!addonsList?.length) {
+        console.error("Addon list is empty");
+        return; // Exit function instead of throwing
+      }
 
-      const randomIndex = Math.floor(Math.random() * addons.length);
-      setAddon(addons[randomIndex]);
+      const randomIndex = Math.floor(Math.random() * addonsList.length);
+      setAddon(addonsList[randomIndex]);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load addon");
       console.error(err);
@@ -33,7 +39,7 @@ const RandomAddon = () => {
   }, []);
 
   useEffect(() => {
-    getRandomAddon();
+    getRandomAddon().then();
   }, [getRandomAddon]);
 
   if (error) {
@@ -60,9 +66,13 @@ const RandomAddon = () => {
     );
   }
 
-  const backgroundColor = addon.color ? 
-    `rgba(${parseInt(addon.color.slice(1,3),16)}, ${parseInt(addon.color.slice(3,5),16)}, ${parseInt(addon.color.slice(5,7),16)}, 0.7)` : 
-    "transparent";
+  const colorHex = addon.modrinth_raw?.color?.toString(16).padStart(6, '0');
+
+  const backgroundColor = colorHex ?
+      `rgba(${parseInt(colorHex.slice(0,2), 16)}, 
+          ${parseInt(colorHex.slice(2,4), 16)}, 
+          ${parseInt(colorHex.slice(4,6), 16)}, 0.7)`
+      : "transparent";
 
   return (
     <div className="container mx-auto px-4 py-8 text-center space-y-8">
@@ -71,14 +81,14 @@ const RandomAddon = () => {
               style={{ backgroundColor }}>
           <CardContent className="p-6 space-y-4">
             <img
-              src={addon.icon_url}
-              alt={addon.title}
+              src={addon.icon}
+              alt={addon.name}
               loading="lazy"
               className="w-32 h-32 mx-auto rounded-lg"
             />
             
             <div className="space-y-2">
-              <h2 className="text-2xl font-bold">{addon.title}</h2>
+              <h2 className="text-2xl font-bold">{addon.name}</h2>
               <p className="text-foreground-muted">{addon.description}</p>
               <p className="text-sm">Author: {addon.author}</p>
               <p className="text-sm">Versions: {addon.versions.join(", ")}</p>

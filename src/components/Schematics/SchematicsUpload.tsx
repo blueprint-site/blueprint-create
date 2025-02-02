@@ -1,357 +1,290 @@
-import noImageSelected from "@/assets/backgrounds/noimage.png";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Textarea } from "@/components/ui/textarea";
-import { User } from "@supabase/supabase-js";
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Button } from "@/components/ui/button.tsx";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card.tsx";
+import { Label } from "@/components/ui/label.tsx";
 import { LoadingSpinner } from "../LoadingOverlays/LoadingSpinner";
 import { LoadingSuccess } from "../LoadingOverlays/LoadingSuccess";
-import supabase from "../utility/Supabase";
+import { Progress } from "@/components/ui/progress";
+import { Input } from "@/components/ui/input.tsx";
+import { Textarea } from "@/components/ui/textarea.tsx";
+import supabase from "@/components/utility/Supabase.tsx";
+import {LoggedUserContextType, useLoggedUser} from "@/context/users/logedUserContext.tsx";
+import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group.tsx";
 
-interface SchematicFormData {
-  title: string;
-  description: string;
-  gameVersion: string;
-  createVersion: string;
-  loader: string;
-  uploadedImage: string;
-  uploadedImageFile: File | null;
-  uploadedSchematic: File | null;
-}
+function SchematicsUpload() {
+    const [step, setStep] = useState(1);
+    const [progress, setProgress] = useState(0);
+    const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+    const [uploadedSchematic, setUploadedSchematic] = useState<File | null>(null);
+    const [title, setTitle] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
+    const [gameVersions, setGameVersions] = useState<string[]>([]);
+    const [createVersions, setCreateVersions] = useState<string[]>([]);
+    const [loaders, setLoaders] = useState<string[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [showFinalMessage, setShowFinalMessage] = useState<boolean>(false);
+    const [uploadedImageUrl, setUploadedImageUrl] = useState<string>();
+    const minecraftVersions = [
 
-const INITIAL_FORM_DATA: SchematicFormData = {
-  title: "",
-  description: "",
-  gameVersion: "",
-  createVersion: "",
-  loader: "",
-  uploadedImage: noImageSelected,
-  uploadedImageFile: null,
-  uploadedSchematic: null
-};
+        // 1.19.x
+        "1.19.1", "1.19.2",
 
-const GAME_VERSIONS = ["1.20.1", "1.19.2", "1.18.2"];
-const CREATE_VERSIONS = ["0.5.1 (a-j)", "0.5.0 (a-i)"];
-const LOADERS = ["Forge", "Fabric", "Quilt", "NeoForge"];
+        // 1.20.x
+        "1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4",
 
-export function SchematicsUpload() {
-  const [formData, setFormData] = useState<SchematicFormData>(INITIAL_FORM_DATA);
-  const [isSchematicUploaded, setIsSchematicUploaded] = useState(false);
-  const [isSchematicError, setIsSchematicError] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [showFinalMessage, setShowFinalMessage] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const getUserData = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
-    };
-    getUserData();
-  }, []);
-
-  useEffect(() => {
-    if (loading) {
-      const timer = setTimeout(() => {
-        setShowFinalMessage(true);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [loading]);
-
-  useEffect(() => {
-    if (showFinalMessage) {
-      const redirectTimer = setTimeout(() => {
-        navigate("/schematics");
-      }, 500);
-      return () => clearTimeout(redirectTimer);
-    }
-  }, [showFinalMessage, navigate]);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setFormData(prev => ({
-        ...prev,
-        uploadedImageFile: file,
-        uploadedImage: URL.createObjectURL(file)
-      }));
-    }
-  };
-
-  const handleSchematicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const fileExtension = file.name.split(".").pop()?.toLowerCase();
-      const isValidSchematic = fileExtension === "nbt";
-
-      setIsSchematicUploaded(isValidSchematic);
-      setIsSchematicError(!isValidSchematic);
-      
-      if (isValidSchematic) {
-        setFormData(prev => ({
-          ...prev,
-          uploadedSchematic: file
-        }));
-      }
-    }
-  };
-
-  const validateForm = (): string[] => {
-    const missingFields: string[] = [];
-    const requiredFields: Array<[keyof SchematicFormData, string]> = [
-      ["uploadedImageFile", "Image File"],
-      ["uploadedSchematic", "Schematic File"],
-      ["gameVersion", "Game Version"],
-      ["createVersion", "Create Version"],
-      ["loader", "Loader"],
-      ["description", "Description"],
-      ["title", "Title"]
+        // 1.21.x
+        "1.21", "1.21.1", "1.21.2"
     ];
+    const  LoggedUser  = useLoggedUser()
 
-    requiredFields.forEach(([field, label]) => {
-      if (!formData[field]) missingFields.push(label);
-    });
 
-    if (isSchematicError) missingFields.push("Valid Schematic File");
-    if (!user) missingFields.push("Login");
+    // Navigation entre les étapes
+    const nextStep = () => {
+        if (step < 4) {
+            setStep(step + 1);
+            setProgress(progress + 25);
+        }
+    };
+    const prevStep = () => {
+        if (step > 1) {
+            setStep(step - 1);
+            setProgress(progress - 25);
+        }
+    };
 
-    return missingFields;
-  };
+    // Vérification des champs requis avant validation finale
+    const validateAndUpload = () => {
+        if (!uploadedSchematic || !uploadedImage || !title || !description || gameVersions.length === 0 || createVersions.length === 0 || loaders.length === 0) {
+            console.log(uploadedSchematic, uploadedImage ,title, description, gameVersions, createVersions, loaders);
+            alert("Veuillez remplir tous les champs avant de soumettre.");
+            return;
+        }
+        setLoading(true);
+        handleSchematicUpload(uploadedSchematic, uploadedImage, title, description, LoggedUser)
+        setTimeout(() => {
+            setShowFinalMessage(true);
+        }, 3000);
+    };
+    async function handleSchematicUpload(
+        file: File,
+        image: File,
+        title: string,
+        description: string,
+        userdata: LoggedUserContextType
+    ) {
+        try {
+            // Upload file to bucket
+            const filePath = `files/${Date.now()}_${file.name}`;
+            const {
+                data: fileData,
+                error: fileError,
+            } = await supabase.storage
+                .from("schematics")
+                .upload(filePath, file);
+            console.log(fileData)
 
-  const handleUpload = async () => {
-    const missingFields = validateForm();
-    if (missingFields.length > 0) {
-      alert(`Please fill in the following fields: ${missingFields.join(", ")}`);
-      return;
+            if (fileError) {
+                console.log("FILE ERROR", fileError);
+            }
+
+            // Upload image to bucket
+            const imagePath = `images/${Date.now()}_${image.name}`;
+            const {
+                data: imageData,
+                error: imageError,
+            } = await supabase.storage
+                .from("schematics")
+                .upload(imagePath, image);
+            console.log(imageData)
+            if (imageError) {
+                console.log("IMAGE ERROR", imageError);
+            }
+
+            // Get public URLs
+            const fileUrl = supabase.storage
+                .from("schematics")
+                .getPublicUrl(filePath).data.publicUrl;
+            const imageUrl = supabase.storage
+                .from("schematics")
+                .getPublicUrl(imagePath).data.publicUrl;
+
+            // Insert metadata into the table
+            const {
+                data: blueprintData,
+                error: insertError,
+            } = await supabase.from("schematics").insert([
+                {
+                    title: title,
+                    description: description,
+                    schematic_url: fileUrl,
+                    image_url: imageUrl,
+                    authors: [userdata.user?.id] ,
+                    game_versions: gameVersions,
+                    create_versions: createVersions,
+                    modloaders: loaders,
+                },
+            ]);
+
+            if (insertError) {
+                console.error("Error insertig data:", insertError);
+                return; // Exit function instead of throwing
+            }
+
+            console.log("Blueprint uploaded successfully:", blueprintData);
+        } catch (error) {
+            console.error("Error uploading blueprint:", error);
+        }
     }
 
-    setLoading(true);
-    
-    try {
-      if (!formData.uploadedSchematic || !formData.uploadedImageFile) {
-        throw new Error("Missing required files");
-      }
-
-      // Upload schematic file
-      const filePath = `files/${Date.now()}_${formData.uploadedSchematic.name}`;
-      const { error: fileError } = await supabase.storage
-        .from("schematics")
-        .upload(filePath, formData.uploadedSchematic);
-
-      if (fileError) throw fileError;
-
-      // Upload image
-      const imagePath = `images/${Date.now()}_${formData.uploadedImageFile.name}`;
-      const { error: imageError } = await supabase.storage
-        .from("schematics")
-        .upload(imagePath, formData.uploadedImageFile);
-
-      if (imageError) throw imageError;
-
-      // Get public URLs
-      const fileUrl = supabase.storage
-        .from("schematics")
-        .getPublicUrl(filePath).data.publicUrl;
-      const imageUrl = supabase.storage
-        .from("schematics")
-        .getPublicUrl(imagePath).data.publicUrl;
-
-      // Insert metadata
-      const { error: insertError } = await supabase.from("schematics").insert([{
-        title: formData.title,
-        description: formData.description,
-        schematic_url: fileUrl,
-        image_url: imageUrl,
-        author: user?.user_metadata?.custom_claims?.global_name,
-        game_versions: formData.gameVersion,
-        create_versions: formData.createVersion,
-        modloader: formData.loader,
-      }]);
-
-      if (insertError) throw insertError;
-
-    } catch (error) {
-      console.error("Error uploading schematic:", error);
-      alert("Failed to upload schematic. Please try again.");
-      setLoading(false);
-      return;
+    // Affichage du message de fin
+    if (loading && !showFinalMessage) {
+        return (
+            <div className="loading">
+                <LoadingSpinner />
+                <h1>Your schematic is being uploaded!</h1>
+            </div>
+        );
     }
-  };
+    if (showFinalMessage) {
+        return (
+            <div className="final-message">
+                <LoadingSuccess />
+            </div>
+        );
+    }
 
-  if (loading && !showFinalMessage) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <LoadingSpinner />
-        <h1 className="text-2xl font-bold mt-4">Your schematic is being uploaded!</h1>
-        <p className="text-muted-foreground">Please wait...</p>
-      </div>
+        <div className="container">
+            <Card className="mt-8">
+                <CardHeader>
+                    <CardTitle className="text-center">Let's upload a schematic</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <Progress value={progress} className="mb-4" />
+
+                    {step === 1 && (
+                        <div className="container mx-auto p-4">
+                            <div className="flex flex-col items-center space-y-6">
+                                <div className="w-full max-w-lg">
+                                    <h2 className="text-center text-2xl font-semibold">Upload your schematic (.nbt)</h2>
+                                    <Input
+                                        type="file"
+                                        accept=".nbt"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) {
+                                                setUploadedSchematic(file);
+                                            } else {
+                                                setUploadedSchematic(null);
+                                            }
+                                        }}
+                                        className="w-full py-2 px-4 border border-gray-300 rounded-lg"
+                                    />
+                                    {uploadedSchematic && (
+                                        <div className="file-preview text-center mt-2">
+                                            <p className="text-gray-600">{uploadedSchematic.name}</p>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="w-full max-w-lg">
+                                    <h2 className="text-center text-2xl font-semibold">Upload an image</h2>
+                                    <Input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) {
+                                                setUploadedImage(file);
+                                                setUploadedImageUrl(URL.createObjectURL(file));
+                                            }
+                                        }}
+                                        className="w-full py-2 px-4 border border-gray-300 rounded-lg"
+                                    />
+                                    {uploadedImageUrl ? (
+                                        <div className="image-preview text-center mt-4">
+                                            <img
+                                                src={uploadedImageUrl}
+                                                alt="Uploaded preview"
+                                                className="max-w-full h-auto rounded-lg shadow-md"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="image-preview-placeholder text-center mt-4">
+                                            <p className="text-gray-500">No image selected</p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {step === 2 && (
+                        <>
+                            <h2 className="text-center">Title & Description</h2>
+                            <Input type="text" placeholder="Title" value={title}
+                                   onChange={(e) => setTitle(e.target.value)} className="mb-2 w-full p-2 border"/>
+                            <Textarea placeholder="Description" value={description}
+                                      onChange={(e) => setDescription(e.target.value)} className="w-full p-2 border"/>
+                        </>
+                    )}
+
+                    {step === 3 && (
+                        <>
+                            <h2 className="text-center">Game Versions</h2>
+                            <ToggleGroup variant="outline" type="multiple" value={gameVersions} onValueChange={setGameVersions} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 grid-flow-row-dense">
+                                {minecraftVersions.map((version, index) => (
+                                    <ToggleGroupItem  key={index} value={version} className="flex items-center space-x-2">
+                                        <Label>{version}</Label>
+                                    </ToggleGroupItem>
+                                ))}
+                            </ToggleGroup>
+
+                            <h3 className="mt-4">Create Mod Versions</h3>
+                            <ToggleGroup variant="outline" type="multiple" value={createVersions} onValueChange={setCreateVersions} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 grid-flow-row-dense">
+                                {["0.5", "0.4"].map((version, index) => (
+                                    <ToggleGroupItem key={index} value={version} className="flex items-center space-x-2">
+                                        <Label>{version}</Label>
+                                    </ToggleGroupItem>
+                                ))}
+                            </ToggleGroup>
+
+                            <h3 className="mt-4">Select Loaders</h3>
+                            <ToggleGroup variant="outline" type="multiple" value={loaders} onValueChange={setLoaders} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 grid-flow-row-dense">
+                                {["fabric", "forge", "quilt"].map((loader, index) => (
+                                    <ToggleGroupItem key={index} value={loader} className="flex items-center space-x-2">
+                                        <Label>{loader}</Label>
+                                    </ToggleGroupItem>
+                                ))}
+                            </ToggleGroup>
+                        </>
+                    )}
+
+                    {step === 4 && (
+                        <>
+                            <h2 className="text-center">Confirm and Upload</h2>
+                            <div className="flex items-center justify-center">
+                                <img src={uploadedImageUrl} alt="Preview"
+                                     className="w-1/4 items-center h-32 object-cover mt-2"/>
+                            </div>
+                            <p><strong>Title:</strong> {title}</p>
+                            <p><strong>Description:</strong> {description}</p>
+                            <p><strong>Game Versions:</strong> {gameVersions.join(", ")}</p>
+                            <p><strong>Create Versions:</strong> {createVersions.join(", ")}</p>
+                            <p><strong>Loaders:</strong> {loaders.join(", ")}</p>
+
+
+                        </>
+                    )}
+                </CardContent>
+
+                <CardFooter className="flex justify-end gap-2">
+                    {step > 1 && <Button onClick={prevStep}>Back</Button>}
+                    {step < 4 ? <Button onClick={nextStep}>Next</Button> : <Button onClick={validateAndUpload}>Upload</Button>}
+                </CardFooter>
+            </Card>
+        </div>
     );
-  }
-
-  if (showFinalMessage) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <LoadingSuccess />
-      </div>
-    );
-  }
-
-  return (
-    <div className="container max-w-4xl mx-auto px-4 py-8">
-      <CardHeader className="text-center">
-        <CardTitle className="text-3xl">Let's upload a schematic!</CardTitle>
-      </CardHeader>
-
-      <Card className="mt-8">
-        <CardContent className="space-y-6 p-6">
-          {/* Image Upload Section */}
-          <div className="space-y-4">
-            <img 
-              src={formData.uploadedImage} 
-              alt="Preview"
-              className="w-full max-h-96 object-contain rounded-lg border"
-            />
-            
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Upload a screenshot (1920x1080px)</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Suggestion: It should feature what is inside the schematic
-              </p>
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="cursor-pointer"
-              />
-            </div>
-          </div>
-
-          {/* Schematic Upload Section */}
-          <div className="space-y-2">
-            <Label htmlFor="schematic">Upload Schematic (.nbt)</Label>
-            <Input
-              id="schematic"
-              type="file"
-              accept=".nbt"
-              onChange={handleSchematicChange}
-              className="cursor-pointer"
-            />
-            {isSchematicError && (
-              <p className="text-destructive text-sm">Only .nbt files are allowed</p>
-            )}
-            {isSchematicUploaded && (
-              <p className="text-success text-sm">Schematic uploaded successfully!</p>
-            )}
-          </div>
-
-          {/* Author Section */}
-          <div>
-            <h3 className="text-lg font-semibold">
-              Schematic author: <span className="italic">{user?.user_metadata?.custom_claims?.global_name}</span>
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              Set automatically according to your account
-            </p>
-          </div>
-
-          {/* Title and Description */}
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="title">Title</Label>
-              <Input
-                id="title"
-                value={formData.title}
-                onChange={e => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                maxLength={100}
-                placeholder="Enter a title for your schematic"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                value={formData.description}
-                onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                placeholder="Tell others what is inside it"
-                className="min-h-[100px]"
-              />
-            </div>
-          </div>
-
-          {/* Version Selectors */}
-          <div className="space-y-6">
-            <div>
-              <Label>Minecraft Version</Label>
-              <RadioGroup
-                value={formData.gameVersion}
-                onValueChange={value => setFormData(prev => ({ ...prev, gameVersion: value }))}
-              >
-                {GAME_VERSIONS.map(version => (
-                  <div key={version} className="flex items-center space-x-2">
-                    <RadioGroupItem value={version} id={`mc-${version}`} />
-                    <Label htmlFor={`mc-${version}`}>{version}</Label>
-                  </div>
-                ))}
-              </RadioGroup>
-            </div>
-
-            <div>
-              <Label>Create Version</Label>
-              <RadioGroup
-                value={formData.createVersion}
-                onValueChange={value => setFormData(prev => ({ ...prev, createVersion: value }))}
-              >
-                {CREATE_VERSIONS.map(version => (
-                  <div key={version} className="flex items-center space-x-2">
-                    <RadioGroupItem value={version} id={`create-${version}`} />
-                    <Label htmlFor={`create-${version}`}>{version}</Label>
-                  </div>
-                ))}
-              </RadioGroup>
-            </div>
-
-            <div>
-              <Label>Mod Loader</Label>
-              <RadioGroup
-                value={formData.loader}
-                onValueChange={value => setFormData(prev => ({ ...prev, loader: value }))}
-              >
-                {LOADERS.map(loader => (
-                  <div key={loader} className="flex items-center space-x-2">
-                    <RadioGroupItem value={loader} id={`loader-${loader}`} />
-                    <Label htmlFor={`loader-${loader}`}>{loader}</Label>
-                  </div>
-                ))}
-              </RadioGroup>
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex justify-end space-x-4 pt-4">
-            <Button
-              variant="outline"
-              onClick={() => navigate("/schematics")}
-            >
-              Cancel
-            </Button>
-            <Button 
-              onClick={handleUpload}
-              disabled={loading}
-            >
-              Upload
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
 }
 
 export default SchematicsUpload;
