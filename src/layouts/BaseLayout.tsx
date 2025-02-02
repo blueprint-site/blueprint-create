@@ -11,11 +11,12 @@ const Layout = () => {
 
   return (
     <div className={`min-h-screen w-full bg-background text-foreground ${isDarkMode ? 'dark' : ''}`}>
-            <NavBar />
+      <NavBar />
 
       <main className="w-full pt-[64px]">
         <Outlet />
       </main>
+      
       <Footer />
       <RotatingCogwheel />
     </div>
