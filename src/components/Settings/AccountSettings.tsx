@@ -1,9 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { AlertCircle, UserCog } from "lucide-react";
+import { UserCog } from "lucide-react";
 
 export default function AccountSettings() {
-  const error = null;
-
   return (
     <div>
       <h2 className="text-2xl font-bold">Account security</h2>
@@ -36,13 +34,6 @@ export default function AccountSettings() {
           <Button variant="outline" disabled>Coming Soon</Button>
         </div>
       </section>
-
-      {error && (
-        <div className="flex items-center gap-2 text-destructive">
-          <AlertCircle className="w-4 h-4" />
-          <span>{error}</span>
-        </div>
-      )}
     </div>
   );
 }
