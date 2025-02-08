@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 
-import NavBar from "@/components/Layout/Navigation/Navigaton";
+import NavBar from "@/components/layout/Navigaton.tsx";
 
 import { useThemeStore } from "@/stores/themeStore";
 

@@ -1,5 +1,5 @@
 // src/stores/collectionStore.ts
-import Collections from '@/components/CollectionHandler';
+import Collections from '@/components/utility/CollectionHandler.tsx';
 import { create } from 'zustand';
 
 interface CollectionStore {

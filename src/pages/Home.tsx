@@ -1,13 +1,13 @@
-// src/pages/Home/Home.tsx
+// src/pages/home/home.tsx
 
 import { Skeleton } from "@/components/ui/skeleton"; // Assuming Shadcn Skeleton component is available
 import { Suspense, lazy } from "react";
 import { useTranslation } from "react-i18next";
 
-const AddonsSlideshow = lazy(() => import("@/components/Home/AddonsSlideshow"));
-const WhatIsBlueprint = lazy(() => import("@/components/Home/WhatIsBlueprint"));
-const UsefulLinks = lazy(() => import("@/components/Home/UsefulLinks"));
-const ForCreators = lazy(() => import("@/components/Home/ForCreators"));
+const AddonsSlideshow = lazy(() => import("@/components/features/home/AddonsSlideshow"));
+const WhatIsBlueprint = lazy(() => import("@/components/features/home/WhatIsBlueprint"));
+const UsefulLinks = lazy(() => import("@/components/features/home/UsefulLinks"));
+const ForCreators = lazy(() => import("@/components/features/home/ForCreators"));
 
 function Home() {
   const { t } = useTranslation();

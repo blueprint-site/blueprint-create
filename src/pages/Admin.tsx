@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {BarChart, LayoutDashboard, Users, Package, FileText, Files} from "lucide-react";
-import AdminAddonsTable from "@/components/admin/components/addons/AdminAddonsTable.tsx";
-import AddonStatsWrapper from "@/components/admin/components/stats/AddonStatsWrapper.tsx";
-import AdminUsersDisplay from "@/components/admin/components/users/AdminUsersDisplay.tsx";
-import AdminBlogDisplay from "@/components/admin/components/blog/AdminBlogDisplay.tsx";
-import AdminSchematicsDisplay from "@/components/admin/components/schematics/AdminSchematicsDisplay.tsx";
+import AdminAddonsTable from "@/components/features/admin/addons/AdminAddonsTable.tsx";
+import AddonStatsWrapper from "@/components/features/admin/stats/AddonStatsWrapper.tsx";
+import AdminUsersDisplay from "@/components/features/admin/users/AdminUsersDisplay.tsx";
+import AdminBlogDisplay from "@/components/features/admin/blog/AdminBlogDisplay.tsx";
+import AdminSchematicsDisplay from "@/components/features/admin/schematics/AdminSchematicsDisplay.tsx";
 
 
 const AdminPage = () => {

@@ -1,7 +1,7 @@
-import ColorsSection from "@/components/Design/Colors";
-import ComponentSection from "@/components/Design/Components";
-import IconSection from "@/components/Design/Icons";
-import TypographySection from "@/components/Design/Typography";
+import ColorsSection from "@/components/features/design/Colors";
+import ComponentSection from "@/components/features/design/Components";
+import IconSection from "@/components/features/design/Icons";
+import TypographySection from "@/components/features/design/Typography";
 import { Separator } from "@/components/ui/separator";
 
 const DesignSystem = () => {
