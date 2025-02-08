@@ -69,10 +69,10 @@ const IconSection = () => {
               {minecraftIcons.map((name) => (
                 <div
                   key={name}
-                  className="flex flex-col items-center justify-center w-16 h-16"
+                  className="flex flex-col items-center justify-center w-24 h-24"
                 >
                   <Button variant="ghost" size="icon">
-                    <MinecraftIcon name={name} />
+                    <MinecraftIcon name={name} size={32} />
                   </Button>
                   <div className="text-center text-[10px]">{name}</div>
                 </div>

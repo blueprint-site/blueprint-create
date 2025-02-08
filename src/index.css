@@ -119,22 +119,22 @@
     --popover-foreground: var(--foreground);
   
     --primary: 242 91% 75%;
-    --primary-foreground: var(--surface-foreground);
+    --primary-foreground: var(--semantic-foreground);
   
     --secondary: 246 100% 77%;
-    --secondary-foreground: var(--surface-foreground);
+    --secondary-foreground: var(--semantic-foreground);
     
     --accent: 265 44% 32%;
     --accent-foreground: 0 0% 98%;
   
     --success: 90 36% 38%;
-    --success-foreground: var(--surface-foreground);
+    --success-foreground: var(--semantic-foreground);
   
     --warning: 49 100% 38%;
-    --warning-foreground: var(--surface-foreground);
+    --warning-foreground: var(--semantic-foreground);
   
     --destructive: 3 57% 36%;
-    --destructive-foreground: var(--surface-foreground);
+    --destructive-foreground: var(--semantic-foreground);
   
     --muted: var(--surface-3);
     --muted-foreground: 0 0% 70%;

@@ -1,11 +1,10 @@
-import { lazy, useEffect } from "react";
+// src/pages/addons/ListPage.tsx
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import AddonList from "@/components/Addons/AddonList";
+import CollectionSidebar from "@/components/Addons/Collections";
 
-
-const AddonList = lazy(() => import("@/components/Addons/AddonList"));
-const CollectionSidebar = lazy(() => import("@/components/Addons/Collections"));
-
-export default function Addons() {
+export default function ListPage() {
   const location = useLocation();
 
   useEffect(() => {
