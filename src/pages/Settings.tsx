@@ -2,18 +2,18 @@ import { Lock, Monitor, User } from "lucide-react";
 import { Suspense, lazy } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { LoadingOverlay } from "@/components/LoadingOverlays/LoadingOverlay";
+import { LoadingOverlay } from "@/components/loading-overlays/LoadingOverlay";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 const DisplaySettings = lazy(
-  () => import("@/components/Settings/DisplaySettings")
+  () => import("@/components/features/settings/DisplaySettings")
 );
 const AccountSettings = lazy(
-  () => import("@/components/Settings/AccountSettings")
+  () => import("@/components/features/settings/AccountSettings")
 );
 const ProfileSettings = lazy(
-  () => import("@/components/Settings/ProfileSettings")
+  () => import("@/components/features/settings/ProfileSettings")
 );
 
 const SettingsPage = () => {

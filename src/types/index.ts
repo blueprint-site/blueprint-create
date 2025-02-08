@@ -39,7 +39,7 @@ export interface Addon {
   description: string, // Description of the addon
   slug: string, // Slug used for navigation in the url
   author: string, // Authors of the mod
-  categories: string[], // Categories of the addon exemple : ["Addons","Ores and Resources","Utility & QoL","Technology"]
+  categories: string[], // Categories of the addon exemple : ["addons","Ores and Resources","Utility & QoL","Technology"]
   downloads: number, // Number of downloads from modrinth
   icon: string, // Base64 encoded
   datecreated: Date, // Date of the creation of the record

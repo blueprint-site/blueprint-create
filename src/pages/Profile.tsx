@@ -4,7 +4,7 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { Download, User, Users } from "lucide-react";
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {LoggedUserContextType, useLoggedUser} from "@/context/users/logedUserContext.tsx";
+import {LoggedUserContextType, useLoggedUser} from "@/context/users/logedUserContext";
 
 
 

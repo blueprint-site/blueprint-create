@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useRef } from "react";
-import supabase from "@/components/utility/Supabase.tsx";
+import supabase from "@/components/utility/Supabase";
 import { User } from "@supabase/supabase-js";
 
 export interface LoggedUserContextType {

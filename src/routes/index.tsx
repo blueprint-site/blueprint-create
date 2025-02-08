@@ -17,8 +17,8 @@ import Terms from '@/pages/Terms';
 import SchematicLayout from '@/layouts/3DViewerLayout';
 import BaseLayout from '@/layouts/BaseLayout';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import AdminPanelLayout from "@/layouts/AdminPanelLayout.tsx";
-import {blogRoutes} from "@/routes/blogRoutes.tsx";
+import AdminPanelLayout from "@/layouts/AdminPanelLayout";
+import {blogRoutes} from "@/routes/blogRoutes";
 
 export const routes: RouteObject[] = [
   {

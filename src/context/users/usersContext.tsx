@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
-import supabase from "@/components/utility/Supabase.tsx";
+import supabase from "@/components/utility/Supabase";
 
 export interface Users {
     id: string;

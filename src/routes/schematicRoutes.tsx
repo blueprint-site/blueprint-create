@@ -1,12 +1,12 @@
 // src/routes/schematicRoutes.tsx
-import SchematicsPageLoadingOverlay from '@/components/LoadingOverlays/SchematicPageLoadingOverlay';
+import SchematicsPageLoadingOverlay from '@/components/loading-overlays/SchematicPageLoadingOverlay';
 import { lazy, Suspense } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-const SchematicsPage = lazy(() => import('@/pages/Schematics/Schematics'));
-const Schematic3DViewer = lazy(() => import('@/pages/Schematics/Schematic3DViewer/Schematic3DViewer'));
-const SchematicsUploadPage = lazy(() => import('@/pages/Schematics/SchematicsUpload/SchematicsUpload'));
-const SchematicExpanded = lazy(() => import('@/components/SchematicExpanded'));
+const SchematicsList = lazy(() => import('@/pages/schematics/SchematicsList'));
+const Schematic3DViewer = lazy(() => import('@/pages/schematics/3d-viewer/Schematic3DViewer'));
+const SchematicsUploadPage = lazy(() => import('@/pages/schematics/SchematicsUpload'));
+const SchematicDetails = lazy(() => import('@/pages/schematics/SchematicDetails'));
 
 const Schematics3DViewerWithLoading = () => (
   <Suspense fallback={<SchematicsPageLoadingOverlay />}>
@@ -18,10 +18,10 @@ export const schematicRoutes: RouteObject[] = [
   {
     path: 'schematics',
     children: [
-      { index: true, element: <SchematicsPage /> },
+      { index: true, element: <SchematicsList /> },
       { path: '3dviewer', element: <Schematics3DViewerWithLoading /> },
       { path: 'upload', element: <SchematicsUploadPage /> },
-      { path: ':id', element: <SchematicExpanded /> }
+      { path: ':id', element: <SchematicDetails /> }
     ]
   }
 ];

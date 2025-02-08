@@ -1,12 +1,12 @@
 // src/App.tsx
-import { LoadingOverlay } from '@/components/LoadingOverlays/LoadingOverlay';
+import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
 import '@/config/i18n';
 import { routes } from '@/routes/index';
 import { Suspense } from 'react';
 import { BrowserRouter, useRoutes } from 'react-router-dom';
 import { useEffect } from "react";
 import {useAppStore} from "@/stores/useAppStore.ts";
-import {LoggedUserProvider} from "@/context/users/logedUserContext.tsx";
+import {LoggedUserProvider} from "@/context/users/logedUserContext";
 
 
 const AppRoutes = () => {

@@ -1,5 +1,5 @@
-import { ContactLink } from "@/components/About/ContactLink";
-import { ContributorCard } from "@/components/About/ContributorCard";
+import { ContactLink } from "@/components/features/about/ContactLink";
+import { ContributorCard } from "@/components/features/about/ContributorCard";
 import DevinsBadges from "@/components/utility/DevinsBadges";
 import { ContributorStats, GitHubUser } from "@/types";
 import { useEffect, useState } from "react";
