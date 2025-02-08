@@ -4,21 +4,21 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card.tsx";
-import { Input } from "@/components/ui/input.tsx";
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select.tsx";
-import { Button } from "@/components/ui/button.tsx";
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import { Addon } from "@/types";
 import { Search } from "lucide-react";
 import { useMemo, useState, useEffect } from "react";
 import { useDebounce } from "use-debounce";
-import AddonListItem from "./AddonListItem.tsx";
+import AddonListItem from "./AddonListItem";
 import { useAppStore } from "@/stores/useAppStore.ts";
 
 const MODLOADER_OPTIONS = [

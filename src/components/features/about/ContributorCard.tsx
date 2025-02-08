@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
-import { Skeleton } from "@/components/ui/skeleton.tsx";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface ContributorStats {
   login: string;

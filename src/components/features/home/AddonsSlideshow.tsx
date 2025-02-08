@@ -1,14 +1,14 @@
 import Autoplay from "embla-carousel-autoplay";
 import { useEffect, useState } from "react";
 
-import { Button } from "@/components/ui/button.tsx";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.tsx";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   type CarouselApi,
-} from "@/components/ui/carousel.tsx";
+} from "@/components/ui/carousel";
 
 // Import your banner images here
 import Banner1 from "@/assets/banners/banner1.webp";
@@ -16,7 +16,7 @@ import Banner2 from "@/assets/banners/banner2.webp";
 import Banner3 from "@/assets/banners/banner3.webp";
 import Banner4 from "@/assets/banners/banner4.webp";
 import Banner5 from "@/assets/banners/banner5.webp";
-import MinecraftIcon from "../../utility/MinecraftIcon.tsx";
+import MinecraftIcon from "../../utility/MinecraftIcon";
 
 const AddonsCarousel = () => {
   const [api, setApi] = useState<CarouselApi>();

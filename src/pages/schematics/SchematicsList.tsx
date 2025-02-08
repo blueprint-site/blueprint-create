@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PostgrestResponse } from "@supabase/supabase-js";
 
-import supabase from "@/components/utility/Supabase.tsx";
-import { LoadingSpinner } from "@/components/loading-overlays/LoadingSpinner.tsx";
+import supabase from "@/components/utility/Supabase";
+import { LoadingSpinner } from "@/components/loading-overlays/LoadingSpinner";
 import { Schematic } from "@/types";
 
-import SchematicSearchCard from "@/components/features/schematics/SchematicSearchCard.tsx";
-import SchematicCard from "@/components/features/schematics/SchematicCard.tsx";
+import SchematicSearchCard from "@/components/features/schematics/SchematicSearchCard";
+import SchematicCard from "@/components/features/schematics/SchematicCard";
 
 function SchematicsList() {
   const [schematics, setSchematics] = useState<Schematic[]>([]);

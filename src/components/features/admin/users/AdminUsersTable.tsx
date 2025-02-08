@@ -6,12 +6,12 @@ import {
     DropdownMenuContent, DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu.tsx";
-import {Button} from "@/components/ui/button.tsx";
+} from "@/components/ui/dropdown-menu";
+import {Button} from "@/components/ui/button";
 import {ArrowUpDown, MoreHorizontal} from "lucide-react";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
-import {Users, useUsers} from "@/context/users/usersContext.tsx";
-import {AdminUsersDataTable} from "@/components/tables/users/Admin-users-data-table.tsx";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {Users, useUsers} from "@/context/users/usersContext";
+import {AdminUsersDataTable} from "@/components/tables/users/Admin-users-data-table";
 
 
 const AdminUsersTable =  () => {

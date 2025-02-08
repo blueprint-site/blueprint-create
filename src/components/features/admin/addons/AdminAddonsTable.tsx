@@ -6,12 +6,12 @@ import {
     DropdownMenuContent, DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu.tsx";
-import {Button} from "@/components/ui/button.tsx";
+} from "@/components/ui/dropdown-menu";
+import {Button} from "@/components/ui/button";
 import {ArrowUpDown, MoreHorizontal} from "lucide-react";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
-import supabase from "@/components/utility/Supabase.tsx";
-import {DataTable} from "@/components/tables/addonChecks/data-table.tsx";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import supabase from "@/components/utility/Supabase";
+import {DataTable} from "@/components/tables/addonChecks/data-table";
 
 
 const AdminAddonsTable =  () => {

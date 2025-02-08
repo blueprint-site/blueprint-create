@@ -5,17 +5,17 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@/components/ui/avatar.tsx";
+} from "@/components/ui/avatar";
 import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu.tsx";
-import supabase from "@/components/utility/Supabase.tsx";
-import ThemeToggle from "@/components/utility/ThemeToggle.tsx";
-import { useLoggedUser} from "@/context/users/logedUserContext.tsx";
+} from "@/components/ui/navigation-menu";
+import supabase from "@/components/utility/Supabase";
+import ThemeToggle from "@/components/utility/ThemeToggle";
+import { useLoggedUser} from "@/context/users/logedUserContext";
 
 interface UserMenuProps {
   user: {

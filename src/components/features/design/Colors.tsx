@@ -2,7 +2,7 @@ import {
   Card,
   CardContent,
   CardHeader
-} from "@/components/ui/card.tsx";
+} from "@/components/ui/card";
 
 const ColorsSection = () => {
   const colorSystem = {

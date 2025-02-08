@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { MeshStandardMaterial, RepeatWrapping } from "three";
-import { getMaterialsForBlocks } from "../Textures/textureLoader.tsx";
+import { getMaterialsForBlocks } from "../Textures/textureLoader";
 
 export function Ground() {
   const [material, setMaterial] = useState<MeshStandardMaterial | null>(null);

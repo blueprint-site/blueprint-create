@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import {AddonsContext} from "@/context/addons/addonsContext.tsx";
+import {AddonsContext} from "@/context/addons/addonsContext";
 
 
 export const useAddons = () => {

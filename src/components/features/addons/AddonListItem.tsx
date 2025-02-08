@@ -3,9 +3,9 @@ import { memo } from "react";
 
 import { useCollectionStore } from "@/stores/collectionStore.ts";
 import { Addon } from "@/types";
-import {Card, CardContent, CardFooter, CardHeader} from "@/components/ui/card.tsx";
-import {Badge} from "@/components/ui/badge.tsx";
-import {Button} from "@/components/ui/button.tsx";
+import {Card, CardContent, CardFooter, CardHeader} from "@/components/ui/card";
+import {Badge} from "@/components/ui/badge";
+import {Button} from "@/components/ui/button";
 
 
 interface AddonListItemProps {

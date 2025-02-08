@@ -1,14 +1,14 @@
 // src/components/ForCreators.tsx
-import { Button } from "@/components/ui/button.tsx";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card.tsx";
+} from "@/components/ui/card";
 import { Mail } from "lucide-react";
-import DevinsBadges from "../../utility/DevinsBadges.tsx";
+import DevinsBadges from "../../utility/DevinsBadges";
 
 const ForCreators = () => {
   return (

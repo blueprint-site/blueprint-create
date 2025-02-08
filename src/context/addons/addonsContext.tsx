@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useEffect, useState, useCallback } from "react";
-import supabase from "@/components/utility/Supabase.tsx";
+import supabase from "@/components/utility/Supabase";
 import { Addon } from "@/types";
 
 type AddonsContextType = {

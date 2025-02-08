@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
 
-import RotatingCogwheel from "@/components/common/Cogwheel.tsx";
+import RotatingCogwheel from "@/components/common/Cogwheel";
 import Footer from "@/components/layout/Footer";
-import NavBar from "@/components/layout/Navigaton.tsx";
+import NavBar from "@/components/layout/Navigaton";
 
 import { useThemeStore } from "@/stores/themeStore";
 

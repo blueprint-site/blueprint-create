@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button.tsx";
-import { Card, CardContent } from "@/components/ui/card.tsx";
-import { Skeleton } from "@/components/ui/skeleton.tsx";
-import DevinsBadges from "@/components/utility/DevinsBadges.tsx";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import DevinsBadges from "@/components/utility/DevinsBadges";
 import {Addon} from "@/types";
 import {useAppStore} from "@/stores/useAppStore.ts";
 

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { BoxGeometry, InstancedMesh, Object3D, Material } from "three";
-import { getMaterialsForBlocks } from "../Textures/textureLoader.tsx";
+import { getMaterialsForBlocks } from "../Textures/textureLoader";
 
 interface TrapdoorState {
   position: "top" | "bottom" | "open";

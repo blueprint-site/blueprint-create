@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Download } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button.tsx";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,9 +8,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card.tsx";
-import { Badge } from "@/components/ui/badge.tsx";
-import ModLoaderDisplay from "@/components/common/ModLoaderDisplay.tsx";
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import ModLoaderDisplay from "@/components/common/ModLoaderDisplay";
 import { Schematic } from "@/types";
 
 interface SchematicCardProps {

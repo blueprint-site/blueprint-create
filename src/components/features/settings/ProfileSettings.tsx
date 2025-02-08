@@ -1,12 +1,12 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { Label } from "@/components/ui/label.tsx";
-import { Textarea } from "@/components/ui/textarea.tsx";
-import supabase from "@/components/utility/Supabase.tsx";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import supabase from "@/components/utility/Supabase";
 import { Upload, User2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { LoggedUserContextType, useLoggedUser } from "@/context/users/logedUserContext.tsx";
+import { LoggedUserContextType, useLoggedUser } from "@/context/users/logedUserContext";
 
 export default function ProfileSettings() {
   const [isLoading, setIsLoading] = useState(false);

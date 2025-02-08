@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button.tsx";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card.tsx";
-import { Label } from "@/components/ui/label.tsx";
-import { LoadingSpinner } from "@/components/loading-overlays/LoadingSpinner.tsx";
-import { LoadingSuccess } from "@/components/loading-overlays/LoadingSuccess.tsx";
-import { Progress } from "@/components/ui/progress.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { Textarea } from "@/components/ui/textarea.tsx";
-import supabase from "@/components/utility/Supabase.tsx";
-import {LoggedUserContextType, useLoggedUser} from "@/context/users/logedUserContext.tsx";
-import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group.tsx";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { LoadingSpinner } from "@/components/loading-overlays/LoadingSpinner";
+import { LoadingSuccess } from "@/components/loading-overlays/LoadingSuccess";
+import { Progress } from "@/components/ui/progress";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import supabase from "@/components/utility/Supabase";
+import {LoggedUserContextType, useLoggedUser} from "@/context/users/logedUserContext";
+import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group";
 
 function SchematicsUpload() {
     const [step, setStep] = useState(1);

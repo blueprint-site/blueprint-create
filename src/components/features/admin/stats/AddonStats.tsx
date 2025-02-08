@@ -1,7 +1,7 @@
 
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {CheckCircle} from "lucide-react";
-import {LoadingSpinner} from "@/components/loading-overlays/LoadingSpinner.tsx";
+import {LoadingSpinner} from "@/components/loading-overlays/LoadingSpinner";
 import {useAddons} from "@/hooks/useAddons.ts";
 
 

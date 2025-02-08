@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 import { Card, Form } from "react-bootstrap";
-import { useSchematic } from "../hooks/useSchematic.tsx";
+import { useSchematic } from "../hooks/useSchematic";
 
 export function SchematicLoader({ className }: { className: string }) {
   const { setFile, loading } = useSchematic();

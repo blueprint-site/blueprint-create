@@ -1,8 +1,8 @@
-import { Badge } from "@/components/ui/badge.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import { Card, CardContent, CardHeader } from "@/components/ui/card.tsx";
-import { Skeleton } from "@/components/ui/skeleton.tsx";
-import DevinsBadges from "@/components/utility/DevinsBadges.tsx";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import DevinsBadges from "@/components/utility/DevinsBadges";
 import DOMPurify from "dompurify";
 import { ChevronLeft, ChevronRight, Download, Heart } from "lucide-react";
 import { marked } from "marked";

@@ -7,7 +7,7 @@ import WikiLogo from "@/assets/sprite-icons/brass_ingot.webp";
 import {
   Card,
   CardContent
-} from "@/components/ui/card.tsx";
+} from "@/components/ui/card";
 
 const UsefulLinks = () => {
   const { t } = useTranslation();

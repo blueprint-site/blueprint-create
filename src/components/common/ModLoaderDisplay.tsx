@@ -1,4 +1,4 @@
-import DevinsBadges from "@/components/utility/DevinsBadges.tsx";
+import DevinsBadges from "@/components/utility/DevinsBadges";
 
 
 const ModLoaderDisplay = ({ loaders = [] }: { loaders: string[] }) => {

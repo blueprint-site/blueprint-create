@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import { Search, Upload, View } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button.tsx";
-import { Input } from "@/components/ui/input.tsx";
+import { buttonVariants } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card.tsx";
+} from "@/components/ui/card";
 
 interface SchematicSearchCardProps {
   searchQuery: string;

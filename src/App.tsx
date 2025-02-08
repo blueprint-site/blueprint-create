@@ -6,7 +6,7 @@ import { Suspense } from 'react';
 import { BrowserRouter, useRoutes } from 'react-router-dom';
 import { useEffect } from "react";
 import {useAppStore} from "@/stores/useAppStore.ts";
-import {LoggedUserProvider} from "@/context/users/logedUserContext.tsx";
+import {LoggedUserProvider} from "@/context/users/logedUserContext";
 
 
 const AppRoutes = () => {

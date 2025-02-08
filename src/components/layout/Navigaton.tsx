@@ -2,27 +2,27 @@ import { Menu } from "lucide-react";
 import {useEffect, useState} from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import NavItem from "@/components/layout/NavItem.tsx";
-import UserMenu from "@/components/layout/UserMenu.tsx";
+import NavItem from "@/components/layout/NavItem";
+import UserMenu from "@/components/layout/UserMenu";
 
-import { Button } from "@/components/ui/button.tsx";
+import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu.tsx";
+} from "@/components/ui/navigation-menu";
 
-import ThemeToggle from "@/components/utility/ThemeToggle.tsx";
+import ThemeToggle from "@/components/utility/ThemeToggle";
 
 import BlueprintLogo from "@/assets/logo.webp";
 import Blog from "@/assets/sprite-icons/clipboard_and_quill.png";
 import AboutIcon from "@/assets/sprite-icons/crafting_blueprint.png";
 import AddonIcon from "@/assets/sprite-icons/minecart_coupling.webp";
 import SchematicIcon from "@/assets/sprite-icons/schematic.webp";
-import { useIsMobile } from "@/hooks/useBreakpoints.tsx";
-import {useLoggedUser} from "@/context/users/logedUserContext.tsx";
+import { useIsMobile } from "@/hooks/useBreakpoints";
+import {useLoggedUser} from "@/context/users/logedUserContext";
 
 
 interface NavigationProps {

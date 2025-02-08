@@ -5,8 +5,8 @@ import { RouteObject } from 'react-router-dom';
 
 const SchematicsList = lazy(() => import('@/pages/schematics/SchematicsList'));
 const Schematic3DViewer = lazy(() => import('@/pages/schematics/3d-viewer/Schematic3DViewer'));
-const SchematicsUploadPage = lazy(() => import('@/pages/schematics/SchematicsUpload.tsx'));
-const SchematicDetails = lazy(() => import('@/pages/schematics/SchematicDetails.tsx'));
+const SchematicsUploadPage = lazy(() => import('@/pages/schematics/SchematicsUpload'));
+const SchematicDetails = lazy(() => import('@/pages/schematics/SchematicDetails'));
 
 const Schematics3DViewerWithLoading = () => (
   <Suspense fallback={<SchematicsPageLoadingOverlay />}>

@@ -1,4 +1,4 @@
-import SchematicsUpload from "@/components/features/schematics/SchematicsUpload.tsx";
+import SchematicsUpload from "@/components/features/schematics/SchematicsUpload";
 function SchematicsUploadPage() {
   return (
     <SchematicsUpload />

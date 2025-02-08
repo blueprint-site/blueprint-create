@@ -1,5 +1,5 @@
-import AdminUsersTable from "@/components/features/admin/users/AdminUsersTable.tsx";
-import {UsersProvider} from "@/context/users/usersContext.tsx";
+import AdminUsersTable from "@/components/features/admin/users/AdminUsersTable";
+import {UsersProvider} from "@/context/users/usersContext";
 
 const AdminUsersDisplay = () => {
 return (

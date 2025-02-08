@@ -1,7 +1,7 @@
-import { useUsers } from "@/context/users/usersContext.tsx";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import { useUsers } from "@/context/users/usersContext";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {CheckCircle} from "lucide-react";
-import {LoadingSpinner} from "@/components/loading-overlays/LoadingSpinner.tsx";
+import {LoadingSpinner} from "@/components/loading-overlays/LoadingSpinner";
 
 
 export const UsersStatsDisplayRegistered = () => {

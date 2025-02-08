@@ -1,9 +1,9 @@
 import * as lucide from "lucide-react";
 
-import MinecraftIcon from "@/components/utility/MinecraftIcon.tsx";
+import MinecraftIcon from "@/components/utility/MinecraftIcon";
 import { minecraftIcons } from "@/data/minecraftIcons.ts";
-import { Button } from "../../ui/button.tsx";
-import { Card, CardContent } from "../../ui/card.tsx";
+import { Button } from "../../ui/button";
+import { Card, CardContent } from "../../ui/card";
 
 const lucideIcons = [
   { icon: lucide.AlertCircle, name: "AlertCircle" },

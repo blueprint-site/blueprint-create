@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button.tsx";
+import { Button } from "@/components/ui/button";
 import { UserCog } from "lucide-react";
 
 export default function AccountSettings() {

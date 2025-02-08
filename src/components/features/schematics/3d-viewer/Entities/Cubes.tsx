@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
 
 import { useSchematicStore } from "../store/schematic.ts";
-import { Cube } from "./Cube.tsx";
+import { Cube } from "./Cube";
 
 export function Cubes() {
   const { schematic } = useSchematicStore();

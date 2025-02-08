@@ -1,5 +1,5 @@
 import { BoxGeometry, InstancedMesh, Object3D, MeshStandardMaterial } from "three";
-import { getMaterialsForBlocks } from "../Textures/textureLoader.tsx";
+import { getMaterialsForBlocks } from "../Textures/textureLoader";
 import { useEffect, useRef, useState } from "react";
 
 const box = new BoxGeometry();

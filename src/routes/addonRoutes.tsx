@@ -1,8 +1,8 @@
 // src/routes/addonRoutes.tsx
 import { RouteObject } from 'react-router-dom';
 import ListPage from '@/pages/addons/AddonListPage'
-import DetailPage from '@/pages/addons/AddonDetailsPage.tsx'
-import RandomAddon from "@/components/features/addons/RandomAddon.tsx";
+import DetailPage from '@/pages/addons/AddonDetailsPage'
+import RandomAddon from "@/components/features/addons/RandomAddon";
 
 
 export const addonRoutes: RouteObject[] = [

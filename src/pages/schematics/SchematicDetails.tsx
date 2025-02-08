@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card.tsx";
-import { Button } from "@/components/ui/button.tsx";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Download, Share } from "lucide-react";
-import ModLoaderDisplay from "@/components/common/ModLoaderDisplay.tsx";
-import VersionsDisplay from "@/components/common/VersionsDisplay.tsx";
-import ShematicCategoriesDisplay from "@/components/common/shematicCategoriesDisplay.tsx";
-import supabase from "../../components/utility/Supabase.tsx";
+import ModLoaderDisplay from "@/components/common/ModLoaderDisplay";
+import VersionsDisplay from "@/components/common/VersionsDisplay";
+import ShematicCategoriesDisplay from "@/components/common/shematicCategoriesDisplay";
+import supabase from "../../components/utility/Supabase";
 import { Schematic } from "@/types";
 
 const SchematicDetails = () => {
