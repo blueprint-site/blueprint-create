@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { LoadingSpinner } from "@/components/loading-overlays/LoadingSpinner";
 import { LoadingSuccess } from "@/components/loading-overlays/LoadingSuccess";
@@ -8,7 +14,10 @@ import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import supabase from "@/components/utility/Supabase";
-import { LoggedUserContextType, useLoggedUser } from "@/context/users/logedUserContext";
+import {
+    LoggedUserContextType,
+    useLoggedUser
+} from "@/context/users/logedUserContext";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { redirect } from "react-router-dom";
 
@@ -16,7 +25,9 @@ function SchematicsUpload() {
     const [step, setStep] = useState(1);
     const [progress, setProgress] = useState(0);
     const [uploadedImage, setUploadedImage] = useState<File | null>(null);
-    const [uploadedSchematic, setUploadedSchematic] = useState<File | null>(null);
+    const [uploadedSchematic, setUploadedSchematic] = useState<File | null>(
+        null
+    );
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [gameVersions, setGameVersions] = useState<string[]>([]);
@@ -26,20 +37,26 @@ function SchematicsUpload() {
     const [showFinalMessage, setShowFinalMessage] = useState<boolean>(false);
     const [uploadedImageUrl, setUploadedImageUrl] = useState<string>();
     const minecraftVersions = [
-
         // 1.19.x
-        "1.19.1", "1.19.2",
+        "1.19.1",
+        "1.19.2",
 
         // 1.20.x
-        "1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
 
         // 1.21.x
-        "1.21", "1.21.1", "1.21.2"
+        "1.21",
+        "1.21.1",
+        "1.21.2"
     ];
-    const LoggedUser = useLoggedUser()
+    const LoggedUser = useLoggedUser();
 
     function slugify(title: string): string {
-        return title.toLowerCase().replace(/\W+/g, '-');
+        return title.toLowerCase().replace(/\W+/g, "-");
     }
 
     // Navigation entre les étapes
@@ -58,13 +75,35 @@ function SchematicsUpload() {
 
     // Vérification des champs requis avant validation finale
     const validateAndUpload = () => {
-        if (!uploadedSchematic || !uploadedImage || !title || !description || gameVersions.length === 0 || createVersions.length === 0 || loaders.length === 0) {
-            console.log(uploadedSchematic, uploadedImage, title, description, gameVersions, createVersions, loaders);
+        if (
+            !uploadedSchematic ||
+            !uploadedImage ||
+            !title ||
+            !description ||
+            gameVersions.length === 0 ||
+            createVersions.length === 0 ||
+            loaders.length === 0
+        ) {
+            console.log(
+                uploadedSchematic,
+                uploadedImage,
+                title,
+                description,
+                gameVersions,
+                createVersions,
+                loaders
+            );
             alert("Veuillez remplir tous les champs avant de soumettre.");
             return;
         }
         setLoading(true);
-        handleSchematicUpload(uploadedSchematic, uploadedImage, title, description, LoggedUser)
+        handleSchematicUpload(
+            uploadedSchematic,
+            uploadedImage,
+            title,
+            description,
+            LoggedUser
+        );
         setTimeout(() => {
             setShowFinalMessage(true);
         }, 3000);
@@ -78,29 +117,54 @@ function SchematicsUpload() {
     ) {
         try {
             // Upload file to bucket
-            const filePath = `files/${slugify(title)}`;
-            console.log(`files/${slugify(title)}`)
-            const {
-                data: fileData,
-                error: fileError,
-            } = await supabase.storage
-                .from("schematics")
-                .upload(filePath, file);
-            console.log(fileData)
+            let filePath = `files/${slugify(title)}`;
+            console.log(filePath);
+            let counter = 0;
 
-            if (fileError) {
-                console.log("FILE ERROR", fileError);
+            try {
+                let { data: fileData, error: fileError } =
+                    await supabase.storage
+                        .from("schematics")
+                        .upload(filePath, file);
+
+                console.log(fileData);
+
+                if (fileError) throw fileError; // Ensure error handling runs
+            } catch (fileError) {
+                if (fileError.statusCode === 409) {
+                    console.log(
+                        "[Im fixing myself] Slug already exists, trying again"
+                    );
+
+                    counter += 1;
+                    filePath = `files/${slugify(title)}-${counter}`;
+
+                    // Retry upload with the new filePath
+                    const { data: retryData, error: retryError } =
+                        await supabase.storage
+                            .from("schematics")
+                            .upload(filePath, file);
+
+                    if (retryError) {
+                        console.log("FILE ERROR after retry:", retryError);
+                    } else {
+                        console.log(
+                            "Upload successful after retry:",
+                            retryData
+                        );
+                    }
+                } else {
+                    console.log("FILE ERROR:", fileError);
+                }
             }
 
             // Upload image to bucket
             const imagePath = `images/${Date.now()}_${image.name}`;
-            const {
-                data: imageData,
-                error: imageError,
-            } = await supabase.storage
-                .from("schematics")
-                .upload(imagePath, image);
-            console.log(imageData)
+            const { data: imageData, error: imageError } =
+                await supabase.storage
+                    .from("schematics")
+                    .upload(imagePath, image);
+            console.log(imageData);
             if (imageError) {
                 console.log("IMAGE ERROR", imageError);
             }
@@ -114,25 +178,24 @@ function SchematicsUpload() {
                 .getPublicUrl(imagePath).data.publicUrl;
 
             // Insert metadata into the table
-            const {
-                data: blueprintData,
-                error: insertError,
-            } = await supabase.from("schematics").insert([
-                {
-                    title: title,
-                    description: description,
-                    schematic_url: fileUrl,
-                    image_url: imageUrl,
-                    authors: [userdata.user?.id],
-                    game_versions: gameVersions,
-                    create_versions: createVersions,
-                    modloaders: loaders,
-                    slug: slugify(title)
-                },
-            ]);
+            const { data: blueprintData, error: insertError } = await supabase
+                .from("schematics")
+                .insert([
+                    {
+                        title: title,
+                        description: description,
+                        schematic_url: fileUrl,
+                        image_url: imageUrl,
+                        authors: [userdata.user?.id],
+                        game_versions: gameVersions,
+                        create_versions: createVersions,
+                        modloaders: loaders,
+                        slug: slugify(title)
+                    }
+                ]);
 
             if (insertError) {
-                console.error("Error insertig data:", insertError);
+                console.error("Error inserting data:", insertError);
                 return; // Exit function instead of throwing
             }
 
@@ -153,8 +216,8 @@ function SchematicsUpload() {
     }
     if (showFinalMessage) {
         setTimeout(() => {
-            redirect("/schematics")
-        }, 2000)
+            redirect("/schematics");
+        }, 2000);
         return (
             <div className="final-message">
                 <LoadingSuccess />
@@ -166,7 +229,9 @@ function SchematicsUpload() {
         <div className="container">
             <Card className="mt-8">
                 <CardHeader>
-                    <CardTitle className="text-center">Let's upload a schematic</CardTitle>
+                    <CardTitle className="text-center">
+                        Let's upload a schematic
+                    </CardTitle>
                 </CardHeader>
                 <CardContent>
                     <Progress value={progress} className="mb-4" />
@@ -175,11 +240,13 @@ function SchematicsUpload() {
                         <div className="container mx-auto p-4">
                             <div className="flex flex-col items-center space-y-6">
                                 <div className="w-full max-w-lg">
-                                    <h2 className="text-center text-2xl font-semibold">Upload your schematic (.nbt)</h2>
+                                    <h2 className="text-center text-2xl font-semibold">
+                                        Upload your schematic (.nbt)
+                                    </h2>
                                     <Input
                                         type="file"
                                         accept=".nbt"
-                                        onChange={(e) => {
+                                        onChange={e => {
                                             const file = e.target.files?.[0];
                                             if (file) {
                                                 setUploadedSchematic(file);
@@ -191,21 +258,27 @@ function SchematicsUpload() {
                                     />
                                     {uploadedSchematic && (
                                         <div className="file-preview text-center mt-2">
-                                            <p className="text-gray-600">{uploadedSchematic.name}</p>
+                                            <p className="text-gray-600">
+                                                {uploadedSchematic.name}
+                                            </p>
                                         </div>
                                     )}
                                 </div>
 
                                 <div className="w-full max-w-lg">
-                                    <h2 className="text-center text-2xl font-semibold">Upload an image</h2>
+                                    <h2 className="text-center text-2xl font-semibold">
+                                        Upload an image
+                                    </h2>
                                     <Input
                                         type="file"
                                         accept="image/*"
-                                        onChange={(e) => {
+                                        onChange={e => {
                                             const file = e.target.files?.[0];
                                             if (file) {
                                                 setUploadedImage(file);
-                                                setUploadedImageUrl(URL.createObjectURL(file));
+                                                setUploadedImageUrl(
+                                                    URL.createObjectURL(file)
+                                                );
                                             }
                                         }}
                                         className="w-full py-2 px-4 border border-gray-300 rounded-lg"
@@ -220,7 +293,9 @@ function SchematicsUpload() {
                                         </div>
                                     ) : (
                                         <div className="image-preview-placeholder text-center mt-4">
-                                            <p className="text-gray-500">No image selected</p>
+                                            <p className="text-gray-500">
+                                                No image selected
+                                            </p>
                                         </div>
                                     )}
                                 </div>
@@ -231,40 +306,81 @@ function SchematicsUpload() {
                     {step === 2 && (
                         <>
                             <h2 className="text-center">Title & Description</h2>
-                            <Input type="text" placeholder="Title" value={title}
-                                onChange={(e) => setTitle(e.target.value)} className="mb-2 w-full p-2 border" />
-                            <Textarea placeholder="Description" value={description}
-                                onChange={(e) => setDescription(e.target.value)} className="w-full p-2 border" />
+                            <Input
+                                type="text"
+                                placeholder="Title"
+                                value={title}
+                                onChange={e => setTitle(e.target.value)}
+                                className="mb-2 w-full p-2 border"
+                            />
+                            <Textarea
+                                placeholder="Description"
+                                value={description}
+                                onChange={e => setDescription(e.target.value)}
+                                className="w-full p-2 border"
+                            />
                         </>
                     )}
 
                     {step === 3 && (
                         <>
                             <h2 className="text-center">Game Versions</h2>
-                            <ToggleGroup variant="outline" type="multiple" value={gameVersions} onValueChange={setGameVersions} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 grid-flow-row-dense">
+                            <ToggleGroup
+                                variant="outline"
+                                type="multiple"
+                                value={gameVersions}
+                                onValueChange={setGameVersions}
+                                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 grid-flow-row-dense"
+                            >
                                 {minecraftVersions.map((version, index) => (
-                                    <ToggleGroupItem key={index} value={version} className="flex items-center space-x-2">
+                                    <ToggleGroupItem
+                                        key={index}
+                                        value={version}
+                                        className="flex items-center space-x-2"
+                                    >
                                         <Label>{version}</Label>
                                     </ToggleGroupItem>
                                 ))}
                             </ToggleGroup>
 
                             <h3 className="mt-4">Create Mod Versions</h3>
-                            <ToggleGroup variant="outline" type="multiple" value={createVersions} onValueChange={setCreateVersions} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 grid-flow-row-dense">
+                            <ToggleGroup
+                                variant="outline"
+                                type="multiple"
+                                value={createVersions}
+                                onValueChange={setCreateVersions}
+                                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 grid-flow-row-dense"
+                            >
                                 {["0.5", "0.4"].map((version, index) => (
-                                    <ToggleGroupItem key={index} value={version} className="flex items-center space-x-2">
+                                    <ToggleGroupItem
+                                        key={index}
+                                        value={version}
+                                        className="flex items-center space-x-2"
+                                    >
                                         <Label>{version}</Label>
                                     </ToggleGroupItem>
                                 ))}
                             </ToggleGroup>
 
                             <h3 className="mt-4">Select Loaders</h3>
-                            <ToggleGroup variant="outline" type="multiple" value={loaders} onValueChange={setLoaders} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 grid-flow-row-dense">
-                                {["fabric", "forge", "quilt"].map((loader, index) => (
-                                    <ToggleGroupItem key={index} value={loader} className="flex items-center space-x-2">
-                                        <Label>{loader}</Label>
-                                    </ToggleGroupItem>
-                                ))}
+                            <ToggleGroup
+                                variant="outline"
+                                type="multiple"
+                                value={loaders}
+                                onValueChange={setLoaders}
+                                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 grid-flow-row-dense"
+                            >
+                                {["fabric", "forge", "quilt"].map(
+                                    (loader, index) => (
+                                        <ToggleGroupItem
+                                            key={index}
+                                            value={loader}
+                                            className="flex items-center space-x-2"
+                                        >
+                                            <Label>{loader}</Label>
+                                        </ToggleGroupItem>
+                                    )
+                                )}
                             </ToggleGroup>
                         </>
                     )}
@@ -273,23 +389,40 @@ function SchematicsUpload() {
                         <>
                             <h2 className="text-center">Confirm and Upload</h2>
                             <div className="flex items-center justify-center">
-                                <img src={uploadedImageUrl} alt="Preview"
-                                    className="w-1/4 items-center h-32 object-cover mt-2" />
+                                <img
+                                    src={uploadedImageUrl}
+                                    alt="Preview"
+                                    className="w-1/4 items-center h-32 object-cover mt-2"
+                                />
                             </div>
-                            <p><strong>Title:</strong> {title}</p>
-                            <p><strong>Description:</strong> {description}</p>
-                            <p><strong>Game Versions:</strong> {gameVersions.join(", ")}</p>
-                            <p><strong>Create Versions:</strong> {createVersions.join(", ")}</p>
-                            <p><strong>Loaders:</strong> {loaders.join(", ")}</p>
-
-
+                            <p>
+                                <strong>Title:</strong> {title}
+                            </p>
+                            <p>
+                                <strong>Description:</strong> {description}
+                            </p>
+                            <p>
+                                <strong>Game Versions:</strong>{" "}
+                                {gameVersions.join(", ")}
+                            </p>
+                            <p>
+                                <strong>Create Versions:</strong>{" "}
+                                {createVersions.join(", ")}
+                            </p>
+                            <p>
+                                <strong>Loaders:</strong> {loaders.join(", ")}
+                            </p>
                         </>
                     )}
                 </CardContent>
 
                 <CardFooter className="flex justify-end gap-2">
                     {step > 1 && <Button onClick={prevStep}>Back</Button>}
-                    {step < 4 ? <Button onClick={nextStep}>Next</Button> : <Button onClick={validateAndUpload}>Upload</Button>}
+                    {step < 4 ? (
+                        <Button onClick={nextStep}>Next</Button>
+                    ) : (
+                        <Button onClick={validateAndUpload}>Upload</Button>
+                    )}
                 </CardFooter>
             </Card>
         </div>
