@@ -1,41 +1,20 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import DevinsBadges from "@/components/utility/DevinsBadges";
-import DOMPurify from "dompurify";
-import { ChevronLeft, ChevronRight, Download, Heart } from "lucide-react";
+import CategoryBadges from "@/components/features/addons/addon-card/CategoryBadges";
+import ModLoaders from "@/components/features/addons/addon-card/ModLoaders";
+import { AddonStats } from "@/components/features/addons/addon-card/AddonStats";
+import { ExternalLinks } from "@/components/features/addons/addon-card/ExternalLinks";
+import { Star, StarOff, ChevronLeft, ChevronRight, Download, Heart, Github, Globe, Bug } from "lucide-react";
 import { marked } from "marked";
+import DOMPurify from "dompurify";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
-interface Addon {
-  id: number;
-  createdAt: string;
-  project_id: string;
-  project_type: string;
-  slug: string;
-  author: string;
-  title: string;
-  description: string;
-  categories: string[];
-  display_categories: string[];
-  versions: string[];
-  downloads: number;
-  follows: number;
-  icon_url: string;
-  date_created: string;
-  date_modified: string;
-  latest_version: string;
-  license: string;
-  client_side: string | null;
-  server_side: string;
-  gallery: string[];
-  featured_gallery: string | null;
-  color: string;
-  BluePrintChecked: boolean;
-  updatedAt: string;
-}
+import { useCollectionStore } from "@/stores/collectionStore";
+import { Addon } from "@/types";
+import supabase from "@/components/utility/Supabase";
 
 export default function AddonDetails() {
   const { slug } = useParams();
@@ -44,78 +23,86 @@ export default function AddonDetails() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { collection, addAddon, removeAddon } = useCollectionStore();
+  const isInCollection = collection.includes(slug || "");
+
+  const handleCollectionAction = () => {
+    if (!slug) return;
+    isInCollection ? removeAddon(slug) : addAddon(slug);
+  };
+
+  const getAddonData = async (slug: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('mods')
+        .select('*')
+        .eq('slug', slug)
+        .single();
+
+      if (error) {
+        console.error('Error fetching addon data:', error);
+        return null;
+      }
+
+      return data as Addon;
+    } catch (error) {
+      console.error('Error fetching addon data:', error);
+      return null;
+    }
+  };
 
   useEffect(() => {
-    const fetchAddonDetails = async () => {
+    if (!slug) {
+      setError("No addon slug provided");
+      setIsLoading(false);
+      return;
+    }
+
+    const loadAddonDetails = async () => {
       try {
         setIsLoading(true);
         setError(null);
 
-        // Get addon from local storage
-        const storedAddons = localStorage.getItem("addonList");
-        const addons: Addon[] = storedAddons ? JSON.parse(storedAddons) : [];
-        const currentAddon = addons.find((a) => a.slug === slug);
-
-        if (!currentAddon) {
+        const data = await getAddonData(slug);
+        if (!data) {
           throw new Error("Addon not found");
         }
 
-        setAddon(currentAddon);
+        setAddon(data);
 
-        // Fetch description from Modrinth API
-        const response = await fetch(
-          `https://api.modrinth.com/v2/project/${slug}`
-        );
-        if (!response.ok) throw new Error("Failed to fetch addon details");
-
-        const data = await response.json();
-
-        // Properly await marked conversion
-        const markedHtml = await marked(data.body);
-        const sanitizedHtml = DOMPurify.sanitize(markedHtml, {
-          ALLOWED_TAGS: [
-            "h1",
-            "h2",
-            "h3",
-            "h4",
-            "h5",
-            "h6",
-            "p",
-            "a",
-            "ul",
-            "ol",
-            "li",
-            "code",
-            "pre",
-            "strong",
-            "em",
-            "img",
-          ],
-          ALLOWED_ATTR: ["href", "src", "alt", "title"],
-        });
-
-        setDescription(sanitizedHtml);
+        // Process markdown description
+        if (data.modrinth_raw?.description) {
+          const markedHtml = await marked(data.modrinth_raw.description);
+          const sanitizedHtml = DOMPurify.sanitize(markedHtml, {
+            ALLOWED_TAGS: [
+              "h1", "h2", "h3", "h4", "h5", "h6",
+              "p", "a", "ul", "ol", "li",
+              "code", "pre", "strong", "em", "img"
+            ],
+            ALLOWED_ATTR: ["href", "src", "alt", "title"],
+          });
+          setDescription(sanitizedHtml);
+        }
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Failed to load addon details"
-        );
-        console.error("Error fetching addon details:", err);
+        setError(err instanceof Error ? err.message : "Failed to load addon details");
+        console.error("Error loading addon details:", err);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchAddonDetails();
+    loadAddonDetails();
   }, [slug]);
 
   const navigateGallery = (direction: "prev" | "next") => {
-    if (!addon) return;
+    const gallery = addon?.modrinth_raw?.gallery;
+    if (!gallery || !Array.isArray(gallery)) return;
 
     setCurrentImageIndex((prev) => {
       if (direction === "prev") {
         return prev > 0 ? prev - 1 : prev;
       }
-      return prev < addon.gallery.length - 1 ? prev + 1 : prev;
+      return prev < gallery.length - 1 ? prev + 1 : prev;
     });
   };
 
@@ -131,7 +118,7 @@ export default function AddonDetails() {
     );
   }
 
-  if (isLoading) {
+  if (isLoading || !addon) {
     return (
       <div className="container mx-auto px-4 py-8 space-y-6">
         <div className="flex gap-4">
@@ -147,22 +134,54 @@ export default function AddonDetails() {
     );
   }
 
-  if (!addon) return null;
+  const modrinthData = addon.modrinth_raw;
+  const curseforgeData = addon.curseforge_raw;
+  const gallery = modrinthData?.gallery;
+  const totalDownloads = (modrinthData?.downloads || 0) + (curseforgeData?.downloadCount || 0);
+
+  const externalLinks = [
+    ...(curseforgeData?.links?.sourceUrl ? [{
+      icon: <Github className="h-4 w-4" />,
+      label: "Source Code",
+      url: curseforgeData.links.sourceUrl
+    }] : []),
+    ...(curseforgeData?.links?.issuesUrl ? [{
+      icon: <Bug className="h-4 w-4" />,
+      label: "Issue Tracker",
+      url: curseforgeData.links.issuesUrl
+    }] : []),
+    ...(curseforgeData?.links?.websiteUrl ? [{
+      icon: <Globe className="h-4 w-4" />,
+      label: "Website",
+      url: curseforgeData.links.websiteUrl
+    }] : [])
+  ];
 
   return (
     <div className="container mx-auto px-4 py-8 space-y-8">
+      {/* Header Card */}
       <Card>
         <CardHeader className="space-y-6">
           <div className="flex items-start gap-4">
             <img
-              src={addon.icon_url}
-              alt=""
+              src={addon.icon}
+              alt={`${addon.name} icon`}
               className="w-16 h-16 rounded-lg border"
             />
             <div className="flex-1 min-w-0">
-              <h1 className="text-2xl font-bold truncate mb-2">
-                {addon.title}
-              </h1>
+              <div className="flex items-center justify-between">
+                <h1 className="text-2xl font-bold truncate mb-2">
+                  {addon.name}
+                </h1>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8 rounded-full"
+                  onClick={handleCollectionAction}
+                >
+                  {isInCollection ? <Star /> : <StarOff />}
+                </Button>
+              </div>
               <p className="text-foreground-muted">{addon.description}</p>
             </div>
           </div>
@@ -171,50 +190,91 @@ export default function AddonDetails() {
             <div className="flex items-center gap-2">
               <Download className="w-4 h-4" />
               <span className="text-foreground-muted">
-                {addon.downloads.toLocaleString()} downloads
+                {totalDownloads.toLocaleString()} total downloads
               </span>
             </div>
-            <div className="flex items-center gap-2">
-              <Heart className="w-4 h-4" />
-              <span className="text-foreground-muted">
-                {addon.follows.toLocaleString()} followers
-              </span>
-            </div>
-            <div className="flex-1" />
-            <a
-              href={`https://modrinth.com/mod/${addon.slug}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="shrink-0"
-            >
-              <DevinsBadges
-                type="compact"
-                category="available"
-                name="modrinth"
-                format="png"
-                height={46}
-              />
-            </a>
+            {modrinthData?.follows && (
+              <div className="flex items-center gap-2">
+                <Heart className="w-4 h-4" />
+                <span className="text-foreground-muted">
+                  {modrinthData.follows.toLocaleString()} followers
+                </span>
+              </div>
+            )}
           </div>
 
-          <div className="flex flex-wrap gap-2">
-            {addon.versions.map((version) => (
-              <Badge key={version} variant="outline">
-                {version}
-              </Badge>
-            ))}
+          <Separator />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-sm font-semibold mb-2">Versions</h3>
+                <div className="flex flex-wrap gap-2">
+                  {addon.versions?.map((version) => (
+                    <Badge key={version} variant="outline">
+                      {version}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-sm font-semibold mb-2">Mod Loaders</h3>
+                <ModLoaders addon={addon} />
+              </div>
+
+              <div>
+                <h3 className="text-sm font-semibold mb-2">Categories</h3>
+                <CategoryBadges categories={addon.categories} />
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-sm font-semibold mb-2">Links</h3>
+                <div className="grid grid-cols-1 gap-2">
+                  {externalLinks.map((link, index) => (
+                    <Button
+                      key={index}
+                      variant="outline"
+                      className="w-full justify-start"
+                      asChild
+                    >
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {link.icon}
+                        <span className="ml-2">{link.label}</span>
+                      </a>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-sm font-semibold mb-2">Available On</h3>
+                <ExternalLinks
+                  slug={addon.slug}
+                  curseforge_raw={addon.curseforge_raw || {}}
+                  modrinth_raw={addon.modrinth_raw || {}}
+                />
+              </div>
+            </div>
           </div>
         </CardHeader>
       </Card>
 
-      {addon.gallery.length > 0 && (
+      {/* Gallery Card */}
+      {gallery && gallery.length > 0 && (
         <Card>
           <CardContent className="p-0">
             <div className="relative">
               <div className="aspect-video overflow-hidden">
                 <img
-                  src={addon.gallery[currentImageIndex]}
-                  alt={`${addon.title} screenshot ${currentImageIndex + 1}`}
+                  src={gallery[currentImageIndex]}
+                  alt={`${addon.name} screenshot ${currentImageIndex + 1}`}
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
@@ -236,7 +296,7 @@ export default function AddonDetails() {
                   variant="outline"
                   size="icon"
                   onClick={() => navigateGallery("next")}
-                  disabled={currentImageIndex === addon.gallery.length - 1}
+                  disabled={currentImageIndex === gallery.length - 1}
                   className="rounded-full bg-background/80 backdrop-blur-sm"
                   aria-label="Next image"
                 >
@@ -245,7 +305,7 @@ export default function AddonDetails() {
               </div>
 
               <div className="absolute bottom-4 inset-x-0 flex justify-center gap-1">
-                {addon.gallery.map((_, idx) => (
+                {gallery.map((_, idx) => (
                   <button
                     key={idx}
                     onClick={() => setCurrentImageIndex(idx)}
@@ -262,12 +322,66 @@ export default function AddonDetails() {
         </Card>
       )}
 
+      {/* Description Card */}
       <Card>
         <CardContent className="p-6 prose prose-neutral dark:prose-invert max-w-none">
           <div
             dangerouslySetInnerHTML={{ __html: description }}
             className="markdown-content"
           />
+        </CardContent>
+      </Card>
+
+      {/* Additional Information */}
+      <Card>
+        <CardContent className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Author Information</h3>
+              <AddonStats
+                author={addon.author}
+                downloads={totalDownloads}
+              />
+              {curseforgeData?.authors && (
+                <div className="mt-4">
+                  <h4 className="text-sm font-semibold mb-2">Contributors</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {curseforgeData.authors.map((author) => (
+                      <a
+                        key={author.id}
+                        href={author.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-primary hover:underline"
+                      >
+                        {author.name}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Project Details</h3>
+              <div className="space-y-2 text-sm">
+                <p>
+                  <span className="font-semibold">Created:</span>{" "}
+                  {new Date(addon.datecreated).toLocaleDateString()}
+                </p>
+                <p>
+                  <span className="font-semibold">Last Updated:</span>{" "}
+                  {new Date(addon.datemodified).toLocaleDateString()}
+                </p>
+                {modrinthData?.license && (
+                  <p>
+                    <span className="font-semibold">License:</span>{" "}
+                    {modrinthData.license}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>

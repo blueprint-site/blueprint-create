@@ -8,7 +8,8 @@ import { SchematicLoader } from "@/components/features/schematics/3d-viewer/Enti
 import { Cubes } from "@/components/features/schematics/3d-viewer/Entities/Cubes";
 
 import styles from "./Schematic3DViewer.module.scss";
-export function Schematic3DViewer() {
+
+export default function Schematic3DViewer() {
   return (
     <div id="schematic-viewer" className={styles.container}>
       <Suspense fallback={<div>CARGANDO ...</div>}>
