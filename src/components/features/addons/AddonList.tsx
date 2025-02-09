@@ -1,11 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -13,23 +6,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 import { Addon } from "@/types";
-import { Search } from "lucide-react";
 import { useMemo, useState, useEffect } from "react";
 import { useDebounce } from "use-debounce";
-import AddonListItem from "./AddonListItem";
+import AddonCard from "./addon-card/AddonCard.tsx";
 import { useAppStore } from "@/stores/useAppStore.ts";
+import { AddonListSkeleton } from "./AddonListSkeleton";
+import { AddonSearchCard, ModloaderType } from "./AddonSearchCard";
 import AddonCollection from "@/components/features/addons/AddonCollection.tsx";
 
-const MODLOADER_OPTIONS = [
-  { value: "all", label: "All Modloaders" },
-  { value: "forge", label: "Forge" },
-  { value: "fabric", label: "Fabric" },
-  { value: "quilt", label: "Quilt" },
-] as const;
-
-type ModloaderType = (typeof MODLOADER_OPTIONS)[number]["value"];
 
 const AddonList = () => {
   const [query, setQuery] = useState<string>("");
@@ -100,69 +85,29 @@ const AddonList = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle>Search Addons</CardTitle>
-          <CardDescription>
-            Find the perfect addon for your Create mod experience
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground-muted" />
-              <Input
-                placeholder="Search addons..."
-                className="pl-10"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-            </div>
+      <AddonSearchCard
+        query={query}
+        onQueryChange={setQuery}
+        modloader={modloader}
+        onModloaderChange={setModloader}
+        version={version}
+        onVersionChange={setVersion}
+      />
 
-            <Select value={modloader} onValueChange={handleModloaderChange}>
-              <SelectTrigger className="w-full md:w-[200px]">
-                <SelectValue placeholder="Modloader" />
-              </SelectTrigger>
-              <SelectContent>
-                {MODLOADER_OPTIONS.map(({ value, label }) => (
-                  <SelectItem key={value} value={value}>
-                    {label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={version} onValueChange={setVersion}>
-              <SelectTrigger className="w-full md:w-[200px]">
-                <SelectValue placeholder="Version" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Versions</SelectItem>
-                <SelectItem value="1.20.1">1.20.1</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </CardContent>
-      </Card>
-
-      {isLoading && (
-        <div className="text-center py-8">
-          <p className="text-foreground-muted">Loading addons...</p>
-        </div>
-      )}
+      {isLoading && <AddonListSkeleton />}
 
       {!isLoading && (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {paginatedAddons.map((addon, index) => (
-              <AddonListItem key={index} addon={addon} />
+              <AddonCard key={index} addon={addon} />
             ))}
           </div>
 
           {filteredAddons.length > 0 && (
             <div className="mt-8 flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">Show</span>
+                <span className="text-sm text-foreground-muted">Show</span>
                 <Select
                   value={itemsPerPage.toString()}
                   onValueChange={(value) => {
@@ -179,10 +124,10 @@ const AddonList = () => {
                     <SelectItem value="50">50</SelectItem>
                   </SelectContent>
                 </Select>
-                <span className="text-sm text-muted-foreground">per page</span>
+                <span className="text-sm text-foreground-muted">per page</span>
               </div>
 
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-foreground-muted">
                 Showing {(currentPage - 1) * itemsPerPage + 1}-
                 {Math.min(currentPage * itemsPerPage, filteredAddons.length)} of{" "}
                 {filteredAddons.length} results

@@ -1,24 +1,15 @@
-import { ReactNode, createContext, useEffect, useState, useCallback } from "react";
+import { ReactNode, useEffect, useState, useCallback } from "react";
 import supabase from "@/components/utility/Supabase";
 import { Addon } from "@/types";
+import AddonsContext from './addonsContext';
 
-type AddonsContextType = {
-    addons: Addon[];
-    loadMore: () => void;
-    loading: boolean;
-    hasMoreData: boolean;
-    totalAddons: number;
-    totalValidAddons: number;
-};
-
-export const AddonsContext = createContext<AddonsContextType | undefined>(undefined);
 const PAGE_SIZE = 10;
 
 interface AddonsProviderProps {
     children: ReactNode;
 }
 
-export const AddonsProvider = ({ children }: AddonsProviderProps) => {
+const AddonsProvider = ({ children }: AddonsProviderProps) => {
     const [addons, setAddons] = useState<Addon[]>([]);
     const [loading, setLoading] = useState(false);
     const [hasMoreData, setHasMoreData] = useState(true);
@@ -94,3 +85,5 @@ export const AddonsProvider = ({ children }: AddonsProviderProps) => {
         </AddonsContext.Provider>
     );
 };
+
+export default AddonsProvider;
