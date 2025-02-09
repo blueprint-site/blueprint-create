@@ -1,31 +1,8 @@
 // src/pages/addons/ListPage.tsx
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import AddonList from "@/components/features/addons/AddonList";
-import CollectionSidebar from "@/components/features/addons/Collections";
 
 export default function ListPage() {
-  const location = useLocation();
-
-  useEffect(() => {
-    const savedScrollPosition = localStorage.getItem("addonsScrollPosition");
-    if (savedScrollPosition) {
-      window.scrollTo(0, parseInt(savedScrollPosition, 10));
-    }
-
-    const saveScrollPosition = () => {
-      localStorage.setItem("addonsScrollPosition", window.scrollY.toString());
-    };
-
-    saveScrollPosition();
-    window.addEventListener("beforeunload", saveScrollPosition);
-    return () => window.removeEventListener("beforeunload", saveScrollPosition);
-  }, [location]);
-
   return (
-    <>
-      <AddonList />
-      <CollectionSidebar />
-    </>
+    <AddonList />
   );
 }
