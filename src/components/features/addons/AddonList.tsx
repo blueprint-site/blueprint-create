@@ -13,6 +13,8 @@ import AddonCard from "./addon-card/AddonCard.tsx";
 import { useAppStore } from "@/stores/useAppStore.ts";
 import { AddonListSkeleton } from "./AddonListSkeleton";
 import { AddonSearchCard, ModloaderType } from "./AddonSearchCard";
+import AddonCollection from "@/components/features/addons/AddonCollection.tsx";
+
 
 const AddonList = () => {
   const [query, setQuery] = useState<string>("");
@@ -58,7 +60,12 @@ const AddonList = () => {
     return filteredAddons.slice(startIndex, endIndex);
   }, [filteredAddons, currentPage, itemsPerPage]);
 
-  console.log(paginatedAddons)
+  const handleModloaderChange = (value: string) => {
+    if (value === "all" || value === "forge" || value === "fabric" || value === "quilt") {
+      setModloader(value);
+    }
+  };
+
   const visiblePages = () => {
     const pages = [];
     const maxVisiblePages = 5;
@@ -155,6 +162,7 @@ const AddonList = () => {
               </div>
             </div>
           )}
+          <AddonCollection />
         </>
       )}
     </div>
