@@ -21,7 +21,7 @@ export const schematicRoutes: RouteObject[] = [
       { index: true, element: <SchematicsList /> },
       { path: '3dviewer', element: <Schematics3DViewerWithLoading /> },
       { path: 'upload', element: <SchematicsUploadPage /> },
-      { path: ':id', element: <SchematicDetails /> }
+      { path: ':slug', element: <SchematicDetails /> }
     ]
   }
 ];

@@ -8,8 +8,9 @@ import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import supabase from "@/components/utility/Supabase";
-import {LoggedUserContextType, useLoggedUser} from "@/context/users/logedUserContext";
-import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group";
+import { LoggedUserContextType, useLoggedUser } from "@/context/users/logedUserContext";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { redirect } from "react-router-dom";
 
 function SchematicsUpload() {
     const [step, setStep] = useState(1);
@@ -35,8 +36,11 @@ function SchematicsUpload() {
         // 1.21.x
         "1.21", "1.21.1", "1.21.2"
     ];
-    const  LoggedUser  = useLoggedUser()
+    const LoggedUser = useLoggedUser()
 
+    function slugify(title: string): string {
+        return title.toLowerCase().replace(/\W+/g, '-');
+    }
 
     // Navigation entre les étapes
     const nextStep = () => {
@@ -55,7 +59,7 @@ function SchematicsUpload() {
     // Vérification des champs requis avant validation finale
     const validateAndUpload = () => {
         if (!uploadedSchematic || !uploadedImage || !title || !description || gameVersions.length === 0 || createVersions.length === 0 || loaders.length === 0) {
-            console.log(uploadedSchematic, uploadedImage ,title, description, gameVersions, createVersions, loaders);
+            console.log(uploadedSchematic, uploadedImage, title, description, gameVersions, createVersions, loaders);
             alert("Veuillez remplir tous les champs avant de soumettre.");
             return;
         }
@@ -74,7 +78,8 @@ function SchematicsUpload() {
     ) {
         try {
             // Upload file to bucket
-            const filePath = `files/${Date.now()}_${file.name}`;
+            const filePath = `files/${slugify(title)}`;
+            console.log(`files/${slugify(title)}`)
             const {
                 data: fileData,
                 error: fileError,
@@ -118,10 +123,11 @@ function SchematicsUpload() {
                     description: description,
                     schematic_url: fileUrl,
                     image_url: imageUrl,
-                    authors: [userdata.user?.id] ,
+                    authors: [userdata.user?.id],
                     game_versions: gameVersions,
                     create_versions: createVersions,
                     modloaders: loaders,
+                    slug: slugify(title)
                 },
             ]);
 
@@ -146,6 +152,9 @@ function SchematicsUpload() {
         );
     }
     if (showFinalMessage) {
+        setTimeout(() => {
+            redirect("/schematics")
+        }, 2000)
         return (
             <div className="final-message">
                 <LoadingSuccess />
@@ -223,9 +232,9 @@ function SchematicsUpload() {
                         <>
                             <h2 className="text-center">Title & Description</h2>
                             <Input type="text" placeholder="Title" value={title}
-                                   onChange={(e) => setTitle(e.target.value)} className="mb-2 w-full p-2 border"/>
+                                onChange={(e) => setTitle(e.target.value)} className="mb-2 w-full p-2 border" />
                             <Textarea placeholder="Description" value={description}
-                                      onChange={(e) => setDescription(e.target.value)} className="w-full p-2 border"/>
+                                onChange={(e) => setDescription(e.target.value)} className="w-full p-2 border" />
                         </>
                     )}
 
@@ -234,7 +243,7 @@ function SchematicsUpload() {
                             <h2 className="text-center">Game Versions</h2>
                             <ToggleGroup variant="outline" type="multiple" value={gameVersions} onValueChange={setGameVersions} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 grid-flow-row-dense">
                                 {minecraftVersions.map((version, index) => (
-                                    <ToggleGroupItem  key={index} value={version} className="flex items-center space-x-2">
+                                    <ToggleGroupItem key={index} value={version} className="flex items-center space-x-2">
                                         <Label>{version}</Label>
                                     </ToggleGroupItem>
                                 ))}
@@ -265,7 +274,7 @@ function SchematicsUpload() {
                             <h2 className="text-center">Confirm and Upload</h2>
                             <div className="flex items-center justify-center">
                                 <img src={uploadedImageUrl} alt="Preview"
-                                     className="w-1/4 items-center h-32 object-cover mt-2"/>
+                                    className="w-1/4 items-center h-32 object-cover mt-2" />
                             </div>
                             <p><strong>Title:</strong> {title}</p>
                             <p><strong>Description:</strong> {description}</p>
