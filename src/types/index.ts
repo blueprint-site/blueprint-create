@@ -34,25 +34,25 @@ export interface UserData {
 }
 
 export interface Addon {
-  id: number, // id of the addon
-  name: string, // Name of the addon
-  description: string, // Description of the addon
-  slug: string, // Slug used for navigation in the url
-  author: string, // Authors of the mod
-  categories: string[], // Categories of the addon exemple : ["addons","Ores and Resources","Utility & QoL","Technology"]
-  downloads: number, // Number of downloads from modrinth
-  icon: string, // Base64 encoded
-  datecreated: Date, // Date of the creation of the record
-  datemodified: Date, // Last time it have been updated
-  curseforge_raw?: curseForgeAddon, // contain the raw data from the modrinth Api  => see modrinthAddon
-  modrinth_raw?: modrinthAddon, // contain the raw data from the curseforge Api  => see curseforgeAddon
-  sources: string[], // Array with "Modrinth" or CurseForge
-  isValid: boolean, // Utils to return the final list with only valid addon
-  isChecked: boolean, // Utils to be sur the addon have been verified by an admin and can sort them by not checked
-  versions: string[]
+  id: string; // id of the addon
+  name: string; // Name of the addon
+  description: string; // Description of the addon
+  slug: string; // Slug used for navigation in the URL
+  author: string; // Authors of the mod
+  categories: string[]; // Categories of the addon, e.g., ["addons", "Ores and Resources", "Utility & QoL", "Technology"]
+  downloads: number; // Number of downloads from Modrinth
+  icon: string; // URL to the icon (not Base64-encoded)
+  datecreated: Date; // Date of the creation of the record
+  datemodified: Date; // Last time it has been updated
+  curseforge_raw?: CurseForgeAddon; // Contains the raw data from the CurseForge API
+  modrinth_raw?: ModrinthAddon; // Contains the raw data from the Modrinth API
+  sources: string[]; // Array with "Modrinth" or "CurseForge"
+  isValid: boolean; // Utility to return the final list with only valid addons
+  isChecked: boolean; // Utility to ensure the addon has been verified by an admin and can sort them by not checked
+  versions: string[]; // Array of supported game versions
 }
 
-export interface modrinthAddon {
+export interface ModrinthAddon {
   project_id: string // Unique identifier for the project on Modrinth
   project_type: string // Type of the project (e.g., mod, plugin)
   slug: string // URL-friendly identifier for the project
@@ -76,7 +76,7 @@ export interface modrinthAddon {
   color: number // Color code associated with the project for display
 }
 
-export interface curseForgeAddon {
+export interface CurseForgeAddon {
   screenshots: Screenshot[] // Array of screenshots associated with the addon
   id: number // Unique identifier for the addon on CurseForge
   gameId: number // Game ID associated with the addon
@@ -176,7 +176,6 @@ export interface LatestFile {
   fileSizeOnDisk?: number // Optional size of the file on disk
   serverPackFileId?: number // Optional server pack file ID
 }
-
 
 export interface Hash {
   value: string // The hash value (checksum) of the file
