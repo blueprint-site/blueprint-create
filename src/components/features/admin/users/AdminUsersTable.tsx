@@ -1,63 +1,40 @@
-
-
 import {ColumnDef} from "@tanstack/react-table";
-import {
-    DropdownMenu,
-    DropdownMenuContent, DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import {Button} from "@/components/ui/button";
-import {ArrowUpDown, MoreHorizontal} from "lucide-react";
+import {ArrowUpDown} from "lucide-react";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {Users, useUsers} from "@/context/users/usersContext";
+
 import {AdminUsersDataTable} from "@/components/tables/users/Admin-users-data-table";
+import {Button} from "@/components/ui/button.tsx";
+import {useEntityManager} from "@/hooks/useData.ts";
+import { usersSchema, Users} from "@/schemas/users.schema.tsx";
 
 
-const AdminUsersTable =  () => {
-    const users = useUsers()
+const AdminUsersTable = () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    const { data: profiles, isLoading, error } = useEntityManager<Users>("profiles", usersSchema);
+
+    if (isLoading) {
+        return <div>Loading profiles...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
+
     const columns: ColumnDef<Users>[] = [
-        {
-            id: "actions",
-            cell: () => {
-
-                return (
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions 🚀</DropdownMenuLabel>
-                            <DropdownMenuItem>
-                                Valid & check this addon ✅
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-
-                            >
-                                Invalid & Check this addon ❌
-                            </DropdownMenuItem
-                          >
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                )
-            },
-        },
         {
             accessorKey: "icon",
             header: "Icon",
             cell: ({ row }) => {
                 return (
                     <Avatar>
-                        <AvatarImage src={row.original.icon_url || ""} />
-                        <AvatarFallback>CN</AvatarFallback>
+                        <AvatarImage src={row.original.icon_url || undefined} alt={row.original.display_name} />
+                        <AvatarFallback className={"font-bold"}>
+                            {row.original.display_name.slice(0, 2).toUpperCase()}
+                        </AvatarFallback>
                     </Avatar>
-                )
-
-
-            }
+                );
+            },
         },
         {
             accessorKey: "display_name",
@@ -70,8 +47,8 @@ const AdminUsersTable =  () => {
                         Display Name
                         <ArrowUpDown className="ml-2 h-4 w-4" />
                     </Button>
-                )
-            }
+                );
+            },
         },
         {
             accessorKey: "email",
@@ -84,8 +61,8 @@ const AdminUsersTable =  () => {
                         Email
                         <ArrowUpDown className="ml-2 h-4 w-4" />
                     </Button>
-                )
-            }
+                );
+            },
         },
         {
             accessorKey: "roles",
@@ -98,17 +75,17 @@ const AdminUsersTable =  () => {
                         Roles
                         <ArrowUpDown className="ml-2 h-4 w-4" />
                     </Button>
-                )
-            }
+                );
+            },
         },
-    ]
-
+    ];
 
     return (
         <div className="px-4 md:px-8">
-            <AdminUsersDataTable columns={columns} data={users ||  [] }></AdminUsersDataTable>
+            <AdminUsersDataTable columns={columns} data={profiles || []} />
         </div>
     );
-}
+};
+
 
 export default AdminUsersTable

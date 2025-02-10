@@ -1,7 +1,6 @@
 import { Star, StarOff } from "lucide-react";
 import React, { memo } from "react";
 import { useCollectionStore } from "@/stores/collectionStore";
-import { Addon } from "@/types";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ModLoaders from "@/components/features/addons/addon-card/ModLoaders";
@@ -10,6 +9,7 @@ import { VersionBadges } from "./VersionBadges";
 import { AddonStats } from "./AddonStats";
 import { ExternalLinks } from "./ExternalLinks";
 import { useNavigate } from "react-router-dom";
+import {Addon} from "@/schemas/addon.schema.tsx";
 
 interface AddonListItemProps {
   addon: Addon;
@@ -36,7 +36,7 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
         onClick={navigateToAddon}
       >
         <img
-          src={addon.icon}
+          src={addon.icon || "/assets/wrench.webp"}
           alt={addon.name}
           loading="lazy"
           className="h-12 w-12 object-cover"
@@ -65,7 +65,7 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
           <CategoryBadges categories={addon.categories} />
         </div>
 
-        <VersionBadges versions={addon.versions} />
+        <VersionBadges versions={addon.versions || []} />
 
         <AddonStats
           author={addon.author}

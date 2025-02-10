@@ -22,14 +22,17 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import {useState} from "react";
-
+import {useNavigate} from "react-router-dom";
+interface DataWithId {
+    id: string | number;
+}
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
 }
 
 
-export function DataTable<TData, TValue>({
+export function AdminBlogTable<TData extends DataWithId, TValue>({
                                              columns,
                                              data,
                                          }: DataTableProps<TData, TValue>) {
@@ -37,6 +40,7 @@ export function DataTable<TData, TValue>({
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
         []
     )
+    const navigate = useNavigate();
 
     const table = useReactTable({
         data,
@@ -57,14 +61,23 @@ export function DataTable<TData, TValue>({
         <div>
             <div className="flex items-center py-4">
                 <Input
-                    placeholder="Filter name..."
-                    value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+                    placeholder="Filter title ..."
+                    value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
-                        table.getColumn("name")?.setFilterValue(event.target.value)
+                        table.getColumn("title")?.setFilterValue(event.target.value)
+                    }
+                    className="max-w-sm"
+                />
+                <Input
+                    placeholder="Filter author ..."
+                    value={(table.getColumn("authors")?.getFilterValue() as string) ?? ""}
+                    onChange={(event) =>
+                        table.getColumn("authors")?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
                 />
             </div>
+
             <div className="rounded-md border">
                 <Table>
                     <TableHeader>
@@ -89,6 +102,8 @@ export function DataTable<TData, TValue>({
                         {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row,index) => (
                                 <TableRow
+                                    onClick={() => navigate(`/admin/blog-editor/${row.original.id}`)}
+                                    className="cursor-pointer"
                                     key={index}
                                     data-state={row.getIsSelected() && "selected"}
                                 >

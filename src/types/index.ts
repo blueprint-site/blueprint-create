@@ -222,7 +222,7 @@ export interface ServerAffiliation {
   defaultBannerCustomTitle: string // Custom title for the default banner
   affiliationLink: string // URL link to the affiliation page
 }
-
+// Interface for the schematic feature
 export interface Schematic {
   id: string;
   title: string;
@@ -236,4 +236,43 @@ export interface Schematic {
   create_versions: string[];
   modloaders: string[];
   categories: string[];
+}
+// Interface for the blog feature
+export interface BlogType {
+  id: string;
+  title: string;
+  content: string;
+  slug: string;
+  img_url: string;
+  status: string;
+  links?: JSON;
+  tags: Tag[];
+  likes: number;
+  authors_uuid: string[];
+  authors: string[];
+  created_at: string;
+}
+export interface Tag {
+  id: number;
+  value: string;
+  color: string;
+}
+
+export interface Admin_logs {
+  id: string;
+  type: string;
+  content: string;
+  category: string;
+  created_at: string;
+  user_uuid: string;
+}
+
+export interface Users {
+  id: string;
+  display_name: string;
+  email: string;
+  icon_url: string;
+  roles: string[];
+  created_at: string;
+  updated_at: string;
 }

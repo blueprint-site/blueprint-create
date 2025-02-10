@@ -1,171 +1,104 @@
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Addon } from "@/types";
-import { useMemo, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDebounce } from "use-debounce";
-import AddonCard from "./addon-card/AddonCard.tsx";
-import { useAppStore } from "@/stores/useAppStore.ts";
+import AddonCard from "./addon-card/AddonCard";
 import { AddonListSkeleton } from "./AddonListSkeleton";
 import { AddonSearchCard, ModloaderType } from "./AddonSearchCard";
-import AddonCollection from "@/components/features/addons/AddonCollection.tsx";
-
+import AddonCollection from "@/components/features/addons/AddonCollection";
+import { useEntityManager } from "@/hooks/useData";
+import { Addon, AddonSchema } from "@/schemas/addon.schema";
+import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
 const AddonList = () => {
   const [query, setQuery] = useState<string>("");
   const [modloader, setModloader] = useState<ModloaderType>("all");
   const [version, setVersion] = useState<string>("all");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [debouncedQuery] = useDebounce(query, 300);
+  const [localAddons, setLocalAddons] = useState<Addon[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
 
-  const { addons, isLoading } = useAppStore();
+  const { data: addons, isLoading, error } = useEntityManager<Addon>("mods", AddonSchema, {
+    filters: {
+      isValid: true
+    },
+    pageSize: 1000,
+  });
 
-  // Reset to first page when filters change
   useEffect(() => {
-    setCurrentPage(1);
-  }, [debouncedQuery, modloader, version]);
-
-  const queryFilteredAddons = useMemo(() => {
-    if (!debouncedQuery) return addons;
-    return addons.filter((addon: Addon) =>
-      addon.name.toLowerCase().includes(debouncedQuery.toLowerCase())
-    );
-  }, [addons, debouncedQuery]);
-
-  const modloaderFilteredAddons = useMemo(() => {
-    if (modloader === 'all') return queryFilteredAddons;
-    return queryFilteredAddons.filter((addon: Addon) =>
-      addon.categories.includes(modloader)
-    );
-  }, [queryFilteredAddons, modloader]);
-
-  const filteredAddons = useMemo(() => {
-    if (version === 'all') return modloaderFilteredAddons;
-    return modloaderFilteredAddons.filter((addon: Addon) =>
-      addon.versions.includes(version)
-    );
-  }, [modloaderFilteredAddons, version]);
-
-  // Pagination calculations
-  const totalPages = Math.ceil(filteredAddons.length / itemsPerPage);
-  const paginatedAddons = useMemo(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return filteredAddons.slice(startIndex, endIndex);
-  }, [filteredAddons, currentPage, itemsPerPage]);
-
-  const handleModloaderChange = (value: string) => {
-    if (value === "all" || value === "forge" || value === "fabric" || value === "quilt") {
-      setModloader(value);
+    if (addons.length) {
+      setLocalAddons(addons);
     }
-  };
+  }, [addons]);
 
-  const visiblePages = () => {
-    const pages = [];
-    const maxVisiblePages = 5;
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = startPage + maxVisiblePages - 1;
+  const filteredAddons = localAddons.filter(addon => {
+    const searchMatch = addon.name.toLowerCase().includes(debouncedQuery.toLowerCase()) ||
+        addon.description?.toLowerCase().includes(debouncedQuery.toLowerCase());
 
-    if (endPage > totalPages) {
-      endPage = totalPages;
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
+    const modloaderMatch = modloader === 'all' || addon.categories?.includes(modloader);
+    return searchMatch && modloaderMatch;
+  });
 
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
-    }
-    return pages;
-  };
+  const totalPages = Math.ceil(filteredAddons.length / pageSize);
+  const paginatedAddons = filteredAddons.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <AddonSearchCard
-        query={query}
-        onQueryChange={setQuery}
-        modloader={modloader}
-        onModloaderChange={setModloader}
-        version={version}
-        onVersionChange={setVersion}
-      />
+      <div className="container mx-auto px-4 py-8">
+        <AddonSearchCard
+            query={query}
+            onQueryChange={setQuery}
+            modloader={modloader}
+            onModloaderChange={setModloader}
+            version={version}
+            onVersionChange={setVersion}
+        />
 
-      {isLoading && <AddonListSkeleton />}
+        {isLoading && <AddonListSkeleton />}
 
-      {!isLoading && (
-        <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {paginatedAddons.map((addon, index) => (
-              <AddonCard key={index} addon={addon} />
-            ))}
-          </div>
-
-          {filteredAddons.length > 0 && (
-            <div className="mt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-foreground-muted">Show</span>
-                <Select
-                  value={itemsPerPage.toString()}
-                  onValueChange={(value) => {
-                    setItemsPerPage(Number(value));
-                    setCurrentPage(1);
-                  }}
-                >
-                  <SelectTrigger className="w-[120px]">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="10">10</SelectItem>
-                    <SelectItem value="20">20</SelectItem>
-                    <SelectItem value="50">50</SelectItem>
-                  </SelectContent>
-                </Select>
-                <span className="text-sm text-foreground-muted">per page</span>
-              </div>
-
-              <div className="text-sm text-foreground-muted">
-                Showing {(currentPage - 1) * itemsPerPage + 1}-
-                {Math.min(currentPage * itemsPerPage, filteredAddons.length)} of{" "}
-                {filteredAddons.length} results
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setCurrentPage(currentPage - 1)}
-                  disabled={currentPage === 1}
-                >
-                  Previous
-                </Button>
-
-                {visiblePages().map((page) => (
-                  <Button
-                    key={page}
-                    variant={currentPage === page ? "default" : "outline"}
-                    onClick={() => setCurrentPage(page)}
-                  >
-                    {page}
-                  </Button>
-                ))}
-
-                <Button
-                  variant="outline"
-                  onClick={() => setCurrentPage(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                >
-                  Next
-                </Button>
-              </div>
+        {error && (
+            <div className="text-red-500 text-center">
+              Error loading addons: {error.message}
             </div>
-          )}
-          <AddonCollection />
-        </>
-      )}
-    </div>
+        )}
+
+        {!isLoading && !error && (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {paginatedAddons.map((addon) => (
+                    <AddonCard key={addon.id} addon={addon} />
+                ))}
+              </div>
+
+              <div className="mt-8 flex flex-col items-center gap-4">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious
+                          onClick={() => currentPage > 1 && setCurrentPage((prev) => prev - 1)}
+                          className={currentPage === 1 ? "pointer-events-none cursor-pointer opacity-50" : ""}
+                      />
+                    </PaginationItem>
+                    <PaginationItem>
+                      <span className="text-sm">Page {currentPage} sur {totalPages}</span>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationNext
+                          onClick={() => currentPage < totalPages && setCurrentPage((prev) => prev + 1)}
+                          className={currentPage === totalPages ? "pointer-events-none cursor-pointer opacity-50" : ""}
+                      />
+
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+
+                <div className="text-sm text-foreground-muted">
+                  {filteredAddons.length} résultats sur {localAddons.length}
+                </div>
+              </div>
+
+              <AddonCollection />
+            </>
+        )}
+      </div>
   );
 };
 

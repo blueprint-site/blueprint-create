@@ -7,11 +7,14 @@ import AddonStatsWrapper from "@/components/features/admin/stats/AddonStatsWrapp
 import AdminUsersDisplay from "@/components/features/admin/users/AdminUsersDisplay";
 import AdminBlogDisplay from "@/components/features/admin/blog/AdminBlogDisplay";
 import AdminSchematicsDisplay from "@/components/features/admin/schematics/AdminSchematicsDisplay";
+import {Button} from "@/components/ui/button.tsx";
+import { useNavigate } from "react-router-dom";
+
 
 
 const AdminPage = () => {
     const [activePage, setActivePage] = useState("dashboard");
-
+    const navigate = useNavigate();
     return (
         <div className="flex h-screen">
             {/* Sidebar */}
@@ -93,12 +96,7 @@ const AdminPage = () => {
                 )}
 
                 {activePage === "users" && (
-                    <Card className="shadow-lg border border-gray-200 dark:border-gray-700">
-                        <CardContent className="p-6">
                         <AdminUsersDisplay></AdminUsersDisplay>
-                    </CardContent>
-                    </Card>
-
                 )}
 
                 {activePage === "stats" && (
@@ -108,35 +106,27 @@ const AdminPage = () => {
 
                 {activePage === "addons" && (
                     <div>
-                        <Card className="shadow-lg border border-gray-200 dark:border-gray-700">
-                            <CardContent className="p-6">
                                 <AdminAddonsTable />
-                            </CardContent>
-                        </Card>
                     </div>
 
 
                 )}
                 {activePage === "blog" && (
                     <>
-                        <Card className="shadow-lg border border-gray-200 dark:border-gray-700">
-                            <CardContent className="p-6">
+                                <Button className={"float-end"} variant="default" onClick={() => navigate("blog-editor/new")}>
+                                    <Files /> New Article
+                                </Button>
+
                                 <h3 className="text-xl font-bold">Blog Management</h3>
-                                <p>Manage blog inside the app.</p>
-                            </CardContent>
-                        </Card>
-                        <AdminBlogDisplay/>
+
+                                <AdminBlogDisplay/>
                     </>
 
                 )}
                 {activePage === "schematics" && (
                     <>
-                        <Card className="shadow-lg border border-gray-200 dark:border-gray-700">
-                            <CardContent className="p-6">
                                 <h3 className="text-xl font-bold">Schematics</h3>
                                 <p>Manage and generate schematics for your application.</p>
-                            </CardContent>
-                        </Card>
                         <AdminSchematicsDisplay/>
                     </>
 

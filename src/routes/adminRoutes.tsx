@@ -2,6 +2,7 @@
 import { RouteObject } from 'react-router-dom';
 import ProtectedRoute from '@/components/utility/ProtectedRoute';
 import AdminPage from "@/pages/Admin";
+import AdminBlogEditor from "@/components/admin/components/blog/AdminBlogEditor.tsx";
 
 
 export const AdminRoutes: RouteObject[] = [
@@ -12,5 +13,13 @@ export const AdminRoutes: RouteObject[] = [
           <AdminPage/>
         </ProtectedRoute>
     )
-  }
+  },
+    {
+        path: 'admin/blog-editor/:id',
+        element: (
+            <ProtectedRoute>
+                <AdminBlogEditor />
+            </ProtectedRoute>
+        )
+    }
 ];
