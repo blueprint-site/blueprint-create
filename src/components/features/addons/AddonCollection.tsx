@@ -8,17 +8,18 @@ import {
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarHeader,
-  SidebarRail,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { useCollectionStore } from "@/stores/collectionStore.ts";
 import { Download, Info, X } from "lucide-react";
 import { useEffect } from "react";
 
-const CollectionSidebar = () => {
+const CollectionSheet = () => {
   const { collection, removeAddon, initializeCollection } =
     useCollectionStore();
 
@@ -35,36 +36,32 @@ const CollectionSidebar = () => {
   };
 
   return (
-    <Sidebar side="right" className="mt-16">
-      <SidebarTrigger
-        className="absolute w-8 h-8 top-6 -left-11 text-lg p-3 rounded-full bg-background shadow-md"
-        size="lg"
-        variant="outline"
-      />
-      <SidebarHeader className="border-b border-border">
-        <div className="flex items-center justify-between px-4 py-2">
-          <div className="flex items-center gap-2">
-            <h3 className="font-semibold">My Addon Collection</h3>
-            <span className="bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded">
-              New
-            </span>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            {collection.length > 0 && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={downloadAllAddons}
-                title="Download all addons"
-              >
-                <Download className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button
+          className="fixed top-20 right-4 w-8 h-8 p-3 rounded-full bg-background shadow-md"
+          variant="outline"
+        >
+          ☰
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="right" className="w-[400px] sm:w-[540px] bg-surface-1">
+        <SheetHeader>
+          <SheetTitle>My Addon Collection</SheetTitle>
+          <SheetDescription>Manage your saved addons here.</SheetDescription>
+        </SheetHeader>
+        <div className="flex justify-end py-2">
+          {collection.length > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={downloadAllAddons}
+              title="Download all addons"
+            >
+              <Download className="h-4 w-4" />
+            </Button>
+          )}
         </div>
-      </SidebarHeader>
-
-      <SidebarContent>
         <ScrollArea className="h-[calc(100vh-8rem)]">
           <div className="p-4 space-y-4">
             {collection.length === 0 ? (
@@ -75,8 +72,7 @@ const CollectionSidebar = () => {
                     Empty Collection
                   </CardTitle>
                   <CardDescription>
-                    Add addons to your collection using the "Add to Collection"
-                    button on addon cards
+                    Add addons to your collection using the "Add to Collection" button on addon cards.
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -92,12 +88,7 @@ const CollectionSidebar = () => {
                         size="icon"
                         variant="ghost"
                         className="h-8 w-8"
-                        onClick={() =>
-                          window.open(
-                            `https://modrinth.com/mod/${addon}`,
-                            "_blank"
-                          )
-                        }
+                        onClick={() => window.open(`https://modrinth.com/mod/${addon}`, "_blank")}
                       >
                         <Download className="h-4 w-4" />
                       </Button>
@@ -116,10 +107,9 @@ const CollectionSidebar = () => {
             )}
           </div>
         </ScrollArea>
-      </SidebarContent>
-      <SidebarRail />
-    </Sidebar>
+      </SheetContent>
+    </Sheet>
   );
 };
 
-export default CollectionSidebar;
+export default CollectionSheet;

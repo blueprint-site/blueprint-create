@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import supabase from "@/components/utility/Supabase";
 import { Upload, User2 } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { LoggedUserContextType, useLoggedUser } from "@/context/users/logedUserContext";
 
 export default function ProfileSettings() {
