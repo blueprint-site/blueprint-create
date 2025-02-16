@@ -84,7 +84,7 @@ function SchematicsList() {
             <SchematicCard
               key={schematic.id}
               schematic={schematic}
-              onClick={() => navigate(`../schematics/${schematic.id}`)}
+              onClick={() => navigate(`../schematics/${schematic.slug}`)}
             />
           ))
         )}
