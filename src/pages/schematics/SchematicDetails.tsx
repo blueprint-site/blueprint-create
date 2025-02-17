@@ -118,13 +118,6 @@ const SchematicDetails = () => {
                         </div>
                     </div>
                 </CardContent>
-                <CardFooter>
-                    {/* print all schematicData */}
-                    <pre className="whitespace-pre-wrap break-words">
-                        {JSON.stringify(schematicData, null, 2)}
-                    </pre>
-
-                </CardFooter>
             </Card>
         </div>
     );
