@@ -1,32 +1,35 @@
+import React, { useCallback, useEffect, useState } from "react";
+import { Upload, User2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import supabase from "@/components/utility/Supabase";
-import { Upload, User2 } from "lucide-react";
-import React, { useCallback, useEffect, useState } from "react";
-import { LoggedUserContextType, useLoggedUser } from "@/context/users/logedUserContext";
+import imageCompression from "browser-image-compression";
+import { useLoggedUser } from "@/context/users/logedUserContext";
+import { account, storage } from "@/lib/appwrite.ts";
+import {logMessage} from "@/components/utility/logs/sendLogs.tsx";
+
 
 export default function ProfileSettings() {
   const [isLoading, setIsLoading] = useState(false);
-  const [userData, setUserData] = useState<LoggedUserContextType | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [profile, setProfile] = useState({
     username: "",
     bio: "",
-    avatar_url: ""
+    avatar: ""
   });
 
   const LoggedUser = useLoggedUser();
 
   useEffect(() => {
-    setUserData(LoggedUser);
-    setProfile({
-      username: LoggedUser.displayName || "",
-      bio: LoggedUser.bio || "",
-      avatar_url: LoggedUser.icon_url || ""
-    });
+    if (LoggedUser) {
+      setProfile({
+        username: LoggedUser?.user?.name || "",
+        bio: LoggedUser.preferences?.bio || "",
+        avatar: LoggedUser.preferences?.avatar || ""
+      });
+    }
   }, [LoggedUser]);
 
   const onUploadImage = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,81 +38,71 @@ export default function ProfileSettings() {
 
     try {
       setIsLoading(true);
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-      const { error: uploadError } = await supabase.storage
-          .from('avatars')
-          .upload(fileName, file);
 
-      if (uploadError) {
-        console.error("Error uploading data:", uploadError);
-        return; // Exit function instead of throwing
+
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 500,
+        useWebWorker: true,
+      };
+
+      const compressedFile = await imageCompression(file, options);
+      const compressedFileAsFile = new File([compressedFile], file.name, { type: compressedFile.type });
+
+      logMessage('Image compressed successfully.', 0 , 'action');
+      if (profile.avatar) {
+        const oldFileId = profile.avatar.match(/\/files\/([^/]+)/)?.[1];
+        if (oldFileId) {
+          logMessage(`Old image file id found (${oldFileId}) !`, 0 , 'action');
+          try {
+            await storage.deleteFile("67aee2b30000b9e21407", oldFileId);
+            logMessage(`Old image have been deleted (${oldFileId}) !`, 0 , 'action');
+          } catch (deleteError) {
+            logMessage(`Error while deleting old file (${oldFileId}) !`, 3 , 'action');
+          }
+        } else {
+          logMessage(`Any file found , skipping suppression ! (${oldFileId}) !`, 0 , 'action');
+        }
       }
-      const { data: { publicUrl } } = supabase.storage
-          .from('avatars')
-          .getPublicUrl(fileName);
 
-      // Update both local state and user metadata
-      setProfile(prev => ({ ...prev, avatar_url: publicUrl }));
+      const fileId = crypto.randomUUID();
+      const response = await storage.createFile(
+          "67aee2b30000b9e21407",
+          fileId,
+          compressedFileAsFile,
+      );
 
-      // Update avatar_url in the profiles table
-      const { error: profileError } = await supabase
-          .from('profiles')
-          .upsert({
-            id: LoggedUser.user?.id,  // Assuming user has an id in the `profiles` table
-            avatar_url: publicUrl
-          });
 
-      if (profileError) {
-        console.error('Error updating profile avatar:', profileError);
-      }
+      const avatarUrl = storage.getFilePreview("67aee2b30000b9e21407", response.$id).toString();
+      console.log(avatarUrl);
+      setProfile(prev => ({ ...prev, avatar: avatarUrl }));
     } catch (error) {
-      console.error('Error uploading image:', error);
-      setError('Failed to upload image');
+      logMessage("Error while uploading avatar image", 3 , 'action');
+      setError("Error while uploading avatar image");
     } finally {
       setIsLoading(false);
+      handleSave().then(() => {
+        logMessage("Saving of the image done", 0 , 'action');
+      })
     }
-  }, [LoggedUser]);
+  }, [profile.avatar]);
 
   const handleSave = async () => {
     setIsLoading(true);
     try {
-      console.log('Saving profile:', profile);
+      logMessage("Saving of the profile in progress", 0 , 'action');
 
-      // Update the username and bio in Supabase Auth
-      const { error: authError } = await supabase.auth.updateUser({
-        data: {
-          preferred_username: profile.username,
-          full_name: profile.bio,
-        }
+      await account.updateName(profile.username);
+
+      await account.updatePrefs({
+        bio: profile.bio,
+        avatar: profile.avatar
       });
 
-      if (authError) {
-        console.error('Error saving user data:', authError);
-        setError('Failed to save profile changes');
-        return;
-      }
-
-      const { error: profileError } = await supabase
-          .from('profiles')
-          .upsert({
-            id: LoggedUser.id, // Identifiant unique de l'utilisateur
-            display_name: profile.username,
-            bio: profile.bio,
-            icon_url: profile.avatar_url // Ajoutez avatar_url si nécessaire
-          });
-
-
-      if (profileError) {
-        console.error('Error saving profile data:', profileError);
-        setError('Failed to save profile changes');
-        return;
-      }
-
-      console.log('Profile updated successfully!');
+      logMessage("Saving of the profile done", 0 , 'action');
     } catch (error) {
-      console.error('Error saving profile:', error);
-      setError('Failed to save profile changes');
+      logMessage("Error while saving the profile ", 3 , 'action');
+      setError("Error while saving the profile");
     } finally {
       setIsLoading(false);
     }
@@ -119,7 +112,7 @@ export default function ProfileSettings() {
     return <div className="text-destructive">{error}</div>;
   }
 
-  if (!userData) {
+  if (!LoggedUser) {
     return <div>Loading...</div>;
   }
 
@@ -137,7 +130,7 @@ export default function ProfileSettings() {
             <h3 className="text-lg font-semibold mb-2">Profile picture</h3>
             <div className="flex items-center gap-4">
               <Avatar className="w-16 h-16">
-                <AvatarImage src={profile.avatar_url} />
+                <AvatarImage src={profile.avatar} />
                 <AvatarFallback>
                   <User2 className="w-8 h-8" />
                 </AvatarFallback>
