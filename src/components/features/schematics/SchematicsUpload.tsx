@@ -121,7 +121,7 @@ function SchematicsUpload() {
             console.log(filePath);
             let counter = 0;
 
-            try {
+            // try {
                 let { data: fileData, error: fileError } =
                     await supabase.storage
                         .from("schematics")
@@ -130,33 +130,33 @@ function SchematicsUpload() {
                 console.log(fileData);
 
                 if (fileError) throw fileError; // Ensure error handling runs
-            } catch (fileError) {
-                if (fileError.statusCode === 409) {
-                    console.log(
-                        "[Im fixing myself] Slug already exists, trying again"
-                    );
+            // } catch (fileError) {
+            //     if (fileError.statusCode === 409) {
+            //         console.log(
+            //             "[Im fixing myself] Slug already exists, trying again"
+            //         );
 
-                    counter += 1;
-                    filePath = `files/${slugify(title)}-${counter}`;
+            //         counter += 1;
+            //         filePath = `files/${slugify(title)}-${counter}`;
 
-                    // Retry upload with the new filePath
-                    const { data: retryData, error: retryError } =
-                        await supabase.storage
-                            .from("schematics")
-                            .upload(filePath, file);
+            //         // Retry upload with the new filePath
+            //         const { data: retryData, error: retryError } =
+            //             await supabase.storage
+            //                 .from("schematics")
+            //                 .upload(filePath, file);
 
-                    if (retryError) {
-                        console.log("FILE ERROR after retry:", retryError);
-                    } else {
-                        console.log(
-                            "Upload successful after retry:",
-                            retryData
-                        );
-                    }
-                } else {
-                    console.log("FILE ERROR:", fileError);
-                }
-            }
+            //         if (retryError) {
+            //             console.log("FILE ERROR after retry:", retryError);
+            //         } else {
+            //             console.log(
+            //                 "Upload successful after retry:",
+            //                 retryData
+            //             );
+            //         }
+            //     } else {
+            //         console.log("FILE ERROR:", fileError);
+            //     }
+            // }
 
             // Upload image to bucket
             const imagePath = `images/${Date.now()}_${image.name}`;
