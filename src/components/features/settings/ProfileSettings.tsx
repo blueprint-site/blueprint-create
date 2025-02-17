@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import imageCompression from "browser-image-compression";
 import { useLoggedUser } from "@/context/users/logedUserContext";
 import { account, storage } from "@/lib/appwrite.ts";
-import logMessage from "@/components/utility/logs/sendLogs.tsx";
+import logMessage from "@/components/utility/logs/sendLogs";
 
 
 export default function ProfileSettings() {

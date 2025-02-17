@@ -1,8 +1,8 @@
 import { useQuery, useMutation, useQueryClient, UseQueryOptions } from "@tanstack/react-query";
 import { useState } from "react";
 import { z } from "zod";
-import supabase from "@/components/utility/Supabase.tsx";
-import logMessage from "@/components/utility/logs/sendLogs.tsx";
+import supabase from "@/components/utility/Supabase";
+import logMessage from "@/components/utility/logs/sendLogs";
 
 // 🛠 Configuration des schémas Zod
 const createSchema = <T extends z.ZodTypeAny>(schema: T) => schema;

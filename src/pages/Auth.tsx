@@ -6,7 +6,7 @@ import { account } from "@/lib/appwrite.ts";
 import DiscordLogo from "@/assets/icons/discord-mark-white.svg";
 import GithubLogo from "@/assets/icons/github-mark-white.svg";
 import GoogleLogo from "@/assets/icons/google-mark-color.png";
-import  logMessage  from "@/components/utility/logs/sendLogs.tsx";
+import  logMessage  from "@/components/utility/logs/sendLogs";
 import { Input } from "@/components/ui/input.tsx";
 import { OAuthProvider} from "appwrite";
 import {User} from "@/types";

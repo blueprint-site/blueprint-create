@@ -1,7 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import supabase from "@/components/utility/Supabase.tsx";
-import logMessage from "@/components/utility/logs/sendLogs.tsx";
+import supabase from "@/components/utility/Supabase";
+import logMessage from "@/components/utility/logs/sendLogs";
 
 // TABLE WHERE WE WANT TO HAVE REAL TIME UPDATE
 const tablesToListen = ["profiles", "addons", "blog_articles", "mods"];
