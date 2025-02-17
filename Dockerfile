@@ -13,7 +13,7 @@ RUN npm ci --legacy-peer-deps
 # Copy the rest of the app
 COPY . .
 
-# Build the app
+# Build the app (assurez-vous que Vite génère votre app dans le dossier "dist")
 RUN npm run build
 
 # Stage 2: Serve with Nginx
@@ -22,11 +22,15 @@ FROM nginx:alpine
 # Copy built files to Nginx public directory
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy custom Nginx config
+# Copy custom Nginx config (votre configuration Nginx)
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copier le script d'entrypoint dans l'image
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 # Expose port 80
 EXPOSE 80
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Lancer le script d'entrypoint
+CMD ["/entrypoint.sh"]
