@@ -45,7 +45,7 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
         <Button
           variant="outline"
           size="icon"
-          className="h-8 w-8 rounded-full absolute z-1000 right-3 top-3"
+          className="h-8 w-8 rounded-full absolute right-3 top-3"
           onClick={handleCollectionAction}
         >
           {isInCollection ? <Star /> : <StarOff />}

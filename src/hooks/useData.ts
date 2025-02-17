@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient, UseQueryOptions } from "@tanstac
 import { useState } from "react";
 import { z } from "zod";
 import supabase from "@/components/utility/Supabase.tsx";
+import {logMessage} from "@/components/utility/logs/sendLogs.tsx";
 
 // 🛠 Configuration des schémas Zod
 const createSchema = <T extends z.ZodTypeAny>(schema: T) => schema;
@@ -42,14 +43,16 @@ export const useEntityManager = <T extends Entity>(
         try {
             return schema.parse(data);
         } catch (error) {
+            logMessage(`Invalid ${table} data: ${error}`, 2 , 'data');
             console.error("Validation error:", error);
-            throw new Error(`Invalid ${table} data: ${error}`);
+            throw error;
         }
     };
 
     const fetchEntities = async (page: number): Promise<T[]> => {
         const from = page * pageSize;
         const to = from + pageSize - 1;
+        logMessage('fetching entities from table :' + table, 0 , 'data');
 
         let query = supabase
             .from(table)
@@ -100,7 +103,7 @@ export const useEntityManager = <T extends Entity>(
             ...(old || []),
             ...newData,
         ]);
-
+        logMessage('load more data from : ' + table, 0 , 'data');
         setPage(nextPage);
     };
 
@@ -111,7 +114,10 @@ export const useEntityManager = <T extends Entity>(
             .select()
             .single();
 
-        if (error) throw error;
+        if (error) {
+            logMessage('Error creating entity on  : ' + table, 2 , 'data');
+        }
+        logMessage('created entity on  : ' + table, 0 , 'data');
         return validateData(result);
     };
 
@@ -123,7 +129,10 @@ export const useEntityManager = <T extends Entity>(
             .select()
             .single();
 
-        if (error) throw error;
+        if (error) {
+            logMessage('Error updating entity on  : ' + table, 2 , 'data');
+        }
+        logMessage('updated entity on  : ' + table, 2 , 'data');
         return validateData(result);
     };
 
@@ -133,7 +142,10 @@ export const useEntityManager = <T extends Entity>(
             .delete()
             .eq("id", id);
 
-        if (error) throw error;
+        if (error){
+            logMessage('Error deleting entity on  : ' + table, 2 , 'data');
+        }
+        logMessage('deleted entity on  : ' + table, 2 , 'data');
     };
 
     const query = useQuery<T[], Error>({

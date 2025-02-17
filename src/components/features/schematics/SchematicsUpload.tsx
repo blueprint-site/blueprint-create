@@ -7,9 +7,10 @@ import { LoadingSuccess } from "@/components/loading-overlays/LoadingSuccess";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import supabase from "@/components/utility/Supabase";
-import {LoggedUserContextType, useLoggedUser} from "@/context/users/logedUserContext";
+import { useLoggedUser} from "@/context/users/logedUserContext";
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group";
+import {databases, storage} from "@/lib/appwrite.ts";
+import {LoggedUserContextType} from "@/types";
 
 function SchematicsUpload() {
     const [step, setStep] = useState(1);
@@ -73,64 +74,34 @@ function SchematicsUpload() {
         userdata: LoggedUserContextType
     ) {
         try {
-            // Upload file to bucket
-            const filePath = `files/${Date.now()}_${file.name}`;
-            const {
-                data: fileData,
-                error: fileError,
-            } = await supabase.storage
-                .from("schematics")
-                .upload(filePath, file);
-            console.log(fileData)
+            // Upload file to Appwrite storage
+            const uploadedFile = await storage.createFile('67b2241e0032c25c8216', 'unique()', file );
 
-            if (fileError) {
-                console.log("FILE ERROR", fileError);
+            // Upload image to Appwrite storage
+            const uploadedImage = await storage.createFile('67b22481001e99d90888', 'unique()', image);
+            const fileUrl = storage.getFileDownload('67b2241e0032c25c8216', uploadedFile.$id);
+            const imageUrl = storage.getFilePreview('67b22481001e99d90888', uploadedImage.$id);
+
+            const data = {
+                title: title,
+                description: description,
+                schematic_url: fileUrl,
+                image_url: imageUrl,
+                user_id: userdata.user?.$id,
+                authors: [userdata.user?.$id],
+                game_versions: gameVersions,
+                create_versions: createVersions,
+                modloaders: loaders,
             }
+            // Insert metadata into Appwrite database
+            const document = await databases.createDocument(
+                '67b1dc430020b4fb23e3',
+                '67b2310d00356b0cb53c',
+                'unique()',
+                data,
+            );
 
-            // Upload image to bucket
-            const imagePath = `images/${Date.now()}_${image.name}`;
-            const {
-                data: imageData,
-                error: imageError,
-            } = await supabase.storage
-                .from("schematics")
-                .upload(imagePath, image);
-            console.log(imageData)
-            if (imageError) {
-                console.log("IMAGE ERROR", imageError);
-            }
-
-            // Get public URLs
-            const fileUrl = supabase.storage
-                .from("schematics")
-                .getPublicUrl(filePath).data.publicUrl;
-            const imageUrl = supabase.storage
-                .from("schematics")
-                .getPublicUrl(imagePath).data.publicUrl;
-
-            // Insert metadata into the table
-            const {
-                data: blueprintData,
-                error: insertError,
-            } = await supabase.from("schematics").insert([
-                {
-                    title: title,
-                    description: description,
-                    schematic_url: fileUrl,
-                    image_url: imageUrl,
-                    authors: [userdata.user?.id] ,
-                    game_versions: gameVersions,
-                    create_versions: createVersions,
-                    modloaders: loaders,
-                },
-            ]);
-
-            if (insertError) {
-                console.error("Error insertig data:", insertError);
-                return; // Exit function instead of throwing
-            }
-
-            console.log("Blueprint uploaded successfully:", blueprintData);
+            console.log("Blueprint uploaded successfully:", document);
         } catch (error) {
             console.error("Error uploading blueprint:", error);
         }

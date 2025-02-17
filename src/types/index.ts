@@ -267,12 +267,47 @@ export interface Admin_logs {
   user_uuid: string;
 }
 
-export interface Users {
-  id: string;
-  display_name: string;
-  email: string;
-  icon_url: string;
+export interface User {
+  $id: string
+  $createdAt: string
+  $updatedAt: string
+  name: string
+  registration: string
+  status: boolean
+  labels: string[]
+  passwordUpdate: string
+  email: string
+  phone: string
+  emailVerification: boolean
+  phoneVerification: boolean
+  mfa: boolean
+  prefs: UserPreferences
+  targets: Target[]
+  accessedAt: string
+}
+
+export interface Target {
+  $id: string
+  $createdAt: string
+  $updatedAt: string
+  name: string
+  userId: string
+  providerId: string
+  providerType: string
+  identifier: string
+}
+
+export interface UserPreferences {
+  theme: 'light' | 'dark';
+  language: string;
+  notificationsEnabled: boolean;
+  avatar: string,
+  bio: string;
   roles: string[];
-  created_at: string;
-  updated_at: string;
+}
+
+export interface LoggedUserContextType {
+  user: User | null;
+  preferences: UserPreferences | null;
+  updatePreferences: (prefs: UserPreferences) => Promise<void>;
 }

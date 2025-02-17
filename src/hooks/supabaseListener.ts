@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import supabase from "@/components/utility/Supabase.tsx";
+import {logMessage} from "@/components/utility/logs/sendLogs.tsx";
 
 // TABLE WHERE WE WANT TO HAVE REAL TIME UPDATE
 const tablesToListen = ["profiles", "addons", "blog_articles", "mods"];
@@ -12,6 +13,7 @@ export const useSupabaseListener = () => {
 
     useEffect(() => {
         const channels = tablesToListen.map((table) => {
+            logMessage('Websocket listen on   : ' + table, 0 , 'action');
             return supabase
                 .channel(table)
                 .on("postgres_changes", { event: "*", schema: "public", table }, async (payload) => {

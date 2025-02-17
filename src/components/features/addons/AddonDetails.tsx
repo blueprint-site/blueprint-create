@@ -13,8 +13,8 @@ import DOMPurify from "dompurify";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useCollectionStore } from "@/stores/collectionStore";
-import { Addon } from "@/types";
 import supabase from "@/components/utility/Supabase";
+import {Addon} from "@/schemas/addon.schema.tsx";
 
 export default function AddonDetails() {
   const { slug } = useParams();
@@ -65,13 +65,13 @@ export default function AddonDetails() {
 
         const data = await getAddonData(slug);
         if (!data) {
-          throw new Error("Addon not found");
+          console.log("Error fetching addon data");
         }
 
         setAddon(data);
 
         // Process markdown description
-        if (data.modrinth_raw?.description) {
+        if (data?.modrinth_raw?.description) {
           const markedHtml = await marked(data.modrinth_raw.description);
           const sanitizedHtml = DOMPurify.sanitize(markedHtml, {
             ALLOWED_TAGS: [
@@ -367,11 +367,11 @@ export default function AddonDetails() {
               <div className="space-y-2 text-sm">
                 <p>
                   <span className="font-semibold">Created:</span>{" "}
-                  {new Date(addon.datecreated).toLocaleDateString()}
+                  {new Date(addon.created_at || Date.now()).toLocaleDateString()}
                 </p>
                 <p>
                   <span className="font-semibold">Last Updated:</span>{" "}
-                  {new Date(addon.datemodified).toLocaleDateString()}
+                  {new Date(addon.updated_at || Date.now()).toLocaleDateString()}
                 </p>
                 {modrinthData?.license && (
                   <p>

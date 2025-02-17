@@ -9,8 +9,7 @@ import { usersSchema, Users} from "@/schemas/users.schema.tsx";
 
 
 const AdminUsersTable = () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
+
     const { data: profiles, isLoading, error } = useEntityManager<Users>("profiles", usersSchema);
 
     if (isLoading) {

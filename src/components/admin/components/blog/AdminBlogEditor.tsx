@@ -36,8 +36,8 @@ const AdminBlogEditor = () => {
                 status: "draft",
                 tags: [],
                 likes: 0,
-                authors_uuid: [LoggedUser.id],
-                authors: [LoggedUser.displayName],
+                authors_uuid: [LoggedUser.user?.$id || ''],
+                authors: [LoggedUser.user?.name || ''],
                 created_at: new Date().toISOString(),
             });
         }
