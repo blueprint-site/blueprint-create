@@ -1,0 +1,9 @@
+{
+  "phases": {
+    "install": {
+      "cmds": [
+        "npm ci --legacy-peer-deps"
+      ]
+    }
+  }
+}
