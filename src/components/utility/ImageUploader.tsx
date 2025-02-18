@@ -1,16 +1,21 @@
-import {useState, useEffect, useRef} from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { UploadCloud, XCircle } from "lucide-react";
+import {storage} from "@/lib/appwrite.ts";
+import {ID} from "appwrite";
+
 
 interface ImageUploaderProps {
     value?: string;
-    onChange: (base64OrUrl: string | undefined) => void;
+    onChange: (url: string | undefined) => void;
 }
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({ value, onChange }) => {
     const [preview, setPreview] = useState<string | null>(value || null);
-    const [imageUrl, setImageUrl] = useState<string>( "");
+    const [imageUrl, setImageUrl] = useState<string>("");
+    const [isUploading, setIsUploading] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {
         if (value) {
@@ -18,20 +23,32 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ value, onChange }) => {
         }
     }, [value]);
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64String = reader.result as string;
-                setPreview(base64String);
-                setImageUrl("");
-                onChange(base64String ?? undefined);
-            };
-            reader.readAsDataURL(file);
+            setIsUploading(true);
+            try {
+                // Upload file to Appwrite bucket
+                const response = await storage.createFile(
+                    "67b478dd00221462624e", // Bucket ID
+                    ID.unique(),
+                    file
+                );
+                const fileId = response.$id;
+
+                // Directly get the view URL using getFileView
+                const viewUrl = await storage.getFilePreview("67b478dd00221462624e", fileId);
+
+                setPreview(viewUrl.href);  // 'href' will give the preview URL
+                setImageUrl(viewUrl.href); // Store the preview URL
+                onChange(viewUrl.href);    // Update parent state with preview URL
+            } catch (error) {
+                console.error("Upload failed:", error);
+            } finally {
+                setIsUploading(false);
+            }
         }
     };
-    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     const handleButtonClick = () => {
         if (fileInputRef.current) {
@@ -69,6 +86,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ value, onChange }) => {
             ) : (
                 <p className="text-gray-500 text-center">No Image selected</p>
             )}
+
             <div className="w-full py-4">
                 <Input
                     type="text"
@@ -77,22 +95,17 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ value, onChange }) => {
                     onChange={handleUrlChange}
                 />
             </div>
-            {/* Input pour URL */}
-
 
             <div className="w-full py-4">
-                {/* Bouton custom qui ouvre le file input */}
-                <Button variant="outline" className="w-full flex gap-2" type="button" onClick={handleButtonClick}>
-                    <UploadCloud size={18}/> Select image
+                <Button variant="outline" className="w-full flex gap-2" type="button" onClick={handleButtonClick} disabled={isUploading}>
+                    <UploadCloud size={18}/> {isUploading ? "Uploading..." : "Select image"}
                 </Button>
-
-                {/* Input caché */}
                 <Input ref={fileInputRef} type="file" accept="image/*" className="hidden"
-                       onChange={handleFileChange}/>
+                       onChange={handleFileChange}
+                       disabled={isUploading}
+                />
             </div>
         </div>
-
-
     );
 };
 

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 
 export const blogSchema = z.object({
-    id: z.number(),
+    id: z.string(),
     title: z.string(),
     content: z.string(),
     slug: z.string(),

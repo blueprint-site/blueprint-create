@@ -1,26 +1,31 @@
 
-
-import {AdminBlogTable} from "@/components/tables/blog/AdminBlogTable.tsx";
-import {ColumnDef} from "@tanstack/react-table";
+import { ColumnDef } from "@tanstack/react-table";
+import { format } from "date-fns";
+import { MoreHorizontal, ArrowUpDown } from "lucide-react";
+import { AdminBlogTable } from "@/components/tables/blog/AdminBlogTable.tsx";
 import {
     DropdownMenu,
-    DropdownMenuContent, DropdownMenuItem,
+    DropdownMenuContent,
+    DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuTrigger
+    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {ArrowUpDown, MoreHorizontal} from "lucide-react";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
-import { format } from "date-fns";
-import {useEntityManager} from "@/hooks/useData.ts";
-import {Blog, blogSchema} from "@/schemas/blog.schema.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar.tsx";
+import {useDeleteBlog, useFetchBlogs, useSaveBlog} from "@/hooks/use-blogs.ts";
+import {BlogType} from "@/types";
+
+
 
 const AdminBlogList = () => {
-    const { data: blogs, isLoading, error, update, delete: deleteMutation } = useEntityManager<Blog>("blog_articles", blogSchema);
+    const { data: blogs, isLoading, error } = useFetchBlogs()
 
-    const handleUpdateStatus = async (id: string, newStatus: "draft" | "published") => {
+    const { mutateAsync: deleteBlog } = useDeleteBlog();
+    const { mutateAsync: saveBlog } = useSaveBlog();
+
+    const handleUpdateStatus = async ($id: string, newStatus: "draft" | "published") => {
         try {
-            await update.mutateAsync({ id, data: { status: newStatus } });
+            await saveBlog({ $id, status: newStatus });
         } catch (error) {
             console.error("Failed to update status:", error);
         }
@@ -28,155 +33,129 @@ const AdminBlogList = () => {
 
     const handleDelete = async (id: string) => {
         try {
-            await deleteMutation.mutateAsync(id); // Utiliser deleteMutation ici
-            console.log("Article deleted successfully!");
+            await deleteBlog(id);
         } catch (error) {
             console.error("Failed to delete article:", error);
-            alert("Failed to delete article. Please try again.");
         }
     };
-    const columns: ColumnDef<Blog>[] = [
+
+    const columns: ColumnDef<BlogType>[] = [
         {
             accessorKey: "img_url",
             header: "Image",
-            cell: ({ row }) => {
-                return (
-                    <Avatar>
-                        <AvatarImage src={row.original.img_url || ""} />
-                        <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                )
-
-
-            }
+            cell: ({ row }) => (
+                <Avatar>
+                    <AvatarImage src={row.original.img_url || ""} />
+                    <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+            ),
         },
         {
             accessorKey: "title",
-            header: ({ column }) => {
-                return (
-                    <Button
-                        variant="ghost"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    >
-                        Title
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                    </Button>
-                )
-            }
+            header: ({ column }) => (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Title
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            ),
         },
         {
             accessorKey: "authors",
-            header: ({ column }) => {
-                return (
-                    <Button
-                        variant="ghost"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    >
-                        Authors
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                    </Button>
-                )
-            }
+            header: ({ column }) => (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Authors
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            ),
         },
         {
             accessorKey: "created_at",
-            header: ({ column }) => {
-                return (
+            header: ({ column }) => (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Created at
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            ),
+            cell: ({ getValue }) => (
+                <span>{format(new Date(getValue() as string), "dd/MM/yyyy HH:mm")}</span>
+            ),
+        },
+        {
+            accessorKey: "status",
+            header: ({ column }) => (
+                <div className="text-center">
                     <Button
                         variant="ghost"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Created at
+                        Status
                         <ArrowUpDown className="ml-2 h-4 w-4" />
                     </Button>
-                );
-            },
-            cell: ({ getValue }) => {
-                const createdAt = getValue() as string;
-                // Formatage de la date
-                const formattedDate = format(new Date(createdAt), "dd/MM/yyyy HH:mm");
-                return <span>{formattedDate}</span>;
-            },
-        },
-        {
-            accessorKey: "status",
-            header: ({ column }) => {
-                return (
-                    <div className="text-center">
-                        <Button
-                            variant="ghost"
-                            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                        >
-                            Status
-                            <ArrowUpDown className="ml-2 h-4 w-4" />
-                        </Button>
-                    </div>
-
-                )
-            },
-            cell: ({ row }) => {
-                   switch (row.original.status) {
-                       case "draft":
-                           return (
-                             <div className={"text-center"}> Draft 📋 </div>
-                           )
-                       case "published":
-                           return (
-                               <div className={"text-center"}> Public ✅ </div>
-                           )
-                   }
-            }
+                </div>
+            ),
+            cell: ({ row }) => (
+                <div className="text-center">
+                    {row.original.status === "draft" ? "Draft 📋" : "Public ✅"}
+                </div>
+            ),
         },
         {
             id: "actions",
-            cell: ({ row }) => {
-                return (
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0 bg-surface-1">
-                                <span className="sr-only">Open menu</span>
-                                <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions 🚀</DropdownMenuLabel>
-                            {row.original.status === "draft" ? (
-                                <DropdownMenuItem
-                                    onClick={(event) => {
-                                        event.stopPropagation();
-                                        handleUpdateStatus(row.original.id.toString(), "published");
-                                    }}
-                                >
-                                    Publish this article ✅
-                                </DropdownMenuItem>
-                            ) : (
-                                <DropdownMenuItem
-                                    onClick={(event) => {
-                                        event.stopPropagation();
-                                        handleUpdateStatus(row.original.id.toString(), "draft");
-                                    }}
-                                >
-                                    Unpublish this article 📋
-                                </DropdownMenuItem>
-                            )}
+            cell: ({ row }) => (
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0 bg-surface-1">
+                            <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Actions 🚀</DropdownMenuLabel>
+                        {row.original.status === "draft" ? (
                             <DropdownMenuItem
-                                onClick={async (event) => {
-                                    event.stopPropagation();
-                                    handleDelete(row.original.id.toString())
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleUpdateStatus(row.original.$id, "published");
                                 }}
                             >
-                                Delete this article ❌
+                                Publish ✅
                             </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                );
-            },
-        }
-    ]
+                        ) : (
+                            <DropdownMenuItem
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleUpdateStatus(row.original.$id, "draft");
+                                }}
+                            >
+                                Unpublish 📋
+                            </DropdownMenuItem>
+                        )}
+                        <DropdownMenuItem
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleDelete(row.original.$id);
+                            }}
+                        >
+                            Delete ❌
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            ),
+        },
+    ];
 
     if (isLoading) return <p>Loading blogs...</p>;
-    if (error) return <p>Error loading blogs: {error.message}</p>;
-    // return the table
-    return <div><AdminBlogTable columns={columns} data={blogs || []}/></div>
-}
-export default AdminBlogList
+    if (error) return <p>Error loading blogs: {(error as Error).message}</p>;
+
+    return <AdminBlogTable columns={columns} data={blogs || []} />;
+};
+
+export default AdminBlogList;

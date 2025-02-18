@@ -240,7 +240,7 @@ export interface Schematic {
 }
 // Interface for the blog feature
 export interface BlogType {
-  id: string;
+  $id: string;
   title: string;
   content: string;
   slug: string;
@@ -254,7 +254,7 @@ export interface BlogType {
   created_at: string;
 }
 export interface Tag {
-  id: number;
+  id: string;
   value: string;
   color: string;
 }

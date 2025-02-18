@@ -24,7 +24,7 @@ import {
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 interface DataWithId {
-    id: string | number;
+    $id: string | number;
 }
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -102,7 +102,7 @@ export function AdminBlogTable<TData extends DataWithId, TValue>({
                         {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row,index) => (
                                 <TableRow
-                                    onClick={() => navigate(`/admin/blog-editor/${row.original.id}`)}
+                                    onClick={() => navigate(`/admin/blog-editor/${row.original.$id}`)}
                                     className="cursor-pointer"
                                     key={index}
                                     data-state={row.getIsSelected() && "selected"}
