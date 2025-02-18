@@ -1,6 +1,6 @@
 import { LogOut, Settings, User , Shield} from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
+import { account } from "@/lib/appwrite.ts";
 import {
   Avatar,
   AvatarFallback,
@@ -13,24 +13,14 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import supabase from "@/components/utility/Supabase";
 import ThemeToggle from "@/components/utility/ThemeToggle";
 import { useLoggedUser} from "@/context/users/logedUserContext";
 
-interface UserMenuProps {
-  user: {
-    avatar_url?: string;
-    custom_claims?: {
-      global_name?: string;
-    };
-  };
-}
 
-const UserMenu = ({ user }: UserMenuProps) => {
+const UserMenu = () => {
   const navigate = useNavigate();
   const loggedUser = useLoggedUser();
   const AdminPanelButton = () => {
-    if(loggedUser.isAdmin) {
       return (
           <button
               onClick={() => navigate("/admin")}
@@ -40,10 +30,9 @@ const UserMenu = ({ user }: UserMenuProps) => {
             Admin Panel
           </button>
       )
-    }
   }
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await account.deleteSession('current');
     navigate("/login");
   };
 
@@ -53,7 +42,7 @@ const UserMenu = ({ user }: UserMenuProps) => {
           <NavigationMenuItem className="h-10">
             <NavigationMenuTrigger className="!bg-transparent hover:!bg-transparent">
             <Avatar className="h-10 w-10">
-              <AvatarImage src={user.avatar_url} />
+              <AvatarImage src={loggedUser.preferences?.avatar} />
               <AvatarFallback>
                 <User className="h-10 w-10" />
               </AvatarFallback>
@@ -62,7 +51,7 @@ const UserMenu = ({ user }: UserMenuProps) => {
           <NavigationMenuContent>
             <div className="flex w-48 flex-col bg-background gap-2 p-2 pb-3">
               <div className="flex items-center border-b px-2 pb-2">
-                <p className="my-1 text-sm font-medium text-foreground">{loggedUser.displayName}</p>
+                <p className="my-1 text-sm font-medium text-foreground">{loggedUser?.user?.name}</p>
               </div>
               <button
                   onClick={() => navigate("/user")}

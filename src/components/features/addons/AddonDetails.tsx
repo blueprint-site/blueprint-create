@@ -13,16 +13,13 @@ import DOMPurify from "dompurify";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useCollectionStore } from "@/stores/collectionStore";
-import { Addon } from "@/types";
-import supabase from "@/components/utility/Supabase";
+import {useFetchAddon} from "@/api";
+
 
 export default function AddonDetails() {
   const { slug } = useParams();
-  const [addon, setAddon] = useState<Addon | null>(null);
   const [description, setDescription] = useState<string>("");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const { collection, addAddon, removeAddon } = useCollectionStore();
   const isInCollection = collection.includes(slug || "");
 
@@ -30,49 +27,19 @@ export default function AddonDetails() {
     if (!slug) return;
     isInCollection ? removeAddon(slug) : addAddon(slug);
   };
+  const { data: addon, isLoading, error } = useFetchAddon(slug);
 
-  const getAddonData = async (slug: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('mods')
-        .select('*')
-        .eq('slug', slug)
-        .single();
-
-      if (error) {
-        console.error('Error fetching addon data:', error);
-        return null;
-      }
-
-      return data as Addon;
-    } catch (error) {
-      console.error('Error fetching addon data:', error);
-      return null;
-    }
-  };
 
   useEffect(() => {
     if (!slug) {
-      setError("No addon slug provided");
-      setIsLoading(false);
       return;
     }
 
     const loadAddonDetails = async () => {
       try {
-        setIsLoading(true);
-        setError(null);
-
-        const data = await getAddonData(slug);
-        if (!data) {
-          throw new Error("Addon not found");
-        }
-
-        setAddon(data);
-
         // Process markdown description
-        if (data.modrinth_raw?.description) {
-          const markedHtml = await marked(data.modrinth_raw.description);
+        if (addon) {
+          const markedHtml = await marked(addon?.modrinth_raw?.description || "");
           const sanitizedHtml = DOMPurify.sanitize(markedHtml, {
             ALLOWED_TAGS: [
               "h1", "h2", "h3", "h4", "h5", "h6",
@@ -84,10 +51,7 @@ export default function AddonDetails() {
           setDescription(sanitizedHtml);
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load addon details");
         console.error("Error loading addon details:", err);
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -111,7 +75,7 @@ export default function AddonDetails() {
       <div className="container mx-auto px-4 py-8">
         <Card className="bg-destructive/10 border-destructive">
           <CardContent className="p-6">
-            <p className="text-destructive">{error}</p>
+            <p className="text-destructive">{error.message}</p>
           </CardContent>
         </Card>
       </div>
@@ -133,12 +97,12 @@ export default function AddonDetails() {
       </div>
     );
   }
+  const modrinthData = typeof addon.modrinth_raw === 'string' ? JSON.parse(addon.modrinth_raw) : addon.modrinth_raw;
+  const curseforgeData = typeof addon.curseforge_raw === 'string' ? JSON.parse(addon.curseforge_raw) : addon.curseforge_raw;
 
-  const modrinthData = addon.modrinth_raw;
-  const curseforgeData = addon.curseforge_raw;
   const gallery = modrinthData?.gallery;
-  const totalDownloads = (modrinthData?.downloads || 0) + (curseforgeData?.downloadCount || 0);
 
+  const totalDownloads = (modrinthData?.downloads || 0) + (curseforgeData?.downloadCount || 0);
   const externalLinks = [
     ...(curseforgeData?.links?.sourceUrl ? [{
       icon: <Github className="h-4 w-4" />,
@@ -305,7 +269,7 @@ export default function AddonDetails() {
               </div>
 
               <div className="absolute bottom-4 inset-x-0 flex justify-center gap-1">
-                {gallery.map((_, idx) => (
+                {gallery.map((_: string, idx: number) => (
                   <button
                     key={idx}
                     onClick={() => setCurrentImageIndex(idx)}
@@ -346,7 +310,7 @@ export default function AddonDetails() {
                 <div className="mt-4">
                   <h4 className="text-sm font-semibold mb-2">Contributors</h4>
                   <div className="flex flex-wrap gap-2">
-                    {curseforgeData.authors.map((author) => (
+                    {curseforgeData.authors.map((author: { id: string , url: string , name: string}) => (
                       <a
                         key={author.id}
                         href={author.url}
@@ -367,11 +331,11 @@ export default function AddonDetails() {
               <div className="space-y-2 text-sm">
                 <p>
                   <span className="font-semibold">Created:</span>{" "}
-                  {new Date(addon.datecreated).toLocaleDateString()}
+                  {new Date(addon.created_at || Date.now()).toLocaleDateString()}
                 </p>
                 <p>
                   <span className="font-semibold">Last Updated:</span>{" "}
-                  {new Date(addon.datemodified).toLocaleDateString()}
+                  {new Date(addon.updated_at || Date.now()).toLocaleDateString()}
                 </p>
                 {modrinthData?.license && (
                   <p>

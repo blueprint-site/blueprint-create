@@ -1,172 +1,185 @@
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Addon } from "@/types";
-import { useMemo, useState, useEffect } from "react";
-import { useDebounce } from "use-debounce";
-import AddonCard from "./addon-card/AddonCard.tsx";
-import { useAppStore } from "@/stores/useAppStore.ts";
-import { AddonListSkeleton } from "./AddonListSkeleton";
-import { AddonSearchCard, ModloaderType } from "./AddonSearchCard";
-import AddonCollection from "@/components/features/addons/AddonCollection.tsx";
-
+import { useState } from 'react';
+import AddonCard from "@/components/features/addons/addon-card/AddonCard.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+import { motion } from 'framer-motion';
+import {CardDescription} from "@/components/ui/card.tsx";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
+import {useSearchAddons} from "@/api";
 
 const AddonList = () => {
-  const [query, setQuery] = useState<string>("");
-  const [modloader, setModloader] = useState<ModloaderType>("all");
-  const [version, setVersion] = useState<string>("all");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [debouncedQuery] = useDebounce(query, 300);
+    const [query, setQuery] = useState('');
+    const [page, setPage] = useState(1);
+    const [category, setCategory] = useState('');
+    const [loaders, setLoaders] = useState('');
+    // New state for category filter
+    const [version, setVersion] = useState(''); // New state for version filter
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const { addons, isLoading } = useAppStore();
+    // Fetch results based on query, category, version, and pagination
+    const { data: hits, isLoading, isFetching } = useSearchAddons(query, page, category, version, loaders);
 
-  // Reset to first page when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [debouncedQuery, modloader, version]);
+    const handleChange = (selectedOption: string) => {
+        setQuery(selectedOption);
+        setIsDropdownOpen(false);
+    };
 
-  const queryFilteredAddons = useMemo(() => {
-    if (!debouncedQuery) return addons;
-    return addons.filter((addon: Addon) =>
-      addon.name.toLowerCase().includes(debouncedQuery.toLowerCase())
-    );
-  }, [addons, debouncedQuery]);
+    const handleFocus = () => {
+        setIsDropdownOpen(true);
+    };
 
-  const modloaderFilteredAddons = useMemo(() => {
-    if (modloader === 'all') return queryFilteredAddons;
-    return queryFilteredAddons.filter((addon: Addon) =>
-      addon.categories.includes(modloader)
-    );
-  }, [queryFilteredAddons, modloader]);
+    const handleBlur = () => {
+        setTimeout(() => {
+            setIsDropdownOpen(false);
+        }, 100);
+    };
 
-  const filteredAddons = useMemo(() => {
-    if (version === 'all') return modloaderFilteredAddons;
-    return modloaderFilteredAddons.filter((addon: Addon) =>
-      addon.versions.includes(version)
-    );
-  }, [modloaderFilteredAddons, version]);
+    return (
+        <div className="flex">
+            {/* Sidebar */}
+            <div className="w-64 p-4 text-foreground">
+                <div className="mt-4 relative"> {/* Add relative here */}
+                    <h3 className="text-lg font-medium">Addon Database</h3>
+                    <Input
+                        type="text"
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
+                        placeholder="Search..."
+                        className="w-full p-2 border rounded-lg mb-4 font-minecraft"
+                    />
+                    {isDropdownOpen && query && hits && (
+                        <div className="absolute z-20 top-full bg-surface-1 w-full mt-1">
+                            {hits.map((hit) => (
+                                <motion.div
+                                    key={hit.id}
+                                    onClick={() => handleChange(hit.name)}
+                                    className="p-2 cursor-pointer text-foreground font-minecraft hover:bg-surface-2"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.3 }}
+                                >
 
-  // Pagination calculations
-  const totalPages = Math.ceil(filteredAddons.length / itemsPerPage);
-  const paginatedAddons = useMemo(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return filteredAddons.slice(startIndex, endIndex);
-  }, [filteredAddons, currentPage, itemsPerPage]);
 
-  const handleModloaderChange = (value: string) => {
-    if (value === "all" || value === "forge" || value === "fabric" || value === "quilt") {
-      setModloader(value);
-    }
-  };
 
-  const visiblePages = () => {
-    const pages = [];
-    const maxVisiblePages = 5;
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = startPage + maxVisiblePages - 1;
+                                            <div className="flex items-center gap-4">
+                                                <Avatar>
+                                                    <AvatarImage className=" bg-cover" src={hit.icon} />
+                                                    <AvatarFallback>CN</AvatarFallback>
+                                                </Avatar>
+                                                <div>
+                                                    <CardDescription>{hit.name}</CardDescription>
+                                                </div>
+                                            </div>
 
-    if (endPage > totalPages) {
-      endPage = totalPages;
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
 
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
-    }
-    return pages;
-  };
+                                </motion.div>
+                            ))}
+                        </div>
+                    )}
+                </div>
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <AddonSearchCard
-        query={query}
-        onQueryChange={setQuery}
-        modloader={modloader}
-        onModloaderChange={setModloader}
-        version={version}
-        onVersionChange={setVersion}
-      />
+                <div className="mt-4">
+                    <h3 className="text-lg font-medium">Category</h3>
+                    <Select value={category} onValueChange={setCategory}>
+                        <SelectTrigger className="w-full p-2 border font-minecraft  rounded-lg">
+                            <SelectValue className="font-minecraft" placeholder="Select category..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem className="font-minecraft cursor-pointer" value="all">All</SelectItem>
+                            <SelectItem className="font-minecraft cursor-pointer" value="tech">Tech</SelectItem>
+                            <SelectItem className="font-minecraft cursor-pointer"  value="energy">Energy</SelectItem>
+                            <SelectItem className="font-minecraft cursor-pointer" value="magic">Magic</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
 
-      {isLoading && <AddonListSkeleton />}
+                <div className="mt-4">
+                    <h3 className="text-lg font-medium">loaders</h3>
+                    <Select value={loaders} onValueChange={setLoaders}>
+                        <SelectTrigger className="w-full p-2 border font-minecraft  rounded-lg">
+                            <SelectValue className="font-minecraft" placeholder="Select category..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem className="font-minecraft cursor-pointer" value="all">All</SelectItem>
+                            <SelectItem className="font-minecraft cursor-pointer" value="Forge">Forge</SelectItem>
+                            <SelectItem className="font-minecraft cursor-pointer"  value="Fabric">Fabric</SelectItem>
+                            <SelectItem className="font-minecraft cursor-pointer" value="NeoForge">NeoForge</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
 
-      {!isLoading && (
-        <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {paginatedAddons.map((addon, index) => (
-              <AddonCard key={index} addon={addon} />
-            ))}
-          </div>
-
-          {filteredAddons.length > 0 && (
-            <div className="mt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-foreground-muted">Show</span>
-                <Select
-                  value={itemsPerPage.toString()}
-                  onValueChange={(value) => {
-                    setItemsPerPage(Number(value));
-                    setCurrentPage(1);
-                  }}
-                >
-                  <SelectTrigger className="w-[120px]">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="10">10</SelectItem>
-                    <SelectItem value="20">20</SelectItem>
-                    <SelectItem value="50">50</SelectItem>
-                  </SelectContent>
-                </Select>
-                <span className="text-sm text-foreground-muted">per page</span>
-              </div>
-
-              <div className="text-sm text-foreground-muted">
-                Showing {(currentPage - 1) * itemsPerPage + 1}-
-                {Math.min(currentPage * itemsPerPage, filteredAddons.length)} of{" "}
-                {filteredAddons.length} results
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setCurrentPage(currentPage - 1)}
-                  disabled={currentPage === 1}
-                >
-                  Previous
-                </Button>
-
-                {visiblePages().map((page) => (
-                  <Button
-                    key={page}
-                    variant={currentPage === page ? "default" : "outline"}
-                    onClick={() => setCurrentPage(page)}
-                  >
-                    {page}
-                  </Button>
-                ))}
-
-                <Button
-                  variant="outline"
-                  onClick={() => setCurrentPage(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                >
-                  Next
-                </Button>
-              </div>
+                <div className="mt-4">
+                    <h3 className="text-lg font-medium">Version</h3>
+                    <Select value={version} onValueChange={setVersion}>
+                        <SelectTrigger className="w-full p-2 border font-minecraft  rounded-lg">
+                            <SelectValue className="font-minecraft" placeholder="Sélectionner une version" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-surface-1">
+                            <SelectItem className="font-minecraft cursor-pointer" value="all">All</SelectItem>
+                            <SelectItem className="font-minecraft cursor-pointer" value="1.19.2">1.19.2</SelectItem>
+                            <SelectItem className="font-minecraft cursor-pointer" value="1.21.1">1.21.1</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
             </div>
-          )}
-          <AddonCollection />
-        </>
-      )}
-    </div>
-  );
+
+            {/* Main Content */}
+            <div className="flex-1 p-8">
+                {isLoading || isFetching ? (
+                    <p>Chargement...</p>
+                ) : (
+                    <div>
+                        <motion.div
+                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            {hits && hits.map((hit) => (
+                                <motion.div
+                                    key={hit.id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20 }}
+                                    transition={{ duration: 0.3 }}
+                                >
+                                    <AddonCard addon={hit} />
+                                </motion.div>
+                            ))}
+                        </motion.div>
+
+                        <div className="mt-8 flex justify-center items-center gap-4">
+                            <Pagination>
+                                <PaginationContent>
+                                    <PaginationItem>
+                                        <PaginationPrevious
+                                            onClick={() => setPage(page - 1)}
+                                            isActive={page === 1}
+                                        />
+                                    </PaginationItem>
+                                    <PaginationItem>
+                                        <span className="text-sm">
+                                            Page {page}
+                                        </span>
+                                    </PaginationItem>
+                                    <PaginationItem>
+                                        <PaginationNext
+                                            onClick={() => setPage(page + 1)}
+                                            isActive={(hits?.length || 0) < 6}
+                                        />
+                                    </PaginationItem>
+                                </PaginationContent>
+                            </Pagination>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
 };
 
 export default AddonList;

@@ -72,7 +72,7 @@ export function AdminUsersDataTable<TData, TValue>({
                             <TableRow key={index}>
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead key={header.id}>
+                                        <TableHead className="text-foreground" key={header.id}>
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(

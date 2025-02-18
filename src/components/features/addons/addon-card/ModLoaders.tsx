@@ -1,8 +1,9 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip.tsx";
 import DevinsBadges from "@/components/utility/DevinsBadges.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
-import { Addon } from "@/types";
+
 import { useMemo } from 'react';
+import {Addon} from "@/schemas/addon.schema.tsx";
 
 const MODLOADERS = ["forge", "fabric", "neoforge", "quilt"];
 

@@ -69,10 +69,10 @@ export function DataTable<TData, TValue>({
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup, index) => (
-                            <TableRow key={index}>
+                            <TableRow  key={index}>
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead key={header.id}>
+                                        <TableHead className="text-foreground" key={header.id}>
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(

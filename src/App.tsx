@@ -1,31 +1,27 @@
 // src/App.tsx
-import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
+import {LoadingOverlay} from '@/components/loading-overlays/LoadingOverlay';
 import '@/config/i18n';
-import { routes } from '@/routes/index';
-import { Suspense } from 'react';
-import { BrowserRouter, useRoutes } from 'react-router-dom';
-import { useEffect } from "react";
-import {useAppStore} from "@/stores/useAppStore.ts";
+import {routes} from '@/routes';
+import {Suspense} from 'react';
+import {BrowserRouter, useRoutes} from 'react-router-dom';
 import {LoggedUserProvider} from "@/context/users/logedUserContext";
+import {Toaster} from "@/components/ui/toaster.tsx";
 
 
 const AppRoutes = () => {
-  const element = useRoutes(routes);
-  return element;
+    return useRoutes(routes);
 };
 
 const App = () => {
-    const { loadAppData } = useAppStore();
-    useEffect(() => {
-        // Charger les données dès le démarrage de l'application
-        loadAppData().then();
-    }, [loadAppData]);
+
   return (
     <BrowserRouter>
       <Suspense fallback={<LoadingOverlay />}>
           <LoggedUserProvider>
               <AppRoutes />
           </LoggedUserProvider>
+      <Toaster/>
+
       </Suspense>
     </BrowserRouter>
   );

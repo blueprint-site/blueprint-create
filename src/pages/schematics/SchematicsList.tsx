@@ -1,96 +1,143 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { PostgrestResponse } from "@supabase/supabase-js";
-
-import supabase from "@/components/utility/Supabase";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { LoadingSpinner } from "@/components/loading-overlays/LoadingSpinner";
-import { Schematic } from "@/types";
-
 import SchematicSearchCard from "@/components/features/schematics/SchematicSearchCard";
 import SchematicCard from "@/components/features/schematics/SchematicCard";
+import { useSearchSchematics } from "@/api";
+import { buttonVariants } from "@/components/ui/button.tsx";
+import { Upload } from "lucide-react";
+import {
+    Select,
+    SelectTrigger,
+    SelectValue,
+    SelectContent,
+    SelectItem,
+    SelectGroup,
+} from "@/components/ui/select";
 
-function SchematicsList() {
-  const [schematics, setSchematics] = useState<Schematic[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const navigate = useNavigate();
+function SchematicsListWithFilters() {
+    const [searchQuery, setSearchQuery] = useState("");
+    const [page] = useState(1);
+    const [category, setCategory] = useState("all");
+    const [version, setVersion] = useState("all");
+    const [loaders, setLoaders] = useState("all");
+    const navigate = useNavigate();
 
-  const fetchSchematics = async (query?: string) => {
-    setLoading(true);
-    setError(null);
-    let data: PostgrestResponse<Schematic>;
-
-    if (query) {
-      data = await supabase
-        .from("schematics")
-        .select("*")
-        .or(`title.ilike.%${query}%, description.ilike.%${query}%, authors.ilike.%${query}%`);
-    } else {
-      data = await supabase
-        .from("schematics")
-        .select("*")
-        .order("created_at", { ascending: false });
-    }
-
-    if (data.error) {
-      setError("Failed to fetch schematics.");
-      console.error("Error fetching schematics:", data.error);
-    } else {
-      setSchematics(data.data || []);
-    }
-
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchSchematics();
-  }, []);
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
-
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center gap-4 p-4">
-        <LoadingSpinner size="lg" />
-        <p className="text-foreground-muted">Loading schematics for you...</p>
-      </div>
+    const { data: schematics, isLoading, isError } = useSearchSchematics(
+        searchQuery,
+        page,
+        category,
+        version,
+        loaders
     );
-  }
+    console.log(schematics);
 
-  if (error) {
+    const handleInputChange = (event: any) => {
+        setSearchQuery(event.target.value);
+    };
+
     return (
-      <div className="text-center text-destructive font-semibold">
-        Oops! There was an error: {error}
-      </div>
-    );
-  }
+        <>
+            <div className="float-end ">
+                <Link
+                    className={buttonVariants({ variant: "default" })}
+                    to="../schematics/upload"
+                >
+                    <Upload /> Upload Schematic
+                </Link>
+            </div>
 
-  return (
-    <div className="wrap container mx-auto">
-      <SchematicSearchCard
-        searchQuery={searchQuery}
-        onSearchChange={handleInputChange}
-      />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
-        {schematics.length === 0 ? (
-          <h3 className="text-center col-span-full text-lg font-semibold">
-            No schematics uploaded yet. Be the first!
-          </h3>
-        ) : (
-          schematics.map((schematic) => (
-            <SchematicCard
-              key={schematic.id}
-              schematic={schematic}
-              onClick={() => navigate(`../schematics/${schematic.slug}`)}
-            />
-          ))
-        )}
-      </div>
-    </div>
-  );
+            <div className="container mx-auto flex gap-6">
+                {/* Sidebar */}
+                <aside className="w-1/4 p-4 bg-surface-1 rounded-xl">
+                    <h2 className="text-xl font-semibold mb-4">Filters</h2>
+                    <SchematicSearchCard
+                        searchQuery={searchQuery}
+                        onSearchChange={handleInputChange}
+                    />
+
+                    {/* Category Filter */}
+                    <label className="block mb-2">Category</label>
+                    <Select
+                        value={category}
+                        onValueChange={(value) => setCategory(value)}
+                    >
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select Category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectItem value="all">All</SelectItem>
+                                <SelectItem value="house">House</SelectItem>
+                                <SelectItem value="castle">Castle</SelectItem>
+                                <SelectItem value="farm">Farm</SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+
+                    {/* Version Filter */}
+                    <label className="block mt-4 mb-2">Version</label>
+                    <Select value={version} onValueChange={(value) => setVersion(value)}>
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select Version" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectItem value="all">All</SelectItem>
+                                <SelectItem value="1.20">1.20</SelectItem>
+                                <SelectItem value="1.19">1.19</SelectItem>
+                                <SelectItem value="1.18">1.18</SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+
+                    {/* Loaders Filter */}
+                    <label className="block mt-4 mb-2">Loaders</label>
+                    <Select value={loaders} onValueChange={(value) => setLoaders(value)}>
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select Loader" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectItem value="all">All</SelectItem>
+                                <SelectItem value="forge">Forge</SelectItem>
+                                <SelectItem value="fabric">Fabric</SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </aside>
+
+                {/* Main Content */}
+                <div className="flex-1">
+                    {isLoading ? (
+                        <div className="flex justify-center mt-8">
+                            <LoadingSpinner size="lg" />
+                        </div>
+                    ) : isError ? (
+                        <div className="text-center text-destructive font-semibold">
+                            Oops! Failed to load schematics.
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
+                            {schematics && schematics.length > 0 ? (
+                                schematics.map((schematic) => (
+                                    <SchematicCard
+                                        key={schematic.id}
+                                        schematic={schematic}
+                                        onClick={() => navigate(`../schematics/${schematic.id}`)}
+                                    />
+                                ))
+                            ) : (
+                                <h3 className="text-center col-span-full text-lg font-semibold">
+                                    No schematics found.
+                                </h3>
+                            )}
+                        </div>
+                    )}
+                </div>
+            </div>
+        </>
+    );
 }
 
-export default SchematicsList;
+export default SchematicsListWithFilters;

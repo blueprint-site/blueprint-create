@@ -21,34 +21,30 @@ import Blog from "@/assets/sprite-icons/clipboard_and_quill.png";
 import AboutIcon from "@/assets/sprite-icons/crafting_blueprint.png";
 import AddonIcon from "@/assets/sprite-icons/minecart_coupling.webp";
 import SchematicIcon from "@/assets/sprite-icons/schematic.webp";
-import { useIsMobile } from "@/hooks/useBreakpoints";
+import { useIsMobile } from "@/api";
 import { useLoggedUser } from "@/context/users/logedUserContext";
+import {User} from "@/types";
 
 interface NavigationProps {
   className?: string;
 }
 
-interface UserData {
-  id: string;
-  email?: string;
-  user_metadata: {
-    avatar_url?: string;
-    custom_claims?: {
-      global_name?: string;
-    };
-  };
-}
+
+
 
 const NavigationBar = ({ className }: NavigationProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const LoggedUserInfo = useLoggedUser();
   useEffect(() => {
-    setUserData(LoggedUserInfo.user);
+    if(LoggedUserInfo.user != null) {
+      setUserData(LoggedUserInfo.user);
+    }
+
   }, [LoggedUserInfo.user]);
 
   const navigationItems = [
@@ -90,7 +86,7 @@ const NavigationBar = ({ className }: NavigationProps) => {
       );
     }
 
-    return <UserMenu user={userData.user_metadata} />;
+    return <UserMenu  />;
   };
 
   return (

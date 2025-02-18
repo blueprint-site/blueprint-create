@@ -1,6 +1,8 @@
+import LastBlogArticleDisplay from "@/components/public/blog/LastBlogArticleDisplay.tsx";
+
 const BlogPage = () => {
     return (
-        <div>Blog page works !</div>
+        <LastBlogArticleDisplay></LastBlogArticleDisplay>
     )
 }
 export default BlogPage;
