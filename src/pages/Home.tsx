@@ -5,6 +5,7 @@ import { Suspense, lazy } from "react";
 import { useTranslation } from "react-i18next";
 
 const AddonsSlideshow = lazy(() => import("@/components/features/home/AddonsSlideshow"));
+const AddonsSlideshowMobile = lazy(() => import("@/components/features/home/AddonsSlideshowMobile"));
 const WhatIsBlueprint = lazy(() => import("@/components/features/home/WhatIsBlueprint"));
 const UsefulLinks = lazy(() => import("@/components/features/home/UsefulLinks"));
 const ForCreators = lazy(() => import("@/components/features/home/ForCreators"));
@@ -13,11 +14,17 @@ function Home() {
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col font-minecraft">
       <Suspense fallback={<HomeSkeleton />}>
-        <section className="bg-andesite-casing deep-shadow py-12">
+        {/* Mobile version */}
+        <section className="md:hidden p-0">
+          <AddonsSlideshowMobile />
+        </section>
+
+        {/* Desktop version */}
+        <section className="hidden md:block bg-andesite-casing deep-shadow py-12">
           <div className="container mx-auto">
-            <div className="text-4xl font-minecraft font-bold text-white/90 text-center drop-shadow-lg">
+            <div className="text-4xl font-bold text-white/90 text-center drop-shadow-lg">
               {t("home.discover")}
             </div>
             <div className="my-5">
