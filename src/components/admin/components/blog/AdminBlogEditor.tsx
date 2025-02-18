@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 import { BlogType } from "@/types";
-import { useLoggedUser } from "@/context/users/logedUserContext.tsx";
+import { useLoggedUser } from "@/context/users/loggedUserContext";
 import ImageUploader from "@/components/utility/ImageUploader.tsx";
 import MarkdownEditor from "@/components/utility/MarkdownEditor.tsx";
 import TagSelector from "@/components/utility/blog/TagSelector.tsx";
