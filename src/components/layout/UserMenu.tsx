@@ -2,7 +2,11 @@ import { LogOut, Menu, Settings, Shield, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -11,16 +15,19 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import ThemeToggle from "@/components/utility/ThemeToggle";
-import { useLoggedUser } from "@/context/users/logedUserContext";
-import supabase from "@/components/utility/Supabase";
+
+import { useLoggedUser } from "@/context/users/loggedUserContext";
+import { account } from "@/lib/appwrite";
 
 const UserMenu = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { displayName, isAdmin, user } = useLoggedUser();
+  const { user } = useLoggedUser();
+  const loggedUser = useLoggedUser();
+  const isAdmin = loggedUser.preferences?.roles?.includes("admin");
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await account.deleteSession('current');
     navigate("/login");
   };
 
@@ -37,7 +44,7 @@ const UserMenu = () => {
               <div className="hidden md:block">
                 {user ? (
                   <Avatar className="h-10 w-10">
-                    <AvatarImage src={user.user_metadata?.avatar_url} />
+                    <AvatarImage src={loggedUser.preferences?.avatar} />
                     <AvatarFallback>
                       <User className="h-6 w-6" />
                     </AvatarFallback>
@@ -55,13 +62,13 @@ const UserMenu = () => {
                 <>
                   <div className="flex items-center gap-2 border-b md:border-t p-2">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={user.user_metadata?.avatar_url} />
+                      <AvatarImage src={loggedUser.preferences?.avatar} />
                       <AvatarFallback>
                         <User className="h-4 w-4" />
                       </AvatarFallback>
                     </Avatar>
                     <span className="text-sm font-medium text-foreground">
-                      {displayName}
+                      {loggedUser.user?.name}
                     </span>
                   </div>
 

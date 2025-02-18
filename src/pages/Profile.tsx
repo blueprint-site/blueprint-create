@@ -2,20 +2,17 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 
 import { Download, User, Users } from "lucide-react";
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {LoggedUserContextType, useLoggedUser} from "@/context/users/logedUserContext";
+import { useLoggedUser} from "@/context/users/logedUserContext";
+import {useState} from "react";
 
 
 
 const Profile = () => {
-  const [userData, setUserData] = useState<LoggedUserContextType | null>(null);
   const [error] = useState<string | null>(null);
   const navigate = useNavigate();
   const LoggedUserInfo = useLoggedUser();
-  useEffect(() => {
-    setUserData(LoggedUserInfo);
-  }, []);
+
 
 
   if (error) {
@@ -32,9 +29,9 @@ const Profile = () => {
         <div className="flex flex-col border-b border-divider pb-3 sm:flex-row items-start gap-6">
           {/* Avatar */}
           <div className="flex-shrink-0">
-            {userData?.icon_url ?
+            {LoggedUserInfo?.preferences?.avatar ?
               <img 
-                src={userData?.icon_url}
+                src={LoggedUserInfo.preferences?.avatar}
                 alt="Profile" 
                 className="w-16 h-16 rounded-full object-cover ring-2 ring-border"
               />
@@ -50,13 +47,13 @@ const Profile = () => {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h2 className="text-2xl font-bold text-foreground">
-                  {userData?.displayName ?? 'Anonymous User'}
+                  {LoggedUserInfo?.user?.name ?? 'Anonymous User'}
                 </h2>
                 <p className="text-sm text-foreground-muted">
-                  {userData?.user?.user_metadata?.full_name}
+                  {LoggedUserInfo?.user?.name}
                 </p>
                 <p className="text-xs text-foreground-muted">
-                  Joined {new Date(userData?.user?.created_at || '').toLocaleDateString()}
+                  Joined {new Date(LoggedUserInfo?.user?.$createdAt || '').toLocaleDateString()}
                 </p>
               </div>
               <div>
@@ -73,7 +70,7 @@ const Profile = () => {
             
             <div className="flex flex-wrap items-center gap-6 mt-4 text-sm text-foreground-muted">
               <div className="flex items-center">
-                <span>Provider: {userData?.user?.app_metadata?.provider || 'None'}</span>
+
               </div>
               <div className="flex items-center">
                 <Download className="w-4 h-4 mr-1" />
@@ -111,17 +108,6 @@ const Profile = () => {
           </Card>
         </div>
 
-        {/* Bottom Banner */}
-        <div className="mt-8 p-6 rounded-lg bg-card">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div className="text-lg font-semibold text-card-foreground">
-              Lorem ipsum dolor
-            </div>
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-              Click Here
-            </Button>
-          </div>
-        </div>
       </div>
     </div>
   );

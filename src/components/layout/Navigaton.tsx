@@ -14,21 +14,14 @@ import AboutIcon from "@/assets/sprite-icons/crafting_blueprint.png";
 import AddonIcon from "@/assets/sprite-icons/minecart_coupling.webp";
 import SchematicIcon from "@/assets/sprite-icons/schematic.webp";
 import { useLoggedUser } from "@/context/users/logedUserContext";
+import {User, UserData} from "@/types";
 
 interface NavigationProps {
   className?: string;
 }
 
-interface UserData {
-  id: string;
-  email?: string;
-  user_metadata: {
-    avatar_url?: string;
-    custom_claims?: {
-      global_name?: string;
-    };
-  };
-}
+
+
 
 const NavigationBar = ({ className }: NavigationProps) => {
   const { t } = useTranslation();
@@ -37,7 +30,10 @@ const NavigationBar = ({ className }: NavigationProps) => {
 
   const LoggedUserInfo = useLoggedUser();
   useEffect(() => {
-    setUserData(LoggedUserInfo.user);
+    if(LoggedUserInfo.user != null) {
+      setUserData(LoggedUserInfo.user);
+    }
+
   }, [LoggedUserInfo.user]);
 
   const navigationItems = [

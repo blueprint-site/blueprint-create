@@ -1,10 +1,13 @@
-import { Client, Account} from 'appwrite';
+import {Client, Account, Databases, Storage} from 'appwrite';
 
 export const client = new Client();
 
 client
-    .setEndpoint('https://api.3de-scs.be/v1')
-    .setProject('67ad0767000d58bb6592')
+    .setEndpoint(import.meta.env.APP_APPWRITE_URL)
+    .setProject(import.meta.env.APP_APPWRITE_PROJECT_ID);
 
+
+export const databases = new Databases(client);
 export const account = new Account(client);
+export const storage = new Storage(client);
 export { ID } from 'appwrite';

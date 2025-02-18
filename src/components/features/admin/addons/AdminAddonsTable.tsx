@@ -7,11 +7,11 @@ import {
     DropdownMenuLabel,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import {Button} from "@/components/ui/button";
 import {ArrowUpDown, MoreHorizontal} from "lucide-react";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import supabase from "@/components/utility/Supabase";
 import {DataTable} from "@/components/tables/addonChecks/data-table";
+import {Button} from "@/components/ui/button.tsx";
 
 
 const AdminAddonsTable =  () => {
@@ -162,11 +162,10 @@ const AdminAddonsTable =  () => {
                 .select();
             if (error) {
                 console.error("Error fetching data:", error);
-                return; // Exit function instead of throwing
+                return;
             }
             if (data) {
                 console.log(data);
-                // Mettez à jour l'état des addons pour refléter les changements
                 setAddons((prevAddons) =>
                     prevAddons.map((addon) =>
                         addon.name === name ? { ...addon, isValid: true, isChecked: true } : addon

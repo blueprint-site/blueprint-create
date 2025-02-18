@@ -13,12 +13,10 @@ import { LoadingSuccess } from "@/components/loading-overlays/LoadingSuccess";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import supabase from "@/components/utility/Supabase";
-import {
-    LoggedUserContextType,
-    useLoggedUser
-} from "@/context/users/logedUserContext";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { useLoggedUser} from "@/context/users/logedUserContext";
+import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group";
+import {databases, storage} from "@/lib/appwrite.ts";
+import {LoggedUserContextType} from "@/types";
 import { redirect } from "react-router-dom";
 
 function SchematicsUpload() {
@@ -55,9 +53,6 @@ function SchematicsUpload() {
     ];
     const LoggedUser = useLoggedUser();
 
-    function slugify(title: string): string {
-        return title.toLowerCase().replace(/\W+/g, "-");
-    }
 
     // Navigation entre les étapes
     const nextStep = () => {
@@ -116,90 +111,34 @@ function SchematicsUpload() {
         userdata: LoggedUserContextType
     ) {
         try {
-            // Upload file to bucket
-            let filePath = `files/${slugify(title)}`;
-            console.log(filePath);
-            let counter = 0;
+            // Upload file to Appwrite storage
+            const uploadedFile = await storage.createFile('67b2241e0032c25c8216', 'unique()', file );
 
-            // try {
-                let { data: fileData, error: fileError } =
-                    await supabase.storage
-                        .from("schematics")
-                        .upload(filePath, file);
+            // Upload image to Appwrite storage
+            const uploadedImage = await storage.createFile('67b22481001e99d90888', 'unique()', image);
+            const fileUrl = storage.getFileDownload('67b2241e0032c25c8216', uploadedFile.$id);
+            const imageUrl = storage.getFilePreview('67b22481001e99d90888', uploadedImage.$id);
 
-                console.log(fileData);
-
-                if (fileError) throw fileError; // Ensure error handling runs
-            // } catch (fileError) {
-            //     if (fileError.statusCode === 409) {
-            //         console.log(
-            //             "[Im fixing myself] Slug already exists, trying again"
-            //         );
-
-            //         counter += 1;
-            //         filePath = `files/${slugify(title)}-${counter}`;
-
-            //         // Retry upload with the new filePath
-            //         const { data: retryData, error: retryError } =
-            //             await supabase.storage
-            //                 .from("schematics")
-            //                 .upload(filePath, file);
-
-            //         if (retryError) {
-            //             console.log("FILE ERROR after retry:", retryError);
-            //         } else {
-            //             console.log(
-            //                 "Upload successful after retry:",
-            //                 retryData
-            //             );
-            //         }
-            //     } else {
-            //         console.log("FILE ERROR:", fileError);
-            //     }
-            // }
-
-            // Upload image to bucket
-            const imagePath = `images/${Date.now()}_${image.name}`;
-            const { data: imageData, error: imageError } =
-                await supabase.storage
-                    .from("schematics")
-                    .upload(imagePath, image);
-            console.log(imageData);
-            if (imageError) {
-                console.log("IMAGE ERROR", imageError);
+            const data = {
+                title: title,
+                description: description,
+                schematic_url: fileUrl,
+                image_url: imageUrl,
+                user_id: userdata.user?.$id,
+                authors: [userdata.user?.$id],
+                game_versions: gameVersions,
+                create_versions: createVersions,
+                modloaders: loaders,
             }
+            // Insert metadata into Appwrite database
+            const document = await databases.createDocument(
+                '67b1dc430020b4fb23e3',
+                '67b2310d00356b0cb53c',
+                'unique()',
+                data,
+            );
 
-            // Get public URLs
-            const fileUrl = supabase.storage
-                .from("schematics")
-                .getPublicUrl(filePath).data.publicUrl;
-            const imageUrl = supabase.storage
-                .from("schematics")
-                .getPublicUrl(imagePath).data.publicUrl;
-
-            // Insert metadata into the table
-            const { data: blueprintData, error: insertError } = await supabase
-                .from("schematics")
-                .insert([
-                    {
-                        title: title,
-                        description: description,
-                        schematic_url: fileUrl,
-                        image_url: imageUrl,
-                        authors: [userdata.user?.id],
-                        game_versions: gameVersions,
-                        create_versions: createVersions,
-                        modloaders: loaders,
-                        slug: slugify(title)
-                    }
-                ]);
-
-            if (insertError) {
-                console.error("Error inserting data:", insertError);
-                return; // Exit function instead of throwing
-            }
-
-            console.log("Blueprint uploaded successfully:", blueprintData);
+            console.log("Blueprint uploaded successfully:", document);
         } catch (error) {
             console.error("Error uploading blueprint:", error);
         }

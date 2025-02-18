@@ -1,0 +1,22 @@
+{
+  "phases": {
+    "install": {
+      "cmds": [
+        "npm ci --legacy-peer-deps"
+      ]
+    },
+    "build": {
+      "cmds": [
+        "npm run build"
+      ]
+    }
+  },
+  "static": {
+    "root": "dist",
+    "headers": {
+      "/**": {
+        "Cache-Control": "max-age=31536000"
+      }
+    }
+  }
+}

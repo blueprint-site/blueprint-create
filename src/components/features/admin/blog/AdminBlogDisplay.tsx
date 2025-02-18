@@ -1,6 +1,11 @@
+import AdminBlogList from "@/components/admin/components/blog/AdminBlogList.tsx";
+
 const AdminBlogDisplay = () => {
     return (
-        <div> Admin Blog Display Work </div>
+        <>
+            <AdminBlogList/>
+        </>
+
     )
 }
 export default AdminBlogDisplay;
