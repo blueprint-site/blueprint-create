@@ -53,9 +53,6 @@ function SchematicsUpload() {
     ];
     const LoggedUser = useLoggedUser();
 
-    function slugify(title: string): string {
-        return title.toLowerCase().replace(/\W+/g, "-");
-    }
 
     // Navigation entre les étapes
     const nextStep = () => {

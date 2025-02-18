@@ -238,3 +238,72 @@ export interface Schematic {
   categories: string[]; // What categories does it fall into
   slug: string; // Slug used for identification
 }
+// Interface for the blog feature
+export interface BlogType {
+  id: string;
+  title: string;
+  content: string;
+  slug: string;
+  img_url: string;
+  status: string;
+  links?: JSON;
+  tags: Tag[];
+  likes: number;
+  authors_uuid: string[];
+  authors: string[];
+  created_at: string;
+}
+export interface Tag {
+  id: number;
+  value: string;
+  color: string;
+}
+export interface Admin_logs {
+  id: string;
+  type: string;
+  content: string;
+  category: string;
+  created_at: string;
+  user_uuid: string;
+}
+export interface User {
+  $id: string
+  $createdAt: string
+  $updatedAt: string
+  name: string
+  registration: string
+  status: boolean
+  labels: string[]
+  passwordUpdate: string
+  email: string
+  phone: string
+  emailVerification: boolean
+  phoneVerification: boolean
+  mfa: boolean
+  prefs: UserPreferences
+  targets: Target[]
+  accessedAt: string
+}
+export interface Target {
+  $id: string
+  $createdAt: string
+  $updatedAt: string
+  name: string
+  userId: string
+  providerId: string
+  providerType: string
+  identifier: string
+}
+export interface UserPreferences {
+  theme: 'light' | 'dark';
+  language: string;
+  notificationsEnabled: boolean;
+  avatar: string,
+  bio: string;
+  roles: string[];
+}
+export interface LoggedUserContextType {
+  user: User | null;
+  preferences: UserPreferences | null;
+  updatePreferences: (prefs: UserPreferences) => Promise<void>;
+}
