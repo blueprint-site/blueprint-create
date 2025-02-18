@@ -10,6 +10,12 @@
           "blog": "Blog"
         }
       },
+      "user-menu": {
+        "profile": "Profile",
+        "settings": "Settings",
+        "admin": "Admin Panel",
+        "logout": "Logout"
+      },
       "awards": {
         "banner": {
           "label": "The Wrench Awards",
@@ -71,6 +77,12 @@
           "about": "Über uns"
         }
       },
+      "user-menu": {
+        "profile": "Profil",
+        "settings": "Einstellungen",
+        "admin": "Admin-Panel",
+        "logout": "Abmelden"
+      },
       "awards": {
         "banner": {
           "label": "Die Wrench Awards",
@@ -126,6 +138,12 @@
           "schematics": "Schematics",
           "about": "Acerca de"
         }
+      },
+      "user-menu": {
+        "profile": "Perfil",
+        "settings": "Configuración",
+        "admin": "Panel de Administración",
+        "logout": "Cerrar Sesión"
       },
       "awards": {
         "banner": {

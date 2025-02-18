@@ -1,19 +1,11 @@
-import { Menu } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from "react-router-dom";
-import NavItem from "@/components/layout/NavItem";
-import UserMenu from "@/components/layout/UserMenu";
 
 import { Button } from "@/components/ui/button";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
 
+import NavItem from "@/components/layout/NavItem";
+import UserMenu from "@/components/layout/UserMenu";
 import ThemeToggle from "@/components/utility/ThemeToggle";
 
 import BlueprintLogo from "@/assets/logo.webp";
@@ -21,7 +13,6 @@ import Blog from "@/assets/sprite-icons/clipboard_and_quill.png";
 import AboutIcon from "@/assets/sprite-icons/crafting_blueprint.png";
 import AddonIcon from "@/assets/sprite-icons/minecart_coupling.webp";
 import SchematicIcon from "@/assets/sprite-icons/schematic.webp";
-import { useIsMobile } from "@/hooks/useBreakpoints";
 import { useLoggedUser } from "@/context/users/logedUserContext";
 
 interface NavigationProps {
@@ -42,9 +33,7 @@ interface UserData {
 const NavigationBar = ({ className }: NavigationProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const isMobile = useIsMobile();
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const LoggedUserInfo = useLoggedUser();
   useEffect(() => {
@@ -74,85 +63,37 @@ const NavigationBar = ({ className }: NavigationProps) => {
     },
   ];
 
-  const renderUserSection = () => {
-    if (!userData) {
-      return (
-        <>
-          <Button
-            onClick={() => navigate("/login")}
-            variant="ghost"
-            className="flex items-center text-md gap-2"
-          >
-            <span>{t("navigation.label.login")}</span>
-          </Button>
-          <ThemeToggle variant="icon" />
-        </>
-      );
-    }
-
-    return <UserMenu user={userData.user_metadata} />;
-  };
-
   return (
-    <nav className={`fixed h-16 bg-background shadow-md w-full z-30 ${className}`}>
+    <nav
+      className={`fixed h-16 bg-background shadow-md w-full z-30 ${className}`}
+    >
       <div className="md:container mx-auto h-full px-4 flex items-center justify-between">
         <NavLink
           to="/"
-          className="flex items-center text-foreground hover:text-foreground transition-colors duration-200"
+          className="flex text-foreground items-center h-8 sm:h-10"
         >
-          <div className="w-10 h-10 flex items-center justify-center">
-            <img
-              loading="lazy"
-              src={BlueprintLogo}
-              alt="Logo"
-              className="max-h-10 w-auto object-contain"
-            />
-          </div>
-          <span className="font-minecraft text-xl font-medium ml-2">
+          <img
+            loading="lazy"
+            src={BlueprintLogo}
+            alt="Logo"
+            className="h-full object-contain"
+          />
+          <span className="font-minecraft text-2xl font-medium ml-3 hidden sm:block">
             Blueprint
           </span>
         </NavLink>
 
-        {isMobile ? (
-          <div className="flex items-center gap-2">
-            <ThemeToggle variant="icon" />
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="bg-background hover:bg-foreground/10"
-                  >
-                    <Menu className="w-6 h-6" />
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent className="w-screen sm:w-80 left-10">
-                    {navigationItems.map((item, index) => (
-                      <NavItem
-                        key={index}
-                        href={item.href}
-                        icon={item.icon}
-                        label={item.label}
-                      />
-                    ))}
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-            <div className="mt-2 px-2">{renderUserSection()}</div>
-          </div>
-        ) : (
-          <div className="flex items-center space-x-4">
-            {navigationItems.map((item, index) => (
-              <NavItem
-                key={index}
-                href={item.href}
-                icon={item.icon}
-                label={item.label}
-              />
-            ))}
-            {renderUserSection()}
-          </div>
-        )}
+        <div className="items-center space-x-4 hidden md:flex">
+          {navigationItems.map((item, index) => (
+            <NavItem
+              key={index}
+              href={item.href}
+              icon={item.icon}
+              label={item.label}
+            />
+          ))}
+          <UserMenu user={userData?.user_metadata} />
+        </div>
       </div>
     </nav>
   );
