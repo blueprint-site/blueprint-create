@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import useSearchAddons from '@/hooks/useSearchAddons';
 import AddonCard from "@/components/features/addons/addon-card/AddonCard.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -7,6 +6,7 @@ import { Pagination, PaginationContent, PaginationItem, PaginationNext, Paginati
 import { motion } from 'framer-motion';
 import {CardDescription} from "@/components/ui/card.tsx";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
+import {useSearchAddons} from "@/api";
 
 const AddonList = () => {
     const [query, setQuery] = useState('');

@@ -9,7 +9,7 @@ import MarkdownDisplay from "@/components/utility/MarkdownDisplay.tsx";
 import BlogTagsDisplay from "@/components/utility/blog/BlogTagsDisplay.tsx";
 import { LoadingOverlay } from "@/components/loading-overlays/LoadingOverlay.tsx";
 import { BlogType } from "@/types";
-import { useFetchBlogs } from "@/hooks/use-blogs";
+import { useFetchBlogs } from "@/api";
 
 
 const LastBlogArticleDisplay = () => {

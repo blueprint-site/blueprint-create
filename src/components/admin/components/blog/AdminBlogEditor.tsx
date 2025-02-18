@@ -9,9 +9,9 @@ import { useLoggedUser } from "@/context/users/logedUserContext.tsx";
 import ImageUploader from "@/components/utility/ImageUploader.tsx";
 import MarkdownEditor from "@/components/utility/MarkdownEditor.tsx";
 import TagSelector from "@/components/utility/blog/TagSelector.tsx";
-import { useToast } from "@/hooks/use-toast.ts";
+import { useToast } from "@/api";
 import AdminLogsService from "@/components/admin/services/AdminLogsService.tsx";
-import { useFetchBlog, useSaveBlog } from "@/hooks/use-blogs.ts";
+import { useFetchBlog, useSaveBlog } from "@/api";
 
 const AdminBlogEditor = () => {
     const { id } = useParams<{ id: string }>();

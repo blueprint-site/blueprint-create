@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import searchClient from '@/lib/meilisearch';
-import { Addon } from "@/schemas/addon.schema.tsx";
+import {Schematic} from "@/types";
 
-const useSearchAddons = (query: string, page: number, category: string, version: string, loaders: string) => {
+export const useSearchSchematics = (query: string, page: number, category: string, version: string, loaders: string) => {
     if (!query) {
-        query = 'create';
+        query = '*';
     }
 
     // Define filter logic for category and version
@@ -13,7 +13,7 @@ const useSearchAddons = (query: string, page: number, category: string, version:
 
         // Loader filter logic
         if (loaders && loaders !== 'all') {
-            filterQuery = `loaders = ${loaders}`;
+            filterQuery = `modloaders = ${loaders}`;
         }
 
         // Category filter logic
@@ -25,7 +25,7 @@ const useSearchAddons = (query: string, page: number, category: string, version:
         // Version filter logic
         if (version && version !== 'all') {
             if (filterQuery) filterQuery += ' AND ';
-            filterQuery += `minecraft_versions = ${version}`;
+            filterQuery += `game_versions = ${version}`;
         }
         console.log('query: ', filterQuery);
         return [filterQuery];
@@ -33,18 +33,18 @@ const useSearchAddons = (query: string, page: number, category: string, version:
     };
 
     return useQuery({
-        queryKey: ['searchAddons', query, page, category, version, loaders],
+        queryKey: ['searchSchematics', query, page, category, version, loaders],
         queryFn: async () => {
-            const index = searchClient.index('mods');
+            const index = searchClient.index('schematics');
             const result = await index.search(query, {
                 limit: 6,
                 offset: (page - 1) * 6,
                 filter: filter(),
             });
-            return result.hits as Addon[];
+            return result.hits as Schematic[];
         },
         enabled: !!query
     });
 };
 
-export default useSearchAddons;
+

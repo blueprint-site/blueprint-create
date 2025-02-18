@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar.tsx";
-import {useDeleteBlog, useFetchBlogs, useSaveBlog} from "@/hooks/use-blogs.ts";
+import {useDeleteBlog, useFetchBlogs, useSaveBlog} from "@/api";
 import {BlogType} from "@/types";
 
 

@@ -21,7 +21,7 @@ import Blog from "@/assets/sprite-icons/clipboard_and_quill.png";
 import AboutIcon from "@/assets/sprite-icons/crafting_blueprint.png";
 import AddonIcon from "@/assets/sprite-icons/minecart_coupling.webp";
 import SchematicIcon from "@/assets/sprite-icons/schematic.webp";
-import { useIsMobile } from "@/hooks/useBreakpoints";
+import { useIsMobile } from "@/api";
 import { useLoggedUser } from "@/context/users/logedUserContext";
 import {User} from "@/types";
 

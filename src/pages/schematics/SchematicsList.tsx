@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { LoadingSpinner } from "@/components/loading-overlays/LoadingSpinner";
 import SchematicSearchCard from "@/components/features/schematics/SchematicSearchCard";
 import SchematicCard from "@/components/features/schematics/SchematicCard";
-import useSearchSchematics from "@/hooks/useSearchSchematics";
+import { useSearchSchematics } from "@/api";
 import { buttonVariants } from "@/components/ui/button.tsx";
 import { Upload } from "lucide-react";
 import {
