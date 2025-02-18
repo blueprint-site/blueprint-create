@@ -33,9 +33,7 @@ function Home() {
           </div>
         </section>
 
-        <section className="py-12 bg-blueprint">
-          <WhatIsBlueprint />
-        </section>
+        <WhatIsBlueprint />
 
         <section className="py-12 bg-background">
           <div className="container mx-auto px-4">

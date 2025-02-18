@@ -1,40 +1,21 @@
-import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { NavLink, useNavigate } from "react-router-dom";
-
-import { Button } from "@/components/ui/button";
+import { NavLink } from "react-router-dom";
 
 import NavItem from "@/components/layout/NavItem";
-import UserMenu from "@/components/layout/UserMenu";
-import ThemeToggle from "@/components/utility/ThemeToggle";
+import HeaderNavMenu from "@/components/layout/HeaderNavMenu";
 
 import BlueprintLogo from "@/assets/logo.webp";
 import Blog from "@/assets/sprite-icons/clipboard_and_quill.png";
 import AboutIcon from "@/assets/sprite-icons/crafting_blueprint.png";
 import AddonIcon from "@/assets/sprite-icons/minecart_coupling.webp";
 import SchematicIcon from "@/assets/sprite-icons/schematic.webp";
-import { useLoggedUser } from "@/context/users/logedUserContext";
-import {User, UserData} from "@/types";
 
-interface NavigationProps {
+interface AppHeaderProps {
   className?: string;
 }
 
-
-
-
-const NavigationBar = ({ className }: NavigationProps) => {
+const AppHeader = ({ className }: AppHeaderProps) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const [userData, setUserData] = useState<UserData | null>(null);
-
-  const LoggedUserInfo = useLoggedUser();
-  useEffect(() => {
-    if(LoggedUserInfo.user != null) {
-      setUserData(LoggedUserInfo.user);
-    }
-
-  }, [LoggedUserInfo.user]);
 
   const navigationItems = [
     {
@@ -79,20 +60,22 @@ const NavigationBar = ({ className }: NavigationProps) => {
           </span>
         </NavLink>
 
-        <div className="items-center space-x-4 hidden md:flex">
-          {navigationItems.map((item, index) => (
-            <NavItem
-              key={index}
-              href={item.href}
-              icon={item.icon}
-              label={item.label}
-            />
-          ))}
-          <UserMenu user={userData?.user_metadata} />
+        <div className="flex items-center space-x-4">
+          <div className="items-center space-x-4 hidden md:flex">
+            {navigationItems.map((item, index) => (
+              <NavItem
+                key={index}
+                href={item.href}
+                icon={item.icon}
+                label={item.label}
+              />
+            ))}
+          </div>
+          <HeaderNavMenu />
         </div>
       </div>
     </nav>
   );
 };
 
-export default NavigationBar;
+export default AppHeader;
