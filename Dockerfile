@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM node:23-slim AS builder
+FROM node:18-slim AS builder
 
 # Set working directory
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --legacy-peer-deps
+RUN npm ci --legacy-peer-deps && npm cache clean --force
 
 # Copy the rest of the app
 COPY . .
