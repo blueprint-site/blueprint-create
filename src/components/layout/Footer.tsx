@@ -10,7 +10,7 @@ const Footer = ({ className }: FooterProps) => {
   return (
     <footer
       className={cn(
-        "w-full bg-container dark:bg-container-dark pb-4 pt-24",
+        "w-full bg-container dark:bg-container-dark pb-4 md:pt-24",
         className
       )}
     >

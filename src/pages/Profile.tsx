@@ -3,7 +3,7 @@ import { Card, CardHeader } from "@/components/ui/card";
 
 import { Download, User, Users } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
-import { useLoggedUser} from "@/context/users/logedUserContext";
+import { useLoggedUser} from "@/context/users/loggedUserContext";
 import {useState} from "react";
 
 
@@ -30,9 +30,9 @@ const Profile = () => {
           {/* Avatar */}
           <div className="flex-shrink-0">
             {LoggedUserInfo?.preferences?.avatar ?
-              <img 
+              <img
                 src={LoggedUserInfo.preferences?.avatar}
-                alt="Profile" 
+                alt="Profile"
                 className="w-16 h-16 rounded-full object-cover ring-2 ring-border"
               />
             :
@@ -57,8 +57,8 @@ const Profile = () => {
                 </p>
               </div>
               <div>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   size="sm"
                   onClick={() => navigate("/settings/profile")}
                   className="w-full sm:w-auto"
@@ -67,7 +67,7 @@ const Profile = () => {
                 </Button>
               </div>
             </div>
-            
+
             <div className="flex flex-wrap items-center gap-6 mt-4 text-sm text-foreground-muted">
               <div className="flex items-center">
 

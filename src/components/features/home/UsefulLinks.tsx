@@ -61,7 +61,7 @@ const UsefulLinks = () => {
                   src={link.icon}
                   alt={link.icon}
                   loading="lazy"
-                  className="w-16 h-16 object-contain pixelated"
+                  className="w-16 h-16 object-contain"
                 />
                 <div className="text-center">
                   <div className="font-minecraft text-xl font-bold text-white/90">

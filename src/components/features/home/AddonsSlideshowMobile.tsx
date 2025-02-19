@@ -1,8 +1,6 @@
 import Autoplay from "embla-carousel-autoplay";
 import { useEffect, useState } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -10,11 +8,8 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 
-import MinecraftIcon from "../../utility/MinecraftIcon";
-
 const AddonsCarousel = () => {
   const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
 
   const addons = [
     {
@@ -22,7 +17,7 @@ const AddonsCarousel = () => {
         "https://cdn.modrinth.com/data/Dq3STxps/10e1b3796f2fcf5b70bb77110e68b59c750310ac_96.webp",
       banner:
         "https://cdn.modrinth.com/data/Dq3STxps/images/f6486f7c9d0b2aee956402a864af9347c607ee0a.png",
-      title: "Create Railways navigator",
+      title: "Create Railways Navigator",
       description:
         "Get train connections in your world from one station to another using the Create Railways Navigator.",
     },
@@ -63,82 +58,48 @@ const AddonsCarousel = () => {
 
   useEffect(() => {
     if (!api) return;
-
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap());
-    });
-
-    return () => {
-      api.off("select", () => {
-        setCurrent(api.selectedScrollSnap());
-      });
-    };
   }, [api]);
 
-  const scrollToIndex = (index: number) => {
-    api?.scrollTo(index);
-  };
-
   return (
-    <div className="max-w-6xl mx-auto flex items-center justify-center h-full gap-4">
-      <Button
-        onClick={() => scrollToIndex(current - 1)}
-        className="rounded-full p-0"
-        variant="icon"
+    <div className="w-full">
+      <Carousel
+        setApi={setApi}
+        opts={{ align: "start", loop: true }}
+        plugins={[Autoplay({ delay: 5000 })]}
       >
-        <MinecraftIcon name="chevron-left" size={32} />
-      </Button>
-
-      <div className="relative flex-1">
-        <Carousel
-          setApi={setApi}
-          opts={{ align: "end", loop: true,  }}
-          plugins={[Autoplay({ delay: 5000 })]}
-        >
-          <CarouselContent>
-            {addons.map((addon, index) => (
-              <CarouselItem key={index}>
-                <img 
+        <CarouselContent>
+          {addons.map((addon, index) => (
+            <CarouselItem key={index}>
+              <div className=" flex flex-col relative h-[50vh]">
+                <img
                   loading="lazy"
                   src={addon.banner}
                   alt=""
-                  className="max-h-full h-96 rounded-lg"
+                  className="min-w-full h-64 object-cover"
                 />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-      </div>
-
-      <div className="w-80 h-96">
-        <Card className="h-full bg-background">
-          <CardHeader>
-            <CardTitle className="text-2xl text-center underline">
-              {addons[current].title}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col items-center justify-center p-4">
-            <img 
-              loading="lazy"
-              className="h-full w-auto object-contain"
-              src={addons[current].image}
-              alt=""
-            />
-            <div className="mt-4 overflow-hidden">
-              <p className="text-sm line-clamp-4">
-                {addons[current].description}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-      <Button
-        onClick={() => scrollToIndex(current + 1)}
-        className="rounded-full p-0"
-        variant="icon"
-      >
-        <MinecraftIcon name="chevron-right" size={32} />
-      </Button>
+                <div className="w-full flex-1">
+                  <div className="flex gap-4 p-4 h-full items-center justify-center">
+                    <img
+                      loading="lazy"
+                      className="h-20 object-contain"
+                      src={addon.image}
+                      alt=""
+                    />
+                    <div className="flex flex-col">
+                      <div className="text-xl underline pb-1">
+                        {addon.title}
+                      </div>
+                      <div className="text-sm line-clamp-4">
+                        {addon.description}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
     </div>
   );
 };

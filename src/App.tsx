@@ -4,7 +4,7 @@ import '@/config/i18n';
 import {routes} from '@/routes';
 import {Suspense} from 'react';
 import {BrowserRouter, useRoutes} from 'react-router-dom';
-import {LoggedUserProvider} from "@/context/users/logedUserContext";
+import {LoggedUserProvider} from "@/context/users/loggedUserContext";
 import {Toaster} from "@/components/ui/toaster.tsx";
 
 

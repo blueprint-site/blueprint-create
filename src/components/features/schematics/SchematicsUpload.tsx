@@ -13,7 +13,7 @@ import { LoadingSuccess } from "@/components/loading-overlays/LoadingSuccess";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useLoggedUser} from "@/context/users/logedUserContext";
+import { useLoggedUser} from "@/context/users/loggedUserContext";
 import {ToggleGroup, ToggleGroupItem} from "@/components/ui/toggle-group";
 import {databases, storage} from "@/lib/appwrite.ts";
 import {LoggedUserContextType} from "@/types";
