@@ -79,11 +79,12 @@ export const LoggedUserProvider = ({ children }: LoggedUserProviderProps) => {
                 discord: OAuthProvider.Discord,
             };
             const oauthProvider = providerMap[provider];
-
+            const SuccessUrl = window._env_?.APP_URL + '/auth/success'
+            const ErrorUrl = window._env_?.APP_URL + '/auth/error'
             account.createOAuth2Session(
                 oauthProvider,
-                'https://dev-preview.blueprint-create.com/auth/success',
-                'https://dev-preview.blueprint-create.com/auth/error',
+                SuccessUrl,
+                ErrorUrl,
             );
         } catch (error) {
             console.error('Erreur lors de l\'authentification OAuth', error);
