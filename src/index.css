@@ -319,27 +319,49 @@ html, body {
   overflow: hidden;
 }
 
-/* Scrollbar container */
+/* Prevent global scrolling */
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Scrollable container */
+.scrollable-container {
+  overflow-y: auto;
+  height: 100%;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #7b9bf7 transparent; /* Firefox */
+}
+
+/* WebKit-based browsers (Chrome, Edge, Safari) */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
-/* Scrollbar track */
 ::-webkit-scrollbar-track {
-  background: transparent; /* Transparent background */
-  margin: 20px 0; /* Adds space above and below the scrollbar */
+  background: transparent;
+  margin: 20px 0;
 }
 
-/* Scrollbar thumb */
 ::-webkit-scrollbar-thumb {
   background-color: #7b9bf7;
   border-radius: 4px;
-  cursor: pointer; /* Cursor change only works on elements, not pseudo-elements */
-  transition: background-color 0.2s ease; /* Smooth color transition */
+  transition: background-color 0.2s ease;
 }
 
-/* Scrollbar thumb hover */
 ::-webkit-scrollbar-thumb:hover {
   background-color: #7393e2;
 }
+
+/* Firefox-specific scrollbar styling */
+.scrollable-container {
+  scrollbar-width: thin; /* Make scrollbar thin */
+  scrollbar-color: #7b9bf7 transparent; /* Thumb and track colors */
+}
+
+/* Edge case for older versions of Safari */
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
 

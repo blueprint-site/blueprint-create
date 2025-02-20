@@ -17,7 +17,7 @@ const Layout = () => {
             <div
                 className={`${
                     isDarkMode ? "bg-shadow_steel_casing" : "bg-refined_radiance_casing"
-                } h-full w-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-200`}
+                } h-full w-full overflow-y-auto scrollable-container`}
             >
                 <Outlet />
                 <AppFooter />
