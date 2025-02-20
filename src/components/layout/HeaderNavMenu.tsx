@@ -1,4 +1,4 @@
-import { LogOut, Menu, Settings, Shield, User } from "lucide-react";
+import { LogIn, LogOut, Menu, Settings, Shield, User } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -106,7 +106,7 @@ const UserMenu = () => {
                   </NavLink>
                 ))}
               </div>
-              {user && (
+              {user ? (
                 <>
                   <div className="flex items-center gap-2 border-y md:border-t-0 p-2">
                     <Avatar className="h-6 w-6">
@@ -151,6 +151,14 @@ const UserMenu = () => {
                     {t("user-menu.logout")}
                   </button>
                 </>
+              ) : (
+                <button
+                  onClick={() => navigate("/login")}
+                  className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm hover:bg-surface-1"
+                >
+                  <LogIn className="h-4 w-4" />
+                  Login
+                </button>
               )}
               <ThemeToggle variant="ghost" />
             </div>
