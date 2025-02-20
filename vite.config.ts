@@ -1,6 +1,5 @@
 import path from "path";
 import { defineConfig } from "vite";
-import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 export default defineConfig({
   build: {
@@ -12,16 +11,7 @@ export default defineConfig({
       preserveEntrySignatures: "exports-only"
     }
   },
-  plugins: [
-    nodePolyfills({
-      globals: {
-        Buffer: true,
-        global: true,
-        process: true,
-      },
-      protocolImports: true,
-    })
-  ],
+  plugins: [],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
