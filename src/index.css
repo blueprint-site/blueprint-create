@@ -1,5 +1,5 @@
 
-
+@import 'minecraft-textures-library/src/templates/create-textures.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

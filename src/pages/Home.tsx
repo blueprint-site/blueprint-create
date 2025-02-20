@@ -22,7 +22,7 @@ function Home() {
         </section>
 
         {/* Desktop version */}
-        <section className="hidden md:block bg-andesite-casing deep-shadow py-12">
+        <section className="hidden md:block bg-brass_casing deep-shadow py-12">
           <div className="container mx-auto">
             <div className="text-4xl font-bold text-white/90 text-center drop-shadow-lg">
               {t("home.discover")}
@@ -53,7 +53,7 @@ function HomeSkeleton() {
   return (
     <div className="flex flex-col space-y-12">
       {/* Skeleton for the Discover section */}
-      <section className="bg-andesite-casing deep-shadow py-12">
+      <section className="bg-brass_casing deep-shadow py-12">
         <div className="container mx-auto">
           <Skeleton className="h-10 w-1/2 mx-auto bg-gray-300" />
           <div className="my-5">

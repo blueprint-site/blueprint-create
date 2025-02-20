@@ -5,17 +5,19 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import DevinsBadges from "@/components/utility/DevinsBadges";
 import {Addon} from "@/types";
-import {useAppStore} from "@/stores/useAppStore.ts";
+
+
 
 const RandomAddon = () => {
+
   const [addon, setAddon] = useState<Addon | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [addonsList, setAddonsList] = useState<Addon[] | null>(null);
-  const { addons } = useAppStore();
-  setAddonsList(addons)
-  const getRandomAddon = useCallback( async() => {
-    setIsLoading(true);
+ const [isLoading, setIsLoading] = useState(true);
+ const [error, setError] = useState<string | null>(null);
+ const [addonsList] = useState<Addon[] | null>(null);
+
+ const getRandomAddon = useCallback( async() => {
+
+   setIsLoading(true);
     try {
 
       if (!addonsList) {
@@ -77,7 +79,7 @@ const RandomAddon = () => {
   return (
     <div className="container mx-auto px-4 py-8 text-center space-y-8">
       <Link to={`/addons/${addon.slug}`} className="block">
-        <Card className="max-w-2xl mx-auto hover:shadow-lg transition-shadow" 
+        <Card className="max-w-2xl mx-auto hover:shadow-lg transition-shadow"
               style={{ backgroundColor }}>
           <CardContent className="p-6 space-y-4">
             <img
@@ -86,7 +88,7 @@ const RandomAddon = () => {
               loading="lazy"
               className="w-32 h-32 mx-auto rounded-lg"
             />
-            
+
             <div className="space-y-2">
               <h2 className="text-2xl font-bold">{addon.name}</h2>
               <p className="text-foreground-muted">{addon.description}</p>
@@ -94,7 +96,7 @@ const RandomAddon = () => {
               <p className="text-sm">Versions: {addon.versions.join(", ")}</p>
             </div>
 
-            <a 
+            <a
               href={`https://modrinth.com/mod/${addon.slug}`}
               target="_blank"
               rel="noopener noreferrer"
@@ -113,7 +115,7 @@ const RandomAddon = () => {
         </Card>
       </Link>
 
-      <Button 
+      <Button
         size="lg"
         onClick={getRandomAddon}
         className="font-minecraft"

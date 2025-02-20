@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --legacy-peer-deps && npm cache clean --force
+RUN npm ci --legacy-peer-deps
 
 # Copy the rest of the app
 COPY . .
@@ -33,4 +33,5 @@ RUN chmod +x /entrypoint.sh
 EXPOSE 80
 
 # Lancer le script d'entrypoint
-CMD ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]

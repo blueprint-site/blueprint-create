@@ -1,6 +1,8 @@
-import {app, BrowserWindow, ipcMain} from "electron";
+// eslint-disable-next-line @typescript-eslint/no-var-requires,no-undef
+const { app, BrowserWindow, ipcMain } = require("electron");
+// eslint-disable-next-line @typescript-eslint/no-var-requires,no-undef
+const path = require("path");
 
-import path from "path";
 
 let mainWindow, logWindow;
 

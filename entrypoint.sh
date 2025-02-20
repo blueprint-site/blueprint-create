@@ -1,31 +1,17 @@
 #!/bin/sh
-# entrypoint.sh
 
-# Génère le fichier .env à la racine des fichiers statiques
-cat <<EOF > /usr/share/nginx/html/.env
-APP_REACT_APP_SUPABASE_URL=${APP_REACT_APP_SUPABASE_URL}
-APP_REACT_APP_SUPABASE_ANON_KEY=${APP_REACT_APP_SUPABASE_ANON_KEY}
-APP_ADDONSAPI_URL=${APP_ADDONSAPI_URL}
-APP_MEILISEARCH_URL=${APP_MEILISEARCH_URL}
-APP_MEILISEARCH_API_KEY=${APP_MEILISEARCH_API_KEY}
-APP_APPWRITE_URL=${APP_APPWRITE_URL}
-APP_APPWRITE_PROJECT_ID=${APP_APPWRITE_PROJECT_ID}
-APPWRITE_API_KEY=${APPWRITE_API_KEY}
-EOF
-
-# Génère également un fichier env-config.js pour une utilisation côté client (optionnel)
-cat <<EOF > /usr/share/nginx/html/env-config.js
+# Générer `env.js` avec les variables d'environnement injectées par Coolify
+cat <<EOF > /usr/share/nginx/html/env.js
 window._env_ = {
-  REACT_APP_SUPABASE_URL: "${APP_REACT_APP_SUPABASE_URL}",
-  REACT_APP_SUPABASE_ANON_KEY: "${APP_REACT_APP_SUPABASE_ANON_KEY}",
-  ADDONSAPI_URL: "${APP_ADDONSAPI_URL}",
-  MEILISEARCH_URL: "${APP_MEILISEARCH_URL}",
-  MEILISEARCH_API_KEY: "${APP_MEILISEARCH_API_KEY}",
-  APP_APPWRITE_URL: "${APP_APPWRITE_URL}",
-  APP_APPWRITE_PROJECT_ID: "${APP_APPWRITE_PROJECT_ID}",
-  APPWRITE_API_KEY: "${APPWRITE_API_KEY}"
+  MEILISEARCH_URL: "${MEILISEARCH_URL}",
+  MEILISEARCH_API_KEY: "${MEILISEARCH_API_KEY}",
+  APPWRITE_URL: "${APPWRITE_URL}",
+  APPWRITE_PROJECT_ID: "${APPWRITE_PROJECT_ID}"
 };
 EOF
 
-# Démarrer Nginx en premier plan
-nginx -g "daemon off;"
+echo "✅ Fichier env.js généré avec succès :"
+cat /usr/share/nginx/html/env.js
+
+# Démarrer Nginx
+exec "$@"
