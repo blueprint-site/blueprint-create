@@ -100,7 +100,7 @@ const UserMenu = () => {
                     <img
                       src={item.icon}
                       alt=""
-                      className="w-6 h-6 object-cover rounded-full shadow-sm transition-all duration-300"
+                      className="w-6 h-6 object-cover rounded-full shadow-xs transition-all duration-300"
                     />
                     <span className="ml-3 font-minecraft">{item.label}</span>
                   </NavLink>
