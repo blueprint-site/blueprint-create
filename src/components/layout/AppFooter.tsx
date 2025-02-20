@@ -1,5 +1,4 @@
 import Logo from "@/assets/logo.webp";
-import ThemeToggle from "@/components/utility/ThemeToggle";
 import { cn } from "@/lib/utils";
 
 interface FooterProps {
@@ -10,12 +9,12 @@ const Footer = ({ className }: FooterProps) => {
   return (
     <footer
       className={cn(
-        "w-full bg-container dark:bg-container-dark pb-4 md:pt-24",
+        "w-full bg-container dark:bg-container-dark pb-4 md:pt-16",
         className
       )}
     >
-      <div className="container mx-auto">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+      <div className="px-4 md:container mx-auto">
+        <div className="flex flex-col  sm:flex-row sm:items-center gap-4">
           {/* Logo and Title Row */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
@@ -55,10 +54,16 @@ const Footer = ({ className }: FooterProps) => {
               <a href="/about" className="text-xs font-normal hover:underline">
                 About
               </a>
+              <a href="/privacy" className="text-xs font-normal hover:underline">
+                Privacy
+              </a>
+              <a href="/terms" className="text-xs font-normal hover:underline">
+                Terms
+              </a>
             </div>
           </div>
-          <div>
-            <ThemeToggle />
+          <div className="flex-1 hidden md:block">
+            {/* <ThemeToggle /> */}
           </div>
         </div>
 

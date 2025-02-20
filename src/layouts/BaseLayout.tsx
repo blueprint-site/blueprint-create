@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 
 import RotatingCogwheel from "@/components/common/Cogwheel";
-import Footer from "@/components/layout/Footer";
+import AppFooter from "@/components/layout/AppFooter";
 import NavBar from "@/components/layout/AppHeader";
 
 import { useThemeStore } from "@/stores/themeStore";
@@ -16,10 +16,11 @@ const Layout = () => {
       <main className="w-full pt-[64px]">
         <div className={`${isDarkMode ? 'bg-shadow_steel_casing' : 'bg-refined_radiance_casing'}`}>
           <Outlet />
+
         </div>
       </main>
 
-      <Footer />
+      <AppFooter />
       <RotatingCogwheel />
     </div>
   );
