@@ -38,9 +38,9 @@ const AddonList = () => {
     return (
         <div className="flex">
             {/* Sidebar */}
-            <div className="w-64 p-4 text-foreground">
+            <div className="w-64 p-4 text-foreground ">
                 <div className="mt-4 relative"> {/* Add relative here */}
-                    <h3 className="text-lg font-medium">Addon Database</h3>
+                    <h3 className="text-lg text-center font-medium">Addon Database</h3>
                     <Input
                         type="text"
                         value={query}
@@ -85,7 +85,7 @@ const AddonList = () => {
                 <div className="mt-4">
                     <h3 className="text-lg font-medium">Category</h3>
                     <Select value={category} onValueChange={setCategory}>
-                        <SelectTrigger className="w-full p-2 border font-minecraft  rounded-lg">
+                        <SelectTrigger className="w-full p-2 border-foreground font-minecraft  rounded-lg">
                             <SelectValue className="font-minecraft" placeholder="Select category..." />
                         </SelectTrigger>
                         <SelectContent>
@@ -100,14 +100,15 @@ const AddonList = () => {
                 <div className="mt-4">
                     <h3 className="text-lg font-medium">loaders</h3>
                     <Select value={loaders} onValueChange={setLoaders}>
-                        <SelectTrigger className="w-full p-2 border font-minecraft  rounded-lg">
-                            <SelectValue className="font-minecraft" placeholder="Select category..." />
+                        <SelectTrigger className="w-full p-2 border-foreground font-minecraft  rounded-lg">
+                            <SelectValue className="font-minecraft" placeholder="Select loaders..." />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem className="font-minecraft cursor-pointer" value="all">All</SelectItem>
                             <SelectItem className="font-minecraft cursor-pointer" value="Forge">Forge</SelectItem>
                             <SelectItem className="font-minecraft cursor-pointer"  value="Fabric">Fabric</SelectItem>
                             <SelectItem className="font-minecraft cursor-pointer" value="NeoForge">NeoForge</SelectItem>
+                            <SelectItem className="font-minecraft cursor-pointer" value="NeoForge">Quilt</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
@@ -115,13 +116,14 @@ const AddonList = () => {
                 <div className="mt-4">
                     <h3 className="text-lg font-medium">Version</h3>
                     <Select value={version} onValueChange={setVersion}>
-                        <SelectTrigger className="w-full p-2 border font-minecraft  rounded-lg">
-                            <SelectValue className="font-minecraft" placeholder="Sélectionner une version" />
+                        <SelectTrigger className="w-full p-2 border-foreground font-minecraft  rounded-lg">
+                            <SelectValue className="font-minecraft" placeholder="Select version..." />
                         </SelectTrigger>
-                        <SelectContent className="bg-surface-1">
-                            <SelectItem className="font-minecraft cursor-pointer" value="all">All</SelectItem>
-                            <SelectItem className="font-minecraft cursor-pointer" value="1.19.2">1.19.2</SelectItem>
-                            <SelectItem className="font-minecraft cursor-pointer" value="1.21.1">1.21.1</SelectItem>
+                        <SelectContent>
+                            <SelectItem className="font-minecraft   cursor-pointer" value="all">All</SelectItem>
+                            <SelectItem className="font-minecraft cursor-pointer" value="1.19.2">1.18.2</SelectItem>
+                            <SelectItem className="font-minecraft  cursor-pointer" value="1.19.2">1.19.2</SelectItem>
+                            <SelectItem className="font-minecraft  cursor-pointer" value="1.21.1">1.21.1</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
