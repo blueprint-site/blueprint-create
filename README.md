@@ -15,13 +15,12 @@ Blueprint is the central hub for Create Mod content, bringing together community
 
 ## Tech Stack
 
-- React 18
+- React 19
 - TypeScript
 - Tailwind CSS
 - Shadcn/UI
-- Supabase
 - i18next
-- Three.js (for schematic previews)
+- Appwrite
 
 ## Development Setup
 
