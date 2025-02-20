@@ -13,7 +13,7 @@ export function LoadingOverlay({
 }: LoadingOverlayProps) {
   return (
     <div className={cn(
-      "fixed inset-0 z-50 flex flex-col items-center justify-center  bg-black/80 backdrop-blur-sm",
+      "fixed inset-0 z-50 flex flex-col items-center justify-center  bg-black/80 backdrop-blur-xs",
       className
     )}>
       <h1 className="mb-6 text-4xl font-minecraft text-white/80">

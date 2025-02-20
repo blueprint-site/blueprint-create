@@ -30,7 +30,7 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
   };
 
   return (
-    <Card className="flex flex-col overflow-hidden hover:shadow-sm">
+    <Card className="flex flex-col overflow-hidden hover:shadow-xs">
       <CardHeader
         className="flex flex-row gap-3 relative cursor-pointer"
         onClick={navigateToAddon}
