@@ -130,7 +130,7 @@ const AddonList = () => {
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 p-8">
+            <div className="flex-1 p-8 h-screen">
                 {isLoading || isFetching ? (
                     <p>Chargement...</p>
                 ) : (
