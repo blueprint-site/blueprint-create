@@ -9,19 +9,16 @@ import { settingsRoutes } from '@/routes/settings';
 import { AdminRoutes } from '@/routes/adminRoutes';
 import { blogRoutes } from "@/routes/blogRoutes";
 
-import BaseLayout from '@/layouts/BaseLayout';
-import SchematicLayout from '@/layouts/3DViewerLayout';
-import AdminPanelLayout from "@/layouts/AdminPanelLayout";
-import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
 import Home from '@/pages/Home';
-
-// Utiliser React.lazy pour charger les pages dynamiquement
+import BaseLayout from '@/layouts/BaseLayout';
+import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
 
 const About = lazy(() => import('@/pages/About'));
 const Design = lazy(() => import('@/pages/Design'));
 const Terms = lazy(() => import('@/pages/Terms'));
 const Privacy = lazy(() => import('@/pages/Privacy'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
+const AdminPanelLayout = lazy(() => import('@/layouts/AdminPanelLayout'));
 
 export const routes: RouteObject[] = [
   {
@@ -36,6 +33,7 @@ export const routes: RouteObject[] = [
       ...settingsRoutes,
       ...blogRoutes,
       ...addonRoutes,
+      ...schematicRoutes,
       { path: '*', element: <Suspense fallback={<LoadingOverlay />}><NotFound /></Suspense> },
     ]
   },
@@ -43,12 +41,6 @@ export const routes: RouteObject[] = [
     element: <AdminPanelLayout />,
     children: [
       ...AdminRoutes,
-    ]
-  },
-  {
-    element: <SchematicLayout />,
-    children: [
-      ...schematicRoutes
     ]
   },
 ];
