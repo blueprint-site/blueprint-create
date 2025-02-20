@@ -8,7 +8,7 @@ export function AddonListSkeleton() {
         {Array(6).fill(null).map((_, i) => (
           <Card key={i}>
             <CardHeader className="flex flex-row items-start gap-3 p-3 pb-0">
-              <Skeleton className="h-12 w-12 flex-shrink-0 rounded-lg" />
+              <Skeleton className="h-12 w-12 shrink-0 rounded-lg" />
               <div className="flex-1 space-y-2">
                 <Skeleton className="h-4 w-3/4" />
                 <Skeleton className="h-3 w-full" />

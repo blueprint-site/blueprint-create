@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import imageCompression from "browser-image-compression";
-import { useLoggedUser } from "@/context/users/logedUserContext";
+import { useLoggedUser } from "@/context/users/loggedUserContext";
 import { account, storage } from "@/lib/appwrite.ts";
 import logMessage from "@/components/utility/logs/sendLogs";
 

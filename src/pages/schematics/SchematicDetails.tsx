@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Download, Share } from "lucide-react";
-import supabase from "../../components/utility/Supabase";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 import ModLoaderDisplay from "@/components/common/ModLoaderDisplay";
 import VersionsDisplay from "@/components/common/VersionsDisplay";
-import ShematicCategoriesDisplay from "@/components/common/shematicCategoriesDisplay";
 
 import { Schematic } from "@/types";
 
@@ -22,17 +20,7 @@ const SchematicDetails = () => {
 
     const getSchematicData = async (slug: string) => {
         try {
-            const { data, error } = await supabase.from('schematics')
-                .select('*')
-                .eq('slug', slug)
-                .single();
-
-            if (data) {
-                return data as Schematic;
-            }
-            if (error) {
-                console.log('Error fetching schematic data: ', error);
-            }
+            console.log(slug)
             return null;
         } catch (error) {
             console.log('Error fetching schematic data: ', error);
@@ -99,7 +87,6 @@ const SchematicDetails = () => {
                         <div className="space-y-4">
                             <div>
                                 <h3 className="text-lg font-semibold mb-2">Categories</h3>
-                                <ShematicCategoriesDisplay categoriesList={schematicData.categories} />
                             </div>
                             <div>
                                 <h3 className="text-lg font-semibold mb-2">Create Versions</h3>

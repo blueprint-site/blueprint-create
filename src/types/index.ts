@@ -305,5 +305,20 @@ export interface UserPreferences {
 export interface LoggedUserContextType {
   user: User | null;
   preferences: UserPreferences | null;
+  error: string | null;
+
+  // Gestion des préférences utilisateur
   updatePreferences: (prefs: UserPreferences) => Promise<void>;
+
+  // Authentification par email/mot de passe
+  register: (name: string, email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+
+  // Authentification OAuth
+  handleOAuthLogin: (provider: "google" | "github" | "discord") => void;
+  handleOAuthCallback: () => Promise<void>;
+
+  // Gestion des erreurs
+  setError: (error: string | null) => void;
 }

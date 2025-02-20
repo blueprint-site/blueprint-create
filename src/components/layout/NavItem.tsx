@@ -5,17 +5,16 @@ interface NavItemProps {
   href: string;
   icon: string;
   label: string;
-  isActive?: boolean;
 }
 
-const NavItem = ({ href, icon, label, isActive }: NavItemProps) => {
+const NavItem = ({ href, icon, label }: NavItemProps) => {
   return (
     <NavLink
       to={href}
-      className={({ isActive: navActive }) => cn(
+      className={({ isActive }) => cn(
         "font-minecraft flex items-center justify-center transition-all duration-300 px-4 py-2 rounded-md",
         "hover:bg-foreground/10 hover:text-foreground hover:shadow-md",
-        navActive || isActive
+        isActive
           ? "bg-primary/10 font-bold text-foreground"
           : "text-foreground-muted"
       )}
@@ -23,7 +22,7 @@ const NavItem = ({ href, icon, label, isActive }: NavItemProps) => {
       <img
         src={icon}
         alt=""
-        className="w-8 h-8 object-cover rounded-full shadow-sm transition-all duration-300"
+        className="w-8 h-8 object-cover rounded-full shadow-xs transition-all duration-300"
       />
       <span className="ml-3 font-minecraft">
         {label}

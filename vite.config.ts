@@ -1,31 +1,37 @@
 import path from "path";
 import { defineConfig } from "vite";
-import { nodePolyfills } from 'vite-plugin-node-polyfills';
+import tailwindcss from "@tailwindcss/vite";
+import react from "@vitejs/plugin-react";
+
+const ReactCompilerConfig = {
+  // sources: (filename: string) => {
+  //   return filename.indexOf("src/components/features/addons") !== -1;
+  // },
+  target: '19'
+};
 
 export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        preserveModules: true
+        preserveModules: true,
       },
       treeshake: false,
-      preserveEntrySignatures: "exports-only"
-    }
+      preserveEntrySignatures: "exports-only",
+    },
   },
   plugins: [
-    nodePolyfills({
-      globals: {
-        Buffer: true,
-        global: true,
-        process: true,
+    tailwindcss(),
+    react({
+      babel: {
+        plugins: [["babel-plugin-react-compiler", ReactCompilerConfig]],
       },
-      protocolImports: true,
-    })
+    }),
   ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  envPrefix: "APP"
+  envPrefix: "APP",
 });

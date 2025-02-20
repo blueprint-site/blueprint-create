@@ -1,38 +1,152 @@
+@import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-@font-face {
-  font-family: 'Minecraft';
-  src: url('/src/assets/fonts/MinecraftRegular/MinecraftRegular.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+@theme {
+  --font-minecraft: Minecraft, system-ui, sans-serif;
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-foreground-muted: hsl(var(--foreground-muted));
+  --color-blueprint: hsl(var(--blueprint));
+  --color-blueprint-foreground: hsl(var(--blueprint-foreground));
+  --color-blueprint-foreground-muted: hsl(var(--blueprint-foreground-muted));
+  --color-semantic-foreground: hsl(var(--semantic-foreground));
+  --color-semantic-foreground-muted: hsl(var(--semantic-foreground-muted));
+  --color-surface-1: hsl(var(--surface-1));
+  --color-surface-2: hsl(var(--surface-2));
+  --color-surface-3: hsl(var(--surface-3));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-foreground-muted: hsl(var(--card-foreground-muted));
+
+  --color-sidebar: hsl(var(--sidebar-background));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
 }
 
-@font-face {
-  font-family: 'Minecraft';
-  src: url('/src/assets/fonts/MinecraftRegular/MinecraftBold.otf') format('opentype');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  @media (width >= --theme(--breakpoint-sm)) {
+    max-width: none;
+  }
+  @media (width >= 1400px) {
+    max-width: 1400px;
+  }
 }
 
-@font-face {
-  font-family: 'Minecraft';
-  src: url('/src/assets/fonts/MinecraftRegular/MinecraftItalic.otf') format('opentype');
-  font-weight: normal;
-  font-style: italic;
-  font-display: swap;
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
 }
 
-@font-face {
-  font-family: 'Minecraft';
-  src: url('/src/assets/fonts/MinecraftRegular/MinecraftBoldItalic.otf') format('opentype');
-  font-weight: bold;
-  font-style: italic;
-  font-display: swap;
+@layer utilities {
+  @font-face {
+    font-family: 'Minecraft';
+    src: url('/src/assets/fonts/MinecraftRegular/MinecraftRegular.otf')
+      format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Minecraft';
+    src: url('/src/assets/fonts/MinecraftRegular/MinecraftBold.otf')
+      format('opentype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Minecraft';
+    src: url('/src/assets/fonts/MinecraftRegular/MinecraftItalic.otf')
+      format('opentype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Minecraft';
+    src: url('/src/assets/fonts/MinecraftRegular/MinecraftBoldItalic.otf')
+      format('opentype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+  }
 }
  
 @layer base {

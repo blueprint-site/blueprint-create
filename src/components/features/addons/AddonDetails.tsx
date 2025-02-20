@@ -250,7 +250,7 @@ export default function AddonDetails() {
                   size="icon"
                   onClick={() => navigateGallery("prev")}
                   disabled={currentImageIndex === 0}
-                  className="rounded-full bg-background/80 backdrop-blur-sm"
+                  className="rounded-full bg-background/80 backdrop-blur-xs"
                   aria-label="Previous image"
                 >
                   <ChevronLeft className="h-4 w-4" />
@@ -261,7 +261,7 @@ export default function AddonDetails() {
                   size="icon"
                   onClick={() => navigateGallery("next")}
                   disabled={currentImageIndex === gallery.length - 1}
-                  className="rounded-full bg-background/80 backdrop-blur-sm"
+                  className="rounded-full bg-background/80 backdrop-blur-xs"
                   aria-label="Next image"
                 >
                   <ChevronRight className="h-4 w-4" />

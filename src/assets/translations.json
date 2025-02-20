@@ -10,6 +10,12 @@
           "blog": "Blog"
         }
       },
+      "user-menu": {
+        "profile": "Profile",
+        "settings": "Settings",
+        "admin": "Admin Panel",
+        "logout": "Logout"
+      },
       "awards": {
         "banner": {
           "label": "The Wrench Awards",
@@ -21,7 +27,7 @@
         "info": {
           "about": {
             "title": "What is Blueprint?",
-            "description": "Blueprint is a Create Mod themed site to find addons, schematics and more!"
+            "description": "Blueprint is a Create Mod resource site to find addons, schematics, and more!"
           },
           "links": "Useful links:"
         },
@@ -70,6 +76,12 @@
           "schematics": "Vorlagen",
           "about": "Über uns"
         }
+      },
+      "user-menu": {
+        "profile": "Profil",
+        "settings": "Einstellungen",
+        "admin": "Admin-Panel",
+        "logout": "Abmelden"
       },
       "awards": {
         "banner": {
@@ -126,6 +138,12 @@
           "schematics": "Schematics",
           "about": "Acerca de"
         }
+      },
+      "user-menu": {
+        "profile": "Perfil",
+        "settings": "Configuración",
+        "admin": "Panel de Administración",
+        "logout": "Cerrar Sesión"
       },
       "awards": {
         "banner": {

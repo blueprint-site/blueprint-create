@@ -3,14 +3,12 @@ import { useParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-
 import { BlogType } from "@/types";
-import { useLoggedUser } from "@/context/users/logedUserContext.tsx";
+import { useLoggedUser } from "@/context/users/loggedUserContext";
 import ImageUploader from "@/components/utility/ImageUploader.tsx";
 import MarkdownEditor from "@/components/utility/MarkdownEditor.tsx";
 import TagSelector from "@/components/utility/blog/TagSelector.tsx";
 import { useToast } from "@/api";
-import AdminLogsService from "@/components/admin/services/AdminLogsService.tsx";
 import { useFetchBlog, useSaveBlog } from "@/api";
 
 const AdminBlogEditor = () => {
@@ -66,11 +64,6 @@ const AdminBlogEditor = () => {
                         title: "✅ Success ✅",
                         description: `${blogState.title} has been saved successfully!`,
                     });
-                    await AdminLogsService.addLog(
-                        isNew ? "write" : "update",
-                        `${isNew ? "added" : "updated"} an article: ${blogState.title}`,
-                        "blog"
-                    );
                 } else {
                     toast({
                         className: "bg-surface-3 border-ring text-foreground",
