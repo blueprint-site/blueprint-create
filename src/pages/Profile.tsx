@@ -28,7 +28,7 @@ const Profile = () => {
       <div className="container mx-auto pt-8 sm:px-6 lg:px-8">
         <div className="flex flex-col border-b border-divider pb-3 sm:flex-row items-start gap-6">
           {/* Avatar */}
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             {LoggedUserInfo?.preferences?.avatar ?
               <img
                 src={LoggedUserInfo.preferences?.avatar}
@@ -43,7 +43,7 @@ const Profile = () => {
           </div>
 
           {/* User Info */}
-          <div className="flex-grow w-full">
+          <div className="grow w-full">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h2 className="text-2xl font-bold text-foreground">

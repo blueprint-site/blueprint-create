@@ -24,7 +24,7 @@ function Home() {
         {/* Desktop version */}
         <section className="hidden md:block py-12">
           <div className="mx-auto">
-            <div className="text-4xl font-bold text-white/90 text-center drop-shadow-lg">
+            <div className="text-4xl font-bold text-foreground text-center drop-shadow-lg">
               {t("home.discover")}
             </div>
             <div className="my-5">
