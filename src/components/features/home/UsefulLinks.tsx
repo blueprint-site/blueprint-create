@@ -42,12 +42,12 @@ const UsefulLinks = () => {
         <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
           {t("home.info.links")}
         </h2>
-        <p className="mx-auto max-w-[700px] text-foreground-muted">
+        <p className="mx-auto max-w-[700px] text-foreground/90 bg-background/10">
           Essential resources for Create mod developers and users
         </p>
       </div>
 
-      <Card className="w-full">
+      <Card className="w-full md:bg-background">
         <CardContent className="flex flex-col p-6 gap-4">
           {links.map((link, index) => (
             <a
@@ -67,7 +67,7 @@ const UsefulLinks = () => {
                   <div className="font-minecraft text-xl font-bold text-white/90">
                     {link.text}
                   </div>
-                  <div className="text-sm text-white/80">
+                  <div className="text-sm text-white/80 line-clamp-2">
                     {link.description}
                   </div>
                 </div>

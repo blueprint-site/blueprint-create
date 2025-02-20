@@ -77,7 +77,7 @@ const AddonsCarousel = () => {
                   alt=""
                   className="min-w-full h-64 object-cover"
                 />
-                <div className="w-full flex-1">
+                <div className="w-full flex-1 bg-background">
                   <div className="flex gap-4 p-4 h-full items-center justify-center">
                     <img
                       loading="lazy"

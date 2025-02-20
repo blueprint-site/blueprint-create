@@ -7,6 +7,7 @@ import { LoggedUserProvider } from "./context/users/loggedUserContext";
 import { routes } from "./routes";
 import {Suspense, useEffect, useState} from 'react';
 import 'minecraft-textures-library/src/templates/create-textures.css';
+
 const App = () => {
     const [envLoaded, setEnvLoaded] = useState(false);
     const AppRoutes = () => {

@@ -14,7 +14,7 @@ function Home() {
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col font-minecraft">
+    <div className="flex flex-col font-minecraft md:container">
       <Suspense fallback={<HomeSkeleton />}>
         {/* Mobile version */}
         <section className="md:hidden p-0">
@@ -22,8 +22,8 @@ function Home() {
         </section>
 
         {/* Desktop version */}
-        <section className="hidden md:block bg-brass_casing deep-shadow py-12">
-          <div className="container mx-auto">
+        <section className="hidden md:block py-12">
+          <div className="mx-auto">
             <div className="text-4xl font-bold text-white/90 text-center drop-shadow-lg">
               {t("home.discover")}
             </div>
@@ -33,10 +33,12 @@ function Home() {
           </div>
         </section>
 
-        <WhatIsBlueprint />
+        <section className="container py-6 md:py-12 font-minecraft bg-blueprint md:rounded-lg">
+          <WhatIsBlueprint />
+        </section>
 
-        <section className="py-12 bg-background">
-          <div className="container mx-auto px-4">
+        <section className="py-12">
+          <div className="mx-auto px-4">
             <div className="grid md:grid-cols-2 gap-8">
               <ForCreators />
               <UsefulLinks />
@@ -53,7 +55,7 @@ function HomeSkeleton() {
   return (
     <div className="flex flex-col space-y-12">
       {/* Skeleton for the Discover section */}
-      <section className="bg-brass_casing deep-shadow py-12">
+      <section className="py-12">
         <div className="container mx-auto">
           <Skeleton className="h-10 w-1/2 mx-auto bg-gray-300" />
           <div className="my-5">
