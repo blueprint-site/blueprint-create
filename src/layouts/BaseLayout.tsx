@@ -14,8 +14,9 @@ const Layout = () => {
       <NavBar />
 
       <main className="w-full pt-[64px]">
-        <div className="md:bg-refined_radiance_casing dark:bg-shadow_steel_casing pb-12">
-        <Outlet />
+        <div className={`${isDarkMode ? 'bg-shadow_steel_casing' : 'bg-refined_radiance_casing'}`}>
+          <Outlet />
+
         </div>
       </main>
 

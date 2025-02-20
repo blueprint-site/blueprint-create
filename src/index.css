@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @font-face {
   font-family: 'Minecraft';
   src: url('/src/assets/fonts/MinecraftRegular/MinecraftRegular.otf') format('opentype');

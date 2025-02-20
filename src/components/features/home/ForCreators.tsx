@@ -15,12 +15,12 @@ const ForCreators = () => {
     <div className="flex flex-col items-center space-y-4 text-center">
       <div className="space-y-2 font-minecraft">
         <h2 className="text-3xl font-bold sm:text-4xl">For Creators</h2>
-        <p className="mx-auto max-w-[700px] text-foreground-muted">
+        <p className="mx-auto max-w-[700px] text-foreground/90 bg-background/10">
           We're here to help showcase your addons to the Blueprint community
         </p>
       </div>
 
-      <Card className="w-full h-full">
+      <Card className="w-full h-full md:bg-background">
         <CardHeader>
           <CardTitle className="text-xl">Can't find your addon?</CardTitle>
           <CardDescription>
