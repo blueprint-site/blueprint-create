@@ -10,13 +10,12 @@ const Layout = () => {
   const { isDarkMode } = useThemeStore();
 
   return (
-    <div className={`min-h-screen w-full bg-background text-foreground ${isDarkMode ? 'dark' : ''}`}>
+    <div className={`min-h-screen w-full bg-background text-foreground`}>
       <NavBar />
 
       <main className="w-full pt-[64px]">
         <div className={`${isDarkMode ? 'bg-shadow_steel_casing' : 'bg-refined_radiance_casing'}`}>
           <Outlet />
-
         </div>
       </main>
 
