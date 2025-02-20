@@ -16,9 +16,9 @@ const App = () => {
     useEffect(() => {
         const loadEnv = () => {
             const script = document.createElement("script");
-            script.src = "/env.js";
+            script.src = `/env.js?version=${new Date().getTime()}`;  // Ajoute un timestamp à chaque demande
             script.onload = () => {
-                console.log(script.src)
+                console.log("env.js loaded");
                 setEnvLoaded(true);
             };
             script.onerror = () => {
