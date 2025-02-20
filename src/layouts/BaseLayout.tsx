@@ -24,8 +24,6 @@ const Layout = () => {
             </div>
 
         </main>
-
-
       <RotatingCogwheel />
     </div>
   );
