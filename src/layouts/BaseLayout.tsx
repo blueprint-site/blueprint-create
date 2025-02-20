@@ -10,17 +10,22 @@ const Layout = () => {
   const { isDarkMode } = useThemeStore();
 
   return (
-    <div className={`min-h-screen w-full bg-background text-foreground ${isDarkMode ? 'dark' : ''}`}>
+    <div className={`min-h-screen  w-full bg-background text-foreground ${isDarkMode ? 'dark' : ''}`}>
       <NavBar />
 
-      <main className="w-full pt-[64px]">
-        <div className={`${isDarkMode ? 'bg-shadow_steel_casing' : 'bg-refined_radiance_casing'}`}>
-          <Outlet />
+        <main className="w-full pt-[64px] h-screen overflow-hidden">
+            <div
+                className={`${
+                    isDarkMode ? "bg-shadow_steel_casing" : "bg-refined_radiance_casing"
+                } h-full w-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-200`}
+            >
+                <Outlet />
+                <AppFooter />
+            </div>
 
-        </div>
-      </main>
+        </main>
 
-      <AppFooter />
+
       <RotatingCogwheel />
     </div>
   );

@@ -198,3 +198,33 @@
 .pixelated {
   image-rendering: pixelated;
 }
+/* Prevent global scrolling */
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Scrollbar container */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Scrollbar track */
+::-webkit-scrollbar-track {
+  background: transparent; /* Transparent background */
+  margin: 20px 0; /* Adds space above and below the scrollbar */
+}
+
+/* Scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background-color: #7b9bf7;
+  border-radius: 4px;
+  cursor: pointer; /* Cursor change only works on elements, not pseudo-elements */
+  transition: background-color 0.2s ease; /* Smooth color transition */
+}
+
+/* Scrollbar thumb hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #7393e2;
+}
+
