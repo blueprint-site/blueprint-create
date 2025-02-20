@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  react-app:
+    image: timiliris/blueprint:latest
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    environment:
+      MEILISEARCH_URL: ${MEILISEARCH_URL}
+      MEILISEARCH_API_KEY: ${MEILISEARCH_API_KEY}
+      APPWRITE_URL: ${APPWRITE_URL}
+      APPWRITE_PROJECT_ID: ${APPWRITE_PROJECT_ID}

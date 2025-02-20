@@ -1,30 +1,50 @@
 // src/App.tsx
-import {LoadingOverlay} from '@/components/loading-overlays/LoadingOverlay';
 import '@/config/i18n';
-import {routes} from '@/routes';
-import {Suspense} from 'react';
-import {BrowserRouter, useRoutes} from 'react-router-dom';
-import {LoggedUserProvider} from "@/context/users/loggedUserContext";
-import {Toaster} from "@/components/ui/toaster.tsx";
-
-
-const AppRoutes = () => {
-    return useRoutes(routes);
-};
-
+import {BrowserRouter, useRoutes} from "react-router-dom";
+import { LoadingOverlay } from "@/components/loading-overlays/LoadingOverlay";
+import { Toaster } from "@/components/ui/toaster.tsx";
+import { LoggedUserProvider } from "./context/users/loggedUserContext";
+import { routes } from "./routes";
+import {Suspense, useEffect, useState} from 'react';
+import 'minecraft-textures-library/src/templates/create-textures.css';
 const App = () => {
+    const [envLoaded, setEnvLoaded] = useState(false);
+    const AppRoutes = () => {
+        return useRoutes(routes);
+    };
 
-  return (
-    <BrowserRouter>
-      <Suspense fallback={<LoadingOverlay />}>
-          <LoggedUserProvider>
-              <AppRoutes />
-          </LoggedUserProvider>
-      <Toaster/>
+    useEffect(() => {
+        const loadEnv = () => {
+            const script = document.createElement("script");
+            script.src = `/env.js?version=${new Date().getTime()}`;  // Ajoute un timestamp à chaque demande
+            script.onload = () => {
+                console.log("env.js loaded");
+                setEnvLoaded(true);
+            };
+            script.onerror = () => {
+                console.error("❌ Error while loading `env.js`");
+            };
+            document.head.appendChild(script);
+        };
 
-      </Suspense>
-    </BrowserRouter>
-  );
+        loadEnv();
+    }, []);
+
+    if (!envLoaded) {
+        return <LoadingOverlay />;
+    }
+
+    return (
+        <BrowserRouter>
+            <Suspense fallback={<LoadingOverlay />}>
+                <LoggedUserProvider>
+                    <AppRoutes />
+                </LoggedUserProvider>
+                <Toaster/>
+
+            </Suspense>
+        </BrowserRouter>
+    );
 };
 
 export default App;

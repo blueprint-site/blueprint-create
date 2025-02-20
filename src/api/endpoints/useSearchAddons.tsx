@@ -35,7 +35,7 @@ export const useSearchAddons = (query: string, page: number, category: string, v
     return useQuery({
         queryKey: ['searchAddons', query, page, category, version, loaders],
         queryFn: async () => {
-            const index = searchClient.index('mods');
+            const index = searchClient.index('addons');
             const result = await index.search(query, {
                 limit: 6,
                 offset: (page - 1) * 6,
