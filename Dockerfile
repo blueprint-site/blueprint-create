@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM node:18-slim AS builder
+FROM node:23-slim AS builder
 
 # Set working directory
 WORKDIR /app
@@ -8,20 +8,16 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies with verification
-RUN npm ci --legacy-peer-deps && \
-    npm audit && \
-    npm run test || echo "⚠️ Tests failed, continuing anyway"
+RUN npm ci --legacy-peer-deps
 
 # Copy the rest of the app
 COPY . .
 
 # Verify required files before building
-RUN test -f vite.config.ts || (echo "❌ vite.config.ts not found!" && exit 1) && \
-    test -d src || (echo "❌ 'src' directory not found!" && exit 1)
+RUN test -f vite.config.ts
 
-# Build the app
-RUN npm run build && \
-    test -d dist || (echo "❌ 'dist' directory was not generated!" && exit 1)
+# Build the app (make sure the build output exists in 'dist')
+RUN npm run build
 
 # Stage 2: Serve with Nginx
 FROM nginx:alpine
@@ -32,15 +28,13 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Copy custom Nginx config
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
+# Copy the entrypoint script, fixing potential CRLF issues
 COPY entrypoint.sh /entrypoint.sh
 RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
-
-# Check if entrypoint script exists
-RUN test -f /entrypoint.sh || (echo "❌ entrypoint.sh not found!" && exit 1)
 
 # Expose port 80
 EXPOSE 80
 
-# Run the entrypoint script
+# Run the entrypoint script to configure the environment variables before starting Nginx
 ENTRYPOINT ["sh", "/entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]

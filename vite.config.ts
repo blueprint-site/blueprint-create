@@ -14,9 +14,13 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        preserveModules: true,
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        },
       },
-      treeshake: false,
+      treeshake: true,
       preserveEntrySignatures: "exports-only",
     },
   },
