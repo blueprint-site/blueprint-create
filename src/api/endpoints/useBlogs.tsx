@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {BlogType} from "@/types";
 import { toast } from "@/api";
-import { databases, ID } from "@/lib/appwrite";
+import { databases, ID } from "@/config/appwrite.ts";
 import {Query} from "appwrite";
 
 // Constantes pour votre base de données
@@ -110,6 +110,8 @@ export const useSaveBlog = () => {
             // Sérialiser les objets JSON avant de les envoyer à Appwrite
             const serializedBlog = {
                 ...blog,
+                authors: blog.authors ? blog.authors : [],
+                likes: blog.likes ? blog.likes : 0,
                 links: blog.links ? JSON.stringify(blog.links) : undefined,
                 tags: blog.tags ? JSON.stringify(blog.tags) : undefined,
             };
@@ -134,5 +136,8 @@ export const useSaveBlog = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["blogs"] });
         },
+        onError: (error) => {
+            console.log(error);
+        }
     });
 };

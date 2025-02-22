@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/config/utils.ts";
 import { LucideIcon } from "lucide-react";
 
 export interface InputProps

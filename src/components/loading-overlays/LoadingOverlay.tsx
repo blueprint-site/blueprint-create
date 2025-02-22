@@ -1,6 +1,6 @@
 // src/components/loading-overlays/LoadingOverlay.tsx
 import LoadingGif from '@/assets/loading.gif';
-import { cn } from '@/lib/utils';
+import { cn } from '@/config/utils.ts';
 
 interface LoadingOverlayProps {
   message?: string;

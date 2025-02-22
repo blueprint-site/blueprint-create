@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils"
+import { cn } from "@/config/utils.ts"
 import React from "react";
 
 function Skeleton({

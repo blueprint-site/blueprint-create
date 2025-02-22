@@ -12,7 +12,7 @@ import { marked } from "marked";
 import DOMPurify from "dompurify";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useCollectionStore } from "@/stores/collectionStore";
+import { useCollectionStore } from "@/api/stores/collectionStore.ts";
 import {useFetchAddon} from "@/api";
 
 

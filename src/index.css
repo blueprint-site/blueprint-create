@@ -133,7 +133,7 @@
     font-display: swap;
   }
 }
- 
+
 @layer base {
   :root {
     --background: 220 13% 98%;
@@ -154,13 +154,13 @@
     --card: var(--surface-1);
     --card-foreground: var(--foreground);
     --card-foreground-muted: var(--muted);
- 
+
     --popover: var(--surface-1);
     --popover-foreground: 220 13% 3.9%;
- 
+
     --primary: 242 91% 75%;
     --primary-foreground: var(--semantic-foreground);
- 
+
     --secondary: 242 44% 59%;
     --secondary-foreground: var(--semantic-foreground);
 
@@ -169,22 +169,22 @@
 
     --warning: 49 100% 38%;
     --warning-foreground: var(--semantic-foreground);
- 
+
     --destructive: 3 57% 36%;
     --destructive-foreground: var(--semantic-foreground);
-    
+
     --accent: 265 44% 32%;
     --accent-foreground: 0 0% 9%;
-    
+
     --muted: var(--surface-3);
     --muted-foreground: 220 13% 95%;
 
     --border: var(--surface-3);
     --input: var(--surface-2);
     --ring: var(--primary);
- 
+
     --radius: 0.5rem;
- 
+
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -194,55 +194,55 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
- 
+
   .dark {
     --background: 0 0% 10%;
     --foreground: 0 0% 98%;
     --foreground-muted: 0 0% 85%;
-  
+
     --blueprint: 239 36% 67%;
     --blueprint-foreground: 220 5% 90%;
     --blueprint-foreground-muted: 220 5% 80%;
-  
+
     --surface-1: 0 0% 17%;
     --surface-2: 0 0% 25%;
     --surface-3: 0 0% 32%;
 
     --semantic-foreground: 0 0% 90%;
     --semantic-foreground-muted: 0 0% 80%;
-  
+
     --card: var(--surface-1);
     --card-foreground: var(--foreground);
     --card-foreground-muted: var(--muted);
-  
+
     --popover: var(--surface-1);
     --popover-foreground: var(--foreground);
-  
+
     --primary: 242 91% 75%;
     --primary-foreground: var(--semantic-foreground);
-  
+
     --secondary: 246 100% 77%;
     --secondary-foreground: var(--semantic-foreground);
-    
+
     --accent: 265 44% 32%;
     --accent-foreground: 0 0% 98%;
-  
+
     --success: 90 36% 38%;
     --success-foreground: var(--semantic-foreground);
-  
+
     --warning: 49 100% 38%;
     --warning-foreground: var(--semantic-foreground);
-  
+
     --destructive: 3 57% 36%;
     --destructive-foreground: var(--semantic-foreground);
-  
+
     --muted: var(--surface-3);
     --muted-foreground: 0 0% 70%;
-  
+
     --border: var(--surface-3);
     --input: var(--surface-2);
     --ring: var(--primary);
-  
+
     --sidebar-background: var(--surface-1);
     --sidebar-foreground: var(--foreground);
     --sidebar-primary: 224.3 76.3% 48%;
@@ -253,7 +253,7 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
- 
+
 @layer base {
   * { @apply border-border; }
   body { @apply bg-background text-foreground; }
@@ -324,5 +324,15 @@ html, body {
 body::-webkit-scrollbar {
   width: 8px;
 }
-
+/*
+  ---break---
+*/
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
 

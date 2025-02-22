@@ -39,7 +39,7 @@ const AddonList = () => {
         <div className="flex">
             {/* Sidebar */}
             <div className="w-64 p-4 text-foreground ">
-                <div className="mt-4 relative"> {/* Add relative here */}
+                <div className="mt-4 relative">
                     <h3 className="text-lg text-center font-medium">Addon Search</h3>
                     <Input
                         type="text"

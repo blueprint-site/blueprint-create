@@ -5,7 +5,7 @@ import {Button} from "@/components/ui/button";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {HexColorPicker} from "react-colorful";
 import {Tag} from "@/types";
-import {databases, ID} from "@/lib/appwrite";
+import {databases, ID} from "@/config/appwrite.ts";
 import {Models, Query} from "appwrite";
 
 const DATABASE_ID = "67b1dc430020b4fb23e3";

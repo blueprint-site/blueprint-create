@@ -10,7 +10,7 @@ import { AdminRoutes } from '@/routes/adminRoutes';
 import { blogRoutes } from "@/routes/blogRoutes";
 
 import Home from '@/pages/Home';
-import BaseLayout from '@/layouts/BaseLayout';
+import BaseLayout from '@/layouts/pages/BaseLayout.tsx';
 import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
 
 const About = lazy(() => import('@/pages/About'));
@@ -18,7 +18,7 @@ const Design = lazy(() => import('@/pages/Design'));
 const Terms = lazy(() => import('@/pages/Terms'));
 const Privacy = lazy(() => import('@/pages/Privacy'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
-const AdminPanelLayout = lazy(() => import('@/layouts/AdminPanelLayout'));
+const AdminPanelLayout = lazy(() => import('@/layouts/pages/AdminPanelLayout.tsx'));
 
 export const routes: RouteObject[] = [
   {

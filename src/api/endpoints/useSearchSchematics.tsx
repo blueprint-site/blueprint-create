@@ -1,39 +1,40 @@
 import { useQuery } from '@tanstack/react-query';
-import searchClient from '@/lib/meilisearch';
-import {Schematic} from "@/types";
-
-export const useSearchSchematics = (query: string, page: number, category: string, version: string, loaders: string) => {
-    if (!query) {
-        query = '*';
+import searchClient from '@/config/meilisearch.ts';
+import {Schematic, SearchSchematicsProps} from "@/types";
+export const useSearchSchematics = ({
+                                        query = '',
+                                        page = 1,
+                                        category = 'all',
+                                        version = 'all',
+                                        loaders = 'all',
+                                        id = 'all',
+                                    }: SearchSchematicsProps) => {
+    if(!query) {
+        query = '*'
     }
-
     // Define filter logic for category and version
     const filter = () => {
-        let filterQuery = '';
-
-        // Loader filter logic
+        const filters = [];
         if (loaders && loaders !== 'all') {
-            filterQuery = `modloaders = ${loaders}`;
+            filters.push(`modloaders = ${loaders}`);
         }
-
-        // Category filter logic
         if (category && category !== 'all') {
-            if (filterQuery) filterQuery += ' AND ';
-            filterQuery += `categories = ${category}`;
+            filters.push(`categories = ${category}`);
         }
-
-        // Version filter logic
+        if (id && id !== 'all') {
+            filters.push(`user_id = ${id}`);
+        }
         if (version && version !== 'all') {
-            if (filterQuery) filterQuery += ' AND ';
-            filterQuery += `game_versions = ${version}`;
+            filters.push(`game_versions = ${version}`);
         }
-        console.log('query: ', filterQuery);
-        return [filterQuery];
+        console.log(filters);
+        return filters.length > 0 ? filters.join(' AND ') : '';
 
     };
 
+
     return useQuery({
-        queryKey: ['searchSchematics', query, page, category, version, loaders],
+        queryKey: ['searchSchematics', query, page, category, version, loaders, id],
         queryFn: async () => {
             const index = searchClient.index('schematics');
             const result = await index.search(query, {
@@ -46,5 +47,3 @@ export const useSearchSchematics = (query: string, page: number, category: strin
         enabled: !!query
     });
 };
-
-

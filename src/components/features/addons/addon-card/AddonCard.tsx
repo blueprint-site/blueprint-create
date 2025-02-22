@@ -1,6 +1,6 @@
 import { Star, StarOff } from "lucide-react";
 import React, { memo } from "react";
-import { useCollectionStore } from "@/stores/collectionStore";
+import { useCollectionStore } from "@/api/stores/collectionStore.ts";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ModLoaders from "@/components/features/addons/addon-card/ModLoaders";
