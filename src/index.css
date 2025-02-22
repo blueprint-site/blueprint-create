@@ -1,7 +1,5 @@
 @import 'tailwindcss';
-
 @custom-variant dark (&:where(.dark, .dark *));
-
 @theme {
   --font-minecraft: Minecraft, system-ui, sans-serif;
 
@@ -64,34 +62,21 @@
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
 
-  @keyframes accordion-down {
-    from {
-      height: 0;
-    }
-    to {
-      height: var(--radix-accordion-content-height);
-    }
-  }
-  @keyframes accordion-up {
-    from {
-      height: var(--radix-accordion-content-height);
-    }
-    to {
-      height: 0;
-    }
-  }
 }
 
 @utility container {
   margin-inline: auto;
   padding-inline: 2rem;
-  @media (width >= --theme(--breakpoint-sm)) {
+
+  @media (min-width: var(--breakpoint-sm)) {
     max-width: none;
   }
-  @media (width >= 1400px) {
+
+  @media (min-width: 1400px) {
     max-width: 1400px;
   }
 }
+
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
@@ -278,30 +263,6 @@
   p { @apply mb-4; }
   a { @apply text-primary hover:text-primary/90 transition-colors; }
   section { @apply py-8; }
-}
-
-.bg-andesite-casing {
-  background: 
-    /* top left border */
-    url('src/assets/backgrounds/andesite_casing/top_left.png') top left no-repeat, 
-    /* top right border */
-    url('src/assets/backgrounds/andesite_casing/top_right.png') top right no-repeat,
-    /* bottom left border */
-    url('src/assets/backgrounds/andesite_casing/bottom_left.png') bottom left no-repeat,
-    /* bottom right border */
-    url('src/assets/backgrounds/andesite_casing/bottom_right.png') bottom right no-repeat, 
-    /* top border */
-    url('src/assets/backgrounds/andesite_casing/top.png') top left repeat-x, 
-    /* bottom border */
-    url('src/assets/backgrounds/andesite_casing/bottom.png') bottom left repeat-x, 
-    /* left border */
-    url('src/assets/backgrounds/andesite_casing/left.png') top left repeat-y, 
-    /* right border */
-    url('src/assets/backgrounds/andesite_casing/right.png') top right repeat-y,
-    /* middle */
-    url('src/assets/backgrounds/andesite_casing/middle.png') top left repeat;
-  image-rendering: pixelated;
-  background-size: 64px 64px;
 }
 
 .deep-shadow {
