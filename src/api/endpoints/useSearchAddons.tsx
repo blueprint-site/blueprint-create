@@ -2,7 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import searchClient from '@/config/meilisearch.ts';
 import { Addon } from "@/schemas/addon.schema.tsx";
 
-export const useSearchAddons = (query: string = 'create', page: number, category: string, version: string, loaders: string) => {
+export const useSearchAddons = (query: string, page: number, category: string, version: string, loaders: string) => {
+
+    const queryInput = query || 'create';
 
     // Define filter logic for category and version
     const filter = () => {
@@ -30,17 +32,17 @@ export const useSearchAddons = (query: string = 'create', page: number, category
     };
 
     return useQuery({
-        queryKey: ['searchAddons', query, page, category, version, loaders],
+        queryKey: ['searchAddons', queryInput, page, category, version, loaders],
         queryFn: async () => {
             const index = searchClient.index('addons');
-            const result = await index.search(query, {
+            const result = await index.search(queryInput, {
                 limit: 6,
                 offset: (page - 1) * 6,
                 filter: filter(),
             });
             return result.hits as Addon[];
         },
-        enabled: !!query
+        enabled: !!queryInput
     });
 };
 

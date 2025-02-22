@@ -110,7 +110,7 @@ export const useFetchSchematics = (categories?: string[]) => {
                 filters
             );
 
-            const addons: Schematic[] = response.documents.map((doc) => ({
+            const schematics: Schematic[] = response.documents.map((doc) => ({
                 $id: doc.$id,
                 $createdAt: doc.$createdAt,
                 $updatedAt: doc.$updatedAt,
@@ -129,7 +129,7 @@ export const useFetchSchematics = (categories?: string[]) => {
                 categories: Array.isArray(doc.categories) ? doc.categories : [],
             }));
 
-            return addons;
+            return schematics;
         },
         staleTime: 1000 * 60 * 5,
         retry: false,
@@ -151,7 +151,7 @@ export const useFetchUserSchematics = (user_id?: string) => {
                 filters
             );
 
-            const addons: Schematic[] = response.documents.map((doc) => ({
+            const schematics: Schematic[] = response.documents.map((doc) => ({
                 $id: doc.$id,
                 $createdAt: doc.$createdAt,
                 $updatedAt: doc.$updatedAt,
@@ -170,7 +170,7 @@ export const useFetchUserSchematics = (user_id?: string) => {
                 categories: Array.isArray(doc.categories) ? doc.categories : [],
             }));
 
-            return addons;
+            return schematics;
         },
         staleTime: 1000 * 60 * 5,
         retry: false,
