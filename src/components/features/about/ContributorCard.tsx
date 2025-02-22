@@ -20,7 +20,7 @@ export const ContributorCard = ({
 }: ContributorCardProps) => {
   if (isLoading) {
     return (
-      <Card className="overflow-hidden">
+      <Card className="overflow-hidden bg-surface-1">
         <CardHeader className="space-y-0 p-10">
           <Skeleton className="aspect-square w-full rounded-full" />
         </CardHeader>
@@ -35,7 +35,7 @@ export const ContributorCard = ({
   if (!contributor) return null;
 
   return (
-    <Card className="overflow-hidden bg-blueprint transition-colors">
+    <Card className="overflow-hidden bg-surface-1 transition-colors">
       <CardContent className="p-4 flex sm:flex-col items-center space-y-2">
         <img
           loading="lazy"
