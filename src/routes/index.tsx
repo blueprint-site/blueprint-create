@@ -19,7 +19,8 @@ const Terms = lazy(() => import('@/pages/Terms'));
 const Privacy = lazy(() => import('@/pages/Privacy'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 const AdminPanelLayout = lazy(() => import('@/layouts/pages/AdminPanelLayout.tsx'));
-
+const Changelogs = lazy(() => import('@/pages/Changelogs'));
+const ChangelogsEditor = lazy(() => import('@/components/features/changelogs/ChangelogsEditor.tsx'))
 export const routes: RouteObject[] = [
   {
     element: <BaseLayout />,
@@ -29,6 +30,8 @@ export const routes: RouteObject[] = [
       { path: 'design', element: <Suspense fallback={<LoadingOverlay />}><Design /></Suspense> },
       { path: 'terms', element: <Suspense fallback={<LoadingOverlay />}><Terms /></Suspense> },
       { path: 'privacy', element: <Suspense fallback={<LoadingOverlay />}><Privacy /></Suspense> },
+      { path: 'changelogs', element: <Suspense fallback={<LoadingOverlay />}><Changelogs /></Suspense>  },
+      { path: 'changelogs/editor', element: <Suspense fallback={<LoadingOverlay />}><ChangelogsEditor /></Suspense>  },
       ...authRoutes,
       ...settingsRoutes,
       ...blogRoutes,
