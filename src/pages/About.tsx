@@ -89,17 +89,17 @@ export default function About() {
       <section className="space-y-6">
         <div className="text-center space-y-2">
           <h1>About Blueprint</h1>
-          <p className="text-lg">
+          <p className="text-lg font-minecraft">
             Probably the best thing that has ever existed since crackers
           </p>
         </div>
 
         <div className="space-y-10">
           <section aria-labelledby="mission">
-            <h2 id="mission" className="text-2xl font-semibold">
+            <h2 id="mission" className="text-2xl font-semibold font-minecraft">
               Our Mission
             </h2>
-            <p className="text-foreground-muted">
+            <p className="text-foreground-muted font-minecraft">
               Blueprint is the central hub for Create Mod content, bringing
               together community-made addons and player-designed schematics in
               one place. Our{" "}
@@ -128,7 +128,7 @@ export default function About() {
                   name="discord-plural"
                   format="svg"
                 />
-                <p className="text-foreground-muted">
+                <p className="text-foreground-muted font-minecraft">
                   For updates, sneak peeks, and issue reporting.
                 </p>
               </div>
@@ -141,7 +141,7 @@ export default function About() {
                   name="github-plural"
                   format="svg"
                 />
-                <p className="text-foreground-muted">
+                <p className="text-foreground-muted font-minecraft">
                   Check the README.md on the "develop" branch for local setup
                   instructions.
                 </p>
@@ -149,7 +149,7 @@ export default function About() {
 
               <div>
                 <h3 className="text-xl font-minecraft font-semibold">Email</h3>
-                <p className="text-foreground-muted">
+                <p className="text-foreground-muted font-minecraft">
                   Contact us at{" "}
                   <ContactLink href="mailto:blueprint-site@proton.me">
                     blueprint-site@proton.me
@@ -162,7 +162,7 @@ export default function About() {
       </section>
 
       <section className="space-y-6" aria-labelledby="contributors">
-        <div className="text-center space-y-2">
+        <div className="text-center space-y-2 font-minecraft">
           <h2 id="contributors" className="text-3xl font-bold">
             {t("home.contributions.title")}
           </h2>
