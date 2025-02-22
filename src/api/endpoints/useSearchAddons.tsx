@@ -1,11 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import searchClient from '@/lib/meilisearch';
+import searchClient from '@/config/meilisearch.ts';
 import { Addon } from "@/schemas/addon.schema.tsx";
 
-export const useSearchAddons = (query: string, page: number, category: string, version: string, loaders: string) => {
-    if (!query) {
-        query = 'create';
-    }
+export const useSearchAddons = (query: string = 'create', page: number, category: string, version: string, loaders: string) => {
 
     // Define filter logic for category and version
     const filter = () => {

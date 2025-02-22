@@ -1,6 +1,6 @@
 // src/components/loading-overlays/LoadingSuccess.tsx
 import LoadingCheckmark from '@/assets/loading_checkmark.png';
-import { cn } from '@/lib/utils';
+import { cn } from '@/config/utils.ts';
 
 interface LoadingSuccessProps {
   message?: string;

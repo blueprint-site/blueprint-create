@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { cn } from "@/config/utils.ts";
 import {BarChart, LayoutDashboard, Users, Package, FileText, Files} from "lucide-react";
 import AdminAddonsTable from "@/components/features/admin/addons/AdminAddonsTable";
 import AddonStatsWrapper from "@/components/features/admin/stats/AddonStatsWrapper";
 import AdminUsersDisplay from "@/components/features/admin/users/AdminUsersDisplay";
-import AdminBlogDisplay from "@/components/features/admin/blog/AdminBlogDisplay";
+import AdminBlogDisplay from "@/components/features/admin/blog/components/AdminBlogDisplay.tsx";
 import AdminSchematicsDisplay from "@/components/features/admin/schematics/AdminSchematicsDisplay";
 import {Button} from "@/components/ui/button.tsx";
 import { useNavigate } from "react-router-dom";

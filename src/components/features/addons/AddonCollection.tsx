@@ -15,7 +15,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useCollectionStore } from "@/stores/collectionStore.ts";
+import { useCollectionStore } from "@/api/stores/collectionStore.ts";
 import { Download, Info, X } from "lucide-react";
 import { useEffect } from "react";
 

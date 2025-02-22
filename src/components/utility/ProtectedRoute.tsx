@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { account } from "@/lib/appwrite.ts";
+import { account } from "@/config/appwrite.ts";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;

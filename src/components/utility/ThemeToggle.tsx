@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useThemeStore } from "@/stores/themeStore";
+import { useThemeStore } from "@/api/stores/themeStore.tsx";
 import NightVisionIcon from "/src/assets/sprite-icons/night_vision.png";
 
 interface ThemeToggleProps {

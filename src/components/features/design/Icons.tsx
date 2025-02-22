@@ -1,7 +1,7 @@
 import * as lucide from "lucide-react";
 
 import MinecraftIcon from "@/components/utility/MinecraftIcon";
-import { minecraftIcons } from "@/data/minecraftIcons.ts";
+import { minecraftIcons } from "@/config/minecraftIcons.ts";
 import { Button } from "../../ui/button";
 import { Card, CardContent } from "../../ui/card";
 

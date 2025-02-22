@@ -3,16 +3,17 @@ import '@/config/i18n';
 import {BrowserRouter, useRoutes} from "react-router-dom";
 import { LoadingOverlay } from "@/components/loading-overlays/LoadingOverlay";
 import { Toaster } from "@/components/ui/toaster.tsx";
-import { LoggedUserProvider } from "./context/users/loggedUserContext";
+import { LoggedUserProvider } from "./api/context/loggedUser/loggedUserContext.tsx";
 import { routes } from "./routes";
 import {Suspense, useEffect, useState} from 'react';
 import 'minecraft-textures-library/src/templates/create-textures.css';
 
 const App = () => {
-    const [envLoaded, setEnvLoaded] = useState(false);
     const AppRoutes = () => {
         return useRoutes(routes);
     };
+    const [envLoaded, setEnvLoaded] = useState(false);
+
 
     useEffect(() => {
         const loadEnv = () => {

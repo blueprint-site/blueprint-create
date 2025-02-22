@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { UploadCloud, XCircle } from "lucide-react";
-import {storage} from "@/lib/appwrite.ts";
+import {storage} from "@/config/appwrite.ts";
 import {ID} from "appwrite";
 
 
