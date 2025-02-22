@@ -1,40 +1,78 @@
 import React, { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
-import { account } from "@/config/appwrite.ts";
+import { Navigate, useLocation } from 'react-router-dom';
+import { account } from "@/config/appwrite";
+import { LoadingOverlay } from "@/components/loading-overlays/LoadingOverlay";
+import { useToast } from "@/api";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
+  // Optional role requirement for future expansion
+  requiredRole?: string;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  children,
+  requiredRole
+}) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [hasRequiredRole, setHasRequiredRole] = useState<boolean>(true);
+  const location = useLocation();
+  const { toast } = useToast();
 
   useEffect(() => {
-    // Vérifie la session lors du montage du composant
     const checkSession = async () => {
       try {
-        // Méthode Appwrite pour obtenir la session actuelle
         const session = await account.getSession('current');
-        setIsAuthenticated(!!session); // Définit à true si une session existe, false sinon
+
+        // Basic authentication check
+        if (!session) {
+          setIsAuthenticated(false);
+          return;
+        }
+
+        // Optional role check if requiredRole is specified
+        if (requiredRole) {
+          const user = await account.get();
+          const userRoles = user.prefs?.roles || [];
+          setHasRequiredRole(userRoles.includes(requiredRole));
+        }
+
+        setIsAuthenticated(true);
       } catch (error) {
-        setIsAuthenticated(false); // Aucune session trouvée, l'utilisateur n'est pas authentifié
+        setIsAuthenticated(false);
+        toast({
+          title: "Authentication Error",
+          description: "Please log in again",
+          variant: "destructive",
+        });
       }
     };
 
     checkSession();
-  }, []);
+  }, [requiredRole, toast]);
 
-  // Affiche un indicateur de chargement pendant la vérification de la session
+  // Show Blueprint's standard loading overlay during check
   if (isAuthenticated === null) {
-    return <div>Vérification de votre statut de connexion...</div>;
+    return <LoadingOverlay message="Verifying authentication..." />;
   }
 
-  // Redirige vers la page de connexion si l'utilisateur n'est pas authentifié
+  // Handle authentication failure
   if (!isAuthenticated) {
-    return <Navigate to="/login" />;
+    // Include the current path as return URL
+    const returnUrl = encodeURIComponent(location.pathname + location.search);
+    return <Navigate to={`/login?returnUrl=${returnUrl}`} replace />;
   }
 
-  // Rend les enfants si l'utilisateur est authentifié
+  // Handle role requirement failure
+  if (requiredRole && !hasRequiredRole) {
+    toast({
+      title: "Access Denied",
+      description: `Required role: ${requiredRole}`,
+      variant: "destructive",
+    });
+    return <Navigate to="/" replace />;
+  }
+
   return <>{children}</>;
 };
 
