@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
-import { Download } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button.tsx";
+import { Link } from 'react-router-dom';
+import { Download } from 'lucide-react';
+import { buttonVariants } from '@/components/ui/button.tsx';
 import {
   Card,
   CardContent,
@@ -8,11 +8,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card.tsx";
-import { Badge } from "@/components/ui/badge.tsx";
-import ModLoaderDisplay from "@/components/common/ModLoaderDisplay.tsx";
-import { Schematic } from "@/types";
-import {useIncrementDownloads} from "@/api/endpoints/useSchematics.tsx";
+} from '@/components/ui/card.tsx';
+import { Badge } from '@/components/ui/badge.tsx';
+import ModLoaderDisplay from '@/components/common/ModLoaderDisplay.tsx';
+import { Schematic } from '@/types';
+import { useIncrementDownloads } from '@/api/endpoints/useSchematics.tsx';
 
 interface SchematicCardProps {
   schematic: Schematic;
@@ -22,7 +22,7 @@ interface SchematicCardProps {
 const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
   const renderVersionBadges = (versions: string[]) => {
     return versions.map((version, i) => (
-      <Badge key={i} variant="mcVersion">
+      <Badge key={i} variant='mcVersion'>
         {version}
       </Badge>
     ));
@@ -31,18 +31,18 @@ const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
 
   return (
     <Card
-      className="flex flex-col h-full bg rounded-lg cursor-pointer hover:shadow-lg transition-shadow"
+      className='bg flex h-full cursor-pointer flex-col rounded-lg transition-shadow hover:shadow-lg'
       onClick={onClick}
     >
-      <div className="h-40 overflow-hidden">
+      <div className='h-40 overflow-hidden'>
         <img
-          className="w-full h-full object-cover rounded-t-md"
+          className='h-full w-full rounded-t-md object-cover'
           alt={schematic.title}
           src={schematic.image_url}
         />
       </div>
 
-      <CardHeader className="grow">
+      <CardHeader className='grow'>
         <CardTitle>{schematic.title}</CardTitle>
         <CardDescription>
           {schematic.description.slice(0, 150)}...
@@ -55,20 +55,23 @@ const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
         </div>
         <div>
           Made for Minecraft:
-          <div className="flex grow gap-2">
+          <div className='flex grow gap-2'>
             {renderVersionBadges(schematic.game_versions)}
           </div>
         </div>
       </CardContent>
 
-      <CardFooter className="mt-auto">
+      <CardFooter className='mt-auto'>
         <Link
           className={buttonVariants({
-            variant: "default",
-            className: "w-full text-center"
+            variant: 'default',
+            className: 'w-full text-center',
           })}
           to={schematic.schematic_url}
-          onClick={(e) =>{incrementDownloads(schematic.$id); e.stopPropagation() }}
+          onClick={(e) => {
+            incrementDownloads(schematic.$id);
+            e.stopPropagation();
+          }}
         >
           <Download /> Download
         </Link>

@@ -1,32 +1,31 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from 'react-router-dom';
 
-import RotatingCogwheel from "@/components/common/Cogwheel.tsx";
-import AppFooter from "@/layouts/components/AppFooter.tsx";
-import NavBar from "@/layouts/components/AppHeader.tsx";
+import RotatingCogwheel from '@/components/common/Cogwheel.tsx';
+import AppFooter from '@/layouts/components/AppFooter.tsx';
+import AppHeader from '@/layouts/components/AppHeader.tsx';
 
-import { useThemeStore } from "@/api/stores/themeStore.tsx";
+import { useThemeStore } from '@/api/stores/themeStore.tsx';
 
-const Layout = () => {
+const BaseLayout = () => {
   const { isDarkMode } = useThemeStore();
 
   return (
-    <div className={`min-h-screen  w-full bg-background text-foreground ${isDarkMode ? 'dark' : ''}`}>
-      <NavBar />
+    <div
+      className={`bg-background text-foreground min-h-screen w-full ${isDarkMode ? 'dark' : ''}`}
+    >
+      <AppHeader />
+      <main className='h-screen overflow-y-auto pt-16'>
+        <div
+          className={`${isDarkMode ? 'bg-shadow_steel_casing' : 'bg-refined_radiance_casing'}`}
+        >
+          <Outlet />
+        </div>
+        <AppFooter />
+      </main>
 
-        <main className="w-full pt-[64px] h-screen overflow-hidden">
-            <div
-                className={`${
-                    isDarkMode ? "bg-shadow_steel_casing" : "bg-refined_radiance_casing"
-                } h-full w-full overflow-y-auto scrollable-container`}
-            >
-                <Outlet />
-                <AppFooter />
-            </div>
-
-        </main>
       <RotatingCogwheel />
     </div>
   );
 };
 
-export default Layout;
+export default BaseLayout;
