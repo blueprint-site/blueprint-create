@@ -3,7 +3,7 @@ import { Download, User, Users } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { useLoggedUser } from "@/api/context/loggedUser/loggedUserContext.tsx";
 import { useState } from "react";
-import UserSchematicList from "@/components/features/schematics/components/UserSchematicList.tsx";
+import UserSchematicList from "@/components/features/schematics/UserSchematicList.tsx";
 
 const Profile = () => {
   const [error] = useState<string | null>(null);
