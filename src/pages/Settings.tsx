@@ -7,13 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 const DisplaySettings = lazy(
-  () => import("@/components/features/settings/components/DisplaySettings.tsx")
+  () => import("@/components/features/settings/DisplaySettings.tsx")
 );
 const AccountSettings = lazy(
-  () => import("@/components/features/settings/components/AccountSettings.tsx")
+  () => import("@/components/features/settings/AccountSettings.tsx")
 );
 const ProfileSettings = lazy(
-  () => import("@/components/features/settings/components/ProfileSettings.tsx")
+  () => import("@/components/features/settings/ProfileSettings.tsx")
 );
 
 const SettingsPage = () => {
