@@ -1,12 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button.tsx';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card.tsx';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card.tsx';
 import { Label } from '@/components/ui/label.tsx';
 import { LoadingSpinner } from '@/components/loading-overlays/LoadingSpinner.tsx';
 import { LoadingSuccess } from '@/components/loading-overlays/LoadingSuccess.tsx';
@@ -17,11 +11,18 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group.tsx';
 import { databases, storage } from '@/config/appwrite.ts';
 import { LoggedUserContextType } from '@/types';
 import { redirect } from 'react-router-dom';
-import MarkdownEditor from "@/components/utility/MarkdownEditor.tsx";
-import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
-import schematicCategories from "@/config/schematicsCategory.ts";
-import minecraftVersion from "@/config/minecraft.ts";
-import ModLoaderDisplay from "@/components/common/ModLoaderDisplay.tsx";
+import MarkdownEditor from '@/components/utility/MarkdownEditor.tsx';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select.tsx';
+import schematicCategories from '@/config/schematicsCategory.ts';
+import minecraftVersion from '@/config/minecraft.ts';
+import ModLoaderDisplay from '@/components/common/ModLoaderDisplay.tsx';
 
 function SchematicsUpload() {
   const [step, setStep] = useState(1);
@@ -39,9 +40,7 @@ function SchematicsUpload() {
   const [showFinalMessage, setShowFinalMessage] = useState<boolean>(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string>();
   const [slug, setSlug] = useState<string>('');
-  const filteredCategories = schematicCategories.filter(
-      (category) => category.category !== 'All'
-  );
+  const filteredCategories = schematicCategories.filter((category) => category.category !== 'All');
   // Function to generate a slug from the title using regex
   const generateSlug = (text: string) => {
     return text
@@ -99,13 +98,7 @@ function SchematicsUpload() {
       return;
     }
     setLoading(true);
-    handleSchematicUpload(
-      uploadedSchematic,
-      uploadedImage,
-      title,
-      description,
-      LoggedUser
-    );
+    handleSchematicUpload(uploadedSchematic, uploadedImage, title, description, LoggedUser);
     setTimeout(() => {
       setShowFinalMessage(true);
     }, 3000);
@@ -119,26 +112,12 @@ function SchematicsUpload() {
   ) {
     try {
       // Upload file to Appwrite storage
-      const uploadedFile = await storage.createFile(
-        '67b2241e0032c25c8216',
-        'unique()',
-        file
-      );
+      const uploadedFile = await storage.createFile('67b2241e0032c25c8216', 'unique()', file);
 
       // Upload image to Appwrite storage
-      const uploadedImage = await storage.createFile(
-        '67b22481001e99d90888',
-        'unique()',
-        image
-      );
-      const fileUrl = storage.getFileDownload(
-        '67b2241e0032c25c8216',
-        uploadedFile.$id
-      );
-      const imageUrl = storage.getFilePreview(
-        '67b22481001e99d90888',
-        uploadedImage.$id
-      );
+      const uploadedImage = await storage.createFile('67b22481001e99d90888', 'unique()', image);
+      const fileUrl = storage.getFileDownload('67b2241e0032c25c8216', uploadedFile.$id);
+      const imageUrl = storage.getFilePreview('67b22481001e99d90888', uploadedImage.$id);
 
       const data = {
         title: title,
@@ -167,14 +146,12 @@ function SchematicsUpload() {
       console.error('Error uploading blueprint:', error);
     }
   }
-  const selectedCategory = filteredCategories.find(
-      (cat) => cat.category === category
-  );
+  const selectedCategory = filteredCategories.find((cat) => cat.category === category);
   const updateCompatibleLoaders = (selectedVersions: string[]) => {
     const compatibleLoaders: string[] = [];
 
     selectedVersions.forEach((version) => {
-      const versionInfo = minecraftVersion.find(v => v.version === version);
+      const versionInfo = minecraftVersion.find((v) => v.version === version);
       if (versionInfo) {
         versionInfo.compatibility.forEach((loader) => {
           if (!compatibleLoaders.includes(loader)) {
@@ -187,7 +164,7 @@ function SchematicsUpload() {
     setLoaders(compatibleLoaders);
   };
 
-// Utiliser cette fonction dans l'effet useEffect
+  // Utiliser cette fonction dans l'effet useEffect
   useEffect(() => {
     updateCompatibleLoaders(gameVersions);
   }, [gameVersions]);
@@ -215,9 +192,7 @@ function SchematicsUpload() {
     <div className='container'>
       <Card className='mt-8'>
         <CardHeader>
-          <CardTitle className='text-center'>
-            Let's upload a schematic
-          </CardTitle>
+          <CardTitle className='text-center'>Let's upload a schematic</CardTitle>
         </CardHeader>
         <CardContent>
           <Progress value={progress} className='mb-4' />
@@ -250,9 +225,7 @@ function SchematicsUpload() {
                 </div>
 
                 <div className='w-full max-w-lg'>
-                  <h2 className='text-center text-2xl font-semibold'>
-                    Upload an image
-                  </h2>
+                  <h2 className='text-center text-2xl font-semibold'>Upload an image</h2>
                   <Input
                     type='file'
                     accept='image/*'
@@ -294,71 +267,69 @@ function SchematicsUpload() {
                 className='mb-2 w-full border p-2'
               />
               <h2 className='text-center'>Description</h2>
-              <MarkdownEditor value={description} onChange={(e) => setDescription(e)}></MarkdownEditor>
+              <MarkdownEditor
+                value={description}
+                onChange={(e) => setDescription(e)}
+              ></MarkdownEditor>
               <h2 className='text-center'>Category</h2>
-              <label className='text-foreground font-minecraft mb-2 block'>
-                Category
-              </label>
+              <label className='text-foreground font-minecraft mb-2 block'>Category</label>
               <Select
-                  value={category}
-                  onValueChange={(value) => {
-                    setCategory(value);
-                    setSubCategory(''); // Réinitialiser la sous-catégorie lorsque la catégorie change
-                  }}
+                value={category}
+                onValueChange={(value) => {
+                  setCategory(value);
+                  setSubCategory(''); // Réinitialiser la sous-catégorie lorsque la catégorie change
+                }}
               >
                 <SelectTrigger className='border-foreground font-minecraft w-full rounded-lg p-2'>
                   <SelectValue
-                      className='text-foreground font-minecraft'
-                      placeholder='Select Category'
+                    className='text-foreground font-minecraft'
+                    placeholder='Select Category'
                   />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
                     {filteredCategories.map(
-                        (categoryItem: { category: string; subcategories: string[] }) => (
-                            <SelectItem
-                                key={categoryItem.category}
-                                className='text-foreground font-minecraft'
-                                value={categoryItem.category}
-                            >
-                              {categoryItem.category}
-                            </SelectItem>
-                        )
+                      (categoryItem: { category: string; subcategories: string[] }) => (
+                        <SelectItem
+                          key={categoryItem.category}
+                          className='text-foreground font-minecraft'
+                          value={categoryItem.category}
+                        >
+                          {categoryItem.category}
+                        </SelectItem>
+                      )
                     )}
                   </SelectGroup>
                 </SelectContent>
               </Select>
 
               {selectedCategory && selectedCategory.subcategories.length > 0 && (
-                  <>
-                    <label className='text-foreground font-minecraft mb-2 block mt-4'>
-                      Subcategory
-                    </label>
-                    <Select
-                        value={subCategory}
-                        onValueChange={setSubCategory}
-                    >
-                      <SelectTrigger className='border-foreground font-minecraft w-full rounded-lg p-2'>
-                        <SelectValue
+                <>
+                  <label className='text-foreground font-minecraft mt-4 mb-2 block'>
+                    Subcategory
+                  </label>
+                  <Select value={subCategory} onValueChange={setSubCategory}>
+                    <SelectTrigger className='border-foreground font-minecraft w-full rounded-lg p-2'>
+                      <SelectValue
+                        className='text-foreground font-minecraft'
+                        placeholder='Select Subcategory'
+                      />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {selectedCategory.subcategories.map((subCat) => (
+                          <SelectItem
+                            key={subCat}
                             className='text-foreground font-minecraft'
-                            placeholder='Select Subcategory'
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {selectedCategory.subcategories.map((subCat) => (
-                              <SelectItem
-                                  key={subCat}
-                                  className='text-foreground font-minecraft'
-                                  value={subCat}
-                              >
-                                {subCat}
-                              </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </>
+                            value={subCat}
+                          >
+                            {subCat}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </>
               )}
             </>
           )}

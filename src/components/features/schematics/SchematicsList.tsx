@@ -14,8 +14,8 @@ import {
   SelectItem,
   SelectGroup,
 } from '@/components/ui/select.tsx';
-import schematicCategories from '@/config/schematicsCategory.ts'
-import minecraftVersion from "@/config/minecraft.ts";
+import schematicCategories from '@/config/schematicsCategory.ts';
+import minecraftVersion from '@/config/minecraft.ts';
 
 function SchematicsListWithFilters() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,9 +26,7 @@ function SchematicsListWithFilters() {
   const navigate = useNavigate();
   const [subCategory, setSubCategory] = useState('All');
 
-  const selectedCategory = schematicCategories.find(
-      (cat) => cat.category === category
-  );
+  const selectedCategory = schematicCategories.find((cat) => cat.category === category);
   const {
     data: schematics,
     isLoading,
@@ -51,84 +49,70 @@ function SchematicsListWithFilters() {
     <div className='flex'>
       <div className='text-foreground w-64 p-4'>
         <div className='relative mt-4'>
-          <h2 className='text-foreground font-minecraft mb-4 text-xl font-semibold'>
-            Filters
-          </h2>
-          <SchematicSearchCard
-            searchQuery={searchQuery}
-            onSearchChange={handleInputChange}
-          />
+          <h2 className='text-foreground font-minecraft mb-4 text-xl font-semibold'>Filters</h2>
+          <SchematicSearchCard searchQuery={searchQuery} onSearchChange={handleInputChange} />
 
           {/* Category Filter */}
-          <label className='text-foreground font-minecraft mb-2 block'>
-            Category
-          </label>
+          <label className='text-foreground font-minecraft mb-2 block'>Category</label>
           <Select
-              value={category}
-              onValueChange={(value) => {
-                setCategory(value);
-                setSubCategory(''); // Réinitialiser la sous-catégorie lorsque la catégorie change
-              }}
+            value={category}
+            onValueChange={(value) => {
+              setCategory(value);
+              setSubCategory(''); // Réinitialiser la sous-catégorie lorsque la catégorie change
+            }}
           >
             <SelectTrigger className='border-foreground font-minecraft w-full rounded-lg p-2'>
               <SelectValue
-                  className='text-foreground font-minecraft'
-                  placeholder='Select Category'
+                className='text-foreground font-minecraft'
+                placeholder='Select Category'
               />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 {schematicCategories.map(
-                    (categoryItem: { category: string; subcategories: string[] }) => (
-                        <SelectItem
-                            key={categoryItem.category}
-                            className='text-foreground font-minecraft'
-                            value={categoryItem.category}
-                        >
-                          {categoryItem.category}
-                        </SelectItem>
-                    )
+                  (categoryItem: { category: string; subcategories: string[] }) => (
+                    <SelectItem
+                      key={categoryItem.category}
+                      className='text-foreground font-minecraft'
+                      value={categoryItem.category}
+                    >
+                      {categoryItem.category}
+                    </SelectItem>
+                  )
                 )}
               </SelectGroup>
             </SelectContent>
           </Select>
 
           {selectedCategory && selectedCategory.subcategories.length > 0 && (
-              <>
-                <label className='text-foreground font-minecraft mb-2 block mt-4'>
-                  Subcategory
-                </label>
-                <Select
-                    value={subCategory}
-                    onValueChange={setSubCategory}
-                >
-                  <SelectTrigger className='border-foreground font-minecraft w-full rounded-lg p-2'>
-                    <SelectValue
+            <>
+              <label className='text-foreground font-minecraft mt-4 mb-2 block'>Subcategory</label>
+              <Select value={subCategory} onValueChange={setSubCategory}>
+                <SelectTrigger className='border-foreground font-minecraft w-full rounded-lg p-2'>
+                  <SelectValue
+                    className='text-foreground font-minecraft'
+                    placeholder='Select Subcategory'
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {selectedCategory.subcategories.map((subCat) => (
+                      <SelectItem
+                        key={subCat}
                         className='text-foreground font-minecraft'
-                        placeholder='Select Subcategory'
-                    />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {selectedCategory.subcategories.map((subCat) => (
-                          <SelectItem
-                              key={subCat}
-                              className='text-foreground font-minecraft'
-                              value={subCat}
-                          >
-                            {subCat}
-                          </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </>
+                        value={subCat}
+                      >
+                        {subCat}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </>
           )}
 
           {/* Version Filter */}
-          <label className='text-foreground font-minecraft mt-4 mb-2 block'>
-            Version
-          </label>
+          <label className='text-foreground font-minecraft mt-4 mb-2 block'>Version</label>
           <Select value={version} onValueChange={(value) => setVersion(value)}>
             <SelectTrigger className='border-foreground font-minecraft w-full rounded-lg p-2'>
               <SelectValue
@@ -139,43 +123,29 @@ function SchematicsListWithFilters() {
             <SelectContent>
               <SelectGroup>
                 {minecraftVersion.map((version) => (
-                    <SelectItem
-                        className='text-foreground font-minecraft'
-                        value={version.version}
-                    >
-                      {version.version}
-                    </SelectItem>
+                  <SelectItem className='text-foreground font-minecraft' value={version.version}>
+                    {version.version}
+                  </SelectItem>
                 ))}
               </SelectGroup>
             </SelectContent>
           </Select>
 
           {/* Loaders Filter */}
-          <label className='text-foreground font-minecraft mt-4 mb-2 block'>
-            Loaders
-          </label>
+          <label className='text-foreground font-minecraft mt-4 mb-2 block'>Loaders</label>
           <Select value={loaders} onValueChange={(value) => setLoaders(value)}>
             <SelectTrigger className='border-foreground font-minecraft w-full rounded-lg p-2'>
               <SelectValue placeholder='Select Loader' />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem
-                  className='text-foreground font-minecraft'
-                  value='all'
-                >
+                <SelectItem className='text-foreground font-minecraft' value='all'>
                   All
                 </SelectItem>
-                <SelectItem
-                  className='text-foreground font-minecraft'
-                  value='forge'
-                >
+                <SelectItem className='text-foreground font-minecraft' value='forge'>
                   Forge
                 </SelectItem>
-                <SelectItem
-                  className='text-foreground font-minecraft'
-                  value='fabric'
-                >
+                <SelectItem className='text-foreground font-minecraft' value='fabric'>
                   Fabric
                 </SelectItem>
               </SelectGroup>
@@ -186,10 +156,7 @@ function SchematicsListWithFilters() {
 
       <div className='h-screen flex-1 p-8'>
         <div className='float-end mt-4'>
-          <Link
-            className={buttonVariants({ variant: 'default' })}
-            to='../schematics/upload'
-          >
+          <Link className={buttonVariants({ variant: 'default' })} to='../schematics/upload'>
             <Upload /> Upload Schematic
           </Link>
         </div>
@@ -209,9 +176,7 @@ function SchematicsListWithFilters() {
                 <SchematicCard
                   key={schematic.$id}
                   schematic={schematic}
-                  onClick={() =>
-                    navigate(`../schematics/${schematic.$id}/${schematic.slug}`)
-                  }
+                  onClick={() => navigate(`../schematics/${schematic.$id}/${schematic.slug}`)}
                 />
               ))
             ) : (
