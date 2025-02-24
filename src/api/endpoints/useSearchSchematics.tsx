@@ -9,14 +9,14 @@ import { Schematic, SearchSchematicsProps } from '@/types';
  * @returns {object} An object containing search results, loading states, and pagination information.
  */
 export const useSearchSchematics = ({
-                                      query = '',
-                                      page = 1,
-                                      category = 'All',
-                                      subCategory = 'All',
-                                      version = 'all',
-                                      loaders = 'all',
-                                      id = 'all',
-                                    }: SearchSchematicsProps): object => {
+  query = '',
+  page = 1,
+  category = 'All',
+  subCategory = 'All',
+  version = 'all',
+  loaders = 'all',
+  id = 'all',
+}: SearchSchematicsProps): object => {
   // If no query is provided, default to a wildcard search ('*').
   if (!query) {
     query = '*';
@@ -29,7 +29,7 @@ export const useSearchSchematics = ({
   const filter = (): string => {
     const filters: string[] = [];
 
-    /**
+    /*
      * @description Adds a filter condition to the filters array if the value is valid.
      * @param {string} field - The field to filter on.
      * @param {string} value - The value to filter by.
@@ -71,12 +71,9 @@ export const useSearchSchematics = ({
     enabled: !!query, // Disable the query if there is no search query.
   });
 
-  // Extract data and loading/error states from the useQuery result.
   const { data, isLoading, isError, error, isFetching } = queryResult;
 
-  // Determine if there is a next page based on the number of hits and the total number of hits.
   const hasNextPage = data ? (page - 1) * 20 + data.hits.length < data.totalHits : false;
-  // Determine if there is a previous page (if the current page is greater than 1).
   const hasPreviousPage = page > 1;
 
   // Return an object containing the search results, loading states, and pagination information.
