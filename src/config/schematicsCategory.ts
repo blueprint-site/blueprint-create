@@ -1,5 +1,9 @@
 export const schematicCategories = [
   {
+    category: 'All',
+    subcategories: ['All'],
+  },
+  {
     category: 'Buildings',
     subcategories: [
       'Houses',
@@ -173,3 +177,5 @@ export const schematicCategories = [
     ],
   },
 ];
+
+export default schematicCategories;

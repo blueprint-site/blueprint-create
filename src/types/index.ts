@@ -329,6 +329,7 @@ export interface SearchSchematicsProps {
   query?: string;
   page?: number;
   category?: string;
+  subCategory?: string;
   version?: string;
   loaders?: string;
   id?: string;

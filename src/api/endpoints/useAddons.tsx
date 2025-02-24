@@ -48,7 +48,7 @@ export const useFetchAddon = (slug?: string) => {
       const doc = response.documents[0];
       console.log(doc);
       const addonData: Addon = {
-        id: doc.$id,
+        $id: doc.$id,
         name: doc.name || '',
         downloads: doc.downloads || '',
         description: doc.description || '',
@@ -63,7 +63,7 @@ export const useFetchAddon = (slug?: string) => {
         sources: Array.isArray(doc.sources) ? doc.sources : [],
         isValid: doc.isValid || false,
         isChecked: doc.isChecked || false,
-        versions: Array.isArray(doc.versions) ? doc.versions : [],
+        minecraft_versions: Array.isArray(doc.minecraft_versions) ? doc.minecraft_versions : [],
       };
 
       return addonData;
@@ -74,37 +74,46 @@ export const useFetchAddon = (slug?: string) => {
   });
 };
 
-export const useFetchAddons = (categories?: string[]) => {
-  return useQuery<Addon[]>({
-    queryKey: ['addons', categories],
+export const useFetchAddons = (page: number, limit: number = 20) => {
+  return useQuery<{ addons: Addon[]; total: number }>({
+    queryKey: ['addons', page],
     queryFn: async () => {
-      const filters = categories ? [Query.equal('categories', categories)] : [];
+      try {
+        const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
+          Query.limit(limit),
+          Query.offset((page - 1) * limit),
+        ]);
 
-      const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, filters);
-
-      const addons: Addon[] = response.documents.map((doc) => ({
-        id: doc.$id,
-        name: doc.name || '',
-        description: doc.description || '',
-        slug: doc.slug || '',
-        author: doc.author || '',
-        categories: doc.categories ? JSON.parse(doc.categories as string) : [],
-        downloads: doc.downloads || 0,
-        icon: doc.icon || '',
-        created_at: doc.created_at,
-        updated_at: doc.updated_at,
-        curseforge_raw: doc.curseforge_raw ? JSON.parse(doc.curseforge_raw as string) : undefined,
-        modrinth_raw: doc.modrinth_raw ? JSON.parse(doc.modrinth_raw as string) : undefined,
-        sources: doc.sources ? JSON.parse(doc.sources as string) : [],
-        isValid: doc.isValid || false,
-        isChecked: doc.isChecked || false,
-        versions: doc.versions ? JSON.parse(doc.versions as string) : [],
-      }));
-
-      return addons;
+        const addons: Addon[] = response.documents.map((doc) => ({
+          $id: doc.$id,
+          name: doc.name || '',
+          downloads: doc.downloads || '',
+          description: doc.description || '',
+          slug: doc.slug || '',
+          author: doc.author || '',
+          categories: Array.isArray(doc.categories) ? doc.categories : [],
+          icon: doc.icon || '',
+          created_at: doc.created_at,
+          updated_at: doc.updated_at,
+          curseforge_raw: JSON.parse(doc.curseforge_raw),
+          modrinth_raw: JSON.parse(doc.modrinth_raw),
+          sources: Array.isArray(doc.sources) ? doc.sources : [],
+          isValid: doc.isValid || false,
+          isChecked: doc.isChecked || false,
+          versions: Array.isArray(doc.versions) ? doc.versions : [],
+        }));
+        console.log(addons);
+        return {
+          addons,
+          total: response.total, // Nombre total d'addons disponibles
+        };
+      } catch (err) {
+        console.error('Error fetching addons:', err);
+        throw new Error('Failed to fetch addons');
+      }
     },
     staleTime: 1000 * 60 * 5,
-    retry: false,
+    retry: 2,
   });
 };
 
@@ -113,20 +122,20 @@ export const useSaveAddon = () => {
 
   return useMutation({
     mutationFn: async (addon: Partial<Addon>) => {
+      console.log(addon);
+
       const serializedAddon = {
         ...addon,
-        categories: addon.categories ? JSON.stringify(addon.categories) : undefined,
-        sources: addon.sources ? JSON.stringify(addon.sources) : undefined,
-        versions: addon.versions ? JSON.stringify(addon.versions) : undefined,
         curseforge_raw: addon.curseforge_raw ? JSON.stringify(addon.curseforge_raw) : undefined,
         modrinth_raw: addon.modrinth_raw ? JSON.stringify(addon.modrinth_raw) : undefined,
       };
+      console.log(serializedAddon);
 
-      if (!addon.id) {
+      if (!addon.$id) {
         return databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), serializedAddon);
       }
 
-      return databases.updateDocument(DATABASE_ID, COLLECTION_ID, addon.id, serializedAddon);
+      return databases.updateDocument(DATABASE_ID, COLLECTION_ID, addon.$id, serializedAddon);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['addons'] });

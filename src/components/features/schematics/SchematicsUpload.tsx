@@ -6,12 +6,23 @@ import { LoadingSpinner } from '@/components/loading-overlays/LoadingSpinner.tsx
 import { LoadingSuccess } from '@/components/loading-overlays/LoadingSuccess.tsx';
 import { Progress } from '@/components/ui/progress.tsx';
 import { Input } from '@/components/ui/input.tsx';
-import { Textarea } from '@/components/ui/textarea.tsx';
 import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group.tsx';
 import { databases, storage } from '@/config/appwrite.ts';
 import { LoggedUserContextType } from '@/types';
 import { redirect } from 'react-router-dom';
+import MarkdownEditor from '@/components/utility/MarkdownEditor.tsx';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select.tsx';
+import schematicCategories from '@/config/schematicsCategory.ts';
+import minecraftVersion from '@/config/minecraft.ts';
+import ModLoaderDisplay from '@/components/common/ModLoaderDisplay.tsx';
 
 function SchematicsUpload() {
   const [step, setStep] = useState(1);
@@ -21,12 +32,15 @@ function SchematicsUpload() {
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [gameVersions, setGameVersions] = useState<string[]>([]);
-  const [createVersions, setCreateVersions] = useState<string[]>([]);
+  const [createVersions] = useState<string[]>(['0.5', '0.4']);
   const [loaders, setLoaders] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [category, setCategory] = useState<string>('Buildings');
+  const [subCategory, setSubCategory] = useState<string>('Houses');
   const [showFinalMessage, setShowFinalMessage] = useState<boolean>(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string>();
   const [slug, setSlug] = useState<string>('');
+  const filteredCategories = schematicCategories.filter((category) => category.category !== 'All');
   // Function to generate a slug from the title using regex
   const generateSlug = (text: string) => {
     return text
@@ -40,23 +54,6 @@ function SchematicsUpload() {
   useEffect(() => {
     setSlug(generateSlug(title));
   }, [title]);
-  const minecraftVersions = [
-    // 1.19.x
-    '1.19.1',
-    '1.19.2',
-
-    // 1.20.x
-    '1.20',
-    '1.20.1',
-    '1.20.2',
-    '1.20.3',
-    '1.20.4',
-
-    // 1.21.x
-    '1.21',
-    '1.21.1',
-    '1.21.2',
-  ];
   const LoggedUser = useLoggedUser();
 
   // Navigation entre les étapes
@@ -80,6 +77,8 @@ function SchematicsUpload() {
       !uploadedImage ||
       !title ||
       !description ||
+      !category ||
+      !subCategory ||
       gameVersions.length === 0 ||
       createVersions.length === 0 ||
       loaders.length === 0
@@ -89,6 +88,8 @@ function SchematicsUpload() {
         uploadedImage,
         title,
         description,
+        category,
+        subCategory,
         gameVersions,
         createVersions,
         loaders
@@ -124,6 +125,8 @@ function SchematicsUpload() {
         schematic_url: fileUrl,
         image_url: imageUrl,
         slug: slug,
+        categories: [category],
+        subCategories: [subCategory],
         user_id: userdata.user?.$id,
         authors: [userdata.user?.$id],
         game_versions: gameVersions,
@@ -143,7 +146,28 @@ function SchematicsUpload() {
       console.error('Error uploading blueprint:', error);
     }
   }
+  const selectedCategory = filteredCategories.find((cat) => cat.category === category);
+  const updateCompatibleLoaders = (selectedVersions: string[]) => {
+    const compatibleLoaders: string[] = [];
 
+    selectedVersions.forEach((version) => {
+      const versionInfo = minecraftVersion.find((v) => v.version === version);
+      if (versionInfo) {
+        versionInfo.compatibility.forEach((loader) => {
+          if (!compatibleLoaders.includes(loader)) {
+            compatibleLoaders.push(loader);
+          }
+        });
+      }
+    });
+
+    setLoaders(compatibleLoaders);
+  };
+
+  // Utiliser cette fonction dans l'effet useEffect
+  useEffect(() => {
+    updateCompatibleLoaders(gameVersions);
+  }, [gameVersions]);
   // Affichage du message de fin
   if (loading && !showFinalMessage) {
     return (
@@ -234,7 +258,7 @@ function SchematicsUpload() {
 
           {step === 2 && (
             <>
-              <h2 className='text-center'>Title & Description</h2>
+              <h2 className='text-center'>Title</h2>
               <Input
                 type='text'
                 placeholder='Title'
@@ -242,12 +266,71 @@ function SchematicsUpload() {
                 onChange={(e) => setTitle(e.target.value)}
                 className='mb-2 w-full border p-2'
               />
-              <Textarea
-                placeholder='Description'
+              <h2 className='text-center'>Description</h2>
+              <MarkdownEditor
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className='w-full border p-2'
-              />
+                onChange={(e) => setDescription(e)}
+              ></MarkdownEditor>
+              <h2 className='text-center'>Category</h2>
+              <label className='text-foreground font-minecraft mb-2 block'>Category</label>
+              <Select
+                value={category}
+                onValueChange={(value) => {
+                  setCategory(value);
+                  setSubCategory(''); // Réinitialiser la sous-catégorie lorsque la catégorie change
+                }}
+              >
+                <SelectTrigger className='border-foreground font-minecraft w-full rounded-lg p-2'>
+                  <SelectValue
+                    className='text-foreground font-minecraft'
+                    placeholder='Select Category'
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {filteredCategories.map(
+                      (categoryItem: { category: string; subcategories: string[] }) => (
+                        <SelectItem
+                          key={categoryItem.category}
+                          className='text-foreground font-minecraft'
+                          value={categoryItem.category}
+                        >
+                          {categoryItem.category}
+                        </SelectItem>
+                      )
+                    )}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+
+              {selectedCategory && selectedCategory.subcategories.length > 0 && (
+                <>
+                  <label className='text-foreground font-minecraft mt-4 mb-2 block'>
+                    Subcategory
+                  </label>
+                  <Select value={subCategory} onValueChange={setSubCategory}>
+                    <SelectTrigger className='border-foreground font-minecraft w-full rounded-lg p-2'>
+                      <SelectValue
+                        className='text-foreground font-minecraft'
+                        placeholder='Select Subcategory'
+                      />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {selectedCategory.subcategories.map((subCat) => (
+                          <SelectItem
+                            key={subCat}
+                            className='text-foreground font-minecraft'
+                            value={subCat}
+                          >
+                            {subCat}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </>
+              )}
             </>
           )}
 
@@ -261,37 +344,20 @@ function SchematicsUpload() {
                 onValueChange={setGameVersions}
                 className='grid grid-flow-row-dense grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4'
               >
-                {minecraftVersions.map((version, index) => (
+                {minecraftVersion.map((version, index) => (
                   <ToggleGroupItem
                     key={index}
-                    value={version}
+                    value={version.version}
                     className='flex items-center space-x-2'
                   >
-                    <Label>{version}</Label>
+                    <Label>{version.version}</Label>
+                    <div>
+                      <ModLoaderDisplay loaders={version.compatibility} />
+                    </div>
                   </ToggleGroupItem>
                 ))}
               </ToggleGroup>
-
-              <h3 className='mt-4'>Create Mod Versions</h3>
-              <ToggleGroup
-                variant='outline'
-                type='multiple'
-                value={createVersions}
-                onValueChange={setCreateVersions}
-                className='grid grid-flow-row-dense grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4'
-              >
-                {['0.5', '0.4'].map((version, index) => (
-                  <ToggleGroupItem
-                    key={index}
-                    value={version}
-                    className='flex items-center space-x-2'
-                  >
-                    <Label>{version}</Label>
-                  </ToggleGroupItem>
-                ))}
-              </ToggleGroup>
-
-              <h3 className='mt-4'>Select Loaders</h3>
+              <h3 className='mt-4 text-center'>Select Loaders</h3>
               <ToggleGroup
                 variant='outline'
                 type='multiple'
@@ -305,7 +371,8 @@ function SchematicsUpload() {
                     value={loader}
                     className='flex items-center space-x-2'
                   >
-                    <Label>{loader}</Label>
+                    {loader}
+                    <ModLoaderDisplay loaders={[`${loader}`]} />
                   </ToggleGroupItem>
                 ))}
               </ToggleGroup>

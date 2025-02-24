@@ -15,6 +15,7 @@ const ModLoaderDisplay = ({ loaders = [] }: { loaders: string[] }) => {
             key={i}
             type='compact-minimal'
             category='supported'
+            className={'h-8'}
             name={loader}
             format='svg'
             height={32}

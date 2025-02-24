@@ -4,7 +4,8 @@ import { Schematic, SearchSchematicsProps } from '@/types';
 export const useSearchSchematics = ({
   query = '',
   page = 1,
-  category = 'all',
+  category = 'All',
+  subCategory = 'All',
   version = 'all',
   loaders = 'all',
   id = 'all',
@@ -14,30 +15,33 @@ export const useSearchSchematics = ({
   }
   // Define filter logic for category and version
   const filter = () => {
-    const filters = [];
-    if (loaders && loaders !== 'all') {
-      filters.push(`modloaders = ${loaders}`);
-    }
-    if (category && category !== 'all') {
-      filters.push(`categories = ${category}`);
-    }
-    if (id && id !== 'all') {
-      filters.push(`user_id = ${id}`);
-    }
-    if (version && version !== 'all') {
-      filters.push(`game_versions = ${version}`);
-    }
+    const filters: string[] = [];
+
+    const addFilter = (field: string, value: string) => {
+      if (value && value !== 'all' && value !== 'All') {
+        // Entourer la valeur de guillemets si elle contient des espaces
+        const formattedValue = value.includes(' ') ? `"${value}"` : value;
+        filters.push(`${field} = ${formattedValue}`);
+      }
+    };
+
+    addFilter('modloaders', loaders);
+    addFilter('categories', category);
+    addFilter('subCategories', subCategory);
+    addFilter('user_id', id);
+    addFilter('game_versions', version);
+
     console.log(filters);
     return filters.length > 0 ? filters.join(' AND ') : '';
   };
 
   return useQuery({
-    queryKey: ['searchSchematics', query, page, category, version, loaders, id],
+    queryKey: ['searchSchematics', query, page, category, subCategory, version, loaders, id],
     queryFn: async () => {
       const index = searchClient.index('schematics');
       const result = await index.search(query, {
-        limit: 6,
-        offset: (page - 1) * 6,
+        limit: 20,
+        offset: (page - 1) * 20,
         filter: filter(),
       });
       return result.hits as Schematic[];

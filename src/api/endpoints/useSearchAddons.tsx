@@ -31,6 +31,8 @@ export const useSearchAddons = (
       if (filterQuery) filterQuery += ' AND ';
       filterQuery += `minecraft_versions = ${version}`;
     }
+    if (filterQuery) filterQuery += ' AND ';
+    filterQuery += `isValid = 'true'`;
     console.log('query: ', filterQuery);
     return [filterQuery];
   };

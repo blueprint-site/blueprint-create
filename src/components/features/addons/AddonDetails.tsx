@@ -209,7 +209,7 @@ export default function AddonDetails() {
               <div>
                 <h3 className='mb-2 text-sm font-semibold'>Versions</h3>
                 <div className='flex flex-wrap gap-2'>
-                  {addon.versions?.map((version) => (
+                  {addon.minecraft_versions?.map((version) => (
                     <Badge key={version} variant='outline'>
                       {version}
                     </Badge>

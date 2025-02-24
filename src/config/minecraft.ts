@@ -1,5 +1,9 @@
 export const minecraftVersion = [
   {
+    version: 'All',
+    compatibility: ['forge', 'fabric', 'neoforge', 'quilt'],
+  },
+  {
     version: '1.14.4',
     compatibility: ['forge'],
   },
@@ -28,3 +32,4 @@ export const minecraftVersion = [
     compatibility: ['forge'],
   },
 ];
+export default minecraftVersion;
