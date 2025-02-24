@@ -1,8 +1,3 @@
-class AdminLogsService {
-
-
-
-
-}
+class AdminLogsService {}
 
 export default AdminLogsService;

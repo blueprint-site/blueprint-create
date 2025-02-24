@@ -19,9 +19,7 @@ const Design = lazy(() => import('@/pages/Design'));
 const Terms = lazy(() => import('@/pages/Terms'));
 const Privacy = lazy(() => import('@/pages/Privacy'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
-const AdminPanelLayout = lazy(
-  () => import('@/layouts/pages/AdminPanelLayout.tsx')
-);
+const AdminPanelLayout = lazy(() => import('@/layouts/pages/AdminPanelLayout.tsx'));
 const Changelogs = lazy(() => import('@/pages/Changelogs'));
 const ChangelogsEditor = lazy(
   () => import('@/components/features/changelogs/ChangelogsEditor.tsx')

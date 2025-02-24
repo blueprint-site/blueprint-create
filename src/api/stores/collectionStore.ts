@@ -11,19 +11,19 @@ interface CollectionStore {
 
 export const useCollectionStore = create<CollectionStore>((set) => ({
   collection: [],
-  
+
   initializeCollection: () => {
     const savedCollection = Collections.getCollection();
     set({ collection: savedCollection });
   },
-  
+
   addAddon: (addonSlug: string) => {
     Collections.collectionAdded(addonSlug);
     set({ collection: Collections.getCollection() });
   },
-  
+
   removeAddon: (addonSlug: string) => {
     Collections.removeAddon(addonSlug);
     set({ collection: Collections.getCollection() });
-  }
+  },
 }));

@@ -1,14 +1,14 @@
-import { useTranslation } from "react-i18next";
-import { NavLink } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
+import { NavLink } from 'react-router-dom';
 
-import NavItem from "@/layouts/components/NavItem.tsx";
-import HeaderNavMenu from "@/layouts/components/HeaderNavMenu.tsx";
+import NavItem from '@/layouts/components/NavItem.tsx';
+import HeaderNavMenu from '@/layouts/components/HeaderNavMenu.tsx';
 
-import BlueprintLogo from "@/assets/logo.webp";
-import Blog from "@/assets/sprite-icons/clipboard_and_quill.png";
-import AboutIcon from "@/assets/sprite-icons/crafting_blueprint.png";
-import AddonIcon from "@/assets/sprite-icons/minecart_coupling.webp";
-import SchematicIcon from "@/assets/sprite-icons/schematic.webp";
+import BlueprintLogo from '@/assets/logo.webp';
+import Blog from '@/assets/sprite-icons/clipboard_and_quill.png';
+import AboutIcon from '@/assets/sprite-icons/crafting_blueprint.png';
+import AddonIcon from '@/assets/sprite-icons/minecart_coupling.webp';
+import SchematicIcon from '@/assets/sprite-icons/schematic.webp';
 
 interface AppHeaderProps {
   className?: string;
@@ -19,56 +19,41 @@ const AppHeader = ({ className }: AppHeaderProps) => {
 
   const navigationItems = [
     {
-      href: "/addons",
+      href: '/addons',
       icon: AddonIcon,
-      label: t("navigation.label.addons"),
+      label: t('navigation.label.addons'),
     },
     {
-      href: "/schematics",
+      href: '/schematics',
       icon: SchematicIcon,
-      label: t("navigation.label.schematics"),
+      label: t('navigation.label.schematics'),
     },
     {
-      href: "/blog",
+      href: '/blog',
       icon: Blog,
-      label: t("navigation.label.blog"),
+      label: t('navigation.label.blog'),
     },
     {
-      href: "/about",
+      href: '/about',
       icon: AboutIcon,
-      label: t("navigation.label.about"),
+      label: t('navigation.label.about'),
     },
   ];
 
   return (
-    <nav
-      className={`fixed h-16 bg-background shadow-md w-full z-30 ${className}`}
-    >
-      <div className="md:container mx-auto h-full px-4 flex items-center justify-between">
-        <NavLink
-          to="/"
-          className="flex text-foreground items-center h-8 sm:h-10"
-        >
-          <img
-            loading="lazy"
-            src={BlueprintLogo}
-            alt="Logo"
-            className="h-full object-contain"
-          />
-          <span className="font-minecraft text-2xl font-medium ml-3 hidden sm:block">
+    <nav className={`bg-background fixed z-30 h-16 w-full shadow-md ${className}`}>
+      <div className='mx-auto flex h-full items-center justify-between px-4 md:container'>
+        <NavLink to='/' className='text-foreground flex h-8 items-center sm:h-10'>
+          <img loading='lazy' src={BlueprintLogo} alt='Logo' className='h-full object-contain' />
+          <span className='font-minecraft ml-3 hidden text-2xl font-medium sm:block'>
             Blueprint
           </span>
         </NavLink>
 
-        <div className="flex items-center space-x-4">
-          <div className="items-center space-x-4 hidden md:flex">
+        <div className='flex items-center space-x-4'>
+          <div className='hidden items-center space-x-4 md:flex'>
             {navigationItems.map((item, index) => (
-              <NavItem
-                key={index}
-                href={item.href}
-                icon={item.icon}
-                label={item.label}
-              />
+              <NavItem key={index} href={item.href} icon={item.icon} label={item.label} />
             ))}
           </div>
           <HeaderNavMenu />

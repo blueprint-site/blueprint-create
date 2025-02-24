@@ -37,3 +37,9 @@ yarn-error.log*
 # Project specific
 tailwind.config.js
 components.json
+docs/
+.github/
+public/
+
+src/components/ui
+assets/

@@ -1,7 +1,2 @@
-
-
-const badgeDisplay = () => {
-
-
-}
+const badgeDisplay = () => {};
 export default badgeDisplay;

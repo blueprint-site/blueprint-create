@@ -4,14 +4,14 @@ import { useEffect, useState } from 'react';
 const useWindowSize = () => {
   const [size, setSize] = useState({
     width: window.innerWidth,
-    height: window.innerHeight
+    height: window.innerHeight,
   });
 
   useEffect(() => {
     const handleResize = () => {
       setSize({
         width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight,
       });
     };
 
@@ -31,15 +31,15 @@ const RotatingCogwheel = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setRotation(prev => (prev + 0.1) % 360);
+      setRotation((prev) => (prev + 0.1) % 360);
     }, 50);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div 
-      className="fixed"
+    <div
+      className='fixed'
       style={{
         width: size,
         height: size,
@@ -49,8 +49,8 @@ const RotatingCogwheel = () => {
     >
       <img
         src={CogwheelImage}
-        alt="Rotating cogwheel"
-        className="w-full h-full"
+        alt='Rotating cogwheel'
+        className='h-full w-full'
         style={{
           transform: `rotate(${rotation}deg)`,
           transformOrigin: 'center',
