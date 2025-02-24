@@ -1,166 +1,166 @@
-import { LogIn, LogOut, Menu, Settings, Shield, User } from "lucide-react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { LogIn, LogOut, Menu, Settings, Shield, User } from 'lucide-react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar.tsx";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx';
 import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu.tsx";
-import ThemeToggle from "@/components/utility/ThemeToggle.tsx";
+} from '@/components/ui/navigation-menu.tsx';
+import ThemeToggle from '@/components/utility/ThemeToggle.tsx';
 
-import { useLoggedUser } from "@/api/context/loggedUser/loggedUserContext.tsx";
-import { account } from "@/config/appwrite.ts";
+import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
+import { account } from '@/config/appwrite.ts';
 
-import AddonIcon from "@/assets/sprite-icons/minecart_coupling.webp";
-import SchematicIcon from "@/assets/sprite-icons/schematic.webp";
-import Blog from "@/assets/sprite-icons/clipboard_and_quill.png";
-import AboutIcon from "@/assets/sprite-icons/crafting_blueprint.png";
-import { cn } from "@/config/utils.ts";
+import AddonIcon from '@/assets/sprite-icons/minecart_coupling.webp';
+import SchematicIcon from '@/assets/sprite-icons/schematic.webp';
+import Blog from '@/assets/sprite-icons/clipboard_and_quill.png';
+import AboutIcon from '@/assets/sprite-icons/crafting_blueprint.png';
+import { cn } from '@/config/utils.ts';
 
 const UserMenu = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useLoggedUser();
   const loggedUser = useLoggedUser();
-  const isAdmin = loggedUser.preferences?.roles?.includes("admin");
+  const isAdmin = loggedUser.preferences?.roles?.includes('admin');
 
   const navigationItems = [
     {
-      href: "/addons",
+      href: '/addons',
       icon: AddonIcon,
-      label: t("navigation.label.addons"),
+      label: t('navigation.label.addons'),
     },
     {
-      href: "/schematics",
+      href: '/schematics',
       icon: SchematicIcon,
-      label: t("navigation.label.schematics"),
+      label: t('navigation.label.schematics'),
     },
     {
-      href: "/blog",
+      href: '/blog',
       icon: Blog,
-      label: t("navigation.label.blog"),
+      label: t('navigation.label.blog'),
     },
     {
-      href: "/about",
+      href: '/about',
       icon: AboutIcon,
-      label: t("navigation.label.about"),
+      label: t('navigation.label.about'),
     },
   ];
 
   const handleLogout = async () => {
-    await account.deleteSession("current");
-    navigate("/login");
+    await account.deleteSession('current');
+    navigate('/login');
   };
 
   return (
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="h-10 py-0 px-1 bg-transparent hover:bg-foreground/10 data-[state=open]:bg-foreground/10">
-            <div className="flex items-center justify-center">
+          <NavigationMenuTrigger className='hover:bg-foreground/10 data-[state=open]:bg-foreground/10 h-10 bg-transparent px-1 py-0'>
+            <div className='flex items-center justify-center'>
               {/* Mobile Menu Icon */}
-              <Menu className="block h-6 w-6 md:hidden" aria-hidden="true" />
+              <Menu className='block h-6 w-6 md:hidden' aria-hidden='true' />
 
               {/* Desktop User Avatar/Icon */}
-              <div className="hidden md:block">
+              <div className='hidden md:block'>
                 {user ? (
-                  <Avatar className="h-10 w-10">
+                  <Avatar className='h-10 w-10'>
                     <AvatarImage src={loggedUser.preferences?.avatar} />
                     <AvatarFallback>
-                      <User className="h-6 w-6" />
+                      <User className='h-6 w-6' />
                     </AvatarFallback>
                   </Avatar>
                 ) : (
-                  <User className="h-6 w-6" />
+                  <User className='h-6 w-6' />
                 )}
               </div>
             </div>
           </NavigationMenuTrigger>
 
           <NavigationMenuContent>
-            <div className="flex w-48 flex-col bg-background gap-2 p-2 pb-3">
-              <div className="md:hidden">
+            <div className='bg-background flex w-48 flex-col gap-2 p-2 pb-3'>
+              <div className='md:hidden'>
                 {navigationItems.map((item, index) => (
                   <NavLink
                     key={index}
                     to={item.href}
                     className={({ isActive }) =>
                       cn(
-                        "flex font-minecraft p-2 rounded-md",
+                        'font-minecraft flex rounded-md p-2',
                         isActive
-                          ? "bg-primary/10 font-bold text-foreground"
-                          : "text-foreground-muted"
+                          ? 'bg-primary/10 text-foreground font-bold'
+                          : 'text-foreground-muted'
                       )
                     }
                   >
                     <img
                       src={item.icon}
-                      alt=""
-                      className="w-6 h-6 object-cover rounded-full shadow-xs transition-all duration-300"
+                      alt=''
+                      className='h-6 w-6 rounded-full object-cover shadow-xs transition-all duration-300'
                     />
-                    <span className="ml-3 font-minecraft">{item.label}</span>
+                    <span className='font-minecraft ml-3'>{item.label}</span>
                   </NavLink>
                 ))}
               </div>
               {user ? (
                 <>
-                  <div className="flex items-center gap-2 border-y md:border-t-0 p-2">
-                    <Avatar className="h-6 w-6">
+                  <div className='flex items-center gap-2 border-y p-2 md:border-t-0'>
+                    <Avatar className='h-6 w-6'>
                       <AvatarImage src={loggedUser.preferences?.avatar} />
                       <AvatarFallback>
-                        <User className="h-4 w-4" />
+                        <User className='h-4 w-4' />
                       </AvatarFallback>
                     </Avatar>
-                    <span className="text-sm font-medium text-foreground">
+                    <span className='text-foreground text-sm font-medium'>
                       {loggedUser.user?.name}
                     </span>
                   </div>
 
                   <button
-                    onClick={() => navigate("/user")}
-                    className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm hover:bg-surface-1"
+                    onClick={() => navigate('/user')}
+                    className='hover:bg-surface-1 flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm'
                   >
-                    <User className="h-4 w-4" />
-                    {t("user-menu.profile")}
+                    <User className='h-4 w-4' />
+                    {t('user-menu.profile')}
                   </button>
                   <button
-                    onClick={() => navigate("/settings")}
-                    className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm hover:bg-surface-1"
+                    onClick={() => navigate('/settings')}
+                    className='hover:bg-surface-1 flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm'
                   >
-                    <Settings className="h-4 w-4" />
-                    {t("user-menu.settings")}
+                    <Settings className='h-4 w-4' />
+                    {t('user-menu.settings')}
                   </button>
                   {isAdmin && (
                     <button
-                      onClick={() => navigate("/admin")}
-                      className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm hover:bg-surface-1"
+                      onClick={() => navigate('/admin')}
+                      className='hover:bg-surface-1 flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm'
                     >
-                      <Shield className="h-4 w-4" />
-                      {t("user-menu.admin")}
+                      <Shield className='h-4 w-4' />
+                      {t('user-menu.admin')}
                     </button>
                   )}
                   <button
                     onClick={handleLogout}
-                    className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm hover:bg-surface-1"
+                    className='hover:bg-surface-1 flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm'
                   >
-                    <LogOut className="h-4 w-4" />
-                    {t("user-menu.logout")}
+                    <LogOut className='h-4 w-4' />
+                    {t('user-menu.logout')}
                   </button>
                 </>
               ) : (
                 <button
-                  onClick={() => navigate("/login")}
-                  className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm hover:bg-surface-1"
+                  onClick={() => navigate('/login')}
+                  className='hover:bg-surface-1 flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm'
                 >
-                  <LogIn className="h-4 w-4" />
+                  <LogIn className='h-4 w-4' />
                   Login
                 </button>
               )}
-              <ThemeToggle variant="ghost" />
+              <ThemeToggle variant='ghost' />
             </div>
           </NavigationMenuContent>
         </NavigationMenuItem>

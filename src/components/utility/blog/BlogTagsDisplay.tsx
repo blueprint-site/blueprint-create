@@ -1,30 +1,30 @@
-import { Tag } from "@/types";
-import { useEffect, useState } from "react";
+import { Tag } from '@/types';
+import { useEffect, useState } from 'react';
 
 interface BlogTagsDisplayProps {
-    value?: Tag[];
+  value?: Tag[];
 }
 
 const BlogTagsDisplay = ({ value }: BlogTagsDisplayProps) => {
-    const [tags, setTags] = useState<Tag[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
 
-    useEffect(() => {
-        setTags(value || []);
-    }, [value]); // ✅ Seulement `value` en dépendance
+  useEffect(() => {
+    setTags(value || []);
+  }, [value]); // ✅ Seulement `value` en dépendance
 
-    return (
-        <div className="flex flex-wrap gap-2">
-            {tags.map((tag) => (
-                <span
-                    key={tag.id}
-                    className="px-1 py-1 text-foreground rounded"
-                    style={{ backgroundColor: tag.color }}
-                >
+  return (
+    <div className='flex flex-wrap gap-2'>
+      {tags.map((tag) => (
+        <span
+          key={tag.id}
+          className='text-foreground rounded px-1 py-1'
+          style={{ backgroundColor: tag.color }}
+        >
           {tag.value}
         </span>
-            ))}
-        </div>
-    );
+      ))}
+    </div>
+  );
 };
 
 export default BlogTagsDisplay;

@@ -26,7 +26,7 @@ Blueprint is a modern web platform that serves as the central hub for Create Mod
 
 - **Framework**: React 19 with TypeScript
 - **Styling**: Tailwind CSS, Shadcn/UI components
-- **State Management**: 
+- **State Management**:
   - TanStack Query for server state
   - Zustand for local state
   - Signals for reactive state
@@ -47,18 +47,21 @@ Blueprint is a modern web platform that serves as the central hub for Create Mod
 ### Development Setup
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/blueprint-site/blueprint-site.github.io.git
 cd blueprint-site.github.io
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Create environment configuration:
-(Contact us on Discord for access)
+   (Contact us on Discord for access)
+
 ```bash
 # Create .env file with required variables
 APP_APPWRITE_URL=your_appwrite_url
@@ -68,6 +71,7 @@ APP_MEILISEARCH_API_KEY=your_api_key
 ```
 
 4. Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -125,17 +129,20 @@ src/
 ### Git Workflow
 
 1. Create feature branch from develop
+
 ```bash
 git checkout -b feature/your-feature-name
 ```
 
 2. Make changes and commit using conventional commits
+
 ```bash
 git commit -m "feat: add new feature"
 git commit -m "fix: resolve issue"
 ```
 
 3. Push changes and create pull request
+
 ```bash
 git push origin feature/your-feature-name
 ```

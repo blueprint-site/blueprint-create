@@ -1,12 +1,12 @@
-import ProtectedRoute from "@/components/utility/ProtectedRoute";
-import { lazy } from "react";
-import { Navigate, RouteObject } from "react-router-dom";
+import ProtectedRoute from '@/components/utility/ProtectedRoute';
+import { lazy } from 'react';
+import { Navigate, RouteObject } from 'react-router-dom';
 
-const SettingsPage = lazy(() => import("@/pages/Settings"));
+const SettingsPage = lazy(() => import('@/pages/Settings'));
 
 export const settingsRoutes: RouteObject[] = [
   {
-    path: "/settings",
+    path: '/settings',
     element: (
       <ProtectedRoute>
         <SettingsPage />
@@ -14,11 +14,11 @@ export const settingsRoutes: RouteObject[] = [
     ),
     children: [
       {
-        path: "",
-        element: <Navigate to="profile" replace />,
+        path: '',
+        element: <Navigate to='profile' replace />,
       },
       {
-        path: ":section",
+        path: ':section',
         element: <SettingsPage key={location.pathname} />,
       },
     ],

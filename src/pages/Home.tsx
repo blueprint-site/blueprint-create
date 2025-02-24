@@ -1,45 +1,47 @@
 // src/pages/home/home.tsx
 
-import { Skeleton } from "@/components/ui/skeleton"; // Assuming Shadcn Skeleton component is available
-import { Suspense, lazy } from "react";
-import { useTranslation } from "react-i18next";
+import { Skeleton } from '@/components/ui/skeleton'; // Assuming Shadcn Skeleton component is available
+import { Suspense, lazy } from 'react';
+import { useTranslation } from 'react-i18next';
 
-const AddonsSlideshow = lazy(() => import("@/components/features/home/AddonsSlideshow"));
-const AddonsSlideshowMobile = lazy(() => import("@/components/features/home/AddonsSlideshowMobile"));
-const WhatIsBlueprint = lazy(() => import("@/components/features/home/WhatIsBlueprint"));
-const UsefulLinks = lazy(() => import("@/components/features/home/UsefulLinks"));
-const ForCreators = lazy(() => import("@/components/features/home/ForCreators"));
+const AddonsSlideshow = lazy(() => import('@/components/features/home/AddonsSlideshow'));
+const AddonsSlideshowMobile = lazy(
+  () => import('@/components/features/home/AddonsSlideshowMobile')
+);
+const WhatIsBlueprint = lazy(() => import('@/components/features/home/WhatIsBlueprint'));
+const UsefulLinks = lazy(() => import('@/components/features/home/UsefulLinks'));
+const ForCreators = lazy(() => import('@/components/features/home/ForCreators'));
 
 function Home() {
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col font-minecraft md:container">
+    <div className='font-minecraft flex flex-col md:container'>
       <Suspense fallback={<HomeSkeleton />}>
         {/* Mobile version */}
-        <section className="md:hidden p-0">
+        <section className='p-0 md:hidden'>
           <AddonsSlideshowMobile />
         </section>
 
         {/* Desktop version */}
-        <section className="hidden md:block py-12">
-          <div className="mx-auto">
-            <div className="text-4xl font-bold text-foreground text-center drop-shadow-lg">
-              {t("home.discover")}
+        <section className='hidden py-12 md:block'>
+          <div className='mx-auto'>
+            <div className='text-foreground text-center text-4xl font-bold drop-shadow-lg'>
+              {t('home.discover')}
             </div>
-            <div className="my-5">
+            <div className='my-5'>
               <AddonsSlideshow />
             </div>
           </div>
         </section>
 
-        <section className="container py-6 md:py-12 font-minecraft bg-blueprint md:rounded-lg">
+        <section className='font-minecraft bg-blueprint container py-6 md:rounded-lg md:py-12'>
           <WhatIsBlueprint />
         </section>
 
-        <section className="py-12">
-          <div className="mx-auto px-4">
-            <div className="grid md:grid-cols-2 gap-8">
+        <section className='py-12'>
+          <div className='mx-auto px-4'>
+            <div className='grid gap-8 md:grid-cols-2'>
               <ForCreators />
               <UsefulLinks />
             </div>
@@ -53,30 +55,30 @@ function Home() {
 // Skeleton component for the loading state
 function HomeSkeleton() {
   return (
-    <div className="flex flex-col space-y-12">
+    <div className='flex flex-col space-y-12'>
       {/* Skeleton for the Discover section */}
-      <section className="py-12">
-        <div className="container mx-auto">
-          <Skeleton className="h-10 w-1/2 mx-auto bg-gray-300" />
-          <div className="my-5">
-            <Skeleton className="h-64 w-full bg-gray-300" />
+      <section className='py-12'>
+        <div className='container mx-auto'>
+          <Skeleton className='mx-auto h-10 w-1/2 bg-gray-300' />
+          <div className='my-5'>
+            <Skeleton className='h-64 w-full bg-gray-300' />
           </div>
         </div>
       </section>
 
       {/* Skeleton for the WhatIsBlueprint section */}
-      <section className="py-12 bg-blueprint">
-        <div className="container mx-auto">
-          <Skeleton className="h-96 w-full bg-gray-300" />
+      <section className='bg-blueprint py-12'>
+        <div className='container mx-auto'>
+          <Skeleton className='h-96 w-full bg-gray-300' />
         </div>
       </section>
 
       {/* Skeleton for the ForCreators and UsefulLinks section */}
-      <section className="py-12 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-8">
-            <Skeleton className="h-96 w-full bg-gray-300" />
-            <Skeleton className="h-96 w-full bg-gray-300" />
+      <section className='bg-background py-12'>
+        <div className='container mx-auto px-4'>
+          <div className='grid gap-8 md:grid-cols-2'>
+            <Skeleton className='h-96 w-full bg-gray-300' />
+            <Skeleton className='h-96 w-full bg-gray-300' />
           </div>
         </div>
       </section>
