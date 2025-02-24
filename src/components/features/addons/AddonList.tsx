@@ -70,7 +70,7 @@ const AddonList = () => {
             <div className='bg-surface-1 absolute top-full z-20 mt-1 w-full'>
               {hits.map((hit) => (
                 <motion.div
-                  key={hit.id}
+                  key={hit.$id}
                   onClick={() => handleChange(hit.name)}
                   className='text-foreground font-minecraft hover:bg-surface-2 cursor-pointer p-2'
                   initial={{ opacity: 0 }}
@@ -181,7 +181,7 @@ const AddonList = () => {
               {hits &&
                 hits.map((hit) => (
                   <motion.div
-                    key={hit.id}
+                    key={hit.$id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}

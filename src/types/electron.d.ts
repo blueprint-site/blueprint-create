@@ -1,6 +1,6 @@
 export interface ElectronAPI {
-    sendLog: ({message: string, level: number, category: string, timestamp: Date}) => void;
-    onLogUpdate: (callback: (function(*): void) | *) => void;
+    sendLog: (params: { message: string; level: string; category: string; timestamp: Date }) => void;
+    onLogUpdate: (callback: (data) => void) => void;
 }
 
 declare global {

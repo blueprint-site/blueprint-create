@@ -172,7 +172,7 @@ export const ModrinthAddonSchema = z.object({
 });
 
 export const AddonSchema = z.object({
-  id: z.string(),
+  $id: z.string(),
   name: z.string(),
   description: z.string(),
   slug: z.string(),
@@ -187,7 +187,7 @@ export const AddonSchema = z.object({
   sources: z.array(z.string()),
   isValid: z.boolean(),
   isChecked: z.boolean(),
-  versions: z.array(z.string()).optional().nullable(),
+  minecraft_versions: z.array(z.string()).optional().nullable(),
 });
 
 export type Addon = z.infer<typeof AddonSchema>;

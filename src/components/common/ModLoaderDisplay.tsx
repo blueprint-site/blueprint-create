@@ -1,4 +1,4 @@
-import DevinsBadges from '@/components/utility/DevinsBadges';
+import DevinsBadges from "@/components/utility/DevinsBadges";
 
 const ModLoaderDisplay = ({ loaders = [] }: { loaders: string[] }) => {
   if (loaders.length === 0) {
@@ -7,20 +7,19 @@ const ModLoaderDisplay = ({ loaders = [] }: { loaders: string[] }) => {
 
   return (
     <div className='flex flex-row gap-2'>
-      {loaders.map((loader, i) =>
-        loader === 'neoforge' ? (
-          <img src='@/assets/neoforge_46h.png' alt={loader} className='h-8' key={i} />
-        ) : (
+      {loaders.map((loader, i) => (
+        loader === 'neoforge' ?
+          <img src='@/assets/neoforge_46h.png' alt={loader} className='h-8' key={i}/> :
           <DevinsBadges
             key={i}
-            type='compact-minimal'
-            category='supported'
+            type="compact-minimal"
+            category="supported"
+            className={"h-8"}
             name={loader}
-            format='svg'
+            format="svg"
             height={32}
           />
-        )
-      )}
+      ))}
     </div>
   );
 };
