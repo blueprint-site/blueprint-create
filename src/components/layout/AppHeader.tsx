@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 
-import NavItem from '@/layouts/components/NavItem.tsx';
-import HeaderNavMenu from '@/layouts/components/HeaderNavMenu.tsx';
+import NavItem from '@/components/layout/NavItem';
+import HeaderNavMenu from '@/components/layout/HeaderNavMenu';
 
 import BlueprintLogo from '@/assets/logo.webp';
 import Blog from '@/assets/sprite-icons/clipboard_and_quill.png';
