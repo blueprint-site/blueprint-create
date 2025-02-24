@@ -61,7 +61,6 @@
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
-
 }
 
 @utility container {
@@ -76,7 +75,6 @@
     max-width: 1400px;
   }
 }
-
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
@@ -99,8 +97,7 @@
 @layer utilities {
   @font-face {
     font-family: 'Minecraft';
-    src: url('/src/assets/fonts/MinecraftRegular/MinecraftRegular.otf')
-      format('opentype');
+    src: url('/src/assets/fonts/MinecraftRegular/MinecraftRegular.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -108,8 +105,7 @@
 
   @font-face {
     font-family: 'Minecraft';
-    src: url('/src/assets/fonts/MinecraftRegular/MinecraftBold.otf')
-      format('opentype');
+    src: url('/src/assets/fonts/MinecraftRegular/MinecraftBold.otf') format('opentype');
     font-weight: bold;
     font-style: normal;
     font-display: swap;
@@ -117,8 +113,7 @@
 
   @font-face {
     font-family: 'Minecraft';
-    src: url('/src/assets/fonts/MinecraftRegular/MinecraftItalic.otf')
-      format('opentype');
+    src: url('/src/assets/fonts/MinecraftRegular/MinecraftItalic.otf') format('opentype');
     font-weight: normal;
     font-style: italic;
     font-display: swap;
@@ -126,8 +121,7 @@
 
   @font-face {
     font-family: 'Minecraft';
-    src: url('/src/assets/fonts/MinecraftRegular/MinecraftBoldItalic.otf')
-      format('opentype');
+    src: url('/src/assets/fonts/MinecraftRegular/MinecraftBoldItalic.otf') format('opentype');
     font-weight: bold;
     font-style: italic;
     font-display: swap;
@@ -255,14 +249,30 @@
 }
 
 @layer base {
-  * { @apply border-border; }
-  body { @apply bg-background text-foreground; }
-  h1 { @apply text-4xl font-bold font-minecraft mb-8; }
-  h2 { @apply text-2xl font-semibold font-minecraft mb-4; }
-  h3 { @apply text-xl font-semibold font-minecraft mb-3; }
-  p { @apply mb-4; }
-  a { @apply text-primary hover:text-primary/90 transition-colors; }
-  section { @apply py-8; }
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1 {
+    @apply font-minecraft mb-8 text-4xl font-bold;
+  }
+  h2 {
+    @apply font-minecraft mb-4 text-2xl font-semibold;
+  }
+  h3 {
+    @apply font-minecraft mb-3 text-xl font-semibold;
+  }
+  p {
+    @apply mb-4;
+  }
+  a {
+    @apply text-primary hover:text-primary/90 transition-colors;
+  }
+  section {
+    @apply py-8;
+  }
 }
 
 .deep-shadow {
@@ -275,13 +285,15 @@
   image-rendering: pixelated;
 }
 /* Prevent global scrolling */
-html, body {
+html,
+body {
   height: 100%;
   overflow: hidden;
 }
 
 /* Prevent global scrolling */
-html, body {
+html,
+body {
   height: 100%;
   overflow: hidden;
 }
@@ -335,4 +347,3 @@ body::-webkit-scrollbar {
     @apply bg-background text-foreground;
   }
 }
-

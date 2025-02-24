@@ -21,7 +21,7 @@ if (typeof window !== 'undefined') {
   const updateBreakpoint = () => {
     const width = window.innerWidth;
     let newBreakpoint: Breakpoint;
-    
+
     if (width < breakpoints.sm) newBreakpoint = 'xs';
     else if (width < breakpoints.md) newBreakpoint = 'sm';
     else if (width < breakpoints.lg) newBreakpoint = 'md';
@@ -32,13 +32,13 @@ if (typeof window !== 'undefined') {
     if (newBreakpoint !== currentBreakpoint) {
       currentBreakpoint = newBreakpoint;
       // Notify all subscribers
-      subscribers.forEach(subscriber => subscriber());
+      subscribers.forEach((subscriber) => subscriber());
     }
   };
 
   // Initial setup
   updateBreakpoint();
-  
+
   // Add resize listener
   window.addEventListener('resize', updateBreakpoint);
 }
@@ -61,7 +61,7 @@ const useBreakpointValue = () => {
 // Helper functions that use the reactive hook
 export const useBreakpoint = () => {
   const value = useBreakpointValue();
-  
+
   const isAbove = (size: Breakpoint): boolean => {
     const breakpointOrder: Breakpoint[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl'];
     const currentIndex = breakpointOrder.indexOf(value);
@@ -82,7 +82,7 @@ export const useBreakpoint = () => {
     isBelow,
     isMobile: isBelow('md'),
     isTablet: value === 'md',
-    isDesktop: isAbove('lg')
+    isDesktop: isAbove('lg'),
   };
 };
 

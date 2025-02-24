@@ -13,32 +13,21 @@ import {
 import { Download, Heart } from 'lucide-react';
 import { Schematic } from '@/types';
 import { format } from 'date-fns';
-import {
-  useDeleteSchematics,
-  useFetchUserSchematics,
-} from '@/api/endpoints/useSchematics.tsx';
+import { useDeleteSchematics, useFetchUserSchematics } from '@/api/endpoints/useSchematics.tsx';
 import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
 import { useThemeStore } from '@/api/stores/themeStore.tsx';
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@/components/ui/avatar.tsx';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx';
 import MinecraftIcon from '@/components/utility/MinecraftIcon.tsx';
 
 const UserSchematicList = () => {
   const { isDarkMode } = useThemeStore();
   const LoggedUserInfo = useLoggedUser();
   // Fetch user schematics
-  const { data: userSchematics } = useFetchUserSchematics(
-    LoggedUserInfo?.user?.$id || ''
-  );
+  const { data: userSchematics } = useFetchUserSchematics(LoggedUserInfo?.user?.$id || '');
   console.log('user schematics', userSchematics);
 
   // Mutation to delete schematic
-  const { mutate: deleteSchematic } = useDeleteSchematics(
-    LoggedUserInfo?.user?.$id
-  );
+  const { mutate: deleteSchematic } = useDeleteSchematics(LoggedUserInfo?.user?.$id);
 
   // Delete handler
   const handleDelete = (id: string) => {
@@ -61,29 +50,20 @@ const UserSchematicList = () => {
               <Card
                 key={schematic.$id}
                 className={`bg hover:bg-accent/50 relative mt-4 w-1/2 cursor-pointer transition-colors duration-200 ${
-                  isDarkMode
-                    ? 'bg-shadow_steel_casing'
-                    : 'bg-refined_radiance_casing'
+                  isDarkMode ? 'bg-shadow_steel_casing' : 'bg-refined_radiance_casing'
                 }`}
               >
                 <CardHeader className='mt-4 flex flex-col items-start justify-between sm:flex-row sm:items-center'>
                   <div className='flex items-center gap-4'>
                     <Avatar>
-                      <AvatarImage
-                        src={schematic.image_url}
-                        alt={schematic.title}
-                      />
-                      <AvatarFallback>
-                        {schematic.title.slice(0, 2)}
-                      </AvatarFallback>
+                      <AvatarImage src={schematic.image_url} alt={schematic.title} />
+                      <AvatarFallback>{schematic.title.slice(0, 2)}</AvatarFallback>
                     </Avatar>
                     <div className=''>
                       <h3 className='text-card-foreground text-lg font-semibold'>
                         {schematic.title}
                       </h3>
-                      <p className='text-foreground-muted text-sm'>
-                        {schematic.description}
-                      </p>
+                      <p className='text-foreground-muted text-sm'>{schematic.description}</p>
                     </div>
                   </div>
                   <div className='text-foreground-muted flex items-center gap-4 text-sm'>
@@ -99,12 +79,10 @@ const UserSchematicList = () => {
                 </CardHeader>
                 <CardContent className='flex flex-col items-start justify-between sm:flex-row sm:items-center'>
                   <div className='flex items-center text-xs'>
-                    Created :{' '}
-                    {format(new Date(schematic.$createdAt), 'dd/MM/yyyy HH:mm')}
+                    Created : {format(new Date(schematic.$createdAt), 'dd/MM/yyyy HH:mm')}
                   </div>
                   <div className='flex items-center text-xs'>
-                    Updated :{' '}
-                    {format(new Date(schematic.$updatedAt), 'dd/MM/yyyy HH:mm')}
+                    Updated : {format(new Date(schematic.$updatedAt), 'dd/MM/yyyy HH:mm')}
                   </div>
                 </CardContent>
 
@@ -123,8 +101,8 @@ const UserSchematicList = () => {
                     <AlertDialogHeader>
                       <AlertDialogTitle>Delete Schematic</AlertDialogTitle>
                       <AlertDialogDescription>
-                        Are you sure you want to delete "{schematic.title}"?
-                        This action cannot be undone.
+                        Are you sure you want to delete "{schematic.title}"? This action cannot be
+                        undone.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

@@ -1,15 +1,15 @@
-import { Star, StarOff } from "lucide-react";
-import React, { memo } from "react";
-import { useCollectionStore } from "@/api/stores/collectionStore.ts";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import ModLoaders from "@/components/features/addons/addon-card/ModLoaders";
-import CategoryBadges from "@/components/features/addons/addon-card/CategoryBadges";
-import { VersionBadges } from "./VersionBadges";
-import { AddonStats } from "./AddonStats";
-import { ExternalLinks } from "./ExternalLinks";
-import { useNavigate } from "react-router-dom";
-import {Addon} from "@/schemas/addon.schema.tsx";
+import { Star, StarOff } from 'lucide-react';
+import React, { memo } from 'react';
+import { useCollectionStore } from '@/api/stores/collectionStore.ts';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import ModLoaders from '@/components/features/addons/addon-card/ModLoaders';
+import CategoryBadges from '@/components/features/addons/addon-card/CategoryBadges';
+import { VersionBadges } from './VersionBadges';
+import { AddonStats } from './AddonStats';
+import { ExternalLinks } from './ExternalLinks';
+import { useNavigate } from 'react-router-dom';
+import { Addon } from '@/schemas/addon.schema.tsx';
 
 interface AddonListItemProps {
   addon: Addon;
@@ -30,35 +30,30 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
   };
 
   return (
-    <Card className="flex flex-col overflow-hidden hover:shadow-xs">
-      <CardHeader
-        className="flex flex-row gap-3 relative cursor-pointer"
-        onClick={navigateToAddon}
-      >
+    <Card className='flex flex-col overflow-hidden hover:shadow-xs'>
+      <CardHeader className='relative flex cursor-pointer flex-row gap-3' onClick={navigateToAddon}>
         <img
-          src={addon.icon || "/assets/wrench.webp"}
+          src={addon.icon || '/assets/wrench.webp'}
           alt={addon.name}
-          loading="lazy"
-          className="h-12 w-12 object-cover"
+          loading='lazy'
+          className='h-12 w-12 object-cover'
         />
-        <h3 className="text-sm font-medium truncate">{addon.name}</h3>
+        <h3 className='truncate text-sm font-medium'>{addon.name}</h3>
         <Button
-          variant="outline"
-          size="icon"
-          className="h-8 w-8 rounded-full absolute right-3 top-3"
+          variant='outline'
+          size='icon'
+          className='absolute top-3 right-3 h-8 w-8 rounded-full'
           onClick={handleCollectionAction}
         >
           {isInCollection ? <Star /> : <StarOff />}
         </Button>
       </CardHeader>
 
-      <CardContent className="flex flex-col flex-1 gap-3">
-        <div className="flex-1">
-          <p className="text-xs text-foreground-muted">
-            {addon.description}
-          </p>
+      <CardContent className='flex flex-1 flex-col gap-3'>
+        <div className='flex-1'>
+          <p className='text-foreground-muted text-xs'>{addon.description}</p>
 
-          <div className="flex gap-2 mt-2">
+          <div className='mt-2 flex gap-2'>
             <ModLoaders addon={addon} />
           </div>
 
@@ -67,10 +62,7 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
 
         <VersionBadges versions={addon.versions || []} />
 
-        <AddonStats
-          author={addon.author}
-          downloads={addon.downloads}
-        />
+        <AddonStats author={addon.author} downloads={addon.downloads} />
 
         <ExternalLinks
           slug={addon.slug}

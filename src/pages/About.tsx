@@ -1,9 +1,9 @@
-import { ContactLink } from "@/components/features/about/ContactLink";
-import { ContributorCard } from "@/components/features/about/ContributorCard";
-import DevinsBadges from "@/components/utility/DevinsBadges";
-import { ContributorStats, GitHubUser } from "@/types";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { ContactLink } from '@/components/features/about/ContactLink';
+import { ContributorCard } from '@/components/features/about/ContributorCard';
+import DevinsBadges from '@/components/utility/DevinsBadges';
+import { ContributorStats, GitHubUser } from '@/types';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function About() {
   const [contributors, setContributors] = useState<ContributorStats[]>([]);
@@ -33,26 +33,25 @@ export default function About() {
         };
 
         const [frontend, api] = await Promise.all([
-          getContributors("blueprint-site.github.io"),
-          getContributors("blueprint-api"),
+          getContributors('blueprint-site.github.io'),
+          getContributors('blueprint-api'),
         ]);
 
         const allContributors: ContributorStats[] = frontend
-          .filter((user: GitHubUser) => user.login !== "blueprint-site")
+          .filter((user: GitHubUser) => user.login !== 'blueprint-site')
           .map((user: GitHubUser) => ({
             login: user.login,
             id: user.id,
             avatar_url: user.avatar_url,
             frontendContributions: user.contributions,
             apiContributions:
-              api.find((u: GitHubUser) => u.login === user.login)
-                ?.contributions || 0,
+              api.find((u: GitHubUser) => u.login === user.login)?.contributions || 0,
           }));
 
         const apiOnlyContributors: ContributorStats[] = api
           .filter(
             (user: GitHubUser) =>
-              user.login !== "blueprint-site" &&
+              user.login !== 'blueprint-site' &&
               !frontend.some((u: GitHubUser) => u.login === user.login)
           )
           .map((user: GitHubUser) => ({
@@ -72,8 +71,8 @@ export default function About() {
           )
         );
       } catch (err) {
-        if (err instanceof Error && err.name !== "AbortError") {
-          setError("Failed to load contributors. Please try again later.");
+        if (err instanceof Error && err.name !== 'AbortError') {
+          setError('Failed to load contributors. Please try again later.');
         }
       } finally {
         setIsLoading(false);
@@ -85,73 +84,58 @@ export default function About() {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8 space-y-8">
-      <section className="space-y-6">
-        <div className="text-center space-y-2">
+    <div className='container mx-auto space-y-8 px-4 py-8'>
+      <section className='space-y-6'>
+        <div className='space-y-2 text-center'>
           <h1>About Blueprint</h1>
-          <p className="text-lg font-minecraft">
+          <p className='font-minecraft text-lg'>
             Probably the best thing that has ever existed since crackers
           </p>
         </div>
 
-        <div className="space-y-10">
-          <section aria-labelledby="mission">
-            <h2 id="mission" className="text-2xl font-semibold font-minecraft">
+        <div className='space-y-10'>
+          <section aria-labelledby='mission'>
+            <h2 id='mission' className='font-minecraft text-2xl font-semibold'>
               Our Mission
             </h2>
-            <p className="text-foreground-muted font-minecraft">
-              Blueprint is the central hub for Create Mod content, bringing
-              together community-made addons and player-designed schematics in
-              one place. Our{" "}
-              <ContactLink href="/addons">addons page</ContactLink> helps you
-              discover and manage the growing ecosystem of Create Mod
-              extensions, while our{" "}
-              <ContactLink href="/schematics">schematics platform</ContactLink>{" "}
-              lets you explore, share, and showcase your automated contraptions
-              and engineering designs with fellow players.
+            <p className='text-foreground-muted font-minecraft'>
+              Blueprint is the central hub for Create Mod content, bringing together community-made
+              addons and player-designed schematics in one place. Our{' '}
+              <ContactLink href='/addons'>addons page</ContactLink> helps you discover and manage
+              the growing ecosystem of Create Mod extensions, while our{' '}
+              <ContactLink href='/schematics'>schematics platform</ContactLink> lets you explore,
+              share, and showcase your automated contraptions and engineering designs with fellow
+              players.
             </p>
           </section>
 
-          <section aria-labelledby="contact">
-            <h2 id="contact" className="text-2xl font-semibold">
+          <section aria-labelledby='contact'>
+            <h2 id='contact' className='text-2xl font-semibold'>
               How to contact us?
             </h2>
 
-            <div className="space-y-6">
+            <div className='space-y-6'>
               <div>
-                <h3 className="text-xl font-minecraft font-semibold">
-                  Discord
-                </h3>
-                <DevinsBadges
-                  type="cozy"
-                  category="social"
-                  name="discord-plural"
-                  format="svg"
-                />
-                <p className="text-foreground-muted font-minecraft">
+                <h3 className='font-minecraft text-xl font-semibold'>Discord</h3>
+                <DevinsBadges type='cozy' category='social' name='discord-plural' format='svg' />
+                <p className='text-foreground-muted font-minecraft'>
                   For updates, sneak peeks, and issue reporting.
                 </p>
               </div>
 
               <div>
-                <h3 className="text-xl font-minecraft font-semibold">GitHub</h3>
-                <DevinsBadges
-                  type="cozy"
-                  category="social"
-                  name="github-plural"
-                  format="svg"
-                />
-                <p className="text-foreground-muted font-minecraft">
-                  Check the README.md on the "develop" branch for local setup
-                  instructions.
+                <h3 className='font-minecraft text-xl font-semibold'>GitHub</h3>
+                <DevinsBadges type='cozy' category='social' name='github-plural' format='svg' />
+                <p className='text-foreground-muted font-minecraft'>
+                  Check the README.md on the "develop" branch for local setup instructions.
                 </p>
               </div>
 
               <div>
-                <h3 className="text-xl font-minecraft font-semibold">Email</h3>
-                <p className="text-foreground-muted font-minecraft">
-                  Contact us at{" "}
-                  <ContactLink href="mailto:blueprint-site@proton.me">
+                <h3 className='font-minecraft text-xl font-semibold'>Email</h3>
+                <p className='text-foreground-muted font-minecraft'>
+                  Contact us at{' '}
+                  <ContactLink href='mailto:blueprint-site@proton.me'>
                     blueprint-site@proton.me
                   </ContactLink>
                 </p>
@@ -161,23 +145,21 @@ export default function About() {
         </div>
       </section>
 
-      <section className="space-y-6" aria-labelledby="contributors">
-        <div className="text-center space-y-2 font-minecraft">
-          <h2 id="contributors" className="text-3xl font-bold">
-            {t("home.contributions.title")}
+      <section className='space-y-6' aria-labelledby='contributors'>
+        <div className='font-minecraft space-y-2 text-center'>
+          <h2 id='contributors' className='text-3xl font-bold'>
+            {t('home.contributions.title')}
           </h2>
-          <p className="text-lg text-foreground-muted">
-            {t("home.contributions.subtitle.main")}
-          </p>
+          <p className='text-foreground-muted text-lg'>{t('home.contributions.subtitle.main')}</p>
         </div>
 
         {error && (
-          <div role="alert" className="text-destructive text-center p-4">
+          <div role='alert' className='text-destructive p-4 text-center'>
             {error}
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
           {isLoading ? (
             Array(8)
               .fill(0)

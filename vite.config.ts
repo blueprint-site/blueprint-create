@@ -1,13 +1,13 @@
-import path from "path";
-import { defineConfig } from "vite";
-import tailwindcss from "@tailwindcss/vite";
-import react from "@vitejs/plugin-react";
-import imagemin from "vite-plugin-imagemin";
+import path from 'path';
+import { defineConfig } from 'vite';
+import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
+import imagemin from 'vite-plugin-imagemin';
 const ReactCompilerConfig = {
   // sources: (filename: string) => {
   //   return filename.indexOf("src/components/features/addons") !== -1;
   // },
-  target: '19'
+  target: '19',
 };
 
 export default defineConfig({
@@ -21,7 +21,7 @@ export default defineConfig({
         },
       },
       treeshake: true,
-      preserveEntrySignatures: "exports-only",
+      preserveEntrySignatures: 'exports-only',
     },
   },
   plugins: [
@@ -31,22 +31,19 @@ export default defineConfig({
       mozjpeg: { quality: 80 },
       optipng: { optimizationLevel: 5 },
       svgo: {
-        plugins: [
-          { name: 'removeViewBox' },
-          { name: 'removeEmptyAttrs', active: false }
-        ]
-      }
+        plugins: [{ name: 'removeViewBox' }, { name: 'removeEmptyAttrs', active: false }],
+      },
     }),
     react({
       babel: {
-        plugins: [["babel-plugin-react-compiler", ReactCompilerConfig]],
+        plugins: [['babel-plugin-react-compiler', ReactCompilerConfig]],
       },
     }),
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      '@': path.resolve(__dirname, './src'),
     },
   },
-  envPrefix: "APP",
+  envPrefix: 'APP',
 });

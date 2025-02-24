@@ -8,10 +8,7 @@ interface SchematicSearchCardProps {
   onSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const SchematicSearchCard = ({
-  searchQuery,
-  onSearchChange,
-}: SchematicSearchCardProps) => {
+const SchematicSearchCard = ({ searchQuery, onSearchChange }: SchematicSearchCardProps) => {
   return (
     <CardContent>
       <Input

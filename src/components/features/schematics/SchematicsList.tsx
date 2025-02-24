@@ -44,22 +44,12 @@ function SchematicsListWithFilters() {
     <div className='flex'>
       <div className='text-foreground w-64 p-4'>
         <div className='relative mt-4'>
-          <h2 className='text-foreground font-minecraft mb-4 text-xl font-semibold'>
-            Filters
-          </h2>
-          <SchematicSearchCard
-            searchQuery={searchQuery}
-            onSearchChange={handleInputChange}
-          />
+          <h2 className='text-foreground font-minecraft mb-4 text-xl font-semibold'>Filters</h2>
+          <SchematicSearchCard searchQuery={searchQuery} onSearchChange={handleInputChange} />
 
           {/* Category Filter */}
-          <label className='text-foreground font-minecraft mb-2 block'>
-            Category
-          </label>
-          <Select
-            value={category}
-            onValueChange={(value) => setCategory(value)}
-          >
+          <label className='text-foreground font-minecraft mb-2 block'>Category</label>
+          <Select value={category} onValueChange={(value) => setCategory(value)}>
             <SelectTrigger className='border-foreground font-minecraft w-full rounded-lg p-2'>
               <SelectValue
                 className='text-foreground font-minecraft'
@@ -68,28 +58,16 @@ function SchematicsListWithFilters() {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem
-                  className='text-foreground font-minecraft'
-                  value='all'
-                >
+                <SelectItem className='text-foreground font-minecraft' value='all'>
                   All
                 </SelectItem>
-                <SelectItem
-                  className='text-foreground font-minecraft'
-                  value='house'
-                >
+                <SelectItem className='text-foreground font-minecraft' value='house'>
                   House
                 </SelectItem>
-                <SelectItem
-                  className='text-foreground font-minecraft'
-                  value='castle'
-                >
+                <SelectItem className='text-foreground font-minecraft' value='castle'>
                   Castle
                 </SelectItem>
-                <SelectItem
-                  className='text-foreground font-minecraft'
-                  value='farm'
-                >
+                <SelectItem className='text-foreground font-minecraft' value='farm'>
                   Farm
                 </SelectItem>
               </SelectGroup>
@@ -97,9 +75,7 @@ function SchematicsListWithFilters() {
           </Select>
 
           {/* Version Filter */}
-          <label className='text-foreground font-minecraft mt-4 mb-2 block'>
-            Version
-          </label>
+          <label className='text-foreground font-minecraft mt-4 mb-2 block'>Version</label>
           <Select value={version} onValueChange={(value) => setVersion(value)}>
             <SelectTrigger className='border-foreground font-minecraft w-full rounded-lg p-2'>
               <SelectValue
@@ -109,28 +85,16 @@ function SchematicsListWithFilters() {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem
-                  className='text-foreground font-minecraft'
-                  value='all'
-                >
+                <SelectItem className='text-foreground font-minecraft' value='all'>
                   All
                 </SelectItem>
-                <SelectItem
-                  className='text-foreground font-minecraft'
-                  value='1.20'
-                >
+                <SelectItem className='text-foreground font-minecraft' value='1.20'>
                   1.20
                 </SelectItem>
-                <SelectItem
-                  className='text-foreground font-minecraft'
-                  value='1.19'
-                >
+                <SelectItem className='text-foreground font-minecraft' value='1.19'>
                   1.19
                 </SelectItem>
-                <SelectItem
-                  className='text-foreground font-minecraft'
-                  value='1.18'
-                >
+                <SelectItem className='text-foreground font-minecraft' value='1.18'>
                   1.18
                 </SelectItem>
               </SelectGroup>
@@ -138,31 +102,20 @@ function SchematicsListWithFilters() {
           </Select>
 
           {/* Loaders Filter */}
-          <label className='text-foreground font-minecraft mt-4 mb-2 block'>
-            Loaders
-          </label>
+          <label className='text-foreground font-minecraft mt-4 mb-2 block'>Loaders</label>
           <Select value={loaders} onValueChange={(value) => setLoaders(value)}>
             <SelectTrigger className='border-foreground font-minecraft w-full rounded-lg p-2'>
               <SelectValue placeholder='Select Loader' />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem
-                  className='text-foreground font-minecraft'
-                  value='all'
-                >
+                <SelectItem className='text-foreground font-minecraft' value='all'>
                   All
                 </SelectItem>
-                <SelectItem
-                  className='text-foreground font-minecraft'
-                  value='forge'
-                >
+                <SelectItem className='text-foreground font-minecraft' value='forge'>
                   Forge
                 </SelectItem>
-                <SelectItem
-                  className='text-foreground font-minecraft'
-                  value='fabric'
-                >
+                <SelectItem className='text-foreground font-minecraft' value='fabric'>
                   Fabric
                 </SelectItem>
               </SelectGroup>
@@ -173,10 +126,7 @@ function SchematicsListWithFilters() {
 
       <div className='h-screen flex-1 p-8'>
         <div className='float-end mt-4'>
-          <Link
-            className={buttonVariants({ variant: 'default' })}
-            to='../schematics/upload'
-          >
+          <Link className={buttonVariants({ variant: 'default' })} to='../schematics/upload'>
             <Upload /> Upload Schematic
           </Link>
         </div>
@@ -196,9 +146,7 @@ function SchematicsListWithFilters() {
                 <SchematicCard
                   key={schematic.$id}
                   schematic={schematic}
-                  onClick={() =>
-                    navigate(`../schematics/${schematic.$id}/${schematic.slug}`)
-                  }
+                  onClick={() => navigate(`../schematics/${schematic.$id}/${schematic.slug}`)}
                 />
               ))
             ) : (

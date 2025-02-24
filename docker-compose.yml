@@ -4,7 +4,7 @@ services:
   react-app:
     image: timiliris/blueprint:latest
     ports:
-      - "80:80"
+      - '80:80'
     restart: unless-stopped
     environment:
       MEILISEARCH_URL: ${MEILISEARCH_URL}

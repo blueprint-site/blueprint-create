@@ -1,8 +1,6 @@
-import ChangelogsList from "@/components/features/changelogs/ChangelogsList.tsx";
+import ChangelogsList from '@/components/features/changelogs/ChangelogsList.tsx';
 
 const ChangelogsPage = () => {
-    return (
-        <ChangelogsList/>
-    )
-}
+  return <ChangelogsList />;
+};
 export default ChangelogsPage;
