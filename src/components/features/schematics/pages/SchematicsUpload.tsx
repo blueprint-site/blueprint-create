@@ -8,7 +8,7 @@ import {
     CardTitle
 } from "@/components/ui/card.tsx";
 import { Label } from "@/components/ui/label.tsx";
-import { LoadingSpinner } from "@/components/loading-overlays/LoadingSpinner.tsx";
+import SchematicUploadLoadingOverlay from "@/components/loading-overlays/SchematicUploadLoadingOverlay.tsx";
 import { LoadingSuccess } from "@/components/loading-overlays/LoadingSuccess.tsx";
 import { Progress } from "@/components/ui/progress.tsx";
 import { Input } from "@/components/ui/input.tsx";
@@ -161,16 +161,11 @@ function SchematicsUpload() {
 
     // Affichage du message de fin
     if (loading && !showFinalMessage) {
-        return (
-            <div className="loading">
-                <LoadingSpinner />
-                <h1>Your schematic is being uploaded!</h1>
-            </div>
-        );
+        return <SchematicUploadLoadingOverlay />;
     }
     if (showFinalMessage) {
         setTimeout(() => {
-            redirect("/schematics");
+            window.location.href = "/schematics";
         }, 2000);
         return (
             <div className="final-message">
