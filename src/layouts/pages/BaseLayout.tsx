@@ -15,9 +15,7 @@ const BaseLayout = () => {
     >
       <AppHeader />
       <main className='h-screen overflow-y-auto pt-16'>
-        <div
-          className={`${isDarkMode ? 'bg-shadow_steel_casing' : 'bg-refined_radiance_casing'}`}
-        >
+        <div className={`${isDarkMode ? 'bg-shadow_steel_casing' : 'bg-refined_radiance_casing'}`}>
           <Outlet />
         </div>
         <AppFooter />

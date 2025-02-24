@@ -1,4 +1,4 @@
-import { User, Download } from "lucide-react";
+import { User, Download } from 'lucide-react';
 
 interface AddonStatsProps {
   author: string;
@@ -6,13 +6,13 @@ interface AddonStatsProps {
 }
 
 export const AddonStats = ({ author, downloads }: AddonStatsProps) => (
-  <div className="mt-3 flex items-center justify-between text-xs text-foreground-muted">
-    <div className="flex items-center gap-1.5 px-2 pb-1 border-b">
-      <User className="h-3.5 w-3.5" />
-      <span className="truncate">{author}</span>
+  <div className='text-foreground-muted mt-3 flex items-center justify-between text-xs'>
+    <div className='flex items-center gap-1.5 border-b px-2 pb-1'>
+      <User className='h-3.5 w-3.5' />
+      <span className='truncate'>{author}</span>
     </div>
-    <div className="flex items-center gap-1.5 px-2 pb-1 border-b">
-      <Download className="h-3.5 w-3.5" />
+    <div className='flex items-center gap-1.5 border-b px-2 pb-1'>
+      <Download className='h-3.5 w-3.5' />
       <span>{downloads.toLocaleString()}</span>
     </div>
   </div>

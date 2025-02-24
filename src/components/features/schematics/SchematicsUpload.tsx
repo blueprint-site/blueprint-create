@@ -1,12 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button.tsx';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card.tsx';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card.tsx';
 import { Label } from '@/components/ui/label.tsx';
 import { LoadingSpinner } from '@/components/loading-overlays/LoadingSpinner.tsx';
 import { LoadingSuccess } from '@/components/loading-overlays/LoadingSuccess.tsx';
@@ -103,13 +97,7 @@ function SchematicsUpload() {
       return;
     }
     setLoading(true);
-    handleSchematicUpload(
-      uploadedSchematic,
-      uploadedImage,
-      title,
-      description,
-      LoggedUser
-    );
+    handleSchematicUpload(uploadedSchematic, uploadedImage, title, description, LoggedUser);
     setTimeout(() => {
       setShowFinalMessage(true);
     }, 3000);
@@ -123,26 +111,12 @@ function SchematicsUpload() {
   ) {
     try {
       // Upload file to Appwrite storage
-      const uploadedFile = await storage.createFile(
-        '67b2241e0032c25c8216',
-        'unique()',
-        file
-      );
+      const uploadedFile = await storage.createFile('67b2241e0032c25c8216', 'unique()', file);
 
       // Upload image to Appwrite storage
-      const uploadedImage = await storage.createFile(
-        '67b22481001e99d90888',
-        'unique()',
-        image
-      );
-      const fileUrl = storage.getFileDownload(
-        '67b2241e0032c25c8216',
-        uploadedFile.$id
-      );
-      const imageUrl = storage.getFilePreview(
-        '67b22481001e99d90888',
-        uploadedImage.$id
-      );
+      const uploadedImage = await storage.createFile('67b22481001e99d90888', 'unique()', image);
+      const fileUrl = storage.getFileDownload('67b2241e0032c25c8216', uploadedFile.$id);
+      const imageUrl = storage.getFilePreview('67b22481001e99d90888', uploadedImage.$id);
 
       const data = {
         title: title,
@@ -194,9 +168,7 @@ function SchematicsUpload() {
     <div className='container'>
       <Card className='mt-8'>
         <CardHeader>
-          <CardTitle className='text-center'>
-            Let's upload a schematic
-          </CardTitle>
+          <CardTitle className='text-center'>Let's upload a schematic</CardTitle>
         </CardHeader>
         <CardContent>
           <Progress value={progress} className='mb-4' />
@@ -229,9 +201,7 @@ function SchematicsUpload() {
                 </div>
 
                 <div className='w-full max-w-lg'>
-                  <h2 className='text-center text-2xl font-semibold'>
-                    Upload an image
-                  </h2>
+                  <h2 className='text-center text-2xl font-semibold'>Upload an image</h2>
                   <Input
                     type='file'
                     accept='image/*'

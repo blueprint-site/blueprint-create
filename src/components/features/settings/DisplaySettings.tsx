@@ -14,23 +14,13 @@ export default function DisplaySettings() {
 
       <div className='space-y-4'>
         <div className='flex items-center gap-2'>
-          {isDarkMode ? (
-            <Moon className='h-5 w-5' />
-          ) : (
-            <Sun className='h-5 w-5' />
-          )}
+          {isDarkMode ? <Moon className='h-5 w-5' /> : <Sun className='h-5 w-5' />}
           <div className='text-lg font-semibold'>Theme</div>
         </div>
 
         <div className='flex items-center gap-4'>
-          <Switch
-            id='theme-toggle'
-            checked={isDarkMode}
-            onCheckedChange={toggleTheme}
-          />
-          <Label htmlFor='theme-toggle'>
-            {isDarkMode ? 'Dark mode' : 'Light mode'}
-          </Label>
+          <Switch id='theme-toggle' checked={isDarkMode} onCheckedChange={toggleTheme} />
+          <Label htmlFor='theme-toggle'>{isDarkMode ? 'Dark mode' : 'Light mode'}</Label>
         </div>
 
         <p className='text-foreground-muted text-sm'>

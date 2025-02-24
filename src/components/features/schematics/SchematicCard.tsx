@@ -44,9 +44,7 @@ const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
 
       <CardHeader className='grow'>
         <CardTitle>{schematic.title}</CardTitle>
-        <CardDescription>
-          {schematic.description.slice(0, 150)}...
-        </CardDescription>
+        <CardDescription>{schematic.description.slice(0, 150)}...</CardDescription>
       </CardHeader>
 
       <CardContent>
@@ -55,9 +53,7 @@ const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
         </div>
         <div>
           Made for Minecraft:
-          <div className='flex grow gap-2'>
-            {renderVersionBadges(schematic.game_versions)}
-          </div>
+          <div className='flex grow gap-2'>{renderVersionBadges(schematic.game_versions)}</div>
         </div>
       </CardContent>
 

@@ -1,10 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Upload, User2 } from 'lucide-react';
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@/components/ui/avatar.tsx';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Input } from '@/components/ui/input.tsx';
 import { Label } from '@/components/ui/label.tsx';
@@ -61,24 +57,12 @@ export default function ProfileSettings() {
             logMessage(`Old image file id found (${oldFileId}) !`, 0, 'action');
             try {
               await storage.deleteFile('67aee2b30000b9e21407', oldFileId);
-              logMessage(
-                `Old image have been deleted (${oldFileId}) !`,
-                0,
-                'action'
-              );
+              logMessage(`Old image have been deleted (${oldFileId}) !`, 0, 'action');
             } catch (deleteError) {
-              logMessage(
-                `Error while deleting old file (${oldFileId}) !`,
-                3,
-                'action'
-              );
+              logMessage(`Error while deleting old file (${oldFileId}) !`, 3, 'action');
             }
           } else {
-            logMessage(
-              `Any file found , skipping suppression ! (${oldFileId}) !`,
-              0,
-              'action'
-            );
+            logMessage(`Any file found , skipping suppression ! (${oldFileId}) !`, 0, 'action');
           }
         }
 
@@ -89,9 +73,7 @@ export default function ProfileSettings() {
           compressedFileAsFile
         );
 
-        const avatarUrl = storage
-          .getFilePreview('67aee2b30000b9e21407', response.$id)
-          .toString();
+        const avatarUrl = storage.getFilePreview('67aee2b30000b9e21407', response.$id).toString();
         console.log(avatarUrl);
         setProfile((prev) => ({ ...prev, avatar: avatarUrl }));
       } catch (error) {
@@ -141,8 +123,7 @@ export default function ProfileSettings() {
       <div>
         <h2 className='mb-2 text-2xl font-bold'>Profile information</h2>
         <p className='text-foreground-muted text-sm'>
-          Your profile information is publicly viewable on Blueprint and through
-          the Blueprint API.
+          Your profile information is publicly viewable on Blueprint and through the Blueprint API.
         </p>
       </div>
 
@@ -183,9 +164,7 @@ export default function ProfileSettings() {
           <Input
             id='username'
             value={profile.username}
-            onChange={(e) =>
-              setProfile((prev) => ({ ...prev, username: e.target.value }))
-            }
+            onChange={(e) => setProfile((prev) => ({ ...prev, username: e.target.value }))}
             className='max-w-md'
           />
         </div>
@@ -198,9 +177,7 @@ export default function ProfileSettings() {
           <Textarea
             id='bio'
             value={profile.bio}
-            onChange={(e) =>
-              setProfile((prev) => ({ ...prev, bio: e.target.value }))
-            }
+            onChange={(e) => setProfile((prev) => ({ ...prev, bio: e.target.value }))}
             className='min-h-[100px]'
           />
         </div>

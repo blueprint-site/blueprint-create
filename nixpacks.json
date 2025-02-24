@@ -1,14 +1,10 @@
 {
   "phases": {
     "install": {
-      "cmds": [
-        "npm ci --legacy-peer-deps"
-      ]
+      "cmds": ["npm ci --legacy-peer-deps"]
     },
     "build": {
-      "cmds": [
-        "npm run build"
-      ]
+      "cmds": ["npm run build"]
     }
   },
   "static": {

@@ -1,11 +1,10 @@
-
 // Define the available badge types as const to enable type inference
 const BADGE_TYPES = {
   cozy: {
     recommendedHeight: 56, // Default SVG height
     heightRange: { min: 48, max: 64 },
   },
-  "cozy-minimal": {
+  'cozy-minimal': {
     recommendedHeight: 56,
     heightRange: { min: 48, max: 64 },
   },
@@ -13,7 +12,7 @@ const BADGE_TYPES = {
     recommendedHeight: 40,
     heightRange: { min: 32, max: 46 },
   },
-  "compact-minimal": {
+  'compact-minimal': {
     recommendedHeight: 40,
     heightRange: { min: 32, max: 46 },
   },
@@ -21,15 +20,15 @@ const BADGE_TYPES = {
 
 // Badge categories with descriptions for better DX
 const BADGE_CATEGORIES = {
-  available: "Places where your project may be available on",
-  "built-with": "Tools and software used to build your project",
-  documentation: "Places where documentation can be found",
-  donate: "Donation and subscription platforms",
-  requires: "Required tools and software for your project",
-  social: "Social platforms and communities",
-  supported: "Platforms/software supported by your project",
-  unsupported: "Platforms/software not supported by your project",
-  translate: "Translation platforms and resources",
+  available: 'Places where your project may be available on',
+  'built-with': 'Tools and software used to build your project',
+  documentation: 'Places where documentation can be found',
+  donate: 'Donation and subscription platforms',
+  requires: 'Required tools and software for your project',
+  social: 'Social platforms and communities',
+  supported: 'Platforms/software supported by your project',
+  unsupported: 'Platforms/software not supported by your project',
+  translate: 'Translation platforms and resources',
 } as const;
 
 interface DevinsBadgesProps {
@@ -46,7 +45,7 @@ interface DevinsBadgesProps {
   height?: number;
 
   /** Image format - SVG recommended for better quality */
-  format: "svg" | "png";
+  format: 'svg' | 'png';
 
   /** Optional className for the image wrapper */
   className?: string;
@@ -57,7 +56,7 @@ const DevinsBadges = ({
   category,
   name,
   height,
-  format = "svg",
+  format = 'svg',
   className,
 }: DevinsBadgesProps) => {
   // Get badge type configuration
@@ -65,20 +64,17 @@ const DevinsBadges = ({
 
   // Validate and normalize height
   const finalHeight = height
-    ? Math.min(
-        Math.max(height, typeConfig.heightRange.min),
-        typeConfig.heightRange.max
-      )
+    ? Math.min(Math.max(height, typeConfig.heightRange.min), typeConfig.heightRange.max)
     : typeConfig.recommendedHeight;
 
   // Construct badge URL
   const badgeSrc = `https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/${type}/${category}/${name}${
-    format === "png" ? `_${finalHeight}h` : format === "svg" ? "_vector" : ""
+    format === 'png' ? `_${finalHeight}h` : format === 'svg' ? '_vector' : ''
   }.${format}`;
 
   return (
     <img
-      loading="lazy"
+      loading='lazy'
       src={badgeSrc}
       alt={`${name} badge`}
       className={className}

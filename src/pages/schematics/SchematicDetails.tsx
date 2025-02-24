@@ -28,9 +28,7 @@ const SchematicDetails = () => {
 
   if (!schematicData) {
     return (
-      <div className='text-foreground-muted flex items-center justify-center p-8'>
-        Loading...
-      </div>
+      <div className='text-foreground-muted flex items-center justify-center p-8'>Loading...</div>
     );
   }
 
@@ -39,10 +37,7 @@ const SchematicDetails = () => {
       <Card className='bg-surface-1'>
         <CardHeader className='text-center'>
           <div className='flex items-center justify-end gap-4'>
-            <Button
-              variant='default'
-              className='transition-all duration-300 hover:shadow-lg'
-            >
+            <Button variant='default' className='transition-all duration-300 hover:shadow-lg'>
               <Share className='mr-2' /> Share
             </Button>
             <Button
@@ -58,9 +53,7 @@ const SchematicDetails = () => {
             </Button>
           </div>
           <CardTitle>
-            <h1 className='text-2xl font-bold md:text-3xl'>
-              {schematicData.title}
-            </h1>
+            <h1 className='text-2xl font-bold md:text-3xl'>{schematicData.title}</h1>
           </CardTitle>
           <CardDescription className='text-foreground-muted'>
             By {schematicData.authors}
@@ -95,9 +88,7 @@ const SchematicDetails = () => {
             </div>
             <div className='space-y-4'>
               <div>
-                <h3 className='mb-2 text-lg font-semibold'>
-                  Minecraft Versions
-                </h3>
+                <h3 className='mb-2 text-lg font-semibold'>Minecraft Versions</h3>
                 <VersionsDisplay versions={schematicData.game_versions} />
               </div>
               <div>

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { account } from "@/config/appwrite";
-import { LoadingOverlay } from "@/components/loading-overlays/LoadingOverlay";
-import { useToast } from "@/api";
+import { account } from '@/config/appwrite';
+import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
+import { useToast } from '@/api';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -10,10 +10,7 @@ interface ProtectedRouteProps {
   requiredRole?: string;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
-  children,
-  requiredRole
-}) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [hasRequiredRole, setHasRequiredRole] = useState<boolean>(true);
   const location = useLocation();
@@ -41,9 +38,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
       } catch (error) {
         setIsAuthenticated(false);
         toast({
-          title: "Authentication Error",
-          description: "Please log in again",
-          variant: "destructive",
+          title: 'Authentication Error',
+          description: 'Please log in again',
+          variant: 'destructive',
         });
       }
     };
@@ -53,7 +50,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // Show Blueprint's standard loading overlay during check
   if (isAuthenticated === null) {
-    return <LoadingOverlay message="Verifying authentication..." />;
+    return <LoadingOverlay message='Verifying authentication...' />;
   }
 
   // Handle authentication failure
@@ -66,11 +63,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   // Handle role requirement failure
   if (requiredRole && !hasRequiredRole) {
     toast({
-      title: "Access Denied",
+      title: 'Access Denied',
       description: `Required role: ${requiredRole}`,
-      variant: "destructive",
+      variant: 'destructive',
     });
-    return <Navigate to="/" replace />;
+    return <Navigate to='/' replace />;
   }
 
   return <>{children}</>;

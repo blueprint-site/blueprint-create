@@ -1,9 +1,4 @@
-
 const AdminUsersTable = () => {
-
-    return (
-        <div className="px-4 md:px-8">
-        </div>
-    );
+  return <div className='px-4 md:px-8'></div>;
 };
-export default AdminUsersTable
+export default AdminUsersTable;

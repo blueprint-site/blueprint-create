@@ -1,18 +1,14 @@
-import { Button } from "@/components/ui/button";
-import { useThemeStore } from "@/api/stores/themeStore.tsx";
-import NightVisionIcon from "/src/assets/sprite-icons/night_vision.png";
+import { Button } from '@/components/ui/button';
+import { useThemeStore } from '@/api/stores/themeStore.tsx';
+import NightVisionIcon from '/src/assets/sprite-icons/night_vision.png';
 
 interface ThemeToggleProps {
   onClick?: () => void;
-  variant?: "outline" | "ghost" | "icon";
-  size?: "default" | "sm" | "lg" | "icon";
+  variant?: 'outline' | 'ghost' | 'icon';
+  size?: 'default' | 'sm' | 'lg' | 'icon';
 }
 
-const ThemeToggle = ({
-  onClick,
-  variant = "outline",
-  size = "default",
-}: ThemeToggleProps) => {
+const ThemeToggle = ({ onClick, variant = 'outline', size = 'default' }: ThemeToggleProps) => {
   const { toggleTheme } = useThemeStore();
 
   const handleClick = () => {
@@ -25,11 +21,11 @@ const ThemeToggle = ({
       onClick={handleClick}
       variant={variant}
       size={size}
-      className="rounded-full flex items-center p-2"
-      aria-label="Change theme"
+      className='flex items-center rounded-full p-2'
+      aria-label='Change theme'
     >
-      <img src={NightVisionIcon} alt="" className="w-6 h-6 object-contain" />
-      {variant !== "icon" && "Change theme"}
+      <img src={NightVisionIcon} alt='' className='h-6 w-6 object-contain' />
+      {variant !== 'icon' && 'Change theme'}
     </Button>
   );
 };

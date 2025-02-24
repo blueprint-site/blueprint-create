@@ -1,13 +1,10 @@
-import AdminUsersTable from "@/components/features/admin/users/AdminUsersTable";
-
+import AdminUsersTable from '@/components/features/admin/users/AdminUsersTable';
 
 const AdminUsersDisplay = () => {
-return (
+  return (
     <div>
-            <AdminUsersTable />
-
+      <AdminUsersTable />
     </div>
-
-);
-}
-export default AdminUsersDisplay
+  );
+};
+export default AdminUsersDisplay;

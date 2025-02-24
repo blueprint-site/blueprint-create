@@ -24,13 +24,11 @@ export default function AccountSettings() {
       <section className='space-y-4'>
         <div className='flex items-center gap-2'>
           <UserCog className='h-5 w-5' />
-          <div className='text-lg font-semibold'>
-            Manage authentication providers
-          </div>
+          <div className='text-lg font-semibold'>Manage authentication providers</div>
         </div>
         <p className='text-foreground-muted text-sm'>
-          Add or remove sign-on methods from your account, including GitHub,
-          GitLab, Microsoft, Discord, Steam, and Google.
+          Add or remove sign-on methods from your account, including GitHub, GitLab, Microsoft,
+          Discord, Steam, and Google.
         </p>
         <div className='flex gap-4'>
           <Button variant='outline' disabled>
