@@ -1,195 +1,151 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { LoadingSpinner } from '@/components/loading-overlays/LoadingSpinner.tsx';
-import SchematicSearchCard from '@/components/features/schematics/SchematicSearchCard';
+// src/pages/schematics/SchematicsList.tsx
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SchematicCard from '@/components/features/schematics/SchematicCard';
 import { useSearchSchematics } from '@/api';
-import { buttonVariants } from '@/components/ui/button.tsx';
-import { Upload } from 'lucide-react';
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-  SelectGroup,
-} from '@/components/ui/select.tsx';
-import schematicCategories from '@/config/schematicsCategory.ts';
-import minecraftVersion from '@/config/minecraft.ts';
+import { buttonVariants } from '@/components/ui/button';
+import { Upload, RefreshCw } from 'lucide-react';
+import { ListPageLayout, ListPageSidebar, ListPageContent } from '@/layouts/ListPageLayout';
+import { SearchFilter } from '@/components/layout/SearchFilter';
+import { SelectFilter } from '@/components/layout/SelectFilter';
+import { FiltersContainer } from '@/components/layout/FiltersContainer';
+import { ItemGrid } from '@/components/layout/ItemGrid';
+import { GridLoadingState } from '@/components/layout/GridLoadingState';
+import { useSchematicFilters } from '@/hooks/useSchematicFilters';
+import { Link } from 'react-router-dom';
 
-function SchematicsListWithFilters() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [page] = useState(1);
-  const [category, setCategory] = useState('All');
-  const [version, setVersion] = useState('All');
-  const [loaders, setLoaders] = useState('all');
+function SchematicsList() {
   const navigate = useNavigate();
-  const [subCategory, setSubCategory] = useState('All');
+  const [allSchematics, setAllSchematics] = useState<any[]>([]);
 
-  const selectedCategory = schematicCategories.find((cat) => cat.category === category);
+  const {
+    filters,
+    setQuery,
+    setCategory,
+    setSubCategory,
+    setVersion,
+    setLoaders,
+    resetFilters,
+    loadMore,
+    categoryOptions,
+    subCategoryOptions,
+    versionOptions,
+    loaderOptions,
+    hasSubCategories
+  } = useSchematicFilters();
+
   const {
     data: schematics,
     isLoading,
     isError,
-  } = useSearchSchematics({
-    query: searchQuery,
-    page: page,
-    category: category,
-    subCategory: subCategory,
-    version: version,
-    loaders: loaders,
-  });
-  console.log(schematics);
+    hasNextPage
+  } = useSearchSchematics(filters);
 
-  const handleInputChange = (event: any) => {
-    setSearchQuery(event.target.value);
-  };
+  // When filters change (other than page), reset the accumulated schematics
+  useEffect(() => {
+    if (filters.page === 1) {
+      setAllSchematics([]);
+    }
+  }, [filters.query, filters.category, filters.subCategory, filters.version, filters.loaders]);
+
+  // When new data loads, append it to our accumulated data
+  useEffect(() => {
+    if (schematics && schematics.length > 0) {
+      if (filters.page === 1) {
+        setAllSchematics(schematics);
+      } else {
+        setAllSchematics(prev => [...prev, ...schematics]);
+      }
+    }
+  }, [schematics, filters.page]);
 
   return (
-    <div className='flex'>
-      <div className='text-foreground w-64 p-4'>
-        <div className='relative mt-4'>
-          <h2 className='text-foreground font-minecraft mb-4 text-xl font-semibold'>Filters</h2>
-          <SchematicSearchCard searchQuery={searchQuery} onSearchChange={handleInputChange} />
+    <ListPageLayout>
+      <ListPageSidebar>
+        <FiltersContainer>
+          <div className="flex justify-between items-center">
+            <div className="text-foreground font-minecraft text-xl font-semibold">Filters</div>
+            <button
+              onClick={resetFilters}
+              className="text-sm text-primary flex items-center gap-1"
+              aria-label="Reset filters"
+            >
+              <RefreshCw size={14} />
+              Reset
+            </button>
+          </div>
 
-          {/* Category Filter */}
-          <label className='text-foreground font-minecraft mb-2 block'>Category</label>
-          <Select
-            value={category}
-            onValueChange={(value) => {
-              setCategory(value);
-              setSubCategory(''); // Réinitialiser la sous-catégorie lorsque la catégorie change
-            }}
-          >
-            <SelectTrigger className='border-foreground font-minecraft w-full rounded-lg p-2'>
-              <SelectValue
-                className='text-foreground font-minecraft'
-                placeholder='Select Category'
-              />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {schematicCategories.map(
-                  (categoryItem: { category: string; subcategories: string[] }) => (
-                    <SelectItem
-                      key={categoryItem.category}
-                      className='text-foreground font-minecraft'
-                      value={categoryItem.category}
-                    >
-                      {categoryItem.category}
-                    </SelectItem>
-                  )
-                )}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <SearchFilter
+            value={filters.query}
+            onChange={setQuery}
+            placeholder="Search schematics..."
+          />
 
-          {selectedCategory && selectedCategory.subcategories.length > 0 && (
-            <>
-              <label className='text-foreground font-minecraft mt-4 mb-2 block'>Subcategory</label>
-              <Select value={subCategory} onValueChange={setSubCategory}>
-                <SelectTrigger className='border-foreground font-minecraft w-full rounded-lg p-2'>
-                  <SelectValue
-                    className='text-foreground font-minecraft'
-                    placeholder='Select Subcategory'
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {selectedCategory.subcategories.map((subCat) => (
-                      <SelectItem
-                        key={subCat}
-                        className='text-foreground font-minecraft'
-                        value={subCat}
-                      >
-                        {subCat}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </>
+          <SelectFilter
+            label="Category"
+            value={filters.category}
+            onChange={setCategory}
+            options={categoryOptions}
+          />
+
+          {/* Only show subcategories if available */}
+          {hasSubCategories && (
+            <SelectFilter
+              label="Subcategory"
+              value={filters.subCategory || ''}
+              onChange={setSubCategory}
+              options={subCategoryOptions}
+            />
           )}
 
-          {/* Version Filter */}
-          <label className='text-foreground font-minecraft mt-4 mb-2 block'>Version</label>
-          <Select value={version} onValueChange={(value) => setVersion(value)}>
-            <SelectTrigger className='border-foreground font-minecraft w-full rounded-lg p-2'>
-              <SelectValue
-                className='text-foreground font-minecraft'
-                placeholder='Select Version'
-              />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {minecraftVersion.map((version) => (
-                  <SelectItem className='text-foreground font-minecraft' value={version.version}>
-                    {version.version}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <SelectFilter
+            label="Version"
+            value={filters.version}
+            onChange={setVersion}
+            options={versionOptions}
+          />
 
-          {/* Loaders Filter */}
-          <label className='text-foreground font-minecraft mt-4 mb-2 block'>Loaders</label>
-          <Select value={loaders} onValueChange={(value) => setLoaders(value)}>
-            <SelectTrigger className='border-foreground font-minecraft w-full rounded-lg p-2'>
-              <SelectValue placeholder='Select Loader' />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem className='text-foreground font-minecraft' value='all'>
-                  All
-                </SelectItem>
-                <SelectItem className='text-foreground font-minecraft' value='forge'>
-                  Forge
-                </SelectItem>
-                <SelectItem className='text-foreground font-minecraft' value='fabric'>
-                  Fabric
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+          <SelectFilter
+            label="Loaders"
+            value={filters.loaders}
+            onChange={setLoaders}
+            options={loaderOptions}
+          />
+        </FiltersContainer>
+      </ListPageSidebar>
 
-      <div className='h-screen flex-1 p-8'>
-        <div className='float-end mt-4'>
-          <Link className={buttonVariants({ variant: 'default' })} to='../schematics/upload'>
-            <Upload /> Upload Schematic
+      <ListPageContent>
+        <div className="flex justify-end mb-6">
+          <Link
+            className={buttonVariants({ variant: 'default' })}
+            to="../schematics/upload"
+          >
+            <Upload className="mr-2 h-4 w-4" /> Upload Schematic
           </Link>
         </div>
 
-        {isLoading ? (
-          <div className='mt-8 flex justify-center'>
-            <LoadingSpinner size='lg' />
-          </div>
-        ) : isError ? (
-          <div className='text-destructive text-center font-semibold'>
-            Oops! Failed to load schematics.
-          </div>
-        ) : (
-          <div className='mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
-            {schematics && schematics.length > 0 ? (
-              schematics.map((schematic) => (
-                <SchematicCard
-                  key={schematic.$id}
-                  schematic={schematic}
-                  onClick={() => navigate(`../schematics/${schematic.$id}/${schematic.slug}`)}
-                />
-              ))
-            ) : (
-              <h3 className='col-span-full text-center text-lg font-semibold'>
-                No schematics found.
-              </h3>
-            )}
-          </div>
-        )}
-      </div>
-      <div className='h-50'></div>
-    </div>
+        <ItemGrid
+          items={allSchematics}
+          renderItem={(schematic) => (
+            <SchematicCard
+              key={schematic.$id}
+              schematic={schematic}
+              onClick={() => navigate(`../schematics/${schematic.$id}/${schematic.slug}`)}
+            />
+          )}
+          isLoading={isLoading && filters.page === 1}
+          isError={isError}
+          loadingComponent={<GridLoadingState message="Loading schematics..." />}
+          loadingMoreComponent={<GridLoadingState size="sm" message="Loading more schematics..." />}
+          emptyMessage="No schematics found."
+          errorMessage="Oops! Failed to load schematics."
+          infiniteScrollEnabled={true}
+          hasMore={!!hasNextPage}
+          onLoadMore={loadMore}
+        />
+      </ListPageContent>
+    </ListPageLayout>
   );
 }
 
-export default SchematicsListWithFilters;
+export default SchematicsList;
