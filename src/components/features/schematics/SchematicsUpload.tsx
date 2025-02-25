@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button.tsx';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card.tsx';
 import { Label } from '@/components/ui/label.tsx';
-import { LoadingSpinner } from '@/components/loading-overlays/LoadingSpinner.tsx';
+import SchematicUploadLoadingOverlay from '@/components/loading-overlays/SchematicUploadLoadingOverlay';
 import { LoadingSuccess } from '@/components/loading-overlays/LoadingSuccess.tsx';
 import { Progress } from '@/components/ui/progress.tsx';
 import { Input } from '@/components/ui/input.tsx';
@@ -10,7 +10,6 @@ import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group.tsx';
 import { databases, storage } from '@/config/appwrite.ts';
 import { LoggedUserContextType } from '@/types';
-import { redirect } from 'react-router-dom';
 import MarkdownEditor from '@/components/utility/MarkdownEditor.tsx';
 import {
   Select,
@@ -40,6 +39,7 @@ function SchematicsUpload() {
   const [showFinalMessage, setShowFinalMessage] = useState<boolean>(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string>();
   const [slug, setSlug] = useState<string>('');
+  const [documentId, setDocumentId] = useState<string>('');
   const filteredCategories = schematicCategories.filter((category) => category.category !== 'All');
   // Function to generate a slug from the title using regex
   const generateSlug = (text: string) => {
@@ -142,6 +142,14 @@ function SchematicsUpload() {
       );
 
       console.log('Blueprint uploaded successfully:', document);
+      setDocumentId(document.$id);
+
+      // Set localstorage timestamp
+      const uploadedSchematics = localStorage.getItem('storedBlueprints') || '[]';
+      const blueprintsArray = JSON.parse(uploadedSchematics);
+      blueprintsArray.push(`${document.$id}/${slug}:${Date.now()}`);
+      localStorage.setItem('uploadedSchematics', JSON.stringify(blueprintsArray));
+
     } catch (error) {
       console.error('Error uploading blueprint:', error);
     }
@@ -160,7 +168,6 @@ function SchematicsUpload() {
         });
       }
     });
-
     setLoaders(compatibleLoaders);
   };
 
@@ -170,16 +177,11 @@ function SchematicsUpload() {
   }, [gameVersions]);
   // Affichage du message de fin
   if (loading && !showFinalMessage) {
-    return (
-      <div className='loading'>
-        <LoadingSpinner />
-        <h1>Your schematic is being uploaded!</h1>
-      </div>
-    );
+    return <SchematicUploadLoadingOverlay />;
   }
   if (showFinalMessage) {
     setTimeout(() => {
-      redirect('/schematics');
+      window.location.href = '/schematics/'+documentId+"/"+slug;
     }, 2000);
     return (
       <div className='final-message'>

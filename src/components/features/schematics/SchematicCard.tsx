@@ -41,7 +41,6 @@ const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
           src={schematic.image_url}
         />
       </div>
-
       <CardHeader className='grow'>
         <CardTitle>{schematic.title}</CardTitle>
         <CardDescription>{schematic.description.slice(0, 150)}...</CardDescription>
