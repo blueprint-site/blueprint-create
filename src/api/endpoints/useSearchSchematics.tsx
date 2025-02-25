@@ -1,22 +1,22 @@
-import { useQuery } from '@tanstack/react-query';
-import searchClient from '@/config/meilisearch.ts';
-import { Schematic,SearchSchematicsProps} from '@/types';
+import searchClient from "@/config/meilisearch";
+import { SearchSchematicsProps, SearchSchematicsResult, Schematic } from "@/types";
+import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
 
 export const useSearchSchematics = ({
-                                      query = '',
-                                      page = 1,
-                                      category = 'All',
-                                      subCategory = 'All',
-                                      version = 'all',
-                                      loaders = 'all',
-                                      id = 'all',
-                                    }: SearchSchematicsProps) => {
-  if (!query) {
-    query = '*';
-  }
+  query = '',
+  page = 1,
+  category = 'All',
+  subCategory = 'All',
+  version = 'all',
+  loaders = 'all',
+  id = 'all',
+}: SearchSchematicsProps): SearchSchematicsResult => {
+  const queryInput = query || '*'; // Default to '*' if query is empty
 
+  // Define filter logic for category, version, and loaders
   const filter = (): string => {
-    const filters: string[] = [];
+    const filters: string[] 
     const addFilter = (field: string, value: string) => {
       if (value && value !== 'all' && value !== 'All') {
         const formattedValue = value.includes(' ') ? `"${value}"` : value;
@@ -71,6 +71,7 @@ export const useSearchSchematics = ({
       };
     },
     enabled: !!query,
+
   });
 
   const { data, isError, error, isPending, isLoading, isLoadingError } = queryResult;
@@ -95,4 +96,28 @@ export const useSearchSchematics = ({
     isLoading,
     isLoadingError,
   }
+  // State to store hasNextPage
+  const [hasNextPage, setHasNextPage] = useState(false);
+
+  // Update hasNextPage only when data is available
+  useEffect(() => {
+    if (data) {
+      const newHasNextPage = (page - 1) * 16 + data.hits.length < data.totalHits;
+      console.log('Updating hasNextPage:', newHasNextPage); // Debugging
+      setHasNextPage(newHasNextPage);
+    }
+  }, [data, page]);
+
+  return {
+    ...queryResult,
+    data: data?.hits || [],
+    isLoading,
+    isError,
+    error,
+    isFetching,
+    hasNextPage,
+    hasPreviousPage: page > 1,
+    totalHits: data?.totalHits || 0,
+    page,
+  };
 };

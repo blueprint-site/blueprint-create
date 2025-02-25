@@ -352,4 +352,15 @@ export interface SearchSchematicsProps {
   id?: string;
 }
 
+export interface SearchSchematicsResult {
+  data: Schematic[];
+  isLoading: boolean;
+  isError: boolean;
+  error: Error | null;
+  isFetching: boolean;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  totalHits: number;
+  page: number;
+}
 
