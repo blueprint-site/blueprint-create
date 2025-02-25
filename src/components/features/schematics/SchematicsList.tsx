@@ -13,10 +13,13 @@ import { ItemGrid } from '@/components/layout/ItemGrid';
 import { GridLoadingState } from '@/components/layout/GridLoadingState';
 import { useSchematicFilters } from '@/hooks/useSchematicFilters';
 import { Link } from 'react-router-dom';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { Schematic } from '@/types';
 
 function SchematicsList() {
   const navigate = useNavigate();
-  const [allSchematics, setAllSchematics] = useState<any[]>([]);
+  const [allSchematics, setAllSchematics] = useState<Schematic[]>([]);
+  const [page, setPage] = useState(1); // Add separate page state
 
   const {
     filters,
@@ -26,38 +29,60 @@ function SchematicsList() {
     setVersion,
     setLoaders,
     resetFilters,
-    loadMore,
     categoryOptions,
     subCategoryOptions,
     versionOptions,
     loaderOptions,
-    hasSubCategories
+    hasSubCategories,
   } = useSchematicFilters();
 
+  // Modify to use the separate page state
   const {
     data: schematics,
     isLoading,
     isError,
-    hasNextPage
-  } = useSearchSchematics(filters);
+    isFetching,
+    hasNextPage,
+  } = useSearchSchematics({
+    ...filters,
+    page: page, // Use the local page state
+  });
 
-  // When filters change (other than page), reset the accumulated schematics
+  // Use the useInfiniteScroll hook
+  const { sentinelRef, loadingMore } = useInfiniteScroll({
+    loading: isLoading || isFetching,
+    hasMore: hasNextPage,
+    onLoadMore: () => {
+      if (hasNextPage && !isFetching) {
+        console.log('Loading more schematics. Current page:', page);
+        setPage(prevPage => prevPage + 1); // Increment local page state
+      }
+    },
+  });
+
+  // Reset accumulated schematics when filters change (except page)
   useEffect(() => {
-    if (filters.page === 1) {
-      setAllSchematics([]);
-    }
+    setAllSchematics([]);
+    setPage(1); // Reset to first page when filters change
   }, [filters.query, filters.category, filters.subCategory, filters.version, filters.loaders]);
 
-  // When new data loads, append it to our accumulated data
+  // Append new schematics to the accumulated list
   useEffect(() => {
     if (schematics && schematics.length > 0) {
-      if (filters.page === 1) {
+      if (page === 1) {
         setAllSchematics(schematics);
       } else {
-        setAllSchematics(prev => [...prev, ...schematics]);
+        setAllSchematics((prev) => [...prev, ...schematics]);
       }
     }
-  }, [schematics, filters.page]);
+  }, [schematics, page]);
+
+  // Handle filter reset
+  const handleResetFilters = () => {
+    resetFilters();
+    setPage(1);
+    setAllSchematics([]);
+  };
 
   return (
     <ListPageLayout>
@@ -66,7 +91,7 @@ function SchematicsList() {
           <div className="flex justify-between items-center">
             <div className="text-foreground font-minecraft text-xl font-semibold">Filters</div>
             <button
-              onClick={resetFilters}
+              onClick={handleResetFilters}
               className="text-sm text-primary flex items-center gap-1"
               aria-label="Reset filters"
             >
@@ -133,15 +158,20 @@ function SchematicsList() {
               onClick={() => navigate(`../schematics/${schematic.$id}/${schematic.slug}`)}
             />
           )}
-          isLoading={isLoading && filters.page === 1}
+          isLoading={isLoading && page === 1}
           isError={isError}
           loadingComponent={<GridLoadingState message="Loading schematics..." />}
-          loadingMoreComponent={<GridLoadingState size="sm" message="Loading more schematics..." />}
+          loadingMoreComponent={
+            <GridLoadingState
+              size="sm"
+              message={loadingMore ? "Loading more schematics..." : "No more schematics"}
+            />
+          }
           emptyMessage="No schematics found."
           errorMessage="Oops! Failed to load schematics."
           infiniteScrollEnabled={true}
-          hasMore={!!hasNextPage}
-          onLoadMore={loadMore}
+          loadingMore={loadingMore}
+          sentinelRef={sentinelRef}
         />
       </ListPageContent>
     </ListPageLayout>

@@ -334,3 +334,15 @@ export interface SearchSchematicsProps {
   loaders?: string;
   id?: string;
 }
+
+export interface SearchSchematicsResult {
+  data: Schematic[];
+  isLoading: boolean;
+  isError: boolean;
+  error: Error | null;
+  isFetching: boolean;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  totalHits: number;
+  page: number;
+}
