@@ -121,10 +121,15 @@ function SchematicsUpload() {
 
   // Update form values for preview
   const handleFieldChange = (field: keyof SchematicFormValues, value: unknown) => {
-    setFormValues((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+    // Special handling for description
+    if (field === 'description') {
+      setFormValues(prev => ({
+        ...prev,
+        [field]: String(value) // Ensure string type
+      }));
+      return;
+    }
+    setFormValues(prev => ({ ...prev, [field]: value }));
   };
 
   // Handle multiple image previews
