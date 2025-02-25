@@ -82,6 +82,7 @@ export const useFetchSchematic = (id?: string) => {
         slug: doc.slug || '',
         create_versions: Array.isArray(doc.create_versions) ? doc.create_versions : [],
         categories: Array.isArray(doc.categories) ? doc.categories : [],
+        status: doc.status || 'draft',
       };
 
       return schematicData;
@@ -120,6 +121,7 @@ export const useFetchSchematics = (categories?: string[]) => {
         slug: doc.slug || '',
         create_versions: Array.isArray(doc.create_versions) ? doc.create_versions : [],
         categories: Array.isArray(doc.categories) ? doc.categories : [],
+        status: doc.status || 'draft',
       }));
 
       return schematics;
@@ -157,6 +159,7 @@ export const useFetchUserSchematics = (user_id?: string) => {
         slug: doc.slug || '',
         create_versions: Array.isArray(doc.create_versions) ? doc.create_versions : [],
         categories: Array.isArray(doc.categories) ? doc.categories : [],
+        status: doc.status || 'draft',
       }));
 
       return schematics;
