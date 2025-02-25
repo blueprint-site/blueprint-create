@@ -14,6 +14,7 @@ import { useFetchSchematic } from '@/api/endpoints/useSchematics.tsx';
 import { useIncrementDownloads } from '@/api/endpoints/useSchematics.tsx';
 import TimerProgress from '@/components/utility/TimerProgress';
 import { Hourglass } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const SchematicDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -33,11 +34,31 @@ const SchematicDetails = () => {
   const isUploadedByUser = uploadedSchematics.some((entry) =>
     entry.startsWith(`${schematic?.$id}/`)
   );
+  // Function to delete the current schematic entry from localStorage
+  const deleteSchematicEntry = () => {
+    const updatedSchematics = uploadedSchematics.filter(
+      (entry) => !entry.startsWith(`${schematic?.$id}/`)
+    );
+    localStorage.setItem('uploadedSchematics', JSON.stringify(updatedSchematics));
+  };
+
+  const [isTimerExpired, setIsTimerExpired] = useState(false);
+
+  useEffect(() => {
+    const expired = currentSchematicTimestamp
+      ? Date.now() - Number(currentSchematicTimestamp) > 60000
+      : false;
+    setIsTimerExpired(expired);
+  }, [currentSchematicTimestamp]);
+
+  // Effect to check when the timer expires and delete the entry
+  useEffect(() => {
+    if (isTimerExpired && isUploadedByUser) {
+      deleteSchematicEntry();
+    }
+  }, [isTimerExpired, isUploadedByUser]);
 
   // Check if the timestamp is older than 60 seconds
-  const isTimerExpired = currentSchematicTimestamp
-    ? Date.now() - Number(currentSchematicTimestamp) > 60000
-    : false;
 
   const openUrl = (url: string) => {
     window.open(url, '_');
@@ -52,7 +73,7 @@ const SchematicDetails = () => {
       <Card className='bg-surface-1'>
         <CardHeader className='text-center'>
           <div className='flex w-full justify-between'>
-            <div className='flex items-center gap-4 justify-start'>
+            <div className='flex items-center justify-start gap-4'>
               {!isTimerExpired && isUploadedByUser && (
                 <TimerProgress
                   startTimestamp={Number(currentSchematicTimestamp)}
@@ -62,7 +83,7 @@ const SchematicDetails = () => {
                 />
               )}
             </div>
-            <div className='flex items-center gap-4 justify-end'>
+            <div className='flex items-center justify-end gap-4'>
               <Button variant='default' className='transition-all duration-300 hover:shadow-lg'>
                 <Share className='mr-2' /> Share
               </Button>
