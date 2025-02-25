@@ -1,10 +1,9 @@
 import { Outlet } from 'react-router-dom';
 
 import RotatingCogwheel from '@/components/common/Cogwheel.tsx';
-import AppFooter from '@/layouts/components/AppFooter.tsx';
-import AppHeader from '@/layouts/components/AppHeader.tsx';
-
 import { useThemeStore } from '@/api/stores/themeStore.tsx';
+import AppHeader from "@/components/layout/AppHeader.tsx";
+import AppFooter from "@/components/layout/AppFooter.tsx";
 
 const GridLayout = () => {
   const { isDarkMode } = useThemeStore();
