@@ -240,6 +240,7 @@ export interface Schematic {
   modloaders: string[]; // What modloaders is it for
   categories: string[]; // What categories does it fall into
   slug: string; // Slug used for identification
+  status: string;
 }
 // Interface for the blog feature
 export interface BlogType {
