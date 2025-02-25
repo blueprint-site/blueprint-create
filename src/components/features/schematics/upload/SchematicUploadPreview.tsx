@@ -3,11 +3,12 @@ import { Badge } from '@/components/ui/badge';
 import ModLoaderDisplay from '@/components/common/ModLoaderDisplay';
 import MarkdownDisplay from '@/components/utility/MarkdownDisplay';
 import { User } from '@/types';
+import { MultiImageViewer } from '@/components/utility/MultiImageViewer'; // Import the new component
 
 interface SchematicPreviewProps {
   title: string;
   description: string;
-  imagePreviewUrl: string | null;
+  imagePreviewUrls: string[]; // Updated to handle multiple images
   gameVersions: string[];
   createVersions: string[];
   modloaders: string[];
@@ -17,7 +18,7 @@ interface SchematicPreviewProps {
 export function SchematicPreview({
   title,
   description,
-  imagePreviewUrl,
+  imagePreviewUrls,
   gameVersions,
   createVersions,
   modloaders,
@@ -45,17 +46,8 @@ export function SchematicPreview({
       <CardContent className="space-y-6">
         <div className="flex flex-col items-start gap-8 md:flex-row">
           <div className="w-full md:w-full">
-            {imagePreviewUrl ? (
-              <img
-                src={imagePreviewUrl}
-                alt="Schematic Preview"
-                className="h-auto w-full rounded-lg object-cover shadow-md"
-              />
-            ) : (
-              <div className="bg-surface-2 flex h-48 w-full items-center justify-center rounded-lg">
-                <p className="text-foreground-muted">Image preview will appear here</p>
-              </div>
-            )}
+            {/* Use the MultiImageViewer component */}
+            <MultiImageViewer images={imagePreviewUrls} />
           </div>
         </div>
 

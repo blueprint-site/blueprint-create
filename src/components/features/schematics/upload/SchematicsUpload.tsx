@@ -13,7 +13,7 @@ function SchematicsUpload() {
   const loggedUser = useLoggedUser();
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]); // Updated for multiple images
   const [formValues, setFormValues] = useState<Partial<SchematicFormValues>>({
     title: '',
     description: '',
@@ -47,8 +47,13 @@ function SchematicsUpload() {
       return;
     }
 
-    if (!data.schematicFile || !data.imageFile) {
-      alert('Please upload both a schematic file and an image');
+    if (!data.schematicFile) {
+      alert('Please upload schematic file');
+      return;
+    }
+
+    if (!data.imageFiles || data.imageFiles.length === 0) {
+      alert('Please upload at least one image');
       return;
     }
 
@@ -62,16 +67,23 @@ function SchematicsUpload() {
         data.schematicFile
       );
 
-      // Upload image file
-      const uploadedImage = await storage.createFile(
-        '67b22481001e99d90888',
-        'unique()',
-        data.imageFile
+      // Upload multiple image files
+      const uploadedImages = await Promise.all(
+        data.imageFiles.map(async (file) => {
+          const uploadedFile = await storage.createFile(
+            '67b22481001e99d90888',
+            'unique()',
+            file
+          );
+          return uploadedFile.$id;
+        })
       );
 
       // Get file URLs
       const schematicUrl = storage.getFileDownload('67b2241e0032c25c8216', uploadedSchematic.$id);
-      const imageUrl = storage.getFilePreview('67b22481001e99d90888', uploadedImage.$id);
+      const imageUrls = uploadedImages.map((id) =>
+        storage.getFilePreview('67b22481001e99d90888', id)
+      );
 
       // Create database entry
       const document = await databases.createDocument(
@@ -82,7 +94,7 @@ function SchematicsUpload() {
           title: data.title,
           description: data.description,
           schematic_url: schematicUrl,
-          image_url: imageUrl,
+          image_urls: imageUrls, // Updated to store multiple image URLs
           user_id: loggedUser.user.$id,
           authors: [loggedUser.user.name],
           game_versions: data.gameVersions,
@@ -109,19 +121,28 @@ function SchematicsUpload() {
 
   // Update form values for preview
   const handleFieldChange = (field: keyof SchematicFormValues, value: unknown) => {
-    setFormValues(prev => ({
+    setFormValues((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
 
-  // Handle image preview
-  const handleImagePreview = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImagePreviewUrl(reader.result as string);
-    };
-    reader.readAsDataURL(file);
+  // Handle multiple image previews
+  const handleImagePreview = (files: File[]) => {
+    const readers = files.map((file) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      return reader;
+    });
+
+    Promise.all(
+      readers.map(
+        (reader) =>
+          new Promise<string>((resolve) => {
+            reader.onload = () => resolve(reader.result as string);
+          })
+      )
+    ).then((urls) => setImagePreviewUrls(urls));
   };
 
   // Show loading or success states
@@ -162,7 +183,7 @@ function SchematicsUpload() {
           <SchematicPreview
             title={formValues.title || ''}
             description={formValues.description || ''}
-            imagePreviewUrl={imagePreviewUrl}
+            imagePreviewUrls={imagePreviewUrls} // Updated to pass multiple image URLs
             gameVersions={formValues.gameVersions || []}
             createVersions={formValues.createVersions || []}
             modloaders={formValues.modloaders || []}
