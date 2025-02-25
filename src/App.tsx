@@ -8,16 +8,19 @@ import { routes } from './routes';
 import { Suspense, useEffect, useState } from 'react';
 import 'minecraft-textures-library/src/templates/create-textures.css';
 
+// Separate the routes component to avoid hook rules violation
+const AppRoutes = () => {
+  // Now useRoutes is at the top level of this component
+  return useRoutes(routes);
+};
+
 const App = () => {
-  const AppRoutes = () => {
-    return useRoutes(routes);
-  };
   const [envLoaded, setEnvLoaded] = useState(false);
 
   useEffect(() => {
     const loadEnv = () => {
       const script = document.createElement('script');
-      script.src = `/env.js?version=${new Date().getTime()}`; // Ajoute un timestamp à chaque demande
+      script.src = `/env.js?version=${new Date().getTime()}`; // Adds a timestamp to each request
       script.onload = () => {
         console.log('env.js loaded');
         setEnvLoaded(true);
