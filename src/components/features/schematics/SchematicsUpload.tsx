@@ -1,163 +1,175 @@
-import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button.tsx';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card.tsx';
-import { Progress } from '@/components/ui/progress.tsx';
-import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SchematicUploadLoadingOverlay from '@/components/loading-overlays/SchematicUploadLoadingOverlay';
-import Step1 from './steps/Step1';
-import Step2 from './steps/Step2';
-import Step3 from './steps/Step3';
-import Step4 from './steps/Step4';
-import { handleSchematicUpload } from './utils/uploadUtils';
-import { generateSlug } from './utils/generateSlug';
+import { databases, storage } from '@/config/appwrite';
+import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext';
+import { LoadingSpinner } from '@/components/loading-overlays/LoadingSpinner';
+import { LoadingSuccess } from '@/components/loading-overlays/LoadingSuccess';
+import { SchematicUploadForm } from './SchematicUploadForm';
+import { type SchematicFormValues } from '@/schemas/schematic.schema.tsx';
+import { SchematicPreview } from './SchematicUploadPreview';
 
 function SchematicsUpload() {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
-  const [progress, setProgress] = useState(0);
-  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
-  const [uploadedSchematic, setUploadedSchematic] = useState<File | null>(null);
-  const [title, setTitle] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
-  const [gameVersions, setGameVersions] = useState<string[]>([]);
-  const [createVersions] = useState<string[]>(['0.5', '0.4']);
-  const [loaders, setLoaders] = useState<string[]>([]);
+  const loggedUser = useLoggedUser();
   const [loading, setLoading] = useState<boolean>(false);
-  const [category, setCategory] = useState<string>('Buildings');
-  const [subCategory, setSubCategory] = useState<string>('Houses');
-  const [showFinalMessage, setShowFinalMessage] = useState<boolean>(false);
-  const [uploadedImageUrl, setUploadedImageUrl] = useState<string>('');
-  const [slug, setSlug] = useState<string>('');
-  const [documentId, setDocumentId] = useState<string>('');
-  const LoggedUser = useLoggedUser();
+  const [success, setSuccess] = useState<boolean>(false);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [formValues, setFormValues] = useState<Partial<SchematicFormValues>>({
+    title: '',
+    description: '',
+    gameVersions: [],
+    createVersions: [],
+    modloaders: [],
+  });
 
-  useEffect(() => {
-    setSlug(generateSlug(title));
-  }, [title]);
-
-  const nextStep = () => {
-    if (step < 4) {
-      setStep(step + 1);
-      setProgress(progress + 25);
-    }
+  // Define available options
+  const options = {
+    minecraftVersions: [
+      '1.19.1',
+      '1.19.2',
+      '1.20',
+      '1.20.1',
+      '1.20.2',
+      '1.20.3',
+      '1.20.4',
+      '1.21',
+      '1.21.1',
+      '1.21.2',
+    ],
+    createVersionOptions: ['0.5', '0.4'],
+    modloaderOptions: ['fabric', 'forge', 'quilt'],
   };
 
-  const prevStep = () => {
-    if (step > 1) {
-      setStep(step - 1);
-      setProgress(progress - 25);
-    }
-  };
-
-  const validateAndUpload = async () => {
-    if (
-      !uploadedSchematic ||
-      !uploadedImage ||
-      !title ||
-      !description ||
-      !category ||
-      !subCategory ||
-      gameVersions.length === 0 ||
-      createVersions.length === 0 ||
-      loaders.length === 0
-    ) {
-      alert('Please fill all fields before submitting.');
+  // Form submission
+  const onSubmit = async (data: SchematicFormValues) => {
+    if (!loggedUser.user) {
+      alert('You must be logged in to upload schematics');
       return;
     }
-    setLoading(true);
-    const document = await handleSchematicUpload(
-      uploadedSchematic,
-      uploadedImage,
-      title,
-      description,
-      LoggedUser,
-      slug,
-      category,
-      subCategory,
-      gameVersions,
-      createVersions,
-      loaders
-    );
-    if (document) {
-      setDocumentId(document.$id);
-      setShowFinalMessage(true);
+
+    if (!data.schematicFile || !data.imageFile) {
+      alert('Please upload both a schematic file and an image');
+      return;
     }
-    setLoading(false);
+
+    setLoading(true);
+
+    try {
+      // Upload schematic file
+      const uploadedSchematic = await storage.createFile(
+        '67b2241e0032c25c8216',
+        'unique()',
+        data.schematicFile
+      );
+
+      // Upload image file
+      const uploadedImage = await storage.createFile(
+        '67b22481001e99d90888',
+        'unique()',
+        data.imageFile
+      );
+
+      // Get file URLs
+      const schematicUrl = storage.getFileDownload('67b2241e0032c25c8216', uploadedSchematic.$id);
+      const imageUrl = storage.getFilePreview('67b22481001e99d90888', uploadedImage.$id);
+
+      // Create database entry
+      const document = await databases.createDocument(
+        '67b1dc430020b4fb23e3',
+        '67b2310d00356b0cb53c',
+        'unique()',
+        {
+          title: data.title,
+          description: data.description,
+          schematic_url: schematicUrl,
+          image_url: imageUrl,
+          user_id: loggedUser.user.$id,
+          authors: [loggedUser.user.name],
+          game_versions: data.gameVersions,
+          create_versions: data.createVersions,
+          modloaders: data.modloaders,
+          slug: data.title.toLowerCase().replace(/\s+/g, '-'),
+        }
+      );
+
+      console.log('Schematic uploaded successfully:', document);
+      setSuccess(true);
+
+      // Redirect after short delay
+      setTimeout(() => {
+        navigate('/schematics');
+      }, 2000);
+    } catch (error) {
+      console.error('Error uploading schematic:', error);
+      alert('Failed to upload schematic. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  if (loading && !showFinalMessage) {
-    return <SchematicUploadLoadingOverlay />;
+  // Update form values for preview
+  const handleFieldChange = (field: keyof SchematicFormValues, value: unknown) => {
+    setFormValues(prev => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  // Handle image preview
+  const handleImagePreview = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImagePreviewUrl(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Show loading or success states
+  if (loading) {
+    return (
+      <div className="loading">
+        <LoadingSpinner />
+        <h1>Your schematic is being uploaded!</h1>
+      </div>
+    );
   }
 
-  if (showFinalMessage) {
-    navigate(`/schematics/${documentId}/${slug}`);
+  if (success) {
+    return (
+      <div className="final-message">
+        <LoadingSuccess />
+      </div>
+    );
   }
 
   return (
-    <div className='container'>
-      <Card className='mt-8'>
-        <CardHeader>
-          <CardTitle className='text-center'>Let's upload a schematic</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Progress value={progress} className='mb-4' />
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="mb-8 text-center text-3xl font-bold">Upload a Schematic</h1>
 
-          {step === 1 && (
-            <Step1
-              uploadedSchematic={uploadedSchematic}
-              setUploadedSchematic={setUploadedSchematic}
-              uploadedImage={uploadedImage}
-              setUploadedImage={setUploadedImage}
-              uploadedImageUrl={uploadedImageUrl}
-              setUploadedImageUrl={setUploadedImageUrl}
-            />
-          )}
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+        {/* Form Section */}
+        <div>
+          <SchematicUploadForm
+            onSubmit={onSubmit}
+            options={options}
+            onValueChange={handleFieldChange}
+            onImageChange={handleImagePreview}
+          />
+        </div>
 
-          {step === 2 && (
-            <Step2
-              title={title}
-              setTitle={setTitle}
-              description={description}
-              setDescription={setDescription}
-              category={category}
-              setCategory={setCategory}
-              subCategory={subCategory}
-              setSubCategory={setSubCategory}
-            />
-          )}
-
-          {step === 3 && (
-            <Step3
-              gameVersions={gameVersions}
-              setGameVersions={setGameVersions}
-              loaders={loaders}
-              setLoaders={setLoaders}
-            />
-          )}
-
-          {step === 4 && (
-            <Step4
-              uploadedImageUrl={uploadedImageUrl}
-              title={title}
-              description={description}
-              gameVersions={gameVersions}
-              createVersions={createVersions}
-              loaders={loaders}
-            />
-          )}
-        </CardContent>
-
-        <CardFooter className='flex justify-end gap-2'>
-          {step > 1 && <Button onClick={prevStep}>Back</Button>}
-          {step < 4 ? (
-            <Button onClick={nextStep}>Next</Button>
-          ) : (
-            <Button onClick={validateAndUpload}>Upload</Button>
-          )}
-        </CardFooter>
-      </Card>
-      <div id='TOREMOVETHHEYSUCKS' className='h-100'></div>
+        {/* Preview Section */}
+        <div>
+          <SchematicPreview
+            title={formValues.title || ''}
+            description={formValues.description || ''}
+            imagePreviewUrl={imagePreviewUrl}
+            gameVersions={formValues.gameVersions || []}
+            createVersions={formValues.createVersions || []}
+            modloaders={formValues.modloaders || []}
+            user={loggedUser.user}
+          />
+        </div>
+      </div>
     </div>
   );
 }
