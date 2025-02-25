@@ -20,11 +20,13 @@ const SchematicDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { data: schematic } = useFetchSchematic(id);
   const { mutate: incrementDownloads } = useIncrementDownloads();
+  const [isTimerComplete, setIsTimerComplete] = useState(false); // State to track timer completion
 
   // Retrieve uploadedSchematics as an array from localStorage
   const uploadedSchematics: string[] = JSON.parse(
     localStorage.getItem('uploadedSchematics') || '[]'
   );
+
   // Parse the current schematic timestamp from uploadedSchematics
   const currentSchematicTimestamp = uploadedSchematics
     .find((entry) => entry.startsWith(`${schematic?.$id}/`))
@@ -34,6 +36,7 @@ const SchematicDetails = () => {
   const isUploadedByUser = uploadedSchematics.some((entry) =>
     entry.startsWith(`${schematic?.$id}/`)
   );
+
   // Function to delete the current schematic entry from localStorage
   const deleteSchematicEntry = () => {
     const updatedSchematics = uploadedSchematics.filter(
@@ -42,30 +45,27 @@ const SchematicDetails = () => {
     localStorage.setItem('uploadedSchematics', JSON.stringify(updatedSchematics));
   };
 
-  const [isTimerExpired, setIsTimerExpired] = useState(false);
-
-  useEffect(() => {
-    const expired = currentSchematicTimestamp
-      ? Date.now() - Number(currentSchematicTimestamp) > 60000
-      : false;
-    setIsTimerExpired(expired);
-  }, [currentSchematicTimestamp]);
-
   // Effect to check when the timer expires and delete the entry
   useEffect(() => {
-    if (isTimerExpired && isUploadedByUser) {
-      deleteSchematicEntry();
-    }
-  }, [isTimerExpired, isUploadedByUser]);
+    if (currentSchematicTimestamp) {
+      const expirationTime = Number(currentSchematicTimestamp) + 60000;
+      const isExpired = Date.now() > expirationTime;
 
-  // Check if the timestamp is older than 60 seconds
+      if (isExpired && isUploadedByUser) {
+        deleteSchematicEntry();
+        setIsTimerComplete(true); // Mark timer as complete
+      }
+    }
+  }, [currentSchematicTimestamp, isUploadedByUser]);
 
   const openUrl = (url: string) => {
     window.open(url, '_');
   };
 
   if (!schematic) {
-    return <div>Loading...</div>;
+    return (
+      <div className='text-foreground-muted flex items-center justify-center p-8'>Loading...</div>
+    );
   }
 
   return (
@@ -74,13 +74,24 @@ const SchematicDetails = () => {
         <CardHeader className='text-center'>
           <div className='flex w-full justify-between'>
             <div className='flex items-center justify-start gap-4'>
-              {!isTimerExpired && isUploadedByUser && (
-                <TimerProgress
-                  startTimestamp={Number(currentSchematicTimestamp)}
-                  countdownTime={60}
-                  description='Processing your upload... Your schematic will be visible to everyone in about a minute'
-                  icon={<Hourglass />}
-                />
+              {isUploadedByUser && (
+                <>
+                  {currentSchematicTimestamp && !isTimerComplete ? (
+                    <TimerProgress
+                      startTimestamp={Number(currentSchematicTimestamp)}
+                      countdownTime={60}
+                      description='Processing your upload... Your schematic will be visible to everyone in about a minute'
+                      icon={<Hourglass />}
+                      onComplete={() => setIsTimerComplete(true)} // Callback to update state
+                    />
+                  ) : (
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm font-semibold text-success">
+                        Your schematic is now public!
+                      </span>
+                    </div>
+                  )}
+                </>
               )}
             </div>
             <div className='flex items-center justify-end gap-4'>
