@@ -1,7 +1,5 @@
-// src/components/layout/ItemGrid.tsx
 import React from 'react';
 import { cn } from '@/config/utils';
-import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 
 interface ItemGridProps<T> {
   items: T[] | undefined;
@@ -14,10 +12,10 @@ interface ItemGridProps<T> {
   className?: string;
   gridClassName?: string;
   // Infinite scroll props
-  hasMore?: boolean;
-  onLoadMore?: () => void;
   infiniteScrollEnabled?: boolean;
   loadingMoreComponent?: React.ReactNode;
+  loadingMore?: boolean; // Add loadingMore prop
+  sentinelRef?: (node: HTMLDivElement) => void; // Add sentinelRef prop
 }
 
 export function ItemGrid<T>({ 
@@ -31,17 +29,11 @@ export function ItemGrid<T>({
   className,
   gridClassName,
   // Infinite scroll props
-  hasMore = false,
-  onLoadMore = () => {},
   infiniteScrollEnabled = false,
-  loadingMoreComponent
+  loadingMoreComponent,
+  loadingMore = false, // Add loadingMore prop
+  sentinelRef, // Add sentinelRef prop
 }: ItemGridProps<T>) {
-  const { sentinelRef, loadingMore } = useInfiniteScroll({
-    loading: isLoading,
-    hasMore,
-    onLoadMore
-  });
-
   if (isLoading && (!items || items.length === 0)) {
     return (
       <div className={cn("flex justify-center items-center min-h-40", className)}>
@@ -80,7 +72,7 @@ export function ItemGrid<T>({
               {loadingMoreComponent || <p>Loading more...</p>}
             </div>
           )}
-          <div ref={sentinelRef} className="h-4 w-full mt-4" />
+          <div ref={sentinelRef} className="h-4 w-full mt-4" /> {/* Attach sentinelRef */}
         </>
       )}
     </div>
