@@ -162,7 +162,7 @@
     --accent-foreground: 0 0% 9%;
 
     --muted: var(--surface-3);
-    --muted-foreground: 220 13% 95%;
+    --muted-foreground: 220 13% 45%;
 
     --border: var(--surface-3);
     --input: var(--surface-2);

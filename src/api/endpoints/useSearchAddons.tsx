@@ -1,6 +1,8 @@
+// /src/api/endpoints/useSearchAddons.tsx
 import { useQuery } from '@tanstack/react-query';
 import searchClient from '@/config/meilisearch.ts';
 import { Addon } from '@/schemas/addon.schema.tsx';
+import { useState, useEffect } from 'react';
 
 export const useSearchAddons = (
   query: string,
@@ -9,45 +11,70 @@ export const useSearchAddons = (
   version: string,
   loaders: string
 ) => {
-  const queryInput = query || 'create';
+  const queryInput = query || '*'; // Default to '*' if query is empty
 
-  // Define filter logic for category and version
-  const filter = () => {
-    let filterQuery = '';
+  // Define filter logic for category, version, and loaders
+  const filter = (): string => {
+    const filters: string[] = [];
 
-    // Loader filter logic
-    if (loaders && loaders !== 'all') {
-      filterQuery = `loaders = ${loaders}`;
-    }
+    const addFilter = (field: string, value: string) => {
+      if (value && value !== 'all') {
+        const formattedValue = value.includes(' ') ? `"${value}"` : value;
+        filters.push(`${field} = ${formattedValue}`);
+      }
+    };
 
-    // Category filter logic
-    if (category && category !== 'all') {
-      if (filterQuery) filterQuery += ' AND ';
-      filterQuery += `categories = ${category}`;
-    }
+    addFilter('loaders', loaders);
+    addFilter('categories', category);
+    addFilter('minecraft_versions', version);
 
-    // Version filter logic
-    if (version && version !== 'all') {
-      if (filterQuery) filterQuery += ' AND ';
-      filterQuery += `minecraft_versions = ${version}`;
-    }
-    if (filterQuery) filterQuery += ' AND ';
-    filterQuery += `isValid = 'true'`;
-    console.log('query: ', filterQuery);
-    return [filterQuery];
+    // Add additional filters if needed
+    filters.push(`isValid = 'true'`); // Ensure only valid addons are returned
+
+    return filters.length > 0 ? filters.join(' AND ') : '';
   };
 
-  return useQuery({
+  const queryResult = useQuery({
     queryKey: ['searchAddons', queryInput, page, category, version, loaders],
     queryFn: async () => {
       const index = searchClient.index('addons');
       const result = await index.search(queryInput, {
-        limit: 6,
-        offset: (page - 1) * 6,
+        limit: 16,
+        offset: (page - 1) * 16,
         filter: filter(),
       });
-      return result.hits as Addon[];
+      console.log('API Response:', result); // Debugging
+      return {
+        hits: result.hits as Addon[],
+        totalHits: result.estimatedTotalHits,
+      };
     },
-    enabled: !!queryInput,
+    enabled: true,
   });
+
+  const { data, isLoading, isError, error, isFetching } = queryResult;
+
+  // State to store hasNextPage
+  const [hasNextPage, setHasNextPage] = useState(false);
+
+  // Update hasNextPage only when data is available
+  useEffect(() => {
+    if (data) {
+      const newHasNextPage = (page - 1) * 16 + data.hits.length < data.totalHits;
+      console.log('Updating hasNextPage:', newHasNextPage); // Debugging
+      setHasNextPage(newHasNextPage);
+    }
+  }, [data, page]);
+
+  return {
+    ...queryResult,
+    data: data?.hits || [],
+    isLoading,
+    isError,
+    error,
+    isFetching,
+    hasNextPage,
+    totalHits: data?.totalHits || 0,
+    page,
+  };
 };
