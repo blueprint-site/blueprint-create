@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Input } from '@/components/ui/input.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Card, CardContent } from '@/components/ui/card.tsx';
-import { BlogType } from '@/types';
+import {BlogType, Tag} from '@/types';
 import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
 import ImageUploader from '@/components/utility/ImageUploader.tsx';
 import MarkdownEditor from '@/components/utility/MarkdownEditor.tsx';
@@ -112,8 +112,10 @@ const AdminBlogEditor = () => {
               />
               <h3>Tags</h3>
               <TagSelector
-                value={blogState?.tags || []}
-                onChange={(value) =>
+                value={blogState?.tags || []
+              }
+                db={"blog"}
+                onChange={(value: Tag[]) =>
                   setBlogState((prev) => (prev ? { ...prev, tags: value ?? undefined } : null))
                 }
               />

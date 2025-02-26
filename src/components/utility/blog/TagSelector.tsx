@@ -15,14 +15,17 @@ import { databases, ID } from '@/config/appwrite.ts';
 import { Models, Query } from 'appwrite';
 
 const DATABASE_ID = '67b1dc430020b4fb23e3';
-const COLLECTION_ID = '67b2326100053d0e304f';
+const BLOG_COLLECTION_ID= '67b2326100053d0e304f';
+const SCHEMATICS_COLLECTION_ID= '67bf59d30021b5c117f5';
+let COLLECTION_ID = '67b2326100053d0e304f';
 
 interface TagSelectorProps {
   value?: Tag[];
+  db: 'blog' | 'schematics'
   onChange?: (selectedTags: Tag[]) => void;
 }
 
-export default function TagSelector({ value, onChange }: TagSelectorProps) {
+export default function TagSelector({ value,db, onChange }: TagSelectorProps) {
   const [tags, setTags] = useState<Tag[]>([]);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [newTag, setNewTag] = useState('');
@@ -32,7 +35,15 @@ export default function TagSelector({ value, onChange }: TagSelectorProps) {
     if (value) {
       setSelectedTags(value);
     }
-  }, [value]);
+    if(db){
+      if(db === 'blog'){
+        COLLECTION_ID = BLOG_COLLECTION_ID
+      }
+      if(db === 'schematics'){
+        COLLECTION_ID = SCHEMATICS_COLLECTION_ID
+      }
+    }
+  }, [value, db]);
 
   async function fetchTags() {
     try {
