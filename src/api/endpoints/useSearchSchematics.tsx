@@ -1,7 +1,6 @@
 import searchClient from "@/config/meilisearch";
 import { SearchSchematicsProps, SearchSchematicsResult, Schematic } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import { useState, useEffect } from "react";
 
 export const useSearchSchematics = ({
   query = '',
@@ -12,11 +11,13 @@ export const useSearchSchematics = ({
   loaders = 'all',
   id = 'all',
 }: SearchSchematicsProps): SearchSchematicsResult => {
-  const queryInput = query || '*'; // Default to '*' if query is empty
-
+console.log('search triggered')
+  if(query === ''){
+    query = '*'
+  }
   // Define filter logic for category, version, and loaders
   const filter = (): string => {
-    const filters: string[] 
+    const filters: string[] = [];
     const addFilter = (field: string, value: string) => {
       if (value && value !== 'all' && value !== 'All') {
         const formattedValue = value.includes(' ') ? `"${value}"` : value;
@@ -32,7 +33,6 @@ export const useSearchSchematics = ({
 
     return filters.length > 0 ? filters.join(' AND ') : '';
   };
-
   const queryResult = useQuery({
     queryKey: ['searchSchematics', query, page, category, subCategory, version, loaders, id],
     queryFn: async () => {
@@ -42,7 +42,6 @@ export const useSearchSchematics = ({
         offset: (page - 1) * 20,
         filter: filter(),
       });
-      console.log(result);
       const schematicsList = result.hits as Schematic[]
 
       // Transform `Hits<SchematicsAnswer>` into `Schematic[]`
@@ -63,6 +62,7 @@ export const useSearchSchematics = ({
         modloaders: hit.modloaders,
         categories: hit.categories,
         slug: hit.slug,
+        status: hit.status,
       }));
 
       return {
@@ -70,11 +70,11 @@ export const useSearchSchematics = ({
         totalHits: result.estimatedTotalHits ?? 0,
       };
     },
+    staleTime: 1000 * 60 * 5,
     enabled: !!query,
-
   });
 
-  const { data, isError, error, isPending, isLoading, isLoadingError } = queryResult;
+  const { data, isLoading, isError, error, isFetching } = queryResult;
 
   // `data` is now an array of Schematic objects
   const schematics = data?.data ?? [];
@@ -90,34 +90,9 @@ export const useSearchSchematics = ({
     hasPreviousPage,
     totalHits,
     page,
+    isLoading,
     isError,
     error,
-    isPending,
-    isLoading,
-    isLoadingError,
+    isFetching
   }
-  // State to store hasNextPage
-  const [hasNextPage, setHasNextPage] = useState(false);
-
-  // Update hasNextPage only when data is available
-  useEffect(() => {
-    if (data) {
-      const newHasNextPage = (page - 1) * 16 + data.hits.length < data.totalHits;
-      console.log('Updating hasNextPage:', newHasNextPage); // Debugging
-      setHasNextPage(newHasNextPage);
-    }
-  }, [data, page]);
-
-  return {
-    ...queryResult,
-    data: data?.hits || [],
-    isLoading,
-    isError,
-    error,
-    isFetching,
-    hasNextPage,
-    hasPreviousPage: page > 1,
-    totalHits: data?.totalHits || 0,
-    page,
-  };
 };
