@@ -1,4 +1,3 @@
-import React from 'react'; // Import React for JSX
 import '@mdxeditor/editor/style.css';
 import {
   MDXEditor,
