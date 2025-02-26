@@ -1,5 +1,5 @@
 export interface ElectronAPI {
-  sendLog: (params: { message: string; level: string; category: string; timestamp: Date }) => void;
+  sendLog: (params: { message: string; level: string; category: string; timestamp: Date, object?: object}) => void;
   onLogUpdate: (callback: (data) => void) => void;
 }
 

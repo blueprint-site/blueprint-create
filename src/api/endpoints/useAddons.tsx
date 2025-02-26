@@ -3,6 +3,7 @@ import { toast } from '@/api';
 import { databases, ID } from '@/config/appwrite.ts';
 import { Query } from 'appwrite';
 import { Addon } from '@/schemas/addon.schema.tsx';
+import logMessage from "@/components/utility/logs/sendLogs.tsx";
 
 const DATABASE_ID = '67b1dc430020b4fb23e3';
 const COLLECTION_ID = '67b1dc4b000762a0ccc6';
@@ -18,11 +19,13 @@ export const useDeleteAddon = () => {
           className: 'bg-surface-3 border-ring text-foreground',
           title: '✅ Addon deleted ✅',
         });
+        logMessage('✅ Addon deleted ✅', 0 , 'data')
       } catch (error) {
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
           title: '❌ Error deleting the addon ❌',
         });
+        logMessage('❌ Error deleting the addon ❌', 2 , 'data')
         console.error('Error deleting addon:', error);
       }
     },
@@ -33,6 +36,7 @@ export const useDeleteAddon = () => {
 };
 
 export const useFetchAddon = (slug?: string) => {
+  logMessage('⚡ useFetchAddon called ⚡', 0 , 'data');
   return useQuery<Addon | null>({
     queryKey: ['addon', slug],
     queryFn: async () => {
@@ -63,7 +67,7 @@ export const useFetchAddon = (slug?: string) => {
         isChecked: doc.isChecked || false,
         minecraft_versions: Array.isArray(doc.minecraft_versions) ? doc.minecraft_versions : [],
       };
-
+      logMessage('⚡ Addons Fetched and returned ⚡', 0 , 'data');
       return addonData;
     },
     enabled: Boolean(slug),
@@ -73,6 +77,7 @@ export const useFetchAddon = (slug?: string) => {
 };
 
 export const useFetchAddons = (page: number, limit: number = 10) => {
+  logMessage('⚡ useFetchAddons called ⚡', 0 , 'data');
   return useQuery<{
     addons: Addon[];
     total: number;

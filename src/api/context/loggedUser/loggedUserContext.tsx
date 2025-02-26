@@ -40,9 +40,10 @@ export const LoggedUserProvider = ({ children }: LoggedUserProviderProps): JSX.E
     try {
       const userData = await account.get();
       setUser(userData as User);
+      logMessage('User is authenticated', 0 , 'auth', userData);
       setPreferences(userData.prefs as UserPreferences);
     } catch (error) {
-      console.log('User is not authenticated');
+      logMessage('User is not authenticated', 2 , 'auth', error || 'No error provided');
     }
   };
 
@@ -53,9 +54,10 @@ export const LoggedUserProvider = ({ children }: LoggedUserProviderProps): JSX.E
   const updatePreferences = async (prefs: UserPreferences) => {
     try {
       await account.updatePrefs(prefs);
+      logMessage('User preferences updated successfully.', 0 , 'auth', prefs);
       setPreferences(prefs);
     } catch (error) {
-      console.error('Erreur lors de la mise à jour des préférences :', error);
+      logMessage('Error updating preferences', 2 , 'auth', error || 'No error provided');
     }
   };
 
@@ -83,9 +85,10 @@ export const LoggedUserProvider = ({ children }: LoggedUserProviderProps): JSX.E
     try {
       await account.create('unique()', email, password, name);
       await login(email, password);
+      logMessage(`User Registered and login in !`, 0, 'auth');
     } catch (error) {
       setError('Registration failed. Please try again.');
-      logMessage(`Error registering: ${error}`, 2, 'auth');
+      logMessage(`Error registering User`, 2, 'auth', error || 'No error provided');
     }
   };
 
@@ -98,8 +101,9 @@ export const LoggedUserProvider = ({ children }: LoggedUserProviderProps): JSX.E
       await account.deleteSession('current');
       setUser(null);
       navigate('/');
+      logMessage('User logged out.', 0 , 'auth');
     } catch (error) {
-      console.error('Logout failed', error);
+      logMessage(`Error logging out`, 2, 'auth', error || "No error provided");
     }
   };
 
@@ -119,8 +123,9 @@ export const LoggedUserProvider = ({ children }: LoggedUserProviderProps): JSX.E
       const SuccessUrl = window._env_?.APP_URL + '/auth/success';
       const ErrorUrl = window._env_?.APP_URL + '/auth/error';
       account.createOAuth2Session(oauthProvider, SuccessUrl, ErrorUrl);
+      logMessage('User logging in with a Oauth service.', 0 , 'auth');
     } catch (error) {
-      console.error("Erreur lors de l'authentification OAuth", error);
+      logMessage('Error while logging in with a Oauth service.', 2 , 'auth', error || "No error provided");
     }
   };
 
@@ -132,19 +137,19 @@ export const LoggedUserProvider = ({ children }: LoggedUserProviderProps): JSX.E
     try {
       // Get the current session to check the user
       const session = await account.listSessions();
-      console.log('Session actuelle :', session);
+      logMessage('Actual User Session', 0 , 'auth', session)
 
       // Check if the session is valid
       if (session) {
         const user = await account.get(); // Get user info
-        console.log('Utilisateur connecté :', user);
+        logMessage('User logged in',0, 'auth', user);
         await fetchUser(); // Load user data
         navigate('/user');
       } else {
-        console.error('Aucune session valide trouvée');
+        logMessage('No valid session find' , 0 , 'auth')
       }
     } catch (error) {
-      console.error("Erreur lors de l'authentification OAuth :", error);
+      logMessage('Error while authentifcate with OAuth:', 2 , 'auth' , error || 'No error provided')
     }
   };
 
@@ -181,6 +186,7 @@ export const LoggedUserProvider = ({ children }: LoggedUserProviderProps): JSX.E
 export const useLoggedUser = (): LoggedUserContextType => {
   const context = useContext(LoggedUserContext);
   if (!context) {
+    logMessage('useLoggedUser must be used within a LoggedUserProvider', 2 , 'auth')
     throw new Error('useLoggedUser must be used within a LoggedUserProvider');
   }
   return context;

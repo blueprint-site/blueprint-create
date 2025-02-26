@@ -15,6 +15,7 @@ import { toast } from '@/api';
 import { databases, ID } from '@/config/appwrite.ts';
 import { Query } from 'appwrite';
 import { Schematic } from '@/types';
+import logMessage from "@/components/utility/logs/sendLogs.tsx";
 
 // Appwrite database configuration
 const DATABASE_ID = '67b1dc430020b4fb23e3';
@@ -34,12 +35,13 @@ export const useDeleteSchematics = (user_id?: string) => {
           className: 'bg-surface-3 border-ring text-foreground',
           title: '✅ Schematics deleted ✅',
         });
+        logMessage(`✅ Schematics ${id} deleted ✅`, 0, 'action')
       } catch (error) {
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
           title: '❌ Error deleting the Schematics ❌',
         });
-        console.error('Error deleting Schematics:', error);
+        logMessage(`❌ Error deleting ${id} the Schematics ❌`, 2 , 'action' , error || 'No error provided')
       }
     },
     onSuccess: async () => {
@@ -192,12 +194,13 @@ export const useIncrementDownloads = () => {
           className: 'bg-surface-1 border-ring text-foreground',
           title: `✅ You have downloaded : ${response.title} ✅`,
         });
+        logMessage(`✅ You have downloaded : ${response.title} ✅`, 0 , 'action')
       } catch (error) {
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
-          title: '❌ Error incrementing downloads ❌',
+          title: `❌ Error while downloads ❌`,
         });
-        console.error('Error incrementing downloads:', error);
+        logMessage(`❌ Error while downloads ❌`, 0 , 'action', error || 'No error provided')
       }
     },
     onSuccess: () => {
@@ -227,14 +230,15 @@ export const useIncrementLikes = () => {
 
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
-          title: '✅ Likes incremented ✅',
+          title: `✅ You have liked : ${response.title} ✅`,
         });
+        logMessage(`✅ You have liked : ${response.title} ✅`, 0 , 'action')
       } catch (error) {
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
           title: '❌ Error incrementing likes ❌',
         });
-        console.error('Error incrementing likes:', error);
+        logMessage('❌ Error incrementing likes ❌', 2 , 'action', error || 'No error provided');
       }
     },
     onSuccess: () => {

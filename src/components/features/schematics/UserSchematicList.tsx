@@ -24,7 +24,6 @@ const UserSchematicList = () => {
   const LoggedUserInfo = useLoggedUser();
   // Fetch user schematics
   const { data: userSchematics } = useFetchUserSchematics(LoggedUserInfo?.user?.$id || '');
-  console.log('user schematics', userSchematics);
 
   // Mutation to delete schematic
   const { mutate: deleteSchematic } = useDeleteSchematics(LoggedUserInfo?.user?.$id);

@@ -7,6 +7,7 @@ import GithubLogo from '@/assets/icons/github-mark-white.svg';
 import GoogleLogo from '@/assets/icons/google-mark-color.png';
 import { Input } from '@/components/ui/input.tsx';
 import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
+import logMessage from "@/components/utility/logs/sendLogs.tsx";
 
 const AuthPage = () => {
   const { user, login, logout, handleOAuthLogin, error } = useLoggedUser();
@@ -55,7 +56,11 @@ const AuthPage = () => {
                 <Button
                   variant='outline'
                   className='bg-white text-black/80 hover:bg-gray-50'
-                  onClick={() => login(email, password)}
+                  onClick={() => {
+                    login(email, password).then(() => {
+                      logMessage('User logged with email/password', 0 , 'auth')
+                    })
+                  } }
                 >
                   {isRegistering ? 'Register' : 'Login'}
                 </Button>
@@ -87,7 +92,10 @@ const AuthPage = () => {
             <Button
               variant='outline'
               className='bg-white text-black/80 hover:bg-gray-50'
-              onClick={() => handleOAuthLogin('google')}
+              onClick={() =>{
+                handleOAuthLogin('google');
+                logMessage('User Authenticated with Google', 0 , 'auth');
+              } }
             >
               <img src={GoogleLogo} alt='Google' className='mr-2 h-5 w-5' />
               Continue with Google
@@ -96,7 +104,11 @@ const AuthPage = () => {
             <Button
               variant='outline'
               className='bg-[#2D333B] text-white hover:bg-[#22272E]'
-              onClick={() => handleOAuthLogin('github')}
+              onClick={() => {
+                handleOAuthLogin('github');
+                logMessage('User Authenticated with Github', 0 , 'auth');
+              }
+            }
             >
               <img src={GithubLogo} alt='GitHub' className='mr-2 h-5 w-5' />
               Continue with GitHub
@@ -105,7 +117,11 @@ const AuthPage = () => {
             <Button
               variant='outline'
               className='bg-[#5865F2] text-white hover:bg-[#4752C4]'
-              onClick={() => handleOAuthLogin('discord')}
+              onClick={() => {
+                handleOAuthLogin('discord');
+                logMessage('User Authenticated with Discord', 0 , 'auth');
+              }
+              }
             >
               <img src={DiscordLogo} alt='Discord' className='mr-2 h-5 w-5' />
               Continue with Discord

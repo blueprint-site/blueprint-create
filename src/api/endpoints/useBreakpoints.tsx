@@ -61,7 +61,6 @@ const useBreakpointValue = () => {
 // Helper functions that use the reactive hook
 export const useBreakpoint = () => {
   const value = useBreakpointValue();
-
   const isAbove = (size: Breakpoint): boolean => {
     const breakpointOrder: Breakpoint[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl'];
     const currentIndex = breakpointOrder.indexOf(value);

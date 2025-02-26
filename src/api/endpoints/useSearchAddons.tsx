@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import searchClient from '@/config/meilisearch.ts';
 import { Addon } from '@/schemas/addon.schema.tsx';
 import { useState, useEffect } from 'react';
+import logMessage from "@/components/utility/logs/sendLogs.tsx";
 
 export const useSearchAddons = (
   query: string,
@@ -12,7 +13,6 @@ export const useSearchAddons = (
   loaders: string
 ) => {
   const queryInput = query || '*'; // Default to '*' if query is empty
-
   // Define filter logic for category, version, and loaders
   const filter = (): string => {
     const filters: string[] = [];
@@ -33,7 +33,6 @@ export const useSearchAddons = (
 
     return filters.length > 0 ? filters.join(' AND ') : '';
   };
-
   const queryResult = useQuery({
     queryKey: ['searchAddons', queryInput, page, category, version, loaders],
     queryFn: async () => {
@@ -60,12 +59,12 @@ export const useSearchAddons = (
   // Update hasNextPage only when data is available
   useEffect(() => {
     if (data) {
+      logMessage(`Searching addons (p: ${page}, q:${queryInput})`, 0 , 'data', data);
       const newHasNextPage = (page - 1) * 16 + data.hits.length < data.totalHits;
       console.log('Updating hasNextPage:', newHasNextPage); // Debugging
       setHasNextPage(newHasNextPage);
     }
-  }, [data, page]);
-
+  }, [data, page, queryInput]);
   return {
     ...queryResult,
     data: data?.hits || [],

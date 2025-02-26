@@ -3,6 +3,7 @@ import { BlogType } from '@/types';
 import { toast } from '@/api';
 import { databases, ID } from '@/config/appwrite.ts';
 import { Query } from 'appwrite';
+import logMessage from "@/components/utility/logs/sendLogs.tsx";
 
 // Constantes pour votre base de données
 const DATABASE_ID = '67b1dc430020b4fb23e3';
@@ -20,16 +21,18 @@ export const useDeleteBlog = () => {
           className: 'bg-surface-3 border-ring text-foreground',
           title: '✅ Article deleted ✅',
         });
+        logMessage(`✅ Article ${id} deleted ✅`, 0 , 'action')
       } catch (error) {
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
           title: '❌ Error deleting the article ❌',
         });
-        console.error('Error deleting blog:', error);
+        logMessage(`❌ Error deleting the article ${id} ❌`, 2 , 'action', error || 'No error retrieved')
       }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['blogs'] });
+      logMessage('🔎 Query "blogs" invalidated successfully.❌');
     },
   });
 };
@@ -65,6 +68,7 @@ export const useFetchBlog = (blogId?: string) => {
   });
 };
 export const useFetchBlogs = (status?: string) => {
+  logMessage(`🔎 useFetchBlogs with status : ${status}`, 0 , 'data');
   return useQuery<BlogType[]>({
     queryKey: ['blogs', status],
     queryFn: async () => {
@@ -91,7 +95,7 @@ export const useFetchBlogs = (status?: string) => {
         likes: doc.likes || 0,
         authors_uuid: doc.authors_uuid || [],
       }));
-
+      logMessage('🔎 result of useFetchBlogs ', 0, 'data' , blogs)
       return blogs;
     },
     staleTime: 1000 * 60 * 5,

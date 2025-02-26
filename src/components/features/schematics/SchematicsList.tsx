@@ -15,6 +15,7 @@ import { useSchematicFilters } from '@/hooks/useSchematicFilters';
 import { Link } from 'react-router-dom';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { Schematic } from '@/types';
+import logMessage from "@/components/utility/logs/sendLogs.tsx";
 
 function SchematicsList() {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ function SchematicsList() {
     hasMore: hasNextPage,
     onLoadMore: () => {
       if (hasNextPage && !isFetching) {
-        console.log('Loading more schematics. Current page:', page);
+        logMessage(`Loading more schematics. Current page ${page}`, 0, 'data')
         setPage(prevPage => prevPage + 1); // Increment local page state
       }
     },

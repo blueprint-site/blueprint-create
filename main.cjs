@@ -24,7 +24,7 @@ app.whenReady().then(() => {
       preload: path.join(__dirname, 'preload.cjs'), // Même preload pour la fenêtre de logs
     },
   });
-  logWindow.loadFile('logs.html');
+  logWindow.loadFile('electron/logs/logs-index.html');
 });
 
 // Gérer les logs

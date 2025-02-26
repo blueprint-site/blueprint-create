@@ -1,6 +1,8 @@
 import searchClient from "@/config/meilisearch";
 import { SearchSchematicsProps, SearchSchematicsResult, Schematic } from "@/types";
 import { useQuery } from "@tanstack/react-query";
+import logMessage from "@/components/utility/logs/sendLogs.tsx";
+import {useEffect} from "react";
 
 export const useSearchSchematics = ({
   query = '',
@@ -82,6 +84,11 @@ console.log('search triggered')
   const totalHits = data?.totalHits ?? 0;
   const hasNextPage = (page - 1) * 20 + schematics.length < totalHits;
   const hasPreviousPage = page > 1;
+  useEffect(() => {
+    if (data) {
+      logMessage(`Searching Schematics (p: ${page}, q:${query})`, 0 , 'data', data);
+    }
+  }, [data, page, query]);
 
   return {
     ...queryResult,
