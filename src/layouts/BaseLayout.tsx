@@ -1,12 +1,10 @@
-import { Outlet } from 'react-router-dom';
-
 import RotatingCogwheel from '@/components/common/Cogwheel.tsx';
 import AppFooter from '@/components/layout/AppFooter';
 import AppHeader from '@/components/layout/AppHeader';
 
 import { useThemeStore } from '@/api/stores/themeStore.tsx';
 
-const BaseLayout = () => {
+const BaseLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isDarkMode } = useThemeStore();
 
   return (
@@ -16,7 +14,7 @@ const BaseLayout = () => {
       <AppHeader />
       <main className='h-screen overflow-y-auto pt-16'>
         <div className={`${isDarkMode ? 'bg-shadow_steel_casing' : 'bg-refined_radiance_casing'}`}>
-          <Outlet />
+        {children}
         </div>
         <AppFooter />
       </main>
