@@ -100,7 +100,6 @@ export function CategorySelectors({ control }: CategorySelectorsProps) {
                 name={`subCategories.${index}`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Subcategory {index + 1}</FormLabel>
                     <Select
                       value={field.value ?? ''}
                       onValueChange={field.onChange}
