@@ -34,11 +34,14 @@ const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
       className='bg flex h-full cursor-pointer flex-col rounded-lg transition-shadow hover:shadow-lg'
       onClick={onClick}
     >
-      <div className='h-40 overflow-hidden'>
+      <div className="h-40 overflow-hidden">
         <img
-          className='h-full w-full rounded-t-md object-cover'
-          alt={schematic.title}
-          src={schematic.image_url}
+            className="h-full w-full rounded-t-md object-cover"
+            alt={schematic.title}
+            src={Array.isArray(schematic.image_urls) && schematic.image_urls.length > 0
+                ? schematic.image_urls[0]
+                : ''
+            }
         />
       </div>
       <CardHeader className='grow'>

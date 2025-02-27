@@ -52,7 +52,7 @@ console.log('search triggered')
         title: hit.title,
         description: hit.description,
         schematic_url: hit.schematic_url,
-        image_url: hit.image_url,
+        image_urls: hit.image_urls,
         authors: hit.authors,
         user_id: hit.user_id,
         downloads: hit.downloads,

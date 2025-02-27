@@ -56,7 +56,7 @@ const UserSchematicList = () => {
                 <CardHeader className='mt-4 flex flex-col items-start justify-between sm:flex-row sm:items-center'>
                   <div className='flex items-center gap-4'>
                     <Avatar>
-                      <AvatarImage src={schematic.image_url} alt={schematic.title} />
+                      <AvatarImage src={schematic.image_urls[0]} alt={schematic.title} />
                       <AvatarFallback>{schematic.title.slice(0, 2)}</AvatarFallback>
                     </Avatar>
                     <div className=''>

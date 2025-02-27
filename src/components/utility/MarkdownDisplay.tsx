@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import '@mdxeditor/editor/style.css';
 import {
   MDXEditor,
@@ -15,30 +16,44 @@ import {
 } from '@mdxeditor/editor';
 
 const MarkdownDisplay = ({ content }: { content: string }) => {
+  // Local state to ensure proper updates
+  const [markdownContent, setMarkdownContent] = useState(content);
+
+  // Keep local state in sync with props
+  useEffect(() => {
+    setMarkdownContent(content);
+  }, [content]);
+
+  // Generate plugins only once
+  const plugins = React.useMemo(() => [
+    headingsPlugin(),
+    tablePlugin(),
+    listsPlugin(),
+    thematicBreakPlugin(),
+    markdownShortcutPlugin(),
+    quotePlugin(),
+    frontmatterPlugin(),
+    codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
+    sandpackPlugin(),
+    codeMirrorPlugin({
+      codeBlockLanguages: {
+        javascript: 'JavaScript',
+        python: 'Python',
+        css: 'CSS',
+        html: 'HTML',
+      },
+    }),
+    imagePlugin(),
+  ], []);
+
+  // Force re-render if content changes
   return (
     <MDXEditor
-      markdown={content}
+      key={`markdown-display-${markdownContent.length}`}
+      markdown={markdownContent}
       readOnly
-      plugins={[
-        headingsPlugin(),
-        tablePlugin(),
-        listsPlugin(),
-        thematicBreakPlugin(),
-        markdownShortcutPlugin(),
-        quotePlugin(),
-        frontmatterPlugin(),
-        codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
-        sandpackPlugin(),
-        codeMirrorPlugin({
-          codeBlockLanguages: {
-            javascript: 'JavaScript',
-            python: 'Python',
-            css: 'CSS',
-            html: 'HTML',
-          },
-        }),
-        imagePlugin(),
-      ]}
+      plugins={plugins}
+      contentEditableClassName="prose max-w-none"
     />
   );
 };

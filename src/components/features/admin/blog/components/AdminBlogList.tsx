@@ -12,7 +12,7 @@ import {
 import { Button } from '@/components/ui/button.tsx';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx';
 import { useDeleteBlog, useFetchBlogs, useSaveBlog } from '@/api';
-import { BlogType } from '@/types';
+import { Blog } from '@/types';
 
 const AdminBlogList = () => {
   const { data: blogs, isLoading, error } = useFetchBlogs();
@@ -36,7 +36,7 @@ const AdminBlogList = () => {
     }
   };
 
-  const columns: ColumnDef<BlogType>[] = [
+  const columns: ColumnDef<Blog>[] = [
     {
       accessorKey: 'img_url',
       header: 'Image',

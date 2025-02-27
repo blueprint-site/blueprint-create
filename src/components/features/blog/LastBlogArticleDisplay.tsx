@@ -9,7 +9,7 @@ import {
 import MarkdownDisplay from '@/components/utility/MarkdownDisplay.tsx';
 import BlogTagsDisplay from '@/components/utility/blog/BlogTagsDisplay.tsx';
 import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay.tsx';
-import { BlogType } from '@/types';
+import { Blog } from '@/types';
 import { useFetchBlogs } from '@/api';
 
 const LastBlogArticleDisplay = () => {
@@ -30,7 +30,7 @@ const LastBlogArticleDisplay = () => {
   return (
     <div className='mx-4 flex flex-row flex-wrap gap-4 py-4'>
       {blogs && blogs.length > 0 ? (
-        blogs.map((blog: BlogType, index: number) => (
+        blogs.map((blog: Blog, index: number) => (
           <Card key={index} className='bg-surface-1 w-full md:w-1/4'>
             <CardHeader>
               <img src={blog.img_url} alt={blog.title} />
@@ -38,7 +38,7 @@ const LastBlogArticleDisplay = () => {
                 <h1> {blog.title} </h1>
               </CardTitle>
               <CardDescription>
-                <BlogTagsDisplay value={blog.tags} />
+                <BlogTagsDisplay value={blog.tags || []} />
               </CardDescription>
             </CardHeader>
             <CardContent>

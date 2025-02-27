@@ -1,3 +1,5 @@
+// /src/componets/utility/MarkdownEditor.tsx
+
 import '@mdxeditor/editor/style.css';
 import {
   MDXEditor,
@@ -112,6 +114,7 @@ interface MarkdownEditorProps {
   showThematicBreak?: boolean;
   showLists?: boolean;
   showUndoRedo?: boolean;
+  placeholder?: string;
 }
 
 const MarkdownEditor = ({
@@ -126,6 +129,7 @@ const MarkdownEditor = ({
   showThematicBreak = true,
   showLists = true,
   showUndoRedo = true,
+  placeholder,
 }: MarkdownEditorProps) => {
   // Plugins configuration
   const plugins = createPlugins([
@@ -206,11 +210,12 @@ const MarkdownEditor = ({
 
   return (
     <MDXEditor
-      className='mdxEditor flex flex-col gap-4'
+      className='mdxEditor flex flex-col gap-[1px]'
       markdown={value}
       onChange={onChange}
       plugins={plugins}
-      contentEditableClassName='h-32 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs placeholder:text-foreground-muted focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm'
+      placeholder={placeholder || 'Write something...'}
+      contentEditableClassName='min-h-32 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs placeholder:text-foreground-muted focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm'
     />
   );
 };
