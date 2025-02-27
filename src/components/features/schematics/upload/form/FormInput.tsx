@@ -11,7 +11,7 @@ interface FormInputProps {
   name: InputField;
   control: Control<SchematicFormValues>;
   label: string;
-  description: string;
+  description?: string;
   placeholder?: string;
 }
 
@@ -36,8 +36,8 @@ export function FormInput({
               value={field.value as string} // Safe cast since we only use this for string fields
             />
           </FormControl>
-          <FormDescription>{description}</FormDescription>
-          <FormMessage />
+          {description && <FormDescription>{description}</FormDescription>}
+          <FormMessage className='text-destructive' />
         </FormItem>
       )}
     />

@@ -44,14 +44,14 @@ export function CategorySelectors({ control }: CategorySelectorsProps) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 py-4">
       {selections.map((selection, index) => {
         const selectedCategoryData = filteredCategories.find(
           (cat) => cat.category === selection.category
         );
 
         return (
-          <div key={selection.id} className="grid grid-cols-1 gap-6 md:grid-cols-2 relative border rounded-md p-4">
+          <div key={selection.id} className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {index > 0 && (
               <Button
                 type="button"
@@ -69,7 +69,6 @@ export function CategorySelectors({ control }: CategorySelectorsProps) {
               name={`categories.${index}`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Category {index + 1}</FormLabel>
                   <Select
                     value={field.value ?? ''}
                     onValueChange={(value) => {

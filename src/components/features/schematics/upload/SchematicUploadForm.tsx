@@ -84,7 +84,6 @@ export function SchematicUploadForm({
                 name="schematicFile"
                 control={form.control}
                 label="Schematic File (.nbt)"
-                description="Select a .nbt schematic file to upload"
                 accept={{ 'application/octet-stream': ['.nbt'] }}
                 maxFiles={1}
                 value={schematicFilePreview ? [schematicFilePreview] : []}
@@ -99,7 +98,6 @@ export function SchematicUploadForm({
                 name="imageFiles"
                 control={form.control}
                 label="Preview Images"
-                description="Upload images of your schematic (max 5)"
                 accept={{ 'image/*': ['.png', '.jpg', '.jpeg', '.webp'] }}
                 maxFiles={5}
                 value={imageFilePreviews}
@@ -116,7 +114,6 @@ export function SchematicUploadForm({
               name="title"
               control={form.control}
               label="Title"
-              description="A descriptive name for your schematic"
               placeholder="Super Cool Contraption"
             />
 

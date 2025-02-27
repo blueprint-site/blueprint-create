@@ -24,7 +24,7 @@ interface FileUploadFieldProps {
   name: FileField;
   control: Control<SchematicFormValues>;
   label: string;
-  description: string;
+  description?: string;
   accept: Record<string, string[]>;
   maxFiles: number;
   value: File[];
@@ -80,7 +80,7 @@ export function FileUploadField({
               </FileUploaderContent>
             </FileUploader>
           </FormControl>
-          <FormDescription className='flex-0'>{description}</FormDescription>
+          {description && <FormDescription className='flex-0'>{description}</FormDescription>}
           <FormMessage className='flex-0' />
         </FormItem>
       )}
