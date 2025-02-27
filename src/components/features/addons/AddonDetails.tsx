@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import CategoryBadges from '@/components/features/addons/addon-card/CategoryBadges';
-import ModLoaders from '@/components/features/addons/addon-card/ModLoaders';
 import { AddonStats } from '@/components/features/addons/addon-card/AddonStats';
 import { ExternalLinks } from '@/components/features/addons/addon-card/ExternalLinks';
 import {
@@ -24,6 +23,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useCollectionStore } from '@/api/stores/collectionStore.ts';
 import { useFetchAddon } from '@/api';
+import ModLoaderDisplay from "@/components/common/ModLoaderDisplay.tsx";
 
 export default function AddonDetails() {
   const { slug } = useParams();
@@ -38,6 +38,9 @@ export default function AddonDetails() {
   };
   const { data: addon, isLoading, error } = useFetchAddon(slug);
 
+
+  console.log(addon?.modrinth_raw?.gallery)
+
   useEffect(() => {
     if (!slug) {
       return;
@@ -47,7 +50,7 @@ export default function AddonDetails() {
       try {
         // Process markdown description
         if (addon) {
-          const markedHtml = await marked(addon?.modrinth_raw?.description || '');
+          const markedHtml = await marked(modrinthData.description || '');
           const sanitizedHtml = DOMPurify.sanitize(markedHtml, {
             ALLOWED_TAGS: [
               'h1',
@@ -79,17 +82,7 @@ export default function AddonDetails() {
     loadAddonDetails();
   }, [slug]);
 
-  const navigateGallery = (direction: 'prev' | 'next') => {
-    const gallery = addon?.modrinth_raw?.gallery;
-    if (!gallery || !Array.isArray(gallery)) return;
 
-    setCurrentImageIndex((prev) => {
-      if (direction === 'prev') {
-        return prev > 0 ? prev - 1 : prev;
-      }
-      return prev < gallery.length - 1 ? prev + 1 : prev;
-    });
-  };
 
   if (error) {
     return (
@@ -157,6 +150,14 @@ export default function AddonDetails() {
         ]
       : []),
   ];
+  const  navigateGallery = async (direction: 'prev' | 'next') => {
+    setCurrentImageIndex((prev) => {
+      if (direction === 'prev') {
+        return prev > 0 ? prev - 1 : gallery.length - 1;
+      }
+      return prev < gallery.length - 1 ? prev + 1 : 0;
+    });
+  };
 
   return (
     <div className='container mx-auto space-y-8 px-4 py-8'>
@@ -189,7 +190,7 @@ export default function AddonDetails() {
             <div className='flex items-center gap-2'>
               <Download className='h-4 w-4' />
               <span className='text-foreground-muted'>
-                {totalDownloads.toLocaleString()} total downloads
+                {totalDownloads.toLocaleString()} downloads
               </span>
             </div>
             {modrinthData?.follows && (
@@ -203,7 +204,6 @@ export default function AddonDetails() {
           </div>
 
           <Separator />
-
           <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
             <div className='space-y-4'>
               <div>
@@ -219,7 +219,7 @@ export default function AddonDetails() {
 
               <div>
                 <h3 className='mb-2 text-sm font-semibold'>Mod Loaders</h3>
-                <ModLoaders addon={addon} />
+                <ModLoaderDisplay loaders={addon.loaders || []}/>
               </div>
 
               <div>
@@ -227,7 +227,6 @@ export default function AddonDetails() {
                 <CategoryBadges categories={addon.categories} />
               </div>
             </div>
-
             <div className='space-y-4'>
               <div>
                 <h3 className='mb-2 text-sm font-semibold'>Links</h3>

@@ -186,6 +186,7 @@ export const AddonSchema = z.object({
   modrinth_raw: ModrinthAddonSchema.optional().nullable(),
   sources: z.array(z.string()),
   isValid: z.boolean(),
+  loaders: z.array(z.string()).nullable(),
   isChecked: z.boolean(),
   minecraft_versions: z.array(z.string()).optional().nullable(),
 });
