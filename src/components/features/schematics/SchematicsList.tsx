@@ -156,7 +156,10 @@ function SchematicsList() {
             <SchematicCard
               key={schematic.$id}
               schematic={schematic}
-              onClick={() => navigate(`../schematics/${schematic.$id}/${schematic.slug}`)}
+              onClick={() => {
+                navigate(`../schematics/${schematic.$id}/${schematic.slug}`) ;
+                logMessage(`User navigate to schematics${schematic.$id}`, 0 , 'action' , schematic);
+              } }
             />
           )}
           isLoading={isLoading && page === 1}

@@ -23,7 +23,7 @@ const SettingsPage = () => {
     },
     {
       id: 'account',
-      label: 'Account security',
+      label: 'Account settings',
       icon: Lock,
       component: AccountSettings,
     },
