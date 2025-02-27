@@ -51,7 +51,7 @@ const RotatingCogwheel = () => {
 
   return (
       <div
-          className='fixed cursor-pointer'
+          className='fixed'
           style={{
             width: size,
             height: size,
