@@ -36,12 +36,9 @@ export function FormMarkdownEditor({ name, control, label, description, onValueC
               showThematicBreak={false}
               showLists={false}
               showUndoRedo={false}
+              placeholder={description}
             />
           </FormControl>
-          <FormDescription className='flex justify-between'>
-            <span>{description}</span>
-            <span>{description?.length || 0}/500</span>
-          </FormDescription>
           <FormMessage />
         </FormItem>
       )}
