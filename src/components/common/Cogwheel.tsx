@@ -1,5 +1,6 @@
 import CogwheelImage from '@/assets/cogwheel.png';
 import { useEffect, useState } from 'react';
+import logMessage from "@/components/utility/logs/sendLogs.tsx";
 
 const useWindowSize = () => {
   const [size, setSize] = useState({
@@ -24,6 +25,7 @@ const useWindowSize = () => {
 
 const RotatingCogwheel = () => {
   const [rotation, setRotation] = useState(0);
+  const [clickCount, setClickCount] = useState(0);
   const { width } = useWindowSize();
 
   const size = Math.min(width * 0.28, 400);
@@ -33,30 +35,41 @@ const RotatingCogwheel = () => {
     const interval = setInterval(() => {
       setRotation((prev) => (prev + 0.1) % 360);
     }, 50);
-
     return () => clearInterval(interval);
   }, []);
 
+  const handleClick = () => {
+    setClickCount((prev) => {
+      const newCount = prev + 1;
+      if (newCount >= 15) {
+        logMessage(`You have clicked ${clickCount} `, 0 , 'default');
+        window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+      }
+      return newCount;
+    });
+  };
+
   return (
-    <div
-      className='fixed'
-      style={{
-        width: size,
-        height: size,
-        bottom: -offset,
-        right: -offset,
-      }}
-    >
-      <img
-        src={CogwheelImage}
-        alt='Rotating cogwheel'
-        className='h-full w-full'
-        style={{
-          transform: `rotate(${rotation}deg)`,
-          transformOrigin: 'center',
-        }}
-      />
-    </div>
+      <div
+          className='fixed cursor-pointer'
+          style={{
+            width: size,
+            height: size,
+            bottom: -offset,
+            right: -offset,
+          }}
+          onClick={handleClick}
+      >
+        <img
+            src={CogwheelImage}
+            alt='Rotating cogwheel'
+            className='h-full w-full'
+            style={{
+              transform: `rotate(${rotation}deg)`,
+              transformOrigin: 'center',
+            }}
+        />
+      </div>
   );
 };
 
