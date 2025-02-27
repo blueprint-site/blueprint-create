@@ -1,156 +1,132 @@
-import { useEffect, useState } from 'react';
-import { Addon } from '@/types';
+"use no memo"
+import { useState } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
+import { ArrowUpDown } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DataTable } from '@/components/tables/addonChecks/data-table';
 import { Button } from '@/components/ui/button.tsx';
+import { useFetchAddons, useSaveAddon } from '@/api/endpoints/useAddons.tsx';
+import { toast } from '@/api';
+import { Addon } from "@/schemas/addon.schema.tsx";
+import { Switch } from '@/components/ui/switch';
 
 const AdminAddonsTable = () => {
-  const [addons] = useState<Addon[]>([]);
+  const [page, setPage] = useState(1);
+  const { data, isLoading, isError, error, refetch } = useFetchAddons(page);
+  const { mutateAsync: saveAddon } = useSaveAddon();
+
+  const addons: Addon[] = data?.addons || [];
+
+
+
+  const handleStatusChange = async (addon: Addon, newIsValid: boolean) => {
+    try {
+      await saveAddon(
+          { ...addon, isValid: newIsValid, isChecked: true },
+          {
+            onSuccess: () => {
+              toast({
+                className: 'bg-surface-3 border-ring text-foreground',
+                title: `✅ Addon ${newIsValid ? 'activé' : 'désactivé'} ✅`,
+              });
+              refetch();
+            },
+            onError: (error) => {
+              toast({
+                className: 'bg-surface-3 border-ring text-foreground',
+                title: '❌ Erreur de mise à jour ❌',
+              });
+              console.error('Error:', error);
+            },
+          }
+      );
+    } catch (error) {
+      console.error('Unexpected error:', error);
+    }
+  };
+
   const columns: ColumnDef<Addon>[] = [
     {
-      id: 'actions',
-      cell: ({ row }) => {
-        const name = row.original.name;
-
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant='ghost' className='h-8 w-8 p-0'>
-                <span className='sr-only'>Open menu</span>
-                <MoreHorizontal className='h-4 w-4' />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align='end'>
-              <DropdownMenuLabel>Actions 🚀</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => validAndCheckAddon(name)}>
-                Valid & check this addon ✅
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => InvalidAndCheckAddon(name)}>
-                Invalid & Check this addon ❌
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      },
-    },
-    {
       accessorKey: 'icon',
-      header: 'Icon',
-      cell: ({ row }) => {
-        return (
+      header: 'Icone',
+      cell: ({ row }) => (
           <Avatar>
             <AvatarImage src={row.original.icon || ''} />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarFallback>ADDON</AvatarFallback>
           </Avatar>
-        );
-      },
+      ),
     },
     {
       accessorKey: 'name',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant='ghost'
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Name
-            <ArrowUpDown className='ml-2 h-4 w-4' />
-          </Button>
-        );
-      },
+      header: 'Nom',
+      cell: ({ row }) => <span className="font-medium">{row.original.name}</span>,
     },
     {
       accessorKey: 'author',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant='ghost'
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Author
-            <ArrowUpDown className='ml-2 h-4 w-4' />
-          </Button>
-        );
-      },
+      header: 'Auteur',
     },
     {
       accessorKey: 'description',
-      header: ({ column }) => {
-        return (
-          <Button
-            variant='ghost'
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          >
-            Description
-            <ArrowUpDown className='ml-2 h-4 w-4' />
-          </Button>
-        );
-      },
+      header: 'Description',
     },
     {
       accessorKey: 'isValid',
-      header: ({ column }) => {
-        return (
+      header: ({ column }) => (
           <Button
-            variant='ghost'
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+              variant='ghost'
+              onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
-            IsValid
+            Status
             <ArrowUpDown className='ml-2 h-4 w-4' />
           </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const value = row.original.isValid;
-        return <div>{!value ? <div>❌</div> : <div>✅</div>}</div>;
-      },
+      ),
+      cell: ({ row }) => (
+          <Switch
+              checked={row.original.isValid}
+              onCheckedChange={(checked) =>
+                  handleStatusChange(row.original, checked)
+              }
+          />
+      ),
     },
     {
-      accessorKey: 'isChecked',
-      header: ({ column }) => {
-        return (
+      accessorKey: 'downloads',
+      header: ({ column }) => (
           <Button
-            variant='ghost'
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+              variant='ghost'
+              onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
-            IsChecked
+            Téléchargements
             <ArrowUpDown className='ml-2 h-4 w-4' />
           </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const value = row.original.isChecked;
-        return <div>{!value ? <div>❌</div> : <div>✅</div>}</div>;
-      },
+      ),
     },
   ];
-  const validAndCheckAddon = async (name: string) => {
-    console.log(name);
-  };
-  const InvalidAndCheckAddon = async (name: string) => {
-    console.log(name);
-  };
 
-  const GetAddonList = async () => {
-    return 'ok';
-  };
-  useEffect(() => {
-    GetAddonList().then();
-  }, []);
+  if (isLoading) return <div>Chargement...</div>;
+  if (isError) return <div>Erreur: {error?.message}</div>;
 
   return (
-    <div className='px-4 md:px-8'>
-      <DataTable columns={columns} data={addons} />
-    </div>
+      <div className='px-4 md:px-8'>
+        <DataTable
+            columns={columns}
+            data={addons}
+        />
+
+        <div className='flex justify-between items-center mt-4'>
+          <Button
+              onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+          >
+            Précédent
+          </Button>
+          <span>Page {page}</span>
+          <Button
+              onClick={() => setPage(prev => prev + 1)}
+          >
+            Suivant
+          </Button>
+        </div>
+      </div>
   );
 };
 

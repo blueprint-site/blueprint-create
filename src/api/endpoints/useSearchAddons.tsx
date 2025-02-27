@@ -18,7 +18,7 @@ export const useSearchAddons = (
     const filters: string[] = [];
 
     const addFilter = (field: string, value: string) => {
-      if (value && value !== 'all') {
+      if (value && value !== 'all' && value !== 'All') {
         const formattedValue = value.includes(' ') ? `"${value}"` : value;
         filters.push(`${field} = ${formattedValue}`);
       }
