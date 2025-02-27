@@ -82,8 +82,8 @@ export const useFetchSchematic = (id?: string) => {
         categories: Array.isArray(doc.categories) ? doc.categories : [],
         sub_categories: Array.isArray(doc.sub_categories) ? doc.sub_categories : [],
         status: doc.status || 'draft',
-        created_at: doc.created_at,
-        updated_at: doc.updated_t,
+        $createdAt: doc.$createdAt,
+        $updatedAt: doc.$updatedAt,
       };
 
       return schematicData;
@@ -107,8 +107,8 @@ export const useFetchSchematics = (categories?: string[]) => {
 
       const schematics: Schematic[] = response.documents.map((doc) => ({
         $id: doc.$id,
-        created_at: doc.$createdAt,
-        updated_at: doc.$updatedAt,
+        $createdAt: doc.$createdAt,
+        $updatedAt: doc.$updatedAt,
         title: doc.title,
         description: doc.description || '',
         schematic_url: doc.schematic_url || '',
@@ -146,8 +146,8 @@ export const useFetchUserSchematics = (user_id?: string) => {
 
       const schematics: Schematic[] = response.documents.map((doc) => ({
         $id: doc.$id,
-        created_at: doc.created_at,
-        updated_at: doc.updated_at,
+        $createdAt: doc.$createdAt,
+        $updatedAt: doc.$updatedAt,
         title: doc.title,
         description: doc.description || '',
         schematic_url: doc.schematic_url || '',

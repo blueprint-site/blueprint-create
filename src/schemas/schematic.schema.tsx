@@ -34,8 +34,8 @@ export const schematicSchema = z.object({
   slug: z.string(),
   downloads: z.number().int().nonnegative().default(0),
   status: z.enum(["draft", "published", "archived"]).default("published"),
-  created_at: z.string().datetime(),
-  updated_at: z.string().datetime(),
+  $createdAt: z.string().datetime(),
+  $updatedAt: z.string().datetime(),
   likes: z.number().int().nonnegative().default(0),
 });
 
@@ -46,8 +46,8 @@ export const partialSchematicSchema = schematicSchema.partial();
 export const createSchematicSchema = schematicSchema.omit({
   $id: true,
   downloads: true,
-  created_at: true,
-  updated_at: true,
+  $createdAt: true,
+  $updatedAt: true,
   likes: true, // Omit likes for creation schema
 });
 

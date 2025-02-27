@@ -1,6 +1,6 @@
 // components/SchematicUploadForm/FormMarkdownEditor.tsx
 import { Control, Path } from 'react-hook-form';
-import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '@/components/ui/form';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import MarkdownEditor from '@/components/utility/MarkdownEditor';
 import { SchematicFormValues } from '@/schemas/schematic.schema.tsx';
 
