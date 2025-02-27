@@ -67,14 +67,12 @@ export const useFetchSchematic = (id?: string) => {
       console.log(doc);
       const schematicData: Schematic = {
         $id: doc.$id,
-        $createdAt: doc.$createdAt,
-        $updatedAt: doc.$updatedAt,
         title: doc.title,
         description: doc.description || '',
         schematic_url: doc.schematic_url || '',
         likes: doc.likes || 0,
         downloads: doc.downloads || 0,
-        image_url: doc.image_url || '',
+        image_urls: Array.isArray(doc.image_urls) ? doc.image_urls : [],
         authors: Array.isArray(doc.authors) ? doc.authors : [],
         user_id: doc.user_id || '',
         game_versions: Array.isArray(doc.game_versions) ? doc.game_versions : [],
@@ -82,7 +80,10 @@ export const useFetchSchematic = (id?: string) => {
         slug: doc.slug || '',
         create_versions: Array.isArray(doc.create_versions) ? doc.create_versions : [],
         categories: Array.isArray(doc.categories) ? doc.categories : [],
+        sub_categories: Array.isArray(doc.sub_categories) ? doc.sub_categories : [],
         status: doc.status || 'draft',
+        created_at: doc.created_at,
+        updated_at: doc.updated_t,
       };
 
       return schematicData;
@@ -106,12 +107,12 @@ export const useFetchSchematics = (categories?: string[]) => {
 
       const schematics: Schematic[] = response.documents.map((doc) => ({
         $id: doc.$id,
-        $createdAt: doc.$createdAt,
-        $updatedAt: doc.$updatedAt,
+        created_at: doc.$createdAt,
+        updated_at: doc.$updatedAt,
         title: doc.title,
         description: doc.description || '',
         schematic_url: doc.schematic_url || '',
-        image_url: doc.image_url || '',
+        image_urls: Array.isArray(doc.image_urls) ? doc.image_urls : [],
         downloads: doc.downloads || 0,
         likes: doc.likes || 0,
         authors: Array.isArray(doc.authors) ? doc.authors : [],
@@ -121,6 +122,7 @@ export const useFetchSchematics = (categories?: string[]) => {
         slug: doc.slug || '',
         create_versions: Array.isArray(doc.create_versions) ? doc.create_versions : [],
         categories: Array.isArray(doc.categories) ? doc.categories : [],
+        sub_categories: Array.isArray(doc.sub_categories) ? doc.sub_categories : [],
         status: doc.status || 'draft',
       }));
 
@@ -144,12 +146,12 @@ export const useFetchUserSchematics = (user_id?: string) => {
 
       const schematics: Schematic[] = response.documents.map((doc) => ({
         $id: doc.$id,
-        $createdAt: doc.$createdAt,
-        $updatedAt: doc.$updatedAt,
+        created_at: doc.created_at,
+        updated_at: doc.updated_at,
         title: doc.title,
         description: doc.description || '',
         schematic_url: doc.schematic_url || '',
-        image_url: doc.image_url || '',
+        image_urls: Array.isArray(doc.image_urls) ? doc.image_urls : [],
         downloads: doc.downloads || 0,
         likes: doc.likes || 0,
         authors: Array.isArray(doc.authors) ? doc.authors : [],
@@ -159,6 +161,7 @@ export const useFetchUserSchematics = (user_id?: string) => {
         slug: doc.slug || '',
         create_versions: Array.isArray(doc.create_versions) ? doc.create_versions : [],
         categories: Array.isArray(doc.categories) ? doc.categories : [],
+        sub_categories: Array.isArray(doc.sub_categories) ? doc.sub_categories : [],
         status: doc.status || 'draft',
       }));
 
@@ -252,25 +255,13 @@ export const useSaveSchematics = () => {
 
   return useMutation({
     mutationFn: async (schematic: Partial<Schematic>) => {
-      const serializedSchematics = {
-        ...schematic,
-        authors: schematic.authors ? JSON.stringify(schematic.authors) : undefined,
-        game_versions: schematic.game_versions
-          ? JSON.stringify(schematic.game_versions)
-          : undefined,
-        create_versions: schematic.create_versions
-          ? JSON.stringify(schematic.create_versions)
-          : undefined,
-        modloaders: schematic.modloaders ? JSON.stringify(schematic.modloaders) : undefined,
-        categories: schematic.categories ? JSON.stringify(schematic.categories) : undefined,
-      };
-
+      // If the schematic does not have an ID, create a new document
       if (!schematic.$id) {
         return databases.createDocument(
           DATABASE_ID,
           COLLECTION_ID,
           ID.unique(),
-          serializedSchematics
+          schematic
         );
       }
 
@@ -278,7 +269,7 @@ export const useSaveSchematics = () => {
         DATABASE_ID,
         COLLECTION_ID,
         schematic.$id,
-        serializedSchematics
+        schematic
       );
     },
     onSuccess: () => {

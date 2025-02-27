@@ -38,7 +38,7 @@ const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
         <img
           className='h-full w-full rounded-t-md object-cover'
           alt={schematic.title}
-          src={schematic.image_url}
+          src={schematic.image_urls[0]}
         />
       </div>
       <CardHeader className='grow'>

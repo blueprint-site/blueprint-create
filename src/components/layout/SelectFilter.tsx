@@ -1,5 +1,4 @@
 // src/components/filters/SelectFilter.tsx
-import React from 'react';
 import {
   Select,
   SelectContent,

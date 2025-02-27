@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { databases, storage } from '@/config/appwrite';
+import { storage } from '@/config/appwrite';
 import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext';
-import { LoadingSpinner } from '@/components/loading-overlays/LoadingSpinner';
-import { LoadingSuccess } from '@/components/loading-overlays/LoadingSuccess';
+import SchematicUploadLoadingOverlay from '@/components/loading-overlays/SchematicUploadLoadingOverlay';
 import { SchematicUploadForm } from './SchematicUploadForm';
-import { type SchematicFormValues } from '@/schemas/schematic.schema.tsx';
+import { type SchematicFormValues } from '@/schemas/schematic.schema';
 import { SchematicPreview } from './SchematicUploadPreview';
+import { generateSlug } from '../utils/generateSlug';
+import { useSaveSchematics } from '@/api/endpoints/useSchematics';
 
 function SchematicsUpload() {
   const navigate = useNavigate();
   const loggedUser = useLoggedUser();
   const [loading, setLoading] = useState<boolean>(false);
-  const [success, setSuccess] = useState<boolean>(false);
-  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]); // Updated for multiple images
+  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
   const [formValues, setFormValues] = useState<Partial<SchematicFormValues>>({
     title: '',
     description: '',
@@ -39,6 +39,9 @@ function SchematicsUpload() {
     createVersionOptions: ['0.5', '0.4'],
     modloaderOptions: ['fabric', 'forge', 'quilt'],
   };
+
+  // Use the mutation hook
+  const { mutateAsync: saveSchematic } = useSaveSchematics();
 
   // Form submission
   const onSubmit = async (data: SchematicFormValues) => {
@@ -70,47 +73,39 @@ function SchematicsUpload() {
       // Upload multiple image files
       const uploadedImages = await Promise.all(
         data.imageFiles.map(async (file) => {
-          const uploadedFile = await storage.createFile(
-            '67b22481001e99d90888',
-            'unique()',
-            file
-          );
+          const uploadedFile = await storage.createFile('67b22481001e99d90888', 'unique()', file);
           return uploadedFile.$id;
         })
       );
 
       // Get file URLs
-      const schematicUrl = storage.getFileDownload('67b2241e0032c25c8216', uploadedSchematic.$id);
+      const schematicUrl = storage.getFileDownload('67b2241e0032c25c8216', uploadedSchematic.$id).toString();
       const imageUrls = uploadedImages.map((id) =>
-        storage.getFilePreview('67b22481001e99d90888', id)
+        storage.getFilePreview('67b22481001e99d90888', id).toString()
       );
 
-      // Create database entry
-      const document = await databases.createDocument(
-        '67b1dc430020b4fb23e3',
-        '67b2310d00356b0cb53c',
-        'unique()',
-        {
-          title: data.title,
-          description: data.description,
-          schematic_url: schematicUrl,
-          image_urls: imageUrls, // Updated to store multiple image URLs
-          user_id: loggedUser.user.$id,
-          authors: [loggedUser.user.name],
-          game_versions: data.gameVersions,
-          create_versions: data.createVersions,
-          modloaders: data.modloaders,
-          slug: data.title.toLowerCase().replace(/\s+/g, '-'),
-        }
-      );
+      const slug = generateSlug(data.title);
 
-      console.log('Schematic uploaded successfully:', document);
-      setSuccess(true);
+      // Use the mutation to save to database
+      const document = await saveSchematic({
+        title: data.title,
+        description: data.description,
+        schematic_url: schematicUrl,
+        image_urls: imageUrls,
+        user_id: loggedUser.user.$id,
+        authors: [loggedUser.user.name], // Ensure authors is an array
+        game_versions: data.gameVersions, // Ensure game_versions is an array
+        create_versions: data.createVersions, // Ensure create_versions is an array
+        modloaders: data.modloaders, // Ensure modloaders is an array
+        categories: data.categories, // Ensure categories is an array
+        sub_categories: data.subCategories ? data.subCategories : [],
+        slug,
+        status: 'published', // Default to published state
+        downloads: 0,
+        likes: 0,
+      });
 
-      // Redirect after short delay
-      setTimeout(() => {
-        navigate('/schematics');
-      }, 2000);
+      navigate(`/schematics/${document.$id}/${slug}`);
     } catch (error) {
       console.error('Error uploading schematic:', error);
       alert('Failed to upload schematic. Please try again.');
@@ -123,13 +118,13 @@ function SchematicsUpload() {
   const handleFieldChange = (field: keyof SchematicFormValues, value: unknown) => {
     // Special handling for description
     if (field === 'description') {
-      setFormValues(prev => ({
+      setFormValues((prev) => ({
         ...prev,
-        [field]: String(value) // Ensure string type
+        [field]: String(value), // Ensure string type
       }));
       return;
     }
-    setFormValues(prev => ({ ...prev, [field]: value }));
+    setFormValues((prev) => ({ ...prev, [field]: value }));
   };
 
   // Handle multiple image previews
@@ -150,29 +145,16 @@ function SchematicsUpload() {
     ).then((urls) => setImagePreviewUrls(urls));
   };
 
-  // Show loading or success states
+  // Show loading state
   if (loading) {
-    return (
-      <div className="loading">
-        <LoadingSpinner />
-        <h1>Your schematic is being uploaded!</h1>
-      </div>
-    );
-  }
-
-  if (success) {
-    return (
-      <div className="final-message">
-        <LoadingSuccess />
-      </div>
-    );
+    return <SchematicUploadLoadingOverlay message='Uploading schematic...' />;
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="mb-8 text-center text-3xl font-bold">Upload a Schematic</h1>
+    <div className='container mx-auto px-4 py-8'>
+      <h1 className='mb-8 text-center text-3xl font-bold'>Upload a Schematic</h1>
 
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+      <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
         {/* Form Section */}
         <div>
           <SchematicUploadForm
@@ -188,11 +170,13 @@ function SchematicsUpload() {
           <SchematicPreview
             title={formValues.title || ''}
             description={formValues.description || ''}
-            imagePreviewUrls={imagePreviewUrls} // Updated to pass multiple image URLs
+            imagePreviewUrls={imagePreviewUrls}
             gameVersions={formValues.gameVersions || []}
             createVersions={formValues.createVersions || []}
             modloaders={formValues.modloaders || []}
             user={loggedUser.user}
+            categories={formValues.categories || []}
+            subCategories={formValues.subCategories || []}
           />
         </div>
       </div>

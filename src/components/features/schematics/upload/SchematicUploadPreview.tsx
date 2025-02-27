@@ -8,11 +8,13 @@ import { MultiImageViewer } from '@/components/utility/MultiImageViewer'; // Imp
 interface SchematicPreviewProps {
   title: string;
   description: string;
-  imagePreviewUrls: string[]; // Updated to handle multiple images
+  imagePreviewUrls: string[];
   gameVersions: string[];
   createVersions: string[];
   modloaders: string[];
   user: User | null;
+  categories: string[];
+  subCategories: string[];
 }
 
 export function SchematicPreview({
@@ -23,6 +25,8 @@ export function SchematicPreview({
   createVersions,
   modloaders,
   user,
+  categories,
+  subCategories,
 }: SchematicPreviewProps) {
   return (
     <Card className="sticky top-20">
@@ -59,6 +63,31 @@ export function SchematicPreview({
             ) : (
               <p className="text-foreground-muted">Schematic description will appear here</p>
             )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="space-y-4">
+            <div>
+              <h3 className="mb-2 text-lg font-semibold">Categories</h3>
+              <div className="flex flex-wrap gap-2">
+                {categories.map((category) => (
+                  <Badge key={category} variant="outline">
+                    {category}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h3 className="mb-2 text-lg font-semibold">Subcategory</h3>
+              <div className="flex flex-wrap gap-2">
+                {subCategories.map((subcategory) => (
+                  <Badge key={subcategory} variant="outline">
+                    {subcategory}
+                  </Badge>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 

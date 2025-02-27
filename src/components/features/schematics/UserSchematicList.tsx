@@ -56,7 +56,7 @@ const UserSchematicList = () => {
                 <CardHeader className='mt-4 flex flex-col items-start justify-between sm:flex-row sm:items-center'>
                   <div className='flex items-center gap-4'>
                     <Avatar>
-                      <AvatarImage src={schematic.image_url} alt={schematic.title} />
+                      <AvatarImage src={schematic.image_urls[0]} alt={schematic.title} />
                       <AvatarFallback>{schematic.title.slice(0, 2)}</AvatarFallback>
                     </Avatar>
                     <div className=''>
@@ -79,10 +79,10 @@ const UserSchematicList = () => {
                 </CardHeader>
                 <CardContent className='flex flex-col items-start justify-between sm:flex-row sm:items-center'>
                   <div className='flex items-center text-xs'>
-                    Created : {format(new Date(schematic.$createdAt), 'dd/MM/yyyy HH:mm')}
+                    Created : {format(new Date(schematic.created_at), 'dd/MM/yyyy HH:mm')}
                   </div>
                   <div className='flex items-center text-xs'>
-                    Updated : {format(new Date(schematic.$updatedAt), 'dd/MM/yyyy HH:mm')}
+                    Updated : {format(new Date(schematic.updated_at), 'dd/MM/yyyy HH:mm')}
                   </div>
                 </CardContent>
 

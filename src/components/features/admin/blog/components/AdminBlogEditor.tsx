@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Input } from '@/components/ui/input.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Card, CardContent } from '@/components/ui/card.tsx';
-import { BlogType } from '@/types';
+import { Blog } from '@/types';
 import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
 import ImageUploader from '@/components/utility/ImageUploader.tsx';
 import MarkdownEditor from '@/components/utility/MarkdownEditor.tsx';
@@ -18,7 +18,7 @@ const AdminBlogEditor = () => {
   const LoggedUser = useLoggedUser();
   const { data: blog, isLoading } = useFetchBlog(id);
   const saveBlogMutation = useSaveBlog();
-  const [blogState, setBlogState] = useState<Partial<BlogType> | null>(null);
+  const [blogState, setBlogState] = useState<Partial<Blog> | null>(null);
 
   useEffect(() => {
     if (!LoggedUser) return;

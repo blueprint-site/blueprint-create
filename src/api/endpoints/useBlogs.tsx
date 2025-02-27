@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { BlogType } from '@/types';
+import { Blog } from '@/types';
 import { toast } from '@/api';
 import { databases, ID } from '@/config/appwrite.ts';
 import { Query } from 'appwrite';
@@ -36,13 +36,13 @@ export const useDeleteBlog = () => {
 
 // Hook pour récupérer un seul blog
 export const useFetchBlog = (blogId?: string) => {
-  return useQuery<BlogType | null>({
+  return useQuery<Blog | null>({
     queryKey: ['blog', blogId],
     queryFn: async () => {
       if (!blogId || blogId === 'new') return null;
 
       const response = await databases.getDocument(DATABASE_ID, COLLECTION_ID, blogId);
-      const blogData: BlogType = {
+      const blogData: Blog = {
         $id: response.$id,
         title: response.title || '',
         content: response.content || '',
@@ -65,7 +65,7 @@ export const useFetchBlog = (blogId?: string) => {
   });
 };
 export const useFetchBlogs = (status?: string) => {
-  return useQuery<BlogType[]>({
+  return useQuery<Blog[]>({
     queryKey: ['blogs', status],
     queryFn: async () => {
       // Si le status n'est pas défini, ne pas ajouter de filtre
@@ -77,7 +77,7 @@ export const useFetchBlogs = (status?: string) => {
         filters // Applique le filtre uniquement si `status` est défini
       );
 
-      const blogs: BlogType[] = response.documents.map((doc) => ({
+      const blogs: Blog[] = response.documents.map((doc) => ({
         $id: doc.$id,
         title: doc.title || '',
         content: doc.content || '',
@@ -104,7 +104,7 @@ export const useSaveBlog = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (blog: Partial<BlogType>) => {
+    mutationFn: async (blog: Partial<Blog>) => {
       // Sérialiser les objets JSON avant de les envoyer à Appwrite
       const serializedBlog = {
         ...blog,

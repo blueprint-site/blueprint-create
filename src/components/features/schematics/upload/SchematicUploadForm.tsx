@@ -1,4 +1,3 @@
-// components/SchematicUploadForm/SchematicUploadForm.tsx
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
@@ -10,6 +9,7 @@ import { FileUploadField } from './form/FileUploadField';
 import { FormMarkdownEditor } from './form/FormMarkdownEditor';
 import { MultiSelectRadioGroup } from './form/MultiSelectRadioGroup';
 import { FormInput } from './form/FormInput';
+import { CategorySelectors } from './form/CategorySelectors';
 
 interface SchematicUploadFormProps {
   onSubmit: (data: SchematicFormValues) => Promise<void>;
@@ -41,6 +41,9 @@ export function SchematicUploadForm({
       modloaders: [],
       schematicFile: undefined,
       imageFiles: [],
+      // Updated to use arrays instead of single strings
+      categories: [''],
+      subCategories: [''],
     },
     mode: 'onChange',
   });
@@ -56,7 +59,14 @@ export function SchematicUploadForm({
     return () => subscription.unsubscribe();
   }, [form, onValueChange]);
 
-  const handleFormSubmit = form.handleSubmit(onSubmit);
+  const handleFormSubmit = form.handleSubmit(async (data) => {
+    console.log('Submitting form:', data);
+    try {
+      await onSubmit(data);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
+  });
 
   return (
     <Card>
@@ -68,28 +78,28 @@ export function SchematicUploadForm({
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={handleFormSubmit} className='space-y-6'>
-            <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+          <form onSubmit={handleFormSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <FileUploadField
-                name='schematicFile'
+                name="schematicFile"
                 control={form.control}
-                label='Schematic File (.nbt)'
-                description='Select a .nbt schematic file to upload'
+                label="Schematic File (.nbt)"
+                description="Select a .nbt schematic file to upload"
                 accept={{ 'application/octet-stream': ['.nbt'] }}
                 maxFiles={1}
                 value={schematicFilePreview ? [schematicFilePreview] : []}
                 onValueChange={(files) => {
                   const file = files?.[0] ?? null;
                   setSchematicFilePreview(file);
-                  form.setValue('schematicFile', file as File | undefined);
+                    form.setValue('schematicFile', file as File);
                 }}
               />
 
               <FileUploadField
-                name='imageFiles'
+                name="imageFiles"
                 control={form.control}
-                label='Preview Images'
-                description='Upload images of your schematic (max 5)'
+                label="Preview Images"
+                description="Upload images of your schematic (max 5)"
                 accept={{ 'image/*': ['.png', '.jpg', '.jpeg', '.webp'] }}
                 maxFiles={5}
                 value={imageFilePreviews}
@@ -103,48 +113,50 @@ export function SchematicUploadForm({
             </div>
 
             <FormInput
-              name='title'
+              name="title"
               control={form.control}
-              label='Title'
-              description='A descriptive name for your schematic'
-              placeholder='Super Cool Contraption'
+              label="Title"
+              description="A descriptive name for your schematic"
+              placeholder="Super Cool Contraption"
             />
 
             <FormMarkdownEditor
-              name='description'
+              name="description"
               control={form.control}
-              label='Description'
-              description='Describe how your contraption works and what it does'
+              label="Description"
+              description="Describe how your contraption works and what it does"
               onValueChange={(value) => onValueChange?.('description', value)}
             />
 
-            <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
+            <CategorySelectors control={form.control} />
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               <MultiSelectRadioGroup
-                name='gameVersions'
+                name="gameVersions"
                 control={form.control}
-                label='Minecraft Versions'
-                description='Select compatible Minecraft versions'
+                label="Minecraft Versions"
+                description="Select compatible Minecraft versions"
                 options={options.minecraftVersions}
               />
 
               <MultiSelectRadioGroup
-                name='createVersions'
+                name="createVersions"
                 control={form.control}
-                label='Create Mod Versions'
-                description='Select compatible Create versions'
+                label="Create Mod Versions"
+                description="Select compatible Create versions"
                 options={options.createVersionOptions}
               />
 
               <MultiSelectRadioGroup
-                name='modloaders'
+                name="modloaders"
                 control={form.control}
-                label='Modloaders'
-                description='Select compatible modloaders'
+                label="Modloaders"
+                description="Select compatible modloaders"
                 options={options.modloaderOptions}
               />
             </div>
 
-            <Button type='submit' className='w-full'>
+            <Button type="submit" className="w-full">
               Upload Schematic
             </Button>
           </form>
