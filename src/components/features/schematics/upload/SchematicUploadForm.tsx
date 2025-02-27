@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { FileUploadField } from './form/FileUploadField';
 import { FormMarkdownEditor } from './form/FormMarkdownEditor';
-import { MultiSelectRadioGroup } from './form/MultiSelectRadioGroup';
+import { MultiSelectCheckboxGroup } from './form/MultiSelectCheckboxGroup';
 import { FormInput } from './form/FormInput';
 import { CategorySelectors } from './form/CategorySelectors';
 
@@ -78,26 +78,26 @@ export function SchematicUploadForm({
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={handleFormSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <form onSubmit={handleFormSubmit} className='space-y-6'>
+            <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
               <FileUploadField
-                name="schematicFile"
+                name='schematicFile'
                 control={form.control}
-                label="Schematic File (.nbt)"
+                label='Schematic File (.nbt)'
                 accept={{ 'application/octet-stream': ['.nbt'] }}
                 maxFiles={1}
                 value={schematicFilePreview ? [schematicFilePreview] : []}
                 onValueChange={(files) => {
                   const file = files?.[0] ?? null;
                   setSchematicFilePreview(file);
-                    form.setValue('schematicFile', file as File);
+                  form.setValue('schematicFile', file as File);
                 }}
               />
 
               <FileUploadField
-                name="imageFiles"
+                name='imageFiles'
                 control={form.control}
-                label="Preview Images"
+                label='Preview Images'
                 accept={{ 'image/*': ['.png', '.jpg', '.jpeg', '.webp'] }}
                 maxFiles={5}
                 value={imageFilePreviews}
@@ -111,49 +111,49 @@ export function SchematicUploadForm({
             </div>
 
             <FormInput
-              name="title"
+              name='title'
               control={form.control}
-              label="Title"
-              placeholder="Super Cool Contraption"
+              label='Title'
+              placeholder='Super Cool Contraption'
             />
 
             <FormMarkdownEditor
-              name="description"
+              name='description'
               control={form.control}
-              label="Description"
-              description="Describe how your contraption works and what it does"
+              label='Description'
+              description='Describe how your contraption works and what it does'
               onValueChange={(value) => onValueChange?.('description', value)}
             />
 
-            <CategorySelectors control={form.control} />
+            <CategorySelectors control={form.control} form={form} />
 
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-              <MultiSelectRadioGroup
-                name="gameVersions"
+            <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
+              <MultiSelectCheckboxGroup
+                name='gameVersions'
                 control={form.control}
-                label="Minecraft Versions"
-                description="Select compatible Minecraft versions"
+                label='Minecraft Versions'
+                description='Select compatible Minecraft versions'
                 options={options.minecraftVersions}
               />
 
-              <MultiSelectRadioGroup
-                name="createVersions"
+              <MultiSelectCheckboxGroup
+                name='createVersions'
                 control={form.control}
-                label="Create Mod Versions"
-                description="Select compatible Create versions"
+                label='Create Mod Versions'
+                description='Select compatible Create versions'
                 options={options.createVersionOptions}
               />
 
-              <MultiSelectRadioGroup
-                name="modloaders"
+              <MultiSelectCheckboxGroup
+                name='modloaders'
                 control={form.control}
-                label="Modloaders"
-                description="Select compatible modloaders"
+                label='Modloaders'
+                description='Select compatible modloaders'
                 options={options.modloaderOptions}
               />
             </div>
 
-            <Button type="submit" className="w-full">
+            <Button type='submit' className='w-full'>
               Upload Schematic
             </Button>
           </form>
