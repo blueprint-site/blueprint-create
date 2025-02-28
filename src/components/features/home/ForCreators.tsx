@@ -33,7 +33,7 @@ const ForCreators = () => {
                 name='discord-plural'
                 height={64}
                 format='svg'
-                className='hidden md:block'
+                className='hidden md:block cursor-pointer'
               />
               <DevinsBadges
                 type='compact'
@@ -41,12 +41,12 @@ const ForCreators = () => {
                 name='discord-plural'
                 height={40}
                 format='svg'
-                className='md:hidden'
+                className='md:hidden cursor-pointer'
               />
             </div>
 
             <Button
-              className='h-[40px] text-xl text-white/90 md:h-[56px]'
+              className='h-[40px] text-xl text-white/90 md:h-[56px] cursor-pointer'
               onClick={() => (window.location.href = 'mailto:blueprint-site@proton.me')}
             >
               <Mail className='mr-2' size={24} />

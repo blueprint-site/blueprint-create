@@ -21,7 +21,7 @@ const ThemeToggle = ({ onClick, variant = 'outline', size = 'default' }: ThemeTo
       onClick={handleClick}
       variant={variant}
       size={size}
-      className='flex items-center rounded-full p-2'
+      className='flex items-center rounded-full p-2 cursor-pointer'
       aria-label='Change theme'
     >
       <img src={NightVisionIcon} alt='' className='h-6 w-6 object-contain' />

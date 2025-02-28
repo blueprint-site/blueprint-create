@@ -36,7 +36,7 @@ export function SelectFilter({
         {label}
       </label>
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className="border-foreground font-minecraft w-full rounded-lg p-2">
+        <SelectTrigger className="border-foreground font-minecraft w-full rounded-lg p-2 cursor-pointer">
           <SelectValue
             className="text-foreground font-minecraft"
             placeholder={placeholder || `Select ${label}`}

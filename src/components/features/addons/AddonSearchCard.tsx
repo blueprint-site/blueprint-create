@@ -59,7 +59,7 @@ export function AddonSearchCard({
             />
           </div>
 
-          <Select value={modloader} onValueChange={handleModloaderChange}>
+          <Select value={modloader} onValueChange={handleModloaderChange} >
             <SelectTrigger className='w-full md:w-[200px]'>
               <SelectValue placeholder='Modloader' />
             </SelectTrigger>

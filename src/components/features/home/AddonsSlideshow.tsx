@@ -83,7 +83,7 @@ const AddonsCarousel = () => {
     <div className='mx-auto flex h-full max-w-6xl items-center justify-center gap-4'>
       <Button
         onClick={() => scrollToIndex(current - 1)}
-        className='rounded-full p-0'
+        className='rounded-full p-0 cursor-pointer'
         variant='icon'
       >
         <MinecraftIcon name='chevron-left' size={32} />
@@ -132,7 +132,7 @@ const AddonsCarousel = () => {
       </div>
       <Button
         onClick={() => scrollToIndex(current + 1)}
-        className='rounded-full p-0'
+        className='rounded-full p-0 cursor-pointer'
         variant='icon'
       >
         <MinecraftIcon name='chevron-right' size={32} />
