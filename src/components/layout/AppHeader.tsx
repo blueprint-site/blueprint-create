@@ -18,7 +18,7 @@ interface AppHeaderProps {
 
 const AppHeader = ({ className }: AppHeaderProps) => {
   const { t } = useTranslation();
-  const [easterEgg, setEasterEgg] = useState(localStorage.getItem("oldLogo") === "true");
+  const [easterEgg] = useState(localStorage.getItem("oldLogo") === "true");
 
 
   const navigationItems = [

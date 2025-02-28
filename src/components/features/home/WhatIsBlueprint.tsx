@@ -36,7 +36,7 @@ const Separator = ({ type }: { type: 'plus' | 'equal' }) => {
 
 const WhatIsBlueprint = () => {
   const { t } = useTranslation();
-  const [easterEgg, setEasterEgg] = useState(localStorage.getItem('oldLogo') === 'true');
+  const [easterEgg] = useState(localStorage.getItem('oldLogo') === 'true');
   const features = [
     { src: AddonIcon, alt: 'Addon Icon', label: 'Addons', url: '/addons' },
     { src: SchematicIcon, alt: 'Schematic Icon', label: 'Schematics', url: '/schematics' },
