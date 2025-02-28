@@ -1,11 +1,27 @@
 import Logo from '@/assets/logo.webp';
+import OldLogo from '@/assets/legacy_logo.webp';
 import { cn } from '@/config/utils.ts';
-
+import { useState } from 'react';
 interface FooterProps {
   className?: string;
 }
 
 const Footer = ({ className }: FooterProps) => {
+  let clicks = 0;
+  const [easterEgg, setEasterEgg] = useState(localStorage.getItem("oldLogo") === "true");
+  function toggleEasterEgg() {
+    clicks +=1;
+    if (clicks === 5) {
+      if (localStorage.getItem("oldLogo") === "true") {
+        localStorage.setItem("oldLogo", "false")
+        alert("Disabled the easter egg! (refresh to see)")
+      } else {
+        localStorage.setItem("oldLogo", "true")
+        alert("Enabled the easter egg! Congatulations! \n Now all logos are set to the old logo! (refresh to see)")
+      }
+      clicks = 0;
+    }
+  }
   return (
     <footer className={cn('bg-surface-1 dark:bg-container-dark w-full pb-4 md:pt-16', className)}>
       <div className='mx-auto px-4 md:container'>
@@ -13,7 +29,7 @@ const Footer = ({ className }: FooterProps) => {
           {/* Logo and Title Row */}
           <div className='flex flex-col gap-2'>
             <div className='flex items-center gap-2'>
-              <img src={Logo} alt='Blueprint Site Logo' className='w-8' />
+              <button onClick={toggleEasterEgg}><img src={easterEgg ? OldLogo : Logo} alt='Blueprint Site Logo' className='w-8' /></button>
               <h4 className='text-lg font-bold'>Blueprint</h4>
             </div>
 
