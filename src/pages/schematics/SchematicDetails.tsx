@@ -15,6 +15,7 @@ import { useIncrementDownloads } from '@/api/endpoints/useSchematics.tsx';
 import TimerProgress from '@/components/utility/TimerProgress';
 import { Hourglass } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { MultiImageViewer } from '@/components/utility/MultiImageViewer';
 
 const SchematicDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -128,11 +129,7 @@ const SchematicDetails = () => {
         <CardContent className='space-y-6'>
           <div className='flex flex-col items-start gap-8 md:flex-row'>
             <div className='w-full md:w-1/2'>
-              <img
-                src={schematic.image_url}
-                alt={schematic.title}
-                className='h-auto w-full rounded-lg object-cover shadow-md'
-              />
+              <MultiImageViewer images={schematic.image_urls} />
             </div>
             <div className='w-full space-y-4 md:w-1/2'>
               <h2 className='text-xl font-semibold'>Description:</h2>
