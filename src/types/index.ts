@@ -247,7 +247,7 @@ export interface Schematic {
   title: string; // Schematic's title
   description: string; // Schematic's description
   schematic_url: string; // Supabase bucket file url for .nbt
-  image_url: string; // Supabase bucket file url for .png
+  image_urls: string[] // Supabase bucket file url for .png
   authors: string[]; // Authors of a schematic
   user_id: string;
   downloads: number; // User who was uploading id
