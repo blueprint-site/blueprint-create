@@ -9,6 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import BaseLayout from '@/layouts/BaseLayout';
 import { useSaveEmail } from '@/api/endpoints/useEmailList';
 
+import BlueprintBanner from '@/assets/banner.png';
+
 const ComingSoon = () => {
   const [email, setEmail] = useState<string>('');
   const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
@@ -53,7 +55,7 @@ const ComingSoon = () => {
         <div className='pb-8 transition-transform duration-300 hover:scale-105'>
           <div className='my-4 flex justify-center px-4'>
             <img
-              src='../assets/banner.png'
+              src={BlueprintBanner}
               alt='Blueprint - Explore Addons'
               className='max-h-[200px] object-contain md:container'
             />
