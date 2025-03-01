@@ -1,7 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { databases, ID } from '@/config/appwrite';
 import { Query } from 'appwrite';
-import console from 'console';
 
 const DATABASE_ID = '67b1dc430020b4fb23e3'; // Replace with your actual Database ID
 const COLLECTION_ID = '67c372910017d2f7ba64'; // Replace with your actual Collection ID

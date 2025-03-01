@@ -14,16 +14,13 @@ import BlueprintBanner from '@/assets/banner.png';
 const ComingSoon = () => {
   const [email, setEmail] = useState<string>('');
   const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
-  const { mutate: saveEmail } = useSaveEmail();
+  const { mutateAsync: saveEmail } = useSaveEmail();
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
       try {
-        // Save email to database
-        const res = await saveEmail({ email });
-        console.log('Save email response:', res);
-        console.log(`Subscribed with email: ${email}`);
+        saveEmail({ email });
         setIsSubscribed(true);
         setEmail('');
       } catch (error) {
