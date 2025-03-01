@@ -62,6 +62,7 @@ export const searchSchematicsResultSchema = z.object({
   hasPreviousPage: z.boolean(),
   totalHits: z.number().int().nonnegative(),
   page: z.number().int().positive(),
+
 });
 
 // Type exports

@@ -38,8 +38,9 @@ export default function AddonDetails() {
   };
   const { data: addon, isLoading, error } = useFetchAddon(slug);
 
+  console.log(addon)
 
-  console.log(addon?.modrinth_raw?.gallery)
+  console.log(addon?.modrinth_raw?.gallery || [])
 
   useEffect(() => {
     if (!slug) {
@@ -118,7 +119,7 @@ export default function AddonDetails() {
       ? JSON.parse(addon.curseforge_raw)
       : addon.curseforge_raw;
 
-  const gallery = modrinthData?.gallery;
+  const gallery = modrinthData?.gallery ?? [];
 
   const totalDownloads = (modrinthData?.downloads || 0) + (curseforgeData?.downloadCount || 0);
   const externalLinks = [

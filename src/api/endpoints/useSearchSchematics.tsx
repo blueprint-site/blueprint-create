@@ -1,6 +1,8 @@
 import searchClient from "@/config/meilisearch";
-import { SearchSchematicsProps, SearchSchematicsResult, Schematic } from "@/types";
+
 import { useQuery } from "@tanstack/react-query";
+import {Schematic, SearchSchematicsResult} from "@/schemas/schematic.schema.tsx";
+import {SearchSchematicsProps} from "@/types";
 
 export const useSearchSchematics = ({
   query = '',
