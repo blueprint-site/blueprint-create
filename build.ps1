@@ -1,6 +1,6 @@
 # Variables
 $DOCKER_USERNAME = "timiliris"
-$DOCKER_REPOSITORY = "blueprint"
+$DOCKER_REPOSITORY = "blueprint-coming-sooon"
 $IMAGE_TAG = "latest"
 
 # Build de l'image Docker

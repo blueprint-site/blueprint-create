@@ -8,7 +8,7 @@ export const AdminRoutes: RouteObject[] = [
   {
     path: 'admin',
     element: (
-      <ProtectedRoute>
+      <ProtectedRoute requiredRole={"admin"}>
         <AdminPage />
       </ProtectedRoute>
     ),
@@ -16,7 +16,7 @@ export const AdminRoutes: RouteObject[] = [
   {
     path: 'admin/blog-editor/:id',
     element: (
-      <ProtectedRoute>
+      <ProtectedRoute requiredRole={"admin"}>
         <AdminBlogEditor />
       </ProtectedRoute>
     ),
