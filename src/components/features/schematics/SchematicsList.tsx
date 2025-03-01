@@ -16,7 +16,8 @@ import { Link } from 'react-router-dom';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { Schematic } from '@/types';
 
-function SchematicsList() {
+function
+SchematicsList() {
   const navigate = useNavigate();
   const [allSchematics, setAllSchematics] = useState<Schematic[]>([]);
   const [page, setPage] = useState(1); // Add separate page state
@@ -26,10 +27,12 @@ function SchematicsList() {
     setQuery,
     setCategory,
     setSubCategory,
+    setCreateVersion,
     setVersion,
     setLoaders,
     resetFilters,
     categoryOptions,
+    createVersionOptions,
     subCategoryOptions,
     versionOptions,
     loaderOptions,
@@ -64,7 +67,7 @@ function SchematicsList() {
   useEffect(() => {
     setAllSchematics([]);
     setPage(1); // Reset to first page when filters change
-  }, [filters.query, filters.category, filters.subCategory, filters.version, filters.loaders]);
+  }, [filters.query, filters.category, filters.subCategory, filters.version, filters.loaders, filters.createVersion]);
 
   // Append new schematics to the accumulated list
   useEffect(() => {
@@ -135,6 +138,12 @@ function SchematicsList() {
             value={filters.loaders}
             onChange={setLoaders}
             options={loaderOptions}
+          />
+          <SelectFilter
+              label="Create version"
+              value={filters.createVersion}
+              onChange={setCreateVersion}
+              options={createVersionOptions}
           />
         </FiltersContainer>
       </ListPageSidebar>

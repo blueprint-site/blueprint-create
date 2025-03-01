@@ -2,8 +2,8 @@
 import { useMemo } from 'react';
 import { useFilters } from './useFilters';
 import schematicCategories from '@/config/schematicsCategory';
-import minecraftVersions from '@/config/minecraft';
 import { FilterOption } from '@/components/layout/SelectFilter';
+import {createVersion, minecraftVersion} from "@/config/minecraft.ts";
 
 export function useSchematicFilters(options = {}) {
   const {
@@ -14,6 +14,7 @@ export function useSchematicFilters(options = {}) {
     setSubCategory,
     setVersion,
     setLoaders,
+    setCreateVersion,
     resetFilters,
     loadMore // Make sure this is included from useFilters
   } = useFilters(options);
@@ -41,7 +42,7 @@ export function useSchematicFilters(options = {}) {
   }, [selectedCategory]);
 
   const versionOptions = useMemo<FilterOption[]>(() => {
-    return minecraftVersions.map(ver => ({
+    return minecraftVersion.map(ver => ({
       value: ver.version,
       label: ver.version
     }));
@@ -53,6 +54,13 @@ export function useSchematicFilters(options = {}) {
     { value: 'fabric', label: 'Fabric' }
   ], []);
 
+  const createVersionOptions = useMemo<FilterOption[]>(() => {
+    return createVersion.map(ver => ({
+    value: ver,
+    label: ver
+    }))
+  }, [])
+
   return {
     filters,
     setQuery,
@@ -61,9 +69,11 @@ export function useSchematicFilters(options = {}) {
     setSubCategory,
     setVersion,
     setLoaders,
+    setCreateVersion,
     resetFilters,
     loadMore, // Include this in the return value
     categoryOptions,
+    createVersionOptions,
     subCategoryOptions,
     versionOptions,
     loaderOptions,
