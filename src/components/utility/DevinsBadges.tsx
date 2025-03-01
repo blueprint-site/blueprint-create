@@ -1,3 +1,5 @@
+
+
 // Define the available badge types as const to enable type inference
 const BADGE_TYPES = {
   cozy: {
@@ -29,6 +31,7 @@ const BADGE_CATEGORIES = {
   supported: 'Platforms/software supported by your project',
   unsupported: 'Platforms/software not supported by your project',
   translate: 'Translation platforms and resources',
+  custom: 'Custom badge',
 } as const;
 
 interface DevinsBadgesProps {
@@ -49,37 +52,51 @@ interface DevinsBadgesProps {
 
   /** Optional className for the image wrapper */
   className?: string;
+
+  /** Custom badge URL (required if category is 'custom') */
+  customBadgeUrl?: string;
 }
 
 const DevinsBadges = ({
-  type,
-  category,
-  name,
-  height,
-  format = 'svg',
-  className,
-}: DevinsBadgesProps) => {
+                        type,
+                        category,
+                        name,
+                        height,
+                        format = 'svg',
+                        className,
+                        customBadgeUrl,
+                      }: DevinsBadgesProps) => {
   // Get badge type configuration
   const typeConfig = BADGE_TYPES[type];
 
   // Validate and normalize height
   const finalHeight = height
-    ? Math.min(Math.max(height, typeConfig.heightRange.min), typeConfig.heightRange.max)
-    : typeConfig.recommendedHeight;
+      ? Math.min(Math.max(height, typeConfig.heightRange.min), typeConfig.heightRange.max)
+      : typeConfig.recommendedHeight;
 
-  // Construct badge URL
-  const badgeSrc = `https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/${type}/${category}/${name}${
-    format === 'png' ? `_${finalHeight}h` : format === 'svg' ? '_vector' : ''
-  }.${format}`;
+  let badgeSrc = '';
+
+  if (category === 'custom') {
+    if (!customBadgeUrl) {
+      console.error('Custom badge URL is required when category is "custom"');
+      return null; // Or display a placeholder image
+    }
+    badgeSrc = customBadgeUrl;
+  } else {
+    // Construct badge URL
+    badgeSrc = `https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/${type}/${category}/${name}${
+        format === 'png' ? `_${finalHeight}h` : format === 'svg' ? '_vector' : ''
+    }.${format}`;
+  }
 
   return (
-    <img
-      loading='lazy'
-      src={badgeSrc}
-      alt={`${name} badge`}
-      className={className}
-      height={finalHeight}
-    />
+      <img
+          loading='lazy'
+          src={badgeSrc}
+          alt={`${name} badge`}
+          className={className}
+          height={finalHeight}
+      />
   );
 };
 
