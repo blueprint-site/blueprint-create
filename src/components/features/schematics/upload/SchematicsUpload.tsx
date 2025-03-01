@@ -8,6 +8,7 @@ import { type SchematicFormValues } from '@/schemas/schematic.schema';
 import { SchematicPreview } from './SchematicUploadPreview';
 import { generateSlug } from '../utils/generateSlug';
 import { useSaveSchematics } from '@/api/endpoints/useSchematics';
+import {createVersion, minecraftVersion} from "@/config/minecraft.ts";
 
 function SchematicsUpload() {
   const navigate = useNavigate();
@@ -21,23 +22,13 @@ function SchematicsUpload() {
     createVersions: [],
     modloaders: [],
   });
-
+  const allCompatibilities = Array.from(new Set(minecraftVersion.flatMap(item => item.compatibility)));
+  const versions = Array.from(new Set(minecraftVersion.flatMap(item => item.version)))
   // Define available options
   const options = {
-    minecraftVersions: [
-      '1.19.1',
-      '1.19.2',
-      '1.20',
-      '1.20.1',
-      '1.20.2',
-      '1.20.3',
-      '1.20.4',
-      '1.21',
-      '1.21.1',
-      '1.21.2',
-    ],
-    createVersionOptions: ['0.5', '0.4'],
-    modloaderOptions: ['fabric', 'forge', 'quilt'],
+    minecraftVersions: versions || [],
+    createVersionOptions: createVersion || [],
+    modloaderOptions: allCompatibilities || [],
   };
 
   // Use the mutation hook

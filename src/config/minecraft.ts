@@ -32,4 +32,8 @@ export const minecraftVersion = [
     compatibility: ['forge'],
   },
 ];
-export default minecraftVersion;
+
+export const createVersion = ['All','0.6','0.5', '0.4']
+
+
+export default {minecraftVersion, createVersion};

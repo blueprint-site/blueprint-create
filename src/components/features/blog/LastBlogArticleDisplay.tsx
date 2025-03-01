@@ -46,7 +46,7 @@ const LastBlogArticleDisplay = () => {
                   </CardContent>
                   <CardFooter className={'flex justify-end'}>
                     <CardDescription className={'text-foreground-muted'}>
-                      {blog.authors.map((author, index: number) => (
+                      {blog.authors.map((author: string, index: number) => (
                           <div key={index}>{author}</div>
                       ))}
                     </CardDescription>

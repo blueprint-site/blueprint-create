@@ -1,5 +1,6 @@
-import { Tag } from '@/types';
+
 import { useEffect, useState } from 'react';
+import {Tag} from "@/schemas/blog.schema.tsx";
 
 interface BlogTagsDisplayProps {
   value?: Tag[];

@@ -59,7 +59,6 @@ export type {
 // Re-export types from Blog schema
 import {
   Blog,
-  Tag,
   CreateBlogInput,
   UpdateBlogInput,
   BlogFilter
@@ -67,7 +66,6 @@ import {
 
 export type {
   Blog,
-  Tag,
   CreateBlogInput,
   UpdateBlogInput,
   BlogFilter
@@ -188,6 +186,7 @@ export interface SearchSchematicsProps {
   category?: string;
   subCategory?: string;
   version?: string;
+  createVersion?: string;
   loaders?: string;
   id?: string;
 }

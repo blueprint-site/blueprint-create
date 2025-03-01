@@ -47,7 +47,7 @@ export function SelectFilter({
             {options.map(option => (
               <SelectItem
                 key={option.value}
-                className="text-foreground font-minecraft"
+                className="text-foreground font-minecraft cursor-pointer"
                 value={option.value}
               >
                 {option.label}

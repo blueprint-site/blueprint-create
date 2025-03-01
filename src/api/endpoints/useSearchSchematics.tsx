@@ -11,6 +11,7 @@ export const useSearchSchematics = ({
   subCategory = 'All',
   version = 'all',
   loaders = 'all',
+  createVersion = 'All',
   id = 'all',
 }: SearchSchematicsProps): SearchSchematicsResult => {
 console.log('search triggered')
@@ -32,11 +33,12 @@ console.log('search triggered')
     addFilter('subCategories', subCategory);
     addFilter('user_id', id);
     addFilter('game_versions', version);
+    addFilter('create_versions', createVersion);
 
     return filters.length > 0 ? filters.join(' AND ') : '';
   };
   const queryResult = useQuery({
-    queryKey: ['searchSchematics', query, page, category, subCategory, version, loaders, id],
+    queryKey: ['searchSchematics', query, page, category, subCategory, version, loaders, createVersion, id],
     queryFn: async () => {
       const index = searchClient.index('schematics');
       const result = await index.search(query, {
@@ -45,6 +47,7 @@ console.log('search triggered')
         filter: filter(),
       });
       const schematicsList = result.hits as Schematic[]
+      console.log(filter())
 
       // Transform `Hits<SchematicsAnswer>` into `Schematic[]`
       const schematics: Schematic[] = schematicsList.map((hit) => ({

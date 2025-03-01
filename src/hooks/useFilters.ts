@@ -8,6 +8,7 @@ export interface FilterState {
   subCategory?: string;
   version: string;
   loaders: string;
+  createVersion: string;
 }
 
 interface UseFiltersOptions {
@@ -28,6 +29,7 @@ export function useFilters(options: UseFiltersOptions = {}) {
     subCategory: 'All',
     version: 'All',
     loaders: 'all',
+    createVersion: 'All',
     ...initialValues
   });
 
@@ -60,6 +62,7 @@ export function useFilters(options: UseFiltersOptions = {}) {
   const setSubCategory = useCallback((value: string) => updateFilter('subCategory', value), [updateFilter]);
   const setVersion = useCallback((value: string) => updateFilter('version', value), [updateFilter]);
   const setLoaders = useCallback((value: string) => updateFilter('loaders', value), [updateFilter]);
+  const setCreateVersion = useCallback((value: string) => updateFilter('createVersion', value), [updateFilter]);
 
   const resetFilters = useCallback(() => {
     setFilters({
@@ -69,6 +72,7 @@ export function useFilters(options: UseFiltersOptions = {}) {
       subCategory: 'All',
       version: 'All',
       loaders: 'all',
+      createVersion: 'All',
       ...initialValues
     });
     
@@ -80,6 +84,7 @@ export function useFilters(options: UseFiltersOptions = {}) {
         subCategory: 'All',
         version: 'All',
         loaders: 'all',
+        createVersion: 'All',
         ...initialValues
       });
     }
@@ -98,6 +103,7 @@ export function useFilters(options: UseFiltersOptions = {}) {
     setPage,
     setCategory,
     setSubCategory,
+    setCreateVersion,
     setVersion,
     setLoaders,
     resetFilters,
