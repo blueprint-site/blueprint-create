@@ -31,7 +31,15 @@ export const useDeleteAddon = () => {
     },
   });
 };
-
+function tryParseJson(jsonString: string) {
+  try {
+    const parsed = JSON.parse(jsonString);
+    return parsed;
+  } catch (e) {
+    console.error("Failed to parse JSON", e);
+    return undefined;
+  }
+}
 export const useFetchAddon = (slug?: string) => {
   return useQuery<Addon | null>({
     queryKey: ['addon', slug],
@@ -43,7 +51,7 @@ export const useFetchAddon = (slug?: string) => {
       ]);
 
       if (response.documents.length === 0) return null;
-
+      console.log(response)
       const doc = response.documents[0];
       const addonData: Addon = {
         $id: doc.$id,
@@ -56,8 +64,8 @@ export const useFetchAddon = (slug?: string) => {
         icon: doc.icon || '',
         created_at: doc.created_at,
         updated_at: doc.updated_at,
-        curseforge_raw: JSON.parse(JSON.parse(doc.curseforge_raw)),
-        modrinth_raw: JSON.parse(JSON.parse(doc.modrinth_raw)),
+        curseforge_raw: doc.curseforge_raw ? tryParseJson(doc.curseforge_raw) : undefined,
+        modrinth_raw: doc.modrinth_raw ? tryParseJson(doc.modrinth_raw) : undefined,
         sources: Array.isArray(doc.sources) ? doc.sources : [],
         loaders: Array.isArray(doc.loaders) ? doc.loaders : [],
         isValid: doc.isValid || false,
