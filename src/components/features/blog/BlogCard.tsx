@@ -16,21 +16,25 @@ interface BlogCardProps {
 
 const BlogCard = ({ blog }: BlogCardProps) => {
   return (
-    <Card className='bg-surface-1'>
+    <Card className='bg-surface-1 h-[450px] flex flex-col'>
       <CardHeader>
-        <img src={blog.img_url} alt={blog.title} className='h-48 w-full object-cover' />
-        <CardTitle className={'text-foreground'}>
-          <h1> {blog.title} </h1>
+        <img src={blog.img_url} alt={blog.title} className='object-contain aspect-16/9' />
+        <CardTitle className='text-2xl font-bold'>
+            {blog.title}
         </CardTitle>
         <CardDescription>
           <BlogTagsDisplay value={blog.tags || []} />
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <MarkdownDisplay content={blog.content} />
+      <CardContent className='flex-grow overflow-hidden'>
+        {/* The content will automatically be truncated by the parent's fixed height */}
+        <MarkdownDisplay
+          content={blog.content}
+          className="line-clamp-[7] text-ellipsis"
+        />
       </CardContent>
-      <CardFooter className={'flex justify-end'}>
-        <CardDescription className={'text-foreground-muted'}>
+      <CardFooter className='flex justify-end mt-auto'>
+        <CardDescription className='text-foreground-muted'>
           {blog.authors.map((author: string, index: number) => (
             <div key={index}>{author}</div>
           ))}

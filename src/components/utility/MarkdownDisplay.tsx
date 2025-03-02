@@ -1,60 +1,40 @@
-import React, { useEffect, useState } from 'react';
-import '@mdxeditor/editor/style.css';
-import {
-  MDXEditor,
-  headingsPlugin,
-  tablePlugin,
-  listsPlugin,
-  thematicBreakPlugin,
-  markdownShortcutPlugin,
-  quotePlugin,
-  frontmatterPlugin,
-  codeBlockPlugin,
-  sandpackPlugin,
-  codeMirrorPlugin,
-  imagePlugin,
-} from '@mdxeditor/editor';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
-const MarkdownDisplay = ({ content }: { content: string }) => {
-  // Local state to ensure proper updates
-  const [markdownContent, setMarkdownContent] = useState(content);
+interface MarkdownDisplayProps {
+  content: string;
+  className?: string;
+}
 
-  // Keep local state in sync with props
-  useEffect(() => {
-    setMarkdownContent(content);
-  }, [content]);
+const MarkdownDisplay = ({
+  content,
+  className = ""
+}: MarkdownDisplayProps) => {
+  // Ensure content is a string
+  const markdownContent = typeof content === 'string' ? content : String(content);
 
-  // Generate plugins only once
-  const plugins = React.useMemo(() => [
-    headingsPlugin(),
-    tablePlugin(),
-    listsPlugin(),
-    thematicBreakPlugin(),
-    markdownShortcutPlugin(),
-    quotePlugin(),
-    frontmatterPlugin(),
-    codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
-    sandpackPlugin(),
-    codeMirrorPlugin({
-      codeBlockLanguages: {
-        javascript: 'JavaScript',
-        python: 'Python',
-        css: 'CSS',
-        html: 'HTML',
-      },
-    }),
-    imagePlugin(),
-  ], []);
+  // Remove escaped backslashes before markdown syntax characters
+  const unescapedContent = markdownContent
+    .replace(/\\#/g, '#')  // Fix headings
+    .replace(/\\\*/g, '*') // Fix bold/italic
+    .replace(/\\\[/g, '[') // Fix links and images
+    .replace(/\\\]/g, ']')
+    .replace(/\\\(/g, '(')
+    .replace(/\\\)/g, ')')
+    .replace(/\\`/g, '`') // Fix code blocks
+    .replace(/\\~/g, '~') // Fix strikethrough
+    .replace(/\\>/g, '>') // Fix blockquotes
+    .replace(/\\-/g, '-') // Fix lists
+    .replace(/\\\+/g, '+')
+    .replace(/\\\|/g, '|') // Fix tables
+    .replace(/\\\\/g, '\\'); // Fix actual backslashes
 
-  // Force re-render if content changes
   return (
-    <MDXEditor
-      key={`markdown-display-${markdownContent.length}`}
-      markdown={markdownContent}
-      readOnly
-      plugins={plugins}
-      contentEditableClassName="prose max-w-none"
-    />
+    <div className={`prose max-w-none overflow-hidden ${className}`}>
+      <Markdown remarkPlugins={[remarkGfm]}>
+        {unescapedContent}
+      </Markdown>
+    </div>
   );
 };
 
