@@ -1,6 +1,5 @@
 import Logo from '@/assets/logo.webp';
 import { cn } from '@/config/utils.ts';
-import SocialSharing from "@/components/features/social-sharing/SocialSharing.tsx";
 
 interface FooterProps {
   className?: string;
