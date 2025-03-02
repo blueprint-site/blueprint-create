@@ -12,15 +12,16 @@ import { useLocation } from "react-router-dom";
 
 export interface SocialSharingProps {
     title: string;
+    details?: boolean;
 }
 
-export const SocialSharing = ({title}: SocialSharingProps) => {
+export const SocialSharing = ({title, details= true}: SocialSharingProps) => {
     const location = useLocation();
     const currentUrl = window.location.origin + location.pathname; // Construct the full URL
 
     return (
         <>
-            <h3>Share on socials</h3>
+            {details ? <h3>Share on socials</h3> : null }
             <div className={"flex flex-row items-center gap-4 row-4"}>
                 <RedditShareButton url={currentUrl} windowWidth={640} windowHeight={420} title={title} >
                     <RedditIcon className={'rounded-full'} size={32}/>
