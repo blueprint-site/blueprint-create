@@ -1,71 +1,48 @@
 import { useParams } from 'react-router-dom';
-import { Download, Share } from 'lucide-react';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card.tsx';
+import { Download, Share, Hourglass } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import ModLoaderDisplay from '@/components/common/ModLoaderDisplay.tsx';
 import VersionsDisplay from '@/components/common/VersionsDisplay.tsx';
-import { useFetchSchematic } from '@/api/endpoints/useSchematics.tsx';
-import { useIncrementDownloads } from '@/api/endpoints/useSchematics.tsx';
+import { useFetchSchematic, useIncrementDownloads } from '@/api/endpoints/useSchematics.tsx';
 import TimerProgress from '@/components/utility/TimerProgress';
-import { Hourglass } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { MultiImageViewer } from '@/components/utility/MultiImageViewer';
+import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext';
 
 const SchematicDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { data: schematic } = useFetchSchematic(id);
   const { mutate: incrementDownloads } = useIncrementDownloads();
-  const [isTimerComplete, setIsTimerComplete] = useState(false); // State to track timer completion
+  const [isTimerComplete, setIsTimerComplete] = useState(false);
+  const [createdAtTimestamp, setCreatedAtTimestamp] = useState<number | null>(null);
+  const LoggedUser = useLoggedUser();
+  const userID = LoggedUser.user ? LoggedUser.user.$id : '';
 
-  // Retrieve uploadedSchematics as an array from localStorage
-  const uploadedSchematics: string[] = JSON.parse(
-    localStorage.getItem('uploadedSchematics') || '[]'
-  );
+  const isUploadedByUser = userID === schematic?.user_id;
+  const currentSchematicTimestamp = schematic?.$createdAt;
 
-  // Parse the current schematic timestamp from uploadedSchematics
-  const currentSchematicTimestamp = uploadedSchematics
-    .find((entry) => entry.startsWith(`${schematic?.$id}/`))
-    ?.split(':')[1];
-
-  // Check if the current schematic ID exists in uploadedSchematics
-  const isUploadedByUser = uploadedSchematics.some((entry) =>
-    entry.startsWith(`${schematic?.$id}/`)
-  );
-
-  // Function to delete the current schematic entry from localStorage
-  const deleteSchematicEntry = () => {
-    const updatedSchematics = uploadedSchematics.filter(
-      (entry) => !entry.startsWith(`${schematic?.$id}/`)
-    );
-    localStorage.setItem('uploadedSchematics', JSON.stringify(updatedSchematics));
-  };
-
-  // Effect to check when the timer expires and delete the entry
   useEffect(() => {
     if (currentSchematicTimestamp) {
-      const expirationTime = Number(currentSchematicTimestamp) + 60000;
-      const isExpired = Date.now() > expirationTime;
+      const timestamp = new Date(currentSchematicTimestamp).getTime();
+      setCreatedAtTimestamp(timestamp);
 
-      if (isExpired && isUploadedByUser) {
-        deleteSchematicEntry();
-        setIsTimerComplete(true); // Mark timer as complete
+      const expirationTime = timestamp + 60000;
+      if (Date.now() > expirationTime && isUploadedByUser) {
+        setIsTimerComplete(true);
       }
     }
   }, [currentSchematicTimestamp, isUploadedByUser]);
 
   const openUrl = (url: string) => {
-    window.open(url, '_');
+    window.open(url, '_blank');
   };
 
   if (!schematic) {
     return (
-      <div className='text-foreground-muted flex items-center justify-center p-8'>Loading...</div>
+      <div className='text-foreground-muted flex items-center justify-center p-8'>
+        Loading...
+      </div>
     );
   }
 
@@ -77,17 +54,17 @@ const SchematicDetails = () => {
             <div className='flex items-center justify-start gap-4'>
               {isUploadedByUser && (
                 <>
-                  {currentSchematicTimestamp && !isTimerComplete ? (
+                  {createdAtTimestamp && !isTimerComplete ? (
                     <TimerProgress
-                      startTimestamp={Number(currentSchematicTimestamp)}
+                      startTimestamp={createdAtTimestamp}
                       countdownTime={60}
                       description='Processing your upload... Your schematic will be visible to everyone in about a minute'
                       icon={<Hourglass />}
-                      onComplete={() => setIsTimerComplete(true)} // Callback to update state
+                      onComplete={() => setIsTimerComplete(true)}
                     />
                   ) : (
-                    <div className="flex items-center gap-3">
-                      <span className="text-sm font-semibold text-success">
+                    <div className='flex items-center gap-3'>
+                      <span className='text-success text-sm font-semibold'>
                         Your schematic is now public!
                       </span>
                     </div>
@@ -118,12 +95,6 @@ const SchematicDetails = () => {
           <CardDescription className='text-foreground-muted'>
             By {schematic.authors.join(', ')}
           </CardDescription>
-
-          {isUploadedByUser && (
-            <div>
-              <p className='mt-2 text-sm text-green-500'>You uploaded this schematic.</p>
-            </div>
-          )}
         </CardHeader>
 
         <CardContent className='space-y-6'>
@@ -138,23 +109,14 @@ const SchematicDetails = () => {
           </div>
           <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
             <div className='space-y-4'>
-              <div>
-                <h3 className='mb-2 text-lg font-semibold'>Categories</h3>
-              </div>
-              <div>
-                <h3 className='mb-2 text-lg font-semibold'>Create Versions</h3>
-                <VersionsDisplay versions={schematic.create_versions} />
-              </div>
+              <h3 className='mb-2 text-lg font-semibold'>Create Versions</h3>
+              <VersionsDisplay versions={schematic.create_versions} />
             </div>
             <div className='space-y-4'>
-              <div>
-                <h3 className='mb-2 text-lg font-semibold'>Minecraft Versions</h3>
-                <VersionsDisplay versions={schematic.game_versions} />
-              </div>
-              <div>
-                <h3 className='mb-2 text-lg font-semibold'>Modloaders</h3>
-                <ModLoaderDisplay loaders={schematic.modloaders} />
-              </div>
+              <h3 className='mb-2 text-lg font-semibold'>Minecraft Versions</h3>
+              <VersionsDisplay versions={schematic.game_versions} />
+              <h3 className='mb-2 text-lg font-semibold'>Modloaders</h3>
+              <ModLoaderDisplay loaders={schematic.modloaders} />
             </div>
           </div>
         </CardContent>
