@@ -3,7 +3,7 @@ import { FiltersContainer } from '@/components/layout/FiltersContainer';
 import { ItemGrid } from '@/components/layout/ItemGrid';
 import { SearchFilter } from '@/components/layout/SearchFilter';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import { ListPageContent, ListPageLayout, ListPageFilters } from '@/layouts/ListPageLayout';
+import { ListPageContent, ListPageLayout, ListPageSidebar } from '@/layouts/ListPageLayout';
 import { Blog } from '@/types';
 import { useState, useEffect, useCallback } from 'react';
 import BlogCard from '@/components/features/blog/BlogCard';
@@ -69,7 +69,7 @@ const BlogPage = () => {
 
   return (
     <ListPageLayout>
-      <ListPageFilters>
+      <ListPageSidebar>
         <FiltersContainer>
           <div className='flex items-center justify-between'>
             <div className='text-foreground font-minecraft text-xl font-semibold'>Filters</div>
@@ -87,7 +87,7 @@ const BlogPage = () => {
             placeholder='Search blog posts...'
           />
         </FiltersContainer>
-      </ListPageFilters>
+      </ListPageSidebar>
 
       <ListPageContent>
         <ItemGrid
