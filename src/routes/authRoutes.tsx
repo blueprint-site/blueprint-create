@@ -8,5 +8,5 @@ import AuthError from '@/pages/auth/AuthError';
 export const authRoutes: RouteObject[] = [
   { path: 'login', element: <AuthPage /> },
   { path: 'auth/success', element: <AuthSuccess /> },
-  { path: 'auth/error', element: <AuthError /> },
+  { path: 'auth/error', element: <AuthError message={'Error'} redirectTo={'/login'} /> },
 ];

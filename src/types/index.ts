@@ -41,7 +41,6 @@ export type {
 
 // Re-export types from Schematic schema
 import {
-  Schematic,
   SchematicFormValues,
   PartialSchematic,
   CreateSchematic,
@@ -49,7 +48,6 @@ import {
 } from '@/schemas/schematic.schema';
 
 export type {
-  Schematic,
   SchematicFormValues,
   PartialSchematic,
   CreateSchematic,
