@@ -26,7 +26,8 @@ export const BlogSchema = z.object({
   likes: z.number().int().nonnegative(),
   authors_uuid: z.array(z.string()),
   authors: z.array(z.string()),
-  created_at: z.string()
+  $createdAt: z.string(),
+  $updatedAt: z.string()
 });
 
 /**
