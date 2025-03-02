@@ -5,7 +5,6 @@ import { SearchFilter } from '@/components/layout/SearchFilter';
 import { SelectFilter } from '@/components/layout/SelectFilter';
 import { FiltersContainer } from '@/components/layout/FiltersContainer';
 import { ItemGrid } from '@/components/layout/ItemGrid';
-import { GridLoadingState } from '@/components/layout/GridLoadingState';
 import AddonCard from '@/components/features/addons/addon-card/AddonCard.tsx';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'; // Import the hook
 import { Addon } from '@/schemas/addon.schema.tsx';
@@ -90,39 +89,34 @@ const AddonsList = () => {
     <ListPageLayout>
       <ListPageSidebar>
         <FiltersContainer>
-          <div className="flex justify-between items-center">
-            <div className="text-foreground font-minecraft text-xl font-semibold">Filters</div>
+          <div className='flex items-center justify-between'>
+            <div className='text-foreground font-minecraft text-xl font-semibold'>Filters</div>
             <button
               onClick={resetFilters}
-              className="text-sm text-primary flex items-center gap-1"
-              aria-label="Reset filters"
-            >
+              className='text-primary flex items-center gap-1 text-sm'
+              aria-label='Reset filters'>
               Reset
             </button>
           </div>
 
-          <SearchFilter
-            value={query}
-            onChange={setQuery}
-            placeholder="Search addons..."
-          />
+          <SearchFilter value={query} onChange={setQuery} placeholder='Search addons...' />
 
           <SelectFilter
-            label="Category"
+            label='Category'
             value={category}
             onChange={setCategory}
             options={categoryOptions}
           />
 
           <SelectFilter
-            label="Loaders"
+            label='Loaders'
             value={loaders}
             onChange={setLoaders}
             options={loaderOptions}
           />
 
           <SelectFilter
-            label="Version"
+            label='Version'
             value={version}
             onChange={setVersion}
             options={versionOptions}
@@ -134,16 +128,9 @@ const AddonsList = () => {
         <ItemGrid
           items={allAddons}
           renderItem={(hit) => <AddonCard key={hit.$id} addon={hit} />}
-          isLoading={isLoading && page === 1}
+          isLoading={true}
           isError={false}
-          loadingComponent={<GridLoadingState message="Loading addons..." />}
-          loadingMoreComponent={
-            <GridLoadingState
-              size="sm"
-              message={loadingMore ? "Loading more addons..." : "No more addons"}
-            />
-          }
-          emptyMessage="No addons found."
+          emptyMessage='No addons found.'
           infiniteScrollEnabled={true}
           loadingMore={loadingMore} // Pass loadingMore state
           sentinelRef={sentinelRef} // Pass sentinelRef
