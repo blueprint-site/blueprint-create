@@ -56,7 +56,6 @@ const Footer = ({ className }: FooterProps) => {
             </div>
           </div>
           <div className='hidden flex-1 md:block'>{/* <ThemeToggle /> */}</div>
-          <SocialSharing title={'Blueprint'} details={false} ></SocialSharing>
         </div>
 
         <div className='text-foreground mt-5 flex flex-col gap-1 text-center text-xs font-normal'>
