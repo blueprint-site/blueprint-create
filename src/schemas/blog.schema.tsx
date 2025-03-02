@@ -22,6 +22,7 @@ export const BlogSchema = z.object({
   status: z.enum(["draft", "published", "archived"]),
   links: z.record(z.any()).nullable().optional(),
   tags: z.array(TagSchema).nullable().optional(),
+  blog_tags: z.array(z.string()).nullable().optional(),
   likes: z.number().int().nonnegative(),
   authors_uuid: z.array(z.string()),
   authors: z.array(z.string()),

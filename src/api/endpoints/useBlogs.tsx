@@ -8,7 +8,10 @@ import { Query } from 'appwrite';
 const DATABASE_ID = '67b1dc430020b4fb23e3';
 const COLLECTION_ID = '67b232540003ed4d8e4f';
 
-// Hook pour supprimer un blog
+/**
+ * Hook to delete a blog.
+ * @returns {Mutation} Mutation object to delete a blog.
+ */
 export const useDeleteBlog = () => {
   const queryClient = useQueryClient();
 
@@ -34,7 +37,11 @@ export const useDeleteBlog = () => {
   });
 };
 
-// Hook pour récupérer un seul blog
+/**
+ * Hook to fetch a single blog by ID.
+ * @param {string} blogId - The ID of the blog to fetch.
+ * @returns {Query} Query object to fetch a single blog.
+ */
 export const useFetchBlog = (blogId?: string) => {
   return useQuery<Blog | null>({
     queryKey: ['blog', blogId],
@@ -64,42 +71,107 @@ export const useFetchBlog = (blogId?: string) => {
     retry: false, // Ne pas essayer en cas d'échec
   });
 };
-export const useFetchBlogs = (status?: string) => {
-  return useQuery<Blog[]>({
-    queryKey: ['blogs', status],
+
+/**
+ * Hook to fetch blog tags from the blog_tags collection.
+ * @returns {Query} Query object with blog tags data
+ */
+export const useFetchBlogTags = () => {
+  return useQuery({
+    queryKey: ['blog_tags'],
     queryFn: async () => {
-      // Si le status n'est pas défini, ne pas ajouter de filtre
-      const filters = status ? [Query.equal('status', status)] : [];
+      try {
+        const response = await databases.listDocuments(DATABASE_ID, '67b2326100053d0e304f', [
+        ]);
 
-      const response = await databases.listDocuments(
-        DATABASE_ID,
-        COLLECTION_ID,
-        filters // Applique le filtre uniquement si `status` est défini
-      );
-
-      const blogs: Blog[] = response.documents.map((doc) => ({
-        $id: doc.$id,
-        title: doc.title || '',
-        content: doc.content || '',
-        slug: doc.slug || '',
-        authors: doc.authors || [],
-        created_at: doc.$createdAt || '',
-        img_url: doc.img_url || '',
-        status: doc.status || '',
-        links: doc.links ? JSON.parse(doc.links as string) : [],
-        tags: doc.tags ? JSON.parse(doc.tags as string) : [],
-        likes: doc.likes || 0,
-        authors_uuid: doc.authors_uuid || [],
-      }));
-
-      return blogs;
+        return response.documents.map(tag => ({
+          value: tag.$id,
+          label: tag.name || tag.$id
+        }));
+      } catch (err) {
+        console.error('Error fetching blog tags:', err);
+        return [];
+      }
     },
-    staleTime: 1000 * 60 * 5,
-    retry: false,
+    staleTime: 1000 * 60 * 60, // Cache for 1 hour
   });
 };
 
-/// Hook pour enregistrer ou mettre à jour un blog
+/**
+ * Hook to fetch all blogs with pagination, search and tag filter support.
+ * @param {string} query - Search query for blog titles
+ * @param {string} tagId - Tag ID to filter blogs
+ * @param {number} page - Current page number
+ * @param {number} limit - Number of items per page
+ * @returns {Query} Query object with blogs data structured for infinite scroll
+ */
+export const useFetchBlogs = (query: string = '', tagId: string = 'all', page: number = 1, limit: number = 12) => {
+  return useQuery({
+    queryKey: ['blogs', query, tagId, page, limit],
+    queryFn: async () => {
+      try {
+        const queryParams = [
+          Query.orderDesc('$createdAt'),
+          Query.limit(limit),
+          Query.offset((page - 1) * limit),
+        ];
+
+        // Only add search query if it's not empty
+        if (query && query.trim() !== '') {
+          queryParams.unshift(Query.search('title', query));
+        }
+
+        // Add tag filter if it's not 'all'
+        if (tagId && tagId !== 'all') {
+          // We need to search in the JSON array
+          // This assumes tags are stored as a JSON string array in the database
+          queryParams.unshift(Query.search('tags', tagId));
+        }
+
+        const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, queryParams);
+
+        const blogs: Blog[] = response.documents.map((doc) => ({
+          $id: doc.$id,
+          title: doc.title || '',
+          content: doc.content || '',
+          slug: doc.slug || '',
+          authors: doc.authors || [],
+          created_at: doc.$createdAt || '',
+          img_url: doc.img_url || '',
+          status: doc.status || '',
+          links: doc.links ? JSON.parse(doc.links as string) : [],
+          tags: doc.tags ? JSON.parse(doc.tags as string) : [],
+          likes: doc.likes || 0,
+          authors_uuid: doc.authors_uuid || [],
+          // Add missing fields based on Blog schema
+          blog_tags: [] // This might need to be populated from somewhere else
+        }));
+
+        const hasNextPage = page * limit < response.total;
+        const hasPreviousPage = page > 1;
+
+        return {
+          data: blogs,
+          isLoading: false,
+          isFetching: false,
+          hasNextPage,
+          hasPreviousPage,
+          total: response.total,
+        };
+      } catch (err) {
+        console.error('Error fetching blogs:', err);
+        throw new Error('Failed to fetch blogs');
+      }
+    },
+    refetchOnWindowFocus: false,
+    retry: 2,
+  });
+};
+
+/**
+ * Hook to save or update a blog.
+ * @returns {Mutation} Mutation object to save or update a blog.
+ */
 export const useSaveBlog = () => {
   const queryClient = useQueryClient();
 
