@@ -76,6 +76,7 @@
     "react-i18next": "^14.1.1",
     "react-resizable-panels": "^2.1.7",
     "react-select": "^5.10.0",
+    "react-share": "^5.2.2",
     "sonner": "^2.0.1",
     "tailwind-merge": "^2.6.0",
     "transliteration": "^2.3.5",

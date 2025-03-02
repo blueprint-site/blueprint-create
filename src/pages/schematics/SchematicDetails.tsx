@@ -9,6 +9,7 @@ import TimerProgress from '@/components/utility/TimerProgress';
 import { useEffect, useState } from 'react';
 import { MultiImageViewer } from '@/components/utility/MultiImageViewer';
 import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext';
+import SocialSharing from "@/components/features/social-sharing/SocialSharing.tsx";
 
 const SchematicDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -119,6 +120,7 @@ const SchematicDetails = () => {
               <ModLoaderDisplay loaders={schematic.modloaders} />
             </div>
           </div>
+          <SocialSharing title={schematic.title}/>
         </CardContent>
       </Card>
     </div>
