@@ -24,7 +24,7 @@ import { useParams } from 'react-router-dom';
 import { useCollectionStore } from '@/api/stores/collectionStore.ts';
 import { useFetchAddon } from '@/api';
 import ModLoaderDisplay from "@/components/common/ModLoaderDisplay.tsx";
-import SocialAddonSharing from "@/components/features/social-sharing/SocialAddonSharing.tsx";
+import SocialSharing from "@/components/features/social-sharing/SocialSharing.tsx";
 
 export default function AddonDetails() {
   const { slug } = useParams();
@@ -345,7 +345,7 @@ export default function AddonDetails() {
                       )
                     )}
                   </div>
-                  <SocialAddonSharing addonName={addon.name} />
+                  <SocialSharing title={addon.name} />
                 </div>
               )}
             </div>

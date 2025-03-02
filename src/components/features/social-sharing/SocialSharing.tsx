@@ -10,11 +10,11 @@ import {
 import { useLocation } from "react-router-dom";
 
 
-export interface SocialAddonSharingProps {
-    addonName: string;
+export interface SocialSharingProps {
+    title: string;
 }
 
-export const SocialAddonSharing = ({addonName}: SocialAddonSharingProps) => {
+export const SocialSharing = ({title}: SocialSharingProps) => {
     const location = useLocation();
     const currentUrl = window.location.origin + location.pathname; // Construct the full URL
 
@@ -22,7 +22,7 @@ export const SocialAddonSharing = ({addonName}: SocialAddonSharingProps) => {
         <>
             <h3>Share on socials</h3>
             <div className={"flex flex-row items-center gap-4 row-4"}>
-                <RedditShareButton url={currentUrl} windowWidth={640} windowHeight={420} title={addonName} >
+                <RedditShareButton url={currentUrl} windowWidth={640} windowHeight={420} title={title} >
                     <RedditIcon className={'rounded-full'} size={32}/>
                 </RedditShareButton>
                 <BlueskyShareButton url={currentUrl} windowWidth={640} windowHeight={420}>
@@ -47,4 +47,4 @@ export const SocialAddonSharing = ({addonName}: SocialAddonSharingProps) => {
     );
 };
 
-export default SocialAddonSharing;
+export default SocialSharing;
