@@ -2,7 +2,8 @@
 import { Control, Path } from 'react-hook-form';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import MarkdownEditor from '@/components/utility/MarkdownEditor';
-import { SchematicFormValues } from '@/schemas/schematic.schema.tsx';
+import {SchematicFormValues} from "@/types";
+
 
 interface FormMarkdownEditorProps {
   name: Path<SchematicFormValues>;

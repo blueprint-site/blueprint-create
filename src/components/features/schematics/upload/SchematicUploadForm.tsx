@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
-import { schematicFormSchema, type SchematicFormValues } from '@/schemas/schematic.schema.tsx';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
@@ -10,6 +9,8 @@ import { FormMarkdownEditor } from './form/FormMarkdownEditor';
 import { MultiSelectCheckboxGroup } from './form/MultiSelectCheckboxGroup';
 import { FormInput } from './form/FormInput';
 import { CategorySelectors } from './form/CategorySelectors';
+import {SchematicFormValues} from "@/types";
+import {schematicFormSchema} from "@/schemas/schematic.schema.tsx";
 
 interface SchematicUploadFormProps {
   onSubmit: (data: SchematicFormValues) => Promise<void>;

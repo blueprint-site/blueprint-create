@@ -12,7 +12,7 @@ import {
 import { Badge } from '@/components/ui/badge.tsx';
 import ModLoaderDisplay from '@/components/common/ModLoaderDisplay.tsx';
 import { useIncrementDownloads } from '@/api/endpoints/useSchematics.tsx';
-import {Schematic} from "@/schemas/schematic.schema.tsx";
+import {Schematic} from "@/types";
 
 interface SchematicCardProps {
   schematic: Schematic;

@@ -46,10 +46,6 @@ export const GitHubRepoSchema = z.object({
 /**
  * Schema for GitHub API response when fetching contributors
  */
+
 export const GitHubContributorsResponseSchema = z.array(GitHubUserSchema);
 
-// Export types based on the schemas
-export type GitHubUser = z.infer<typeof GitHubUserSchema>;
-export type ContributorStats = z.infer<typeof ContributorStatsSchema>;
-export type GitHubRepo = z.infer<typeof GitHubRepoSchema>;
-export type GitHubContributorsResponse = z.infer<typeof GitHubContributorsResponseSchema>;

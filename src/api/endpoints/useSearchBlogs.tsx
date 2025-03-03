@@ -1,6 +1,6 @@
 import searchClient from "@/config/meilisearch";
 import { useQuery } from "@tanstack/react-query";
-import {Blog, SearchBlogProps, SearchBlogResultSchema} from "@/schemas/blog.schema.tsx";
+import {Blog, SearchBlogProps, SearchBlogResultSchema} from "@/types";
 
 
 export const useSearchBlogs = ({

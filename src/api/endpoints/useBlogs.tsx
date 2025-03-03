@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from '@/api';
 import { databases, ID } from '@/config/appwrite.ts';
 import { Query } from 'appwrite';
-import {Blog} from "@/schemas/blog.schema.tsx";
+import { Blog } from '@/types';
 
 // Constantes pour votre base de données
 const DATABASE_ID = '67b1dc430020b4fb23e3';

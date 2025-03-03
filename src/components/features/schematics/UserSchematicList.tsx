@@ -17,7 +17,8 @@ import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
 import { useThemeStore } from '@/api/stores/themeStore.tsx';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx';
 import MinecraftIcon from '@/components/utility/MinecraftIcon.tsx';
-import {Schematic} from "@/schemas/schematic.schema.tsx";
+import {Schematic} from "@/types";
+
 
 const UserSchematicList = () => {
   const { isDarkMode } = useThemeStore();

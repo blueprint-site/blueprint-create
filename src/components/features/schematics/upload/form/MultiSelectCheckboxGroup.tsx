@@ -2,7 +2,7 @@
 import { Control } from 'react-hook-form';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Checkbox } from '@/components/ui/checkbox';
-import { SchematicFormValues } from '@/schemas/schematic.schema.tsx';
+import {SchematicFormValues} from "@/types";
 
 // Explicitly type allowed array fields
 type ArrayField = 'gameVersions' | 'createVersions' | 'modloaders';

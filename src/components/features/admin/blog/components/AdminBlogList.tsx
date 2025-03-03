@@ -12,7 +12,8 @@ import {
 import { Button } from '@/components/ui/button.tsx';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx';
 import { useDeleteBlog, useFetchBlogs, useSaveBlog } from '@/api';
-import {Blog} from "@/schemas/blog.schema.tsx";
+import {Blog} from "@/types";
+
 
 const AdminBlogList = () => {
   const { data: blogs, isLoading, error } = useFetchBlogs();

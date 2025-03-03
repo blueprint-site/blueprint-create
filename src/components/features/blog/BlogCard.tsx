@@ -8,7 +8,8 @@ import {
 } from '@/components/ui/card.tsx';
 import MarkdownDisplay from '@/components/utility/MarkdownDisplay.tsx';
 import BlogTagsDisplay from '@/components/utility/blog/BlogTagsDisplay.tsx';
-import { Blog } from '@/schemas/blog.schema.tsx';
+import {Blog} from "@/types";
+
 
 interface BlogCardProps {
   blog: Blog;

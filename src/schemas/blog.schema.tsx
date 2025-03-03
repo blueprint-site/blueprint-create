@@ -88,12 +88,3 @@ export const SearchBlogResultSchema = z.object({
   page: z.number().int().positive(),
 
 });
-
-// Export types based on the schemas
-export type Blog = z.infer<typeof BlogSchema>;
-export type Tag = z.infer<typeof TagSchema>;
-export type CreateBlogInput = z.infer<typeof CreateBlogSchema>;
-export type UpdateBlogInput = z.infer<typeof UpdateBlogSchema>;
-export type BlogFilter = z.infer<typeof BlogFilterSchema>;
-export type SearchBlogProps = z.infer<typeof SearchBlogProps>;
-export type SearchBlogResultSchema = z.infer<typeof SearchBlogResultSchema>;
