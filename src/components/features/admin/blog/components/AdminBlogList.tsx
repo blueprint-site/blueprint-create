@@ -12,7 +12,7 @@ import {
 import { Button } from '@/components/ui/button.tsx';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx';
 import { useDeleteBlog, useFetchBlogs, useSaveBlog } from '@/api';
-import { Blog } from '@/types';
+import {Blog} from "@/schemas/blog.schema.tsx";
 
 const AdminBlogList = () => {
   const { data: blogs, isLoading, error } = useFetchBlogs();
@@ -152,7 +152,7 @@ const AdminBlogList = () => {
   if (isLoading) return <p>Loading blogs...</p>;
   if (error) return <p>Error loading blogs: {(error as Error).message}</p>;
 
-  return <AdminBlogTable columns={columns} data={blogs || []} />;
+  return <AdminBlogTable columns={columns} data={blogs?.data || []} />;
 };
 
 export default AdminBlogList;
