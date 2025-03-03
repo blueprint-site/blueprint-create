@@ -60,7 +60,7 @@
     "embla-carousel-react": "^8.5.2",
     "expo-auth-session": "^6.0.3",
     "expo-web-browser": "^14.0.2",
-    "framer-motion": "^12.4.3",
+    "framer-motion": "^12.4.7",
     "i18next": "^23.11.3",
     "i18next-browser-languagedetector": "^7.2.1",
     "i18next-http-backend": "^2.5.1",
