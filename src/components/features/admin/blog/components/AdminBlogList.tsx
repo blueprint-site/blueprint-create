@@ -73,7 +73,7 @@ const AdminBlogList = () => {
       ),
     },
     {
-      accessorKey: 'created_at',
+      accessorKey: '$createdAt',
       header: ({ column }) => (
         <Button
           variant='ghost'
