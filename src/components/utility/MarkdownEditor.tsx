@@ -211,7 +211,7 @@ const MarkdownEditor = ({
   return (
     <MDXEditor
         className={`${isDarkMode ? 'dark-theme' : ''} ${className || ''}`}
-        markdown={value}
+        markdown={value || ''}
       onChange={onChange}
       plugins={plugins}
       placeholder={placeholder || 'Write something...'}
