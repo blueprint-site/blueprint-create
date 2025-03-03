@@ -1,5 +1,5 @@
 // /src/componets/utility/MarkdownEditor.tsx
-
+import {useThemeStore} from "@/api/stores/themeStore.tsx";
 import '@mdxeditor/editor/style.css';
 import {
   MDXEditor,
@@ -35,7 +35,6 @@ import {
   quotePlugin,
   RealmPlugin,
 } from '@mdxeditor/editor';
-
 // Constants
 const DEFAULT_SNIPPET_CONTENT = `
 export default function App() {
@@ -81,7 +80,6 @@ const SANDPACK_CONFIG: SandpackConfig = {
     },
   ],
 };
-
 const CODE_MIRROR_LANGUAGES = {
   js: 'JavaScript',
   javascript: 'JavaScript',
@@ -104,6 +102,7 @@ const createPlugins = (configs: PluginConfig[]) =>
 
 interface MarkdownEditorProps {
   value: string;
+  className?: string;
   onChange: (val: string) => void;
   showCodeBlocks?: boolean;
   showImages?: boolean;
@@ -118,6 +117,7 @@ interface MarkdownEditorProps {
 }
 
 const MarkdownEditor = ({
+  className = '',
   value,
   onChange,
   showCodeBlocks = true,
@@ -207,11 +207,11 @@ const MarkdownEditor = ({
       })
     },
   ]);
-
+  const { isDarkMode } = useThemeStore();
   return (
     <MDXEditor
-      className='mdxEditor flex flex-col gap-[1px]'
-      markdown={value}
+        className={`${isDarkMode ? 'dark-theme' : ''} ${className || ''}`}
+        markdown={value || ''}
       onChange={onChange}
       plugins={plugins}
       placeholder={placeholder || 'Write something...'}

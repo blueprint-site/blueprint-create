@@ -8,7 +8,7 @@ import DevinsBadges from '@/components/utility/DevinsBadges.tsx';
 import { Badge } from '@/components/ui/badge.tsx';
 
 import { useMemo } from 'react';
-import { Addon } from '@/schemas/addon.schema.tsx';
+import { Addon } from '@/types';
 
 const MODLOADERS = ['forge', 'fabric', 'neoforge', 'quilt'];
 

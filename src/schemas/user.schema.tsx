@@ -4,7 +4,7 @@ import { z } from "zod";
 /**
  * Schema for Target object in User
  */
-const TargetSchema = z.object({
+export const TargetSchema = z.object({
   $id: z.string(),
   $createdAt: z.string(),
   $updatedAt: z.string(),
@@ -18,7 +18,7 @@ const TargetSchema = z.object({
 /**
  * Schema for UserPreferences object
  */
-const UserPreferencesSchema = z.object({
+export const UserPreferencesSchema = z.object({
   theme: z.enum(["light", "dark"]),
   language: z.string(),
   notificationsEnabled: z.boolean(),
@@ -76,10 +76,3 @@ export const UpdateUserPreferencesSchema = z.object({
   notificationsEnabled: z.boolean().optional()
 });
 
-// Export types based on the schemas
-export type User = z.infer<typeof UserSchema>;
-export type Target = z.infer<typeof TargetSchema>;
-export type UserPreferences = z.infer<typeof UserPreferencesSchema>;
-export type CreateUserInput = z.infer<typeof CreateUserSchema>;
-export type UpdateUserProfileInput = z.infer<typeof UpdateUserProfileSchema>;
-export type UpdateUserPreferencesInput = z.infer<typeof UpdateUserPreferencesSchema>;

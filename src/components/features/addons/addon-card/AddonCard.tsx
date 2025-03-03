@@ -9,7 +9,7 @@ import { VersionBadges } from './VersionBadges';
 import { AddonStats } from './AddonStats';
 import { ExternalLinks } from './ExternalLinks';
 import { useNavigate } from 'react-router-dom';
-import { Addon } from '@/schemas/addon.schema.tsx';
+import { Addon } from '@/types';
 
 interface AddonListItemProps {
   addon: Addon;

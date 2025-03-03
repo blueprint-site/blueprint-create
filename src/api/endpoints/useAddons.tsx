@@ -2,7 +2,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from '@/api';
 import { databases, ID } from '@/config/appwrite.ts';
 import { Query } from 'appwrite';
-import { Addon } from '@/schemas/addon.schema.tsx';
+import { Addon } from '@/types';
+
 
 const DATABASE_ID = '67b1dc430020b4fb23e3';
 const COLLECTION_ID = '67b1dc4b000762a0ccc6';

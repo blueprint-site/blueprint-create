@@ -11,8 +11,8 @@ import {
 } from '@/components/ui/card.tsx';
 import { Badge } from '@/components/ui/badge.tsx';
 import ModLoaderDisplay from '@/components/common/ModLoaderDisplay.tsx';
-import { Schematic } from '@/types';
 import { useIncrementDownloads } from '@/api/endpoints/useSchematics.tsx';
+import {Schematic} from "@/types";
 
 interface SchematicCardProps {
   schematic: Schematic;

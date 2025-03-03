@@ -13,7 +13,7 @@ import { ItemGrid } from '@/components/layout/ItemGrid';
 import { useSchematicFilters } from '@/hooks/useSchematicFilters';
 import { Link } from 'react-router-dom';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import { Schematic } from '@/schemas/schematic.schema';
+import {Schematic} from "@/types";
 
 function SchematicsList() {
   const navigate = useNavigate();

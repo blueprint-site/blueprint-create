@@ -24,6 +24,7 @@ const AdminBlogEditor = () => {
     if (!LoggedUser) return;
 
     if (id && !isNew && blog) {
+      console.log(blog);
       setBlogState(blog);
     } else {
       setBlogState({
@@ -36,10 +37,9 @@ const AdminBlogEditor = () => {
         likes: 0,
         authors_uuid: [LoggedUser.user?.$id || ''],
         authors: [LoggedUser.user?.name || ''],
-        created_at: new Date().toISOString(),
       });
     }
-  }, [blog, isNew, LoggedUser]);
+  }, [id, blog, isNew, LoggedUser]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -78,68 +78,74 @@ const AdminBlogEditor = () => {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <>
-      <div className='mt-4 text-center'>
-        <h1>Blog Article Editor</h1>
-      </div>
-      <Card className='mx-auto w-full p-4 py-4'>
-        <CardContent className='w-full'>
-          <div className='flex flex-row gap-4 py-4'>
-            <div className='w-1/3'>
-              <ImageUploader
-                value={blogState?.img_url}
-                onChange={(base64) =>
-                  setBlogState((prev) => (prev ? { ...prev, img_url: base64 ?? undefined } : null))
-                }
-              />
-            </div>
-            <div className='w-full justify-end'>
-              <h3>Title</h3>
-              <Input
-                name='title'
-                value={blogState?.title || ''}
-                onChange={handleChange}
-                placeholder='Title'
-                className='mb-2 w-full'
-              />
-              <h3>Slug</h3>
-              <Input
-                name='slug'
-                value={blogState?.slug || ''}
-                onChange={handleChange}
-                placeholder='Slug'
-                className='mb-2 w-full'
-              />
-              <h3>Tags</h3>
-              <TagSelector
-                value={blogState?.tags || []
-              }
-                db={"blog"}
-                onChange={(value: Tag[]) =>
-                  setBlogState((prev) => (prev ? { ...prev, tags: value ?? undefined } : null))
-                }
-              />
-            </div>
-          </div>
-          <div className='w-full'>
-            <h3>Content</h3>
-            <MarkdownEditor
-              value={blogState?.content || ''}
-              onChange={(value) =>
-                setBlogState((prev) => (prev ? { ...prev, content: value ?? undefined } : null))
-              }
-            />
-          </div>
+      <Card className="mx-auto w-full p-4">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-xl font-semibold">Blog Article Editor</h1>
           <Button
-            className='float-end py-4'
-            onClick={handleSave}
-            disabled={saveBlogMutation.isPending}
+              onClick={handleSave}
+              disabled={saveBlogMutation.isPending}
+              className="ml-auto"
           >
             {saveBlogMutation.isPending ? 'Saving...' : 'Save'}
           </Button>
-        </CardContent>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {/* Sidebar (Metadata) */}
+          <div className="md:col-span-1">
+            <CardContent className="space-y-4">
+              <ImageUploader
+                  value={blogState?.img_url}
+                  onChange={(base64) =>
+                      setBlogState((prev) => (prev ? { ...prev, img_url: base64 ?? undefined } : null))
+                  }
+              />
+              <div className="space-y-2">
+                <h3 className="text-sm font-medium">Title</h3>
+                <Input
+                    name="title"
+                    value={blogState?.title || ''}
+                    onChange={handleChange}
+                    placeholder="Title"
+                    className="w-full"
+                />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-sm font-medium">Slug</h3>
+                <Input
+                    name="slug"
+                    value={blogState?.slug || ''}
+                    onChange={handleChange}
+                    placeholder="Slug"
+                    className="w-full"
+                />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-sm font-medium">Tags</h3>
+                <TagSelector
+                    value={blogState?.tags || []}
+                    db="blog"
+                    onChange={(value: Tag[]) =>
+                        setBlogState((prev) => (prev ? { ...prev, tags: value ?? undefined } : null))
+                    }
+                />
+              </div>
+            </CardContent>
+          </div>
+
+          {/* Main Content (Markdown Editor) */}
+          <div className="md:col-span-3">
+            <div className="h-[calc(100vh-200px)] overflow-auto">
+              <MarkdownEditor
+                  value={blog?.content ?? ''}
+                  onChange={(value) =>
+                      setBlogState((prev) => (prev ? { ...prev, content: value ?? undefined } : null))
+                  }
+              />
+            </div>
+          </div>
+        </div>
       </Card>
-    </>
   );
 };
 
