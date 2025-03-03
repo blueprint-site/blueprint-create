@@ -189,5 +189,6 @@ export const AddonSchema = z.object({
   loaders: z.array(z.string()).nullable(),
   isChecked: z.boolean(),
   minecraft_versions: z.array(z.string()).optional().nullable(),
+  create_versions: z.array(z.string()).optional().nullable(),
 });
 
