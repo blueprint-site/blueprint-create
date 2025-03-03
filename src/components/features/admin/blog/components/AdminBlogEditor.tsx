@@ -37,7 +37,6 @@ const AdminBlogEditor = () => {
         likes: 0,
         authors_uuid: [LoggedUser.user?.$id || ''],
         authors: [LoggedUser.user?.name || ''],
-        created_at: new Date().toISOString(),
       });
     }
   }, [id, blog, isNew, LoggedUser]);

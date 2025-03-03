@@ -1,8 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Blog } from '@/types';
 import { toast } from '@/api';
 import { databases, ID } from '@/config/appwrite.ts';
 import { Query } from 'appwrite';
+import {Blog} from "@/schemas/blog.schema.tsx";
 
 // Constantes pour votre base de données
 const DATABASE_ID = '67b1dc430020b4fb23e3';
@@ -51,11 +51,12 @@ export const useFetchBlog = (blogId?: string) => {
       const response = await databases.getDocument(DATABASE_ID, COLLECTION_ID, blogId);
       const blogData: Blog = {
         $id: response.$id,
+        $createdAt: response.$createdAt || '',
+        $updatedAt: response.$updatedAt || '',
         title: response.title || '',
         content: response.content || '',
         slug: response.slug || '',
         authors: response.author || '',
-        created_at: response.$createdAt || '',
         img_url: response.img_url || '',
         status: response.status || '',
         links: response.links ? JSON.parse(response.links as string) : [],
@@ -132,11 +133,12 @@ export const useFetchBlogs = (query: string = '', tagId: string = 'all', page: n
 
         const blogs: Blog[] = response.documents.map((doc) => ({
           $id: doc.$id,
+          $createdAt: doc.$createdAt || '',
+          $updatedAt: doc.$updatedAt || '',
           title: doc.title || '',
           content: doc.content || '',
           slug: doc.slug || '',
           authors: doc.authors || [],
-          created_at: doc.$createdAt || '',
           img_url: doc.img_url || '',
           status: doc.status || '',
           links: doc.links ? JSON.parse(doc.links as string) : [],
