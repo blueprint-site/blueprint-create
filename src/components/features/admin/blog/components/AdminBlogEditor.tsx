@@ -24,6 +24,7 @@ const AdminBlogEditor = () => {
     if (!LoggedUser) return;
 
     if (id && !isNew && blog) {
+      console.log(blog)
       setBlogState(blog);
     } else {
       setBlogState({
@@ -124,10 +125,10 @@ const AdminBlogEditor = () => {
           <div className='w-full'>
             <h3>Content</h3>
             <MarkdownEditor
-              value={blogState?.content || ''}
-              onChange={(value) =>
-                setBlogState((prev) => (prev ? { ...prev, content: value ?? undefined } : null))
-              }
+                value={blogState?.content || ''}
+                onChange={(value) =>
+                  setBlogState((prev) => (prev ? { ...prev, content: value ?? undefined } : null))
+                     }
             />
           </div>
           <Button
