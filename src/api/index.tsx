@@ -7,7 +7,7 @@ export {
   useIsDesktop,
   useCurrentBreakpoint,
 } from './endpoints/useBreakpoints.tsx';
-export { useToast, toast } from './endpoints/useToast.tsx';
+export { useToast, toast } from '../hooks/useToast.tsx';
 export { useSystemThemeSync } from './endpoints/useSystemThemeSync.tsx';
 export {
   useDeleteAddon,
