@@ -15,7 +15,8 @@ import {
   FormDescription,
   FormMessage,
 } from '@/components/ui/form';
-import { SchematicFormValues } from '@/schemas/schematic.schema.tsx';
+import {SchematicFormValues} from "@/types";
+
 
 // Explicitly type allowed file fields
 type FileField = 'schematicFile' | 'imageFiles';

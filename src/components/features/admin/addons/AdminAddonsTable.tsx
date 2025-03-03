@@ -7,7 +7,7 @@ import { DataTable } from '@/components/tables/addonChecks/data-table';
 import { Button } from '@/components/ui/button.tsx';
 import { useFetchAddons, useSaveAddon } from '@/api/endpoints/useAddons.tsx';
 import { toast } from '@/api';
-import { Addon } from "@/schemas/addon.schema.tsx";
+import { Addon } from "@/types";
 import { Switch } from '@/components/ui/switch';
 
 const AdminAddonsTable = () => {

@@ -4,11 +4,11 @@ import { storage } from '@/config/appwrite';
 import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext';
 import SchematicUploadLoadingOverlay from '@/components/loading-overlays/SchematicUploadLoadingOverlay';
 import { SchematicUploadForm } from './SchematicUploadForm';
-import { type SchematicFormValues } from '@/schemas/schematic.schema';
 import { SchematicPreview } from './SchematicUploadPreview';
 import { generateSlug } from '../utils/generateSlug';
 import { useSaveSchematics } from '@/api/endpoints/useSchematics';
 import {createVersion, minecraftVersion} from "@/config/minecraft.ts";
+import {SchematicFormValues} from "@/types";
 
 function SchematicsUpload() {
   const navigate = useNavigate();

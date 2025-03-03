@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-
 @custom-variant dark (.dark &);
 
 @theme {

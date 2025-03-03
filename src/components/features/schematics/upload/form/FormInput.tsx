@@ -2,7 +2,8 @@
 import { Control } from 'react-hook-form';
 import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { SchematicFormValues } from '@/schemas/schematic.schema.tsx';
+import {SchematicFormValues} from "@/types";
+
 
 // Explicitly type allowed input fields
 type InputField = 'title' | 'description';

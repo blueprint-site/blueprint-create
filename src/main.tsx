@@ -4,7 +4,6 @@ import App from './App';
 import './index.css';
 import 'minecraft-textures-library/src/templates/create-textures.css';
 import 'minecraft-textures-library/src/templates/mc-classic-textures.css'
-
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const queryClient = new QueryClient();
 

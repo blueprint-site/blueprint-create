@@ -1,6 +1,14 @@
 // src/schemas/blog.schema.tsx
 import { z } from "zod";
 
+export const SearchBlogProps = z.object({
+  query: z.string(),
+  page: z.number(),
+  tags: z.array(z.string()),
+  id: z.string(),
+});
+
+
 /**
  * Schema for Tag object in Blog
  */
@@ -15,6 +23,8 @@ export const TagSchema = z.object({
  */
 export const BlogSchema = z.object({
   $id: z.string(),
+  $createdAt: z.string(),
+  $updatedAt: z.string(),
   title: z.string().min(5, "Title must be at least 5 characters long"),
   content: z.string().min(20, "Content must be at least 20 characters long"),
   slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must be URL-friendly"),
@@ -22,11 +32,9 @@ export const BlogSchema = z.object({
   status: z.enum(["draft", "published", "archived"]),
   links: z.record(z.any()).nullable().optional(),
   tags: z.array(TagSchema).nullable().optional(),
-  blog_tags: z.array(z.string()).nullable().optional(),
   likes: z.number().int().nonnegative(),
   authors_uuid: z.array(z.string()),
   authors: z.array(z.string()),
-  created_at: z.string()
 });
 
 /**
@@ -68,9 +76,15 @@ export const BlogFilterSchema = z.object({
   search: z.string().optional()
 });
 
-// Export types based on the schemas
-export type Blog = z.infer<typeof BlogSchema>;
-export type Tag = z.infer<typeof TagSchema>;
-export type CreateBlogInput = z.infer<typeof CreateBlogSchema>;
-export type UpdateBlogInput = z.infer<typeof UpdateBlogSchema>;
-export type BlogFilter = z.infer<typeof BlogFilterSchema>;
+export const SearchBlogResultSchema = z.object({
+  data: z.array(BlogSchema),
+  isLoading: z.boolean(),
+  isError: z.boolean(),
+  error: z.instanceof(Error).nullable(),
+  isFetching: z.boolean(),
+  hasNextPage: z.boolean(),
+  hasPreviousPage: z.boolean(),
+  totalHits: z.number().int().nonnegative(),
+  page: z.number().int().positive(),
+
+});

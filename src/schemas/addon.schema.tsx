@@ -191,19 +191,3 @@ export const AddonSchema = z.object({
   minecraft_versions: z.array(z.string()).optional().nullable(),
 });
 
-export type Addon = z.infer<typeof AddonSchema>;
-export type Screenshot = z.infer<typeof ScreenshotSchema>;
-export type Links = z.infer<typeof LinksSchema>;
-export type Category = z.infer<typeof CategorySchema>;
-export type Author = z.infer<typeof AuthorSchema>;
-export type Logo = z.infer<typeof LogoSchema>;
-export type Hash = z.infer<typeof HashSchema>;
-export type SortableGameVersion = z.infer<typeof SortableGameVersionSchema>;
-export type Dependency = z.infer<typeof DependencySchema>;
-export type Module = z.infer<typeof ModuleSchema>;
-export type LatestFilesIndex = z.infer<typeof LatestFilesIndexSchema>;
-export type SocialLink = z.infer<typeof SocialLinkSchema>;
-export type ServerAffiliation = z.infer<typeof ServerAffiliationSchema>;
-export type LatestFile = z.infer<typeof LatestFileSchema>;
-export type CurseForgeAddon = z.infer<typeof CurseForgeAddonSchema>;
-export type ModrinthAddon = z.infer<typeof ModrinthAddonSchema>;
