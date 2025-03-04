@@ -1,5 +1,5 @@
 import { Star, StarOff } from 'lucide-react';
-import React, { memo } from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import { useCollectionStore } from '@/api/stores/collectionStore.ts';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,9 +7,9 @@ import ModLoaders from '@/components/features/addons/addon-card/ModLoaders';
 import CategoryBadges from '@/components/features/addons/addon-card/CategoryBadges';
 import { VersionBadges } from './VersionBadges';
 import { AddonStats } from './AddonStats';
-import { ExternalLinks } from './ExternalLinks';
 import { useNavigate } from 'react-router-dom';
 import { Addon } from '@/types';
+import {ExternalLinks} from "@/components/features/addons/addon-card/ExternalLinks.tsx";
 
 interface AddonListItemProps {
   addon: Addon;
@@ -19,6 +19,20 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
   const navigate = useNavigate(); // Hook called at top level
   const { collection, addAddon, removeAddon } = useCollectionStore();
   const isInCollection = collection.includes(addon.slug);
+  const [availableOn, setAvailableOn] = useState<string[]>([]);
+
+  useEffect(() => {
+    const platforms: string[] = [];
+
+    if (addon.curseforge_raw) {
+      platforms.push('curseforge');
+    }
+    if (addon.modrinth_raw) {
+      platforms.push('modrinth');
+    }
+
+    setAvailableOn(platforms);
+  }, [addon.curseforge_raw, addon.modrinth_raw]);
 
   const handleCollectionAction = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent navigation when clicking collection button
@@ -66,8 +80,8 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
 
         <ExternalLinks
           slug={addon.slug}
-          curseforge_raw={addon.curseforge_raw || {}}
-          modrinth_raw={addon.modrinth_raw || {}}
+          curseforge={availableOn.includes('curseforge')}
+          modrinth={availableOn.includes('modrinth')}
         />
       </CardContent>
     </Card>
