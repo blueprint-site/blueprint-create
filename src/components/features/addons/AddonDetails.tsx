@@ -8,7 +8,8 @@ import {
     AddonDetailsDescription,
     AddonDetailsError,
     AddonDetailsGallery,
-    AddonDetailsHeader, AddonDetailsLoading
+    AddonDetailsHeader,
+    AddonDetailsLoading,
 } from "@/components/features/addons/addon-details";
 
 export default function AddonDetails() {
