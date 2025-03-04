@@ -64,4 +64,3 @@ export const AddonDetailsHeader = ({title = '', description =  '', downloads = 0
     </CardHeader>
 )
 }
-export default AddonDetailsHeader;

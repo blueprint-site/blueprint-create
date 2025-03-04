@@ -79,4 +79,3 @@ export const AddonDetailsGallery = ({gallery_small = [], addon_name = ''} : Addo
     )
 
 }
-export default AddonDetailsGallery;

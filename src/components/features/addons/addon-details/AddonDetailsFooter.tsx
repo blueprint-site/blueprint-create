@@ -31,7 +31,7 @@ export const AddonDetailFooter  = ({
                                         (author) => (
 
                                             <>
-                                                <Avatar className={"h-8"} >
+                                                <Avatar className={"h-8 w-8"} >
                                                     <img  src={author.avatarUrl || ''} alt={author.name} />
                                                 </Avatar>
                                                 <a
@@ -76,4 +76,3 @@ export const AddonDetailFooter  = ({
         </Card>
     )
 }
-export default AddonDetailFooter

@@ -55,4 +55,3 @@ export const AddonDetailsDescription = ({description = ''}: AddonDetailsDescript
 
     )
 }
-export default AddonDetailsDescription;

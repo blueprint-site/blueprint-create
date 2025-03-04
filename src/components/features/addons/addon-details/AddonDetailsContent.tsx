@@ -6,25 +6,36 @@ import {ExternalLinks} from "@/components/features/addons/addon-card/ExternalLin
 import {CardContent} from "@/components/ui/card.tsx";
 import {ReactNode, useEffect, useState} from "react";
 import {CurseForgeAddon, ModrinthAddon} from "@/types";
+import {Bug, Github, Globe} from "lucide-react";
 
 
 export interface AddonDetailsParams {
     versions: string[];
     loaders: string[];
     categories: string[];
-    links?:   {
-        icon: ReactNode,
-        label: string;
-        url: string;
-    }[
-    ] ;
     slug: string;
     curseforge_raw?: CurseForgeAddon;
     modrinth_raw?: ModrinthAddon;
 }
-export const AddonDetailsContent = ({versions = [],loaders = [], categories = [], links = [{icon: '', label: '', url: ''}] , slug = '', curseforge_raw, modrinth_raw }: AddonDetailsParams) => {
+export const AddonDetailsContent = ({
+                                        versions = [],
+                                        loaders = [],
+                                        categories = [],
+                                        slug = '',
+                                        curseforge_raw,
+                                        modrinth_raw
+}: AddonDetailsParams) => {
     const [availableOn, setAvailableOn] = useState<string[]>([]);
+    const createLink = (icon: ReactNode, label: string, url?: string) => {
+        return url ? { icon, label, url } : null;
+    };
+    const { sourceUrl, issuesUrl, websiteUrl } = curseforge_raw?.links || {};
 
+    const externalLinks = [
+        createLink(<Github className="h-4 w-4" />, "Source Code", sourceUrl || ''),
+        createLink(<Bug className="h-4 w-4" />, "Issue Tracker", issuesUrl || ''),
+        createLink(<Globe className="h-4 w-4" />, "Website", websiteUrl),
+    ].filter((link): link is { icon: ReactNode; label: string; url: string } => link !== null);
     useEffect(() => {
         const platforms: string[] = [];
 
@@ -69,7 +80,7 @@ export const AddonDetailsContent = ({versions = [],loaders = [], categories = []
                     <div>
                         <h3 className='mb-2 text-sm font-semibold'>Links</h3>
                         <div className='grid grid-cols-1 gap-2'>
-                            {links.map((link, index) => (
+                            {externalLinks.map((link, index) => (
                                 <Button key={index} variant='outline' className='w-full justify-start' asChild>
                                     <a href={link.url} target='_blank' rel='noopener noreferrer'>
                                         {link.icon}
@@ -93,4 +104,3 @@ export const AddonDetailsContent = ({versions = [],loaders = [], categories = []
         </CardContent>
     )
 }
-export default AddonDetailsContent;
