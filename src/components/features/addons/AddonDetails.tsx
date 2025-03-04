@@ -1,42 +1,30 @@
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
+import { Card, CardContent} from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import CategoryBadges from '@/components/features/addons/addon-card/CategoryBadges';
 import { AddonStats } from '@/components/features/addons/addon-card/AddonStats';
-import { ExternalLinks } from '@/components/features/addons/addon-card/ExternalLinks';
 import {
-  Star,
-  StarOff,
   ChevronLeft,
   ChevronRight,
-  Download,
-  Heart,
   Github,
   Globe,
   Bug,
 } from 'lucide-react';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
-import { useEffect, useState } from 'react';
+import {ReactNode, useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
-import { useCollectionStore } from '@/api/stores/collectionStore.ts';
 import { useFetchAddon } from '@/api';
-import ModLoaderDisplay from "@/components/common/ModLoaderDisplay.tsx";
+
 import SocialSharing from "@/components/features/social-sharing/SocialSharing.tsx";
+import {CurseForgeAddon, ModrinthAddon} from "@/types";
+import AddonDetailsHeader from "@/components/features/addons/addon-details/AddonDetailsHeader.tsx";
+import AddonDetailsContent from "@/components/features/addons/addon-details/AddonDetailsContent.tsx";
 
 export default function AddonDetails() {
   const { slug } = useParams();
   const [description, setDescription] = useState<string>('');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const { collection, addAddon, removeAddon } = useCollectionStore();
-  const isInCollection = collection.includes(slug || '');
 
-  const handleCollectionAction = () => {
-    if (!slug) return;
-    isInCollection ? removeAddon(slug) : addAddon(slug);
-  };
   const { data: addon, isLoading, error } = useFetchAddon(slug);
 
   console.log(addon)
@@ -114,44 +102,35 @@ export default function AddonDetails() {
     );
   }
   const modrinthData =
-    typeof addon.modrinth_raw === 'string' ? JSON.parse(addon.modrinth_raw) : addon.modrinth_raw;
+    typeof addon.modrinth_raw === 'string' ? JSON.parse(addon.modrinth_raw) as ModrinthAddon : addon.modrinth_raw as ModrinthAddon;
+
   const curseforgeData =
     typeof addon.curseforge_raw === 'string'
       ? JSON.parse(addon.curseforge_raw)
       : addon.curseforge_raw;
 
   const gallery = modrinthData?.gallery ?? [];
+  console.log(modrinthData)
 
   const totalDownloads = (modrinthData?.downloads || 0) + (curseforgeData?.downloadCount || 0);
+
+
+  const createLink = (icon: ReactNode, label: string, url?: string) => {
+    return url ? { icon, label, url } : null;
+  };
+
+
+
+    const { links } = curseforgeData || {};
+  const { sourceUrl, issuesUrl, websiteUrl } = links || {};
+
   const externalLinks = [
-    ...(curseforgeData?.links?.sourceUrl
-      ? [
-          {
-            icon: <Github className='h-4 w-4' />,
-            label: 'Source Code',
-            url: curseforgeData.links.sourceUrl,
-          },
-        ]
-      : []),
-    ...(curseforgeData?.links?.issuesUrl
-      ? [
-          {
-            icon: <Bug className='h-4 w-4' />,
-            label: 'Issue Tracker',
-            url: curseforgeData.links.issuesUrl,
-          },
-        ]
-      : []),
-    ...(curseforgeData?.links?.websiteUrl
-      ? [
-          {
-            icon: <Globe className='h-4 w-4' />,
-            label: 'Website',
-            url: curseforgeData.links.websiteUrl,
-          },
-        ]
-      : []),
-  ];
+    createLink(<Github className="h-4 w-4" />, "Source Code", sourceUrl),
+    createLink(<Bug className="h-4 w-4" />, "Issue Tracker", issuesUrl),
+    createLink(<Globe className="h-4 w-4" />, "Website", websiteUrl),
+  ].filter((link): link is { icon: ReactNode; label: string; url: string } => link !== null);
+
+
   const  navigateGallery = async (direction: 'prev' | 'next') => {
     setCurrentImageIndex((prev) => {
       if (direction === 'prev') {
@@ -163,98 +142,31 @@ export default function AddonDetails() {
 
   return (
     <div className='container mx-auto space-y-8 px-4 py-8'>
-      {/* Header Card */}
+
       <Card>
-        <CardHeader className='space-y-6'>
-          <div className='flex items-start gap-4'>
-            <img
-              src={addon.icon}
-              alt={`${addon.name} icon`}
-              className='h-16 w-16 rounded-lg border'
-            />
-            <div className='min-w-0 flex-1'>
-              <div className='flex items-center justify-between'>
-                <h1 className='mb-2 truncate text-2xl font-bold'>{addon.name}</h1>
-                <Button
-                  variant='outline'
-                  size='icon'
-                  className='h-8 w-8 rounded-full'
-                  onClick={handleCollectionAction}
-                >
-                  {isInCollection ? <Star /> : <StarOff />}
-                </Button>
-              </div>
-              <p className='text-foreground-muted'>{addon.description}</p>
-            </div>
-          </div>
 
-          <div className='flex flex-wrap items-center gap-4'>
-            <div className='flex items-center gap-2'>
-              <Download className='h-4 w-4' />
-              <span className='text-foreground-muted'>
-                {totalDownloads.toLocaleString()} downloads
-              </span>
-            </div>
-            {modrinthData?.follows && (
-              <div className='flex items-center gap-2'>
-                <Heart className='h-4 w-4' />
-                <span className='text-foreground-muted'>
-                  {modrinthData.follows.toLocaleString()} followers
-                </span>
-              </div>
-            )}
-          </div>
+        {/* Header Card */}
 
-          <Separator />
-          <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-            <div className='space-y-4'>
-              <div>
-                <h3 className='mb-2 text-sm font-semibold'>Versions</h3>
-                <div className='flex flex-wrap gap-2'>
-                  {addon.minecraft_versions?.map((version) => (
-                    <Badge key={version} variant='outline'>
-                      {version}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
+      <AddonDetailsHeader
+          title={addon.name}
+          description={addon.description}
+          downloads={modrinthData?.downloads || 0}
+          follows={modrinthData?.follows || 0}
+          icon={addon.icon}
+      />
 
-              <div>
-                <h3 className='mb-2 text-sm font-semibold'>Mod Loaders</h3>
-                <ModLoaderDisplay loaders={addon.loaders || []}/>
-              </div>
+        {/* Content Card */}
 
-              <div>
-                <h3 className='mb-2 text-sm font-semibold'>Categories</h3>
-                <CategoryBadges categories={addon.categories} />
-              </div>
-            </div>
-            <div className='space-y-4'>
-              <div>
-                <h3 className='mb-2 text-sm font-semibold'>Links</h3>
-                <div className='grid grid-cols-1 gap-2'>
-                  {externalLinks.map((link, index) => (
-                    <Button key={index} variant='outline' className='w-full justify-start' asChild>
-                      <a href={link.url} target='_blank' rel='noopener noreferrer'>
-                        {link.icon}
-                        <span className='ml-2'>{link.label}</span>
-                      </a>
-                    </Button>
-                  ))}
-                </div>
-              </div>
+      <AddonDetailsContent
+          versions={addon.minecraft_versions || []}
+          loaders={addon.loaders || []}
+          categories={addon.categories || []}
+          links={externalLinks || []}
+          slug={addon.slug}
+          modrinth_raw={addon.modrinth_raw as ModrinthAddon}
+          curseforge_raw={addon.curseforge_raw as CurseForgeAddon}
+      />
 
-              <div>
-                <h3 className='mb-2 text-sm font-semibold'>Available On</h3>
-                <ExternalLinks
-                  slug={addon.slug}
-                  curseforge_raw={addon.curseforge_raw || {}}
-                  modrinth_raw={addon.modrinth_raw || {}}
-                />
-              </div>
-            </div>
-          </div>
-        </CardHeader>
       </Card>
 
       {/* Gallery Card */}
