@@ -16,7 +16,11 @@ export function ListPageLayout({
   const { isDarkMode } = useThemeStore();
 
   return (
-    <div className={cn(`flex min-h-screen w-full ${isDarkMode ? 'dark' : ''}`, className)}>
+    <div
+      className={cn(
+        `flex min-h-screen w-full flex-col md:flex-row ${isDarkMode ? 'dark' : ''}`,
+        className
+      )}>
       <AppHeader />
       {children}
       <RotatingCogwheel />
@@ -24,7 +28,7 @@ export function ListPageLayout({
   );
 }
 
-export function ListPageSidebar({
+export function ListPageFilters({
   children,
   className,
 }: {
@@ -32,7 +36,9 @@ export function ListPageSidebar({
   className?: string;
 }) {
   return (
-    <aside className={cn('bg-background mt-16 w-64 shrink-0 p-4', className)}>{children}</aside>
+    <div className={cn('bg-surface-1 mt-16 w-full shrink-0 p-4 md:w-64', className)}>
+      {children}
+    </div>
   );
 }
 
@@ -48,7 +54,7 @@ export function ListPageContent({
   return (
     <main
       className={cn(
-        'flex h-screen w-full flex-col justify-between overflow-scroll pt-16',
+        'flex h-screen w-full flex-col justify-between overflow-scroll md:pt-16',
         className
       )}>
       <div

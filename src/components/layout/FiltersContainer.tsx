@@ -13,13 +13,13 @@ export function FiltersContainer({
   className
 }: FiltersContainerProps) {
   return (
-    <div className={className}>
+    <div className={`w-full ${className}`}>
       {title && (
-        <div className="text-foreground font-minecraft mb-4 text-xl font-semibold">
+        <div className="text-foreground font-minecraft mb-4 md:text-xl font-semibold">
           {title}
         </div>
       )}
-      <div className="space-y-4">
+      <div className="grid md:block md:space-y-4 gap-4 grid-cols-1 sm:grid-cols-2 w-full">
         {children}
       </div>
     </div>

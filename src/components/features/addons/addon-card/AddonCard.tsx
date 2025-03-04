@@ -44,7 +44,7 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
   };
 
   return (
-    <Card className='flex flex-col overflow-hidden hover:shadow-xs'>
+    <Card className='flex flex-col overflow-hidden hover:shadow-xs h-full'>
       <CardHeader className='relative flex cursor-pointer flex-row gap-3' onClick={navigateToAddon}>
         <img
           src={addon.icon || '/assets/wrench.webp'}

@@ -9,7 +9,8 @@ export const useSearchAddons = (
   page: number,
   category: string,
   version: string,
-  loaders: string
+  loaders: string,
+  limit: number = 16 // Default value of 16 if not provided
 ) => {
   const queryInput = query || '*'; // Default to '*' if query is empty
 
@@ -35,12 +36,12 @@ export const useSearchAddons = (
   };
 
   const queryResult = useQuery({
-    queryKey: ['searchAddons', queryInput, page, category, version, loaders],
+    queryKey: ['searchAddons', queryInput, page, category, version, loaders, limit],
     queryFn: async () => {
       const index = searchClient.index('addons');
       const result = await index.search(queryInput, {
-        limit: 16,
-        offset: (page - 1) * 16,
+        limit: limit,
+        offset: (page - 1) * limit,
         filter: filter(),
       });
       console.log('API Response:', result); // Debugging
@@ -60,11 +61,11 @@ export const useSearchAddons = (
   // Update hasNextPage only when data is available
   useEffect(() => {
     if (data) {
-      const newHasNextPage = (page - 1) * 16 + data.hits.length < data.totalHits;
+      const newHasNextPage = (page - 1) * limit + data.hits.length < data.totalHits;
       console.log('Updating hasNextPage:', newHasNextPage); // Debugging
       setHasNextPage(newHasNextPage);
     }
-  }, [data, page]);
+  }, [data, page, limit]);
 
   return {
     ...queryResult,
@@ -76,5 +77,6 @@ export const useSearchAddons = (
     hasNextPage,
     totalHits: data?.totalHits || 0,
     page,
+    limit,
   };
 };
