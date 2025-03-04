@@ -1,14 +1,14 @@
-import { Card, CardContent} from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Card} from '@/components/ui/card';
 import { useParams } from 'react-router-dom';
 import { useFetchAddon } from '@/api';
 import {CurseForgeAddon, ModrinthAddon} from "@/types";
 import {
-    AddonDetailFooter,
+    AddonDetailsFooter,
     AddonDetailsContent,
     AddonDetailsDescription,
+    AddonDetailsError,
     AddonDetailsGallery,
-    AddonDetailsHeader
+    AddonDetailsHeader, AddonDetailsLoading
 } from "@/components/features/addons/addon-details";
 
 export default function AddonDetails() {
@@ -17,29 +17,13 @@ export default function AddonDetails() {
 
   if (error) {
     return (
-      <div className='container mx-auto px-4 py-8'>
-        <Card className='bg-destructive/10 border-destructive'>
-          <CardContent className='p-6'>
-            <p className='text-destructive'>{error.message}</p>
-          </CardContent>
-        </Card>
-      </div>
+     <AddonDetailsError error={error}/>
     );
   }
 
   if (isLoading || !addon) {
     return (
-      <div className='container mx-auto space-y-6 px-4 py-8'>
-        <div className='flex gap-4'>
-          <Skeleton className='h-16 w-16 rounded-lg' />
-          <div className='flex-1 space-y-2'>
-            <Skeleton className='h-8 w-1/3' />
-            <Skeleton className='h-4 w-2/3' />
-          </div>
-        </div>
-        <Skeleton className='h-96 w-full' />
-        <Skeleton className='h-48 w-full' />
-      </div>
+     <AddonDetailsLoading/>
     );
   }
 
@@ -83,7 +67,7 @@ export default function AddonDetails() {
 
       {/* Gallery Card */}
 
-      {gallery ?
+      {gallery.length > 0 ?
           <AddonDetailsGallery
           addon_name={addon.name}
           gallery_small={gallery}
@@ -97,7 +81,7 @@ export default function AddonDetails() {
 
       {/* Additional Information */}
 
-      <AddonDetailFooter authors={curseforgeData.authors}  createdAt={addon.created_at} updatedAt={addon.updated_at} licence={modrinthData?.license} addon_name={addon.name}></AddonDetailFooter>
+      <AddonDetailsFooter authors={curseforgeData.authors}  createdAt={addon.created_at} updatedAt={addon.updated_at} licence={modrinthData?.license} addon_name={addon.name}></AddonDetailsFooter>
 
     </div>
   );

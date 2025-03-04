@@ -10,7 +10,7 @@ export interface AddonDetailsFooterProps {
     licence: string;
     addon_name: string
 }
-export const AddonDetailFooter  = ({
+export const AddonDetailsFooter  = ({
                                        authors = [],
                                        createdAt = '',
                                        updatedAt = '' ,

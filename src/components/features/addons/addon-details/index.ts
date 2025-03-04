@@ -2,5 +2,7 @@
 export { AddonDetailsHeader } from './AddonDetailsHeader';
 export { AddonDetailsGallery } from './AddonDetailsGallery';
 export { AddonDetailsContent } from './AddonDetailsContent';
-export { AddonDetailFooter } from './AddonDetailsFooter';
+export { AddonDetailsFooter } from './AddonDetailsFooter';
 export { AddonDetailsDescription } from './AddonDetailsDescription';
+export { AddonDetailsError } from './AddonDetailsError';
+export { AddonDetailsLoading } from './AddonDetailsLoading';
