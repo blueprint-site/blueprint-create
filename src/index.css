@@ -328,3 +328,34 @@ body::-webkit-scrollbar {
     @apply bg-background text-foreground;
   }
 }
+.customMarkdown {
+  p, li {
+    font-family: 'default', sans-serif;
+  }
+
+  h1 {
+    color: var(--color-primary);
+  }
+
+  h2, h3 {
+    color: var(--color-secondary);
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+  }
+  hr{
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+  }
+  li{
+    margin-left: 5vh;
+  }
+ a {
+    color: var(--color-blueprint);
+    font-weight: bold;
+    text-decoration: none;
+  }
+  strong {
+    color: var(--color-secondary);
+  }
+}
+

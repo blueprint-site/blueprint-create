@@ -10,10 +10,9 @@ export interface BlogDetailsMainProps {
 export const BlogDetailsMain = ({blog}: BlogDetailsMainProps) => {
   console.log(blog);
   return (
-    <div>
-      <h1>{blog.title}</h1>
-      <BlogDetailsHeader/>
-      <BlogDetailsContent/>
+    <div className="container">
+      <BlogDetailsHeader title={blog.title} />
+      <BlogDetailsContent blog={blog} />
       <BlogDetailsFooter/>
     </div>
   );
