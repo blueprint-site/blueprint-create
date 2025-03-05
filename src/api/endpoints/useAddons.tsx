@@ -72,6 +72,7 @@ export const useFetchAddon = (slug?: string) => {
         isValid: doc.isValid || false,
         isChecked: doc.isChecked || false,
         minecraft_versions: Array.isArray(doc.minecraft_versions) ? doc.minecraft_versions : [],
+        create_versions: Array.isArray(doc.create_versions) ? doc.create_versions : [],
       };
 
       return addonData;
@@ -115,6 +116,7 @@ export const useFetchAddons = (page: number, limit: number = 10) => {
           isValid: doc.isValid || false,
           isChecked: doc.isChecked || false,
           minecraft_versions: Array.isArray(doc.minecraft_versions) ? doc.minecraft_versions : [],
+          create_versions: Array.isArray(doc.create_versions) ? doc.create_versions : [],
         }));
 
         return {

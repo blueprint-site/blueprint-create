@@ -2,13 +2,13 @@ import DevinsBadges from '@/components/utility/DevinsBadges';
 
 interface ExternalLinksProps {
   slug: string;
-  curseforge_raw: object;
-  modrinth_raw: object;
+  curseforge: boolean;
+  modrinth: boolean;
 }
 
-export const ExternalLinks = ({ slug, curseforge_raw, modrinth_raw }: ExternalLinksProps) => (
+export const ExternalLinks = ({ slug, curseforge, modrinth}: ExternalLinksProps) => (
   <div className='flex flex-col justify-between gap-2 md:flex-row'>
-    {curseforge_raw && (
+    {curseforge && (
       <a
         className='flex h-full w-full items-center justify-center md:w-1/2'
         target='_blank'
@@ -18,7 +18,7 @@ export const ExternalLinks = ({ slug, curseforge_raw, modrinth_raw }: ExternalLi
         <DevinsBadges type='compact' category='available' name='curseforge' format='svg' />
       </a>
     )}
-    {modrinth_raw && (
+    {modrinth && (
       <a
         className='flex h-full w-full items-center justify-center md:w-1/2'
         target='_blank'
