@@ -1,15 +1,18 @@
 import Logo from '@/assets/logo.webp';
 import OldLogo from '@/assets/legacy_logo.webp';
 import { cn } from '@/config/utils.ts';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
+import { useToast } from '@/api';
 
 interface FooterProps {
   className?: string;
 }
 
 const Footer = ({ className }: FooterProps) => {
+  const { toast } = useToast();
+
   let clicks = 0;
-  const [easterEgg] = useState(localStorage.getItem('oldLogo') === 'true');
+  const [easterEgg, setEasterEgg] = useState(localStorage.getItem('oldLogo') === 'true');
   const button = document.querySelector('#easter-egg') as HTMLButtonElement | null;
   if (button) {
     let rotating = false;
@@ -29,18 +32,45 @@ const Footer = ({ className }: FooterProps) => {
   function toggleEasterEgg() {
     clicks += 1;
     if (clicks === 5) {
-      if (localStorage.getItem('oldLogo') === 'true') {
+      const isEnabled = localStorage.getItem('oldLogo') === 'true';
+  
+      if (isEnabled) {
         localStorage.setItem('oldLogo', 'false');
-        alert('Disabled the easter egg! (refresh to see)');
+        setEasterEgg(false);
+        toast({
+          title: 'Disabled the easter egg!',
+          description: 'All logos are set to the new logo! (refresh to see)',
+        });
       } else {
         localStorage.setItem('oldLogo', 'true');
-        alert(
-          'Enabled the easter egg! Congratulations! \n Now all logos are set to the old logo! (refresh to see)'
-        );
+        setEasterEgg(true);
+        toast({
+          title: 'Enabled the easter egg!',
+          description: 'All logos are set to the old logo! (refresh to see)',
+        });
+  
+        // Store expiration timestamp
+        const expirationTime = Date.now() + 300000; // 5 minutes from now
+        localStorage.setItem('easterEggExpiration', expirationTime.toString());
       }
+      
       clicks = 0;
+      setTimeout(() => {
+        clicks = 0;
+      }, 6000);
     }
   }
+  
+  // Check expiration on page load
+  useEffect(() => {
+    const expiration = localStorage.getItem('easterEggExpiration');
+    if (expiration && Date.now() > Number(expiration)) {
+      localStorage.setItem('oldLogo', 'false');
+      setEasterEgg(false);
+      localStorage.removeItem('easterEggExpiration'); // Clean up storage
+    }
+  }, []);
+  
 
   return (
     <footer className={cn('bg-surface-1 dark:bg-container-dark w-full pb-4 md:pt-16', className)}>
@@ -106,3 +136,4 @@ const Footer = ({ className }: FooterProps) => {
 };
 
 export default Footer;
+
