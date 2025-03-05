@@ -14,8 +14,8 @@ export interface AddonDetailsParams {
     loaders: string[];
     categories: string[];
     slug: string;
-    curseforge_raw?: CurseForgeAddon;
-    modrinth_raw?: ModrinthAddon;
+    curseforge_raw?: CurseForgeAddon | null;
+    modrinth_raw?: ModrinthAddon | null;
 }
 export const AddonDetailsContent = ({
                                         versions = [],
