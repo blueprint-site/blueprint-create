@@ -6,7 +6,7 @@ import { RouteObject } from 'react-router-dom';
 const SchematicsUploadPage = lazy(
   () => import('@/components/features/schematics/upload/SchematicsUpload')
 );
-const SchematicDetails = lazy(() => import('@/pages/schematics/SchematicDetails.tsx'));
+const SchematicDetails = lazy(() => import('@/pages/schematics/SchematicDetailsPage.tsx'));
 
 export const schematicRoutes: RouteObject[] = [
   {
