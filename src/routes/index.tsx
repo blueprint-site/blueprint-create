@@ -1,4 +1,4 @@
-// src/routes/index.tsx
+// src/routes/index.ts
 import { lazy, Suspense } from 'react';
 import { RouteObject } from 'react-router-dom';
 

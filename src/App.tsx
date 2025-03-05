@@ -42,11 +42,11 @@ const App = () => {
   return (
     <BrowserRouter>
       <Suspense fallback={<LoadingOverlay />}>
-        <LoggedUserProvider>
-          <AppRoutes />
-          {/* Cookie dialog displays one time on any page load */}
-          <CookieDialog variant='default'/>
-        </LoggedUserProvider>
+          <LoggedUserProvider>
+            <AppRoutes />
+            {/* Cookie dialog displays one time on any page load */}
+            <CookieDialog variant='default'/>
+          </LoggedUserProvider>
         <Toaster />
       </Suspense>
     </BrowserRouter>
