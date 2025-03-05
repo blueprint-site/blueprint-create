@@ -1,8 +1,15 @@
+import {Card, CardHeader} from "@/components/ui/card.tsx";
 
-export interface BlogDetailsHeaderProps {}
+export interface BlogDetailsHeaderProps {
+  title: string;
+}
 
-export const BlogDetailsHeader = ({}: BlogDetailsHeaderProps) => {
+export const BlogDetailsHeader = ({title = ""}: BlogDetailsHeaderProps) => {
   return (
-    <div>BlogDetailsHeader works!</div>
+    <Card className={"mt-4"}>
+     <CardHeader className={"text-center"}>
+       <h1>{title}</h1>
+     </CardHeader>
+    </Card>
   );
 };
