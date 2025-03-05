@@ -1,26 +1,8 @@
-import {Blog} from "@/types";
-import {Card, CardContent} from "@/components/ui/card.tsx";
-import BlogTagsDisplay from "@/components/utility/blog/BlogTagsDisplay.tsx";
-import MarkdownDisplay from "@/components/utility/MarkdownDisplay.tsx";
 
-export interface BlogDetailsContentProps {
-  blog : Blog
+export interface BlogDetailsContentProps {}
 
-}
-
-export const BlogDetailsContent = ({blog}: BlogDetailsContentProps) => {
+export const BlogDetailsContent = ({}: BlogDetailsContentProps) => {
   return (
-      <Card className={"mt-4"}>
-        <CardContent>
-          <div className={'flex flex-row items-center justify-items-center'}>
-            <div className={'flex items-center justify-center'}>
-              <img className={'object-cover  w-1/4 mx-auto'} src={blog.img_url} alt={blog.title} />
-            </div>
-          </div>
-          <BlogTagsDisplay value={blog.tags || []} ></BlogTagsDisplay>
-          <MarkdownDisplay className={"mt-2 customMarkdown"} content={blog.content}></MarkdownDisplay>
-        </CardContent>
-      </Card>
-
+    <div>BlogDetailsContent works!</div>
   );
 };
