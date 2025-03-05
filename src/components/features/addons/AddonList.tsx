@@ -7,7 +7,8 @@ import { FiltersContainer } from '@/components/layout/FiltersContainer';
 import { ItemGrid } from '@/components/layout/ItemGrid';
 import AddonCard from '@/components/features/addons/addon-card/AddonCard.tsx';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import { Addon } from '@/schemas/addon.schema.tsx';
+import {Addon} from "@/types";
+
 
 const AddonsList = () => {
   const [query, setQuery] = useState('');
@@ -97,7 +98,7 @@ const AddonsList = () => {
   };
 
   // Simple render function - no need for animation wrapper since ItemGrid handles it
-  const renderAddon = (addon) => {
+  const renderAddon = (addon: Addon) => {
     return <AddonCard key={addon.$id} addon={addon} />;
   };
 
