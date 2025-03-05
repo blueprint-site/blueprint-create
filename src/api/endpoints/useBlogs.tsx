@@ -2,7 +2,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from '@/api';
 import { databases, ID } from '@/config/appwrite.ts';
 import { Query } from 'appwrite';
-import { Blog } from '@/types';
+import {Blog} from "@/types";
+
 
 // Constantes pour votre base de données
 const DATABASE_ID = '67b1dc430020b4fb23e3';
@@ -37,41 +38,52 @@ export const useDeleteBlog = () => {
   });
 };
 
-/**
- * Hook to fetch a single blog by ID.
- * @param {string} blogId - The ID of the blog to fetch.
- * @returns {Query} Query object to fetch a single blog.
- */
-export const useFetchBlog = (blogId?: string) => {
+export const useFetchBlog = (blogId?: string, slug?: string) => {
   return useQuery<Blog | null>({
-    queryKey: ['blog', blogId],
+    queryKey: ['blog', blogId, slug],
     queryFn: async () => {
-      if (!blogId || blogId === 'new') return null;
+      if (!blogId && !slug) return null;
 
-      const response = await databases.getDocument(DATABASE_ID, COLLECTION_ID, blogId);
-      const blogData: Blog = {
-        $id: response.$id,
-        $createdAt: response.$createdAt || '',
-        $updatedAt: response.$updatedAt || '',
-        title: response.title || '',
-        content: response.content || '',
-        slug: response.slug || '',
-        authors: response.author || '',
-        img_url: response.img_url || '',
-        status: response.status || '',
-        links: response.links ? JSON.parse(response.links as string) : [],
-        tags: response.tags ? JSON.parse(response.tags as string) : [],
-        likes: response.likes || '',
-        authors_uuid: response.authors_uuid || '',
-      };
+      try {
+        let response;
 
-      return blogData;
+        if (blogId && blogId !== 'new') {
+          response = await databases.getDocument(DATABASE_ID, COLLECTION_ID, blogId);
+        } else if (slug) {
+          const query = [Query.equal('slug', slug)];
+          const result = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, query);
+          response = result.documents[0] || null;
+        }
+
+        if (!response) throw new Error('Blog not found');
+
+        return {
+          $id: response.$id,
+          $createdAt: response.$createdAt || '',
+          $updatedAt: response.$updatedAt || '',
+          title: response.title || '',
+          content: response.content || '',
+          slug: response.slug || '',
+          authors: response.author || '',
+          img_url: response.img_url || '',
+          status: response.status || '',
+          links: response.links ? JSON.parse(response.links as string) : [],
+          tags: response.tags ? JSON.parse(response.tags as string) : [],
+          likes: response.likes || 0,
+          authors_uuid: response.authors_uuid || [],
+        } as Blog;
+      } catch (err) {
+        console.error('Error fetching blog:', err);
+        return null; // ✅ Ajouté pour éviter les erreurs de typage
+      }
     },
-    enabled: Boolean(blogId),
-    staleTime: 1000 * 60 * 5, // Rafraîchissement tous les 5 minutes
-    retry: false, // Ne pas essayer en cas d'échec
+    enabled: Boolean(blogId || slug),
+    staleTime: 1000 * 60 * 5,
+    retry: false,
   });
 };
+
+
 
 /**
  * Hook to fetch blog tags from the blog_tags collection.
