@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { BookOpen, Bot, Map, Settings2, SquareTerminal } from 'lucide-react';
 
-import { NavMain } from '@/components/layout/AdminPanel/nav-main.tsx';
-import { NavUser } from '@/components/layout/AdminPanel/nav-user.tsx';
+import { NavMain } from '@/components/layout/AdminPanel/NavMain.tsx';
+import { NavUser } from '@/components/layout/AdminPanel/NavUser.tsx';
 import {
   Sidebar,
   SidebarContent,
