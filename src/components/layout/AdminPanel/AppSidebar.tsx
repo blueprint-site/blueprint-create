@@ -31,7 +31,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         title: 'Dashboard',
         url: '/admin',
         icon: SquareTerminal,
-        isActive: pathSegments[1] === undefined,
+        isActive:
+          pathSegments[1] === undefined ||
+          pathSegments[1] === 'stats' ||
+          pathSegments[1] === 'logs',
         items: [
           { title: 'Stats', url: '/admin/stats' },
           { title: 'Logs', url: '/admin/logs' },

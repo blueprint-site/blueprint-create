@@ -1,5 +1,3 @@
-const AdminPage = () => {
+export const Admin = () => {
   return <div>Dashboard page</div>;
 };
-
-export default AdminPage;
