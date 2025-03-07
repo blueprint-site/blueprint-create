@@ -83,7 +83,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'admin/AdminLogs',
+    path: 'admin/logs',
     element: (
       <ProtectedRoute requiredRole={'admin'}>
         <LogsList />
