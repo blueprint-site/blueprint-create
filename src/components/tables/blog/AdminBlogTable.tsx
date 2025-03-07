@@ -92,7 +92,7 @@ export function AdminBlogTable<TData extends DataWithId, TValue>({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row, index) => (
                 <TableRow
-                  onClick={() => navigate(`/admin/blog-editor/${row.original.$id}`)}
+                  onClick={() => navigate(`/admin/blogs/editor/${row.original.$id}`)}
                   className='cursor-pointer'
                   key={index}
                   data-state={row.getIsSelected() && 'selected'}

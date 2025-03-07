@@ -1,21 +1,52 @@
 // src/routes/authRoutes.tsx
 import { RouteObject } from 'react-router-dom';
+import { lazy } from 'react';
+
 import ProtectedRoute from '@/components/utility/ProtectedRoute';
-import AdminPage from '@/pages/Admin';
-import AdminBlogEditor from '@/components/features/admin/blog/components/AdminBlogEditor.tsx';
-import AddonStatsWrapper from '@/components/features/admin/stats/AddonStatsWrapper.tsx';
-import AdminAddonsTable from '@/components/features/admin/addons/AdminAddonsTable.tsx';
-import { AdminLogsList } from '@/components/features/admin/logs';
-import { AdminAddAddon } from '@/components/features/admin/addons';
-import AdminBlogList from '@/components/features/admin/blog/components/AdminBlogList.tsx';
-import AdminSchematicsDisplay from '@/components/features/admin/schematics/AdminSchematicsDisplay.tsx';
+
+// LAZY IMPORT Logs Li st
+const LogsList = lazy(() =>
+  import('@/components/features/admin/AdminLogs').then((m) => ({ default: m.LogsList }))
+);
+
+// LAZY IMPORT Blog List
+const BlogList = lazy(() =>
+  import('@/components/features/admin/blog').then((m) => ({ default: m.BlogList }))
+);
+
+// LAZY IMPORT Blog Editor
+const BlogEditor = lazy(() =>
+  import('@/components/features/admin/blog').then((m) => ({ default: m.BlogEditor }))
+);
+
+// LAZY IMPORT Schematics display
+const SchematicsDisplay = lazy(() =>
+  import('@/components/features/admin/schematics').then((m) => ({ default: m.SchematicsDisplay }))
+);
+
+// LAZY IMPORT ADMIN PAGE
+const Admin = lazy(() => import('@/pages').then((mod) => ({ default: mod.Admin })));
+
+// LAZY IMPORT AddonStatsWrapper
+const AddonStatsWrapper = lazy(() =>
+  import('@/components/features/admin/stats').then((m) => ({ default: m.AddonStatsWrapper }))
+);
+// LAZY IMPORT AddAddon
+const AddAddon = lazy(() =>
+  import('@/components/features/admin/addons').then((m) => ({ default: m.AddAddon }))
+);
+
+// LAZY IMPORT AddonsTable
+const AddonsTable = lazy(() =>
+  import('@/components/features/admin/addons').then((mod) => ({ default: mod.AddonsTable }))
+);
 
 export const AdminRoutes: RouteObject[] = [
   {
     path: 'admin',
     element: (
       <ProtectedRoute requiredRole={'admin'}>
-        <AdminPage />
+        <Admin />
       </ProtectedRoute>
     ),
   },
@@ -23,7 +54,7 @@ export const AdminRoutes: RouteObject[] = [
     path: 'admin/blogs/editor/:id',
     element: (
       <ProtectedRoute requiredRole={'admin'}>
-        <AdminBlogEditor />
+        <BlogEditor />
       </ProtectedRoute>
     ),
   },
@@ -31,7 +62,7 @@ export const AdminRoutes: RouteObject[] = [
     path: 'admin/blogs/list',
     element: (
       <ProtectedRoute requiredRole={'admin'}>
-        <AdminBlogList />
+        <BlogList />
       </ProtectedRoute>
     ),
   },
@@ -47,7 +78,7 @@ export const AdminRoutes: RouteObject[] = [
     path: 'admin/addons/list',
     element: (
       <ProtectedRoute requiredRole={'admin'}>
-        <AdminAddonsTable></AdminAddonsTable>
+        <AddonsTable />
       </ProtectedRoute>
     ),
   },
@@ -55,7 +86,7 @@ export const AdminRoutes: RouteObject[] = [
     path: 'admin/logs',
     element: (
       <ProtectedRoute requiredRole={'admin'}>
-        <AdminLogsList></AdminLogsList>
+        <LogsList />
       </ProtectedRoute>
     ),
   },
@@ -63,7 +94,7 @@ export const AdminRoutes: RouteObject[] = [
     path: 'admin/addons/add',
     element: (
       <ProtectedRoute requiredRole={'admin'}>
-        <AdminAddAddon></AdminAddAddon>
+        <AddAddon />
       </ProtectedRoute>
     ),
   },
@@ -71,7 +102,7 @@ export const AdminRoutes: RouteObject[] = [
     path: 'admin/schematics/list',
     element: (
       <ProtectedRoute requiredRole={'admin'}>
-        <AdminSchematicsDisplay></AdminSchematicsDisplay>
+        <SchematicsDisplay></SchematicsDisplay>
       </ProtectedRoute>
     ),
   },
