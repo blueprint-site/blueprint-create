@@ -10,10 +10,9 @@ export const useSearchAddons = (
   category: string,
   version: string,
   loaders: string,
-  limit: number = 16 // Default value of 16 if not provided
+  limit?: number
 ) => {
   const queryInput = query || '*'; // Default to '*' if query is empty
-
   // Define filter logic for category, version, and loaders
   const filter = (): string => {
     const filters: string[] = [];
@@ -36,12 +35,12 @@ export const useSearchAddons = (
   };
 
   const queryResult = useQuery({
-    queryKey: ['searchAddons', queryInput, page, category, version, loaders, limit],
+    queryKey: ['searchAddons', queryInput, page, category, version, loaders, limit ],
     queryFn: async () => {
       const index = searchClient.index('addons');
       const result = await index.search(queryInput, {
-        limit: limit,
-        offset: (page - 1) * limit,
+        limit: limit || 16,
+        offset: (page - 1) * (limit || 16),
         filter: filter(),
       });
       console.log('API Response:', result); // Debugging
