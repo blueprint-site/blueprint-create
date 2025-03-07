@@ -10,7 +10,18 @@
     "format": "prettier --write .",
     "preview": "vite preview",
     "update": "git pull && npm install",
-    "docker-build": "docker build --no-cache -t blueprint-app ."
+    "docker-build": "docker build --no-cache -t blueprint-app .",
+    "prepare": "husky",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "npm run format",
+      "npm run lint --fix"
+    ],
+    "*.{json,css,scss,md}": [
+      "npm run format"
+    ]
   },
   "dependencies": {
     "@algolia/autocomplete-js": "^1.18.1",
@@ -104,6 +115,8 @@
     "eslint-plugin-react-compiler": "^19.0.0-beta-21e868a-20250216",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
     "postcss": "^8.5.1",
     "postcss-cli": "^11.0.0",
     "postcss-import": "^16.1.0",
