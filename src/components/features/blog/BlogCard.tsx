@@ -16,6 +16,7 @@ interface BlogCardProps {
 }
 
 const BlogCard = ({ blog }: BlogCardProps) => {
+
     return (
         <Card className='bg-surface-1 h-[450px] flex flex-col'>
             <CardHeader>
@@ -46,6 +47,8 @@ const BlogCard = ({ blog }: BlogCardProps) => {
             </CardFooter>
         </Card>
     );
+
+
 };
 
 export default BlogCard;

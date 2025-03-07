@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useSearchAddons } from '@/api';
-import { ListPageLayout, ListPageSidebar, ListPageContent } from '@/layouts/ListPageLayout';
+import { ListPageLayout, ListPageFilters, ListPageContent } from '@/layouts/ListPageLayout';
 import { SearchFilter } from '@/components/layout/SearchFilter';
 import { SelectFilter } from '@/components/layout/SelectFilter';
 import { FiltersContainer } from '@/components/layout/FiltersContainer';
 import { ItemGrid } from '@/components/layout/ItemGrid';
 import AddonCard from '@/components/features/addons/addon-card/AddonCard.tsx';
-import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'; // Import the hook
-import { Addon } from '@/types';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import {Addon} from "@/types";
+
 
 const AddonsList = () => {
   const [query, setQuery] = useState('');
@@ -15,22 +16,33 @@ const AddonsList = () => {
   const [category, setCategory] = useState('');
   const [loaders, setLoaders] = useState('');
   const [version, setVersion] = useState('');
-  const [allAddons, setAllAddons] = useState<Addon[]>([]); // Use correct type
+  const [allAddons, setAllAddons] = useState<Addon[]>([]);
+
+  // Set a consistent item limit for all fetches
+  const ITEMS_PER_PAGE = 16;
 
   const {
     data: hits,
     isLoading,
     isFetching,
     hasNextPage,
-  } = useSearchAddons(query, page, category, version, loaders);
+    totalHits,
+  } = useSearchAddons(
+    query,
+    page,
+    category,
+    version,
+    loaders,
+    ITEMS_PER_PAGE
+  );
 
   // Use the useInfiniteScroll hook
   const { sentinelRef, loadingMore } = useInfiniteScroll({
-    loading: isLoading || isFetching, // Use isLoading or isFetching
+    loading: isLoading || isFetching,
     hasMore: hasNextPage,
     onLoadMore: () => {
       if (hasNextPage && !isFetching) {
-        console.log('Loading more addons. Current page:', page); // Debugging
+        console.log('Loading more addons. Current page:', page);
         setPage((prev) => prev + 1);
       }
     },
@@ -39,17 +51,17 @@ const AddonsList = () => {
   // Reset accumulated addons when filters change (except page)
   useEffect(() => {
     setAllAddons([]);
-    setPage(1); // Reset to first page when filters change
+    setPage(1);
   }, [query, category, loaders, version]);
 
   // Append new addons to the accumulated list
   useEffect(() => {
     if (hits && hits.length > 0) {
-      console.log('New hits fetched:', hits); // Debugging
+      console.log(`New hits fetched: ${hits.length} items`);
       if (page === 1) {
-        setAllAddons(hits); // Replace the list if it's the first page
+        setAllAddons(hits);
       } else {
-        setAllAddons((prev) => [...prev, ...hits]); // Append new addons for subsequent pages
+        setAllAddons((prev) => [...prev, ...hits]);
       }
     }
   }, [hits, page]);
@@ -85,36 +97,43 @@ const AddonsList = () => {
     setPage(1);
   };
 
+  // Simple render function - no need for animation wrapper since ItemGrid handles it
+  const renderAddon = (addon: Addon) => {
+    return <AddonCard key={addon.$id} addon={addon} />;
+  };
+
   return (
     <ListPageLayout>
-      <ListPageSidebar>
+      <ListPageFilters>
         <FiltersContainer>
           <div className='flex items-center justify-between'>
-            <div className='text-foreground font-minecraft text-xl font-semibold'>Filters</div>
+            <div className='text-foreground font-minecraft md:text-xl font-semibold'>Filters</div>
             <button
               onClick={resetFilters}
-              className='text-primary flex items-center gap-1 text-sm'
-              aria-label='Reset filters'>
+              className='text-primary text-sm'
+              aria-label='Reset filters'
+            >
               Reset
             </button>
           </div>
-
-          <SearchFilter value={query} onChange={setQuery} placeholder='Search addons...' />
-
+          <div className='md:hidden'></div>
+          <SearchFilter
+            value={query}
+            onChange={setQuery}
+            placeholder='Search addons...'
+          />
           <SelectFilter
             label='Category'
             value={category}
             onChange={setCategory}
             options={categoryOptions}
           />
-
           <SelectFilter
             label='Loaders'
             value={loaders}
             onChange={setLoaders}
             options={loaderOptions}
           />
-
           <SelectFilter
             label='Version'
             value={version}
@@ -122,18 +141,31 @@ const AddonsList = () => {
             options={versionOptions}
           />
         </FiltersContainer>
-      </ListPageSidebar>
+      </ListPageFilters>
 
       <ListPageContent>
+        {/* Display total hits count */}
+        {totalHits > 0 && !isLoading && (
+          <div className="mb-4 text-sm text-muted-foreground">
+            Found {totalHits} addon{totalHits !== 1 ? 's' : ''}
+          </div>
+        )}
+
         <ItemGrid
           items={allAddons}
-          renderItem={(hit) => <AddonCard key={hit.$id} addon={hit} />}
-          isLoading={true}
+          renderItem={renderAddon}
+          isLoading={isLoading && page === 1} // Only show loading state for initial page
           isError={false}
           emptyMessage='No addons found.'
           infiniteScrollEnabled={true}
-          loadingMore={loadingMore} // Pass loadingMore state
-          sentinelRef={sentinelRef} // Pass sentinelRef
+          loadingMore={loadingMore}
+          sentinelRef={sentinelRef}
+          // Animation props
+          animationEnabled={true} // Toggle animations on/off
+          animationDelay={0.1} // Control the stagger delay
+          animationDuration={0.4} // Control the animation duration
+          staggerItemCount={ITEMS_PER_PAGE} // Match to our items per page
+          skeletonCount={ITEMS_PER_PAGE} // Show the right number of skeletons
         />
       </ListPageContent>
     </ListPageLayout>

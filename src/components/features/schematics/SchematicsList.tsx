@@ -5,7 +5,7 @@ import SchematicCard from '@/components/features/schematics/SchematicCard';
 import { useSearchSchematics } from '@/api';
 import { buttonVariants } from '@/components/ui/button';
 import { Upload, RefreshCw } from 'lucide-react';
-import { ListPageLayout, ListPageSidebar, ListPageContent } from '@/layouts/ListPageLayout';
+import { ListPageLayout, ListPageFilters, ListPageContent } from '@/layouts/ListPageLayout';
 import { SearchFilter } from '@/components/layout/SearchFilter';
 import { SelectFilter } from '@/components/layout/SelectFilter';
 import { FiltersContainer } from '@/components/layout/FiltersContainer';
@@ -94,7 +94,7 @@ function SchematicsList() {
 
   return (
     <ListPageLayout>
-      <ListPageSidebar>
+      <ListPageFilters>
         <FiltersContainer>
           <div className='flex items-center justify-between'>
             <div className='text-foreground font-minecraft text-xl font-semibold'>Filters</div>
@@ -150,7 +150,7 @@ function SchematicsList() {
             options={createVersionOptions}
           />
         </FiltersContainer>
-      </ListPageSidebar>
+      </ListPageFilters>
 
       <ListPageContent>
         <div className='mb-4 flex justify-end'>

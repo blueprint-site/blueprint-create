@@ -129,9 +129,9 @@
     --blueprint-foreground: 220 13% 45%;
     --blueprint-foreground-muted: 220 13% 45%;
 
-    --surface-1: 220 13% 90%;
-    --surface-2: 220 13% 80%;
-    --surface-3: 220 13% 70%;
+    --surface-1: 220 13% 95%;
+    --surface-2: 220 13% 85%;
+    --surface-3: 220 13% 79%;
 
     --semantic-foreground: 0 0% 90%;
     --semantic-foreground-muted: 0 0% 80%;
@@ -189,9 +189,9 @@
     --blueprint-foreground: 220 5% 90%;
     --blueprint-foreground-muted: 220 5% 80%;
 
-    --surface-1: 0 0% 17%;
-    --surface-2: 0 0% 25%;
-    --surface-3: 0 0% 32%;
+    --surface-1: 0 0% 14%;
+    --surface-2: 0 0% 18.5%;
+    --surface-3: 0 0% 23%;
 
     --semantic-foreground: 0 0% 90%;
     --semantic-foreground-muted: 0 0% 80%;
