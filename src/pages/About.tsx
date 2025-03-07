@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {Card, CardContent} from "@/components/ui/card.tsx";
 import {DynamicBg} from "@/components/features/dynamic-bg";
-
 export default function About() {
   const [contributors, setContributors] = useState<ContributorStats[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -152,7 +151,7 @@ export default function About() {
                             type="compact"
                             category="custom"
                             name="my-custom-badge"
-                            customBadgeUrl="src/assets/bages/chat-whit-us-by-email_vector.svg"
+                            customBadgeUrl="/badges/chat-whit-us-by-email_vector.svg"
                             format='svg'
                         />
                         <p className='text-foreground font-minecraft'>
