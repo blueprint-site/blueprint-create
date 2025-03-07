@@ -1,6 +1,6 @@
 import searchClient from "@/config/meilisearch";
 import { useQuery } from "@tanstack/react-query";
-import {Blog, SearchBlogProps, SearchBlogResultSchema} from "@/types";
+import {Blog, SearchBlogProps, SearchBlogResult,} from "@/types";
 
 
 export const useSearchBlogs = ({
@@ -8,7 +8,7 @@ export const useSearchBlogs = ({
                                         page = 1,
                                         tags = ['All'] ,
                                         id = 'all',
-                                    }: SearchBlogProps): SearchBlogResultSchema => {
+                                    }: SearchBlogProps): SearchBlogResult => {
     if(query === ''){
         query = '*'
     }
