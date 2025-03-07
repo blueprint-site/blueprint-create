@@ -60,7 +60,7 @@ export const useSearchAddons = (
   // Update hasNextPage only when data is available
   useEffect(() => {
     if (data) {
-      const newHasNextPage = (page - 1) * limit + data.hits.length < data.totalHits;
+      const newHasNextPage = (page - 1) * (limit || 16) + data.hits.length < data.totalHits;
       console.log('Updating hasNextPage:', newHasNextPage); // Debugging
       setHasNextPage(newHasNextPage);
     }
