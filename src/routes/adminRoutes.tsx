@@ -6,7 +6,7 @@ import ProtectedRoute from '@/components/utility/ProtectedRoute';
 
 // LAZY IMPORT Logs Li st
 const LogsList = lazy(() =>
-  import('@/components/features/admin/logs').then((m) => ({ default: m.LogsList }))
+  import('@/components/features/admin/AdminLogs').then((m) => ({ default: m.LogsList }))
 );
 
 // LAZY IMPORT Blog List
@@ -83,7 +83,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'admin/logs',
+    path: 'admin/AdminLogs',
     element: (
       <ProtectedRoute requiredRole={'admin'}>
         <LogsList />
