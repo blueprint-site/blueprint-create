@@ -18,17 +18,21 @@ export const useDeleteBlog = () => {
   return useMutation({
     mutationFn: async (id: string) => {
       try {
-        await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
+        const response = await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
           title: '✅ Article deleted ✅',
         });
+
+        return response;
       } catch (error) {
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
           title: '❌ Error deleting the article ❌',
         });
         console.error('Error deleting blog:', error);
+
+        throw error;
       }
     },
     onSuccess: () => {
@@ -96,12 +100,11 @@ export const useFetchBlogTags = () => {
     queryKey: ['blog_tags'],
     queryFn: async () => {
       try {
-        const response = await databases.listDocuments(DATABASE_ID, '67b2326100053d0e304f', [
-        ]);
+        const response = await databases.listDocuments(DATABASE_ID, '67b2326100053d0e304f', []);
 
-        return response.documents.map(tag => ({
+        return response.documents.map((tag) => ({
           value: tag.$id,
-          label: tag.name || tag.$id
+          label: tag.name || tag.$id,
         }));
       } catch (err) {
         console.error('Error fetching blog tags:', err);
@@ -120,7 +123,12 @@ export const useFetchBlogTags = () => {
  * @param {number} limit - Number of items per page
  * @returns {Query} Query object with blogs data structured for infinite scroll
  */
-export const useFetchBlogs = (query: string = '', tagId: string = 'all', page: number = 1, limit: number = 12) => {
+export const useFetchBlogs = (
+  query: string = '',
+  tagId: string = 'all',
+  page: number = 1,
+  limit: number = 12
+) => {
   return useQuery({
     queryKey: ['blogs', query, tagId, page, limit],
     queryFn: async () => {
@@ -160,7 +168,7 @@ export const useFetchBlogs = (query: string = '', tagId: string = 'all', page: n
           likes: doc.likes || 0,
           authors_uuid: doc.authors_uuid || [],
           // Add missing fields based on Blog schema
-          blog_tags: [] // This might need to be populated from somewhere else
+          blog_tags: [], // This might need to be populated from somewhere else
         }));
 
         const hasNextPage = page * limit < response.total;

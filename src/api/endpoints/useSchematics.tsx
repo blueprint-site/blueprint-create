@@ -14,7 +14,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from '@/api';
 import { databases, ID } from '@/config/appwrite.ts';
 import { Query } from 'appwrite';
-import {Schematic} from "@/types";
+import { Schematic } from '@/types';
 
 // Appwrite database configuration
 const DATABASE_ID = '67b1dc430020b4fb23e3';
@@ -29,21 +29,25 @@ export const useDeleteSchematics = (user_id?: string) => {
   return useMutation({
     mutationFn: async (id: string) => {
       try {
-        await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
+        const response = await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
           title: '✅ Schematics deleted ✅',
         });
+
+        return response;
       } catch (error) {
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
           title: '❌ Error deleting the Schematics ❌',
         });
         console.error('Error deleting Schematics:', error);
+
+        throw error;
       }
     },
     onSuccess: async () => {
-      // ⚡️ Invalidation spécifique aux schémas utilisateur
+      // Invalidating the query to refetch the list of schematics after the deletion
       await queryClient.invalidateQueries({ queryKey: ['usersSchematics', user_id] });
     },
   });
@@ -257,20 +261,10 @@ export const useSaveSchematics = () => {
     mutationFn: async (schematic: Partial<Schematic>) => {
       // If the schematic does not have an ID, create a new document
       if (!schematic.$id) {
-        return databases.createDocument(
-          DATABASE_ID,
-          COLLECTION_ID,
-          ID.unique(),
-          schematic
-        );
+        return databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), schematic);
       }
 
-      return databases.updateDocument(
-        DATABASE_ID,
-        COLLECTION_ID,
-        schematic.$id,
-        schematic
-      );
+      return databases.updateDocument(DATABASE_ID, COLLECTION_ID, schematic.$id, schematic);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['schematics'] }).then();
