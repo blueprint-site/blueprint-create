@@ -11,16 +11,15 @@
     "preview": "vite preview",
     "update": "git pull && npm install",
     "docker-build": "docker build --no-cache -t blueprint-app .",
-    "prepare": "husky",
-    "lint-staged": "lint-staged"
+    "prepare": "husky"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "npm run format",
-      "npm run lint --fix"
+    "**/*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
     ],
-    "*.{json,css,scss,md}": [
-      "npm run format"
+    "**/*.{json,css,scss,md,html}": [
+      "prettier --write"
     ]
   },
   "dependencies": {
