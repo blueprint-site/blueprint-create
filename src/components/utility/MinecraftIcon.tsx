@@ -1,5 +1,5 @@
 import { cn } from '@/config/utils.ts';
-import { useThemeStore } from '@/api/stores/themeStore.tsx';
+import { useThemeStore } from '@/api/stores/themeStore';
 
 interface MinecraftIconProps {
   name: keyof typeof iconPositions;

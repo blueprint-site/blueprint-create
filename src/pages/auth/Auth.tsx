@@ -6,7 +6,7 @@ import DiscordLogo from '@/assets/icons/discord-mark-white.svg?url';
 import GithubLogo from '@/assets/icons/github-mark-white.svg?url';
 import GoogleLogo from '@/assets/icons/google-mark-color.png';
 import { Input } from '@/components/ui/input.tsx';
-import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
+import { useLoggedUser } from '@/api/context/loggedUser/useLoggedUser';
 
 const AuthPage = () => {
   const { user, login, logout, handleOAuthLogin, error } = useLoggedUser();

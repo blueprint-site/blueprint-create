@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useEffect, useState, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { account } from '@/config/appwrite.ts';
 import { LoggedUserContextType, User, UserPreferences } from '@/types';
@@ -153,35 +153,23 @@ export const LoggedUserProvider = ({ children }: LoggedUserProviderProps): JSX.E
   }, []);
 
   return (
-      <LoggedUserContext.Provider
-          value={{
-            user,
-            preferences,
-            error,
-            updatePreferences,
-            login,
-            register,
-            logout,
-            handleOAuthLogin,
-            handleOAuthCallback,
-            setError,
-          }}
-      >
-        {children}
-      </LoggedUserContext.Provider>
+    <LoggedUserContext.Provider
+      value={{
+        user,
+        preferences,
+        error,
+        updatePreferences,
+        login,
+        register,
+        logout,
+        handleOAuthLogin,
+        handleOAuthCallback,
+        setError,
+      }}
+    >
+      {children}
+    </LoggedUserContext.Provider>
   );
 };
 
-/**
- * @description A custom hook that provides access to the LoggedUserContext.
- *              It throws an error if used outside of a LoggedUserProvider.
- *
- * @returns {LoggedUserContextType} The context value containing user data and authentication functions.
- */
-export const useLoggedUser = (): LoggedUserContextType => {
-  const context = useContext(LoggedUserContext);
-  if (!context) {
-    throw new Error('useLoggedUser must be used within a LoggedUserProvider');
-  }
-  return context;
-};
+export { LoggedUserContext };

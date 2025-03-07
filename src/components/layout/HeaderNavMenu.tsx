@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/navigation-menu.tsx';
 import ThemeToggle from '@/components/utility/ThemeToggle.tsx';
 
-import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
+import { useLoggedUser } from '@/api/context/loggedUser/useLoggedUser';
 import { account } from '@/config/appwrite.ts';
 
 import AddonIcon from '@/assets/sprite-icons/minecart_coupling.webp';
@@ -60,7 +60,7 @@ const UserMenu = () => {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className='hover:bg-foreground/10 data-[state=open]:bg-foreground/10 h-10 bg-transparent px-1 py-0 cursor-pointer'>
+          <NavigationMenuTrigger className='hover:bg-foreground/10 data-[state=open]:bg-foreground/10 h-10 cursor-pointer bg-transparent px-1 py-0'>
             <div className='flex items-center justify-center'>
               {/* Mobile Menu Icon */}
               <Menu className='block h-6 w-6 md:hidden' aria-hidden='true' />
@@ -122,14 +122,14 @@ const UserMenu = () => {
 
                   <button
                     onClick={() => navigate('/user')}
-                    className='hover:bg-surface-1 flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm cursor-pointer'
+                    className='hover:bg-surface-1 flex w-full cursor-pointer items-center gap-2 rounded-md px-2 py-1 text-sm'
                   >
                     <User className='h-4 w-4' />
                     {t('user-menu.profile')}
                   </button>
                   <button
                     onClick={() => navigate('/settings')}
-                    className='hover:bg-surface-1 flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm cursor-pointer'
+                    className='hover:bg-surface-1 flex w-full cursor-pointer items-center gap-2 rounded-md px-2 py-1 text-sm'
                   >
                     <Settings className='h-4 w-4' />
                     {t('user-menu.settings')}
@@ -137,7 +137,7 @@ const UserMenu = () => {
                   {isAdmin && (
                     <button
                       onClick={() => navigate('/admin')}
-                      className='hover:bg-surface-1 flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm cursor-pointer'
+                      className='hover:bg-surface-1 flex w-full cursor-pointer items-center gap-2 rounded-md px-2 py-1 text-sm'
                     >
                       <Shield className='h-4 w-4' />
                       {t('user-menu.admin')}
@@ -145,7 +145,7 @@ const UserMenu = () => {
                   )}
                   <button
                     onClick={handleLogout}
-                    className='hover:bg-surface-1 flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm cursor-pointer'
+                    className='hover:bg-surface-1 flex w-full cursor-pointer items-center gap-2 rounded-md px-2 py-1 text-sm'
                   >
                     <LogOut className='h-4 w-4' />
                     {t('user-menu.logout')}
@@ -154,7 +154,7 @@ const UserMenu = () => {
               ) : (
                 <button
                   onClick={() => navigate('/login')}
-                  className='hover:bg-surface-1 flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm cursor-pointer'
+                  className='hover:bg-surface-1 flex w-full cursor-pointer items-center gap-2 rounded-md px-2 py-1 text-sm'
                 >
                   <LogIn className='h-4 w-4' />
                   Login

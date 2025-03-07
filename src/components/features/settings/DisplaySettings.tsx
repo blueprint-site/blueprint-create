@@ -1,6 +1,6 @@
 import { Label } from '@/components/ui/label.tsx';
 import { Switch } from '@/components/ui/switch.tsx';
-import { useThemeStore } from '@/api/stores/themeStore.tsx';
+import { useThemeStore } from '@/api/stores/themeStore';
 import { Moon, Sun } from 'lucide-react';
 
 export default function DisplaySettings() {

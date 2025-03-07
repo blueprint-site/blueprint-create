@@ -2,8 +2,7 @@
 import { Control, Path } from 'react-hook-form';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import MarkdownEditor from '@/components/utility/MarkdownEditor';
-import {SchematicFormValues} from "@/types";
-
+import { SchematicFormValues } from '@/types';
 
 interface FormMarkdownEditorProps {
   name: Path<SchematicFormValues>;
@@ -13,7 +12,13 @@ interface FormMarkdownEditorProps {
   onValueChange?: (value: string) => void;
 }
 
-export function FormMarkdownEditor({ name, control, label, description, onValueChange }: FormMarkdownEditorProps) {
+export function FormMarkdownEditor({
+  name,
+  control,
+  label,
+  description,
+  onValueChange,
+}: FormMarkdownEditorProps) {
   return (
     <FormField
       control={control}
@@ -22,7 +27,7 @@ export function FormMarkdownEditor({ name, control, label, description, onValueC
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-          <MarkdownEditor
+            <MarkdownEditor
               value={field.value as string}
               onChange={(value) => {
                 field.onChange(value);

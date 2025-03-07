@@ -13,7 +13,7 @@ import { ItemGrid } from '@/components/layout/ItemGrid';
 import { useSchematicFilters } from '@/hooks/useSchematicFilters';
 import { Link } from 'react-router-dom';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import {Schematic} from "@/types";
+import { Schematic } from '@/types';
 
 function SchematicsList() {
   const navigate = useNavigate();
@@ -101,7 +101,8 @@ function SchematicsList() {
             <button
               onClick={handleResetFilters}
               className='text-primary flex items-center gap-1 text-sm'
-              aria-label='Reset filters'>
+              aria-label='Reset filters'
+            >
               <RefreshCw size={14} />
               Reset
             </button>

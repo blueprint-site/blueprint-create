@@ -1,11 +1,8 @@
-import {SchematicsDetailsHeader} from "@/components/features/schematics/schematic-details/SchematicsDetailsHeader.tsx";
-import {
-  SchematicsDetailsContent
-} from "@/components/features/schematics/schematic-details/SchematicsDetailsContent.tsx";
-import {SchematicsDetailsFooter} from "@/components/features/schematics/schematic-details/SchematicsDetailsFooter.tsx";
-import {useParams} from "react-router-dom";
-import {useFetchSchematic} from "@/api/endpoints/useSchematics.tsx";
-
+import { SchematicsDetailsHeader } from '@/components/features/schematics/schematic-details/SchematicsDetailsHeader.tsx';
+import { SchematicsDetailsContent } from '@/components/features/schematics/schematic-details/SchematicsDetailsContent.tsx';
+import { SchematicsDetailsFooter } from '@/components/features/schematics/schematic-details/SchematicsDetailsFooter.tsx';
+import { useParams } from 'react-router-dom';
+import { useFetchSchematic } from '@/api/endpoints/useSchematics.tsx';
 
 export const SchematicsDetailsMain = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,18 +10,15 @@ export const SchematicsDetailsMain = () => {
 
   if (!schematic) {
     return (
-        <div className='text-foreground-muted flex items-center justify-center p-8'>
-          Loading...
-        </div>
+      <div className='text-foreground-muted flex items-center justify-center p-8'>Loading...</div>
     );
   }
 
-
   return (
-      <div className='container'>
-        <SchematicsDetailsHeader schematic={schematic} />
-        <SchematicsDetailsContent schematic={schematic} />
-        <SchematicsDetailsFooter title={schematic.title} />
-      </div>
+    <div className='container'>
+      <SchematicsDetailsHeader schematic={schematic} />
+      <SchematicsDetailsContent schematic={schematic} />
+      <SchematicsDetailsFooter title={schematic.title} />
+    </div>
   );
 };

@@ -11,7 +11,7 @@ const Footer = ({ className }: FooterProps) => {
       <div className='mx-auto px-4 md:container'>
         <div className='flex flex-col gap-4 sm:flex-row sm:items-center'>
           {/* Logo and Title Row */}
-          <div className='flex flex-col gap-2 flex-1'>
+          <div className='flex flex-1 flex-col gap-2'>
             <div className='flex items-center gap-2'>
               <img src={Logo} alt='Blueprint Site Logo' className='w-8' />
               <h4 className='text-lg font-bold'>Blueprint</h4>
@@ -30,7 +30,7 @@ const Footer = ({ className }: FooterProps) => {
           </div>
           <div className='flex-1'>
             {/* Links to site pages */}
-            <div className='flex flex-wrap gap-4 sm:justify-center items-center'>
+            <div className='flex flex-wrap items-center gap-4 sm:justify-center'>
               <a href='/addons' className='text-xs font-normal hover:underline'>
                 Addons
               </a>

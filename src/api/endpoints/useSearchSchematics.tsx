@@ -1,7 +1,7 @@
-import searchClient from "@/config/meilisearch";
+import searchClient from '@/config/meilisearch';
 
-import { useQuery } from "@tanstack/react-query";
-import {Schematic, SearchSchematicsProps, SearchSchematicsResult} from "@/types";
+import { useQuery } from '@tanstack/react-query';
+import { Schematic, SearchSchematicsProps, SearchSchematicsResult } from '@/types';
 
 export const useSearchSchematics = ({
   query = '',
@@ -13,9 +13,9 @@ export const useSearchSchematics = ({
   createVersion = 'All',
   id = 'all',
 }: SearchSchematicsProps): SearchSchematicsResult => {
-console.log('search triggered')
-  if(query === ''){
-    query = '*'
+  console.log('search triggered');
+  if (query === '') {
+    query = '*';
   }
   // Define filter logic for category, version, and loaders
   const filter = (): string => {
@@ -37,7 +37,17 @@ console.log('search triggered')
     return filters.length > 0 ? filters.join(' AND ') : '';
   };
   const queryResult = useQuery({
-    queryKey: ['searchSchematics', query, page, category, subCategory, version, loaders, createVersion, id],
+    queryKey: [
+      'searchSchematics',
+      query,
+      page,
+      category,
+      subCategory,
+      version,
+      loaders,
+      createVersion,
+      id,
+    ],
     queryFn: async () => {
       const index = searchClient.index('schematics');
       const result = await index.search(query, {
@@ -45,8 +55,8 @@ console.log('search triggered')
         offset: (page - 1) * 20,
         filter: filter(),
       });
-      const schematicsList = result.hits as Schematic[]
-      console.log(filter())
+      const schematicsList = result.hits as Schematic[];
+      console.log(filter());
 
       // Transform `Hits<SchematicsAnswer>` into `Schematic[]`
       const schematics: Schematic[] = schematicsList.map((hit) => ({
@@ -97,6 +107,6 @@ console.log('search triggered')
     isLoading,
     isError,
     error,
-    isFetching
-  }
+    isFetching,
+  };
 };

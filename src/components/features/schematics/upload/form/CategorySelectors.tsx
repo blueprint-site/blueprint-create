@@ -10,7 +10,7 @@ import { FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Control, UseFormReturn } from 'react-hook-form';
 import { SchematicFormValues } from '@/types';
-import schematicCategories from '@/config/schematicsCategory.ts';
+import { SCHEMATIC_CATEGORIES } from '@/data';
 import { useState } from 'react';
 import { PlusCircle, X } from 'lucide-react';
 
@@ -26,6 +26,7 @@ interface CategorySelection {
 }
 
 export function CategorySelectors({ control, form }: CategorySelectorsProps) {
+  const schematicCategories = SCHEMATIC_CATEGORIES;
   const [selections, setSelections] = useState<CategorySelection[]>([{ id: '0', category: '' }]);
   const filteredCategories = schematicCategories.filter((cat) => cat.category !== 'All');
 
@@ -35,7 +36,7 @@ export function CategorySelectors({ control, form }: CategorySelectorsProps) {
 
   const removeCategorySelector = (id: string) => {
     if (selections.length > 1) {
-      const updatedSelections = selections.filter(selection => selection.id !== id);
+      const updatedSelections = selections.filter((selection) => selection.id !== id);
       setSelections(updatedSelections);
 
       // Update the form with the updated categories and subcategories
@@ -44,7 +45,7 @@ export function CategorySelectors({ control, form }: CategorySelectorsProps) {
   };
 
   const updateCategory = (id: string, category: string) => {
-    const updatedSelections = selections.map(selection =>
+    const updatedSelections = selections.map((selection) =>
       selection.id === id ? { ...selection, category } : selection
     );
     setSelections(updatedSelections);
@@ -55,7 +56,7 @@ export function CategorySelectors({ control, form }: CategorySelectorsProps) {
 
   const updateSubcategory = (id: string, subcategory: string) => {
     // Find the index of the selection being updated
-    const index = selections.findIndex(selection => selection.id === id);
+    const index = selections.findIndex((selection) => selection.id === id);
 
     // Update the subcategory in the form directly
     form.setValue(`subCategories.${index}`, subcategory);
@@ -72,7 +73,7 @@ export function CategorySelectors({ control, form }: CategorySelectorsProps) {
   // Helper function to update both arrays in the form
   const updateFormArrays = (updatedSelections: CategorySelection[]) => {
     // Get categories and update the form
-    const categoryValues = updatedSelections.map(s => s.category).filter(Boolean);
+    const categoryValues = updatedSelections.map((s) => s.category).filter(Boolean);
     form.setValue('categories', categoryValues);
 
     // Get current subcategories
@@ -86,23 +87,23 @@ export function CategorySelectors({ control, form }: CategorySelectorsProps) {
   };
 
   return (
-    <div className="space-y-4 py-4">
+    <div className='space-y-4 py-4'>
       {selections.map((selection, index) => {
         const selectedCategoryData = filteredCategories.find(
           (cat) => cat.category === selection.category
         );
 
         return (
-          <div key={selection.id} className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div key={selection.id} className='grid grid-cols-1 gap-6 md:grid-cols-2'>
             {index > 0 && (
               <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-background"
+                type='button'
+                variant='ghost'
+                size='icon'
+                className='bg-background absolute -top-2 -right-2 h-6 w-6 rounded-full'
                 onClick={() => removeCategorySelector(selection.id)}
               >
-                <X className="h-4 w-4" />
+                <X className='h-4 w-4' />
               </Button>
             )}
 
@@ -119,7 +120,7 @@ export function CategorySelectors({ control, form }: CategorySelectorsProps) {
                     }}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select Category" />
+                      <SelectValue placeholder='Select Category' />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
@@ -151,7 +152,7 @@ export function CategorySelectors({ control, form }: CategorySelectorsProps) {
                       }}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select Subcategory" />
+                        <SelectValue placeholder='Select Subcategory' />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
@@ -172,15 +173,15 @@ export function CategorySelectors({ control, form }: CategorySelectorsProps) {
         );
       })}
 
-      <div className="flex justify-center mt-4">
+      <div className='mt-4 flex justify-center'>
         <Button
-          type="button"
-          variant="outline"
-          size="sm"
+          type='button'
+          variant='outline'
+          size='sm'
           onClick={addCategorySelector}
-          className="flex items-center gap-1"
+          className='flex items-center gap-1'
         >
-          <PlusCircle className="h-4 w-4" />
+          <PlusCircle className='h-4 w-4' />
           Add Category
         </Button>
       </div>

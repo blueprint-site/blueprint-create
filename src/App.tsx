@@ -3,11 +3,12 @@ import '@/config/i18n';
 import { BrowserRouter, useRoutes } from 'react-router-dom';
 import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
 import { Toaster } from '@/components/ui/toaster.tsx';
-import { LoggedUserProvider } from './api/context/loggedUser/loggedUserContext.tsx';
+import { useUserStore } from '@/api/stores/userStore';
 import { routes } from './routes';
 import { Suspense, useEffect, useState } from 'react';
 import 'minecraft-textures-library/src/templates/create-textures.css';
 import CookieDialog from './components/utility/CookieDialog.tsx';
+import { LoggedUserProvider } from './api/context/loggedUser/loggedUserContext.tsx';
 
 // Separate the routes component to avoid hook rules violation
 const AppRoutes = () => {
@@ -16,7 +17,12 @@ const AppRoutes = () => {
 };
 
 const App = () => {
+  const fetchUser = useUserStore((state) => state.fetchUser);
   const [envLoaded, setEnvLoaded] = useState(false);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
 
   useEffect(() => {
     const loadEnv = () => {
@@ -42,11 +48,11 @@ const App = () => {
   return (
     <BrowserRouter>
       <Suspense fallback={<LoadingOverlay />}>
-          <LoggedUserProvider>
-            <AppRoutes />
-            {/* Cookie dialog displays one time on any page load */}
-            <CookieDialog variant='default'/>
-          </LoggedUserProvider>
+        <LoggedUserProvider>
+          <AppRoutes />
+          {/* Cookie dialog displays one time on any page load */}
+          <CookieDialog variant='default' />
+        </LoggedUserProvider>
         <Toaster />
       </Suspense>
     </BrowserRouter>

@@ -7,8 +7,7 @@ import { FiltersContainer } from '@/components/layout/FiltersContainer';
 import { ItemGrid } from '@/components/layout/ItemGrid';
 import AddonCard from '@/components/features/addons/addon-card/AddonCard.tsx';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import {Addon} from "@/types";
-
+import { Addon } from '@/types';
 
 const AddonsList = () => {
   const [query, setQuery] = useState('');
@@ -27,14 +26,7 @@ const AddonsList = () => {
     isFetching,
     hasNextPage,
     totalHits,
-  } = useSearchAddons(
-    query,
-    page,
-    category,
-    version,
-    loaders,
-    ITEMS_PER_PAGE
-  );
+  } = useSearchAddons(query, page, category, version, loaders, ITEMS_PER_PAGE);
 
   // Use the useInfiniteScroll hook
   const { sentinelRef, loadingMore } = useInfiniteScroll({
@@ -107,7 +99,7 @@ const AddonsList = () => {
       <ListPageFilters>
         <FiltersContainer>
           <div className='flex items-center justify-between'>
-            <div className='text-foreground font-minecraft md:text-xl font-semibold'>Filters</div>
+            <div className='text-foreground font-minecraft font-semibold md:text-xl'>Filters</div>
             <button
               onClick={resetFilters}
               className='text-primary text-sm'
@@ -117,11 +109,7 @@ const AddonsList = () => {
             </button>
           </div>
           <div className='md:hidden'></div>
-          <SearchFilter
-            value={query}
-            onChange={setQuery}
-            placeholder='Search addons...'
-          />
+          <SearchFilter value={query} onChange={setQuery} placeholder='Search addons...' />
           <SelectFilter
             label='Category'
             value={category}
@@ -146,7 +134,7 @@ const AddonsList = () => {
       <ListPageContent>
         {/* Display total hits count */}
         {totalHits > 0 && !isLoading && (
-          <div className="mb-4 text-sm text-muted-foreground">
+          <div className='text-muted-foreground mb-4 text-sm'>
             Found {totalHits} addon{totalHits !== 1 ? 's' : ''}
           </div>
         )}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { account } from '@/config/appwrite';
 import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
-import AuthError from "@/pages/auth/AuthError.tsx";
+import AuthError from '@/pages/auth/AuthError.tsx';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -38,15 +38,17 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole 
   }, [requiredRole]);
 
   if (isAuthenticated === null) {
-    return <LoadingOverlay message="Verifying authentication..." />;
+    return <LoadingOverlay message='Verifying authentication...' />;
   }
 
   if (!isAuthenticated) {
-    return <AuthError message="Authentication Error. Please log in again." redirectTo="/login" />;
+    return <AuthError message='Authentication Error. Please log in again.' redirectTo='/login' />;
   }
 
   if (requiredRole && !hasRequiredRole) {
-    return <AuthError message={`Access Denied. Required role: ${requiredRole}`} redirectTo="/login" />;
+    return (
+      <AuthError message={`Access Denied. Required role: ${requiredRole}`} redirectTo='/login' />
+    );
   }
   return <>{children}</>;
 };

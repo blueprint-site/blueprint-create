@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
+import { useLoggedUser } from '@/api/context/loggedUser/useLoggedUser';
 
 const AuthSuccess = () => {
   const { handleOAuthCallback } = useLoggedUser();

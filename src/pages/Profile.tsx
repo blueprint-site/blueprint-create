@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Download, User, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
+import { useLoggedUser } from '@/api/context/loggedUser/useLoggedUser';
 import { useState } from 'react';
 import UserSchematicList from '@/components/features/schematics/UserSchematicList.tsx';
 

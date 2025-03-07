@@ -259,7 +259,7 @@
     @apply mb-4;
   }
   a {
-    @apply text-primary transition-colors hover:text-primary/90;
+    @apply text-primary hover:text-primary/90 transition-colors;
   }
   section {
     @apply py-8;
@@ -329,7 +329,8 @@ body::-webkit-scrollbar {
   }
 }
 .customMarkdown {
-  p, li {
+  p,
+  li {
     font-family: 'default', sans-serif;
   }
 
@@ -337,19 +338,20 @@ body::-webkit-scrollbar {
     color: var(--color-primary);
   }
 
-  h2, h3 {
+  h2,
+  h3 {
     color: var(--color-secondary);
     margin-top: 2vh;
     margin-bottom: 2vh;
   }
-  hr{
+  hr {
     margin-top: 2vh;
     margin-bottom: 2vh;
   }
-  li{
+  li {
     margin-left: 5vh;
   }
- a {
+  a {
     color: var(--color-blueprint);
     font-weight: bold;
     text-decoration: none;
@@ -358,4 +360,3 @@ body::-webkit-scrollbar {
     color: var(--color-secondary);
   }
 }
-

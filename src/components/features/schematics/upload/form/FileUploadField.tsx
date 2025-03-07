@@ -15,8 +15,7 @@ import {
   FormDescription,
   FormMessage,
 } from '@/components/ui/form';
-import {SchematicFormValues} from "@/types";
-
+import { SchematicFormValues } from '@/types';
 
 // Explicitly type allowed file fields
 type FileField = 'schematicFile' | 'imageFiles';
@@ -61,7 +60,7 @@ export function FileUploadField({
               dropzoneOptions={{ accept, maxFiles }}
               className='bg-background rounded-lg p-2'
             >
-              <FileInput className='outline-1 outline-foreground outline-dashed'>
+              <FileInput className='outline-foreground outline-1 outline-dashed'>
                 <div className='flex w-full flex-col items-center justify-center p-8'>
                   <CloudUpload className='text-foreground-muted h-10 w-10' />
                   <p className='text-foreground-muted mb-1 text-sm'>
