@@ -4,7 +4,6 @@ import { databases, ID } from '@/config/appwrite.ts';
 import { Query } from 'appwrite';
 import { Addon } from '@/types';
 
-
 const DATABASE_ID = '67b1dc430020b4fb23e3';
 const COLLECTION_ID = '67b1dc4b000762a0ccc6';
 
@@ -14,17 +13,20 @@ export const useDeleteAddon = () => {
   return useMutation({
     mutationFn: async (id: string) => {
       try {
-        await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
+        const response = await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
           title: '✅ Addon deleted ✅',
         });
+        return response;
       } catch (error) {
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
           title: '❌ Error deleting the addon ❌',
         });
         console.error('Error deleting addon:', error);
+
+        throw error;
       }
     },
     onSuccess: () => {
@@ -32,12 +34,13 @@ export const useDeleteAddon = () => {
     },
   });
 };
+
 function tryParseJson(jsonString: string) {
   try {
     const parsed = JSON.parse(jsonString);
     return parsed;
   } catch (e) {
-    console.error("Failed to parse JSON", e);
+    console.error('Failed to parse JSON', e);
     return undefined;
   }
 }
@@ -52,7 +55,7 @@ export const useFetchAddon = (slug?: string) => {
       ]);
 
       if (response.documents.length === 0) return null;
-      console.log(response)
+      console.log(response);
       const doc = response.documents[0];
       const addonData: Addon = {
         $id: doc.$id,
