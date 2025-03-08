@@ -8,7 +8,6 @@ import { routes } from './routes';
 import { Suspense, useEffect, useState } from 'react';
 import 'minecraft-textures-library/src/templates/create-textures.css';
 import CookieDialog from './components/utility/CookieDialog.tsx';
-import { LoggedUserProvider } from './api/context/loggedUser/loggedUserContext.tsx';
 
 // Separate the routes component to avoid hook rules violation
 const AppRoutes = () => {
@@ -20,9 +19,14 @@ const App = () => {
   const fetchUser = useUserStore((state) => state.fetchUser);
   const [envLoaded, setEnvLoaded] = useState(false);
 
+  // Fetch user data after component mounts
   useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
+    if (envLoaded) {
+      fetchUser().catch((error) => {
+        console.error('Failed to fetch user data:', error);
+      });
+    }
+  }, [fetchUser, envLoaded]);
 
   useEffect(() => {
     const loadEnv = () => {
@@ -48,11 +52,11 @@ const App = () => {
   return (
     <BrowserRouter>
       <Suspense fallback={<LoadingOverlay />}>
-        <LoggedUserProvider>
+        <>
           <AppRoutes />
           {/* Cookie dialog displays one time on any page load */}
           <CookieDialog variant='default' />
-        </LoggedUserProvider>
+        </>
         <Toaster />
       </Suspense>
     </BrowserRouter>

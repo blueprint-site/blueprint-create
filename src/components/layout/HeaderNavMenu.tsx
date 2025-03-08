@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/navigation-menu.tsx';
 import ThemeToggle from '@/components/utility/ThemeToggle.tsx';
 
-import { useLoggedUser } from '@/api/context/loggedUser/useLoggedUser';
+import { useUserStore } from '@/api/stores/userStore';
 import { account } from '@/config/appwrite.ts';
 
 import AddonIcon from '@/assets/sprite-icons/minecart_coupling.webp';
@@ -24,9 +24,9 @@ import { cn } from '@/config/utils.ts';
 const UserMenu = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { user } = useLoggedUser();
-  const loggedUser = useLoggedUser();
-  const isAdmin = loggedUser.preferences?.roles?.includes('admin');
+  const user = useUserStore((state) => state.user);
+  const preferences = useUserStore((state) => state.preferences);
+  const isAdmin = preferences?.roles?.includes('admin');
 
   const navigationItems = [
     {
@@ -69,7 +69,7 @@ const UserMenu = () => {
               <div className='hidden md:block'>
                 {user ? (
                   <Avatar className='h-10 w-10'>
-                    <AvatarImage src={loggedUser.preferences?.avatar} />
+                    <AvatarImage src={preferences?.avatar} />
                     <AvatarFallback>
                       <User className='h-6 w-6' />
                     </AvatarFallback>
@@ -110,14 +110,12 @@ const UserMenu = () => {
                 <>
                   <div className='flex items-center gap-2 border-y p-2 md:border-t-0'>
                     <Avatar className='h-6 w-6'>
-                      <AvatarImage src={loggedUser.preferences?.avatar} />
+                      <AvatarImage src={preferences?.avatar} />
                       <AvatarFallback>
                         <User className='h-4 w-4' />
                       </AvatarFallback>
                     </Avatar>
-                    <span className='text-foreground text-sm font-medium'>
-                      {loggedUser.user?.name}
-                    </span>
+                    <span className='text-foreground text-sm font-medium'>{user?.name}</span>
                   </div>
 
                   <button

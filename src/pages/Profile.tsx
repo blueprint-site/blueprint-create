@@ -1,14 +1,15 @@
 import { Button } from '@/components/ui/button';
 import { Download, User, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useLoggedUser } from '@/api/context/loggedUser/useLoggedUser';
+import { useUserStore } from '@/api/stores/userStore';
 import { useState } from 'react';
 import UserSchematicList from '@/components/features/schematics/UserSchematicList.tsx';
 
 const Profile = () => {
   const [error] = useState<string | null>(null);
   const navigate = useNavigate();
-  const LoggedUserInfo = useLoggedUser();
+  const user = useUserStore((state) => state.user);
+  const preferences = useUserStore((state) => state.preferences);
 
   if (error) {
     return (
@@ -24,9 +25,9 @@ const Profile = () => {
         <div className='border-divider flex flex-col items-start gap-6 border-b pb-3 sm:flex-row'>
           {/* Avatar */}
           <div className='shrink-0'>
-            {LoggedUserInfo?.preferences?.avatar ? (
+            {preferences?.avatar ? (
               <img
-                src={LoggedUserInfo.preferences?.avatar}
+                src={preferences?.avatar}
                 alt='Profile'
                 className='ring-border h-16 w-16 rounded-full object-cover ring-2'
               />
@@ -42,11 +43,11 @@ const Profile = () => {
             <div className='flex flex-col justify-between gap-4 sm:flex-row sm:items-center'>
               <div>
                 <h2 className='text-foreground text-2xl font-bold'>
-                  {LoggedUserInfo?.user?.name ?? 'Anonymous User'}
+                  {user?.name ?? 'Anonymous User'}
                 </h2>
-                <p className='text-foreground-muted text-sm'>{LoggedUserInfo?.user?.name}</p>
+                <p className='text-foreground-muted text-sm'>{user?.name}</p>
                 <p className='text-foreground-muted text-xs'>
-                  Joined {new Date(LoggedUserInfo?.user?.$createdAt || '').toLocaleDateString()}
+                  Joined {new Date(user?.$createdAt || '').toLocaleDateString()}
                 </p>
               </div>
               <div>
