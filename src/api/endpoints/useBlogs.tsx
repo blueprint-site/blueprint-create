@@ -18,21 +18,17 @@ export const useDeleteBlog = () => {
   return useMutation({
     mutationFn: async (id: string) => {
       try {
-        const response = await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
+        await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
           title: '✅ Article deleted ✅',
         });
-
-        return response;
       } catch (error) {
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
           title: '❌ Error deleting the article ❌',
         });
         console.error('Error deleting blog:', error);
-
-        throw error;
       }
     },
     onSuccess: () => {
@@ -46,48 +42,34 @@ export const useDeleteBlog = () => {
  * @param {string} blogId - The ID of the blog to fetch.
  * @returns {Query} Query object to fetch a single blog.
  */
-export const useFetchBlog = (blogId?: string, slug?: string) => {
+export const useFetchBlog = (blogId?: string) => {
   return useQuery<Blog | null>({
-    queryKey: ['blog', blogId, slug],
+    queryKey: ['blog', blogId],
     queryFn: async () => {
-      if (!blogId && !slug) return null;
+      if (!blogId || blogId === 'new') return null;
 
-      try {
-        let response;
+      const response = await databases.getDocument(DATABASE_ID, COLLECTION_ID, blogId);
+      const blogData: Blog = {
+        $id: response.$id,
+        title: response.title || '',
+        content: response.content || '',
+        slug: response.slug || '',
+        authors: response.author || '',
+        $createdAt: response.$createdAt || '',
+        $updatedAt: response.$updatedAt || '',
+        img_url: response.img_url || '',
+        status: response.status || '',
+        links: response.links ? JSON.parse(response.links as string) : [],
+        tags: response.tags ? JSON.parse(response.tags as string) : [],
+        likes: response.likes || '',
+        authors_uuid: response.authors_uuid || '',
+      };
 
-        if (blogId && blogId !== 'new') {
-          response = await databases.getDocument(DATABASE_ID, COLLECTION_ID, blogId);
-        } else if (slug) {
-          const query = [Query.equal('slug', slug)];
-          const result = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, query);
-          response = result.documents[0] || null;
-        }
-
-        if (!response) throw new Error('Blog not found');
-
-        return {
-          $id: response.$id,
-          $createdAt: response.$createdAt || '',
-          $updatedAt: response.$updatedAt || '',
-          title: response.title || '',
-          content: response.content || '',
-          slug: response.slug || '',
-          authors: response.author || '',
-          img_url: response.img_url || '',
-          status: response.status || '',
-          links: response.links ? JSON.parse(response.links as string) : [],
-          tags: response.tags ? JSON.parse(response.tags as string) : [],
-          likes: response.likes || 0,
-          authors_uuid: response.authors_uuid || [],
-        } as Blog;
-      } catch (err) {
-        console.error('Error fetching blog:', err);
-        return null; // ✅ Ajouté pour éviter les erreurs de typage
-      }
+      return blogData;
     },
-    enabled: Boolean(blogId || slug),
-    staleTime: 1000 * 60 * 5,
-    retry: false,
+    enabled: Boolean(blogId),
+    staleTime: 1000 * 60 * 5, // Rafraîchissement tous les 5 minutes
+    retry: false, // Ne pas essayer en cas d'échec
   });
 };
 
@@ -100,11 +82,12 @@ export const useFetchBlogTags = () => {
     queryKey: ['blog_tags'],
     queryFn: async () => {
       try {
-        const response = await databases.listDocuments(DATABASE_ID, '67b2326100053d0e304f', []);
+        const response = await databases.listDocuments(DATABASE_ID, '67b2326100053d0e304f', [
+        ]);
 
-        return response.documents.map((tag) => ({
+        return response.documents.map(tag => ({
           value: tag.$id,
-          label: tag.name || tag.$id,
+          label: tag.name || tag.$id
         }));
       } catch (err) {
         console.error('Error fetching blog tags:', err);
@@ -123,12 +106,7 @@ export const useFetchBlogTags = () => {
  * @param {number} limit - Number of items per page
  * @returns {Query} Query object with blogs data structured for infinite scroll
  */
-export const useFetchBlogs = (
-  query: string = '',
-  tagId: string = 'all',
-  page: number = 1,
-  limit: number = 12
-) => {
+export const useFetchBlogs = (query: string = '', tagId: string = 'all', page: number = 1, limit: number = 12) => {
   return useQuery({
     queryKey: ['blogs', query, tagId, page, limit],
     queryFn: async () => {
@@ -168,7 +146,7 @@ export const useFetchBlogs = (
           likes: doc.likes || 0,
           authors_uuid: doc.authors_uuid || [],
           // Add missing fields based on Blog schema
-          blog_tags: [], // This might need to be populated from somewhere else
+          blog_tags: [] // This might need to be populated from somewhere else
         }));
 
         const hasNextPage = page * limit < response.total;

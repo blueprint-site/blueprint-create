@@ -43,7 +43,6 @@ export const useSearchAddons = (
         offset: (page - 1) * (limit || 16),
         filter: filter(),
       });
-      console.log('API Response:', result); // Debugging
       return {
         hits: result.hits as Addon[],
         totalHits: result.estimatedTotalHits,
@@ -61,7 +60,6 @@ export const useSearchAddons = (
   useEffect(() => {
     if (data) {
       const newHasNextPage = (page - 1) * (limit || 16) + data.hits.length < data.totalHits;
-      console.log('Updating hasNextPage:', newHasNextPage); // Debugging
       setHasNextPage(newHasNextPage);
     }
   }, [data, page, limit]);
