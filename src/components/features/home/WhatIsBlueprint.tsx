@@ -56,37 +56,38 @@ const WhatIsBlueprint = () => {
   const logoRef = React.useRef<HTMLImageElement>(null);
   const isAnimatingRef = React.useRef(false);
 
-  const [rotationDegrees, setRotationDegrees] = React.useState(0);
 
-  // Update the handleLogoClick function
-  const handleLogoClick = (e: React.MouseEvent) => {
-    // Stop event propagation to prevent the anchor tag from being triggered
-    e.preventDefault();
-    e.stopPropagation();
+const [rotationDegrees, setRotationDegrees] = React.useState(0);
 
-    incrementLogoClickCount();
+// Update the handleLogoClick function
+const handleLogoClick = (e: React.MouseEvent) => {
+  // Stop event propagation to prevent the anchor tag from being triggered
+  e.preventDefault();
+  e.stopPropagation();
 
-    // Animate the logo when clicked - with continuous rotation
-    if (!logoRef.current || isAnimatingRef.current) return;
+  incrementLogoClickCount();
 
-    isAnimatingRef.current = true;
+  // Animate the logo when clicked - with continuous rotation
+  if (!logoRef.current || isAnimatingRef.current) return;
 
-    // Increase the total rotation by 360 degrees
-    const newRotation = rotationDegrees + 360;
-    setRotationDegrees(newRotation);
+  isAnimatingRef.current = true;
 
-    const element = logoRef.current;
-    element.style.transition = 'transform 0.4s ease';
-    element.style.transform = `rotate(${newRotation}deg)`;
+  // Increase the total rotation by 360 degrees
+  const newRotation = rotationDegrees + 360;
+  setRotationDegrees(newRotation);
 
-    // Just set the animating flag back to false when done,
-    // but don't reset the rotation
-    setTimeout(() => {
-      isAnimatingRef.current = false;
-    }, 450);
-  };
+  const element = logoRef.current;
+  element.style.transition = 'transform 0.4s ease';
+  element.style.transform = `rotate(${newRotation}deg)`;
+
+  // Just set the animating flag back to false when done,
+  // but don't reset the rotation
+  setTimeout(() => {
+    isAnimatingRef.current = false;
+  }, 450);
+};
   // Clean up animation styles on unmount
-  React.useEffect(() => {
+  useEffect(() => {
     const currentRef = logoRef.current;
     return () => {
       if (currentRef) {

@@ -26,8 +26,7 @@ const Footer = ({ className }: FooterProps) => {
               Found a bug? Report it to{' '}
               <a
                 href='https://github.com/blueprint-site/blueprint-site.github.io'
-                className='hover:underline'
-              >
+                className='hover:underline'>
                 GitHub issues
               </a>
               .
@@ -44,8 +43,7 @@ const Footer = ({ className }: FooterProps) => {
               </a>
               <a
                 href='https://blueprint-site.github.io/blueprint-blog/'
-                className='text-xs font-normal hover:underline'
-              >
+                className='text-xs font-normal hover:underline'>
                 Blog
               </a>
               <a href='/about' className='text-xs font-normal hover:underline'>

@@ -5,8 +5,8 @@ import { useToast } from '@/hooks/useToast';
 import Logo from '@/assets/logo.webp';
 import LegacyLogo from '@/assets/legacy_logo.webp';
 import { getEasterEggById, DEFAULT_EASTER_EGGS } from '@/config/easterEggs';
-import { UserPreferences } from '@/schemas/user.schema';
 import { useUserStore } from '@/api/stores/userStore';
+import { UserPreferences } from '@/types';
 
 // Rest of the imports and interfaces remain the same
 
