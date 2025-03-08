@@ -1,4 +1,3 @@
-// src/api/stores/easterEggStore.ts
 import { create } from 'zustand';
 
 interface EasterEggState {
@@ -6,9 +5,13 @@ interface EasterEggState {
   logoClickCount: number;
   lastClickTime: number;
 
+  // Flag for discovery
+  shouldTriggerDiscovery: boolean;
+
   // Methods
   incrementLogoClickCount: () => void;
   resetClickCount: () => void;
+  acknowledgeTrigger: () => void;
 }
 
 const CLICK_THRESHOLD = 5;
@@ -17,6 +20,7 @@ const CLICK_TIMEOUT = 6000; // 6 seconds
 export const useEasterEggStore = create<EasterEggState>((set, get) => ({
   logoClickCount: 0,
   lastClickTime: 0,
+  shouldTriggerDiscovery: false,
 
   incrementLogoClickCount: () => {
     const currentTime = Date.now();
@@ -35,10 +39,13 @@ export const useEasterEggStore = create<EasterEggState>((set, get) => ({
 
     const newCount = logoClickCount + 1;
 
-    // Reset the counter when we reach the threshold
-    // The actual easter egg discovery will be handled in the hook
+    // When we reach the threshold, trigger discovery
     if (newCount >= CLICK_THRESHOLD) {
-      set({ logoClickCount: 0, lastClickTime: currentTime });
+      set({
+        logoClickCount: 0,
+        lastClickTime: currentTime,
+        shouldTriggerDiscovery: true // Set flag to trigger discovery
+      });
       return;
     }
 
@@ -48,5 +55,9 @@ export const useEasterEggStore = create<EasterEggState>((set, get) => ({
 
   resetClickCount: () => {
     set({ logoClickCount: 0 });
+  },
+
+  acknowledgeTrigger: () => {
+    set({ shouldTriggerDiscovery: false });
   }
 }));
