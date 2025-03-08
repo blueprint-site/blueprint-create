@@ -4,12 +4,14 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
 import { Toaster } from '@/components/ui/toaster.tsx';
 import { useUserStore } from '@/api/stores/userStore';
+import { useUserStore } from '@/api/stores/userStore';
 import { routes } from './routes';
 import { Suspense, useEffect, useState } from 'react';
 import 'minecraft-textures-library/src/templates/create-textures.css';
 import CookieDialog from './components/utility/CookieDialog.tsx';
 
 const App = () => {
+  const fetchUser = useUserStore((state) => state.fetchUser);
   const fetchUser = useUserStore((state) => state.fetchUser);
   const [envLoaded, setEnvLoaded] = useState(false);
   const [router, setRouter] = useState<ReturnType<typeof createBrowserRouter> | null>(null);
