@@ -6,7 +6,8 @@ import { ExternalLinks } from '@/components/features/addons/addon-card/ExternalL
 import { CardContent } from '@/components/ui/card.tsx';
 import { ReactNode, useEffect, useState } from 'react';
 import { CurseForgeAddon, ModrinthAddon } from '@/types';
-import { Bug, Github, Globe } from 'lucide-react';
+import { Bug, Globe } from 'lucide-react';
+import { SiGithub } from '@icons-pack/react-simple-icons';
 
 export interface AddonDetailsParams {
   versions: string[];
@@ -31,7 +32,7 @@ export const AddonDetailsContent = ({
   const { sourceUrl, issuesUrl, websiteUrl } = curseforge_raw?.links || {};
 
   const externalLinks = [
-    createLink(<Github className='h-4 w-4' />, 'Source Code', sourceUrl || ''),
+    createLink(<SiGithub className='h-4 w-4' />, 'Source Code', sourceUrl || ''),
     createLink(<Bug className='h-4 w-4' />, 'Issue Tracker', issuesUrl || ''),
     createLink(<Globe className='h-4 w-4' />, 'Website', websiteUrl),
   ].filter((link): link is { icon: ReactNode; label: string; url: string } => link !== null);
@@ -48,8 +49,6 @@ export const AddonDetailsContent = ({
     setAvailableOn(platforms);
   }, [curseforge_raw, modrinth_raw]);
 
-  console.log(availableOn);
-  console.log(availableOn.includes('modrinth'));
   return (
     <CardContent className='space-y-6'>
       <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
