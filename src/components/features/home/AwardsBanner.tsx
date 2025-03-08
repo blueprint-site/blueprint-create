@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import WrenchIcon from '@/assets/wrench.webp';
 import '@/styles/awardsbanner.scss';

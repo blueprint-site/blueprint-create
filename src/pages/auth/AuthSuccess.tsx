@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useUserStore } from '@/api/stores/userStore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 const AuthSuccess = () => {
   // Replace context with Zustand store

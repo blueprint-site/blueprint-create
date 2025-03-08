@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/card';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { useFetchAddon } from '@/api';
 import { CurseForgeAddon, ModrinthAddon } from "@/types";
 import {

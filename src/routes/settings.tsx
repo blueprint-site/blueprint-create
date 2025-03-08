@@ -1,6 +1,6 @@
 import ProtectedRoute from '@/components/utility/ProtectedRoute';
 import { lazy } from 'react';
-import { Navigate, RouteObject } from 'react-router-dom';
+import { Navigate, RouteObject } from 'react-router';
 
 const SettingsPage = lazy(() => import('@/pages/Settings'));
 

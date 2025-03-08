@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { storage } from '@/config/appwrite';
 import { useUserStore } from '@/api/stores/userStore';
-import SchematicUploadLoadingOverlay from '@/components/loading-overlays/SchematicUploadLoadingOverlay';
 import { SchematicUploadForm } from './SchematicUploadForm';
 import { SchematicPreview } from './SchematicUploadPreview';
 import { generateSlug } from '../utils/generateSlug';
 import { useSaveSchematics } from '@/api/endpoints/useSchematics';
 import { createVersion, minecraftVersion } from '@/config/minecraft.ts';
 import { SchematicFormValues } from '@/types';
+import SchematicUploadLoadingOverlay from '@/components/loading-overlays/SchematicUploadLoadingOverlay';
 
 function SchematicsUpload() {
   const navigate = useNavigate();
@@ -21,11 +21,15 @@ function SchematicsUpload() {
     gameVersions: [],
     createVersions: [],
     modloaders: [],
+    categories: [],
+    subCategories: [],
   });
+
   const allCompatibilities = Array.from(
     new Set(minecraftVersion.flatMap((item) => item.compatibility))
   );
   const versions = Array.from(new Set(minecraftVersion.flatMap((item) => item.version)));
+
   // Define available options
   const options = {
     minecraftVersions: versions || [],
@@ -36,8 +40,22 @@ function SchematicsUpload() {
   // Use the mutation hook
   const { mutateAsync: saveSchematic } = useSaveSchematics();
 
+  // Handle field changes
+  const handleFieldChange = (field: keyof SchematicFormValues, value: any): void => {
+    setFormValues(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  // Handle image preview
+  const handleImagePreview = (files: File[]): void => {
+    const urls = files.map(file => URL.createObjectURL(file));
+    setImagePreviewUrls(urls);
+  };
+
   // Form submission
-  const onSubmit = async (data: SchematicFormValues) => {
+  const onSubmit = async (data: SchematicFormValues): Promise<void> => {
     if (!user) {
       alert('You must be logged in to upload schematics');
       return;
@@ -48,19 +66,7 @@ function SchematicsUpload() {
       return;
     }
 
-  React.useEffect(() => {
-    const subscription = form.watch((value) => {
-      if (onValueChange) {
-        Object.entries(value).forEach(([field, val]) => {
-          onValueChange(field as keyof SchematicFormValues, val);
-        });
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [form, onValueChange]);
-
-  const handleFormSubmit = form.handleSubmit(async (data) => {
-    console.log('Submitting form:', data);
+    setLoading(true);
     try {
       // Upload schematic file
       const uploadedSchematic = await storage.createFile(
@@ -71,7 +77,7 @@ function SchematicsUpload() {
 
       // Upload multiple image files
       const uploadedImages = await Promise.all(
-        data.imageFiles.map(async (file) => {
+        data.imageFiles.map(async (file: File) => {
           const uploadedFile = await storage.createFile('67b22481001e99d90888', 'unique()', file);
           return uploadedFile.$id;
         })
@@ -109,8 +115,14 @@ function SchematicsUpload() {
       navigate(`/schematics/${document.$id}/${slug}`);
     } catch (error) {
       console.error('Error submitting form:', error);
+    } finally {
+      setLoading(false);
     }
-  });
+  };
+
+  if (loading) {
+    return <SchematicUploadLoadingOverlay message='Uploading schematic...' />;
+  }
 
   return (
     <div className='container mx-auto px-4 py-8'>
