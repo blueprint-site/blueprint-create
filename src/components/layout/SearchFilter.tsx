@@ -9,7 +9,12 @@ interface SearchFilterProps {
   className?: string;
 }
 
-export function SearchFilter({ value, onChange, placeholder = 'Search...', className }: SearchFilterProps) {
+export function SearchFilter({
+  value,
+  onChange,
+  placeholder = 'Search...',
+  className,
+}: SearchFilterProps) {
   return (
     <div className={`flex flex-col justify-baseline align-baseline ${className}`}>
       <Input

@@ -87,7 +87,15 @@ const DevinsBadges = ({
     }.${format}`;
   }
 
-  return <img loading='lazy' src={badgeSrc} alt={`${name} badge`} className={className} height={finalHeight} />;
+  return (
+    <img
+      loading='lazy'
+      src={badgeSrc}
+      alt={`${name} badge`}
+      className={className}
+      height={finalHeight}
+    />
+  );
 };
 
 export default DevinsBadges;

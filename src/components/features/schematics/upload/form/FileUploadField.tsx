@@ -1,8 +1,20 @@
 // components/SchematicUploadForm/FileUploadField.tsx
 import { Control } from 'react-hook-form';
-import { FileUploader, FileUploaderContent, FileUploaderItem, FileInput } from '@/components/ui/file-uploader';
+import {
+  FileUploader,
+  FileUploaderContent,
+  FileUploaderItem,
+  FileInput,
+} from '@/components/ui/file-uploader';
 import { CloudUpload, Paperclip } from 'lucide-react';
-import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '@/components/ui/form';
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+} from '@/components/ui/form';
 import { SchematicFormValues } from '@/types';
 
 // Explicitly type allowed file fields

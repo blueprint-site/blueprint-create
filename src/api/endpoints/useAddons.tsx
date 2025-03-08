@@ -50,7 +50,9 @@ export const useFetchAddon = (slug?: string) => {
     queryFn: async () => {
       if (!slug) return null;
 
-      const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [Query.equal('slug', slug)]);
+      const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
+        Query.equal('slug', slug),
+      ]);
 
       if (response.documents.length === 0) return null;
       console.log(response);

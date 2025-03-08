@@ -1,5 +1,12 @@
 // src/components/filters/SelectFilter.tsx
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 export interface FilterOption {
   value: string;
@@ -30,7 +37,10 @@ export function SelectFilter({
       <label className='text-foreground font-minecraft mb-2 hidden md:block'>{label}</label>
       <Select value={value} onValueChange={onChange} disabled={isLoading}>
         <SelectTrigger className='border-foreground font-minecraft w-full cursor-pointer rounded-lg p-2'>
-          <SelectValue className='text-foreground font-minecraft' placeholder={placeholder || `Select ${label}`} />
+          <SelectValue
+            className='text-foreground font-minecraft'
+            placeholder={placeholder || `Select ${label}`}
+          />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>

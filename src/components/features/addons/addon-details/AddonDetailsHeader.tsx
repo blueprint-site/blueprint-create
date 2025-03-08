@@ -33,7 +33,12 @@ export const AddonDetailsHeader = ({
         <div className='min-w-0 flex-1'>
           <div className='flex items-center justify-between'>
             <h1 className='mb-2 truncate text-2xl font-bold'>{title}</h1>
-            <Button variant='outline' size='icon' className='h-8 w-8 rounded-full' onClick={handleCollectionAction}>
+            <Button
+              variant='outline'
+              size='icon'
+              className='h-8 w-8 rounded-full'
+              onClick={handleCollectionAction}
+            >
               {isInCollection ? <Star /> : <StarOff />}
             </Button>
           </div>

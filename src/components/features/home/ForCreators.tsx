@@ -21,8 +21,8 @@ const ForCreators = () => {
         </CardHeader>
         <CardContent className='grid gap-4'>
           <p className='text-foreground-muted text-sm'>
-            Our addon scanning process is fully automated. Contact us to request a rescan and get your addon included in
-            our directory.
+            Our addon scanning process is fully automated. Contact us to request a rescan and get
+            your addon included in our directory.
           </p>
 
           <div className='mx-auto mt-4 grid gap-4 md:grid-cols-2'>
@@ -55,7 +55,9 @@ const ForCreators = () => {
           </div>
 
           <div className='mt-4 flex items-center justify-center'>
-            <p className='text-foreground-muted text-center text-xs tracking-wide'>Email: blueprint-site@proton.me</p>
+            <p className='text-foreground-muted text-center text-xs tracking-wide'>
+              Email: blueprint-site@proton.me
+            </p>
           </div>
         </CardContent>
       </Card>

@@ -51,7 +51,9 @@ export const SchematicsDetailsHeader = ({ schematic }: SchematicsDetailsHeaderPr
                   />
                 ) : (
                   <div className='flex items-center gap-3'>
-                    <span className='text-success text-sm font-semibold'>Your schematic is now public!</span>
+                    <span className='text-success text-sm font-semibold'>
+                      Your schematic is now public!
+                    </span>
                   </div>
                 )}
               </>
@@ -78,7 +80,9 @@ export const SchematicsDetailsHeader = ({ schematic }: SchematicsDetailsHeaderPr
         <CardTitle>
           <h1 className='text-2xl font-bold md:text-3xl'>{schematic.title}</h1>
         </CardTitle>
-        <CardDescription className='text-foreground-muted'>By {schematic.authors.join(', ')}</CardDescription>
+        <CardDescription className='text-foreground-muted'>
+          By {schematic.authors.join(', ')}
+        </CardDescription>
       </CardHeader>
     </Card>
   );

@@ -58,11 +58,20 @@ export function useFilters(options: UseFiltersOptions = {}) {
 
   const setQuery = useCallback((value: string) => updateFilter('query', value), [updateFilter]);
   const setPage = useCallback((value: number) => updateFilter('page', value), [updateFilter]);
-  const setCategory = useCallback((value: string) => updateFilter('category', value), [updateFilter]);
-  const setSubCategory = useCallback((value: string) => updateFilter('subCategory', value), [updateFilter]);
+  const setCategory = useCallback(
+    (value: string) => updateFilter('category', value),
+    [updateFilter]
+  );
+  const setSubCategory = useCallback(
+    (value: string) => updateFilter('subCategory', value),
+    [updateFilter]
+  );
   const setVersion = useCallback((value: string) => updateFilter('version', value), [updateFilter]);
   const setLoaders = useCallback((value: string) => updateFilter('loaders', value), [updateFilter]);
-  const setCreateVersion = useCallback((value: string) => updateFilter('createVersion', value), [updateFilter]);
+  const setCreateVersion = useCallback(
+    (value: string) => updateFilter('createVersion', value),
+    [updateFilter]
+  );
 
   const resetFilters = useCallback(() => {
     setFilters({

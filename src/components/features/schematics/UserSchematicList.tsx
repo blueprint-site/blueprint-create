@@ -52,11 +52,16 @@ const UserSchematicList = () => {
                 <CardHeader className='mt-4 flex flex-col items-start justify-between'>
                   <div className='flex items-center gap-4'>
                     <Avatar>
-                      <AvatarImage src={schematic.image_urls ? schematic.image_urls[1] : ''} alt={schematic.title} />
+                      <AvatarImage
+                        src={schematic.image_urls ? schematic.image_urls[1] : ''}
+                        alt={schematic.title}
+                      />
                       <AvatarFallback>{schematic.title.slice(0, 2)}</AvatarFallback>
                     </Avatar>
                     <div className=''>
-                      <h3 className='text-card-foreground text-lg font-semibold'>{schematic.title}</h3>
+                      <h3 className='text-card-foreground text-lg font-semibold'>
+                        {schematic.title}
+                      </h3>
                       <p className='text-foreground-muted text-sm'>{schematic.description}</p>
                     </div>
                   </div>
@@ -84,19 +89,27 @@ const UserSchematicList = () => {
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <button className='text-destructive absolute top-1 right-1 cursor-pointer'>
-                      <MinecraftIcon name={'trash'} className={'absolute top-1 right-1'} size={32} />
+                      <MinecraftIcon
+                        name={'trash'}
+                        className={'absolute top-1 right-1'}
+                        size={32}
+                      />
                     </button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
                       <AlertDialogTitle>Delete Schematic</AlertDialogTitle>
                       <AlertDialogDescription>
-                        Are you sure you want to delete "{schematic.title}"? This action cannot be undone.
+                        Are you sure you want to delete "{schematic.title}"? This action cannot be
+                        undone.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => handleDelete(schematic.$id)} className='text-destructive'>
+                      <AlertDialogAction
+                        onClick={() => handleDelete(schematic.$id)}
+                        className='text-destructive'
+                      >
                         Delete
                       </AlertDialogAction>
                     </AlertDialogFooter>

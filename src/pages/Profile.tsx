@@ -42,7 +42,9 @@ const Profile = () => {
           <div className='w-full grow'>
             <div className='flex flex-col justify-between gap-4 sm:flex-row sm:items-center'>
               <div>
-                <h2 className='text-foreground text-2xl font-bold'>{user?.name ?? 'Anonymous User'}</h2>
+                <h2 className='text-foreground text-2xl font-bold'>
+                  {user?.name ?? 'Anonymous User'}
+                </h2>
                 <p className='text-foreground-muted text-sm'>{user?.name}</p>
                 <p className='text-foreground-muted text-xs'>
                   Joined {new Date(user?.$createdAt || '').toLocaleDateString()}

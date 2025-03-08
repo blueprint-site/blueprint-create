@@ -10,7 +10,13 @@ type ContactCardProps = {
   link: string;
 };
 
-export function ContactCard({ title, badgeName, description, customBadgeUrl, link }: ContactCardProps) {
+export function ContactCard({
+  title,
+  badgeName,
+  description,
+  customBadgeUrl,
+  link,
+}: ContactCardProps) {
   return (
     <Card className='border-border flex flex-col items-center gap-4 rounded-lg border p-4'>
       <h3 className='font-minecraft text-xl font-semibold'>{title}</h3>

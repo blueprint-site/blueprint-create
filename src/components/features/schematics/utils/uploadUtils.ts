@@ -35,7 +35,12 @@ export async function handleSchematicUpload(
       modloaders: loaders,
     };
 
-    const document = await databases.createDocument('67b1dc430020b4fb23e3', '67b2310d00356b0cb53c', 'unique()', data);
+    const document = await databases.createDocument(
+      '67b1dc430020b4fb23e3',
+      '67b2310d00356b0cb53c',
+      'unique()',
+      data
+    );
 
     const uploadedSchematics = localStorage.getItem('storedBlueprints') || '[]';
     const blueprintsArray = JSON.parse(uploadedSchematics);

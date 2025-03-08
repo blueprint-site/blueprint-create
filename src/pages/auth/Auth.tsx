@@ -44,9 +44,19 @@ const AuthPage = () => {
             <form onSubmit={(e) => e.preventDefault()}>
               <div className='grid gap-2'>
                 {isRegistering && (
-                  <Input type='text' placeholder='Name' value={name} onChange={(e) => setName(e.target.value)} />
+                  <Input
+                    type='text'
+                    placeholder='Name'
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
                 )}
-                <Input type='email' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} />
+                <Input
+                  type='email'
+                  placeholder='Email'
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
                 <Input
                   type='password'
                   placeholder='Password'
@@ -56,7 +66,11 @@ const AuthPage = () => {
               </div>
 
               <div className='mt-2 flex items-center gap-2'>
-                <Button variant='outline' className='bg-white text-black/80 hover:bg-gray-50' onClick={handleSubmit}>
+                <Button
+                  variant='outline'
+                  className='bg-white text-black/80 hover:bg-gray-50'
+                  onClick={handleSubmit}
+                >
                   {isRegistering ? 'Register' : 'Login'}
                 </Button>
 
@@ -68,8 +82,14 @@ const AuthPage = () => {
               </div>
 
               <div className='text-center'>
-                <Button type='button' onClick={() => setIsRegistering(!isRegistering)} variant='link'>
-                  {isRegistering ? 'Already have an account? Login' : "Don't have an account? Register"}
+                <Button
+                  type='button'
+                  onClick={() => setIsRegistering(!isRegistering)}
+                  variant='link'
+                >
+                  {isRegistering
+                    ? 'Already have an account? Login'
+                    : "Don't have an account? Register"}
                 </Button>
               </div>
             </form>

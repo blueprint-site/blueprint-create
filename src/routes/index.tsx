@@ -24,7 +24,9 @@ const Privacy = lazy(() => import('@/pages/Privacy'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 const AdminPanelLayout = lazy(() => import('@/layouts/AdminPanelLayout'));
 const Changelogs = lazy(() => import('@/pages/Changelogs'));
-const ChangelogsEditor = lazy(() => import('@/components/features/changelogs/ChangelogsEditor.tsx'));
+const ChangelogsEditor = lazy(
+  () => import('@/components/features/changelogs/ChangelogsEditor.tsx')
+);
 
 export const routes: RouteObject[] = [
   {

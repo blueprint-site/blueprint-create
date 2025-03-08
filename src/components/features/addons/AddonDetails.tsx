@@ -69,7 +69,9 @@ export default function AddonDetails() {
       </Card>
 
       {/* Gallery Card */}
-      {gallery.length > 0 && <AddonDetailsGallery addon_name={addon.name} gallery_small={gallery} />}
+      {gallery.length > 0 && (
+        <AddonDetailsGallery addon_name={addon.name} gallery_small={gallery} />
+      )}
 
       {/* Description Card */}
       <AddonDetailsDescription description={modrinthData?.description ?? ''} />

@@ -9,7 +9,9 @@ export const SchematicsDetailsMain = () => {
   const { data: schematic } = useFetchSchematic(id);
 
   if (!schematic) {
-    return <div className='text-foreground-muted flex items-center justify-center p-8'>Loading...</div>;
+    return (
+      <div className='text-foreground-muted flex items-center justify-center p-8'>Loading...</div>
+    );
   }
 
   return (

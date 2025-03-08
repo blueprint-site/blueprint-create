@@ -9,7 +9,10 @@ export interface AddonDetailsGalleryParams {
   gallery_hd?: string[];
 }
 
-export const AddonDetailsGallery = ({ gallery_small = [], addon_name = '' }: AddonDetailsGalleryParams) => {
+export const AddonDetailsGallery = ({
+  gallery_small = [],
+  addon_name = '',
+}: AddonDetailsGalleryParams) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   console.log('gallery', gallery_small);
 

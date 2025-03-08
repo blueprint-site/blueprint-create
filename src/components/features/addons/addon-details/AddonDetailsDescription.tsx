@@ -48,7 +48,10 @@ export const AddonDetailsDescription = ({ description = '' }: AddonDetailsDescri
   return (
     <Card>
       <CardContent className='prose prose-neutral dark:prose-invert max-w-none p-6'>
-        <div dangerouslySetInnerHTML={{ __html: descriptionFormated }} className='markdown-content' />
+        <div
+          dangerouslySetInnerHTML={{ __html: descriptionFormated }}
+          className='markdown-content'
+        />
       </CardContent>
     </Card>
   );

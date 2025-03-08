@@ -15,7 +15,11 @@ const BlogTagsDisplay = ({ value }: BlogTagsDisplayProps) => {
   return (
     <div className='flex flex-wrap gap-2'>
       {tags.map((tag) => (
-        <span key={tag.id} className='text-foreground rounded px-1 py-1' style={{ backgroundColor: tag.color }}>
+        <span
+          key={tag.id}
+          className='text-foreground rounded px-1 py-1'
+          style={{ backgroundColor: tag.color }}
+        >
           {tag.value}
         </span>
       ))}

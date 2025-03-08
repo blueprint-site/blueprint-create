@@ -40,7 +40,9 @@ export function SchematicPreview({
         <CardTitle>
           <h1 className='text-2xl font-bold md:text-3xl'>{title || 'Schematic Title'}</h1>
         </CardTitle>
-        <CardDescription className='text-foreground-muted'>By {user?.name || 'Anonymous'}</CardDescription>
+        <CardDescription className='text-foreground-muted'>
+          By {user?.name || 'Anonymous'}
+        </CardDescription>
       </CardHeader>
 
       <CardContent className='space-y-6'>

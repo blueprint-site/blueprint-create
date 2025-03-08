@@ -21,23 +21,21 @@ export function ContributorsSection({ contributors, isLoading, error }: Contribu
   const { t } = useTranslation();
 
   return (
-    <section aria-labelledby="contributors">
-      <div className="font-minecraft space-y-2 text-center mb-6">
-        <h2 id="contributors" className="text-3xl font-bold">
+    <section aria-labelledby='contributors'>
+      <div className='font-minecraft mb-6 space-y-2 text-center'>
+        <h2 id='contributors' className='text-3xl font-bold'>
           {t('home.contributions.title')}
         </h2>
-        <p className="text-foreground-muted text-lg">
-          {t('home.contributions.subtitle.main')}
-        </p>
+        <p className='text-foreground-muted text-lg'>{t('home.contributions.subtitle.main')}</p>
       </div>
 
       {error && (
-        <Alert variant="destructive" className="mb-6">
+        <Alert variant='destructive' className='mb-6'>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
         {isLoading
           ? Array(8)
               .fill(0)

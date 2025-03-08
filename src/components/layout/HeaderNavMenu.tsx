@@ -91,7 +91,9 @@ const UserMenu = () => {
                     className={({ isActive }) =>
                       cn(
                         'font-minecraft flex rounded-md p-2',
-                        isActive ? 'bg-primary/10 text-foreground font-bold' : 'text-foreground-muted'
+                        isActive
+                          ? 'bg-primary/10 text-foreground font-bold'
+                          : 'text-foreground-muted'
                       )
                     }
                   >

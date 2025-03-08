@@ -92,7 +92,9 @@ export const BlogEditor = () => {
           <CardContent className='space-y-4'>
             <ImageUploader
               value={blogState?.img_url}
-              onChange={(base64) => setBlogState((prev) => (prev ? { ...prev, img_url: base64 ?? undefined } : null))}
+              onChange={(base64) =>
+                setBlogState((prev) => (prev ? { ...prev, img_url: base64 ?? undefined } : null))
+              }
             />
             <div className='space-y-2'>
               <h3 className='text-sm font-medium'>Title</h3>
@@ -132,7 +134,9 @@ export const BlogEditor = () => {
           <div className='h-[calc(100vh-200px)] overflow-auto'>
             <MarkdownEditor
               value={blog?.content ?? ''}
-              onChange={(value) => setBlogState((prev) => (prev ? { ...prev, content: value ?? undefined } : null))}
+              onChange={(value) =>
+                setBlogState((prev) => (prev ? { ...prev, content: value ?? undefined } : null))
+              }
             />
           </div>
         </div>

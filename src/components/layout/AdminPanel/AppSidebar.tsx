@@ -3,7 +3,13 @@ import { BookOpen, Bot, Map, Settings2, SquareTerminal } from 'lucide-react';
 
 import { NavMain } from '@/components/layout/AdminPanel/NavMain.tsx';
 import { NavUser } from '@/components/layout/AdminPanel/NavUser.tsx';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar.tsx';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarRail,
+} from '@/components/ui/sidebar.tsx';
 import { useUserStore } from '@/api/stores/userStore.ts';
 import logo from '@/assets/logo.webp';
 import { useLocation } from 'react-router';
@@ -26,7 +32,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         title: 'Dashboard',
         url: '/admin',
         icon: SquareTerminal,
-        isActive: pathSegments[1] === undefined || pathSegments[1] === 'stats' || pathSegments[1] === 'logs',
+        isActive:
+          pathSegments[1] === undefined ||
+          pathSegments[1] === 'stats' ||
+          pathSegments[1] === 'logs',
         items: [
           { title: 'Stats', url: '/admin/stats' },
           { title: 'Logs', url: '/admin/logs' },

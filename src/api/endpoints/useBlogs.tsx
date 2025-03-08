@@ -105,12 +105,21 @@ export const useFetchBlogTags = () => {
  * @param {number} limit - Number of items per page
  * @returns {Query} Query object with blogs data structured for infinite scroll
  */
-export const useFetchBlogs = (query: string = '', tagId: string = 'all', page: number = 1, limit: number = 12) => {
+export const useFetchBlogs = (
+  query: string = '',
+  tagId: string = 'all',
+  page: number = 1,
+  limit: number = 12
+) => {
   return useQuery({
     queryKey: ['blogs', query, tagId, page, limit],
     queryFn: async () => {
       try {
-        const queryParams = [Query.orderDesc('$createdAt'), Query.limit(limit), Query.offset((page - 1) * limit)];
+        const queryParams = [
+          Query.orderDesc('$createdAt'),
+          Query.limit(limit),
+          Query.offset((page - 1) * limit),
+        ];
 
         // Only add search query if it's not empty
         if (query && query.trim() !== '') {

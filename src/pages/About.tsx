@@ -19,7 +19,9 @@ export default function About() {
         </HeroSection>
       </HeroHeader>
       <HeroContent>
-        <div className='font-minecraft my-8 text-center text-4xl font-semibold'>About Blueprint</div>
+        <div className='font-minecraft my-8 text-center text-4xl font-semibold'>
+          About Blueprint
+        </div>
         <MissionSection />
         <ContactSection />
         <ContributorsSection contributors={contributors} isLoading={isLoading} error={error} />

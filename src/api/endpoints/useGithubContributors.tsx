@@ -33,10 +33,9 @@ export function useGitHubContributors() {
 
         // Helper function to fetch contributors for a specific repo
         const getContributors = async (repo: string): Promise<GitHubUser[]> => {
-          const response = await fetch(
-            `${GITHUB_API_BASE}/${repo}/contributors?per_page=50`,
-            { signal: controller.signal }
-          );
+          const response = await fetch(`${GITHUB_API_BASE}/${repo}/contributors?per_page=50`, {
+            signal: controller.signal,
+          });
 
           if (!response.ok) {
             throw new Error(`Failed to fetch ${repo} contributors`);

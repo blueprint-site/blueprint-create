@@ -24,7 +24,10 @@ const Footer = ({ className }: FooterProps) => {
 
             <h6 className='text-xs font-normal'>
               Found a bug? Report it to{' '}
-              <a href='https://github.com/blueprint-site/blueprint-site.github.io' className='hover:underline'>
+              <a
+                href='https://github.com/blueprint-site/blueprint-site.github.io'
+                className='hover:underline'
+              >
                 GitHub issues
               </a>
               .
@@ -60,7 +63,10 @@ const Footer = ({ className }: FooterProps) => {
         </div>
 
         <div className='text-foreground mt-5 flex flex-col gap-1 text-center text-xs font-normal'>
-          <div>NOT AN OFFICIAL MINECRAFT SERVICE. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.</div>
+          <div>
+            NOT AN OFFICIAL MINECRAFT SERVICE. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR
+            MICROSOFT.
+          </div>
           <div>Not affiliated with Create Mod team or one of the addons in any way.</div>
         </div>
       </div>

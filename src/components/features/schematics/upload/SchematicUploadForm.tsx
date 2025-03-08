@@ -19,7 +19,11 @@ interface SchematicUploadFormProps {
   onImageChange?: (files: File[]) => void;
 }
 
-export function SchematicUploadForm({ onSubmit, onValueChange, onImageChange }: SchematicUploadFormProps) {
+export function SchematicUploadForm({
+  onSubmit,
+  onValueChange,
+  onImageChange,
+}: SchematicUploadFormProps) {
   const [schematicFilePreview, setSchematicFilePreview] = useState<File | null>(null);
   const [imageFilePreviews, setImageFilePreviews] = useState<File[]>([]);
   const minecraftVersions = MINECRAFT_VERSIONS;
@@ -67,7 +71,9 @@ export function SchematicUploadForm({ onSubmit, onValueChange, onImageChange }: 
     <Card>
       <CardHeader>
         <CardTitle>Schematic Information</CardTitle>
-        <CardDescription>Fill out the details about your schematic to share with the community</CardDescription>
+        <CardDescription>
+          Fill out the details about your schematic to share with the community
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -103,7 +109,12 @@ export function SchematicUploadForm({ onSubmit, onValueChange, onImageChange }: 
               />
             </div>
 
-            <FormInput name='title' control={form.control} label='Title' placeholder='Super Cool Contraption' />
+            <FormInput
+              name='title'
+              control={form.control}
+              label='Title'
+              placeholder='Super Cool Contraption'
+            />
 
             <FormMarkdownEditor
               name='description'

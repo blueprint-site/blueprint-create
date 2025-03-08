@@ -3,7 +3,7 @@ export * from './ContactCard';
 export * from './ContactLink';
 export * from './ContributorCard';
 export * from './ContactSection';
-export * from './MissionSection'; 
+export * from './MissionSection';
 export * from './ContributorsSection';
 export * from './HeroSection';
 

@@ -11,7 +11,8 @@ import { UserPreferences } from '@/types';
 // Rest of the imports and interfaces remain the same
 
 export const useEasterEgg = () => {
-  const { logoClickCount, incrementLogoClickCount, eggTriggered, resetEggTriggered } = useEasterEggStore();
+  const { logoClickCount, incrementLogoClickCount, eggTriggered, resetEggTriggered } =
+    useEasterEggStore();
 
   const preferences = useUserStore((state) => state.preferences);
   const updatePreferences = useUserStore((state) => state.updatePreferences);

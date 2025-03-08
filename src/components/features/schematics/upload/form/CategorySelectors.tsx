@@ -1,4 +1,11 @@
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Control, UseFormReturn } from 'react-hook-form';
@@ -82,7 +89,9 @@ export function CategorySelectors({ control, form }: CategorySelectorsProps) {
   return (
     <div className='space-y-4 py-4'>
       {selections.map((selection, index) => {
-        const selectedCategoryData = filteredCategories.find((cat) => cat.category === selection.category);
+        const selectedCategoryData = filteredCategories.find(
+          (cat) => cat.category === selection.category
+        );
 
         return (
           <div key={selection.id} className='grid grid-cols-1 gap-6 md:grid-cols-2'>

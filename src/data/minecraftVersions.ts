@@ -42,4 +42,5 @@ export const MINECRAFT_VERSIONS = [
 ] as const;
 
 export type MinecraftVersions = (typeof MINECRAFT_VERSIONS)[number]['value'];
-export type ModloaderCompatibility = (typeof MINECRAFT_VERSIONS)[number]['metadata']['compatibility'][number];
+export type ModloaderCompatibility =
+  (typeof MINECRAFT_VERSIONS)[number]['metadata']['compatibility'][number];

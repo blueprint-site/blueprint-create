@@ -13,7 +13,14 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 interface DataWithId {
@@ -24,7 +31,10 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export function AdminBlogTable<TData extends DataWithId, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function AdminBlogTable<TData extends DataWithId, TValue>({
+  columns,
+  data,
+}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const navigate = useNavigate();
@@ -69,7 +79,9 @@ export function AdminBlogTable<TData extends DataWithId, TValue>({ columns, data
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead className='text-foreground' key={header.id}>
-                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );
                 })}
@@ -86,7 +98,9 @@ export function AdminBlogTable<TData extends DataWithId, TValue>({ columns, data
                   data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell, index) => (
-                    <TableCell key={index}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                    <TableCell key={index}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
                   ))}
                 </TableRow>
               ))
@@ -110,7 +124,12 @@ export function AdminBlogTable<TData extends DataWithId, TValue>({ columns, data
           >
             Previous
           </Button>
-          <Button variant='outline' size='sm' onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+          <Button
+            variant='outline'
+            size='sm'
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
             Next
           </Button>
         </div>

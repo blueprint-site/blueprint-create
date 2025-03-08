@@ -18,7 +18,16 @@ export const SCHEMATIC_CATEGORIES = [
   },
   {
     category: 'Landscapes',
-    subcategories: ['Gardens', 'Parks', 'Mountains', 'Forests', 'Deserts', 'Caves', 'Islands', 'Others'],
+    subcategories: [
+      'Gardens',
+      'Parks',
+      'Mountains',
+      'Forests',
+      'Deserts',
+      'Caves',
+      'Islands',
+      'Others',
+    ],
   },
   {
     category: 'Technical Structures',
@@ -34,7 +43,15 @@ export const SCHEMATIC_CATEGORIES = [
   },
   {
     category: 'Decoration',
-    subcategories: ['Furniture', 'Lighting', 'Street Details', 'Statues', 'Planters', 'Interiors', 'Others'],
+    subcategories: [
+      'Furniture',
+      'Lighting',
+      'Street Details',
+      'Statues',
+      'Planters',
+      'Interiors',
+      'Others',
+    ],
   },
   {
     category: 'Infrastructure',
@@ -54,7 +71,13 @@ export const SCHEMATIC_CATEGORIES = [
   },
   {
     category: 'Monuments & Replicas',
-    subcategories: ['Historical Monuments', 'Real Building Replicas', 'Landmarks', 'Giant Statues', 'Others'],
+    subcategories: [
+      'Historical Monuments',
+      'Real Building Replicas',
+      'Landmarks',
+      'Giant Statues',
+      'Others',
+    ],
   },
   {
     category: 'Cities & Villages',
@@ -98,7 +121,15 @@ export const SCHEMATIC_CATEGORIES = [
   },
   {
     category: 'Resource Farms',
-    subcategories: ['Iron Farms', 'Gold Farms', 'Crop Farms', 'Animal Farms', 'Mob Farms', 'XP Farms', 'Others'],
+    subcategories: [
+      'Iron Farms',
+      'Gold Farms',
+      'Crop Farms',
+      'Animal Farms',
+      'Mob Farms',
+      'XP Farms',
+      'Others',
+    ],
   },
   {
     category: 'Transportation & Logistics',

@@ -10,7 +10,9 @@ const BaseLayout = () => {
   const { isDarkMode } = useThemeStore();
 
   return (
-    <div className={`bg-background text-foreground min-h-screen w-full ${isDarkMode ? 'dark' : ''}`}>
+    <div
+      className={`bg-background text-foreground min-h-screen w-full ${isDarkMode ? 'dark' : ''}`}
+    >
       <AppHeader />
       <main className='flex h-screen flex-col justify-between overflow-y-auto pt-16'>
         <div className={`${isDarkMode ? 'bg-shadow_steel_casing' : 'bg-refined_radiance_casing'}`}>

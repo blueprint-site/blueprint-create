@@ -37,12 +37,18 @@ export function MissionSection() {
   return (
     <Card className='relative mb-8 overflow-hidden px-4' aria-labelledby='mission'>
       <div className='absolute -top-12 -right-12 hidden opacity-5 md:block'>
-        <motion.div animate={{ rotate: 360 }} transition={{ duration: 100, repeat: Infinity, ease: 'linear' }}>
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 100, repeat: Infinity, ease: 'linear' }}
+        >
           <Cog className='h-48 w-48' />
         </motion.div>
       </div>
       <CardHeader>
-        <h2 id='mission' className='font-minecraft mb-6 text-center text-3xl font-semibold sm:text-left'>
+        <h2
+          id='mission'
+          className='font-minecraft mb-6 text-center text-3xl font-semibold sm:text-left'
+        >
           Our Mission
         </h2>
       </CardHeader>
@@ -50,14 +56,14 @@ export function MissionSection() {
       <CardContent>
         <div className='text-foreground-muted font-minecraft relative z-10 mb-8 space-y-4'>
           <p className='max-w-3xl text-lg leading-relaxed'>
-            Blueprint emerged from recognizing the need for a centralized platform that serves the Create Mod community
-            effectively. We built this site using modern web technologies to provide a robust solution for discovering
-            and sharing content.
+            Blueprint emerged from recognizing the need for a centralized platform that serves the
+            Create Mod community effectively. We built this site using modern web technologies to
+            provide a robust solution for discovering and sharing content.
           </p>
           <p className='max-w-3xl text-lg leading-relaxed'>
-            Our goal is to consolidate Create Mod resources in one accessible location - connecting addon developers
-            with users and enabling easy sharing of contraption designs. We aim to enhance discoverability and foster
-            collaboration within the community.
+            Our goal is to consolidate Create Mod resources in one accessible location - connecting
+            addon developers with users and enabling easy sharing of contraption designs. We aim to
+            enhance discoverability and foster collaboration within the community.
           </p>
         </div>
 

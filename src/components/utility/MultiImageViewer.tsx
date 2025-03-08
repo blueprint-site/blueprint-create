@@ -45,7 +45,11 @@ export function MultiImageViewer({ images }: MultiImageViewerProps) {
               activeImage === image ? 'ring-primary ring-2' : 'opacity-70 hover:opacity-100'
             }`}
           >
-            <img src={image} alt={`Thumbnail ${index + 1}`} className='h-16 w-16 rounded-lg object-cover' />
+            <img
+              src={image}
+              alt={`Thumbnail ${index + 1}`}
+              className='h-16 w-16 rounded-lg object-cover'
+            />
           </button>
         ))}
       </div>

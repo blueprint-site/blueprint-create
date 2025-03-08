@@ -1,4 +1,11 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card.tsx';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card.tsx';
 import MarkdownDisplay from '@/components/utility/MarkdownDisplay.tsx';
 import BlogTagsDisplay from '@/components/utility/blog/BlogTagsDisplay.tsx';
 import { Blog } from '@/types';

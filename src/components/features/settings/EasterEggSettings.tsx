@@ -25,7 +25,9 @@ const EasterEggsSettings = () => {
     <div className='space-y-6'>
       <div>
         <h2 className='text-2xl font-bold tracking-tight'>Easter Eggs</h2>
-        <p className='text-muted-foreground'>Discover and toggle special features hidden throughout the application.</p>
+        <p className='text-muted-foreground'>
+          Discover and toggle special features hidden throughout the application.
+        </p>
       </div>
 
       <div className='space-y-4'>
@@ -47,7 +49,10 @@ const EasterEggsSettings = () => {
                         <UnlockIcon className='mr-1 h-3 w-3' /> Discovered
                       </Badge>
                     ) : (
-                      <Badge variant='outline' className='bg-gray-50 text-gray-700 dark:bg-gray-900 dark:text-gray-300'>
+                      <Badge
+                        variant='outline'
+                        className='bg-gray-50 text-gray-700 dark:bg-gray-900 dark:text-gray-300'
+                      >
                         <LockIcon className='mr-1 h-3 w-3' /> Locked
                       </Badge>
                     )}
@@ -62,7 +67,9 @@ const EasterEggsSettings = () => {
                     />
                   )}
                 </div>
-                <CardDescription>{discovered ? egg.description : egg.discoveryHint}</CardDescription>
+                <CardDescription>
+                  {discovered ? egg.description : egg.discoveryHint}
+                </CardDescription>
               </CardHeader>
 
               {discovered && enabled && egg.component && (

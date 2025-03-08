@@ -59,7 +59,11 @@ function SchematicsUpload() {
     setLoading(true);
     try {
       // Upload schematic file
-      const uploadedSchematic = await storage.createFile('67b2241e0032c25c8216', 'unique()', data.schematicFile);
+      const uploadedSchematic = await storage.createFile(
+        '67b2241e0032c25c8216',
+        'unique()',
+        data.schematicFile
+      );
 
       // Upload multiple image files
       const uploadedImages = await Promise.all(
@@ -70,8 +74,12 @@ function SchematicsUpload() {
       );
 
       // Get file URLs
-      const schematicUrl = storage.getFileDownload('67b2241e0032c25c8216', uploadedSchematic.$id).toString();
-      const imageUrls = uploadedImages.map((id) => storage.getFilePreview('67b22481001e99d90888', id).toString());
+      const schematicUrl = storage
+        .getFileDownload('67b2241e0032c25c8216', uploadedSchematic.$id)
+        .toString();
+      const imageUrls = uploadedImages.map((id) =>
+        storage.getFilePreview('67b22481001e99d90888', id).toString()
+      );
 
       const slug = generateSlug(data.title);
 

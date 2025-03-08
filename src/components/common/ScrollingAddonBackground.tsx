@@ -196,7 +196,10 @@ export const ScrollingAddonBackground = ({
   `;
 
   return (
-    <div className='relative h-full w-full overflow-hidden rounded-b-2xl bg-background' ref={containerRef}>
+    <div
+      className='bg-background relative h-full w-full overflow-hidden rounded-b-2xl'
+      ref={containerRef}
+    >
       <style>{keyframesStyle}</style>
 
       <div className='absolute inset-0'>
@@ -208,7 +211,8 @@ export const ScrollingAddonBackground = ({
               style={{
                 animation: `scrollRow ${animationDuration}s linear infinite`,
                 animationDelay: `${((rowIndex % 2) * -animationDuration) / 2}s`, // Alternate row direction
-              }}>
+              }}
+            >
               {row.map((addon) =>
                 addon.icon ? (
                   <img

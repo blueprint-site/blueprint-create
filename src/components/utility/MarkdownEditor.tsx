@@ -97,7 +97,8 @@ type PluginConfig = {
   createPlugin: () => RealmPlugin;
 };
 
-const createPlugins = (configs: PluginConfig[]) => configs.filter((c) => c.condition).map((c) => c.createPlugin());
+const createPlugins = (configs: PluginConfig[]) =>
+  configs.filter((c) => c.condition).map((c) => c.createPlugin());
 
 interface MarkdownEditorProps {
   value: string;

@@ -5,13 +5,19 @@ import { lazy } from 'react';
 import ProtectedRoute from '@/components/utility/ProtectedRoute';
 
 // LAZY IMPORT Logs Li st
-const LogsList = lazy(() => import('@/components/features/admin/AdminLogs').then((m) => ({ default: m.LogsList })));
+const LogsList = lazy(() =>
+  import('@/components/features/admin/AdminLogs').then((m) => ({ default: m.LogsList }))
+);
 
 // LAZY IMPORT Blog List
-const BlogList = lazy(() => import('@/components/features/admin/blog').then((m) => ({ default: m.BlogList })));
+const BlogList = lazy(() =>
+  import('@/components/features/admin/blog').then((m) => ({ default: m.BlogList }))
+);
 
 // LAZY IMPORT Blog Editor
-const BlogEditor = lazy(() => import('@/components/features/admin/blog').then((m) => ({ default: m.BlogEditor })));
+const BlogEditor = lazy(() =>
+  import('@/components/features/admin/blog').then((m) => ({ default: m.BlogEditor }))
+);
 
 // LAZY IMPORT Schematics display
 const SchematicsDisplay = lazy(() =>
@@ -26,7 +32,9 @@ const AddonStatsWrapper = lazy(() =>
   import('@/components/features/admin/stats').then((m) => ({ default: m.AddonStatsWrapper }))
 );
 // LAZY IMPORT AddAddon
-const AddAddon = lazy(() => import('@/components/features/admin/addons').then((m) => ({ default: m.AddAddon })));
+const AddAddon = lazy(() =>
+  import('@/components/features/admin/addons').then((m) => ({ default: m.AddAddon }))
+);
 
 // LAZY IMPORT AddonsTable
 const AddonsTable = lazy(() =>

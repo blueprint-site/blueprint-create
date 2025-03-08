@@ -11,7 +11,13 @@ interface TimerProgressProps {
   onComplete?: () => void;
 }
 
-const TimerProgress = ({ startTimestamp, countdownTime, description, icon, onComplete }: TimerProgressProps) => {
+const TimerProgress = ({
+  startTimestamp,
+  countdownTime,
+  description,
+  icon,
+  onComplete,
+}: TimerProgressProps) => {
   const [timeLeft, setTimeLeft] = useState(() =>
     Math.max(countdownTime - Math.floor((Date.now() - startTimestamp) / 1000), 0)
   );

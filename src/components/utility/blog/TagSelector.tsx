@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -42,7 +48,9 @@ export default function TagSelector({ value, db, onChange }: TagSelectorProps) {
 
   async function fetchTags() {
     try {
-      const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [Query.limit(100)]);
+      const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
+        Query.limit(100),
+      ]);
 
       const fetchedTags = response.documents.map((doc: Models.Document) => ({
         id: doc.$id,
@@ -120,7 +128,12 @@ export default function TagSelector({ value, db, onChange }: TagSelectorProps) {
                     <span className='mr-2' style={{ color: tag.color }}>
                       {tag.value}
                     </span>
-                    <Button variant='ghost' className={'absolute right-0'} size='sm' onClick={() => deleteTag(tag.id)}>
+                    <Button
+                      variant='ghost'
+                      className={'absolute right-0'}
+                      size='sm'
+                      onClick={() => deleteTag(tag.id)}
+                    >
                       ❌
                     </Button>
                   </span>
@@ -130,9 +143,16 @@ export default function TagSelector({ value, db, onChange }: TagSelectorProps) {
           </Select>
         </div>
         <div className='flex flex-row gap-4'>
-          <Input value={newTag} onChange={(e) => setNewTag(e.target.value)} placeholder='New tag name' />
+          <Input
+            value={newTag}
+            onChange={(e) => setNewTag(e.target.value)}
+            placeholder='New tag name'
+          />
           <Popover>
-            <PopoverTrigger className='h-10 w-10 rounded border' style={{ background: newTagColor }} />
+            <PopoverTrigger
+              className='h-10 w-10 rounded border'
+              style={{ background: newTagColor }}
+            />
             <PopoverContent className='p-2'>
               <HexColorPicker color={newTagColor} onChange={(e) => setNewTagColor(e)} />
             </PopoverContent>
@@ -146,7 +166,11 @@ export default function TagSelector({ value, db, onChange }: TagSelectorProps) {
       <h3>Selected Tags :</h3>
       <div className='m-2 flex flex-wrap gap-2'>
         {selectedTags.map((tag) => (
-          <span key={tag.id} className='text-foreground rounded px-1 py-1' style={{ backgroundColor: tag.color }}>
+          <span
+            key={tag.id}
+            className='text-foreground rounded px-1 py-1'
+            style={{ backgroundColor: tag.color }}
+          >
             {tag.value}
           </span>
         ))}

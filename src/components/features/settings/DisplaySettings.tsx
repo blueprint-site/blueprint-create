@@ -24,7 +24,9 @@ export default function DisplaySettings() {
           <Label htmlFor='theme-toggle'>{isDarkMode ? 'Dark mode' : 'Light mode'}</Label>
         </div>
 
-        <p className='text-foreground-muted text-sm'>Choose between light and dark mode for the site interface.</p>
+        <p className='text-foreground-muted text-sm'>
+          Choose between light and dark mode for the site interface.
+        </p>
       </div>
 
       <EasterEggsSettings />

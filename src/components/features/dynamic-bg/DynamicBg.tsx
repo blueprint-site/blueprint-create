@@ -135,7 +135,9 @@ export const DynamicBg = ({
       {/* Main content */}
       <div className='relative flex h-full flex-col items-center justify-center font-bold text-white'>
         <h1 className='mb-4 text-4xl'>{title || '0% of addons have support for Create 0.6'}</h1>
-        <p className='text-xl italic'>{subtitle || '"That accounts to ~0 addons totally" - Says our expert'}</p>
+        <p className='text-xl italic'>
+          {subtitle || '"That accounts to ~0 addons totally" - Says our expert'}
+        </p>
       </div>
       <div className='absolute top-2 right-2 flex items-center'>
         <div className='group relative mr-1'>

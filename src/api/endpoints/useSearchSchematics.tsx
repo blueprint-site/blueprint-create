@@ -37,7 +37,17 @@ export const useSearchSchematics = ({
     return filters.length > 0 ? filters.join(' AND ') : '';
   };
   const queryResult = useQuery({
-    queryKey: ['searchSchematics', query, page, category, subCategory, version, loaders, createVersion, id],
+    queryKey: [
+      'searchSchematics',
+      query,
+      page,
+      category,
+      subCategory,
+      version,
+      loaders,
+      createVersion,
+      id,
+    ],
     queryFn: async () => {
       const index = searchClient.index('schematics');
       const result = await index.search(query, {

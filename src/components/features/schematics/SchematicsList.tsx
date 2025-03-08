@@ -64,7 +64,14 @@ function SchematicsList() {
   useEffect(() => {
     setAllSchematics([]);
     setPage(1); // Reset to first page when filters change
-  }, [filters.query, filters.category, filters.subCategory, filters.version, filters.loaders, filters.createVersion]);
+  }, [
+    filters.query,
+    filters.category,
+    filters.subCategory,
+    filters.version,
+    filters.loaders,
+    filters.createVersion,
+  ]);
 
   // Append new schematics to the accumulated list
   useEffect(() => {
@@ -100,9 +107,18 @@ function SchematicsList() {
             </button>
           </div>
 
-          <SearchFilter value={filters.query} onChange={setQuery} placeholder='Search schematics...' />
+          <SearchFilter
+            value={filters.query}
+            onChange={setQuery}
+            placeholder='Search schematics...'
+          />
 
-          <SelectFilter label='Category' value={filters.category} onChange={setCategory} options={categoryOptions} />
+          <SelectFilter
+            label='Category'
+            value={filters.category}
+            onChange={setCategory}
+            options={categoryOptions}
+          />
 
           {/* Only show subcategories if available */}
           {hasSubCategories && (
@@ -114,9 +130,19 @@ function SchematicsList() {
             />
           )}
 
-          <SelectFilter label='Version' value={filters.version} onChange={setVersion} options={versionOptions} />
+          <SelectFilter
+            label='Version'
+            value={filters.version}
+            onChange={setVersion}
+            options={versionOptions}
+          />
 
-          <SelectFilter label='Loaders' value={filters.loaders} onChange={setLoaders} options={loaderOptions} />
+          <SelectFilter
+            label='Loaders'
+            value={filters.loaders}
+            onChange={setLoaders}
+            options={loaderOptions}
+          />
           <SelectFilter
             label='Create version'
             value={filters.createVersion}

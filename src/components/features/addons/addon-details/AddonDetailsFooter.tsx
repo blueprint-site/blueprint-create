@@ -53,7 +53,8 @@ export const AddonDetailsFooter = ({
             <h3 className='mb-4 text-lg font-semibold'>Project Details</h3>
             <div className='space-y-2 text-sm'>
               <p>
-                <span className='font-semibold'>Created:</span> {new Date(createdAt || Date.now()).toLocaleDateString()}
+                <span className='font-semibold'>Created:</span>{' '}
+                {new Date(createdAt || Date.now()).toLocaleDateString()}
               </p>
               <p>
                 <span className='font-semibold'>Last Updated:</span>{' '}

@@ -12,7 +12,13 @@ interface FormMarkdownEditorProps {
   onValueChange?: (value: string) => void;
 }
 
-export function FormMarkdownEditor({ name, control, label, description, onValueChange }: FormMarkdownEditorProps) {
+export function FormMarkdownEditor({
+  name,
+  control,
+  label,
+  description,
+  onValueChange,
+}: FormMarkdownEditorProps) {
   return (
     <FormField
       control={control}

@@ -19,7 +19,11 @@ const NavItem = ({ href, icon, label }: NavItemProps) => {
         )
       }
     >
-      <img src={icon} alt='' className='h-8 w-8 rounded-full object-cover shadow-xs transition-all duration-300' />
+      <img
+        src={icon}
+        alt=''
+        className='h-8 w-8 rounded-full object-cover shadow-xs transition-all duration-300'
+      />
       <span className='font-minecraft ml-3'>{label}</span>
     </NavLink>
   );

@@ -99,15 +99,34 @@ const AddonsList = () => {
         <FiltersContainer>
           <div className='flex items-center justify-between'>
             <div className='text-foreground font-minecraft font-semibold md:text-xl'>Filters</div>
-            <button onClick={resetFilters} className='text-primary text-sm' aria-label='Reset filters'>
+            <button
+              onClick={resetFilters}
+              className='text-primary text-sm'
+              aria-label='Reset filters'
+            >
               Reset
             </button>
           </div>
           <div className='md:hidden'></div>
           <SearchFilter value={query} onChange={setQuery} placeholder='Search addons...' />
-          <SelectFilter label='Category' value={category} onChange={setCategory} options={categoryOptions} />
-          <SelectFilter label='Loaders' value={loaders} onChange={setLoaders} options={loaderOptions} />
-          <SelectFilter label='Version' value={version} onChange={setVersion} options={versionOptions} />
+          <SelectFilter
+            label='Category'
+            value={category}
+            onChange={setCategory}
+            options={categoryOptions}
+          />
+          <SelectFilter
+            label='Loaders'
+            value={loaders}
+            onChange={setLoaders}
+            options={loaderOptions}
+          />
+          <SelectFilter
+            label='Version'
+            value={version}
+            onChange={setVersion}
+            options={versionOptions}
+          />
         </FiltersContainer>
       </ListPageFilters>
 

@@ -96,7 +96,11 @@ export default function ProfileSettings() {
         }
 
         const fileId = crypto.randomUUID();
-        const response = await storage.createFile('67aee2b30000b9e21407', fileId, compressedFileAsFile);
+        const response = await storage.createFile(
+          '67aee2b30000b9e21407',
+          fileId,
+          compressedFileAsFile
+        );
 
         const avatarUrl = storage.getFilePreview('67aee2b30000b9e21407', response.$id).toString();
         console.log(avatarUrl);
@@ -163,7 +167,9 @@ export default function ProfileSettings() {
 
         <div>
           <Label htmlFor='username'>Username</Label>
-          <p className='text-foreground-muted mb-2 text-sm'>A unique case-insensitive name to identify your profile.</p>
+          <p className='text-foreground-muted mb-2 text-sm'>
+            A unique case-insensitive name to identify your profile.
+          </p>
           <Input
             id='username'
             value={profile.username}

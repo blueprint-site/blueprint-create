@@ -30,7 +30,9 @@ export function ContactSection() {
           description={
             <>
               Contact us at{' '}
-              <ContactLink href='mailto:contact@blueprint-create.com'>contact@blueprint-create.com</ContactLink>
+              <ContactLink href='mailto:contact@blueprint-create.com'>
+                contact@blueprint-create.com
+              </ContactLink>
             </>
           }
           link='mailto:contact@blueprint-create.com'

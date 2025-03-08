@@ -70,7 +70,10 @@ export function ItemGrid<T>({
     if (items && items.length > 0 && !isLoading && animationEnabled) {
       // Calculate timeout based directly on staggerItemCount
       // This ensures all items in the group have time to animate
-      const timeoutDuration = Math.max(1000, staggerItemCount * animationDelay * 1000 + animationDuration * 1000);
+      const timeoutDuration = Math.max(
+        1000,
+        staggerItemCount * animationDelay * 1000 + animationDuration * 1000
+      );
 
       const timeout = setTimeout(() => {
         setInitialRender(false);
@@ -115,7 +118,12 @@ export function ItemGrid<T>({
 
   if (isError) {
     return (
-      <div className={cn('text-destructive bg-destructive/10 rounded-md p-8 text-center font-semibold', className)}>
+      <div
+        className={cn(
+          'text-destructive bg-destructive/10 rounded-md p-8 text-center font-semibold',
+          className
+        )}
+      >
         {errorMessage}
       </div>
     );
@@ -144,7 +152,9 @@ export function ItemGrid<T>({
         // Newly loaded items get a medium stagger
         // Calculate position within the new batch
         const positionInBatch = index - prevItemsCount;
-        return ((animationDelay / 2) * (positionInBatch % staggerItemCount)) / (staggerItemCount / 4);
+        return (
+          ((animationDelay / 2) * (positionInBatch % staggerItemCount)) / (staggerItemCount / 4)
+        );
       } else {
         // Already visible items don't need a delay
         return 0;
