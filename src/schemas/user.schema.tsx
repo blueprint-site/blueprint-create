@@ -16,6 +16,18 @@ export const TargetSchema = z.object({
 });
 
 /**
+ * Schema for Easter Eggs configuration
+ */
+const EasterEggsSchema = z.object({
+  // Eggs that the user has discovered
+  discovered: z.array(z.string()).default([]),
+  // Eggs that the user has enabled (after discovering)
+  enabled: z.record(z.string(), z.boolean()).default({}),
+  // Last discovery timestamp
+  lastDiscovery: z.number().optional()
+});
+
+/**
  * Schema for UserPreferences object
  */
 export const UserPreferencesSchema = z.object({
@@ -25,6 +37,7 @@ export const UserPreferencesSchema = z.object({
   avatar: z.string().optional(),
   bio: z.string().optional(),
   roles: z.array(z.string()),
+  easterEggs: EasterEggsSchema.optional()
 });
 
 /**
@@ -74,4 +87,23 @@ export const UpdateUserPreferencesSchema = z.object({
   theme: z.enum(['light', 'dark']).optional(),
   language: z.string().optional(),
   notificationsEnabled: z.boolean().optional(),
+  easterEggs: EasterEggsSchema.optional()
 });
+
+// Easter Egg types
+export interface EasterEggDefinition {
+  id: string;
+  name: string;
+  description: string;
+  discoveryHint: string;
+  component?: React.ComponentType<{enabled: boolean}>;
+}
+
+// Export types based on the schemas
+export type User = z.infer<typeof UserSchema>;
+export type Target = z.infer<typeof TargetSchema>;
+export type UserPreferences = z.infer<typeof UserPreferencesSchema>;
+export type EasterEggs = z.infer<typeof EasterEggsSchema>;
+export type CreateUserInput = z.infer<typeof CreateUserSchema>;
+export type UpdateUserProfileInput = z.infer<typeof UpdateUserProfileSchema>;
+export type UpdateUserPreferencesInput = z.infer<typeof UpdateUserPreferencesSchema>;
