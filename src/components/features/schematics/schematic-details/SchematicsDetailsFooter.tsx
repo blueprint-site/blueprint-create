@@ -1,15 +1,15 @@
-import {Card, CardFooter} from "@/components/ui/card.tsx";
-import SocialSharing from "@/components/features/social-sharing/SocialSharing.tsx";
+import { Card, CardFooter } from '@/components/ui/card.tsx';
+import SocialSharing from '@/components/features/social-sharing/SocialSharing.tsx';
 
 export interface SchematicsDetailsFooterProps {
   title: string;
 }
 
-export const SchematicsDetailsFooter = ({title = ''}: SchematicsDetailsFooterProps) => {
+export const SchematicsDetailsFooter = ({ title = '' }: SchematicsDetailsFooterProps) => {
   return (
-    <Card className={"mt-4 my-8"}>
+    <Card className={'my-8 mt-4'}>
       <CardFooter>
-        <SocialSharing title={title}/>
+        <SocialSharing title={title} />
       </CardFooter>
     </Card>
   );

@@ -99,7 +99,8 @@ export function ItemGrid<T>({
             'mx-auto grid max-w-[128rem]',
             'grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
             gridClassName
-          )}>
+          )}
+        >
           {/* Display a set of skeleton items during initial loading */}
           {loadingComponent || (
             <>
@@ -121,7 +122,8 @@ export function ItemGrid<T>({
         className={cn(
           'text-destructive bg-destructive/10 rounded-md p-8 text-center font-semibold',
           className
-        )}>
+        )}
+      >
         {errorMessage}
       </div>
     );
@@ -170,7 +172,8 @@ export function ItemGrid<T>({
           duration: animationDuration,
           delay,
           ease: 'easeOut',
-        }}>
+        }}
+      >
         {renderItem(item, index)}
       </motion.div>
     );
@@ -183,12 +186,15 @@ export function ItemGrid<T>({
           'mx-auto grid max-w-[128rem]',
           'grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
           gridClassName
-        )}>
+        )}
+      >
         {items.map((item, index) =>
           animationEnabled ? (
             renderWithAnimation(item, index)
           ) : (
-            <div key={index} className='h-full'>{renderItem(item, index)}</div>
+            <div key={index} className='h-full'>
+              {renderItem(item, index)}
+            </div>
           )
         )}
       </div>

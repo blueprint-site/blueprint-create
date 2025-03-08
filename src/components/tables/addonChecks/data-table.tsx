@@ -1,17 +1,24 @@
 // components/tables/addonChecks/data-table.tsx
 'use client';
-'use no memo';
 import { Input } from '@/components/ui/input';
 import {
   ColumnDef,
-  ColumnFiltersState, flexRender,
+  ColumnFiltersState,
+  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getSortedRowModel,
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { useState } from 'react';
 
 interface DataTableProps<TData, TValue> {
@@ -22,11 +29,11 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function DataTable<TData, TValue>({
-                                           columns,
-                                           data,
-                                           onSortingChange,
-                                           onColumnFiltersChange
-                                         }: DataTableProps<TData, TValue>) {
+  columns,
+  data,
+  onSortingChange,
+  onColumnFiltersChange,
+}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
@@ -53,49 +60,49 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-      <div>
-        <div className='flex items-center py-4'>
-          <Input
-              placeholder='Filter name...'
-              value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-              onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
-              className='max-w-sm'
-          />
-        </div>
-        <div className='rounded-md border'>
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                        <TableHead className='text-foreground' key={header.id}>
-                          {flexRender(header.column.columnDef.header, header.getContext())}
-                        </TableHead>
-                    ))}
-                  </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                      <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                        {row.getVisibleCells().map((cell) => (
-                            <TableCell key={cell.id}>
-                              {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                            </TableCell>
-                        ))}
-                      </TableRow>
-                  ))
-              ) : (
-                  <TableRow>
-                    <TableCell colSpan={columns.length} className='h-24 text-center'>
-                      No results.
-                    </TableCell>
-                  </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
+    <div>
+      <div className='flex items-center py-4'>
+        <Input
+          placeholder='Filter name...'
+          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+          onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
+          className='max-w-sm'
+        />
       </div>
+      <div className='rounded-md border'>
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead className='text-foreground' key={header.id}>
+                    {flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className='h-24 text-center'>
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
   );
 }

@@ -42,7 +42,7 @@ export const useEasterEggStore = create<EasterEggState>((set, get) => ({
       set({
         logoClickCount: 0,
         lastClickTime: currentTime,
-        eggTriggered: true // Set the egg as triggered, so hook can detect it
+        eggTriggered: true, // Set the egg as triggered, so hook can detect it
       });
       console.log('Easter egg triggered!'); // Log to confirm the trigger
       return;
@@ -58,5 +58,5 @@ export const useEasterEggStore = create<EasterEggState>((set, get) => ({
 
   resetEggTriggered: () => {
     set({ eggTriggered: false });
-  }
+  },
 }));

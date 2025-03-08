@@ -1,13 +1,11 @@
 // src/components/features/home/WhatIsBlueprint.tsx
 import { useTranslation } from 'react-i18next';
 import { Equal, Plus } from 'lucide-react';
-import React from 'react';
+import { Fragment, useEffect, useRef, useState, MouseEvent as ReactMouseEvent } from 'react';
 import { useEasterEgg } from '@/hooks/useEasterEgg';
-
 // Import logos
 import Logo from '@/assets/logo.webp';
 import OldLogo from '@/assets/legacy_logo.webp';
-
 // Import icons
 import AddonIcon from '@/assets/sprite-icons/minecart_coupling.webp';
 import SchematicIcon from '@/assets/sprite-icons/schematic.webp';
@@ -26,7 +24,8 @@ const FeatureIcon = ({ src, alt, label, url, onClick, className }: FeatureIconPr
     href={url}
     className={`text-foreground mt-4 flex flex-col items-center transition-transform duration-200 hover:scale-110 ${className || ''}`}
     target='_blank'
-    rel='noopener noreferrer'>
+    rel='noopener noreferrer'
+  >
     <img
       loading='lazy'
       src={src}
@@ -52,40 +51,41 @@ const WhatIsBlueprint = () => {
   const logoSrc = isEggEnabled('legacyLogo') ? OldLogo : Logo;
 
   // Animation reference and state
-  const logoRef = React.useRef<HTMLImageElement>(null);
-  const isAnimatingRef = React.useRef(false);
+  const logoRef = useRef<HTMLImageElement>(null);
+  const isAnimatingRef = useRef(false);
 
-const [rotationDegrees, setRotationDegrees] = React.useState(0);
+  const [rotationDegrees, setRotationDegrees] = useState(0);
 
-// Update the handleLogoClick function
-const handleLogoClick = (e: React.MouseEvent) => {
-  // Stop event propagation to prevent the anchor tag from being triggered
-  e.preventDefault();
-  e.stopPropagation();
+  // Update the handleLogoClick function
 
-  incrementLogoClickCount();
+  const handleLogoClick = (e: ReactMouseEvent<HTMLImageElement>) => {
+    // Stop event propagation to prevent the anchor tag from being triggered
+    e.preventDefault();
+    e.stopPropagation();
 
-  // Animate the logo when clicked - with continuous rotation
-  if (!logoRef.current || isAnimatingRef.current) return;
+    incrementLogoClickCount();
 
-  isAnimatingRef.current = true;
+    // Animate the logo when clicked - with continuous rotation
+    if (!logoRef.current || isAnimatingRef.current) return;
 
-  // Increase the total rotation by 360 degrees
-  const newRotation = rotationDegrees + 360;
-  setRotationDegrees(newRotation);
+    isAnimatingRef.current = true;
 
-  const element = logoRef.current;
-  element.style.transition = 'transform 0.4s ease';
-  element.style.transform = `rotate(${newRotation}deg)`;
+    // Increase the total rotation by 360 degrees
+    const newRotation = rotationDegrees + 360;
+    setRotationDegrees(newRotation);
 
-  // Just set the animating flag back to false when done,
-  // but don't reset the rotation
-  setTimeout(() => {
-    isAnimatingRef.current = false;
-  }, 450);
-};
+    const element = logoRef.current;
+    element.style.transition = 'transform 0.4s ease';
+    element.style.transform = `rotate(${newRotation}deg)`;
+
+    // Just set the animating flag back to false when done,
+    // but don't reset the rotation
+    setTimeout(() => {
+      isAnimatingRef.current = false;
+    }, 450);
+  };
   // Clean up animation styles on unmount
-  React.useEffect(() => {
+  useEffect(() => {
     const currentRef = logoRef.current;
     return () => {
       if (currentRef) {
@@ -99,7 +99,7 @@ const handleLogoClick = (e: React.MouseEvent) => {
     { src: AddonIcon, alt: 'Addon Icon', label: 'Addons', url: '/addons' },
     { src: SchematicIcon, alt: 'Schematic Icon', label: 'Schematics', url: '/schematics' },
     // Don't include the ref in the features array - we'll apply it directly in JSX
-    { src: logoSrc, alt: 'Blueprint Logo', label: 'Blueprint', url: '/' }
+    { src: logoSrc, alt: 'Blueprint Logo', label: 'Blueprint', url: '/' },
   ];
 
   return (
@@ -112,7 +112,7 @@ const handleLogoClick = (e: React.MouseEvent) => {
 
       <div className='flex items-center justify-center gap-4 px-2'>
         {features.map((feature, index) => (
-          <React.Fragment key={feature.label}>
+          <Fragment key={feature.label}>
             {feature.label === 'Blueprint' ? (
               <div className='text-foreground mt-4 flex flex-col items-center transition-transform duration-200 hover:scale-110'>
                 <img
@@ -120,7 +120,7 @@ const handleLogoClick = (e: React.MouseEvent) => {
                   loading='lazy'
                   src={feature.src}
                   alt={feature.alt}
-                  className='w-8 object-contain sm:w-10 md:w-14 lg:w-20 cursor-pointer'
+                  className='w-8 cursor-pointer object-contain sm:w-10 md:w-14 lg:w-20'
                   onClick={handleLogoClick}
                 />
                 <div className='mt-2 text-base md:text-lg'>{feature.label}</div>
@@ -129,7 +129,7 @@ const handleLogoClick = (e: React.MouseEvent) => {
               <FeatureIcon {...feature} />
             )}
             {index < features.length - 1 && <Separator type={index === 0 ? 'plus' : 'equal'} />}
-          </React.Fragment>
+          </Fragment>
         ))}
       </div>
     </div>

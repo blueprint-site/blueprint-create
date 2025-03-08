@@ -1,17 +1,16 @@
-export { useSearchAddons } from './endpoints/useSearchAddons.tsx';
-export { useSearchSchematics } from './endpoints/useSearchSchematics.tsx';
-export { useDeleteBlog, useFetchBlog, useFetchBlogs, useSaveBlog } from './endpoints/useBlogs.tsx';
+// Export endpoints
+export { useSearchAddons } from './endpoints/useSearchAddons';
+export { useSearchSchematics } from './endpoints/useSearchSchematics';
+export { useDeleteBlog, useFetchBlog, useFetchBlogs, useSaveBlog } from './endpoints/useBlogs';
 export {
   useIsMobile,
   useIsTablet,
   useIsDesktop,
   useCurrentBreakpoint,
-} from './endpoints/useBreakpoints.tsx';
-export { useToast, toast } from '../hooks/useToast.tsx';
-export { useSystemThemeSync } from './endpoints/useSystemThemeSync.tsx';
-export {
-  useDeleteAddon,
-  useFetchAddon,
-  useFetchAddons,
-  useSaveAddon,
-} from './endpoints/useAddons.tsx';
+} from './endpoints/useBreakpoints';
+export { useSystemThemeSync } from './endpoints/useSystemThemeSync';
+
+// Export addon-related hooks directly
+export { useDeleteAddon, useFetchAddon, useFetchAddons, useSaveAddon } from './endpoints/useAddons';
+
+export { useToast, toast } from '@/hooks/useToast';

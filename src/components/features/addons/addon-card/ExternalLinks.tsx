@@ -6,7 +6,7 @@ interface ExternalLinksProps {
   modrinth: boolean;
 }
 
-export const ExternalLinks = ({ slug, curseforge, modrinth}: ExternalLinksProps) => (
+export const ExternalLinks = ({ slug, curseforge, modrinth }: ExternalLinksProps) => (
   <div className='flex flex-col justify-between gap-2 md:flex-row'>
     {curseforge && (
       <a

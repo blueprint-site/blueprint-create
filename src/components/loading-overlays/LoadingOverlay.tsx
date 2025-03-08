@@ -11,7 +11,7 @@ export function LoadingOverlay({ message = 'Blueprint', className }: LoadingOver
   return (
     <div
       className={cn(
-        'fixed inset-0 z-50 w-full h-screen flex flex-col items-center justify-center bg-black/80 backdrop-blur-xs',
+        'fixed inset-0 z-50 flex h-screen w-full flex-col items-center justify-center bg-black/80 backdrop-blur-xs',
         className
       )}
     >

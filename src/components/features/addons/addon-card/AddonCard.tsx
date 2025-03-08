@@ -1,5 +1,5 @@
 import { Star, StarOff } from 'lucide-react';
-import { memo, useEffect, useState} from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useCollectionStore } from '@/api/stores/collectionStore.ts';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,7 @@ import { VersionBadges } from './VersionBadges';
 import { AddonStats } from './AddonStats';
 import { useNavigate } from 'react-router';
 import { Addon } from '@/types';
-import {ExternalLinks} from "@/components/features/addons/addon-card/ExternalLinks.tsx";
+import { ExternalLinks } from '@/components/features/addons/addon-card/ExternalLinks.tsx';
 
 interface AddonListItemProps {
   addon: Addon;
@@ -44,7 +44,7 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
   };
 
   return (
-    <Card className='flex flex-col overflow-hidden hover:shadow-xs h-full'>
+    <Card className='flex h-full flex-col overflow-hidden hover:shadow-xs'>
       <CardHeader className='relative flex cursor-pointer flex-row gap-3' onClick={navigateToAddon}>
         <img
           src={addon.icon || '/assets/wrench.webp'}
@@ -72,9 +72,8 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
           </div>
 
           <CategoryBadges categories={addon.categories} />
-        <VersionBadges versions={addon.minecraft_versions || []} />
+          <VersionBadges versions={addon.minecraft_versions || []} />
         </div>
-
 
         <AddonStats author={addon.author} downloads={addon.downloads} />
 

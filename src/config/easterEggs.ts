@@ -25,7 +25,7 @@ export const EASTER_EGGS: EasterEggDefinition[] = [
  * Gets easter egg definition by its ID
  */
 export function getEasterEggById(id: string): EasterEggDefinition | undefined {
-  return EASTER_EGGS.find(egg => egg.id === id);
+  return EASTER_EGGS.find((egg) => egg.id === id);
 }
 
 /**
@@ -33,5 +33,5 @@ export function getEasterEggById(id: string): EasterEggDefinition | undefined {
  */
 export const DEFAULT_EASTER_EGGS = {
   discovered: [],
-  enabled: {}
+  enabled: {},
 };

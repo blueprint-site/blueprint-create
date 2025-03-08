@@ -1,6 +1,5 @@
-
 import { useEffect, useState } from 'react';
-import {Tag} from "@/types";
+import { Tag } from '@/types';
 
 interface BlogTagsDisplayProps {
   value?: Tag[];
