@@ -1,13 +1,11 @@
 // src/components/features/home/WhatIsBlueprint.tsx
 import { useTranslation } from 'react-i18next';
 import { Equal, Plus } from 'lucide-react';
-import React from 'react';
+import { Fragment, useEffect, useRef, useState, MouseEvent as ReactMouseEvent } from 'react';
 import { useEasterEgg } from '@/hooks/useEasterEgg';
-
 // Import logos
 import Logo from '@/assets/logo.webp';
 import OldLogo from '@/assets/legacy_logo.webp';
-
 // Import icons
 import AddonIcon from '@/assets/sprite-icons/minecart_coupling.webp';
 import SchematicIcon from '@/assets/sprite-icons/schematic.webp';
@@ -53,39 +51,39 @@ const WhatIsBlueprint = () => {
   const logoSrc = isEggEnabled('legacyLogo') ? OldLogo : Logo;
 
   // Animation reference and state
-  const logoRef = React.useRef<HTMLImageElement>(null);
-  const isAnimatingRef = React.useRef(false);
+  const logoRef = useRef<HTMLImageElement>(null);
+  const isAnimatingRef = useRef(false);
 
+  const [rotationDegrees, setRotationDegrees] = useState(0);
 
-const [rotationDegrees, setRotationDegrees] = React.useState(0);
+  // Update the handleLogoClick function
 
-// Update the handleLogoClick function
-const handleLogoClick = (e: React.MouseEvent) => {
-  // Stop event propagation to prevent the anchor tag from being triggered
-  e.preventDefault();
-  e.stopPropagation();
+  const handleLogoClick = (e: ReactMouseEvent<HTMLImageElement>) => {
+    // Stop event propagation to prevent the anchor tag from being triggered
+    e.preventDefault();
+    e.stopPropagation();
 
-  incrementLogoClickCount();
+    incrementLogoClickCount();
 
-  // Animate the logo when clicked - with continuous rotation
-  if (!logoRef.current || isAnimatingRef.current) return;
+    // Animate the logo when clicked - with continuous rotation
+    if (!logoRef.current || isAnimatingRef.current) return;
 
-  isAnimatingRef.current = true;
+    isAnimatingRef.current = true;
 
-  // Increase the total rotation by 360 degrees
-  const newRotation = rotationDegrees + 360;
-  setRotationDegrees(newRotation);
+    // Increase the total rotation by 360 degrees
+    const newRotation = rotationDegrees + 360;
+    setRotationDegrees(newRotation);
 
-  const element = logoRef.current;
-  element.style.transition = 'transform 0.4s ease';
-  element.style.transform = `rotate(${newRotation}deg)`;
+    const element = logoRef.current;
+    element.style.transition = 'transform 0.4s ease';
+    element.style.transform = `rotate(${newRotation}deg)`;
 
-  // Just set the animating flag back to false when done,
-  // but don't reset the rotation
-  setTimeout(() => {
-    isAnimatingRef.current = false;
-  }, 450);
-};
+    // Just set the animating flag back to false when done,
+    // but don't reset the rotation
+    setTimeout(() => {
+      isAnimatingRef.current = false;
+    }, 450);
+  };
   // Clean up animation styles on unmount
   useEffect(() => {
     const currentRef = logoRef.current;
@@ -114,7 +112,7 @@ const handleLogoClick = (e: React.MouseEvent) => {
 
       <div className='flex items-center justify-center gap-4 px-2'>
         {features.map((feature, index) => (
-          <React.Fragment key={feature.label}>
+          <Fragment key={feature.label}>
             {feature.label === 'Blueprint' ? (
               <div className='text-foreground mt-4 flex flex-col items-center transition-transform duration-200 hover:scale-110'>
                 <img
@@ -131,7 +129,7 @@ const handleLogoClick = (e: React.MouseEvent) => {
               <FeatureIcon {...feature} />
             )}
             {index < features.length - 1 && <Separator type={index === 0 ? 'plus' : 'equal'} />}
-          </React.Fragment>
+          </Fragment>
         ))}
       </div>
     </div>
