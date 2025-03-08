@@ -1,22 +1,8 @@
 import { Search } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-
-export const MODLOADER_OPTIONS = [
-  { value: 'all', label: 'All Modloaders' },
-  { value: 'forge', label: 'Forge' },
-  { value: 'fabric', label: 'Fabric' },
-  { value: 'quilt', label: 'Quilt' },
-] as const;
-
-export type ModloaderType = (typeof MODLOADER_OPTIONS)[number]['value'];
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { MODLOADER_OPTIONS, ModloaderType } from '@/data';
 
 interface AddonSearchCardProps {
   query: string;
@@ -59,7 +45,7 @@ export function AddonSearchCard({
             />
           </div>
 
-          <Select value={modloader} onValueChange={handleModloaderChange} >
+          <Select value={modloader} onValueChange={handleModloaderChange}>
             <SelectTrigger className='w-full md:w-[200px]'>
               <SelectValue placeholder='Modloader' />
             </SelectTrigger>

@@ -51,33 +51,43 @@ export const ContributorCard = ({ contributor, isLoading }: ContributorCardProps
   }
 
   if (!contributor) return null;
-  const points = contributor.frontendContributions + contributor.apiContributions
+  const points = contributor.frontendContributions + contributor.apiContributions;
   const backgroundColorClass = getBackgroundColor(points);
   const borderColor = getBorderColor(points);
   return (
-    <Card className={`bg-surface-1 border bg-dark_oak_planks-iron_block  overflow-hidden transition-colors ${backgroundColorClass} `}>
+    <Card
+      className={`bg-surface-1 bg-dark_oak_planks-iron_block overflow-hidden border transition-colors ${backgroundColorClass} `}
+    >
       <CardContent className='flex items-center space-y-2 p-4 sm:flex-col'>
         <img
           loading='lazy'
           src={`https://avatars.githubusercontent.com/u/${contributor.id}?size=160`}
           alt={`${contributor.login}'s profile picture`}
-          className={`w-12 rounded-full sm:w-auto shadow border-2 ${borderColor} `}
+          className={`w-12 rounded-full border-2 shadow sm:w-auto ${borderColor} `}
         />
-        <div className={`flex flex-col space-y-1 pl-4 sm:pl-0 text-center shadow-lg`}>
+        <div className={`flex flex-col space-y-1 pl-4 text-center shadow-lg sm:pl-0`}>
           <a
             href={`https://github.com/${contributor.login}`}
             target='_blank'
             rel='noopener noreferrer'
-            className='hover:underline text-center mx-2 text-foreground text-shadow-md'
+            className='text-foreground text-shadow-md mx-2 text-center hover:underline'
           >
             <h3> {contributor.login} </h3>
           </a>
 
-          <div className={`space-y-1 flex flex-center  gap-4 text-sm `}>
+          <div className={`flex-center flex gap-4 space-y-1 text-sm`}>
             {contributor.frontendContributions > 0 && (
-              <div className={"mx-2"}> Frontend : <b> {contributor.frontendContributions} </b> </div>
+              <div className={'mx-2'}>
+                {' '}
+                Frontend : <b> {contributor.frontendContributions} </b>{' '}
+              </div>
             )}
-            {contributor.apiContributions > 0 && <div className={"mx-2"}> Backend : <b> {contributor.apiContributions} </b> </div>}
+            {contributor.apiContributions > 0 && (
+              <div className={'mx-2'}>
+                {' '}
+                Backend : <b> {contributor.apiContributions} </b>{' '}
+              </div>
+            )}
           </div>
         </div>
       </CardContent>

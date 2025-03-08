@@ -1,18 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Download } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button.tsx';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card.tsx';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card.tsx';
 import { Badge } from '@/components/ui/badge.tsx';
 import ModLoaderDisplay from '@/components/common/ModLoaderDisplay.tsx';
 import { useIncrementDownloads } from '@/api/endpoints/useSchematics.tsx';
-import {Schematic} from "@/types";
+import { Schematic } from '@/types';
 
 interface SchematicCardProps {
   schematic: Schematic;
@@ -34,14 +27,11 @@ const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
       className='bg flex h-full cursor-pointer flex-col rounded-lg transition-shadow hover:shadow-lg'
       onClick={onClick}
     >
-      <div className="h-40 overflow-hidden">
+      <div className='h-40 overflow-hidden'>
         <img
-            className="h-full w-full rounded-t-md object-cover"
-            alt={schematic.title}
-            src={Array.isArray(schematic.image_urls) && schematic.image_urls.length > 0
-                ? schematic.image_urls[0]
-                : ''
-            }
+          className='h-full w-full rounded-t-md object-cover'
+          alt={schematic.title}
+          src={Array.isArray(schematic.image_urls) && schematic.image_urls.length > 0 ? schematic.image_urls[0] : ''}
         />
       </div>
       <CardHeader className='grow'>

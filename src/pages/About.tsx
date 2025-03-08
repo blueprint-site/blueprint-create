@@ -8,8 +8,6 @@ import {
 } from '@/components/features/about';
 import { HeroLayout, HeroContent, HeroHeader } from '@/layouts/HeroLayout';
 import ScrollingAddonBackground from '@/components/common/ScrollingAddonBackground';
-import { motion } from 'framer-motion';
-import { Cog } from 'lucide-react';
 
 export default function About() {
   const { contributors, isLoading, error } = useGitHubContributors();

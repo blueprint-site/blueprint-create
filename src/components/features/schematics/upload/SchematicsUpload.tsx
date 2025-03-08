@@ -1,42 +1,52 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { storage } from '@/config/appwrite';
-import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext';
-import SchematicUploadLoadingOverlay from '@/components/loading-overlays/SchematicUploadLoadingOverlay';
+import { useUserStore } from '@/api/stores/userStore';
 import { SchematicUploadForm } from './SchematicUploadForm';
 import { SchematicPreview } from './SchematicUploadPreview';
 import { generateSlug } from '../utils/generateSlug';
 import { useSaveSchematics } from '@/api/endpoints/useSchematics';
-import {createVersion, minecraftVersion} from "@/config/minecraft.ts";
-import {SchematicFormValues} from "@/types";
+import { SchematicFormValues } from '@/types';
+import SchematicUploadLoadingOverlay from '@/components/loading-overlays/SchematicUploadLoadingOverlay';
 
 function SchematicsUpload() {
   const navigate = useNavigate();
-  const loggedUser = useLoggedUser();
+  const user = useUserStore((state) => state.user);
   const [loading, setLoading] = useState<boolean>(false);
   const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
+  const { mutateAsync: saveSchematic } = useSaveSchematics();
+
   const [formValues, setFormValues] = useState<Partial<SchematicFormValues>>({
     title: '',
     description: '',
     gameVersions: [],
     createVersions: [],
     modloaders: [],
+    categories: [],
+    subCategories: [],
   });
-  const allCompatibilities = Array.from(new Set(minecraftVersion.flatMap(item => item.compatibility)));
-  const versions = Array.from(new Set(minecraftVersion.flatMap(item => item.version)))
-  // Define available options
-  const options = {
-    minecraftVersions: versions || [],
-    createVersionOptions: createVersion || [],
-    modloaderOptions: allCompatibilities || [],
+
+  if (loading) {
+    return <SchematicUploadLoadingOverlay message='Uploading Schematic...' />;
+  }
+
+  // Handle field changes
+  const handleFieldChange = (field: keyof SchematicFormValues, value: unknown): void => {
+    setFormValues((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
-  // Use the mutation hook
-  const { mutateAsync: saveSchematic } = useSaveSchematics();
+  // Handle image preview
+  const handleImagePreview = (files: File[]): void => {
+    const urls = files.map((file) => URL.createObjectURL(file));
+    setImagePreviewUrls(urls);
+  };
 
   // Form submission
-  const onSubmit = async (data: SchematicFormValues) => {
-    if (!loggedUser.user) {
+  const onSubmit = async (data: SchematicFormValues): Promise<void> => {
+    if (!user) {
       alert('You must be logged in to upload schematics');
       return;
     }
@@ -46,24 +56,14 @@ function SchematicsUpload() {
       return;
     }
 
-    if (!data.imageFiles || data.imageFiles.length === 0) {
-      alert('Please upload at least one image');
-      return;
-    }
-
     setLoading(true);
-
     try {
       // Upload schematic file
-      const uploadedSchematic = await storage.createFile(
-        '67b2241e0032c25c8216',
-        'unique()',
-        data.schematicFile
-      );
+      const uploadedSchematic = await storage.createFile('67b2241e0032c25c8216', 'unique()', data.schematicFile);
 
       // Upload multiple image files
       const uploadedImages = await Promise.all(
-        data.imageFiles.map(async (file) => {
+        data.imageFiles.map(async (file: File) => {
           const uploadedFile = await storage.createFile('67b22481001e99d90888', 'unique()', file);
           return uploadedFile.$id;
         })
@@ -71,9 +71,7 @@ function SchematicsUpload() {
 
       // Get file URLs
       const schematicUrl = storage.getFileDownload('67b2241e0032c25c8216', uploadedSchematic.$id).toString();
-      const imageUrls = uploadedImages.map((id) =>
-        storage.getFilePreview('67b22481001e99d90888', id).toString()
-      );
+      const imageUrls = uploadedImages.map((id) => storage.getFilePreview('67b22481001e99d90888', id).toString());
 
       const slug = generateSlug(data.title);
 
@@ -83,60 +81,27 @@ function SchematicsUpload() {
         description: data.description,
         schematic_url: schematicUrl,
         image_urls: imageUrls,
-        user_id: loggedUser.user.$id,
-        authors: [loggedUser.user.name], // Ensure authors is an array
-        game_versions: data.gameVersions, // Ensure game_versions is an array
-        create_versions: data.createVersions, // Ensure create_versions is an array
-        modloaders: data.modloaders, // Ensure modloaders is an array
-        categories: data.categories, // Ensure categories is an array
+        user_id: user?.$id,
+        authors: [user.name],
+        game_versions: data.gameVersions,
+        create_versions: data.createVersions,
+        modloaders: data.modloaders,
+        categories: data.categories,
         sub_categories: data.subCategories ? data.subCategories : [],
         slug,
-        status: 'published', // Default to published state
+        status: 'published',
         downloads: 0,
         likes: 0,
       });
 
       navigate(`/schematics/${document.$id}/${slug}`);
     } catch (error) {
-      console.error('Error uploading schematic:', error);
-      alert('Failed to upload schematic. Please try again.');
+      console.error('Error submitting form:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  // Update form values for preview
-  const handleFieldChange = (field: keyof SchematicFormValues, value: unknown) => {
-    // Special handling for description
-    if (field === 'description') {
-      setFormValues((prev) => ({
-        ...prev,
-        [field]: String(value), // Ensure string type
-      }));
-      return;
-    }
-    setFormValues((prev) => ({ ...prev, [field]: value }));
-  };
-
-  // Handle multiple image previews
-  const handleImagePreview = (files: File[]) => {
-    const readers = files.map((file) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      return reader;
-    });
-
-    Promise.all(
-      readers.map(
-        (reader) =>
-          new Promise<string>((resolve) => {
-            reader.onload = () => resolve(reader.result as string);
-          })
-      )
-    ).then((urls) => setImagePreviewUrls(urls));
-  };
-
-  // Show loading state
   if (loading) {
     return <SchematicUploadLoadingOverlay message='Uploading schematic...' />;
   }
@@ -150,7 +115,6 @@ function SchematicsUpload() {
         <div>
           <SchematicUploadForm
             onSubmit={onSubmit}
-            options={options}
             onValueChange={handleFieldChange}
             onImageChange={handleImagePreview}
           />
@@ -165,7 +129,7 @@ function SchematicsUpload() {
             gameVersions={formValues.gameVersions || []}
             createVersions={formValues.createVersions || []}
             modloaders={formValues.modloaders || []}
-            user={loggedUser.user}
+            user={user}
             categories={formValues.categories || []}
             subCategories={formValues.subCategories || []}
           />

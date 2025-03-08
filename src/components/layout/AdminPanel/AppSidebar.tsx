@@ -3,25 +3,20 @@ import { BookOpen, Bot, Map, Settings2, SquareTerminal } from 'lucide-react';
 
 import { NavMain } from '@/components/layout/AdminPanel/NavMain.tsx';
 import { NavUser } from '@/components/layout/AdminPanel/NavUser.tsx';
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarRail,
-} from '@/components/ui/sidebar.tsx';
-import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar.tsx';
+import { useUserStore } from '@/api/stores/userStore.ts';
 import logo from '@/assets/logo.webp';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const location = useLocation();
   const pathSegments = location.pathname.split('/').filter((segment) => segment !== '');
   console.log(pathSegments[1]);
-  const { user, preferences } = useLoggedUser(); // Déplacer ici l'appel du hook
-  // Données de navigation et utilisateur
+  const user = useUserStore((state) => state.user);
+  const preferences = useUserStore((state) => state.preferences);
+
   const data = {
     user: {
-      name: user?.name || 'Guest', // Ajout de fallback au cas où LoggedUser est undefined
+      name: user?.name || 'Guest',
       email: user?.email || 'Guest',
       avatar: preferences?.avatar || 'Guest',
     },
@@ -31,10 +26,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         title: 'Dashboard',
         url: '/admin',
         icon: SquareTerminal,
-        isActive:
-          pathSegments[1] === undefined ||
-          pathSegments[1] === 'stats' ||
-          pathSegments[1] === 'logs',
+        isActive: pathSegments[1] === undefined || pathSegments[1] === 'stats' || pathSegments[1] === 'logs',
         items: [
           { title: 'Stats', url: '/admin/stats' },
           { title: 'Logs', url: '/admin/logs' },

@@ -21,8 +21,8 @@ const ForCreators = () => {
         </CardHeader>
         <CardContent className='grid gap-4'>
           <p className='text-foreground-muted text-sm'>
-            Our addon scanning process is fully automated. Contact us to request a rescan and get
-            your addon included in our directory.
+            Our addon scanning process is fully automated. Contact us to request a rescan and get your addon included in
+            our directory.
           </p>
 
           <div className='mx-auto mt-4 grid gap-4 md:grid-cols-2'>
@@ -33,7 +33,7 @@ const ForCreators = () => {
                 name='discord-plural'
                 height={64}
                 format='svg'
-                className='hidden md:block cursor-pointer'
+                className='hidden cursor-pointer md:block'
               />
               <DevinsBadges
                 type='compact'
@@ -41,12 +41,12 @@ const ForCreators = () => {
                 name='discord-plural'
                 height={40}
                 format='svg'
-                className='md:hidden cursor-pointer'
+                className='cursor-pointer md:hidden'
               />
             </div>
 
             <Button
-              className='h-[40px] text-xl text-white/90 md:h-[56px] cursor-pointer'
+              className='h-[40px] cursor-pointer text-xl text-white/90 md:h-[56px]'
               onClick={() => (window.location.href = 'mailto:blueprint-site@proton.me')}
             >
               <Mail className='mr-2' size={24} />
@@ -55,9 +55,7 @@ const ForCreators = () => {
           </div>
 
           <div className='mt-4 flex items-center justify-center'>
-            <p className='text-foreground-muted text-center text-xs tracking-wide'>
-              Email: blueprint-site@proton.me
-            </p>
+            <p className='text-foreground-muted text-center text-xs tracking-wide'>Email: blueprint-site@proton.me</p>
           </div>
         </CardContent>
       </Card>

@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input.tsx';
 import { Label } from '@/components/ui/label.tsx';
 import { Textarea } from '@/components/ui/textarea.tsx';
 import imageCompression from 'browser-image-compression';
-import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
+import { useUserStore } from '@/api/stores/userStore';
 import { account, storage } from '@/config/appwrite.ts';
 import logMessage from '@/components/utility/logs/sendLogs.tsx';
 
@@ -19,17 +19,46 @@ export default function ProfileSettings() {
     avatar: '',
   });
 
-  const LoggedUser = useLoggedUser();
+  // Get user data and the updatePreferences function from the store
+  const user = useUserStore((state) => state.user);
+  const preferences = useUserStore((state) => state.preferences);
+  const updatePreferences = useUserStore((state) => state.updatePreferences);
 
   useEffect(() => {
-    if (LoggedUser) {
+    if (user) {
       setProfile({
-        username: LoggedUser?.user?.name || '',
-        bio: LoggedUser.preferences?.bio || '',
-        avatar: LoggedUser.preferences?.avatar || '',
+        username: user?.name || '',
+        bio: preferences?.bio || '',
+        avatar: preferences?.avatar || '',
       });
     }
-  }, [LoggedUser]);
+  }, [user, preferences]);
+
+  const handleSave = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      logMessage('Saving of the profile in progress', 0, 'action');
+
+      await account.updateName(profile.username);
+
+      // Use the store's updatePreferences function
+      await updatePreferences({
+        theme: preferences?.theme || 'light',
+        language: preferences?.language || 'en',
+        notificationsEnabled: preferences?.notificationsEnabled || false,
+        roles: preferences?.roles || [],
+        bio: profile.bio,
+        avatar: profile.avatar,
+      });
+
+      logMessage('Saving of the profile done', 0, 'action');
+    } catch (error) {
+      logMessage('Error while saving the profile ', 3, 'action');
+      setError('Error while saving the profile');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [preferences, profile, updatePreferences]);
 
   const onUploadImage = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,11 +96,7 @@ export default function ProfileSettings() {
         }
 
         const fileId = crypto.randomUUID();
-        const response = await storage.createFile(
-          '67aee2b30000b9e21407',
-          fileId,
-          compressedFileAsFile
-        );
+        const response = await storage.createFile('67aee2b30000b9e21407', fileId, compressedFileAsFile);
 
         const avatarUrl = storage.getFilePreview('67aee2b30000b9e21407', response.$id).toString();
         console.log(avatarUrl);
@@ -86,35 +111,15 @@ export default function ProfileSettings() {
         });
       }
     },
-    [profile.avatar]
+    [profile.avatar, handleSave]
   );
-
-  const handleSave = async () => {
-    setIsLoading(true);
-    try {
-      logMessage('Saving of the profile in progress', 0, 'action');
-
-      await account.updateName(profile.username);
-
-      await account.updatePrefs({
-        bio: profile.bio,
-        avatar: profile.avatar,
-      });
-
-      logMessage('Saving of the profile done', 0, 'action');
-    } catch (error) {
-      logMessage('Error while saving the profile ', 3, 'action');
-      setError('Error while saving the profile');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   if (error) {
     return <div className='text-destructive'>{error}</div>;
   }
 
-  if (!LoggedUser) {
+  // Show loading state if user data isn't available yet
+  if (!user) {
     return <div>Loading...</div>;
   }
 
@@ -158,9 +163,7 @@ export default function ProfileSettings() {
 
         <div>
           <Label htmlFor='username'>Username</Label>
-          <p className='text-foreground-muted mb-2 text-sm'>
-            A unique case-insensitive name to identify your profile.
-          </p>
+          <p className='text-foreground-muted mb-2 text-sm'>A unique case-insensitive name to identify your profile.</p>
           <Input
             id='username'
             value={profile.username}

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Blog } from '@/types';
-import { toast } from '@/api';
+import { toast } from '@/hooks/useToast';
 import { databases, ID } from '@/config/appwrite.ts';
 import { Query } from 'appwrite';
 
@@ -82,12 +82,11 @@ export const useFetchBlogTags = () => {
     queryKey: ['blog_tags'],
     queryFn: async () => {
       try {
-        const response = await databases.listDocuments(DATABASE_ID, '67b2326100053d0e304f', [
-        ]);
+        const response = await databases.listDocuments(DATABASE_ID, '67b2326100053d0e304f', []);
 
-        return response.documents.map(tag => ({
+        return response.documents.map((tag) => ({
           value: tag.$id,
-          label: tag.name || tag.$id
+          label: tag.name || tag.$id,
         }));
       } catch (err) {
         console.error('Error fetching blog tags:', err);
@@ -111,11 +110,7 @@ export const useFetchBlogs = (query: string = '', tagId: string = 'all', page: n
     queryKey: ['blogs', query, tagId, page, limit],
     queryFn: async () => {
       try {
-        const queryParams = [
-          Query.orderDesc('$createdAt'),
-          Query.limit(limit),
-          Query.offset((page - 1) * limit),
-        ];
+        const queryParams = [Query.orderDesc('$createdAt'), Query.limit(limit), Query.offset((page - 1) * limit)];
 
         // Only add search query if it's not empty
         if (query && query.trim() !== '') {
@@ -146,7 +141,7 @@ export const useFetchBlogs = (query: string = '', tagId: string = 'all', page: n
           likes: doc.likes || 0,
           authors_uuid: doc.authors_uuid || [],
           // Add missing fields based on Blog schema
-          blog_tags: [] // This might need to be populated from somewhere else
+          blog_tags: [], // This might need to be populated from somewhere else
         }));
 
         const hasNextPage = page * limit < response.total;

@@ -1,4 +1,4 @@
-export const schematicCategories = [
+export const SCHEMATIC_CATEGORIES = [
   {
     category: 'All',
     subcategories: ['All'],
@@ -18,16 +18,7 @@ export const schematicCategories = [
   },
   {
     category: 'Landscapes',
-    subcategories: [
-      'Gardens',
-      'Parks',
-      'Mountains',
-      'Forests',
-      'Deserts',
-      'Caves',
-      'Islands',
-      'Others',
-    ],
+    subcategories: ['Gardens', 'Parks', 'Mountains', 'Forests', 'Deserts', 'Caves', 'Islands', 'Others'],
   },
   {
     category: 'Technical Structures',
@@ -43,15 +34,7 @@ export const schematicCategories = [
   },
   {
     category: 'Decoration',
-    subcategories: [
-      'Furniture',
-      'Lighting',
-      'Street Details',
-      'Statues',
-      'Planters',
-      'Interiors',
-      'Others',
-    ],
+    subcategories: ['Furniture', 'Lighting', 'Street Details', 'Statues', 'Planters', 'Interiors', 'Others'],
   },
   {
     category: 'Infrastructure',
@@ -71,13 +54,7 @@ export const schematicCategories = [
   },
   {
     category: 'Monuments & Replicas',
-    subcategories: [
-      'Historical Monuments',
-      'Real Building Replicas',
-      'Landmarks',
-      'Giant Statues',
-      'Others',
-    ],
+    subcategories: ['Historical Monuments', 'Real Building Replicas', 'Landmarks', 'Giant Statues', 'Others'],
   },
   {
     category: 'Cities & Villages',
@@ -121,15 +98,7 @@ export const schematicCategories = [
   },
   {
     category: 'Resource Farms',
-    subcategories: [
-      'Iron Farms',
-      'Gold Farms',
-      'Crop Farms',
-      'Animal Farms',
-      'Mob Farms',
-      'XP Farms',
-      'Others',
-    ],
+    subcategories: ['Iron Farms', 'Gold Farms', 'Crop Farms', 'Animal Farms', 'Mob Farms', 'XP Farms', 'Others'],
   },
   {
     category: 'Transportation & Logistics',
@@ -176,6 +145,7 @@ export const schematicCategories = [
       'Others',
     ],
   },
-];
+] as const;
 
-export default schematicCategories;
+export type SchematicCategory = (typeof SCHEMATIC_CATEGORIES)[number]['category'];
+export type SchematicSubcategory = (typeof SCHEMATIC_CATEGORIES)[number]['subcategories'][number];

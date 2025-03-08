@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from '@/api';
-import { databases, ID } from '@/config/appwrite.ts';
+import { toast } from '@/hooks/useToast';
+import { databases, ID } from '@/config/appwrite';
 import { Query } from 'appwrite';
 import { Addon } from '@/types';
 
@@ -50,9 +50,7 @@ export const useFetchAddon = (slug?: string) => {
     queryFn: async () => {
       if (!slug) return null;
 
-      const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
-        Query.equal('slug', slug),
-      ]);
+      const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [Query.equal('slug', slug)]);
 
       if (response.documents.length === 0) return null;
       console.log(response);

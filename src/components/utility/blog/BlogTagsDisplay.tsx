@@ -1,6 +1,5 @@
-
 import { useEffect, useState } from 'react';
-import {Tag} from "@/types";
+import { Tag } from '@/types';
 
 interface BlogTagsDisplayProps {
   value?: Tag[];
@@ -16,11 +15,7 @@ const BlogTagsDisplay = ({ value }: BlogTagsDisplayProps) => {
   return (
     <div className='flex flex-wrap gap-2'>
       {tags.map((tag) => (
-        <span
-          key={tag.id}
-          className='text-foreground rounded px-1 py-1'
-          style={{ backgroundColor: tag.color }}
-        >
+        <span key={tag.id} className='text-foreground rounded px-1 py-1' style={{ backgroundColor: tag.color }}>
           {tag.value}
         </span>
       ))}

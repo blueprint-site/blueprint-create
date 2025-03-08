@@ -1,14 +1,16 @@
 // src/schemas/schematic.schema.tsx
-import { z } from "zod";
+import { z } from 'zod';
 
 // Form schema for schematic uploads
 export const schematicFormSchema = z.object({
   title: z.string().min(1, 'Title is required'),
-  description: z.string()
-    .min(10, "Description must be at least 10 characters")
-    .max(500, "Description cannot exceed 500 characters"),
+  description: z
+    .string()
+    .min(10, 'Description must be at least 10 characters')
+    .max(500, 'Description cannot exceed 500 characters'),
   schematicFile: z.instanceof(File, { message: 'Please upload a schematic file' }),
-  imageFiles: z.array(z.instanceof(File, { message: 'Please upload valid image files' }))
+  imageFiles: z
+    .array(z.instanceof(File, { message: 'Please upload valid image files' }))
     .min(1, 'Upload at least one image'),
   gameVersions: z.array(z.string()).min(1, 'Select at least one game version'),
   createVersions: z.array(z.string()).min(1, 'Select at least one Create version'),
@@ -26,15 +28,15 @@ export const searchSchematicsPropsSchema = z.object({
   version: z.string().optional(),
   loaders: z.string().optional(),
   id: z.string().optional(),
-})
+});
 
 // Database schema for stored schematics
 export const schematicSchema = z.object({
   $id: z.string(),
   title: z.string().min(1, 'Title is required'),
   description: z.string(),
-  schematic_url: z.string().url("Must be a valid URL"),
-  image_urls: z.array(z.string().url("Must be a valid URL")),
+  schematic_url: z.string().url('Must be a valid URL'),
+  image_urls: z.array(z.string().url('Must be a valid URL')),
   user_id: z.string(),
   authors: z.array(z.string()),
   game_versions: z.array(z.string()),
@@ -44,7 +46,7 @@ export const schematicSchema = z.object({
   sub_categories: z.array(z.string()).optional(),
   slug: z.string(),
   downloads: z.number().int().nonnegative().default(0),
-  status: z.enum(["draft", "published", "archived"]).default("published"),
+  status: z.enum(['draft', 'published', 'archived']).default('published'),
   $createdAt: z.string().datetime(),
   $updatedAt: z.string().datetime(),
   likes: z.number().int().nonnegative().default(0),
@@ -73,6 +75,4 @@ export const searchSchematicsResultSchema = z.object({
   hasPreviousPage: z.boolean(),
   totalHits: z.number().int().nonnegative(),
   page: z.number().int().positive(),
-
 });
-

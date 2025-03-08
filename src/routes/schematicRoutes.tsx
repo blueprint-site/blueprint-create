@@ -1,11 +1,9 @@
 // src/routes/schematicRoutes.tsx
 import ProtectedRoute from '@/components/utility/ProtectedRoute';
 import { lazy } from 'react';
-import { RouteObject } from 'react-router-dom';
+import { RouteObject } from 'react-router';
 
-const SchematicsUploadPage = lazy(
-  () => import('@/components/features/schematics/upload/SchematicsUpload')
-);
+const SchematicsUploadPage = lazy(() => import('@/components/features/schematics/upload/SchematicsUpload'));
 const SchematicDetails = lazy(() => import('@/pages/schematics/SchematicDetailsPage.tsx'));
 
 export const schematicRoutes: RouteObject[] = [

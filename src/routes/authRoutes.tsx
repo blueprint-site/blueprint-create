@@ -1,5 +1,5 @@
 // src/routes/authRoutes.tsx
-import { RouteObject } from 'react-router-dom';
+import { RouteObject } from 'react-router';
 
 import AuthPage from '@/pages/auth/Auth';
 import AuthSuccess from '@/pages/auth/AuthSuccess';

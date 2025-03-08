@@ -35,7 +35,7 @@ export const useSearchAddons = (
   };
 
   const queryResult = useQuery({
-    queryKey: ['searchAddons', queryInput, page, category, version, loaders, limit ],
+    queryKey: ['searchAddons', queryInput, page, category, version, loaders, limit],
     queryFn: async () => {
       const index = searchClient.index('addons');
       const result = await index.search(queryInput, {

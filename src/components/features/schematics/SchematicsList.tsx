@@ -1,6 +1,6 @@
 // src/pages/schematics/SchematicsList.tsx
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router';
 import SchematicCard from '@/components/features/schematics/SchematicCard';
 import { useSearchSchematics } from '@/api';
 import { buttonVariants } from '@/components/ui/button';
@@ -11,9 +11,8 @@ import { SelectFilter } from '@/components/layout/SelectFilter';
 import { FiltersContainer } from '@/components/layout/FiltersContainer';
 import { ItemGrid } from '@/components/layout/ItemGrid';
 import { useSchematicFilters } from '@/hooks/useSchematicFilters';
-import { Link } from 'react-router-dom';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import {Schematic} from "@/types";
+import { Schematic } from '@/types';
 
 function SchematicsList() {
   const navigate = useNavigate();
@@ -65,14 +64,7 @@ function SchematicsList() {
   useEffect(() => {
     setAllSchematics([]);
     setPage(1); // Reset to first page when filters change
-  }, [
-    filters.query,
-    filters.category,
-    filters.subCategory,
-    filters.version,
-    filters.loaders,
-    filters.createVersion,
-  ]);
+  }, [filters.query, filters.category, filters.subCategory, filters.version, filters.loaders, filters.createVersion]);
 
   // Append new schematics to the accumulated list
   useEffect(() => {
@@ -101,24 +93,16 @@ function SchematicsList() {
             <button
               onClick={handleResetFilters}
               className='text-primary flex items-center gap-1 text-sm'
-              aria-label='Reset filters'>
+              aria-label='Reset filters'
+            >
               <RefreshCw size={14} />
               Reset
             </button>
           </div>
 
-          <SearchFilter
-            value={filters.query}
-            onChange={setQuery}
-            placeholder='Search schematics...'
-          />
+          <SearchFilter value={filters.query} onChange={setQuery} placeholder='Search schematics...' />
 
-          <SelectFilter
-            label='Category'
-            value={filters.category}
-            onChange={setCategory}
-            options={categoryOptions}
-          />
+          <SelectFilter label='Category' value={filters.category} onChange={setCategory} options={categoryOptions} />
 
           {/* Only show subcategories if available */}
           {hasSubCategories && (
@@ -130,19 +114,9 @@ function SchematicsList() {
             />
           )}
 
-          <SelectFilter
-            label='Version'
-            value={filters.version}
-            onChange={setVersion}
-            options={versionOptions}
-          />
+          <SelectFilter label='Version' value={filters.version} onChange={setVersion} options={versionOptions} />
 
-          <SelectFilter
-            label='Loaders'
-            value={filters.loaders}
-            onChange={setLoaders}
-            options={loaderOptions}
-          />
+          <SelectFilter label='Loaders' value={filters.loaders} onChange={setLoaders} options={loaderOptions} />
           <SelectFilter
             label='Create version'
             value={filters.createVersion}

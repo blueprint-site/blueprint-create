@@ -5,7 +5,7 @@ import { SearchFilter } from '@/components/layout/SearchFilter';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { ListPageContent, ListPageLayout, ListPageFilters } from '@/layouts/ListPageLayout';
 import { Blog } from '@/types';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import BlogCard from '@/components/features/blog/BlogCard';
 
 const BlogPage = () => {
@@ -14,14 +14,10 @@ const BlogPage = () => {
   const [allBlogs, setAllBlogs] = useState<Blog[]>([]);
 
   // Fetch blogs based on filters
-  const {
-    data,
-    isLoading,
-    isFetching,
-  } = useFetchBlogs(query, 'all', page);
+  const { data, isLoading, isFetching } = useFetchBlogs(query, 'all', page);
 
   // Extract the needed properties from the data
-  const blogs = data?.data || [];
+  const blogs = useMemo(() => data?.data || [], [data?.data]);
   const hasNextPage = data?.hasNextPage || false;
 
   // Simple blog processor - now without tag processing
@@ -33,7 +29,7 @@ const BlogPage = () => {
   // Handle loading more blogs
   const handleLoadMore = useCallback(() => {
     if (hasNextPage && !isFetching) {
-      setPage(prev => prev + 1);
+      setPage((prev) => prev + 1);
     }
   }, [hasNextPage, isFetching]);
 
@@ -55,9 +51,7 @@ const BlogPage = () => {
     if (blogs?.length) {
       const processedBlogs = processBlogs(blogs);
 
-      setAllBlogs(prev =>
-        page === 1 ? processedBlogs : [...prev, ...processedBlogs]
-      );
+      setAllBlogs((prev) => (page === 1 ? processedBlogs : [...prev, ...processedBlogs]));
     }
   }, [blogs, page, processBlogs]);
 
@@ -76,16 +70,13 @@ const BlogPage = () => {
             <button
               onClick={resetFilters}
               className='text-primary flex items-center gap-1 text-sm'
-              aria-label='Reset filters'>
+              aria-label='Reset filters'
+            >
               Reset
             </button>
           </div>
 
-          <SearchFilter
-            value={query}
-            onChange={setQuery}
-            placeholder='Search blog posts...'
-          />
+          <SearchFilter value={query} onChange={setQuery} placeholder='Search blog posts...' />
         </FiltersContainer>
       </ListPageFilters>
 

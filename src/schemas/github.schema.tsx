@@ -1,5 +1,5 @@
 // src/schemas/github.schema.tsx
-import { z } from "zod";
+import { z } from 'zod';
 
 /**
  * Schema for GitHub user data
@@ -7,7 +7,7 @@ import { z } from "zod";
 export const GitHubUserSchema = z.object({
   login: z.string(),
   id: z.number().int().positive(),
-  avatar_url: z.string().url("Must be a valid URL"),
+  avatar_url: z.string().url('Must be a valid URL'),
   contributions: z.number().int().nonnegative(),
 });
 
@@ -17,7 +17,7 @@ export const GitHubUserSchema = z.object({
 export const ContributorStatsSchema = z.object({
   login: z.string(),
   id: z.number().int().positive(),
-  avatar_url: z.string().url("Must be a valid URL"),
+  avatar_url: z.string().url('Must be a valid URL'),
   frontendContributions: z.number().int().nonnegative(),
   apiContributions: z.number().int().nonnegative(),
 });
@@ -29,7 +29,7 @@ export const GitHubRepoSchema = z.object({
   id: z.number().int().positive(),
   name: z.string(),
   full_name: z.string(),
-  html_url: z.string().url("Must be a valid URL"),
+  html_url: z.string().url('Must be a valid URL'),
   description: z.string().nullable(),
   fork: z.boolean(),
   language: z.string().nullable(),
@@ -48,4 +48,3 @@ export const GitHubRepoSchema = z.object({
  */
 
 export const GitHubContributorsResponseSchema = z.array(GitHubUserSchema);
-

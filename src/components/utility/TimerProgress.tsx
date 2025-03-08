@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef, useMemo } from "react";
-import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card";
-import { Progress } from "@/components/ui/progress";
-import { Clock } from "lucide-react";
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
+import { Progress } from '@/components/ui/progress';
+import { Clock } from 'lucide-react';
 
 interface TimerProgressProps {
   startTimestamp: number;
@@ -12,7 +12,9 @@ interface TimerProgressProps {
 }
 
 const TimerProgress = ({ startTimestamp, countdownTime, description, icon, onComplete }: TimerProgressProps) => {
-  const [timeLeft, setTimeLeft] = useState(() => Math.max(countdownTime - Math.floor((Date.now() - startTimestamp) / 1000), 0));
+  const [timeLeft, setTimeLeft] = useState(() =>
+    Math.max(countdownTime - Math.floor((Date.now() - startTimestamp) / 1000), 0)
+  );
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -40,19 +42,19 @@ const TimerProgress = ({ startTimestamp, countdownTime, description, icon, onCom
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${minutes}:${secs.toString().padStart(2, "0")}`;
+    return `${minutes}:${secs.toString().padStart(2, '0')}`;
   };
 
   return (
     <HoverCard>
-      <HoverCardTrigger className="flex items-center gap-3 cursor-pointer">
-        {icon || <Clock className="w-6 h-6 text-gray-500" />}
-        <span className="text-lg font-semibold">{formatTime(timeLeft)}</span>
+      <HoverCardTrigger className='flex cursor-pointer items-center gap-3'>
+        {icon || <Clock className='h-6 w-6 text-gray-500' />}
+        <span className='text-lg font-semibold'>{formatTime(timeLeft)}</span>
       </HoverCardTrigger>
-      <HoverCardContent className="w-64 space-y-2">
-        <div className="text-sm">Time Remaining</div>
-        <Progress value={progress} className="w-full" />
-        <p className="text-sm">{description || "This timer is counting down."}</p>
+      <HoverCardContent className='w-64 space-y-2'>
+        <div className='text-sm'>Time Remaining</div>
+        <Progress value={progress} className='w-full' />
+        <p className='text-sm'>{description || 'This timer is counting down.'}</p>
       </HoverCardContent>
     </HoverCard>
   );

@@ -1,5 +1,3 @@
-
-
 // Define the available badge types as const to enable type inference
 const BADGE_TYPES = {
   cozy: {
@@ -58,21 +56,21 @@ interface DevinsBadgesProps {
 }
 
 const DevinsBadges = ({
-                        type,
-                        category,
-                        name,
-                        height,
-                        format = 'svg',
-                        className,
-                        customBadgeUrl,
-                      }: DevinsBadgesProps) => {
+  type,
+  category,
+  name,
+  height,
+  format = 'svg',
+  className,
+  customBadgeUrl,
+}: DevinsBadgesProps) => {
   // Get badge type configuration
   const typeConfig = BADGE_TYPES[type];
 
   // Validate and normalize height
   const finalHeight = height
-      ? Math.min(Math.max(height, typeConfig.heightRange.min), typeConfig.heightRange.max)
-      : typeConfig.recommendedHeight;
+    ? Math.min(Math.max(height, typeConfig.heightRange.min), typeConfig.heightRange.max)
+    : typeConfig.recommendedHeight;
 
   let badgeSrc = '';
 
@@ -85,19 +83,11 @@ const DevinsBadges = ({
   } else {
     // Construct badge URL
     badgeSrc = `https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/${type}/${category}/${name}${
-        format === 'png' ? `_${finalHeight}h` : format === 'svg' ? '_vector' : ''
+      format === 'png' ? `_${finalHeight}h` : format === 'svg' ? '_vector' : ''
     }.${format}`;
   }
 
-  return (
-      <img
-          loading='lazy'
-          src={badgeSrc}
-          alt={`${name} badge`}
-          className={className}
-          height={finalHeight}
-      />
-  );
+  return <img loading='lazy' src={badgeSrc} alt={`${name} badge`} className={className} height={finalHeight} />;
 };
 
 export default DevinsBadges;

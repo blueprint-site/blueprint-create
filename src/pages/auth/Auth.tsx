@@ -6,15 +6,29 @@ import DiscordLogo from '@/assets/icons/discord-mark-white.svg?url';
 import GithubLogo from '@/assets/icons/github-mark-white.svg?url';
 import GoogleLogo from '@/assets/icons/google-mark-color.png';
 import { Input } from '@/components/ui/input.tsx';
-import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
+import { useUserStore } from '@/api/stores/userStore';
 
 const AuthPage = () => {
-  const { user, login, logout, handleOAuthLogin, error } = useLoggedUser();
+  // Replace context with Zustand store
+  const user = useUserStore((state) => state.user);
+  const login = useUserStore((state) => state.login);
+  const register = useUserStore((state) => state.register);
+  const logout = useUserStore((state) => state.logout);
+  const handleOAuthLogin = useUserStore((state) => state.handleOAuthLogin);
+  const error = useUserStore((state) => state.error);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
+
+  const handleSubmit = async () => {
+    if (isRegistering) {
+      await register(name, email, password);
+    } else {
+      await login(email, password);
+    }
+  };
 
   return (
     <div className='bg-background flex min-h-screen items-center justify-center p-4'>
@@ -30,19 +44,9 @@ const AuthPage = () => {
             <form onSubmit={(e) => e.preventDefault()}>
               <div className='grid gap-2'>
                 {isRegistering && (
-                  <Input
-                    type='text'
-                    placeholder='Name'
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
+                  <Input type='text' placeholder='Name' value={name} onChange={(e) => setName(e.target.value)} />
                 )}
-                <Input
-                  type='email'
-                  placeholder='Email'
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
+                <Input type='email' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} />
                 <Input
                   type='password'
                   placeholder='Password'
@@ -52,11 +56,7 @@ const AuthPage = () => {
               </div>
 
               <div className='mt-2 flex items-center gap-2'>
-                <Button
-                  variant='outline'
-                  className='bg-white text-black/80 hover:bg-gray-50'
-                  onClick={() => login(email, password)}
-                >
+                <Button variant='outline' className='bg-white text-black/80 hover:bg-gray-50' onClick={handleSubmit}>
                   {isRegistering ? 'Register' : 'Login'}
                 </Button>
 
@@ -68,14 +68,8 @@ const AuthPage = () => {
               </div>
 
               <div className='text-center'>
-                <Button
-                  type='button'
-                  onClick={() => setIsRegistering(!isRegistering)}
-                  variant='link'
-                >
-                  {isRegistering
-                    ? 'Already have an account? Login'
-                    : "Don't have an account? Register"}
+                <Button type='button' onClick={() => setIsRegistering(!isRegistering)} variant='link'>
+                  {isRegistering ? 'Already have an account? Login' : "Don't have an account? Register"}
                 </Button>
               </div>
             </form>

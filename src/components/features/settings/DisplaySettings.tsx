@@ -1,7 +1,8 @@
 import { Label } from '@/components/ui/label.tsx';
 import { Switch } from '@/components/ui/switch.tsx';
-import { useThemeStore } from '@/api/stores/themeStore.tsx';
+import { useThemeStore } from '@/api/stores/themeStore';
 import { Moon, Sun } from 'lucide-react';
+import EasterEggsSettings from './EasterEggSettings';
 
 export default function DisplaySettings() {
   const { isDarkMode, toggleTheme } = useThemeStore();
@@ -23,10 +24,10 @@ export default function DisplaySettings() {
           <Label htmlFor='theme-toggle'>{isDarkMode ? 'Dark mode' : 'Light mode'}</Label>
         </div>
 
-        <p className='text-foreground-muted text-sm'>
-          Choose between light and dark mode for the site interface.
-        </p>
+        <p className='text-foreground-muted text-sm'>Choose between light and dark mode for the site interface.</p>
       </div>
+
+      <EasterEggsSettings />
     </div>
   );
 }

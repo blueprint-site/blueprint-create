@@ -1,7 +1,6 @@
-import { useParams } from "react-router-dom";
-import { BlogDetailsMain } from "@/components/features/blog/blog-details";
-import { useFetchBlog } from "@/api";
-
+import { useParams } from 'react-router';
+import { BlogDetailsMain } from '@/components/features/blog/blog-details';
+import { useFetchBlog } from '@/api';
 
 const BlogDetails = () => {
   const { slug } = useParams(); // Récupère le slug de l'URL

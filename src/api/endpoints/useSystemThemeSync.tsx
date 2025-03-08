@@ -1,5 +1,5 @@
 // src/hooks/useSystemThemeSync.ts
-import { useThemeStore } from '@/api/stores/themeStore.tsx';
+import { useThemeStore } from '@/api/stores/themeStore';
 import { useEffect } from 'react';
 
 export const useSystemThemeSync = () => {

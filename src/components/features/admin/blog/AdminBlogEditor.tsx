@@ -1,10 +1,10 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { Input } from '@/components/ui/input.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Card, CardContent } from '@/components/ui/card.tsx';
 import { Blog, Tag } from '@/types';
-import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
+import { useUserStore } from '@/api/stores/userStore';
 import ImageUploader from '@/components/utility/ImageUploader.tsx';
 import MarkdownEditor from '@/components/utility/MarkdownEditor.tsx';
 import TagSelector from '@/components/utility/blog/TagSelector.tsx';
@@ -15,13 +15,13 @@ export const BlogEditor = () => {
   const { id } = useParams<{ id: string }>();
   const isNew = id === 'new';
   const { toast } = useToast();
-  const LoggedUser = useLoggedUser();
+  const user = useUserStore((state) => state.user);
   const { data: blog, isLoading } = useFetchBlog(id);
   const saveBlogMutation = useSaveBlog();
   const [blogState, setBlogState] = useState<Partial<Blog> | null>(null);
 
   useEffect(() => {
-    if (!LoggedUser) return;
+    if (!user) return;
 
     if (id && !isNew && blog) {
       console.log(blog);
@@ -35,11 +35,11 @@ export const BlogEditor = () => {
         status: 'draft',
         tags: [],
         likes: 0,
-        authors_uuid: [LoggedUser.user?.$id || ''],
-        authors: [LoggedUser.user?.name || ''],
+        authors_uuid: [user?.$id || ''],
+        authors: [user?.name || ''],
       });
     }
-  }, [id, blog, isNew, LoggedUser]);
+  }, [id, blog, isNew, user]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -92,9 +92,7 @@ export const BlogEditor = () => {
           <CardContent className='space-y-4'>
             <ImageUploader
               value={blogState?.img_url}
-              onChange={(base64) =>
-                setBlogState((prev) => (prev ? { ...prev, img_url: base64 ?? undefined } : null))
-              }
+              onChange={(base64) => setBlogState((prev) => (prev ? { ...prev, img_url: base64 ?? undefined } : null))}
             />
             <div className='space-y-2'>
               <h3 className='text-sm font-medium'>Title</h3>
@@ -134,9 +132,7 @@ export const BlogEditor = () => {
           <div className='h-[calc(100vh-200px)] overflow-auto'>
             <MarkdownEditor
               value={blog?.content ?? ''}
-              onChange={(value) =>
-                setBlogState((prev) => (prev ? { ...prev, content: value ?? undefined } : null))
-              }
+              onChange={(value) => setBlogState((prev) => (prev ? { ...prev, content: value ?? undefined } : null))}
             />
           </div>
         </div>

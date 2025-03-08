@@ -1,6 +1,6 @@
 import { Lock, Monitor, User } from 'lucide-react';
 import { Suspense, lazy } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 
 import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
 import { Button } from '@/components/ui/button';
@@ -35,8 +35,7 @@ const SettingsPage = () => {
     },
   ];
 
-  const ActiveSection =
-    settingsSections.find((s) => s.id === section)?.component || ProfileSettings;
+  const ActiveSection = settingsSections.find((s) => s.id === section)?.component || ProfileSettings;
 
   return (
     <div className='container mx-auto px-4 py-8'>

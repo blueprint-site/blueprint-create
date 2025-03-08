@@ -7,8 +7,7 @@ import { FiltersContainer } from '@/components/layout/FiltersContainer';
 import { ItemGrid } from '@/components/layout/ItemGrid';
 import AddonCard from '@/components/features/addons/addon-card/AddonCard.tsx';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import {Addon} from "@/types";
-
+import { Addon } from '@/types';
 
 const AddonsList = () => {
   const [query, setQuery] = useState('');
@@ -26,15 +25,7 @@ const AddonsList = () => {
     isLoading,
     isFetching,
     hasNextPage,
-    totalHits,
-  } = useSearchAddons(
-    query,
-    page,
-    category,
-    version,
-    loaders,
-    ITEMS_PER_PAGE
-  );
+  } = useSearchAddons(query, page, category, version, loaders, ITEMS_PER_PAGE);
 
   // Use the useInfiniteScroll hook
   const { sentinelRef, loadingMore } = useInfiniteScroll({
@@ -107,50 +98,20 @@ const AddonsList = () => {
       <ListPageFilters>
         <FiltersContainer>
           <div className='flex items-center justify-between'>
-            <div className='text-foreground font-minecraft md:text-xl font-semibold'>Filters</div>
-            <button
-              onClick={resetFilters}
-              className='text-primary text-sm'
-              aria-label='Reset filters'
-            >
+            <div className='text-foreground font-minecraft font-semibold md:text-xl'>Filters</div>
+            <button onClick={resetFilters} className='text-primary text-sm' aria-label='Reset filters'>
               Reset
             </button>
           </div>
           <div className='md:hidden'></div>
-          <SearchFilter
-            value={query}
-            onChange={setQuery}
-            placeholder='Search addons...'
-          />
-          <SelectFilter
-            label='Category'
-            value={category}
-            onChange={setCategory}
-            options={categoryOptions}
-          />
-          <SelectFilter
-            label='Loaders'
-            value={loaders}
-            onChange={setLoaders}
-            options={loaderOptions}
-          />
-          <SelectFilter
-            label='Version'
-            value={version}
-            onChange={setVersion}
-            options={versionOptions}
-          />
+          <SearchFilter value={query} onChange={setQuery} placeholder='Search addons...' />
+          <SelectFilter label='Category' value={category} onChange={setCategory} options={categoryOptions} />
+          <SelectFilter label='Loaders' value={loaders} onChange={setLoaders} options={loaderOptions} />
+          <SelectFilter label='Version' value={version} onChange={setVersion} options={versionOptions} />
         </FiltersContainer>
       </ListPageFilters>
 
       <ListPageContent>
-        {/* Display total hits count */}
-        {totalHits > 0 && !isLoading && (
-          <div className="mb-4 text-sm text-muted-foreground">
-            Found {totalHits} addon{totalHits !== 1 ? 's' : ''}
-          </div>
-        )}
-
         <ItemGrid
           items={allAddons}
           renderItem={renderAddon}
@@ -160,7 +121,6 @@ const AddonsList = () => {
           infiniteScrollEnabled={true}
           loadingMore={loadingMore}
           sentinelRef={sentinelRef}
-          // Animation props
           animationEnabled={true} // Toggle animations on/off
           animationDelay={0.1} // Control the stagger delay
           animationDuration={0.4} // Control the animation duration

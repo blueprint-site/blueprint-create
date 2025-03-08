@@ -1,6 +1,6 @@
 // src/routes/index.ts
 import { lazy, Suspense } from 'react';
-import { RouteObject } from 'react-router-dom';
+import { RouteObject } from 'react-router';
 
 import { authRoutes } from '@/routes/authRoutes';
 import { schematicRoutes } from '@/routes/schematicRoutes';
@@ -24,9 +24,7 @@ const Privacy = lazy(() => import('@/pages/Privacy'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 const AdminPanelLayout = lazy(() => import('@/layouts/AdminPanelLayout'));
 const Changelogs = lazy(() => import('@/pages/Changelogs'));
-const ChangelogsEditor = lazy(
-  () => import('@/components/features/changelogs/ChangelogsEditor.tsx')
-);
+const ChangelogsEditor = lazy(() => import('@/components/features/changelogs/ChangelogsEditor.tsx'));
 
 export const routes: RouteObject[] = [
   {
