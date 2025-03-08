@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { storage } from '@/config/appwrite';
 import { useUserStore } from '@/api/stores/userStore';
-import SchematicUploadLoadingOverlay from '@/components/loading-overlays/SchematicUploadLoadingOverlay';
 import { SchematicUploadForm } from './SchematicUploadForm';
 import { SchematicPreview } from './SchematicUploadPreview';
 import { generateSlug } from '../utils/generateSlug';
 import { useSaveSchematics } from '@/api/endpoints/useSchematics';
 import { SchematicFormValues } from '@/types';
+import SchematicUploadLoadingOverlay from '@/components/loading-overlays/SchematicUploadLoadingOverlay';
 
 function SchematicsUpload() {
   const navigate = useNavigate();
@@ -22,6 +22,10 @@ function SchematicsUpload() {
     createVersions: [],
     modloaders: [],
   });
+
+  if (loading) {
+    return <SchematicUploadLoadingOverlay message='Uploading Schematic...' />;
+  }
 
   const onSubmit = async (data: SchematicFormValues) => {
     if (!user) {
@@ -89,8 +93,24 @@ function SchematicsUpload() {
       navigate(`/schematics/${document.$id}/${slug}`);
     } catch (error) {
       console.error('Error submitting form:', error);
+    } finally {
+      setLoading(false);
     }
-  });
+  };
+
+  const handleFieldChange = (field: keyof SchematicFormValues, value: unknown) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [field]: value,
+    }));
+  };
+
+  // Function to handle file preview generation
+  const handleImagePreview = (files: File[]) => {
+    // Create local URLs for image previews
+    const urls = files.map((file) => URL.createObjectURL(file));
+    setImagePreviewUrls(urls);
+  };
 
   return (
     <div className='container mx-auto px-4 py-8'>
