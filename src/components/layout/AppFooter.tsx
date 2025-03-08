@@ -1,11 +1,15 @@
-import Logo from '@/assets/logo.webp';
+// src/components/layout/AppFooter.tsx
 import { cn } from '@/config/utils.ts';
+import { useLogo } from '@/hooks/useEasterEgg';
 
 interface FooterProps {
   className?: string;
 }
 
 const Footer = ({ className }: FooterProps) => {
+  // Use non-clickable logo (default behavior)
+  const { logoSrc } = useLogo();
+
   return (
     <footer className={cn('bg-surface-1 w-full py-4 md:pt-12', className)}>
       <div className='mx-auto px-4 md:container'>
@@ -13,7 +17,12 @@ const Footer = ({ className }: FooterProps) => {
           {/* Logo and Title Row */}
           <div className='flex flex-col gap-2 flex-1'>
             <div className='flex items-center gap-2'>
-              <img src={Logo} alt='Blueprint Site Logo' className='w-8' />
+              {/* Easter egg logo (now non-clickable) */}
+              <img
+                src={logoSrc}
+                alt='Blueprint Site Logo'
+                className='w-8'
+              />
               <h4 className='text-lg font-bold'>Blueprint</h4>
             </div>
 
@@ -21,8 +30,7 @@ const Footer = ({ className }: FooterProps) => {
               Found a bug? Report it to{' '}
               <a
                 href='https://github.com/blueprint-site/blueprint-site.github.io'
-                className='hover:underline'
-              >
+                className='hover:underline'>
                 GitHub issues
               </a>
               .
@@ -39,8 +47,7 @@ const Footer = ({ className }: FooterProps) => {
               </a>
               <a
                 href='https://blueprint-site.github.io/blueprint-blog/'
-                className='text-xs font-normal hover:underline'
-              >
+                className='text-xs font-normal hover:underline'>
                 Blog
               </a>
               <a href='/about' className='text-xs font-normal hover:underline'>

@@ -2,6 +2,7 @@ import { Label } from '@/components/ui/label.tsx';
 import { Switch } from '@/components/ui/switch.tsx';
 import { useThemeStore } from '@/api/stores/themeStore.tsx';
 import { Moon, Sun } from 'lucide-react';
+import EasterEggsSettings from './EasterEggSettings';
 
 export default function DisplaySettings() {
   const { isDarkMode, toggleTheme } = useThemeStore();
@@ -27,6 +28,8 @@ export default function DisplaySettings() {
           Choose between light and dark mode for the site interface.
         </p>
       </div>
+
+      <EasterEggsSettings />
     </div>
   );
 }

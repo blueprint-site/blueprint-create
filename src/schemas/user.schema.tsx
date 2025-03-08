@@ -16,6 +16,18 @@ export const TargetSchema = z.object({
 });
 
 /**
+ * Schema for Easter Eggs configuration
+ */
+const EasterEggsSchema = z.object({
+  // Eggs that the user has discovered
+  discovered: z.array(z.string()).default([]),
+  // Eggs that the user has enabled (after discovering)
+  enabled: z.record(z.string(), z.boolean()).default({}),
+  // Last discovery timestamp
+  lastDiscovery: z.number().optional()
+});
+
+/**
  * Schema for UserPreferences object
  */
 export const UserPreferencesSchema = z.object({
@@ -24,7 +36,9 @@ export const UserPreferencesSchema = z.object({
   notificationsEnabled: z.boolean(),
   avatar: z.string().optional(),
   bio: z.string().optional(),
-  roles: z.array(z.string())
+  roles: z.array(z.string()),
+  // Add easter eggs configuration
+  easterEggs: EasterEggsSchema.optional()
 });
 
 /**
@@ -73,6 +87,7 @@ export const UpdateUserProfileSchema = z.object({
 export const UpdateUserPreferencesSchema = z.object({
   theme: z.enum(["light", "dark"]).optional(),
   language: z.string().optional(),
-  notificationsEnabled: z.boolean().optional()
+  notificationsEnabled: z.boolean().optional(),
+  // Add easter eggs to preference updates
+  easterEggs: EasterEggsSchema.optional()
 });
-
