@@ -1,12 +1,11 @@
+// src/components/layout/AppHeader.tsx
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 
 import NavItem from '@/components/layout/NavItem';
 import HeaderNavMenu from '@/components/layout/HeaderNavMenu';
+import { useLogo } from '@/hooks/useEasterEgg';
 
-import BlueprintLogo from '@/assets/logo.webp';
-import OldLogo from '@/assets/legacy_logo.webp';
 import Blog from '@/assets/sprite-icons/clipboard_and_quill.png';
 import AboutIcon from '@/assets/sprite-icons/crafting_blueprint.png';
 import AddonIcon from '@/assets/sprite-icons/minecart_coupling.webp';
@@ -18,8 +17,8 @@ interface AppHeaderProps {
 
 const AppHeader = ({ className }: AppHeaderProps) => {
   const { t } = useTranslation();
-  const [easterEgg] = useState(localStorage.getItem("oldLogo") === "true");
-
+  // Use non-clickable logo (default behavior)
+  const { logoSrc } = useLogo();
 
   const navigationItems = [
     {
@@ -50,8 +49,8 @@ const AppHeader = ({ className }: AppHeaderProps) => {
         <NavLink to='/' className='text-foreground flex h-8 items-center sm:h-10'>
           <img
             loading='lazy'
-            src={easterEgg ? OldLogo : BlueprintLogo}
-            alt={easterEgg ? 'Old Logo' : 'Blueprint Logo'}
+            src={logoSrc}
+            alt='Blueprint Logo'
             className='h-full object-contain'
           />
           <span className='font-minecraft ml-3 hidden text-2xl font-medium sm:block'>
@@ -73,4 +72,3 @@ const AppHeader = ({ className }: AppHeaderProps) => {
 };
 
 export default AppHeader;
-

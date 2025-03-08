@@ -1,76 +1,14 @@
-import Logo from '@/assets/logo.webp';
-import OldLogo from '@/assets/legacy_logo.webp';
+// src/components/layout/AppFooter.tsx
 import { cn } from '@/config/utils.ts';
-import { useEffect, useState } from 'react';
-import { useToast } from '@/api';
+import { useLogo } from '@/hooks/useEasterEgg';
 
 interface FooterProps {
   className?: string;
 }
 
 const Footer = ({ className }: FooterProps) => {
-  const { toast } = useToast();
-
-  let clicks = 0;
-  const [easterEgg, setEasterEgg] = useState(localStorage.getItem('oldLogo') === 'true');
-  const button = document.querySelector('#easter-egg') as HTMLButtonElement | null;
-  if (button) {
-    let rotating = false;
-    button.addEventListener('click', () => {
-      if (!rotating) {
-        rotating = true;
-        button.style.transition = 'transform 0.4s ease';
-        button.style.transform = 'rotate(360deg)';
-        setTimeout(() => {
-          button.style.transform = 'rotate(0deg)';
-          rotating = false;
-        }, 450);
-      }
-    });
-  }
-
-  function toggleEasterEgg() {
-    clicks += 1;
-    if (clicks === 5) {
-      const isEnabled = localStorage.getItem('oldLogo') === 'true';
-  
-      if (isEnabled) {
-        localStorage.setItem('oldLogo', 'false');
-        setEasterEgg(false);
-        toast({
-          title: 'Disabled the easter egg!',
-          description: 'All logos are set to the new logo! (refresh to see)',
-        });
-      } else {
-        localStorage.setItem('oldLogo', 'true');
-        setEasterEgg(true);
-        toast({
-          title: 'Enabled the easter egg!',
-          description: 'All logos are set to the old logo! (refresh to see)',
-        });
-  
-        // Store expiration timestamp
-        const expirationTime = Date.now() + 300000; // 5 minutes from now
-        localStorage.setItem('easterEggExpiration', expirationTime.toString());
-      }
-      
-      clicks = 0;
-      setTimeout(() => {
-        clicks = 0;
-      }, 6000);
-    }
-  }
-  
-  // Check expiration on page load
-  useEffect(() => {
-    const expiration = localStorage.getItem('easterEggExpiration');
-    if (expiration && Date.now() > Number(expiration)) {
-      localStorage.setItem('oldLogo', 'false');
-      setEasterEgg(false);
-      localStorage.removeItem('easterEggExpiration'); // Clean up storage
-    }
-  }, []);
-  
+  // Use non-clickable logo (default behavior)
+  const { logoSrc } = useLogo();
 
   return (
     <footer className={cn('bg-surface-1 dark:bg-container-dark w-full pb-4 md:pt-16', className)}>
@@ -79,9 +17,12 @@ const Footer = ({ className }: FooterProps) => {
           {/* Logo and Title Row */}
           <div className='flex flex-col gap-2'>
             <div className='flex items-center gap-2'>
-              <button onClick={toggleEasterEgg} id='easter-egg'>
-                <img src={easterEgg ? OldLogo : Logo} alt='Blueprint Site Logo' className='w-8' />
-              </button>
+              {/* Easter egg logo (now non-clickable) */}
+              <img
+                src={logoSrc}
+                alt='Blueprint Site Logo'
+                className='w-8'
+              />
               <h4 className='text-lg font-bold'>Blueprint</h4>
             </div>
 
@@ -136,4 +77,3 @@ const Footer = ({ className }: FooterProps) => {
 };
 
 export default Footer;
-
