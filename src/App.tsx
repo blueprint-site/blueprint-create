@@ -1,4 +1,4 @@
-// src/App.tsx
+// Keep your current App.tsx as is
 import '@/config/i18n';
 import { BrowserRouter, useRoutes } from 'react-router-dom';
 import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
@@ -9,9 +9,7 @@ import { Suspense, useEffect, useState } from 'react';
 import 'minecraft-textures-library/src/templates/create-textures.css';
 import CookieDialog from './components/utility/CookieDialog.tsx';
 
-// Separate the routes component to avoid hook rules violation
 const AppRoutes = () => {
-  // Now useRoutes is at the top level of this component
   return useRoutes(routes);
 };
 
@@ -31,7 +29,7 @@ const App = () => {
   useEffect(() => {
     const loadEnv = () => {
       const script = document.createElement('script');
-      script.src = `/env.js?version=${new Date().getTime()}`; // Adds a timestamp to each request
+      script.src = `/env.js?version=${new Date().getTime()}`;
       script.onload = () => {
         console.log('env.js loaded');
         setEnvLoaded(true);
@@ -54,7 +52,6 @@ const App = () => {
       <Suspense fallback={<LoadingOverlay />}>
         <>
           <AppRoutes />
-          {/* Cookie dialog displays one time on any page load */}
           <CookieDialog variant='default' />
         </>
         <Toaster />
