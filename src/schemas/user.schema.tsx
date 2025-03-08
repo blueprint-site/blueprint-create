@@ -19,24 +19,9 @@ export const TargetSchema = z.object({
  * Schema for Easter Eggs configuration
  */
 const EasterEggsSchema = z.object({
-  // Eggs that the user has discovered
   discovered: z.array(z.string()).default([]),
-  // Eggs that the user has enabled (after discovering)
   enabled: z.record(z.string(), z.boolean()).default({}),
-  // Last discovery timestamp
   lastDiscovery: z.number().optional(),
-});
-
-/**
- * Schema for Easter Eggs configuration
- */
-const EasterEggsSchema = z.object({
-  // Eggs that the user has discovered
-  discovered: z.array(z.string()).default([]),
-  // Eggs that the user has enabled (after discovering)
-  enabled: z.record(z.string(), z.boolean()).default({}),
-  // Last discovery timestamp
-  lastDiscovery: z.number().optional()
 });
 
 /**
