@@ -1,10 +1,16 @@
+// src/components/features/home/WhatIsBlueprint.tsx
 import { useTranslation } from 'react-i18next';
 import { Equal, Plus } from 'lucide-react';
-import BlueprintLogo from '@/assets/logo.webp';
+import React from 'react';
+import { useEasterEgg } from '@/hooks/useEasterEgg';
+
+// Import logos
+import Logo from '@/assets/logo.webp';
 import OldLogo from '@/assets/legacy_logo.webp';
+
+// Import icons
 import AddonIcon from '@/assets/sprite-icons/minecart_coupling.webp';
 import SchematicIcon from '@/assets/sprite-icons/schematic.webp';
-import React, { useState } from 'react';
 
 interface FeatureIconProps {
   src: string;
@@ -36,11 +42,15 @@ const Separator = ({ type }: { type: 'plus' | 'equal' }) => {
 
 const WhatIsBlueprint = () => {
   const { t } = useTranslation();
-  const [easterEgg] = useState(localStorage.getItem('oldLogo') === 'true');
+  const { isEggEnabled } = useEasterEgg();
+
+  // Use the legacy logo if the easter egg is enabled
+  const logoSrc = isEggEnabled('legacyLogo') ? OldLogo : Logo;
+
   const features = [
     { src: AddonIcon, alt: 'Addon Icon', label: 'Addons', url: '/addons' },
     { src: SchematicIcon, alt: 'Schematic Icon', label: 'Schematics', url: '/schematics' },
-    { src: easterEgg ? OldLogo : BlueprintLogo, alt: 'Blueprint Logo', label: 'Blueprint', url: '/' },
+    { src: logoSrc, alt: 'Blueprint Logo', label: 'Blueprint', url: '/' },
   ];
 
   return (
