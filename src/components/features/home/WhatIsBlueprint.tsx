@@ -56,35 +56,35 @@ const WhatIsBlueprint = () => {
   const logoRef = React.useRef<HTMLImageElement>(null);
   const isAnimatingRef = React.useRef(false);
 
-const [rotationDegrees, setRotationDegrees] = React.useState(0);
+  const [rotationDegrees, setRotationDegrees] = React.useState(0);
 
-// Update the handleLogoClick function
-const handleLogoClick = (e: React.MouseEvent) => {
-  // Stop event propagation to prevent the anchor tag from being triggered
-  e.preventDefault();
-  e.stopPropagation();
+  // Update the handleLogoClick function
+  const handleLogoClick = (e: React.MouseEvent) => {
+    // Stop event propagation to prevent the anchor tag from being triggered
+    e.preventDefault();
+    e.stopPropagation();
 
-  incrementLogoClickCount();
+    incrementLogoClickCount();
 
-  // Animate the logo when clicked - with continuous rotation
-  if (!logoRef.current || isAnimatingRef.current) return;
+    // Animate the logo when clicked - with continuous rotation
+    if (!logoRef.current || isAnimatingRef.current) return;
 
-  isAnimatingRef.current = true;
+    isAnimatingRef.current = true;
 
-  // Increase the total rotation by 360 degrees
-  const newRotation = rotationDegrees + 360;
-  setRotationDegrees(newRotation);
+    // Increase the total rotation by 360 degrees
+    const newRotation = rotationDegrees + 360;
+    setRotationDegrees(newRotation);
 
-  const element = logoRef.current;
-  element.style.transition = 'transform 0.4s ease';
-  element.style.transform = `rotate(${newRotation}deg)`;
+    const element = logoRef.current;
+    element.style.transition = 'transform 0.4s ease';
+    element.style.transform = `rotate(${newRotation}deg)`;
 
-  // Just set the animating flag back to false when done,
-  // but don't reset the rotation
-  setTimeout(() => {
-    isAnimatingRef.current = false;
-  }, 450);
-};
+    // Just set the animating flag back to false when done,
+    // but don't reset the rotation
+    setTimeout(() => {
+      isAnimatingRef.current = false;
+    }, 450);
+  };
   // Clean up animation styles on unmount
   React.useEffect(() => {
     const currentRef = logoRef.current;
@@ -100,7 +100,7 @@ const handleLogoClick = (e: React.MouseEvent) => {
     { src: AddonIcon, alt: 'Addon Icon', label: 'Addons', url: '/addons' },
     { src: SchematicIcon, alt: 'Schematic Icon', label: 'Schematics', url: '/schematics' },
     // Don't include the ref in the features array - we'll apply it directly in JSX
-    { src: logoSrc, alt: 'Blueprint Logo', label: 'Blueprint', url: '/' }
+    { src: logoSrc, alt: 'Blueprint Logo', label: 'Blueprint', url: '/' },
   ];
 
   return (
@@ -121,7 +121,7 @@ const handleLogoClick = (e: React.MouseEvent) => {
                   loading='lazy'
                   src={feature.src}
                   alt={feature.alt}
-                  className='w-8 object-contain sm:w-10 md:w-14 lg:w-20 cursor-pointer'
+                  className='w-8 cursor-pointer object-contain sm:w-10 md:w-14 lg:w-20'
                   onClick={handleLogoClick}
                 />
                 <div className='mt-2 text-base md:text-lg'>{feature.label}</div>

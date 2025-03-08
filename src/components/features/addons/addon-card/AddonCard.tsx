@@ -1,5 +1,5 @@
 import { Star, StarOff } from 'lucide-react';
-import { memo, useEffect, useState} from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useCollectionStore } from '@/api/stores/collectionStore.ts';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';

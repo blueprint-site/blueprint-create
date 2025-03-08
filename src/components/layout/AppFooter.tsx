@@ -18,11 +18,7 @@ const Footer = ({ className }: FooterProps) => {
           <div className='flex flex-1 flex-col gap-2'>
             <div className='flex items-center gap-2'>
               {/* Easter egg logo (now non-clickable) */}
-              <img
-                src={logoSrc}
-                alt='Blueprint Site Logo'
-                className='w-8'
-              />
+              <img src={logoSrc} alt='Blueprint Site Logo' className='w-8' />
               <h4 className='text-lg font-bold'>Blueprint</h4>
             </div>
 
@@ -30,7 +26,8 @@ const Footer = ({ className }: FooterProps) => {
               Found a bug? Report it to{' '}
               <a
                 href='https://github.com/blueprint-site/blueprint-site.github.io'
-                className='hover:underline'>
+                className='hover:underline'
+              >
                 GitHub issues
               </a>
               .
@@ -47,7 +44,8 @@ const Footer = ({ className }: FooterProps) => {
               </a>
               <a
                 href='https://blueprint-site.github.io/blueprint-blog/'
-                className='text-xs font-normal hover:underline'>
+                className='text-xs font-normal hover:underline'
+              >
                 Blog
               </a>
               <a href='/about' className='text-xs font-normal hover:underline'>

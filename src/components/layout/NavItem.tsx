@@ -17,7 +17,8 @@ const NavItem = ({ href, icon, label }: NavItemProps) => {
           'hover:bg-foreground/10 hover:text-foreground hover:shadow-md',
           isActive ? 'bg-primary/10 text-foreground font-bold' : 'text-foreground-muted'
         )
-      }>
+      }
+    >
       <img
         src={icon}
         alt=''

@@ -32,15 +32,15 @@ function SchematicsUpload() {
 
   // Handle field changes
   const handleFieldChange = (field: keyof SchematicFormValues, value: any): void => {
-    setFormValues(prev => ({
+    setFormValues((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
   // Handle image preview
   const handleImagePreview = (files: File[]): void => {
-    const urls = files.map(file => URL.createObjectURL(file));
+    const urls = files.map((file) => URL.createObjectURL(file));
     setImagePreviewUrls(urls);
   };
 

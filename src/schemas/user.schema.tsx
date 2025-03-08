@@ -24,7 +24,7 @@ const EasterEggsSchema = z.object({
   // Eggs that the user has enabled (after discovering)
   enabled: z.record(z.string(), z.boolean()).default({}),
   // Last discovery timestamp
-  lastDiscovery: z.number().optional()
+  lastDiscovery: z.number().optional(),
 });
 
 /**
@@ -37,7 +37,7 @@ export const UserPreferencesSchema = z.object({
   avatar: z.string().optional(),
   bio: z.string().optional(),
   roles: z.array(z.string()),
-  easterEggs: EasterEggsSchema.optional()
+  easterEggs: EasterEggsSchema.optional(),
 });
 
 /**
@@ -87,7 +87,7 @@ export const UpdateUserPreferencesSchema = z.object({
   theme: z.enum(['light', 'dark']).optional(),
   language: z.string().optional(),
   notificationsEnabled: z.boolean().optional(),
-  easterEggs: EasterEggsSchema.optional()
+  easterEggs: EasterEggsSchema.optional(),
 });
 
 // Easter Egg types
@@ -96,7 +96,7 @@ export interface EasterEggDefinition {
   name: string;
   description: string;
   discoveryHint: string;
-  component?: React.ComponentType<{enabled: boolean}>;
+  component?: React.ComponentType<{ enabled: boolean }>;
 }
 
 // Export types based on the schemas
