@@ -1,3 +1,4 @@
+'use no memo';
 import { useState } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
@@ -9,7 +10,7 @@ import { toast } from '@/api';
 import { Addon } from '@/types';
 import { Switch } from '@/components/ui/switch';
 
-const AdminAddonsTable = () => {
+export const AddonsTable = () => {
   const [page, setPage] = useState(1);
   const { data, isLoading, isError, error, refetch } = useFetchAddons(page);
   const { mutateAsync: saveAddon } = useSaveAddon();
@@ -114,4 +115,4 @@ const AdminAddonsTable = () => {
   );
 };
 
-export default AdminAddonsTable;
+export default AddonsTable;

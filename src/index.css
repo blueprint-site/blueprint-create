@@ -316,10 +316,6 @@ body::-webkit-scrollbar {
   image-rendering: pixelated;
 }
 
-/*
-  ---break---
-*/
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -328,6 +324,7 @@ body::-webkit-scrollbar {
     @apply bg-background text-foreground;
   }
 }
+
 .customMarkdown {
   p,
   li {

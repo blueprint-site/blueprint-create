@@ -14,7 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx'
 import { useDeleteBlog, useFetchBlogs, useSaveBlog } from '@/api';
 import { Blog } from '@/types';
 
-const AdminBlogList = () => {
+export const BlogList = () => {
   const { data: blogs, isLoading, error } = useFetchBlogs();
 
   const { mutateAsync: deleteBlog } = useDeleteBlog();
@@ -154,5 +154,3 @@ const AdminBlogList = () => {
 
   return <AdminBlogTable columns={columns} data={blogs?.data || []} />;
 };
-
-export default AdminBlogList;

@@ -11,7 +11,7 @@ import TagSelector from '@/components/utility/blog/TagSelector.tsx';
 import { useToast } from '@/api';
 import { useFetchBlog, useSaveBlog } from '@/api';
 
-const AdminBlogEditor = () => {
+export const BlogEditor = () => {
   const { id } = useParams<{ id: string }>();
   const isNew = id === 'new';
   const { toast } = useToast();
@@ -144,5 +144,3 @@ const AdminBlogEditor = () => {
     </Card>
   );
 };
-
-export default AdminBlogEditor;
