@@ -49,14 +49,6 @@ export const routes: RouteObject[] = [
         ),
       },
       {
-        path: 'about',
-        element: (
-          <Suspense fallback={<LoadingOverlay />}>
-            <About />
-          </Suspense>
-        ),
-      },
-      {
         path: 'design',
         element: (
           <Suspense fallback={<LoadingOverlay />}>
@@ -110,6 +102,14 @@ export const routes: RouteObject[] = [
         ),
       },
     ],
+  },
+  {
+    path: 'about',
+    element: (
+      <Suspense fallback={<LoadingOverlay />}>
+        <About />
+      </Suspense>
+    ),
   },
   {
     path: 'addons',
