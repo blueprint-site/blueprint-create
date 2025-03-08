@@ -1,9 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import { Equal, Plus } from 'lucide-react';
 import BlueprintLogo from '@/assets/logo.webp';
+import OldLogo from '@/assets/legacy_logo.webp';
 import AddonIcon from '@/assets/sprite-icons/minecart_coupling.webp';
 import SchematicIcon from '@/assets/sprite-icons/schematic.webp';
-import React from 'react';
+import React, { useState } from 'react';
 
 interface FeatureIconProps {
   src: string;
@@ -36,11 +37,11 @@ const Separator = ({ type }: { type: 'plus' | 'equal' }) => {
 
 const WhatIsBlueprint = () => {
   const { t } = useTranslation();
-
+  const [easterEgg] = useState(localStorage.getItem('oldLogo') === 'true');
   const features = [
     { src: AddonIcon, alt: 'Addon Icon', label: 'Addons', url: '/addons' },
     { src: SchematicIcon, alt: 'Schematic Icon', label: 'Schematics', url: '/schematics' },
-    { src: BlueprintLogo, alt: 'Blueprint Logo', label: 'Blueprint', url: '/' },
+    { src: easterEgg ? OldLogo : BlueprintLogo, alt: 'Blueprint Logo', label: 'Blueprint', url: '/' },
   ];
 
   return (
