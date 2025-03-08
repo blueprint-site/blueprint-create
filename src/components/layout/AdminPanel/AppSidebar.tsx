@@ -10,18 +10,19 @@ import {
   SidebarHeader,
   SidebarRail,
 } from '@/components/ui/sidebar.tsx';
-import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
+import { useUserStore } from '@/api/stores/userStore.ts';
 import logo from '@/assets/logo.webp';
 import { useLocation } from 'react-router-dom';
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const location = useLocation();
   const pathSegments = location.pathname.split('/').filter((segment) => segment !== '');
   console.log(pathSegments[1]);
-  const { user, preferences } = useLoggedUser(); // Déplacer ici l'appel du hook
-  // Données de navigation et utilisateur
+  const user = useUserStore((state) => state.user);
+  const preferences = useUserStore((state) => state.preferences);
+
   const data = {
     user: {
-      name: user?.name || 'Guest', // Ajout de fallback au cas où LoggedUser est undefined
+      name: user?.name || 'Guest',
       email: user?.email || 'Guest',
       avatar: preferences?.avatar || 'Guest',
     },

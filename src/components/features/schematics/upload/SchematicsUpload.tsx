@@ -1,51 +1,52 @@
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Form } from '@/components/ui/form';
-import { FileUploadField } from './form/FileUploadField';
-import { FormMarkdownEditor } from './form/FormMarkdownEditor';
-import { MultiSelectCheckboxGroup } from './form/MultiSelectCheckboxGroup';
-import { FormInput } from './form/FormInput';
-import { CategorySelectors } from './form/CategorySelectors';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { storage } from '@/config/appwrite';
+import { useUserStore } from '@/api/stores/userStore';
+import SchematicUploadLoadingOverlay from '@/components/loading-overlays/SchematicUploadLoadingOverlay';
+import { SchematicUploadForm } from './SchematicUploadForm';
+import { SchematicPreview } from './SchematicUploadPreview';
+import { generateSlug } from '../utils/generateSlug';
+import { useSaveSchematics } from '@/api/endpoints/useSchematics';
+import { createVersion, minecraftVersion } from '@/config/minecraft.ts';
 import { SchematicFormValues } from '@/types';
-import { schematicFormSchema } from '@/schemas/schematic.schema.tsx';
-import { MODLOADER_OPTIONS, CREATE_VERSIONS, MINECRAFT_VERSIONS } from '@/data';
 
-interface SchematicUploadFormProps {
-  onSubmit: (data: SchematicFormValues) => Promise<void>;
-  onValueChange?: (field: keyof SchematicFormValues, value: unknown) => void;
-  onImageChange?: (files: File[]) => void;
-}
-
-export function SchematicUploadForm({
-  onSubmit,
-  onValueChange,
-  onImageChange,
-}: SchematicUploadFormProps) {
-  const [schematicFilePreview, setSchematicFilePreview] = useState<File | null>(null);
-  const [imageFilePreviews, setImageFilePreviews] = useState<File[]>([]);
-  const minecraftVersions = MINECRAFT_VERSIONS;
-  const createVersions = CREATE_VERSIONS;
-  const modloaders = MODLOADER_OPTIONS;
-
-  const form = useForm<SchematicFormValues>({
-    resolver: zodResolver(schematicFormSchema),
-    defaultValues: {
-      title: '',
-      description: '',
-      gameVersions: [],
-      createVersions: [],
-      modloaders: [],
-      schematicFile: undefined,
-      imageFiles: [],
-      // Updated to use arrays instead of single strings
-      categories: [''],
-      subCategories: [''],
-    },
-    mode: 'onChange',
+function SchematicsUpload() {
+  const navigate = useNavigate();
+  const user = useUserStore((state) => state.user);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
+  const [formValues, setFormValues] = useState<Partial<SchematicFormValues>>({
+    title: '',
+    description: '',
+    gameVersions: [],
+    createVersions: [],
+    modloaders: [],
   });
+  const allCompatibilities = Array.from(
+    new Set(minecraftVersion.flatMap((item) => item.compatibility))
+  );
+  const versions = Array.from(new Set(minecraftVersion.flatMap((item) => item.version)));
+  // Define available options
+  const options = {
+    minecraftVersions: versions || [],
+    createVersionOptions: createVersion || [],
+    modloaderOptions: allCompatibilities || [],
+  };
+
+  // Use the mutation hook
+  const { mutateAsync: saveSchematic } = useSaveSchematics();
+
+  // Form submission
+  const onSubmit = async (data: SchematicFormValues) => {
+    if (!user) {
+      alert('You must be logged in to upload schematics');
+      return;
+    }
+
+    if (!data.schematicFile) {
+      alert('Please upload schematic file');
+      return;
+    }
 
   React.useEffect(() => {
     const subscription = form.watch((value) => {
@@ -61,103 +62,88 @@ export function SchematicUploadForm({
   const handleFormSubmit = form.handleSubmit(async (data) => {
     console.log('Submitting form:', data);
     try {
-      await onSubmit(data);
+      // Upload schematic file
+      const uploadedSchematic = await storage.createFile(
+        '67b2241e0032c25c8216',
+        'unique()',
+        data.schematicFile
+      );
+
+      // Upload multiple image files
+      const uploadedImages = await Promise.all(
+        data.imageFiles.map(async (file) => {
+          const uploadedFile = await storage.createFile('67b22481001e99d90888', 'unique()', file);
+          return uploadedFile.$id;
+        })
+      );
+
+      // Get file URLs
+      const schematicUrl = storage
+        .getFileDownload('67b2241e0032c25c8216', uploadedSchematic.$id)
+        .toString();
+      const imageUrls = uploadedImages.map((id) =>
+        storage.getFilePreview('67b22481001e99d90888', id).toString()
+      );
+
+      const slug = generateSlug(data.title);
+
+      // Use the mutation to save to database
+      const document = await saveSchematic({
+        title: data.title,
+        description: data.description,
+        schematic_url: schematicUrl,
+        image_urls: imageUrls,
+        user_id: user.$id,
+        authors: [user.name], // Ensure authors is an array
+        game_versions: data.gameVersions, // Ensure game_versions is an array
+        create_versions: data.createVersions, // Ensure create_versions is an array
+        modloaders: data.modloaders, // Ensure modloaders is an array
+        categories: data.categories, // Ensure categories is an array
+        sub_categories: data.subCategories ? data.subCategories : [],
+        slug,
+        status: 'published', // Default to published state
+        downloads: 0,
+        likes: 0,
+      });
+
+      navigate(`/schematics/${document.$id}/${slug}`);
     } catch (error) {
       console.error('Error submitting form:', error);
     }
   });
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Schematic Information</CardTitle>
-        <CardDescription>
-          Fill out the details about your schematic to share with the community
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={handleFormSubmit} className='space-y-6'>
-            <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-              <FileUploadField
-                name='schematicFile'
-                control={form.control}
-                label='Schematic File (.nbt)'
-                accept={{ 'application/octet-stream': ['.nbt'] }}
-                maxFiles={1}
-                value={schematicFilePreview ? [schematicFilePreview] : []}
-                onValueChange={(files) => {
-                  const file = files?.[0] ?? null;
-                  setSchematicFilePreview(file);
-                  form.setValue('schematicFile', file as File);
-                }}
-              />
+    <div className='container mx-auto px-4 py-8'>
+      <h1 className='mb-8 text-center text-3xl font-bold'>Upload a Schematic</h1>
 
-              <FileUploadField
-                name='imageFiles'
-                control={form.control}
-                label='Preview Images'
-                accept={{ 'image/*': ['.png', '.jpg', '.jpeg', '.webp'] }}
-                maxFiles={5}
-                value={imageFilePreviews}
-                onValueChange={(files) => {
-                  const validFiles = files ?? [];
-                  setImageFilePreviews(validFiles);
-                  form.setValue('imageFiles', validFiles);
-                  onImageChange?.(validFiles);
-                }}
-              />
-            </div>
+      <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
+        {/* Form Section */}
+        <div>
+          <SchematicUploadForm
+            onSubmit={onSubmit}
+            options={options}
+            onValueChange={handleFieldChange}
+            onImageChange={handleImagePreview}
+          />
+        </div>
 
-            <FormInput
-              name='title'
-              control={form.control}
-              label='Title'
-              placeholder='Super Cool Contraption'
-            />
-
-            <FormMarkdownEditor
-              name='description'
-              control={form.control}
-              label='Description'
-              description='Describe how your contraption works and what it does'
-              onValueChange={(value) => onValueChange?.('description', value)}
-            />
-
-            <CategorySelectors control={form.control} form={form} />
-
-            <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
-              <MultiSelectCheckboxGroup
-                name='gameVersions'
-                control={form.control}
-                label='Minecraft Versions'
-                description='Select compatible Minecraft versions'
-                options={minecraftVersions}
-              />
-
-              <MultiSelectCheckboxGroup
-                name='createVersions'
-                control={form.control}
-                label='Create Mod Versions'
-                description='Select compatible Create versions'
-                options={createVersions}
-              />
-
-              <MultiSelectCheckboxGroup
-                name='modloaders'
-                control={form.control}
-                label='Modloaders'
-                description='Select compatible modloaders'
-                options={modloaders}
-              />
-            </div>
-
-            <Button type='submit' className='w-full'>
-              Upload Schematic
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+        {/* Preview Section */}
+        <div>
+          <SchematicPreview
+            title={formValues.title || ''}
+            description={formValues.description || ''}
+            imagePreviewUrls={imagePreviewUrls}
+            gameVersions={formValues.gameVersions || []}
+            createVersions={formValues.createVersions || []}
+            modloaders={formValues.modloaders || []}
+            user={user}
+            categories={formValues.categories || []}
+            subCategories={formValues.subCategories || []}
+          />
+        </div>
+      </div>
+    </div>
   );
 }
+
+export default SchematicsUpload;
