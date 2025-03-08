@@ -31,7 +31,7 @@ function SchematicsUpload() {
   }
 
   // Handle field changes
-  const handleFieldChange = (field: keyof SchematicFormValues, value: any): void => {
+  const handleFieldChange = (field: keyof SchematicFormValues, value: unknown): void => {
     setFormValues((prev) => ({
       ...prev,
       [field]: value,
