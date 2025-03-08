@@ -3,7 +3,7 @@ import '@/config/i18n';
 import { BrowserRouter, useRoutes } from 'react-router-dom';
 import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
 import { Toaster } from '@/components/ui/toaster.tsx';
-import { LoggedUserProvider } from './api/context/loggedUser/loggedUserContext.tsx';
+import { useUserStore } from '@/api/stores/userStore';
 import { routes } from './routes';
 import { Suspense, useEffect, useState } from 'react';
 import 'minecraft-textures-library/src/templates/create-textures.css';
@@ -16,7 +16,17 @@ const AppRoutes = () => {
 };
 
 const App = () => {
+  const fetchUser = useUserStore((state) => state.fetchUser);
   const [envLoaded, setEnvLoaded] = useState(false);
+
+  // Fetch user data after component mounts
+  useEffect(() => {
+    if (envLoaded) {
+      fetchUser().catch((error) => {
+        console.error('Failed to fetch user data:', error);
+      });
+    }
+  }, [fetchUser, envLoaded]);
 
   useEffect(() => {
     const loadEnv = () => {
@@ -42,11 +52,11 @@ const App = () => {
   return (
     <BrowserRouter>
       <Suspense fallback={<LoadingOverlay />}>
-          <LoggedUserProvider>
-            <AppRoutes />
-            {/* Cookie dialog displays one time on any page load */}
-            <CookieDialog variant='default'/>
-          </LoggedUserProvider>
+        <>
+          <AppRoutes />
+          {/* Cookie dialog displays one time on any page load */}
+          <CookieDialog variant='default' />
+        </>
         <Toaster />
       </Suspense>
     </BrowserRouter>

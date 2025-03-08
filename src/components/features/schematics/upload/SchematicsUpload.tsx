@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { storage } from '@/config/appwrite';
-import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext';
+import { useUserStore } from '@/api/stores/userStore';
 import SchematicUploadLoadingOverlay from '@/components/loading-overlays/SchematicUploadLoadingOverlay';
 import { SchematicUploadForm } from './SchematicUploadForm';
 import { SchematicPreview } from './SchematicUploadPreview';
 import { generateSlug } from '../utils/generateSlug';
 import { useSaveSchematics } from '@/api/endpoints/useSchematics';
-import {createVersion, minecraftVersion} from "@/config/minecraft.ts";
-import {SchematicFormValues} from "@/types";
+import { createVersion, minecraftVersion } from '@/config/minecraft.ts';
+import { SchematicFormValues } from '@/types';
 
 function SchematicsUpload() {
   const navigate = useNavigate();
-  const loggedUser = useLoggedUser();
+  const user = useUserStore((state) => state.user);
   const [loading, setLoading] = useState<boolean>(false);
   const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
   const [formValues, setFormValues] = useState<Partial<SchematicFormValues>>({
@@ -22,8 +22,10 @@ function SchematicsUpload() {
     createVersions: [],
     modloaders: [],
   });
-  const allCompatibilities = Array.from(new Set(minecraftVersion.flatMap(item => item.compatibility)));
-  const versions = Array.from(new Set(minecraftVersion.flatMap(item => item.version)))
+  const allCompatibilities = Array.from(
+    new Set(minecraftVersion.flatMap((item) => item.compatibility))
+  );
+  const versions = Array.from(new Set(minecraftVersion.flatMap((item) => item.version)));
   // Define available options
   const options = {
     minecraftVersions: versions || [],
@@ -36,7 +38,7 @@ function SchematicsUpload() {
 
   // Form submission
   const onSubmit = async (data: SchematicFormValues) => {
-    if (!loggedUser.user) {
+    if (!user) {
       alert('You must be logged in to upload schematics');
       return;
     }
@@ -70,7 +72,9 @@ function SchematicsUpload() {
       );
 
       // Get file URLs
-      const schematicUrl = storage.getFileDownload('67b2241e0032c25c8216', uploadedSchematic.$id).toString();
+      const schematicUrl = storage
+        .getFileDownload('67b2241e0032c25c8216', uploadedSchematic.$id)
+        .toString();
       const imageUrls = uploadedImages.map((id) =>
         storage.getFilePreview('67b22481001e99d90888', id).toString()
       );
@@ -83,8 +87,8 @@ function SchematicsUpload() {
         description: data.description,
         schematic_url: schematicUrl,
         image_urls: imageUrls,
-        user_id: loggedUser.user.$id,
-        authors: [loggedUser.user.name], // Ensure authors is an array
+        user_id: user.$id,
+        authors: [user.name], // Ensure authors is an array
         game_versions: data.gameVersions, // Ensure game_versions is an array
         create_versions: data.createVersions, // Ensure create_versions is an array
         modloaders: data.modloaders, // Ensure modloaders is an array
@@ -165,7 +169,7 @@ function SchematicsUpload() {
             gameVersions={formValues.gameVersions || []}
             createVersions={formValues.createVersions || []}
             modloaders={formValues.modloaders || []}
-            user={loggedUser.user}
+            user={user}
             categories={formValues.categories || []}
             subCategories={formValues.subCategories || []}
           />

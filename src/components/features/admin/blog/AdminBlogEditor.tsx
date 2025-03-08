@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Card, CardContent } from '@/components/ui/card.tsx';
 import { Blog, Tag } from '@/types';
-import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
+import { useUserStore } from '@/api/stores/userStore';
 import ImageUploader from '@/components/utility/ImageUploader.tsx';
 import MarkdownEditor from '@/components/utility/MarkdownEditor.tsx';
 import TagSelector from '@/components/utility/blog/TagSelector.tsx';
@@ -15,13 +15,13 @@ export const BlogEditor = () => {
   const { id } = useParams<{ id: string }>();
   const isNew = id === 'new';
   const { toast } = useToast();
-  const LoggedUser = useLoggedUser();
+  const user = useUserStore((state) => state.user);
   const { data: blog, isLoading } = useFetchBlog(id);
   const saveBlogMutation = useSaveBlog();
   const [blogState, setBlogState] = useState<Partial<Blog> | null>(null);
 
   useEffect(() => {
-    if (!LoggedUser) return;
+    if (!user) return;
 
     if (id && !isNew && blog) {
       console.log(blog);
@@ -35,11 +35,11 @@ export const BlogEditor = () => {
         status: 'draft',
         tags: [],
         likes: 0,
-        authors_uuid: [LoggedUser.user?.$id || ''],
-        authors: [LoggedUser.user?.name || ''],
+        authors_uuid: [user?.$id || ''],
+        authors: [user?.name || ''],
       });
     }
-  }, [id, blog, isNew, LoggedUser]);
+  }, [id, blog, isNew, user]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
