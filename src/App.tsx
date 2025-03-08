@@ -1,6 +1,6 @@
 // Keep your current App.tsx as is
 import '@/config/i18n';
-import { BrowserRouter, useRoutes } from 'react-router-dom';
+import { BrowserRouter, useRoutes } from 'react-router';
 import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
 import { Toaster } from '@/components/ui/toaster.tsx';
 import { useUserStore } from '@/api/stores/userStore';

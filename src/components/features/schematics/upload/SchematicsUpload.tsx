@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { storage } from '@/config/appwrite';
 import { useUserStore } from '@/api/stores/userStore';
 import { SchematicUploadForm } from './SchematicUploadForm';
