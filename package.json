@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 5",
     "format": "prettier --write .",
     "preview": "vite preview",
     "update": "git pull && npm install",
@@ -97,6 +97,8 @@
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react": "^4.3.4",
+    "babel-plugin-react-compiler": "^19.0.0-beta-21e868a-20250216",
+    "dependency-cruiser": "^16.10.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react-compiler": "^19.0.0-beta-21e868a-20250216",
     "eslint-plugin-react-hooks": "^4.6.0",

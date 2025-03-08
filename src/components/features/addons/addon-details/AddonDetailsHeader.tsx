@@ -37,7 +37,8 @@ export const AddonDetailsHeader = ({
               variant='outline'
               size='icon'
               className='h-8 w-8 rounded-full'
-              onClick={handleCollectionAction}>
+              onClick={handleCollectionAction}
+            >
               {isInCollection ? <Star /> : <StarOff />}
             </Button>
           </div>

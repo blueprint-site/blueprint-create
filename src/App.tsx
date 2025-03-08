@@ -1,4 +1,4 @@
-// src/App.tsx
+// Keep your current App.tsx as is
 import '@/config/i18n';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';

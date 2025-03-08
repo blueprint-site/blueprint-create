@@ -2,5 +2,5 @@
 export * from './minecraftVersions';
 export * from './modloaders';
 export * from './minecraftIcons';
-export * from './schematicCategories';
+export * from './schematicsCategories';
 export * from './createVersions';

@@ -13,20 +13,20 @@ import { HexColorPicker } from 'react-colorful';
 import { Tag } from '@/types';
 import { databases, ID } from '@/config/appwrite.ts';
 import { Models, Query } from 'appwrite';
-import {PlusIcon} from "lucide-react";
+import { PlusIcon } from 'lucide-react';
 
 const DATABASE_ID = '67b1dc430020b4fb23e3';
-const BLOG_COLLECTION_ID= '67b2326100053d0e304f';
-const SCHEMATICS_COLLECTION_ID= '67bf59d30021b5c117f5';
+const BLOG_COLLECTION_ID = '67b2326100053d0e304f';
+const SCHEMATICS_COLLECTION_ID = '67bf59d30021b5c117f5';
 let COLLECTION_ID = '67b2326100053d0e304f';
 
 interface TagSelectorProps {
   value?: Tag[];
-  db: 'blog' | 'schematics'
+  db: 'blog' | 'schematics';
   onChange?: (selectedTags: Tag[]) => void;
 }
 
-export default function TagSelector({ value,db, onChange }: TagSelectorProps) {
+export default function TagSelector({ value, db, onChange }: TagSelectorProps) {
   const [tags, setTags] = useState<Tag[]>([]);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [newTag, setNewTag] = useState('');
@@ -36,12 +36,12 @@ export default function TagSelector({ value,db, onChange }: TagSelectorProps) {
     if (value) {
       setSelectedTags(value);
     }
-    if(db){
-      if(db === 'blog'){
-        COLLECTION_ID = BLOG_COLLECTION_ID
+    if (db) {
+      if (db === 'blog') {
+        COLLECTION_ID = BLOG_COLLECTION_ID;
       }
-      if(db === 'schematics'){
-        COLLECTION_ID = SCHEMATICS_COLLECTION_ID
+      if (db === 'schematics') {
+        COLLECTION_ID = SCHEMATICS_COLLECTION_ID;
       }
     }
   }, [value, db]);
@@ -118,17 +118,22 @@ export default function TagSelector({ value,db, onChange }: TagSelectorProps) {
               if (tag) toggleTagSelection(tag);
             }}
           >
-            <SelectTrigger className={"cursor-pointer"}>
+            <SelectTrigger className={'cursor-pointer'}>
               <SelectValue placeholder='Select tags' />
             </SelectTrigger>
             <SelectContent className='bg-surface-1'>
               {tags.map((tag) => (
-                <SelectItem key={tag.id} value={tag.value} className={"cursor-pointer"}>
+                <SelectItem key={tag.id} value={tag.value} className={'cursor-pointer'}>
                   <span className='flex items-center justify-between'>
                     <span className='mr-2' style={{ color: tag.color }}>
                       {tag.value}
                     </span>
-                    <Button variant='ghost'  className={"absolute right-0 "} size='sm' onClick={() => deleteTag(tag.id)}>
+                    <Button
+                      variant='ghost'
+                      className={'absolute right-0'}
+                      size='sm'
+                      onClick={() => deleteTag(tag.id)}
+                    >
                       ❌
                     </Button>
                   </span>
@@ -155,7 +160,7 @@ export default function TagSelector({ value,db, onChange }: TagSelectorProps) {
         </div>
 
         <Button className='cursor-pointer' onClick={createTag}>
-          <PlusIcon/>
+          <PlusIcon />
         </Button>
       </div>
       <h3>Selected Tags :</h3>

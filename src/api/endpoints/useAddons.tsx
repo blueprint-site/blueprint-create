@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from '@/api';
-import { databases, ID } from '@/config/appwrite.ts';
+import { toast } from '@/hooks/useToast';
+import { databases, ID } from '@/config/appwrite';
 import { Query } from 'appwrite';
 import { Addon } from '@/types';
 

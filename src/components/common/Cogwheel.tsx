@@ -1,6 +1,6 @@
 import CogwheelImage from '@/assets/cogwheel.png';
 import { useEffect, useState } from 'react';
-import logMessage from "@/components/utility/logs/sendLogs.tsx";
+import logMessage from '@/components/utility/logs/sendLogs.tsx';
 
 const useWindowSize = () => {
   const [size, setSize] = useState({
@@ -42,7 +42,7 @@ const RotatingCogwheel = () => {
     setClickCount((prev) => {
       const newCount = prev + 1;
       if (newCount >= 15) {
-        logMessage(`You have clicked ${clickCount} `, 0 , 'default');
+        logMessage(`You have clicked ${clickCount} `, 0, 'default');
         window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
       }
       return newCount;
@@ -50,26 +50,26 @@ const RotatingCogwheel = () => {
   };
 
   return (
-      <div
-          className='fixed'
-          style={{
-            width: size,
-            height: size,
-            bottom: -offset,
-            right: -offset,
-          }}
-          onClick={handleClick}
-      >
-        <img
-            src={CogwheelImage}
-            alt='Rotating cogwheel'
-            className='h-full w-full'
-            style={{
-              transform: `rotate(${rotation}deg)`,
-              transformOrigin: 'center',
-            }}
-        />
-      </div>
+    <div
+      className='fixed'
+      style={{
+        width: size,
+        height: size,
+        bottom: -offset,
+        right: -offset,
+      }}
+      onClick={handleClick}
+    >
+      <img
+        src={CogwheelImage}
+        alt='Rotating cogwheel'
+        className='h-full w-full'
+        style={{
+          transform: `rotate(${rotation}deg)`,
+          transformOrigin: 'center',
+        }}
+      />
+    </div>
   );
 };
 

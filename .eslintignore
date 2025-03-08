@@ -1,0 +1,6 @@
+# Ignore shadcn/ui components
+src/components/ui/*.tsx
+
+# Other generated files
+dist/
+node_modules/

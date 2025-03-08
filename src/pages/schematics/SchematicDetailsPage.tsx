@@ -1,9 +1,7 @@
-import {SchematicsDetailsMain} from "@/components/features/schematics/schematic-details";
+import { SchematicsDetailsMain } from '@/components/features/schematics/schematic-details';
 
 const SchematicDetailsPage = () => {
-  return (
-        <SchematicsDetailsMain  />
-  );
+  return <SchematicsDetailsMain />;
 };
 
 export default SchematicDetailsPage;

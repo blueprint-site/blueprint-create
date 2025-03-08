@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
@@ -9,53 +9,26 @@ import { FormMarkdownEditor } from './form/FormMarkdownEditor';
 import { MultiSelectCheckboxGroup } from './form/MultiSelectCheckboxGroup';
 import { FormInput } from './form/FormInput';
 import { CategorySelectors } from './form/CategorySelectors';
-import { SchematicFormValues } from "@/types";
-import { schematicFormSchema } from "@/schemas/schematic.schema.tsx";
+import { SchematicFormValues } from '@/types';
+import { schematicFormSchema } from '@/schemas/schematic.schema.tsx';
+import { MODLOADER_OPTIONS, CREATE_VERSIONS, MINECRAFT_VERSIONS } from '@/data';
 
 interface SchematicUploadFormProps {
   onSubmit: (data: SchematicFormValues) => Promise<void>;
-  options: {
-    minecraftVersions: string[];
-    createVersionOptions: string[];
-    modloaderOptions: string[];
-  };
   onValueChange?: (field: keyof SchematicFormValues, value: unknown) => void;
   onImageChange?: (files: File[]) => void;
 }
 
 export function SchematicUploadForm({
   onSubmit,
-  options,
   onValueChange,
   onImageChange,
 }: SchematicUploadFormProps) {
   const [schematicFilePreview, setSchematicFilePreview] = useState<File | null>(null);
   const [imageFilePreviews, setImageFilePreviews] = useState<File[]>([]);
-
-  // Transform string arrays to SelectOption arrays
-  const minecraftVersionOptions = useMemo(() =>
-    options.minecraftVersions.map(version => ({
-      value: version,
-      label: version
-    })),
-    [options.minecraftVersions]
-  );
-
-  const createVersionOptions = useMemo(() =>
-    options.createVersionOptions.map(version => ({
-      value: version,
-      label: version
-    })),
-    [options.createVersionOptions]
-  );
-
-  const modloaderOptions = useMemo(() =>
-    options.modloaderOptions.map(loader => ({
-      value: loader,
-      label: loader
-    })),
-    [options.modloaderOptions]
-  );
+  const minecraftVersions = MINECRAFT_VERSIONS;
+  const createVersions = CREATE_VERSIONS;
+  const modloaders = MODLOADER_OPTIONS;
 
   const form = useForm<SchematicFormValues>({
     resolver: zodResolver(schematicFormSchema),
@@ -159,7 +132,7 @@ export function SchematicUploadForm({
                 control={form.control}
                 label='Minecraft Versions'
                 description='Select compatible Minecraft versions'
-                options={minecraftVersionOptions}
+                options={minecraftVersions}
               />
 
               <MultiSelectCheckboxGroup
@@ -167,7 +140,7 @@ export function SchematicUploadForm({
                 control={form.control}
                 label='Create Mod Versions'
                 description='Select compatible Create versions'
-                options={createVersionOptions}
+                options={createVersions}
               />
 
               <MultiSelectCheckboxGroup
@@ -175,7 +148,7 @@ export function SchematicUploadForm({
                 control={form.control}
                 label='Modloaders'
                 description='Select compatible modloaders'
-                options={modloaderOptions}
+                options={modloaders}
               />
             </div>
 
