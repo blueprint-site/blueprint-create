@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Download, User, Users } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useUserStore } from '@/api/stores/userStore';
 import { useState } from 'react';
 import UserSchematicList from '@/components/features/schematics/UserSchematicList.tsx';

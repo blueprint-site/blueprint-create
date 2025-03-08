@@ -1,6 +1,6 @@
 // src/components/layout/AppHeader.tsx
 import { useTranslation } from 'react-i18next';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 
 import NavItem from '@/components/layout/NavItem';
 import HeaderNavMenu from '@/components/layout/HeaderNavMenu';

@@ -1,6 +1,6 @@
 // src/pages/schematics/SchematicsList.tsx
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router';
 import SchematicCard from '@/components/features/schematics/SchematicCard';
 import { useSearchSchematics } from '@/api';
 import { buttonVariants } from '@/components/ui/button';
@@ -11,7 +11,6 @@ import { SelectFilter } from '@/components/layout/SelectFilter';
 import { FiltersContainer } from '@/components/layout/FiltersContainer';
 import { ItemGrid } from '@/components/layout/ItemGrid';
 import { useSchematicFilters } from '@/hooks/useSchematicFilters';
-import { Link } from 'react-router-dom';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import {Schematic} from "@/types";
 

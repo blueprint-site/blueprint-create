@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 
 import RotatingCogwheel from '@/components/common/Cogwheel.tsx';
 import AppFooter from '@/components/layout/AppFooter';

@@ -22,7 +22,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 interface DataWithId {
   $id: string | number;
 }

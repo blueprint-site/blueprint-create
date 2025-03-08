@@ -1,5 +1,5 @@
 // src/routes/authRoutes.tsx
-import { RouteObject } from 'react-router-dom';
+import { RouteObject } from 'react-router';
 import { lazy } from 'react';
 
 import ProtectedRoute from '@/components/utility/ProtectedRoute';

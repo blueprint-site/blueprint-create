@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { BlogDetailsMain } from "@/components/features/blog/blog-details";
 import { useFetchBlog } from "@/api";
 

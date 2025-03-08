@@ -1,5 +1,5 @@
 import { LogIn, LogOut, Menu, Settings, Shield, User } from 'lucide-react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx';
