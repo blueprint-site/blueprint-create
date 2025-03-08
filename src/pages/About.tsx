@@ -1,4 +1,3 @@
-import { Card, CardContent } from '@/components/ui/card';
 import {
   HeroSection,
   MissionSection,
@@ -20,13 +19,10 @@ export default function About() {
         </HeroSection>
       </HeroHeader>
       <HeroContent>
-        <Card className='relative overflow-hidden md:px-8'>
-          <CardContent className='p-6'>
-            <MissionSection />
-            <ContactSection />
-            <ContributorsSection contributors={contributors} isLoading={isLoading} error={error} />
-          </CardContent>
-        </Card>
+        <div className='font-minecraft my-8 text-center text-4xl font-semibold'>About Blueprint</div>
+        <MissionSection />
+        <ContactSection />
+        <ContributorsSection contributors={contributors} isLoading={isLoading} error={error} />
       </HeroContent>
     </HeroLayout>
   );
