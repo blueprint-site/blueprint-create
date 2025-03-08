@@ -88,48 +88,9 @@ function SchematicsUpload() {
 
       navigate(`/schematics/${document.$id}/${slug}`);
     } catch (error) {
-      console.error('Error uploading schematic:', error);
-      alert('Failed to upload schematic. Please try again.');
-    } finally {
-      setLoading(false);
+      console.error('Error submitting form:', error);
     }
-  };
-
-  // Update form values for preview
-  const handleFieldChange = (field: keyof SchematicFormValues, value: unknown) => {
-    // Special handling for description
-    if (field === 'description') {
-      setFormValues((prev) => ({
-        ...prev,
-        [field]: String(value), // Ensure string type
-      }));
-      return;
-    }
-    setFormValues((prev) => ({ ...prev, [field]: value }));
-  };
-
-  // Handle multiple image previews
-  const handleImagePreview = (files: File[]) => {
-    const readers = files.map((file) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      return reader;
-    });
-
-    Promise.all(
-      readers.map(
-        (reader) =>
-          new Promise<string>((resolve) => {
-            reader.onload = () => resolve(reader.result as string);
-          })
-      )
-    ).then((urls) => setImagePreviewUrls(urls));
-  };
-
-  // Show loading state
-  if (loading) {
-    return <SchematicUploadLoadingOverlay message='Uploading schematic...' />;
-  }
+  });
 
   return (
     <div className='container mx-auto px-4 py-8'>
