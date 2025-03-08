@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
@@ -47,7 +47,7 @@ export function SchematicUploadForm({
     mode: 'onChange',
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     const subscription = form.watch((value) => {
       if (onValueChange) {
         Object.entries(value).forEach(([field, val]) => {

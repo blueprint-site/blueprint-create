@@ -16,7 +16,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar.tsx';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 export function NavMain({
   items,
@@ -45,8 +45,7 @@ export function NavMain({
             key={item.title}
             asChild
             defaultOpen={item.isActive}
-            className='group/collapsible'
-          >
+            className='group/collapsible'>
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton tooltip={item.title}>
@@ -61,8 +60,7 @@ export function NavMain({
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton
                         asChild
-                        className={IsActive(subItem.url) ? 'bg-surface-1' : undefined}
-                      >
+                        className={IsActive(subItem.url) ? 'bg-surface-1' : undefined}>
                         <a href={subItem.url}>
                           <span>{subItem.title}</span>
                         </a>

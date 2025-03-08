@@ -9,7 +9,7 @@ import {
 import MarkdownDisplay from '@/components/utility/MarkdownDisplay.tsx';
 import BlogTagsDisplay from '@/components/utility/blog/BlogTagsDisplay.tsx';
 import { Blog } from '@/types';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 interface BlogCardProps {
   blog: Blog;

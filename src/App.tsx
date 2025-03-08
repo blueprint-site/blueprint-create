@@ -1,6 +1,6 @@
 // Keep your current App.tsx as is
 import '@/config/i18n';
-import { BrowserRouter, useRoutes } from 'react-router';
+import { createBrowserRouter, RouterProvider } from 'react-router';
 import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
 import { Toaster } from '@/components/ui/toaster.tsx';
 import { useUserStore } from '@/api/stores/userStore';
@@ -9,13 +9,10 @@ import { Suspense, useEffect, useState } from 'react';
 import 'minecraft-textures-library/src/templates/create-textures.css';
 import CookieDialog from './components/utility/CookieDialog.tsx';
 
-const AppRoutes = () => {
-  return useRoutes(routes);
-};
-
 const App = () => {
   const fetchUser = useUserStore((state) => state.fetchUser);
   const [envLoaded, setEnvLoaded] = useState(false);
+  const [router, setRouter] = useState<ReturnType<typeof createBrowserRouter> | null>(null);
 
   // Fetch user data after component mounts
   useEffect(() => {
@@ -43,20 +40,26 @@ const App = () => {
     loadEnv();
   }, []);
 
-  if (!envLoaded) {
+  // Create router after env is loaded
+  useEffect(() => {
+    if (envLoaded) {
+      const newRouter = createBrowserRouter(routes);
+      setRouter(newRouter);
+    }
+  }, [envLoaded]);
+
+  if (!envLoaded || !router) {
     return <LoadingOverlay />;
   }
 
   return (
-    <BrowserRouter>
-      <Suspense fallback={<LoadingOverlay />}>
-        <>
-          <AppRoutes />
-          <CookieDialog variant='default' />
-        </>
-        <Toaster />
-      </Suspense>
-    </BrowserRouter>
+    <Suspense fallback={<LoadingOverlay />}>
+      <>
+        <RouterProvider router={router} />
+        <CookieDialog variant='default' />
+      </>
+      <Toaster />
+    </Suspense>
   );
 };
 

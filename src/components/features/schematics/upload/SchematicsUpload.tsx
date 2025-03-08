@@ -15,19 +15,37 @@ function SchematicsUpload() {
   const [loading, setLoading] = useState<boolean>(false);
   const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
   const { mutateAsync: saveSchematic } = useSaveSchematics();
+
   const [formValues, setFormValues] = useState<Partial<SchematicFormValues>>({
     title: '',
     description: '',
     gameVersions: [],
     createVersions: [],
     modloaders: [],
+    categories: [],
+    subCategories: [],
   });
 
   if (loading) {
     return <SchematicUploadLoadingOverlay message='Uploading Schematic...' />;
   }
 
-  const onSubmit = async (data: SchematicFormValues) => {
+  // Handle field changes
+  const handleFieldChange = (field: keyof SchematicFormValues, value: any): void => {
+    setFormValues(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  // Handle image preview
+  const handleImagePreview = (files: File[]): void => {
+    const urls = files.map(file => URL.createObjectURL(file));
+    setImagePreviewUrls(urls);
+  };
+
+  // Form submission
+  const onSubmit = async (data: SchematicFormValues): Promise<void> => {
     if (!user) {
       alert('You must be logged in to upload schematics');
       return;
@@ -38,13 +56,7 @@ function SchematicsUpload() {
       return;
     }
 
-    if (!data.imageFiles || data.imageFiles.length === 0) {
-      alert('Please upload at least one image');
-      return;
-    }
-
     setLoading(true);
-
     try {
       // Upload schematic file
       const uploadedSchematic = await storage.createFile(
@@ -55,7 +67,7 @@ function SchematicsUpload() {
 
       // Upload multiple image files
       const uploadedImages = await Promise.all(
-        data.imageFiles.map(async (file) => {
+        data.imageFiles.map(async (file: File) => {
           const uploadedFile = await storage.createFile('67b22481001e99d90888', 'unique()', file);
           return uploadedFile.$id;
         })
@@ -98,19 +110,9 @@ function SchematicsUpload() {
     }
   };
 
-  const handleFieldChange = (field: keyof SchematicFormValues, value: unknown) => {
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      [field]: value,
-    }));
-  };
-
-  // Function to handle file preview generation
-  const handleImagePreview = (files: File[]) => {
-    // Create local URLs for image previews
-    const urls = files.map((file) => URL.createObjectURL(file));
-    setImagePreviewUrls(urls);
-  };
+  if (loading) {
+    return <SchematicUploadLoadingOverlay message='Uploading schematic...' />;
+  }
 
   return (
     <div className='container mx-auto px-4 py-8'>

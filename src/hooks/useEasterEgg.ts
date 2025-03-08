@@ -1,12 +1,12 @@
 // src/hooks/useEasterEgg.ts - Fixed version with proper trigger handling
 import { useRef, useCallback, useEffect } from 'react';
 import { useEasterEggStore } from '@/api/stores/easterEggStore';
-import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext';
-import { useToast } from '@/api/endpoints/useToast';
+import { useToast } from '@/hooks/useToast';
 import Logo from '@/assets/logo.webp';
 import LegacyLogo from '@/assets/legacy_logo.webp';
 import { getEasterEggById, DEFAULT_EASTER_EGGS } from '@/config/easterEggs';
 import { UserPreferences } from '@/schemas/user.schema';
+import { useUserStore } from '@/api/stores/userStore';
 
 // Rest of the imports and interfaces remain the same
 
@@ -18,7 +18,8 @@ export const useEasterEgg = () => {
     resetEggTriggered
   } = useEasterEggStore();
 
-  const { preferences, updatePreferences } = useLoggedUser();
+  const preferences = useUserStore((state) => state.preferences);
+  const updatePreferences = useUserStore((state) => state.updatePreferences);
   const { toast } = useToast();
 
   // Used to prevent multiple discovery attempts

@@ -1,5 +1,5 @@
 // src/routes/authRoutes.tsx
-import { RouteObject } from 'react-router-dom';
+import { RouteObject } from 'react-router';
 
 import Profile from '@/pages/Profile';
 

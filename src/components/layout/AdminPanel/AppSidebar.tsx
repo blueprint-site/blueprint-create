@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/sidebar.tsx';
 import { useUserStore } from '@/api/stores/userStore.ts';
 import logo from '@/assets/logo.webp';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const location = useLocation();
   const pathSegments = location.pathname.split('/').filter((segment) => segment !== '');

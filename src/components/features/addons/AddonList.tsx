@@ -25,7 +25,6 @@ const AddonsList = () => {
     isLoading,
     isFetching,
     hasNextPage,
-    totalHits,
   } = useSearchAddons(query, page, category, version, loaders, ITEMS_PER_PAGE);
 
   // Use the useInfiniteScroll hook
@@ -132,13 +131,6 @@ const AddonsList = () => {
       </ListPageFilters>
 
       <ListPageContent>
-        {/* Display total hits count */}
-        {totalHits > 0 && !isLoading && (
-          <div className='text-muted-foreground mb-4 text-sm'>
-            Found {totalHits} addon{totalHits !== 1 ? 's' : ''}
-          </div>
-        )}
-
         <ItemGrid
           items={allAddons}
           renderItem={renderAddon}
@@ -148,7 +140,6 @@ const AddonsList = () => {
           infiniteScrollEnabled={true}
           loadingMore={loadingMore}
           sentinelRef={sentinelRef}
-          // Animation props
           animationEnabled={true} // Toggle animations on/off
           animationDelay={0.1} // Control the stagger delay
           animationDuration={0.4} // Control the animation duration

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button.tsx';
 import { Download, Heart, Star, StarOff } from 'lucide-react';
 import { Separator } from '@/components/ui/separator.tsx';
 import { useCollectionStore } from '@/api/stores/collectionStore.ts';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 export interface AddonDetailsHeaderParams {
   title: string;
@@ -37,8 +37,7 @@ export const AddonDetailsHeader = ({
               variant='outline'
               size='icon'
               className='h-8 w-8 rounded-full'
-              onClick={handleCollectionAction}
-            >
+              onClick={handleCollectionAction}>
               {isInCollection ? <Star /> : <StarOff />}
             </Button>
           </div>

@@ -18,7 +18,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar.tsx';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 
 export function NavUser({
   user,

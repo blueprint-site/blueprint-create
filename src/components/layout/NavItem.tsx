@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 import { cn } from '@/config/utils.ts';
 
 interface NavItemProps {
@@ -17,8 +17,7 @@ const NavItem = ({ href, icon, label }: NavItemProps) => {
           'hover:bg-foreground/10 hover:text-foreground hover:shadow-md',
           isActive ? 'bg-primary/10 text-foreground font-bold' : 'text-foreground-muted'
         )
-      }
-    >
+      }>
       <img
         src={icon}
         alt=''
