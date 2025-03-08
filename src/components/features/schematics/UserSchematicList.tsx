@@ -19,6 +19,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx'
 import MinecraftIcon from '@/components/utility/MinecraftIcon.tsx';
 import {Schematic} from "@/types";
 
+
 const UserSchematicList = () => {
   const { isDarkMode } = useThemeStore();
   const LoggedUserInfo = useLoggedUser();

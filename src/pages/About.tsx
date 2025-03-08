@@ -4,7 +4,8 @@ import DevinsBadges from '@/components/utility/DevinsBadges';
 import { ContributorStats, GitHubUser } from '@/types';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import {Card, CardContent} from "@/components/ui/card.tsx";
+import {DynamicBg} from "@/components/features/dynamic-bg";
 export default function About() {
   const [contributors, setContributors] = useState<ContributorStats[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -84,98 +85,123 @@ export default function About() {
   }, []);
 
   return (
-    <div className='container mx-auto space-y-8 px-4 py-8'>
-      <section className='space-y-6'>
-        <div className='space-y-2 text-center'>
-          <h1>About Blueprint</h1>
-          <p className='font-minecraft text-lg'>
-            Probably the best thing that has ever existed since crackers
-          </p>
+
+      <>
+
+        <div className='container mx-auto space-y-8 px-4 py-8 relative z-10'>
+
+          <Card>
+
+            <CardContent>
+              <Card className={"h-40"}>
+                <DynamicBg  title={"About Blueprint"} subtitle={"Probably the best thing that has ever existed since crackers"}></DynamicBg>
+              </Card>
+              <section className='space-y-6'>
+                <div className='space-y-10'>
+                  <section aria-labelledby='mission'>
+                    <h2 id='mission' className='font-minecraft text-2xl font-semibold'>
+                      Our Mission
+                    </h2>
+                    <p className='text-foreground-muted font-minecraft'>
+                      Blueprint is the central hub for Create Mod content, bringing together community-made
+                      addons and player-designed schematics in one place.
+                      <p>
+
+                      </p>
+                      <p>
+                        Our <ContactLink href='/addons'>addons page</ContactLink> helps you discover and manage
+                        the growing ecosystem of Create Mod extensions
+                      </p>
+
+
+                      <p>While our{' '}
+                        <ContactLink href='/schematics'>schematics platform</ContactLink> lets you explore,
+                        share, and showcase your automated contraptions and engineering designs with fellow
+                        players.
+                      </p>
+                    </p>
+                  </section>
+
+                  <section aria-labelledby='contact'>
+                    <h2 id='contact' className='text-2xl font-semibold'>
+                      How to contact us?
+                    </h2>
+
+                    <div className='space-y-6 flex flex-row items-center gap-4 justify-evenly w-full'>
+
+                      <div className={'flex flex-col items-center gap-4'}>
+                        <h3 className='font-minecraft text-xl font-semibold'>Discord</h3>
+                        <DevinsBadges type='compact' category='social' name='discord-plural' format='svg' />
+                        <p className='text-foreground-muted font-minecraft'>
+                          For updates, sneak peeks, and issue reporting.
+                        </p>
+                      </div>
+
+                      <div className={'flex flex-col items-center gap-4'}>
+                        <h3 className='font-minecraft text-xl font-semibold'>GitHub</h3>
+                        <DevinsBadges type='compact' category='social' name='github-plural' format='svg' />
+                        <p className='text-foreground-muted font-minecraft'>
+                          For the devs out there !
+                        </p>
+                      </div>
+
+                      <div className={'flex flex-col items-center gap-4'}>
+                        <h3 className='font-minecraft text-xl font-semibold'>Email</h3>
+                        <DevinsBadges
+                            type="compact"
+                            category="custom"
+                            name="my-custom-badge"
+                            customBadgeUrl="/badges/chat-whit-us-by-email_vector.svg"
+                            format='svg'
+                        />
+                        <p className='text-foreground font-minecraft'>
+                          Contact us at{' '}
+                          <ContactLink href='mailto:blueprint-site@proton.me'>
+                            blueprint-site@proton.me
+                          </ContactLink>
+                        </p>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </section>
+
+              <section className='space-y-6' aria-labelledby='contributors'>
+                <div className='font-minecraft space-y-2 text-center'>
+                  <h2 id='contributors' className='text-3xl font-bold'>
+                    {t('home.contributions.title')}
+                  </h2>
+                  <p className='text-foreground-muted text-lg'>{t('home.contributions.subtitle.main')}</p>
+                </div>
+
+                {error && (
+                    <div role='alert' className='text-destructive p-4 text-center'>
+                      {error}
+                    </div>
+                )}
+
+                <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+                  {isLoading ? (
+                      Array(8)
+                          .fill(0)
+                          .map((_, i) => <ContributorCard key={i} isLoading />)
+                  ) : (
+                      <>
+                        {contributors.map((contributor) => (
+                            <ContributorCard
+                                key={`${contributor.id}-${contributor.login}`}
+                                contributor={contributor}
+                            />
+                        ))}
+                      </>
+                  )}
+                </div>
+              </section>
+            </CardContent>
+          </Card>
         </div>
 
-        <div className='space-y-10'>
-          <section aria-labelledby='mission'>
-            <h2 id='mission' className='font-minecraft text-2xl font-semibold'>
-              Our Mission
-            </h2>
-            <p className='text-foreground-muted font-minecraft'>
-              Blueprint is the central hub for Create Mod content, bringing together community-made
-              addons and player-designed schematics in one place. Our{' '}
-              <ContactLink href='/addons'>addons page</ContactLink> helps you discover and manage
-              the growing ecosystem of Create Mod extensions, while our{' '}
-              <ContactLink href='/schematics'>schematics platform</ContactLink> lets you explore,
-              share, and showcase your automated contraptions and engineering designs with fellow
-              players.
-            </p>
-          </section>
+      </>
 
-          <section aria-labelledby='contact'>
-            <h2 id='contact' className='text-2xl font-semibold'>
-              How to contact us?
-            </h2>
-
-            <div className='space-y-6'>
-              <div>
-                <h3 className='font-minecraft text-xl font-semibold'>Discord</h3>
-                <DevinsBadges type='cozy' category='social' name='discord-plural' format='svg' />
-                <p className='text-foreground-muted font-minecraft'>
-                  For updates, sneak peeks, and issue reporting.
-                </p>
-              </div>
-
-              <div>
-                <h3 className='font-minecraft text-xl font-semibold'>GitHub</h3>
-                <DevinsBadges type='cozy' category='social' name='github-plural' format='svg' />
-                <p className='text-foreground-muted font-minecraft'>
-                  Check the README.md on the "develop" branch for local setup instructions.
-                </p>
-              </div>
-
-              <div>
-                <h3 className='font-minecraft text-xl font-semibold'>Email</h3>
-                <p className='text-foreground-muted font-minecraft'>
-                  Contact us at{' '}
-                  <ContactLink href='mailto:blueprint-site@proton.me'>
-                    blueprint-site@proton.me
-                  </ContactLink>
-                </p>
-              </div>
-            </div>
-          </section>
-        </div>
-      </section>
-
-      <section className='space-y-6' aria-labelledby='contributors'>
-        <div className='font-minecraft space-y-2 text-center'>
-          <h2 id='contributors' className='text-3xl font-bold'>
-            {t('home.contributions.title')}
-          </h2>
-          <p className='text-foreground-muted text-lg'>{t('home.contributions.subtitle.main')}</p>
-        </div>
-
-        {error && (
-          <div role='alert' className='text-destructive p-4 text-center'>
-            {error}
-          </div>
-        )}
-
-        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
-          {isLoading ? (
-            Array(8)
-              .fill(0)
-              .map((_, i) => <ContributorCard key={i} isLoading />)
-          ) : (
-            <>
-              {contributors.map((contributor) => (
-                <ContributorCard
-                  key={`${contributor.id}-${contributor.login}`}
-                  contributor={contributor}
-                />
-              ))}
-            </>
-          )}
-        </div>
-      </section>
-    </div>
   );
 }

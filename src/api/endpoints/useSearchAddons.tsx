@@ -1,7 +1,7 @@
 // /src/api/endpoints/useSearchAddons.tsx
 import { useQuery } from '@tanstack/react-query';
 import searchClient from '@/config/meilisearch.ts';
-import { Addon } from '@/schemas/addon.schema.tsx';
+import { Addon } from '@/types';
 import { useState, useEffect } from 'react';
 
 export const useSearchAddons = (
@@ -9,10 +9,10 @@ export const useSearchAddons = (
   page: number,
   category: string,
   version: string,
-  loaders: string
+  loaders: string,
+  limit?: number
 ) => {
   const queryInput = query || '*'; // Default to '*' if query is empty
-
   // Define filter logic for category, version, and loaders
   const filter = (): string => {
     const filters: string[] = [];
@@ -35,12 +35,12 @@ export const useSearchAddons = (
   };
 
   const queryResult = useQuery({
-    queryKey: ['searchAddons', queryInput, page, category, version, loaders],
+    queryKey: ['searchAddons', queryInput, page, category, version, loaders, limit ],
     queryFn: async () => {
       const index = searchClient.index('addons');
       const result = await index.search(queryInput, {
-        limit: 16,
-        offset: (page - 1) * 16,
+        limit: limit || 16,
+        offset: (page - 1) * (limit || 16),
         filter: filter(),
       });
       console.log('API Response:', result); // Debugging
@@ -60,11 +60,11 @@ export const useSearchAddons = (
   // Update hasNextPage only when data is available
   useEffect(() => {
     if (data) {
-      const newHasNextPage = (page - 1) * 16 + data.hits.length < data.totalHits;
+      const newHasNextPage = (page - 1) * (limit || 16) + data.hits.length < data.totalHits;
       console.log('Updating hasNextPage:', newHasNextPage); // Debugging
       setHasNextPage(newHasNextPage);
     }
-  }, [data, page]);
+  }, [data, page, limit]);
 
   return {
     ...queryResult,
@@ -76,5 +76,6 @@ export const useSearchAddons = (
     hasNextPage,
     totalHits: data?.totalHits || 0,
     page,
+    limit,
   };
 };

@@ -19,7 +19,7 @@ const Profile = () => {
   }
 
   return (
-    <div className='bg-background text-foreground'>
+    <div className='bg-background'>
       <div className='container mx-auto pt-8 sm:px-6 lg:px-8'>
         <div className='border-divider flex flex-col items-start gap-6 border-b pb-3 sm:flex-row'>
           {/* Avatar */}

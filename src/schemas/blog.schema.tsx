@@ -22,10 +22,12 @@ export const BlogSchema = z.object({
   status: z.enum(["draft", "published", "archived"]),
   links: z.record(z.any()).nullable().optional(),
   tags: z.array(TagSchema).nullable().optional(),
+  blog_tags: z.array(z.string()).nullable().optional(),
   likes: z.number().int().nonnegative(),
   authors_uuid: z.array(z.string()),
   authors: z.array(z.string()),
-  created_at: z.string()
+  $createdAt: z.string(),
+  $updatedAt: z.string()
 });
 
 /**
@@ -66,10 +68,27 @@ export const BlogFilterSchema = z.object({
   author: z.string().optional(),
   search: z.string().optional()
 });
+/**
+ * Schema for search parameters when querying blogs
+ */
+export const SearchBlogPropsSchema = z.object({
+  query: z.string().default(""),
+  page: z.number().int().positive().default(1),
+  tags: z.array(z.string()).default(["All"]),
+  id: z.string().default("all"),
+});
 
-// Export types based on the schemas
-export type Blog = z.infer<typeof BlogSchema>;
-export type Tag = z.infer<typeof TagSchema>;
-export type CreateBlogInput = z.infer<typeof CreateBlogSchema>;
-export type UpdateBlogInput = z.infer<typeof UpdateBlogSchema>;
-export type BlogFilter = z.infer<typeof BlogFilterSchema>;
+/**
+ * Schema for the search result structure
+ */
+export const SearchBlogResultSchema = z.object({
+  data: z.array(BlogSchema),
+  hasNextPage: z.boolean(),
+  hasPreviousPage: z.boolean(),
+  totalHits: z.number().int().nonnegative(),
+  page: z.number().int().positive(),
+  isLoading: z.boolean(),
+  isError: z.boolean(),
+  error: z.any().optional(),
+  isFetching: z.boolean(),
+});

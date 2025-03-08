@@ -7,6 +7,7 @@ import { LoggedUserProvider } from './api/context/loggedUser/loggedUserContext.t
 import { routes } from './routes';
 import { Suspense, useEffect, useState } from 'react';
 import 'minecraft-textures-library/src/templates/create-textures.css';
+import CookieDialog from './components/utility/CookieDialog.tsx';
 
 // Separate the routes component to avoid hook rules violation
 const AppRoutes = () => {
@@ -41,9 +42,11 @@ const App = () => {
   return (
     <BrowserRouter>
       <Suspense fallback={<LoadingOverlay />}>
-        <LoggedUserProvider>
-          <AppRoutes />
-        </LoggedUserProvider>
+          <LoggedUserProvider>
+            <AppRoutes />
+            {/* Cookie dialog displays one time on any page load */}
+            <CookieDialog variant='default'/>
+          </LoggedUserProvider>
         <Toaster />
       </Suspense>
     </BrowserRouter>

@@ -1,8 +1,7 @@
-// src/routes/index.tsx
+// src/routes/index.ts
 import { lazy, Suspense } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-import { addonRoutes } from '@/routes/addonRoutes';
 import { authRoutes } from '@/routes/authRoutes';
 import { schematicRoutes } from '@/routes/schematicRoutes';
 import { settingsRoutes } from '@/routes/settings';
@@ -13,7 +12,11 @@ import { userRoutes } from '@/routes/userRoutes';
 import Home from '@/pages/Home';
 import BaseLayout from '@/layouts/BaseLayout';
 import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
+import BlogPage from '@/pages/blog/Blog';
 
+const SchematicsList = lazy(() => import('@/pages/schematics/SchematicsList'));
+const AddonsList = lazy(() => import('@/pages/addons/AddonListPage'));
+const AddonDetails = lazy(() => import('@/pages/addons/AddonDetailsPage'));
 const About = lazy(() => import('@/pages/About'));
 const Design = lazy(() => import('@/pages/Design'));
 const Terms = lazy(() => import('@/pages/Terms'));
@@ -24,6 +27,7 @@ const Changelogs = lazy(() => import('@/pages/Changelogs'));
 const ChangelogsEditor = lazy(
   () => import('@/components/features/changelogs/ChangelogsEditor.tsx')
 );
+
 export const routes: RouteObject[] = [
   {
     element: <BaseLayout />,
@@ -33,6 +37,14 @@ export const routes: RouteObject[] = [
         element: (
           <Suspense fallback={<LoadingOverlay />}>
             <Home />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'addons/:slug',
+        element: (
+          <Suspense fallback={<LoadingOverlay />}>
+            <AddonDetails />
           </Suspense>
         ),
       },
@@ -87,7 +99,6 @@ export const routes: RouteObject[] = [
       ...authRoutes,
       ...settingsRoutes,
       ...blogRoutes,
-      ...addonRoutes,
       ...schematicRoutes,
       ...userRoutes,
       {
@@ -99,6 +110,31 @@ export const routes: RouteObject[] = [
         ),
       },
     ],
+  },
+  {
+    path: 'addons',
+    element: (
+      <Suspense fallback={<LoadingOverlay />}>
+        <AddonsList />
+      </Suspense>
+    ),
+  },
+  {
+    path: 'schematics',
+    index: true,
+    element: (
+      <Suspense fallback={<LoadingOverlay />}>
+        <SchematicsList />
+      </Suspense>
+    ),
+  },
+  {
+    path: 'blog',
+    element: (
+      <Suspense fallback={<LoadingOverlay />}>
+        <BlogPage />
+      </Suspense>
+    ),
   },
   {
     element: <AdminPanelLayout />,

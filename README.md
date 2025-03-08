@@ -169,7 +169,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-- Email: blueprint-site@proton.me
+- Email: contact@blueprint-create.com
 - Discord: [Blueprint Server](https://discord.gg/blueprint)
 - GitHub: [@blueprint-site](https://github.com/blueprint-site)
 

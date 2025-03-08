@@ -17,6 +17,17 @@ export const schematicFormSchema = z.object({
   subCategories: z.array(z.string()).optional(),
 });
 
+export const searchSchematicsPropsSchema = z.object({
+  query: z.string().optional(),
+  page: z.number().optional(),
+  category: z.string().optional(),
+  subCategory: z.string().optional(),
+  createVersion: z.string().optional(),
+  version: z.string().optional(),
+  loaders: z.string().optional(),
+  id: z.string().optional(),
+})
+
 // Database schema for stored schematics
 export const schematicSchema = z.object({
   $id: z.string(),
@@ -62,11 +73,6 @@ export const searchSchematicsResultSchema = z.object({
   hasPreviousPage: z.boolean(),
   totalHits: z.number().int().nonnegative(),
   page: z.number().int().positive(),
+
 });
 
-// Type exports
-export type SchematicFormValues = z.infer<typeof schematicFormSchema>;
-export type Schematic = z.infer<typeof schematicSchema>;
-export type PartialSchematic = z.infer<typeof partialSchematicSchema>;
-export type CreateSchematic = z.infer<typeof createSchematicSchema>;
-export type SearchSchematicsResult = z.infer<typeof searchSchematicsResultSchema>;

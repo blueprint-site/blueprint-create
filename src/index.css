@@ -129,9 +129,9 @@
     --blueprint-foreground: 220 13% 45%;
     --blueprint-foreground-muted: 220 13% 45%;
 
-    --surface-1: 220 13% 90%;
-    --surface-2: 220 13% 80%;
-    --surface-3: 220 13% 70%;
+    --surface-1: 220 13% 95%;
+    --surface-2: 220 13% 85%;
+    --surface-3: 220 13% 79%;
 
     --semantic-foreground: 0 0% 90%;
     --semantic-foreground-muted: 0 0% 80%;
@@ -189,9 +189,9 @@
     --blueprint-foreground: 220 5% 90%;
     --blueprint-foreground-muted: 220 5% 80%;
 
-    --surface-1: 0 0% 17%;
-    --surface-2: 0 0% 25%;
-    --surface-3: 0 0% 32%;
+    --surface-1: 0 0% 14%;
+    --surface-2: 0 0% 18.5%;
+    --surface-3: 0 0% 23%;
 
     --semantic-foreground: 0 0% 90%;
     --semantic-foreground-muted: 0 0% 80%;
@@ -259,7 +259,7 @@
     @apply mb-4;
   }
   a {
-    @apply text-primary transition-colors hover:text-primary/90;
+    @apply text-primary hover:text-primary/90 transition-colors;
   }
   section {
     @apply py-8;
@@ -327,4 +327,75 @@ body::-webkit-scrollbar {
   body {
     @apply bg-background text-foreground;
   }
+}
+.customMarkdown {
+  p,
+  li {
+    font-family: 'default', sans-serif;
+  }
+
+  h1 {
+    color: var(--color-primary);
+  }
+
+  h2,
+  h3 {
+    color: var(--color-secondary);
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+  }
+  hr {
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+  }
+  li {
+    margin-left: 5vh;
+  }
+  a {
+    color: var(--color-blueprint);
+    font-weight: bold;
+    text-decoration: none;
+  }
+  strong {
+    color: var(--color-secondary);
+  }
+}
+/*
+  ---break---
+*/
+:root {
+  --sidebar: hsl(0 0% 98%);
+  --sidebar-foreground: hsl(240 5.3% 26.1%);
+  --sidebar-primary: hsl(240 5.9% 10%);
+  --sidebar-primary-foreground: hsl(0 0% 98%);
+  --sidebar-accent: hsl(240 4.8% 95.9%);
+  --sidebar-accent-foreground: hsl(240 5.9% 10%);
+  --sidebar-border: hsl(220 13% 91%);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+}
+/*
+  ---break---
+*/
+.dark {
+  --sidebar: hsl(240 5.9% 10%);
+  --sidebar-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-primary: hsl(224.3 76.3% 48%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(240 3.7% 15.9%);
+  --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
+  --sidebar-border: hsl(240 3.7% 15.9%);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+}
+/*
+  ---break---
+*/
+@theme inline {
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }

@@ -13,6 +13,7 @@ import { HexColorPicker } from 'react-colorful';
 import { Tag } from '@/types';
 import { databases, ID } from '@/config/appwrite.ts';
 import { Models, Query } from 'appwrite';
+import {PlusIcon} from "lucide-react";
 
 const DATABASE_ID = '67b1dc430020b4fb23e3';
 const BLOG_COLLECTION_ID= '67b2326100053d0e304f';
@@ -110,24 +111,24 @@ export default function TagSelector({ value,db, onChange }: TagSelectorProps) {
   return (
     <>
       <div className='flex flex-row gap-4'>
-        <div className='w-1/4'>
+        <div>
           <Select
             onValueChange={(value) => {
               const tag = tags.find((t) => t.value === value);
               if (tag) toggleTagSelection(tag);
             }}
           >
-            <SelectTrigger>
+            <SelectTrigger className={"cursor-pointer"}>
               <SelectValue placeholder='Select tags' />
             </SelectTrigger>
-            <SelectContent className='bg-foreground hover:bg-foreground'>
+            <SelectContent className='bg-surface-1'>
               {tags.map((tag) => (
-                <SelectItem key={tag.id} value={tag.value}>
+                <SelectItem key={tag.id} value={tag.value} className={"cursor-pointer"}>
                   <span className='flex items-center justify-between'>
                     <span className='mr-2' style={{ color: tag.color }}>
                       {tag.value}
                     </span>
-                    <Button variant='ghost' size='sm' onClick={() => deleteTag(tag.id)}>
+                    <Button variant='ghost'  className={"absolute right-0 "} size='sm' onClick={() => deleteTag(tag.id)}>
                       ❌
                     </Button>
                   </span>
@@ -136,8 +137,7 @@ export default function TagSelector({ value,db, onChange }: TagSelectorProps) {
             </SelectContent>
           </Select>
         </div>
-        <div className='w-2/4'></div>
-        <div className='flex w-1/4 flex-row gap-4'>
+        <div className='flex flex-row gap-4'>
           <Input
             value={newTag}
             onChange={(e) => setNewTag(e.target.value)}
@@ -154,8 +154,8 @@ export default function TagSelector({ value,db, onChange }: TagSelectorProps) {
           </Popover>
         </div>
 
-        <Button className='' onClick={createTag}>
-          Add
+        <Button className='cursor-pointer' onClick={createTag}>
+          <PlusIcon/>
         </Button>
       </div>
       <h3>Selected Tags :</h3>

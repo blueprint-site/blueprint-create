@@ -4,7 +4,7 @@ import { z } from "zod";
 /**
  * Schema for Target object in User
  */
-const TargetSchema = z.object({
+export const TargetSchema = z.object({
   $id: z.string(),
   $createdAt: z.string(),
   $updatedAt: z.string(),
@@ -30,7 +30,7 @@ const EasterEggsSchema = z.object({
 /**
  * Schema for UserPreferences object
  */
-const UserPreferencesSchema = z.object({
+export const UserPreferencesSchema = z.object({
   theme: z.enum(["light", "dark"]),
   language: z.string(),
   notificationsEnabled: z.boolean(),
@@ -91,21 +91,3 @@ export const UpdateUserPreferencesSchema = z.object({
   // Add easter eggs to preference updates
   easterEggs: EasterEggsSchema.optional()
 });
-
-// Easter Egg types
-export interface EasterEggDefinition {
-  id: string;
-  name: string;
-  description: string;
-  discoveryHint: string;
-  component?: React.ComponentType<{enabled: boolean}>;
-}
-
-// Export types based on the schemas
-export type User = z.infer<typeof UserSchema>;
-export type Target = z.infer<typeof TargetSchema>;
-export type UserPreferences = z.infer<typeof UserPreferencesSchema>;
-export type EasterEggs = z.infer<typeof EasterEggsSchema>;
-export type CreateUserInput = z.infer<typeof CreateUserSchema>;
-export type UpdateUserProfileInput = z.infer<typeof UpdateUserProfileSchema>;
-export type UpdateUserPreferencesInput = z.infer<typeof UpdateUserPreferencesSchema>;
