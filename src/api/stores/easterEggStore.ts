@@ -1,3 +1,4 @@
+// src/api/stores/easterEggStore.ts
 import { create } from 'zustand';
 
 interface EasterEggState {
@@ -5,13 +6,13 @@ interface EasterEggState {
   logoClickCount: number;
   lastClickTime: number;
 
-  // Flag for discovery
-  shouldTriggerDiscovery: boolean;
+  // New flag to explicitly track discovery state
+  eggTriggered: boolean;
 
   // Methods
   incrementLogoClickCount: () => void;
   resetClickCount: () => void;
-  acknowledgeTrigger: () => void;
+  resetEggTriggered: () => void;
 }
 
 const CLICK_THRESHOLD = 5;
@@ -20,15 +21,12 @@ const CLICK_TIMEOUT = 6000; // 6 seconds
 export const useEasterEggStore = create<EasterEggState>((set, get) => ({
   logoClickCount: 0,
   lastClickTime: 0,
-  shouldTriggerDiscovery: false,
+  eggTriggered: false,
 
   incrementLogoClickCount: () => {
     const currentTime = Date.now();
     const { lastClickTime, logoClickCount } = get();
 
-    console.log('Incrementing click count');
-    console.log('Current time:', currentTime);
-    console.log('Last click time:', lastClickTime);
     console.log('Click count:', logoClickCount);
 
     // Reset counter if it's been too long since the last click
@@ -39,13 +37,14 @@ export const useEasterEggStore = create<EasterEggState>((set, get) => ({
 
     const newCount = logoClickCount + 1;
 
-    // When we reach the threshold, trigger discovery
+    // When we reach the threshold, set the trigger flag instead of just resetting
     if (newCount >= CLICK_THRESHOLD) {
       set({
         logoClickCount: 0,
         lastClickTime: currentTime,
-        shouldTriggerDiscovery: true // Set flag to trigger discovery
+        eggTriggered: true // Set the egg as triggered, so hook can detect it
       });
+      console.log('Easter egg triggered!'); // Log to confirm the trigger
       return;
     }
 
@@ -57,7 +56,7 @@ export const useEasterEggStore = create<EasterEggState>((set, get) => ({
     set({ logoClickCount: 0 });
   },
 
-  acknowledgeTrigger: () => {
-    set({ shouldTriggerDiscovery: false });
+  resetEggTriggered: () => {
+    set({ eggTriggered: false });
   }
 }));

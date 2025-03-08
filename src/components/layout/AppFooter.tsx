@@ -7,8 +7,8 @@ interface FooterProps {
 }
 
 const Footer = ({ className }: FooterProps) => {
-  // Get logo with easter egg functionality
-  const { logoSrc, logoRef, handleLogoClick } = useLogo();
+  // Use non-clickable logo (default behavior)
+  const { logoSrc } = useLogo();
 
   return (
     <footer className={cn('bg-surface-1 dark:bg-container-dark w-full pb-4 md:pt-16', className)}>
@@ -17,14 +17,11 @@ const Footer = ({ className }: FooterProps) => {
           {/* Logo and Title Row */}
           <div className='flex flex-col gap-2'>
             <div className='flex items-center gap-2'>
-              {/* Easter egg logo */}
+              {/* Easter egg logo (now non-clickable) */}
               <img
-                ref={logoRef}
-                onClick={handleLogoClick}
                 src={logoSrc}
                 alt='Blueprint Site Logo'
-                className='w-8 cursor-pointer'
-                id="easter-egg-logo"
+                className='w-8'
               />
               <h4 className='text-lg font-bold'>Blueprint</h4>
             </div>

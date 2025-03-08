@@ -37,8 +37,8 @@ const EasterEggsSettings = () => {
           const enabled = isEggEnabled(egg.id);
           
           return (
-            <Card key={egg.id} className={discovered ? "" : "opacity-70"}>
-              <CardHeader className="pb-2">
+            <Card key={egg.id} className={`${discovered} ? "" : "opacity-70" border`}>
+              <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <CardTitle>{discovered ? egg.name : "???"}</CardTitle>

@@ -17,7 +17,8 @@ interface AppHeaderProps {
 
 const AppHeader = ({ className }: AppHeaderProps) => {
   const { t } = useTranslation();
-  const { logoSrc, logoRef, handleLogoClick } = useLogo();
+  // Use non-clickable logo (default behavior)
+  const { logoSrc } = useLogo();
 
   const navigationItems = [
     {
@@ -47,12 +48,10 @@ const AppHeader = ({ className }: AppHeaderProps) => {
       <div className='mx-auto flex h-full items-center justify-between px-4 lg:container'>
         <NavLink to='/' className='text-foreground flex h-8 items-center sm:h-10'>
           <img
-            ref={logoRef}
-            onClick={handleLogoClick}
             loading='lazy'
             src={logoSrc}
             alt='Blueprint Logo'
-            className='h-full object-contain cursor-pointer'
+            className='h-full object-contain'
           />
           <span className='font-minecraft ml-3 hidden text-2xl font-medium sm:block'>
             Blueprint
