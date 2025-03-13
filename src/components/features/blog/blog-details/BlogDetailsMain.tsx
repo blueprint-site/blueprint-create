@@ -13,7 +13,7 @@ export const BlogDetailsMain = ({ blog }: BlogDetailsMainProps) => {
     <div className='container'>
       <BlogDetailsHeader title={blog.title} />
       <BlogDetailsContent blog={blog} />
-      <BlogDetailsFooter />
+      <BlogDetailsFooter title={blog.title} authors={blog.authors} createdAt={blog.$createdAt} />
     </div>
   );
 };
