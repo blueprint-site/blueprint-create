@@ -13,8 +13,9 @@ import { ItemGrid } from '@/components/layout/ItemGrid';
 import { useSchematicFilters } from '@/hooks/useSchematicFilters';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { Schematic } from '@/types';
-
+import { useTranslation } from 'react-i18next';
 function SchematicsList() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [allSchematics, setAllSchematics] = useState<Schematic[]>([]);
   const [page, setPage] = useState(1); // Add separate page state
@@ -96,25 +97,27 @@ function SchematicsList() {
       <ListPageFilters>
         <FiltersContainer>
           <div className='flex items-center justify-between'>
-            <div className='text-foreground font-minecraft text-xl font-semibold'>Filters</div>
+            <div className='text-foreground font-minecraft text-xl font-semibold'>
+              {t('schematics.filters.title')}
+            </div>
             <button
               onClick={handleResetFilters}
               className='text-primary flex items-center gap-1 text-sm'
               aria-label='Reset filters'
             >
               <RefreshCw size={14} />
-              Reset
+              {t('schematics.filters.reset')}
             </button>
           </div>
 
           <SearchFilter
             value={filters.query}
             onChange={setQuery}
-            placeholder='Search schematics...'
+            placeholder={t('schematics.filters.placeholder')}
           />
 
           <SelectFilter
-            label='Category'
+            label={t('schematics.filters.category')}
             value={filters.category}
             onChange={setCategory}
             options={categoryOptions}
@@ -123,7 +126,7 @@ function SchematicsList() {
           {/* Only show subcategories if available */}
           {hasSubCategories && (
             <SelectFilter
-              label='Subcategory'
+              label={t('schematics.filters.subcategory')}
               value={filters.subCategory || ''}
               onChange={setSubCategory}
               options={subCategoryOptions}
@@ -131,20 +134,20 @@ function SchematicsList() {
           )}
 
           <SelectFilter
-            label='Version'
+            label={t('schematics.filters.version')}
             value={filters.version}
             onChange={setVersion}
             options={versionOptions}
           />
 
           <SelectFilter
-            label='Loaders'
+            label={t('schematics.filters.loaders')}
             value={filters.loaders}
             onChange={setLoaders}
             options={loaderOptions}
           />
           <SelectFilter
-            label='Create version'
+            label={t('schematics.filters.createversion')}
             value={filters.createVersion}
             onChange={setCreateVersion}
             options={createVersionOptions}
@@ -155,7 +158,7 @@ function SchematicsList() {
       <ListPageContent>
         <div className='mb-4 flex justify-end'>
           <Link className={buttonVariants({ variant: 'default' })} to='../schematics/upload'>
-            <Upload className='mr-2 h-4 w-4' /> Upload Schematic
+            <Upload className='mr-2 h-4 w-4' /> {t('schematics.uploadbtn')}
           </Link>
         </div>
 

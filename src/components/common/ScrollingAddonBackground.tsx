@@ -3,6 +3,7 @@ import { Addon } from '@/types';
 import { useSearchAddons } from '@/api';
 import { Info } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
+import { useTranslation } from 'react-i18next';
 
 export interface ScrollingAddonBackgroundProps {
   title?: string;
@@ -195,6 +196,7 @@ export const ScrollingAddonBackground = ({
     }
   `;
 
+  const { t } = useTranslation();
   return (
     <div
       className='bg-background relative h-full w-full overflow-hidden rounded-b-2xl'
@@ -244,14 +246,14 @@ export const ScrollingAddonBackground = ({
         <h1 className='mb-4 text-center text-4xl'>
           {showPlaceholderContent ? (
             <span className='inline-block animate-pulse'>
-              {title || '0% of addons have support for Create 0.6'}
+              {title || t('scrollingaddonbackground.title')}
             </span>
           ) : (
-            title || '0% of addons have support for Create 0.6'
+            title || t('scrollingaddonbackground.title')
           )}
         </h1>
         <p className='text-center text-xl italic'>
-          {subtitle || '"That accounts to ~0 addons totally" - Says our expert'}
+          {subtitle || t('scrollingaddonbackground.subtitle')}
         </p>
       </div>
 
@@ -262,7 +264,7 @@ export const ScrollingAddonBackground = ({
             <TooltipTrigger asChild>
               <Info className='h-4 w-4 cursor-pointer text-white' />
             </TooltipTrigger>
-            <TooltipContent>Grayed icons do not support Create 0.6</TooltipContent>
+            <TooltipContent>{t('scrollingaddonbackground.tooltip')}</TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </div>

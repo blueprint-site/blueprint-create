@@ -10,7 +10,6 @@ import { AddonStats } from './AddonStats';
 import { useNavigate } from 'react-router';
 import { Addon } from '@/types';
 import { ExternalLinks } from '@/components/features/addons/addon-card/ExternalLinks.tsx';
-
 interface AddonListItemProps {
   addon: Addon;
 }

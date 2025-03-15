@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router';
 import { useUserStore } from '@/api/stores/userStore';
 import { useState } from 'react';
 import UserSchematicList from '@/components/features/schematics/UserSchematicList.tsx';
-
+import { useTranslation } from 'react-i18next';
 const Profile = () => {
   const [error] = useState<string | null>(null);
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
   const preferences = useUserStore((state) => state.preferences);
-
+  const { t } = useTranslation();
   if (error) {
     return (
       <div className='bg-background flex min-h-screen items-center justify-center'>
@@ -47,7 +47,7 @@ const Profile = () => {
                 </h2>
                 <p className='text-foreground-muted text-sm'>{user?.name}</p>
                 <p className='text-foreground-muted text-xs'>
-                  Joined {new Date(user?.$createdAt || '').toLocaleDateString()}
+                  {t('profile.joined')} {new Date(user?.$createdAt || '').toLocaleDateString()}
                 </p>
               </div>
               <div>
@@ -57,7 +57,7 @@ const Profile = () => {
                   onClick={() => navigate('/settings/profile')}
                   className='w-full sm:w-auto'
                 >
-                  Edit Profile
+                  {t('profile.edit')}
                 </Button>
               </div>
             </div>

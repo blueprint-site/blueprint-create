@@ -3,27 +3,25 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail } from 'lucide-react';
 import DevinsBadges from '../../utility/DevinsBadges';
-
+import { useTranslation } from 'react-i18next';
 const ForCreators = () => {
+  const { t } = useTranslation();
   return (
     <div className='flex flex-col items-center space-y-4 text-center'>
       <div className='font-minecraft space-y-2'>
-        <h2 className='text-3xl font-bold sm:text-4xl'>For Creators</h2>
+        <h2 className='text-3xl font-bold sm:text-4xl'>{t('home.forcreators.title')}</h2>
         <p className='text-foreground/90 bg-background/10 mx-auto max-w-[700px]'>
-          We're here to help showcase your addons to the Blueprint community
+          {t('home.forcreators.description')}
         </p>
       </div>
 
       <Card className='md:bg-background h-full w-full'>
         <CardHeader>
-          <CardTitle className='text-xl'>Can't find your addon?</CardTitle>
-          <CardDescription>Let us know and we'll help get your addon listed</CardDescription>
+          <CardTitle className='text-xl'>{t('home.forcreators.card.title')}</CardTitle>
+          <CardDescription>{t('home.forcreators.card.description')}</CardDescription>
         </CardHeader>
         <CardContent className='grid gap-4'>
-          <p className='text-foreground-muted text-sm'>
-            Our addon scanning process is fully automated. Contact us to request a rescan and get
-            your addon included in our directory.
-          </p>
+          <p className='text-foreground-muted text-sm'>{t('home.forcreators.card.content')}</p>
 
           <div className='mx-auto mt-4 grid gap-4 md:grid-cols-2'>
             <div className='flex items-center justify-center'>
@@ -50,7 +48,7 @@ const ForCreators = () => {
               onClick={() => (window.location.href = 'mailto:blueprint-site@proton.me')}
             >
               <Mail className='mr-2' size={24} />
-              Email Us
+              {t('home.forcreators.card.email')}
             </Button>
           </div>
 

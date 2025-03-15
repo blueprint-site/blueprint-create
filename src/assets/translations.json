@@ -31,6 +31,71 @@
           },
           "links": "Useful links:"
         },
+        "forcreators": {
+          "title": "For Creators",
+          "description": "We're here to help showcase your addons to the Blueprint community",
+          "card": {
+            "title": "Can't find your addon?",
+            "description": "Let us know and we'll help get your addon listed",
+            "content": "Our addon scanning process is fully automated. Contact us to request a rescan and get your addon included in our directory.",
+            "email": "Email Us"
+          }
+        },
+        "usefulllinks": {
+          "card1": {
+            "text": "Create Mod wiki",
+            "desc": "Complete documentation and guides"
+          },
+          "card2": {
+            "text": "Create Mod (Forge)",
+            "desc": "Download for Forge modloader"
+          },
+          "card3": {
+            "text": "Create Mod (Fabric)",
+            "desc": "Download for Fabric modloader"
+          }
+        }
+      },
+      "addons": {
+        "filters": {
+          "title": "Filters",
+          "reset": "Reset",
+          "category": "Category",
+          "loaders": "Loaders",
+          "version": "Version"
+        }
+      },
+      "about": {
+        "title": "About Blueprint",
+        "description1": "Blueprint emerged from recognizing the need for a centralized platform that serves the Create Mod community effectively. We built this site using modern web technologies to provide a robust solution for discovering and sharing content.",
+        "description2": "Our goal is to consolidate Create Mod resources in one accessible location - connecting addon developers with users and enabling easy sharing of contraption designs. We aim to enhance discoverability and foster collaboration within the community.",
+        "card1": {
+          "title": "Discover Addons",
+          "description": "Browse and manage the growing ecosystem of Create Mod extensions.",
+          "linktext": "Explore Addons"
+        },
+        "card2": {
+          "title": "Share Creations",
+          "description": "Upload and showcase your automated contraptions and engineering designs.",
+          "linktext": "Visit Schematics"
+        },
+        "card3": {
+          "title": "Join Our Community",
+          "description": "Connect with fellow Create enthusiasts and contribute to the ecosystem.",
+          "linktext": "Learn More"
+        },
+        "contacts": {
+          "title": "Get in Touch!",
+          "discord": {
+            "description": "For updates, sneak peeks, and issue reporting."
+          },
+          "github": {
+            "description": "For the devs out there!"
+          },
+          "email": {
+            "description": "Contact us at"
+          }
+        },
         "contributions": {
           "title": "Contributors",
           "subtitle": {
@@ -39,155 +104,35 @@
           }
         }
       },
-      "addons": {
-        "search": {
-          "placeholder": "Search Addons..."
-        },
-        "dropdown": {
-          "modloader": {
-            "select": "Select Modloader",
-            "all": "All Modloaders"
-          },
-          "version": {
-            "select": "Select Version",
-            "all": "All Versions"
-          }
-        },
-        "label": {
-          "downloads": "Downloads",
-          "description": "Description",
-          "categories": "Categories",
-          "followers": "Followers",
-          "authors": "Created by",
-          "note": "Note"
-        },
-        "random": {
-          "title": "Feeling bored?",
-          "link": "Get a random addon!"
-        }
-      }
-    }
-  },
-  "de": {
-    "translation": {
-      "navigation": {
-        "label": {
-          "addons": "Addons",
-          "schematics": "Vorlagen",
-          "about": "Über uns"
-        }
+      "scrollingaddonbackground": {
+        "title": "0% of addons have support for Create 0.6",
+        "subtitle": "'That accounts to ~0 addons totally' - Says our expert",
+        "tooltip": "Grayed icons do not support Create 0.6"
       },
-      "user-menu": {
-        "profile": "Profil",
-        "settings": "Einstellungen",
-        "admin": "Admin-Panel",
-        "logout": "Abmelden"
+      "404": {
+        "title": "Page Not Found",
+        "desc": "Oops! The page you're looking for doesn't exist or has been moved.",
+        "believe": "If you believe this is a bug email us at",
+        "back": "Back to Home"
       },
-      "awards": {
-        "banner": {
-          "label": "Die Wrench Awards",
-          "link": "Jetzt abstimmen!"
-        }
+      "profile": {
+        "joined": "Joined",
+        "edit": "Edit Profile"
       },
-      "home": {
-        "discover": "Entdecke Addons",
-        "info": {
-          "about": {
-            "title": "Was ist Blueprint?",
-            "description": "Blueprint ist eine Website zur Create Mod, auf der du Add-ons, Vorlagen und mehr findest!"
-          },
-          "links": "Hier sind einige nütliche Links zur Create Mod:"
+      "schematics": {
+        "filters": {
+          "title": "Filters",
+          "reset": "Reset",
+          "category": "Category",
+          "loaders": "Loaders",
+          "version": "Version",
+          "subcategory": "Subcategory",
+          "createversion": "Create Version",
+          "placeholder": "Search Schematics..."
         },
-        "contributions": {
-          "title": "Mitwirkende",
-          "subtitle": {
-            "main": "Vielen Dank an unsere großartigen Mitwirkenden ❤️",
-            "api": "Ein großes Dankeschön geht auch an diejenigen, die uns beim Aufbau der API geholfen haben ❤️"
-          }
-        }
-      },
-      "addons": {
-        "search": {
-          "placeholder": "Addons suchen..."
-        },
-        "dropdown": {
-          "modloader": {
-            "select": "Modloader wählen",
-            "all": "Alle Modloader"
-          },
-          "version": {
-            "select": "Version wählen",
-            "all": "Alle Versionen"
-          }
-        },
-        "label": {
-          "downloads": "Downloads",
-          "description": "Beschreibung",
-          "categories": "Kategorien",
-          "followers": "Follower",
-          "authors": "Erstellt von"
-        }
-      }
-    }
-  },
-  "es": {
-    "translation": {
-      "navigation": {
-        "label": {
-          "addons": "Addons",
-          "schematics": "Schematics",
-          "about": "Acerca de"
-        }
-      },
-      "user-menu": {
-        "profile": "Perfil",
-        "settings": "Configuración",
-        "admin": "Panel de Administración",
-        "logout": "Cerrar Sesión"
-      },
-      "awards": {
-        "banner": {
-          "label": "The Wrench Awards",
-          "link": "Vota Ahora!"
-        }
-      },
-      "home": {
-        "discover": "Descubre nuevos Addons",
-        "info": {
-          "about": {
-            "title": "¿Qué es Blueprint?",
-            "description": "Blueprint es un sitio sobre Create Mod donde puedes encontrar addons, schematics y más!"
-          },
-          "links": "Algunos links de utilidad:"
-        },
-        "contributions": {
-          "title": "Contribuidores",
-          "subtitle": {
-            "main": "Gracias a nuestros asombrosos contribuidores. Sin su ayuda esto no sería posible ❤️",
-            "api": "También muchas gracias a aquellos que nos ayudan a crear la API ❤️"
-          }
-        }
-      },
-      "addons": {
-        "search": {
-          "placeholder": "Buscar Addons..."
-        },
-        "dropdown": {
-          "modloader": {
-            "select": "Selecciona el Modloader",
-            "all": "Todos los Modloaders"
-          },
-          "version": {
-            "select": "Selecciona la versión",
-            "all": "Todas las versiones"
-          }
-        },
-        "label": {
-          "downloads": "Descargas",
-          "description": "Descripción",
-          "categories": "Categorías",
-          "followers": "Seguidores",
-          "authors": "Creado por"
+        "uploadbtn": "Upload Schematic",
+        "upload": {
+
         }
       }
     }

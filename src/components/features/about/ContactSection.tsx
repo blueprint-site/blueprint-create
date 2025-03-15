@@ -1,25 +1,26 @@
 import { ContactCard } from './ContactCard';
 import { ContactLink } from './ContactLink';
-
+import { useTranslation } from 'react-i18next';
 export function ContactSection() {
+  const { t } = useTranslation();
   return (
     <section className='mb-12' aria-labelledby='contact'>
       <h2 id='contact' className='mb-6 text-center text-2xl font-semibold'>
-        Get in touch!
+        {t('about.contacts.title')}
       </h2>
 
       <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
         <ContactCard
           title='Discord'
           badgeName='discord-plural'
-          description='For updates, sneak peeks, and issue reporting.'
+          description={t('about.contacts.discord.description')}
           link='https://discord.gg/WSJUCWZD'
         />
 
         <ContactCard
           title='GitHub'
           badgeName='github-plural'
-          description='For the devs out there!'
+          description={t('about.contacts.github.description')}
           link='https://github.com/blueprint-site/blueprint-site.github.io'
         />
 
@@ -29,7 +30,7 @@ export function ContactSection() {
           customBadgeUrl='/badges/chat-whit-us-by-email_vector.svg'
           description={
             <>
-              Contact us at{' '}
+              {t('about.contacts.email.description')}{' '}
               <ContactLink href='mailto:contact@blueprint-create.com'>
                 contact@blueprint-create.com
               </ContactLink>

@@ -13,22 +13,22 @@ const UsefulLinks = () => {
     {
       href: 'https://create.fandom.com/wiki/Create_Mod_Wiki',
       icon: WikiLogo,
-      text: 'Create Mod wiki',
-      description: 'Complete documentation and guides',
+      text: t('home.usefulllinks.card1.text'),
+      description: t('home.usefulllinks.card1.desc'),
       color: 'success',
     },
     {
       href: 'https://modrinth.com/mod/create',
       icon: CreateLogo,
-      text: 'Create Mod (Forge)',
-      description: 'Download for Forge modloader',
+      text: t('home.usefulllinks.card2.text'),
+      description: t('home.usefulllinks.card2.desc'),
       color: 'warning',
     },
     {
       href: 'https://modrinth.com/mod/create-fabric',
       icon: CreateFabricLogo,
-      text: 'Create Mod (Fabric)',
-      description: 'Download for Fabric modloader',
+      text: t('home.usefulllinks.card3.text'),
+      description: t('home.usefulllinks.card3.desc'),
       color: 'destructive',
     },
   ];

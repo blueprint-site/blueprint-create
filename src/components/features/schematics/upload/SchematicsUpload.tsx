@@ -8,7 +8,6 @@ import { generateSlug } from '../utils/generateSlug';
 import { useSaveSchematics } from '@/api/endpoints/useSchematics';
 import { SchematicFormValues } from '@/types';
 import SchematicUploadLoadingOverlay from '@/components/loading-overlays/SchematicUploadLoadingOverlay';
-
 function SchematicsUpload() {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);

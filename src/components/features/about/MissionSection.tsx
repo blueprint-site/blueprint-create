@@ -3,34 +3,35 @@ import { ContactLink } from './ContactLink';
 import { motion } from 'framer-motion';
 import { Compass, Share2, Code, Cog } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
 
 export function MissionSection() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
-
+  const { t } = useTranslation();
   const cards = [
     {
       id: 'addons',
-      title: 'Discover Addons',
-      description: 'Browse and manage the growing ecosystem of Create Mod extensions.',
+      title: t('about.card1.title'),
+      description: t('about.card1.description'),
       icon: <Compass className='h-8 w-8 text-amber-500' />,
       link: '/addons',
-      linkText: 'Explore Addons',
+      linkText: t('about.card1.linktext'),
     },
     {
       id: 'schematics',
-      title: 'Share Creations',
-      description: 'Upload and showcase your automated contraptions and engineering designs.',
+      title: t('about.card2.title'),
+      description: t('about.card2.description'),
       icon: <Share2 className='h-8 w-8 text-emerald-500' />,
       link: '/schematics',
-      linkText: 'Visit Schematics',
+      linkText: t('about.card2.linktext'),
     },
     {
       id: 'community',
-      title: 'Join Our Community',
-      description: 'Connect with fellow Create enthusiasts and contribute to the ecosystem.',
+      title: t('about.card3.title'),
+      description: t('about.card3.description'),
       icon: <Code className='h-8 w-8 text-blue-500' />,
       link: '/about',
-      linkText: 'Learn More',
+      linkText: t('about.card3.linktext'),
     },
   ];
 
@@ -55,16 +56,8 @@ export function MissionSection() {
 
       <CardContent>
         <div className='text-foreground-muted font-minecraft relative z-10 mb-8 space-y-4'>
-          <p className='max-w-3xl text-lg leading-relaxed'>
-            Blueprint emerged from recognizing the need for a centralized platform that serves the
-            Create Mod community effectively. We built this site using modern web technologies to
-            provide a robust solution for discovering and sharing content.
-          </p>
-          <p className='max-w-3xl text-lg leading-relaxed'>
-            Our goal is to consolidate Create Mod resources in one accessible location - connecting
-            addon developers with users and enabling easy sharing of contraption designs. We aim to
-            enhance discoverability and foster collaboration within the community.
-          </p>
+          <p className='max-w-3xl text-lg leading-relaxed'>{t('about.description1')}</p>
+          <p className='max-w-3xl text-lg leading-relaxed'>{t('about.description2')}</p>
         </div>
 
         <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3'>
