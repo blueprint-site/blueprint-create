@@ -7,7 +7,7 @@ import GithubLogo from '@/assets/icons/github-mark-white.svg?url';
 import GoogleLogo from '@/assets/icons/google-mark-color.png';
 import { Input } from '@/components/ui/input.tsx';
 import { useUserStore } from '@/api/stores/userStore';
-
+import { useNavigate } from 'react-router';
 const AuthPage = () => {
   // Replace context with Zustand store
   const user = useUserStore((state) => state.user);
@@ -16,17 +16,24 @@ const AuthPage = () => {
   const logout = useUserStore((state) => state.logout);
   const handleOAuthLogin = useUserStore((state) => state.handleOAuthLogin);
   const error = useUserStore((state) => state.error);
-
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
 
   const handleSubmit = async () => {
-    if (isRegistering) {
-      await register(name, email, password);
-    } else {
-      await login(email, password);
+    try {
+      if (isRegistering) {
+        await register(name, email, password);
+      } else {
+        await login(email, password);
+      }
+
+      // Redirection après succès
+      navigate('/auth/success');
+    } catch (error) {
+      console.error('Authentication failed:', error);
     }
   };
 

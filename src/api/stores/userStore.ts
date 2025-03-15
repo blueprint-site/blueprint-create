@@ -9,11 +9,11 @@ interface UserState {
   user: User | null;
   preferences: UserPreferences | null;
   error: string | null;
-
+  isLoading: boolean;
   // Methods
   fetchUser: () => Promise<void>;
   updatePreferences: (prefs: UserPreferences) => Promise<void>;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<{ success: boolean; message: string } | void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   handleOAuthLogin: (provider: 'google' | 'github' | 'discord') => Promise<void>;
@@ -25,6 +25,7 @@ export const useUserStore = create<UserState>((set, get) => ({
   user: null,
   preferences: null,
   error: null,
+  isLoading: false,
 
   /**
    * Fetches the currently logged-in user's data and preferences from the Appwrite account.
@@ -56,14 +57,19 @@ export const useUserStore = create<UserState>((set, get) => ({
   /**
    * Logs in a user using their email and password.
    */
-  login: async (email: string, password: string) => {
+  login: async (
+    email: string,
+    password: string
+  ): Promise<{ success: boolean; message: string } | void> => {
     try {
       await account.createEmailPasswordSession(email, password);
       await get().fetchUser();
-      return Promise.resolve();
+      // Resolve with a success message to trigger the redirection
+      return Promise.resolve({ success: true, message: 'Login successful' });
     } catch (error) {
       set({ error: 'Login failed. Please check your credentials.' });
       logMessage(`Error logging in: ${error}`, 2, 'auth');
+      // Reject with the error to handle it in the component
       return Promise.reject(error);
     }
   },
@@ -87,13 +93,21 @@ export const useUserStore = create<UserState>((set, get) => ({
    * Logs out the current user by deleting the current session.
    */
   logout: async () => {
+    set({ isLoading: true, error: null }); // Set loading state and clear any previous errors
     try {
       await account.deleteSession('current');
-      set({ user: null, preferences: null });
+      set({ user: null, preferences: null, error: null }); // Clear user data and error
+      // Optionally, clear any other authentication tokens/cookies here
+
+      // Redirect to login page (example using window.location, consider using react-router for SPA)
+      window.location.href = '/login'; // Or use navigate('/login') if using react-router
       return Promise.resolve();
     } catch (error) {
       console.error('Logout failed', error);
+      set({ error: 'Logout failed. Please try again.', isLoading: false }); // Set error and clear loading state
       return Promise.reject(error);
+    } finally {
+      set({ isLoading: false }); // Ensure loading state is cleared even if there's an error
     }
   },
 

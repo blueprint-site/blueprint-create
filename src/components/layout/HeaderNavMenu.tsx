@@ -13,7 +13,6 @@ import {
 import ThemeToggle from '@/components/utility/ThemeToggle.tsx';
 
 import { useUserStore } from '@/api/stores/userStore';
-import { account } from '@/config/appwrite.ts';
 
 import AddonIcon from '@/assets/sprite-icons/minecart_coupling.webp';
 import SchematicIcon from '@/assets/sprite-icons/schematic.webp';
@@ -27,7 +26,7 @@ const UserMenu = () => {
   const user = useUserStore((state) => state.user);
   const preferences = useUserStore((state) => state.preferences);
   const isAdmin = preferences?.roles?.includes('admin');
-
+  const logout = useUserStore((state) => state.logout);
   const navigationItems = [
     {
       href: '/addons',
@@ -52,8 +51,9 @@ const UserMenu = () => {
   ];
 
   const handleLogout = async () => {
-    await account.deleteSession('current');
-    navigate('/login');
+    await logout().then(async () => {
+      navigate('/login');
+    });
   };
 
   return (
