@@ -2,7 +2,7 @@
 import { create } from 'zustand';
 import { account } from '@/config/appwrite.ts';
 import { User, UserPreferences } from '@/types';
-import { OAuthProvider } from 'appwrite';
+import { Models, OAuthProvider } from 'appwrite';
 import logMessage from '@/components/utility/logs/sendLogs.tsx';
 
 interface UserState {
@@ -12,6 +12,8 @@ interface UserState {
   isLoading: boolean;
   // Methods
   fetchUser: () => Promise<void>;
+  getProviders: () => Promise<string[]>;
+  getUserSessions: () => Promise<Models.Session[]>;
   updatePreferences: (prefs: UserPreferences) => Promise<void>;
   login: (email: string, password: string) => Promise<{ success: boolean; message: string } | void>;
   register: (name: string, email: string, password: string) => Promise<void>;
@@ -43,6 +45,19 @@ export const useUserStore = create<UserState>((set, get) => ({
   },
 
   /**
+   * GET user's Sessions
+   */
+  getUserSessions: async (): Promise<Models.Session[]> => {
+    try {
+      const sessionList = await account.listSessions();
+      return sessionList.sessions; // Retourne bien un tableau de sessions
+    } catch (error) {
+      console.error('Error fetching user sessions:', error);
+      return [];
+    }
+  },
+
+  /**
    * Updates the user's preferences in the Appwrite account.
    */
   updatePreferences: async (prefs: UserPreferences) => {
@@ -51,6 +66,21 @@ export const useUserStore = create<UserState>((set, get) => ({
       set({ preferences: prefs });
     } catch (error) {
       console.error('Error updating preferences:', error);
+    }
+  },
+
+  /**
+   * Get user providers in Appwrite
+   */
+  getProviders: async (): Promise<string[]> => {
+    try {
+      const sessions = await account.listSessions();
+      // Extract the provider from each session
+      const providers = sessions.sessions.map((session) => session.provider);
+      return providers;
+    } catch (error) {
+      console.error('Error getting providers:', error);
+      return []; // Or handle the error as needed
     }
   },
 
