@@ -6,11 +6,14 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card.
 import { Models } from 'appwrite';
 import OAuthProvidersDisplay from '@/components/utility/OAuthProvidersDisplay.tsx';
 import ClientDisplay from '@/components/utility/ClientDisplay.tsx';
+import { Button } from '@/components/ui/button.tsx';
 
 export default function AccountSettings() {
   const user = useUserStore((state) => state.user);
   const getProviders = useUserStore((state) => state.getProviders);
   const getSessions = useUserStore((state) => state.getUserSessions);
+  const getAllUserData = useUserStore((state) => state.getAllUserData);
+
   const [userProviders, setUserProviders] = useState<string[]>([]);
   const [userSessions, setUserSession] = useState<Models.Session[]>([]);
 
@@ -28,6 +31,17 @@ export default function AccountSettings() {
     <div>
       <h2 className='text-2xl font-bold'>Account security</h2>
       <h3 className='text-xl font-bold'>{user?.name}</h3>
+
+      <section className={'space-y-4'}>
+        <div className='flex items-center gap-2'>
+          <UserCog className='h-5 w-5' />
+          <div className='text-lg font-semibold'>Account Data</div>
+        </div>
+        <p className='text-foreground-muted text-sm'>Retrieve all your data !</p>
+        <Button className={'cursor-pointer'} onClick={() => getAllUserData(user?.$id || '')}>
+          Get My Data
+        </Button>
+      </section>
 
       {/* Providers Section */}
       <section className='space-y-4'>

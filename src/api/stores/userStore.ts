@@ -1,8 +1,8 @@
 // src/api/stores/userStore.ts
 import { create } from 'zustand';
-import { account } from '@/config/appwrite.ts';
+import { account, functions } from '@/config/appwrite.ts';
 import { User, UserPreferences } from '@/types';
-import { Models, OAuthProvider } from 'appwrite';
+import { ExecutionMethod, Models, OAuthProvider } from 'appwrite';
 import logMessage from '@/components/utility/logs/sendLogs.tsx';
 
 interface UserState {
@@ -14,6 +14,7 @@ interface UserState {
   fetchUser: () => Promise<void>;
   getProviders: () => Promise<string[]>;
   getUserSessions: () => Promise<Models.Session[]>;
+  getAllUserData: (userID: string) => Promise<{ message: string; data: object } | null>;
   updatePreferences: (prefs: UserPreferences) => Promise<void>;
   login: (email: string, password: string) => Promise<{ success: boolean; message: string } | void>;
   register: (name: string, email: string, password: string) => Promise<void>;
@@ -66,6 +67,52 @@ export const useUserStore = create<UserState>((set, get) => ({
       set({ preferences: prefs });
     } catch (error) {
       console.error('Error updating preferences:', error);
+    }
+  },
+
+  /**
+   * Get all the users data
+   */
+
+  getAllUserData: async (userID: string) => {
+    try {
+      const headers = {
+        'x-user-id': userID,
+      };
+      const res = await functions.createExecution(
+        '67bf7b35002f188635ac',
+        undefined,
+        false,
+        undefined,
+        ExecutionMethod.POST,
+        headers
+      );
+
+      if (res.responseStatusCode === 200) {
+        const result: { message: string; data: object } = JSON.parse(res.responseBody);
+
+        // Create JSON file content
+        const jsonContent = JSON.stringify(result.data, null, 2); // Pretty print JSON
+
+        // Create a Blob
+        const blob = new Blob([jsonContent], { type: 'application/json' });
+
+        // Create a link and trigger download
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${userID}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        return result; // Or return a success message
+      }
+      return null;
+    } catch (error) {
+      console.error('Error getting all the user data', error);
+      return null;
     }
   },
 
