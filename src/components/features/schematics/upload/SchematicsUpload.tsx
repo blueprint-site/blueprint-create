@@ -14,11 +14,12 @@ function SchematicsUpload() {
   const { id } = useParams();
   const user = useUserStore((state) => state.user);
   const [loading, setLoading] = useState<boolean>(false);
+  const [dataReady, setDataReady] = useState<boolean>(false);
   const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
+  const [isNew, setIsNew] = useState<boolean>(true);
   const { mutateAsync: saveSchematic } = useSaveSchematics();
   const { data: existingSchematic, isLoading: isLoadingExisting } = useFetchSchematic(id);
-  console.log('SchematicsUpload', existingSchematic);
-  console.log('isLoading', isLoadingExisting);
+
   const [formValues, setFormValues] = useState<Partial<SchematicFormValues>>({
     title: '',
     description: '',
@@ -26,18 +27,23 @@ function SchematicsUpload() {
     create_versions: [],
     modloaders: [],
     categories: [],
-    subCategories: [],
+    sub_categories: [],
   });
 
   useEffect(() => {
-    console.log(existingSchematic);
+    if (id === undefined) {
+      setIsNew(true);
+      setDataReady(true);
+    }
     if (existingSchematic) {
+      setIsNew(false);
       setFormValues(existingSchematic);
       setImagePreviewUrls(existingSchematic.image_urls || []);
+      setDataReady(true); // Définir que les données sont prêtes après mise à jour
     }
-  }, [existingSchematic]);
+  }, [id, existingSchematic]);
 
-  if (loading || isLoadingExisting) {
+  if (loading || isLoadingExisting || !dataReady) {
     return <SchematicUploadLoadingOverlay message='Loading schematic...' />;
   }
 
@@ -106,7 +112,7 @@ function SchematicsUpload() {
         create_versions: data.create_versions,
         modloaders: data.modloaders,
         categories: data.categories,
-        sub_categories: data.subCategories || [],
+        sub_categories: data.sub_categories || [],
         slug,
         status: 'published',
         downloads: existingSchematic?.downloads || 0,
@@ -130,6 +136,7 @@ function SchematicsUpload() {
       <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
         <div>
           <SchematicUploadForm
+            isNew={isNew}
             initialData={formValues}
             onSubmit={onSubmit}
             onValueChange={handleFieldChange}
@@ -147,7 +154,7 @@ function SchematicsUpload() {
             modloaders={formValues.modloaders || []}
             user={user}
             categories={formValues.categories || []}
-            subCategories={formValues.subCategories || []}
+            subCategories={formValues.sub_categories || []}
           />
         </div>
       </div>

@@ -16,14 +16,14 @@ export const schematicFormSchema = z.object({
   create_versions: z.array(z.string()).min(1, 'Select at least one Create version'),
   modloaders: z.array(z.string()).min(1, 'Select at least one modloader'),
   categories: z.array(z.string()).min(1, 'Select at least one category'),
-  subCategories: z.array(z.string()).optional(),
+  sub_categories: z.array(z.string()).optional(),
 });
 
 export const searchSchematicsPropsSchema = z.object({
   query: z.string().optional(),
   page: z.number().optional(),
   category: z.string().optional(),
-  subCategory: z.string().optional(),
+  sub_categories: z.string().optional(),
   create_versions: z.string().optional(),
   version: z.string().optional(),
   loaders: z.string().optional(),

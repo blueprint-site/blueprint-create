@@ -18,6 +18,7 @@ interface SchematicUploadFormProps {
   onValueChange?: (field: keyof SchematicFormValues, value: unknown) => void;
   onImageChange?: (files: File[]) => void;
   initialData?: Partial<SchematicFormValues>;
+  isNew?: boolean;
 }
 
 export function SchematicUploadForm({
@@ -25,13 +26,13 @@ export function SchematicUploadForm({
   onValueChange,
   onImageChange,
   initialData,
+  isNew,
 }: SchematicUploadFormProps) {
   const [schematicFilePreview, setSchematicFilePreview] = useState<File | null>(null);
   const [imageFilePreviews, setImageFilePreviews] = useState<File[]>([]);
   const minecraftVersions = MINECRAFT_VERSIONS;
   const createVersions = CREATE_VERSIONS;
   const modloaders = MODLOADER_OPTIONS;
-
   const form = useForm<SchematicFormValues>({
     resolver: zodResolver(schematicFormSchema),
     defaultValues: {
@@ -43,7 +44,7 @@ export function SchematicUploadForm({
       schematicFile: undefined,
       imageFiles: [],
       categories: initialData?.categories || [''],
-      subCategories: initialData?.subCategories || [''],
+      sub_categories: initialData?.sub_categories || [''],
     },
     mode: 'onChange',
   });
@@ -163,7 +164,7 @@ export function SchematicUploadForm({
             </div>
 
             <Button type='submit' className='w-full'>
-              {initialData ? 'Update Schematic' : 'Upload Schematic'}
+              {isNew ? 'Upload Schematic' : 'Update Schematic'}
             </Button>
           </form>
         </Form>

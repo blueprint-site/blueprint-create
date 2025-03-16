@@ -7,7 +7,7 @@ export const useSearchSchematics = ({
   query = '',
   page = 1,
   category = 'All',
-  subCategory = 'All',
+  sub_categories = 'All',
   version = 'all',
   loaders = 'all',
   create_versions = 'All',
@@ -29,7 +29,7 @@ export const useSearchSchematics = ({
 
     addFilter('modloaders', loaders);
     addFilter('categories', category);
-    addFilter('subCategories', subCategory);
+    addFilter('subCategories', sub_categories);
     addFilter('user_id', id);
     addFilter('game_versions', version);
     addFilter('create_versions', create_versions);
@@ -42,7 +42,7 @@ export const useSearchSchematics = ({
       query,
       page,
       category,
-      subCategory,
+      sub_categories,
       version,
       loaders,
       create_versions,
