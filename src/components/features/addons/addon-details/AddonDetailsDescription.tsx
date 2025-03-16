@@ -1,58 +1,104 @@
 import { useEffect, useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card.tsx';
+import { CardContent } from '@/components/ui/card';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
+import { Skeleton } from '@/components/ui/skeleton';
+
 export interface AddonDetailsDescriptionProps {
   description: string;
 }
+
 export const AddonDetailsDescription = ({ description = '' }: AddonDetailsDescriptionProps) => {
-  const [descriptionFormated, setDescription] = useState<string>('');
+  const [formattedDescription, setFormattedDescription] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const loadAddonDetails = async () => {
+    const processMarkdown = async () => {
+      setIsLoading(true);
+
       try {
-        // Process markdown description
-        if (description) {
-          const markedHtml = await marked(description || '');
-          const sanitizedHtml = DOMPurify.sanitize(markedHtml, {
-            ALLOWED_TAGS: [
-              'h1',
-              'h2',
-              'h3',
-              'h4',
-              'h5',
-              'h6',
-              'p',
-              'a',
-              'ul',
-              'ol',
-              'li',
-              'code',
-              'pre',
-              'strong',
-              'em',
-              'img',
-            ],
-            ALLOWED_ATTR: ['href', 'src', 'alt', 'title'],
-          });
-          setDescription(sanitizedHtml);
+        if (!description) {
+          setFormattedDescription('<p class="text-muted-foreground">No description available.</p>');
+          return;
         }
+
+        // Process markdown description
+        const markedHtml = await marked(description, {
+          gfm: true, // GitHub Flavored Markdown
+          breaks: true, // Convert line breaks to <br>
+        });
+
+        const sanitizedHtml = DOMPurify.sanitize(markedHtml, {
+          ALLOWED_TAGS: [
+            'h1',
+            'h2',
+            'h3',
+            'h4',
+            'h5',
+            'h6',
+            'p',
+            'a',
+            'ul',
+            'ol',
+            'li',
+            'blockquote',
+            'code',
+            'pre',
+            'strong',
+            'em',
+            'img',
+            'hr',
+            'br',
+            'table',
+            'thead',
+            'tbody',
+            'tr',
+            'th',
+            'td',
+            'dl',
+            'dt',
+            'dd',
+            'div',
+            'span',
+          ],
+          ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'id', 'target', 'rel', 'style'],
+          FORBID_ATTR: ['onerror', 'onload', 'onclick'],
+          ADD_ATTR: ['target'], // Allow target="_blank" for links
+          ADD_URI_SAFE_ATTR: ['target'], // Safe attributes for links
+        });
+
+        setFormattedDescription(sanitizedHtml);
       } catch (err) {
-        console.error('Error loading addon details:', err);
+        console.error('Error processing markdown:', err);
+        setFormattedDescription('<p class="text-red-500">Error rendering description.</p>');
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    loadAddonDetails().then();
+    processMarkdown();
   }, [description]);
 
   return (
-    <Card>
-      <CardContent className='prose prose-neutral dark:prose-invert max-w-none p-6'>
+    <CardContent className='py-6'>
+      <h2 className='mb-4 text-xl font-semibold'>Description</h2>
+
+      {isLoading ? (
+        <div className='space-y-4'>
+          <Skeleton className='h-6 w-2/3' />
+          <Skeleton className='h-4 w-full' />
+          <Skeleton className='h-4 w-full' />
+          <Skeleton className='h-4 w-3/4' />
+          <Skeleton className='h-10 w-full' />
+          <Skeleton className='h-4 w-full' />
+          <Skeleton className='h-4 w-5/6' />
+        </div>
+      ) : (
         <div
-          dangerouslySetInnerHTML={{ __html: descriptionFormated }}
-          className='markdown-content'
+          className='prose prose-slate dark:prose-invert prose-headings:font-semibold prose-a:text-primary prose-img:rounded prose-code:text-muted-foreground prose-pre:bg-muted prose-pre:text-muted-foreground max-w-none'
+          dangerouslySetInnerHTML={{ __html: formattedDescription }}
         />
-      </CardContent>
-    </Card>
+      )}
+    </CardContent>
   );
 };

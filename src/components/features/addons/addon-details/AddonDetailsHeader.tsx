@@ -1,9 +1,7 @@
-import { CardHeader } from '@/components/ui/card.tsx';
-import { Button } from '@/components/ui/button.tsx';
 import { Download, Heart, Star, StarOff } from 'lucide-react';
-import { Separator } from '@/components/ui/separator.tsx';
-import { useCollectionStore } from '@/api/stores/collectionStore.ts';
-import { useParams } from 'react-router';
+import { Button } from '@/components/ui/button';
+import { useCollectionStore } from '@/api/stores/collectionStore';
+import { CardHeader } from '@/components/ui/card';
 
 export interface AddonDetailsHeaderParams {
   title: string;
@@ -11,53 +9,58 @@ export interface AddonDetailsHeaderParams {
   downloads: number;
   follows: number;
   icon: string;
+  slug: string;
 }
+
 export const AddonDetailsHeader = ({
   title = '',
   description = '',
   downloads = 0,
   follows = 0,
   icon = '',
+  slug = '',
 }: AddonDetailsHeaderParams) => {
-  const { slug } = useParams();
   const { collection, addAddon, removeAddon } = useCollectionStore();
-  const isInCollection = collection.includes(slug || '');
+  const isInCollection = collection.includes(slug);
+
   const handleCollectionAction = () => {
     if (!slug) return;
     isInCollection ? removeAddon(slug) : addAddon(slug);
   };
+
   return (
     <CardHeader className='space-y-6'>
       <div className='flex items-start gap-4'>
-        <img src={icon} alt={`${title} icon`} className='h-16 w-16 rounded-lg border' />
+        <img src={icon} alt={`${title} icon`} className='h-20 w-20 rounded-lg border shadow-sm' />
         <div className='min-w-0 flex-1'>
           <div className='flex items-center justify-between'>
-            <h1 className='mb-2 truncate text-2xl font-bold'>{title}</h1>
+            <h1 className='mb-2 text-3xl font-bold'>{title}</h1>
             <Button
-              variant='outline'
-              size='icon'
-              className='h-8 w-8 rounded-full'
+              variant={isInCollection ? 'default' : 'outline'}
+              size='sm'
+              className='gap-1.5'
               onClick={handleCollectionAction}
             >
-              {isInCollection ? <Star /> : <StarOff />}
+              {isInCollection ? <Star className='h-4 w-4' /> : <StarOff className='h-4 w-4' />}
+              {isInCollection ? 'Saved' : 'Save'}
             </Button>
           </div>
-          <p className='text-foreground-muted'>{description}</p>
+          <p className='text-muted-foreground text-md'>{description}</p>
         </div>
       </div>
 
+      {/* Stats Section */}
       <div className='flex flex-wrap items-center gap-4'>
         <div className='flex items-center gap-2'>
-          <Download className='h-4 w-4' />
-          <span className='text-foreground-muted'>{downloads.toLocaleString()} downloads</span>
+          <Download className='text-muted-foreground h-4 w-4' />
+          <span className='text-muted-foreground'>{downloads.toLocaleString()} downloads</span>
         </div>
-        {follows && (
+        {follows > 0 && (
           <div className='flex items-center gap-2'>
-            <Heart className='h-4 w-4' />
-            <span className='text-foreground-muted'>{follows.toLocaleString()} followers</span>
+            <Heart className='text-muted-foreground h-4 w-4' />
+            <span className='text-muted-foreground'>{follows.toLocaleString()} followers</span>
           </div>
         )}
-        <Separator />
       </div>
     </CardHeader>
   );
