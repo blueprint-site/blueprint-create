@@ -54,8 +54,6 @@ export const AddonDetailsGallery = ({
 
   return (
     <CardContent className='py-6'>
-      <h2 className='mb-4 text-xl font-semibold'>Gallery</h2>
-
       <div className='relative'>
         <div className='aspect-video overflow-hidden rounded-lg'>
           <img

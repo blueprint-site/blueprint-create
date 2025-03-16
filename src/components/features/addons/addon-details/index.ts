@@ -6,3 +6,5 @@ export { AddonDetailsFooter } from './AddonDetailsFooter';
 export { AddonDetailsDescription } from './AddonDetailsDescription';
 export { AddonDetailsError } from './AddonDetailsError';
 export { AddonDetailsLoading } from './AddonDetailsLoading';
+export { AddonDetailsDependencies } from './AddonDetailsDependencies';
+export { AddonDetailsDonation } from './AddonDetailsDonation';

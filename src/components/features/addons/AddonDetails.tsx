@@ -11,6 +11,8 @@ import {
   AddonDetailsGallery,
   AddonDetailsFooter,
   AddonDetailsLoading,
+  AddonDetailsDependencies,
+  AddonDetailsDonation,
 } from '@/components/features/addons/addon-details';
 import { Separator } from '@/components/ui/separator';
 import { ReactNode } from 'react';
@@ -68,6 +70,19 @@ export default function AddonDetails() {
   // Calculate total downloads
   const totalDownload = (modrinthData?.downloads ?? 0) + (curseforgeData?.downloadCount ?? 0);
 
+  // Get dependency information (only available in the full project data)
+  const dependencies = modrinthProject?.dependencies;
+
+  // Get donation links
+  const donationLinks = modrinthProject?.donation_urls;
+
+  // Get environment compatibility
+  const clientSide = modrinthData?.client_side || modrinthProject?.client_side;
+  const serverSide = modrinthData?.server_side || modrinthProject?.server_side;
+
+  // Get the full body content (for rich description)
+  const bodyContent = modrinthProject?.body;
+
   // Setup links for footer
   const { sourceUrl, issuesUrl, websiteUrl } = curseforgeData?.links || {};
 
@@ -114,19 +129,40 @@ export default function AddonDetails() {
 
         {/* Gallery */}
         {gallerySmall.length > 0 && (
+          <AddonDetailsGallery
+            addon_name={addon.name}
+            gallery_small={gallerySmall}
+            gallery_hd={galleryHD}
+          />
+        )}
+
+        {/* Dependencies and Environment Compatibility */}
+        {(dependencies || clientSide || serverSide) && (
           <>
             <Separator className='mx-6' />
-            <AddonDetailsGallery
-              addon_name={addon.name}
-              gallery_small={gallerySmall}
-              gallery_hd={galleryHD}
+            <AddonDetailsDependencies
+              dependencies={dependencies}
+              clientSide={clientSide}
+              serverSide={serverSide}
             />
           </>
         )}
 
-        {/* Description */}
-        <Separator className='mx-6' />
-        <AddonDetailsDescription description={modrinthData?.description ?? ''} />
+        {/* Full Body Content */}
+        {bodyContent && (
+          <>
+            <Separator className='mx-6' />
+            <AddonDetailsDescription description={bodyContent} />
+          </>
+        )}
+
+        {/* Donation Links */}
+        {donationLinks && donationLinks.length > 0 && (
+          <>
+            <Separator className='mx-6' />
+            <AddonDetailsDonation donationLinks={donationLinks} />
+          </>
+        )}
 
         {/* Footer */}
         <Separator className='mx-6' />
