@@ -21,9 +21,6 @@ export function CategorySelectors({ control, form }: CategorySelectorsProps) {
   // Get form values for initial state
   const formCategories = form.watch('categories') || [];
   const formSubCategories = form.watch('sub_categories') || [];
-  console.log('formCategories', formCategories);
-  console.log('formSubCategories', formSubCategories);
-
   // Initialize state with form values
   const [selectedCategories, setSelectedCategories] = useState<string[]>(formCategories);
   const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(formSubCategories);

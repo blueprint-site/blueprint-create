@@ -35,10 +35,6 @@ export function MultiSelectCheckboxGroup({
       name={name}
       render={({ field }) => {
         const values = (field.value as string[]) || []; // Type guard for array fields with fallback
-        console.log('values', values);
-        options.map((option) => {
-          console.log(option);
-        });
         return (
           <FormItem className='flex flex-col space-y-2'>
             <FormLabel className='flex-0'>{label}</FormLabel>
