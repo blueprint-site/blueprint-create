@@ -10,7 +10,7 @@ export const useSearchSchematics = ({
   subCategory = 'All',
   version = 'all',
   loaders = 'all',
-  createVersion = 'All',
+  create_versions = 'All',
   id = 'all',
 }: SearchSchematicsProps): SearchSchematicsResult => {
   console.log('search triggered');
@@ -32,7 +32,7 @@ export const useSearchSchematics = ({
     addFilter('subCategories', subCategory);
     addFilter('user_id', id);
     addFilter('game_versions', version);
-    addFilter('create_versions', createVersion);
+    addFilter('create_versions', create_versions);
 
     return filters.length > 0 ? filters.join(' AND ') : '';
   };
@@ -45,7 +45,7 @@ export const useSearchSchematics = ({
       subCategory,
       version,
       loaders,
-      createVersion,
+      create_versions,
       id,
     ],
     queryFn: async () => {

@@ -17,12 +17,14 @@ interface SchematicUploadFormProps {
   onSubmit: (data: SchematicFormValues) => Promise<void>;
   onValueChange?: (field: keyof SchematicFormValues, value: unknown) => void;
   onImageChange?: (files: File[]) => void;
+  initialData?: Partial<SchematicFormValues>;
 }
 
 export function SchematicUploadForm({
   onSubmit,
   onValueChange,
   onImageChange,
+  initialData,
 }: SchematicUploadFormProps) {
   const [schematicFilePreview, setSchematicFilePreview] = useState<File | null>(null);
   const [imageFilePreviews, setImageFilePreviews] = useState<File[]>([]);
@@ -33,19 +35,27 @@ export function SchematicUploadForm({
   const form = useForm<SchematicFormValues>({
     resolver: zodResolver(schematicFormSchema),
     defaultValues: {
-      title: '',
-      description: '',
-      gameVersions: [],
-      createVersions: [],
-      modloaders: [],
+      title: initialData?.title || '',
+      description: initialData?.description || '',
+      game_versions: initialData?.game_versions || [],
+      create_versions: initialData?.create_versions || [],
+      modloaders: initialData?.modloaders || [],
       schematicFile: undefined,
       imageFiles: [],
-      // Updated to use arrays instead of single strings
-      categories: [''],
-      subCategories: [''],
+      categories: initialData?.categories || [''],
+      subCategories: initialData?.subCategories || [''],
     },
     mode: 'onChange',
   });
+
+  useEffect(() => {
+    if (initialData) {
+      form.reset({
+        ...form.getValues(), // Garde les valeurs actuelles
+        ...initialData, // Applique les valeurs initiales
+      });
+    }
+  }, [initialData, form]);
 
   useEffect(() => {
     const subscription = form.watch((value) => {
@@ -128,7 +138,7 @@ export function SchematicUploadForm({
 
             <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
               <MultiSelectCheckboxGroup
-                name='gameVersions'
+                name='game_versions'
                 control={form.control}
                 label='Minecraft Versions'
                 description='Select compatible Minecraft versions'
@@ -136,7 +146,7 @@ export function SchematicUploadForm({
               />
 
               <MultiSelectCheckboxGroup
-                name='createVersions'
+                name='create_versions'
                 control={form.control}
                 label='Create Mod Versions'
                 description='Select compatible Create versions'
@@ -153,7 +163,7 @@ export function SchematicUploadForm({
             </div>
 
             <Button type='submit' className='w-full'>
-              Upload Schematic
+              {initialData ? 'Update Schematic' : 'Upload Schematic'}
             </Button>
           </form>
         </Form>

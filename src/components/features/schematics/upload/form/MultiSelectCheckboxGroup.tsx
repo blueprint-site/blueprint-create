@@ -5,7 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { SchematicFormValues } from '@/types';
 
 // Explicitly type allowed array fields
-type ArrayField = 'gameVersions' | 'createVersions' | 'modloaders';
+type ArrayField = 'game_versions' | 'create_versions' | 'modloaders';
 
 // Define the SelectOption interface
 interface SelectOption {
@@ -35,7 +35,10 @@ export function MultiSelectCheckboxGroup({
       name={name}
       render={({ field }) => {
         const values = (field.value as string[]) || []; // Type guard for array fields with fallback
-
+        console.log('values', values);
+        options.map((option) => {
+          console.log(option);
+        });
         return (
           <FormItem className='flex flex-col space-y-2'>
             <FormLabel className='flex-0'>{label}</FormLabel>
