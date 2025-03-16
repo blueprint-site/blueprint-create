@@ -7,29 +7,22 @@ This guide outlines the contribution workflow for the Blueprint project, includi
 Before you start contributing to Blueprint, make sure you have:
 
 1. Created a [GitHub account](https://github.com/signup)
-2. [Forked the repository](https://github.com/blueprint-site/blueprint-site.github.io/fork)
-3. [Cloned your fork](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
-4. Set up the development environment as described in the [Installation Guide](../getting-started/installation.md)
+2. [Cloned the repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
+3. Set up the development environment as described in the [Installation Guide](../getting-started/installation.md)
 
 ## Git Workflow
 
-Blueprint follows a forking workflow for contributions:
+Blueprint follows a branch-based workflow for contributions:
 
-### Setting Up Your Fork
+### Setting Up Your Repository
 
-1. Fork the repository on GitHub
-2. Clone your fork locally:
+1. Clone the repository locally:
    ```bash
-   git clone https://github.com/YOUR-USERNAME/blueprint-site.github.io.git
+   git clone https://github.com/blueprint-site/blueprint-site.github.io.git
    cd blueprint-site.github.io
    ```
 
-3. Add the upstream repository as a remote:
-   ```bash
-   git remote add upstream https://github.com/blueprint-site/blueprint-site.github.io.git
-   ```
-
-4. Verify your remotes:
+2. Verify your remote:
    ```bash
    git remote -v
    ```
@@ -52,12 +45,10 @@ Examples:
 
 ### Development Workflow
 
-1. **Sync your fork** with the upstream repository:
+1. **Sync your local repository** with the remote:
    ```bash
-   git checkout main
-   git fetch upstream
-   git merge upstream/main
-   git push origin main
+   git checkout develop
+   git pull
    ```
 
 2. **Create a new branch** for your work:
@@ -76,7 +67,7 @@ Examples:
    git commit -m "feat: add user collections feature"
    ```
 
-5. **Push your branch** to your fork:
+5. **Push your branch** to the repository:
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -120,9 +111,8 @@ If you're working on multiple changes:
 
 1. Go to the [repository](https://github.com/blueprint-site/blueprint-site.github.io)
 2. Click "Pull Requests" > "New Pull Request"
-3. Click "compare across forks"
-4. Select your fork and branch
-5. Click "Create Pull Request"
+3. Select your branch as the source and `develop` as the target branch
+4. Click "Create Pull Request"
 
 ### Writing a Good Pull Request Description
 
@@ -186,18 +176,16 @@ Fixes #123
 
 If your PR has conflicts:
 
-1. Sync your fork with upstream:
+1. Sync your local develop branch:
    ```bash
-   git checkout main
-   git fetch upstream
-   git merge upstream/main
-   git push origin main
+   git checkout develop
+   git pull
    ```
 
 2. Rebase your feature branch:
    ```bash
    git checkout feature/your-feature-name
-   git rebase main
+   git rebase develop
    ```
 
 3. Resolve conflicts in each file
@@ -234,7 +222,7 @@ git push origin feature/your-feature-name
 Before final merge, squash the fixups:
 
 ```bash
-git rebase -i --autosquash main
+git rebase -i --autosquash develop
 git push --force origin feature/your-feature-name
 ```
 
@@ -255,16 +243,14 @@ After your PR is merged:
 
 1. Delete your feature branch:
    ```bash
-   git checkout main
+   git checkout develop
    git branch -d feature/your-feature-name
    git push origin --delete feature/your-feature-name
    ```
 
-2. Update your local main:
+2. Update your local develop branch:
    ```bash
-   git fetch upstream
-   git merge upstream/main
-   git push origin main
+   git pull
    ```
 
 3. Celebrate your contribution! 🎉
@@ -294,7 +280,7 @@ After your PR is merged:
 
 For critical bug fixes:
 
-1. Create a branch from main: `git checkout -b hotfix/critical-issue`
+1. Create a branch from develop: `git checkout -b hotfix/critical-issue`
 2. Fix the issue with minimal changes
 3. Submit a PR with "HOTFIX" in the title
 4. Request expedited review
@@ -316,10 +302,11 @@ Blueprint follows semantic versioning:
 3. **Patch**: Bug fixes, non-breaking
 
 The release process is handled by maintainers, who will:
-1. Merge PRs into main
-2. Create a new version tag
-3. Generate release notes
-4. Deploy to production
+1. Merge PRs into develop
+2. Merge develop into main when ready for release
+3. Create a new version tag
+4. Generate release notes
+5. Deploy to production
 
 ## Additional Resources
 
