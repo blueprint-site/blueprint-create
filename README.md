@@ -159,7 +159,7 @@ Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on our co
 
 ## Community
 
-- Join our [Discord Server](https://discord.gg/blueprint)
+- Join our [Discord Server](https://discord.gg/kDa8YC8u5J)
 - Follow us on [GitHub](https://github.com/blueprint-site)
 - Report issues [here](https://github.com/blueprint-site/blueprint-site.github.io/issues)
 
@@ -170,7 +170,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Contact
 
 - Email: contact@blueprint-create.com
-- Discord: [Blueprint Server](https://discord.gg/blueprint)
+- Discord: [Blueprint Server](https://discord.gg/kDa8YC8u5J)
 - GitHub: [@blueprint-site](https://github.com/blueprint-site)
 
 ## Acknowledgments
@@ -178,3 +178,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Create Mod Team](https://github.com/Creators-of-Create/Create)
 - [Minecraft Modding Community](https://modrinth.com)
 - All our [contributors](https://github.com/blueprint-site/blueprint-site.github.io/graphs/contributors)
+
+<!-- blurry was here 🏳️‍🌈 boo -->
