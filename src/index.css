@@ -2,60 +2,180 @@
 
 @custom-variant dark (.dark &);
 
-@theme {
+/* Root CSS Variables - HSL values wrapped in hsl() */
+:root {
+  --background: hsl(220 13% 98%);
+  --foreground: hsl(220 13% 20%);
+  --foreground-muted: hsl(220 13% 30%);
+
+  --blueprint: hsl(238 93% 84%);
+  --blueprint-foreground: hsl(220 13% 45%);
+  --blueprint-foreground-muted: hsl(220 13% 45%);
+
+  --surface-1: hsl(220 13% 95%);
+  --surface-2: hsl(220 13% 85%);
+  --surface-3: hsl(220 13% 79%);
+
+  --semantic-foreground: hsl(0 0% 90%);
+  --semantic-foreground-muted: hsl(0 0% 80%);
+
+  --card: var(--surface-1);
+  --card-foreground: var(--foreground);
+  --card-foreground-muted: var(--muted);
+
+  --popover: var(--surface-1);
+  --popover-foreground: hsl(220 13% 3.9%);
+
+  --primary: hsl(242 91% 75%);
+  --primary-foreground: var(--semantic-foreground);
+
+  --secondary: hsl(242 44% 59%);
+  --secondary-foreground: var(--semantic-foreground);
+
+  --success: hsl(90 36% 38%);
+  --success-foreground: var(--semantic-foreground);
+
+  --warning: hsl(49 100% 38%);
+  --warning-foreground: var(--semantic-foreground);
+
+  --destructive: hsl(3 57% 36%);
+  --destructive-foreground: var(--semantic-foreground);
+
+  --accent: hsl(265 44% 32%);
+  --accent-foreground: hsl(0 0% 9%);
+
+  --muted: var(--surface-3);
+  --muted-foreground: hsl(220 13% 45%);
+
+  --border: var(--surface-3);
+  --input: var(--surface-2);
+  --ring: var(--primary);
+
+  --radius: 0.5rem;
+
+  --sidebar-background: hsl(0 0% 98%);
+  --sidebar-foreground: hsl(240 5.3% 26.1%);
+  --sidebar-primary: hsl(240 5.9% 10%);
+  --sidebar-primary-foreground: hsl(0 0% 98%);
+  --sidebar-accent: hsl(240 4.8% 95.9%);
+  --sidebar-accent-foreground: hsl(240 5.9% 10%);
+  --sidebar-border: hsl(220 13% 91%);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+}
+
+.dark {
+  --background: hsl(0 0% 10%);
+  --foreground: hsl(0 0% 98%);
+  --foreground-muted: hsl(0 0% 85%);
+
+  --blueprint: hsl(239 36% 67%);
+  --blueprint-foreground: hsl(220 5% 90%);
+  --blueprint-foreground-muted: hsl(220 5% 80%);
+
+  --surface-1: hsl(0 0% 14%);
+  --surface-2: hsl(0 0% 18.5%);
+  --surface-3: hsl(0 0% 23%);
+
+  --semantic-foreground: hsl(0 0% 90%);
+  --semantic-foreground-muted: hsl(0 0% 80%);
+
+  --card: var(--surface-1);
+  --card-foreground: var(--foreground);
+  --card-foreground-muted: var(--muted);
+
+  --popover: var(--surface-1);
+  --popover-foreground: var(--foreground);
+
+  --primary: hsl(242 91% 75%);
+  --primary-foreground: var(--semantic-foreground);
+
+  --secondary: hsl(246 100% 77%);
+  --secondary-foreground: var(--semantic-foreground);
+
+  --accent: hsl(265 44% 32%);
+  --accent-foreground: hsl(0 0% 98%);
+
+  --success: hsl(90 36% 38%);
+  --success-foreground: var(--semantic-foreground);
+
+  --warning: hsl(49 100% 38%);
+  --warning-foreground: var(--semantic-foreground);
+
+  --destructive: hsl(3 57% 36%);
+  --destructive-foreground: var(--semantic-foreground);
+
+  --muted: var(--surface-3);
+  --muted-foreground: hsl(0 0% 70%);
+
+  --border: var(--surface-3);
+  --input: var(--surface-2);
+  --ring: var(--primary);
+
+  --sidebar-background: var(--surface-1);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: hsl(224.3 76.3% 48%);
+  --sidebar-primary-foreground: var(--foreground);
+  --sidebar-accent: var(--surface-2);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: var(--surface-3);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+}
+
+/* Use @theme inline with variables directly without hsl() wrappers */
+@theme inline {
   --font-minecraft: Minecraft, system-ui, sans-serif;
 
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
-  --color-foreground-muted: hsl(var(--foreground-muted));
-  --color-blueprint: hsl(var(--blueprint));
-  --color-blueprint-foreground: hsl(var(--blueprint-foreground));
-  --color-blueprint-foreground-muted: hsl(var(--blueprint-foreground-muted));
-  --color-semantic-foreground: hsl(var(--semantic-foreground));
-  --color-semantic-foreground-muted: hsl(var(--semantic-foreground-muted));
-  --color-surface-1: hsl(var(--surface-1));
-  --color-surface-2: hsl(var(--surface-2));
-  --color-surface-3: hsl(var(--surface-3));
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-blueprint: var(--blueprint);
+  --color-blueprint-foreground: var(--blueprint-foreground);
+  --color-blueprint-foreground-muted: var(--blueprint-foreground-muted);
+  --color-semantic-foreground: var(--semantic-foreground);
+  --color-semantic-foreground-muted: var(--semantic-foreground-muted);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
 
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
 
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
 
-  --color-success: hsl(var(--success));
-  --color-success-foreground: hsl(var(--success-foreground));
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
 
-  --color-warning: hsl(var(--warning));
-  --color-warning-foreground: hsl(var(--warning-foreground));
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
 
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
 
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
 
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
 
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
 
-  --color-card: hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
-  --color-card-foreground-muted: hsl(var(--card-foreground-muted));
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-card-foreground-muted: var(--card-foreground-muted);
 
-  --color-sidebar: hsl(var(--sidebar-background));
-  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
-  --color-sidebar-primary: hsl(var(--sidebar-primary));
-  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
-  --color-sidebar-accent: hsl(var(--sidebar-accent));
-  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
-  --color-sidebar-border: hsl(var(--sidebar-border));
-  --color-sidebar-ring: hsl(var(--sidebar-ring));
+  --color-sidebar: var(--sidebar-background);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
@@ -116,126 +236,6 @@
     font-weight: bold;
     font-style: italic;
     font-display: swap;
-  }
-}
-
-@layer base {
-  :root {
-    --background: 220 13% 98%;
-    --foreground: 220 13% 20%;
-    --foreground-muted: 220 13% 30%;
-
-    --blueprint: 238 93% 84%;
-    --blueprint-foreground: 220 13% 45%;
-    --blueprint-foreground-muted: 220 13% 45%;
-
-    --surface-1: 220 13% 95%;
-    --surface-2: 220 13% 85%;
-    --surface-3: 220 13% 79%;
-
-    --semantic-foreground: 0 0% 90%;
-    --semantic-foreground-muted: 0 0% 80%;
-
-    --card: var(--surface-1);
-    --card-foreground: var(--foreground);
-    --card-foreground-muted: var(--muted);
-
-    --popover: var(--surface-1);
-    --popover-foreground: 220 13% 3.9%;
-
-    --primary: 242 91% 75%;
-    --primary-foreground: var(--semantic-foreground);
-
-    --secondary: 242 44% 59%;
-    --secondary-foreground: var(--semantic-foreground);
-
-    --success: 90 36% 38%;
-    --success-foreground: var(--semantic-foreground);
-
-    --warning: 49 100% 38%;
-    --warning-foreground: var(--semantic-foreground);
-
-    --destructive: 3 57% 36%;
-    --destructive-foreground: var(--semantic-foreground);
-
-    --accent: 265 44% 32%;
-    --accent-foreground: 0 0% 9%;
-
-    --muted: var(--surface-3);
-    --muted-foreground: 220 13% 45%;
-
-    --border: var(--surface-3);
-    --input: var(--surface-2);
-    --ring: var(--primary);
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 0 0% 10%;
-    --foreground: 0 0% 98%;
-    --foreground-muted: 0 0% 85%;
-
-    --blueprint: 239 36% 67%;
-    --blueprint-foreground: 220 5% 90%;
-    --blueprint-foreground-muted: 220 5% 80%;
-
-    --surface-1: 0 0% 14%;
-    --surface-2: 0 0% 18.5%;
-    --surface-3: 0 0% 23%;
-
-    --semantic-foreground: 0 0% 90%;
-    --semantic-foreground-muted: 0 0% 80%;
-
-    --card: var(--surface-1);
-    --card-foreground: var(--foreground);
-    --card-foreground-muted: var(--muted);
-
-    --popover: var(--surface-1);
-    --popover-foreground: var(--foreground);
-
-    --primary: 242 91% 75%;
-    --primary-foreground: var(--semantic-foreground);
-
-    --secondary: 246 100% 77%;
-    --secondary-foreground: var(--semantic-foreground);
-
-    --accent: 265 44% 32%;
-    --accent-foreground: 0 0% 98%;
-
-    --success: 90 36% 38%;
-    --success-foreground: var(--semantic-foreground);
-
-    --warning: 49 100% 38%;
-    --warning-foreground: var(--semantic-foreground);
-
-    --destructive: 3 57% 36%;
-    --destructive-foreground: var(--semantic-foreground);
-
-    --muted: var(--surface-3);
-    --muted-foreground: 0 0% 70%;
-
-    --border: var(--surface-3);
-    --input: var(--surface-2);
-    --ring: var(--primary);
-
-    --sidebar-background: var(--surface-1);
-    --sidebar-foreground: var(--foreground);
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: var(--foreground);
-    --sidebar-accent: var(--surface-2);
-    --sidebar-accent-foreground: var(--foreground);
-    --sidebar-border: var(--surface-3);
-    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
