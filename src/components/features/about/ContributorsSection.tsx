@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ContributorCard } from './ContributorCard';
@@ -17,7 +16,11 @@ interface ContributorsSectionProps {
   error: string | null;
 }
 
-export function ContributorsSection({ contributors, isLoading, error }: ContributorsSectionProps) {
+export function ContributorsSection({
+  contributors,
+  isLoading,
+  error,
+}: Readonly<ContributorsSectionProps>) {
   const { t } = useTranslation();
 
   return (

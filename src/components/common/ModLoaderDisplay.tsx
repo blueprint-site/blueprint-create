@@ -8,27 +8,25 @@ const ModLoaderDisplay = ({ loaders = [] }: { loaders: string[] }) => {
   const uniqueLoaders = [...new Set(loaders.map((loader) => loader.toLowerCase()))];
 
   return (
-    <>
-      <div className='flex flex-row gap-2'>
-        {uniqueLoaders.map((loader, i) => {
-          return loader === 'neoforge' ? (
-            <div>
-              <img src={neoforge} alt={loader} className='h-8' key={i} />
-            </div>
-          ) : (
-            <DevinsBadges
-              key={i}
-              type='compact-minimal'
-              category='supported'
-              className={'h-8'}
-              name={loader}
-              format='svg'
-              height={32}
-            />
-          );
-        })}
-      </div>
-    </>
+    <div className='flex flex-row gap-2'>
+      {uniqueLoaders.map((loader) => {
+        return loader === 'neoforge' ? (
+          <div key={loader}>
+            <img src={neoforge} alt={loader} className='h-8' />
+          </div>
+        ) : (
+          <DevinsBadges
+            key={loader}
+            type='compact-minimal'
+            category='supported'
+            className={'h-8'}
+            name={loader}
+            format='svg'
+            height={32}
+          />
+        );
+      })}
+    </div>
   );
 };
 
