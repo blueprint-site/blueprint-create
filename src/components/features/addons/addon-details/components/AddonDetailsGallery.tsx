@@ -1,9 +1,9 @@
 import { CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { ModrinthGalleryImage } from '@/api/endpoints/useModrinthProject';
+import { ModrinthGalleryImage } from '@/api/endpoints/useModrinth';
 
 export interface AddonDetailsGalleryParams {
   addon_name: string;
@@ -18,17 +18,35 @@ export const AddonDetailsGallery = ({
 }: AddonDetailsGalleryParams) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [fullscreenIndex, setFullscreenIndex] = useState(0);
+  const [imagesLoaded, setImagesLoaded] = useState<boolean[]>([]);
 
   // Handle both string arrays and ModrinthGalleryImage arrays
-  const normalizedGallery = gallery_small.map((item) => {
-    if (typeof item === 'string') {
-      return { url: item };
-    }
-    return item;
-  });
+  const normalizedGallery = useMemo(() => {
+    return gallery_small.map((item) => {
+      if (typeof item === 'string') {
+        return { url: item };
+      }
+      return item;
+    });
+  }, [gallery_small]);
 
   // Use HD images if available, otherwise use the gallery from the main API
-  const displayImages = gallery_hd || normalizedGallery.map((img) => img.url);
+  const displayImages = useMemo(() => {
+    return gallery_hd || normalizedGallery.map((img) => img.url);
+  }, [gallery_hd, normalizedGallery]);
+
+  // Initialize image loading state
+  useEffect(() => {
+    setImagesLoaded(new Array(normalizedGallery.length).fill(false));
+  }, [normalizedGallery.length]);
+
+  const handleImageLoad = (index: number) => {
+    setImagesLoaded((prev) => {
+      const newState = [...prev];
+      newState[index] = true;
+      return newState;
+    });
+  };
 
   const navigateGallery = (direction: 'prev' | 'next') => {
     setCurrentImageIndex((prev) => {
@@ -52,15 +70,30 @@ export const AddonDetailsGallery = ({
     });
   };
 
+  // Preload the next image
+  useEffect(() => {
+    const nextIndex = (currentImageIndex + 1) % normalizedGallery.length;
+    if (nextIndex !== currentImageIndex) {
+      const img = new Image();
+      img.src = displayImages[nextIndex];
+    }
+  }, [currentImageIndex, displayImages, normalizedGallery.length]);
+
   return (
     <CardContent className='py-6'>
       <div className='relative'>
-        <div className='aspect-video overflow-hidden rounded-lg'>
+        <div className='bg-muted/30 aspect-video overflow-hidden rounded-lg'>
+          {/* Using a container with fixed aspect ratio to prevent layout shifts */}
           <img
             src={displayImages[currentImageIndex]}
             alt={`${addon_name} screenshot ${currentImageIndex + 1}`}
-            className='h-full w-full object-cover transition-all duration-300 hover:scale-105'
+            className={`h-full w-full object-cover transition-all duration-300 hover:scale-105 ${
+              imagesLoaded[currentImageIndex] ? 'opacity-100' : 'opacity-0'
+            }`}
             loading='lazy'
+            onLoad={() => handleImageLoad(currentImageIndex)}
+            width={800}
+            height={450}
           />
         </div>
 
@@ -97,6 +130,8 @@ export const AddonDetailsGallery = ({
                     src={displayImages[fullscreenIndex]}
                     alt={`${addon_name} screenshot ${fullscreenIndex + 1}`}
                     className='w-full object-contain'
+                    width={1200}
+                    height={800}
                   />
                   <div className='absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-between px-4'>
                     <Button
@@ -146,9 +181,9 @@ export const AddonDetailsGallery = ({
         {normalizedGallery.length > 1 && (
           <div className='absolute inset-x-0 bottom-4 flex justify-center gap-2'>
             <div className='bg-background/70 flex items-center gap-1.5 rounded-full px-3 py-1.5 backdrop-blur-sm'>
-              {normalizedGallery.map((image, idx) => (
+              {normalizedGallery.map((_, idx) => (
                 <button
-                  key={`dot-${idx}-${image.url.substring(0, 8)}`}
+                  key={`dot-${idx}`}
                   onClick={() => setCurrentImageIndex(idx)}
                   className={`h-2 w-2 rounded-full transition-all ${
                     idx === currentImageIndex
@@ -169,7 +204,7 @@ export const AddonDetailsGallery = ({
         <div className='mt-4 hidden gap-2 overflow-x-auto py-2 sm:flex'>
           {normalizedGallery.map((image, idx) => (
             <button
-              key={`thumb-${idx}-${image.url.substring(0, 8)}`}
+              key={`thumb-${idx}`}
               onClick={() => setCurrentImageIndex(idx)}
               className={`h-16 w-24 flex-shrink-0 overflow-hidden rounded border-2 transition-all ${
                 idx === currentImageIndex
@@ -182,6 +217,8 @@ export const AddonDetailsGallery = ({
                 alt={`Thumbnail ${idx + 1}`}
                 className='h-full w-full object-cover'
                 loading='lazy'
+                width={96}
+                height={64}
               />
             </button>
           ))}
