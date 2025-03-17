@@ -1,0 +1,69 @@
+{
+  "translation": {
+    "navigation": {
+      "label": {
+        "addons": "الإضافات",
+        "schematics": "مخططات",
+        "about": "بشأن",
+        "login": "Login",
+        "blog": "Blog"
+      }
+    },
+    "user-menu": {
+      "profile": "Profile",
+      "settings": "التركيبات",
+      "admin": "الفريق المخصص",
+      "logout": "Logout"
+    },
+    "awards": {
+      "banner": {
+        "label": "الجائزة الكبرى",
+        "link": "صوت الآن!"
+      }
+    },
+    "home": {
+      "discover": "أضافات بارزة",
+      "info": {
+        "about": {
+          "title": "ما هو (بلو بومب)؟?",
+          "description": "(بلوت) موقع موارد (كريت مود) لإيجاد إضافات، مخططات، وأكثر!"
+        },
+        "links": "الروابط المفيدة:"
+      },
+      "contributions": {
+        "title": "المساهمون",
+        "subtitle": {
+          "main": "بفضل مساهمينا الرائعين بدونك لم يكن هذا ممكناً",
+          "api": "أيضاً شكراً كبيراً لأولئك الذين ساعدونا على بناء نظام \"آي بي آي\""
+        }
+      }
+    },
+    "addons": {
+      "search": {
+        "placeholder": "ابحثوا عن (آدونز)."
+      },
+      "dropdown": {
+        "modloader": {
+          "select": "محمول مختار",
+          "all": "جميع المحركات"
+        },
+        "version": {
+          "select": "الصيغة المختارة",
+          "all": "كل الأحاديث"
+        }
+      },
+      "label": {
+        "downloads": "الحمولات",
+        "description": "الوصف",
+        "categories": "فئات",
+        "followers": "المتابعون",
+        "authors": "أنشئت من قبل",
+        "note": "ملاحظة"
+      },
+      "random": {
+        "title": "تشعر بالملل؟?",
+        "link": "الحصول على إضافات عشوائية!"
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "translation": {
+    "navigation": {
+      "label": {
+        "addons": "Аддоны",
+        "schematics": "Схематика",
+        "about": "О нас",
+        "login": "Логин",
+        "blog": "Блог"
+      }
+    },
+    "user-menu": {
+      "profile": "Профиль",
+      "settings": "Настройки",
+      "admin": "Панель администраторов",
+      "logout": "Выход"
+    },
+    "awards": {
+      "banner": {
+        "label": "Премия Wrench Awards",
+        "link": "Голосуйте сейчас!"
+      }
+    },
+    "home": {
+      "discover": "Особенности Addons",
+      "info": {
+        "about": {
+          "title": "Что такое Blueprint?",
+          "description": "Blueprint - это ресурс Create Mod для поиска дополнений, схем и многого другого!"
+        },
+        "links": "Полезные ссылки:"
+      },
+      "contributions": {
+        "title": "Вкладчики",
+        "subtitle": {
+          "main": "Спасибо нашим замечательным вкладчикам. Без тебя это было бы невозможно",
+          "api": "Также большое спасибо тем, кто помог нам создать API"
+        }
+      }
+    },
+    "addons": {
+      "search": {
+        "placeholder": "Поисковые аддоны..."
+      },
+      "dropdown": {
+        "modloader": {
+          "select": "Выберите Modloader",
+          "all": "Все модаторы"
+        },
+        "version": {
+          "select": "Выберите версию",
+          "all": "Все версии"
+        }
+      },
+      "label": {
+        "downloads": "Скачать",
+        "description": "Описание",
+        "categories": "Категории",
+        "followers": "Последователи",
+        "authors": "Созданный",
+        "note": "Примечание"
+      },
+      "random": {
+        "title": "Тебе скучно?",
+        "link": "Получите случайный аддон!"
+      }
+    }
+  }
+}

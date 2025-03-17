@@ -1,0 +1,69 @@
+{
+  "translation": {
+    "navigation": {
+      "label": {
+        "addons": "Addons",
+        "schematics": "Schematics",
+        "about": "About",
+        "login": "Login",
+        "blog": "Blog"
+      }
+    },
+    "user-menu": {
+      "profile": "Profile",
+      "settings": "Settings",
+      "admin": "Admin Panel",
+      "logout": "Logout"
+    },
+    "awards": {
+      "banner": {
+        "label": "The Wrench Awards",
+        "link": "Vote now!"
+      }
+    },
+    "home": {
+      "discover": "Featured Addons",
+      "info": {
+        "about": {
+          "title": "What is Blueprint?",
+          "description": "Blueprint is a Create Mod resource site to find addons, schematics, and more!"
+        },
+        "links": "Useful links:"
+      },
+      "contributions": {
+        "title": "Contributors",
+        "subtitle": {
+          "main": "Thanks to our awesome contributors. Without you this wouldn't have been possible ❤️",
+          "api": "Also a big thanks to those who helped us building the API ❤️"
+        }
+      }
+    },
+    "addons": {
+      "search": {
+        "placeholder": "Search Addons..."
+      },
+      "dropdown": {
+        "modloader": {
+          "select": "Select Modloader",
+          "all": "All Modloaders"
+        },
+        "version": {
+          "select": "Select Version",
+          "all": "All Versions"
+        }
+      },
+      "label": {
+        "downloads": "Downloads",
+        "description": "Description",
+        "categories": "Categories",
+        "followers": "Followers",
+        "authors": "Created by",
+        "note": "Note"
+      },
+      "random": {
+        "title": "Feeling bored?",
+        "link": "Get a random addon!"
+      }
+    }
+  }
+}

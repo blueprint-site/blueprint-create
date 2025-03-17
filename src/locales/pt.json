@@ -1,0 +1,69 @@
+{
+  "translation": {
+    "navigation": {
+      "label": {
+        "addons": "Addons",
+        "schematics": "Esquema",
+        "about": "Sobre a",
+        "login": "Login",
+        "blog": "Blog"
+      }
+    },
+    "user-menu": {
+      "profile": "Perfil",
+      "settings": "Configurações",
+      "admin": "Painel de administração",
+      "logout": "Logotipo"
+    },
+    "awards": {
+      "banner": {
+        "label": "O Prêmio Wrench",
+        "link": "Votem agora!"
+      }
+    },
+    "home": {
+      "discover": "Addons em destaque",
+      "info": {
+        "about": {
+          "title": "O que é a Blueprint?",
+          "description": "Blueprint é um site de recurso Criar Mod para encontrar addons, esquemas e muito mais!"
+        },
+        "links": "Links úteis:"
+      },
+      "contributions": {
+        "title": "Contribuintes",
+        "subtitle": {
+          "main": "Graças aos nossos contribuidores incríveis. Sem você isso não teria sido possível '",
+          "api": "Também um grande obrigado para aqueles que nos ajudaram a construir a API  to"
+        }
+      }
+    },
+    "addons": {
+      "search": {
+        "placeholder": "Pesquisa Addons..."
+      },
+      "dropdown": {
+        "modloader": {
+          "select": "Selecione Modloader",
+          "all": "Todos os Modloaders"
+        },
+        "version": {
+          "select": "Selecione a versão",
+          "all": "Todas as versões"
+        }
+      },
+      "label": {
+        "downloads": "Downloads",
+        "description": "Descrição",
+        "categories": "Categorias",
+        "followers": "Seguidores",
+        "authors": "Criado por",
+        "note": "Nota"
+      },
+      "random": {
+        "title": "Estás a ficar aborrecido?",
+        "link": "Arranja um addon aleatório!"
+      }
+    }
+  }
+}

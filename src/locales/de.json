@@ -1,0 +1,69 @@
+{
+  "translation": {
+    "navigation": {
+      "label": {
+        "addons": "Addons",
+        "schematics": "In den Warenkorb",
+        "about": "Über uns",
+        "login": "Anmelden",
+        "blog": "Blog"
+      }
+    },
+    "user-menu": {
+      "profile": "Profil",
+      "settings": "Einstellungen",
+      "admin": "Admin-Panel",
+      "logout": "Anmeldung"
+    },
+    "awards": {
+      "banner": {
+        "label": "Die Wrench Awards",
+        "link": "Jetzt abstimmen!"
+      }
+    },
+    "home": {
+      "discover": "Vorgestellte Addons",
+      "info": {
+        "about": {
+          "title": "Was ist Blueprint?",
+          "description": "Blueprint ist eine Website zum Erstellen von Mod-Ressourcen, um Addons, Schaltpläne und vieles mehr zu finden!"
+        },
+        "links": "Nützliche Links"
+      },
+      "contributions": {
+        "title": "Beiträge",
+        "subtitle": {
+          "main": "Dank unserer großartigen Mitarbeiter. Ohne dich wäre das nicht möglich gewesen ❤",
+          "api": "Auch ein großer Dank an diejenigen, die uns geholfen haben, die API zu bauen"
+        }
+      }
+    },
+    "addons": {
+      "search": {
+        "placeholder": "Suche nach Addons..."
+      },
+      "dropdown": {
+        "modloader": {
+          "select": "Wählen Sie Modloader",
+          "all": "Alle Modloader"
+        },
+        "version": {
+          "select": "Wählen Sie die Version",
+          "all": "Alle Versionen"
+        }
+      },
+      "label": {
+        "downloads": "Downloads",
+        "description": "Warenbezeichnung",
+        "categories": "Kategorien",
+        "followers": "Folgen",
+        "authors": "Erstellt von",
+        "note": "Anmerkung"
+      },
+      "random": {
+        "title": "Langeweile?",
+        "link": "Hol ein zufälliges Addon!"
+      }
+    }
+  }
+}

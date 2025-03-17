@@ -1,0 +1,69 @@
+{
+  "translation": {
+    "navigation": {
+      "label": {
+        "addons": "加词",
+        "schematics": "形状",
+        "about": "关于",
+        "login": "登录",
+        "blog": "博客"
+      }
+    },
+    "user-menu": {
+      "profile": "简介",
+      "settings": "设置",
+      "admin": "行政小组",
+      "logout": "注销"
+    },
+    "awards": {
+      "banner": {
+        "label": "扳手奖",
+        "link": "现在就投票!"
+      }
+    },
+    "home": {
+      "discover": "特性加成",
+      "info": {
+        "about": {
+          "title": "蓝图是什么?",
+          "description": "蓝图是一个创建 Mod 资源网站,可以找到加词,图表等等!"
+        },
+        "links": "有用链接 :"
+      },
+      "contributions": {
+        "title": "贡献者",
+        "subtitle": {
+          "main": "感谢我们出色的贡献。 没有你,这是不可能的... ..",
+          "api": "也感谢那些帮助我们建造API的人"
+        }
+      }
+    },
+    "addons": {
+      "search": {
+        "placeholder": "搜索添加..."
+      },
+      "dropdown": {
+        "modloader": {
+          "select": "选择装入器",
+          "all": "全部装入器"
+        },
+        "version": {
+          "select": "选择版本",
+          "all": "所有版本"
+        }
+      },
+      "label": {
+        "downloads": "下载",
+        "description": "说明",
+        "categories": "类别",
+        "followers": "跟踪者",
+        "authors": "创建于",
+        "note": "说明"
+      },
+      "random": {
+        "title": "觉得无聊吗?",
+        "link": "拿个随机加登!"
+      }
+    }
+  }
+}

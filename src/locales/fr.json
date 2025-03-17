@@ -1,0 +1,69 @@
+{
+  "translation": {
+    "navigation": {
+      "label": {
+        "addons": "Addons",
+        "schematics": "Schémas",
+        "about": "À propos",
+        "login": "Connexion",
+        "blog": "Blog"
+      }
+    },
+    "user-menu": {
+      "profile": "Profil",
+      "settings": "Paramètres",
+      "admin": "Panneau d'administration",
+      "logout": "Déconnexion"
+    },
+    "awards": {
+      "banner": {
+        "label": "Les prix de la clé",
+        "link": "Votez !"
+      }
+    },
+    "home": {
+      "discover": "Addons en vedette",
+      "info": {
+        "about": {
+          "title": "Qu'est-ce que Blueprint?",
+          "description": "Blueprint est un site de ressources Create Mod pour trouver des addons, des schémas et plus encore !"
+        },
+        "links": "Liens utiles:"
+      },
+      "contributions": {
+        "title": "Contributions",
+        "subtitle": {
+          "main": "Merci à nos contributeurs. Sans vous, ça n'aurait pas été possible",
+          "api": "Un grand merci aussi à ceux qui nous ont aidés à construire l'API"
+        }
+      }
+    },
+    "addons": {
+      "search": {
+        "placeholder": "Addons de recherche..."
+      },
+      "dropdown": {
+        "modloader": {
+          "select": "Sélectionnez Modloader",
+          "all": "Tous les Modloaders"
+        },
+        "version": {
+          "select": "Sélectionner la version",
+          "all": "Toutes les versions"
+        }
+      },
+      "label": {
+        "downloads": "Téléchargements",
+        "description": "Désignation des marchandises",
+        "categories": "Catégories",
+        "followers": "Abonnés",
+        "authors": "Créé par",
+        "note": "Remarque"
+      },
+      "random": {
+        "title": "Tu t'ennuies ?",
+        "link": "Prends un addon aléatoire !"
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "translation": {
+    "navigation": {
+      "label": {
+        "addons": "アドオン",
+        "schematics": "スケマティクス",
+        "about": "お問い合わせ",
+        "login": "ログイン",
+        "blog": "ニュース"
+      }
+    },
+    "user-menu": {
+      "profile": "プロフィール",
+      "settings": "コンテンツ",
+      "admin": "管理者パネル",
+      "logout": "ログイン"
+    },
+    "awards": {
+      "banner": {
+        "label": "レンチ賞",
+        "link": "今すぐ投票!"
+      }
+    },
+    "home": {
+      "discover": "注目のアドオン",
+      "info": {
+        "about": {
+          "title": "Blueprintとは何ですか?",
+          "description": "Blueprint は Create Mod リソース サイトで、アドオン、スキーマなどの検索ができます!"
+        },
+        "links": "便利なリンク:"
+      },
+      "contributions": {
+        "title": "貢献者",
+        "subtitle": {
+          "main": "素晴らしいコントリビューターのおかげで。 せっかくなっていなかったのは❤️",
+          "api": "また、API ❤️ の構築にご協力いただいた方々、大歓迎です"
+        }
+      }
+    },
+    "addons": {
+      "search": {
+        "placeholder": "検索アドオン..."
+      },
+      "dropdown": {
+        "modloader": {
+          "select": "Modloader を選択",
+          "all": "すべてのModloaders"
+        },
+        "version": {
+          "select": "バージョンを選択",
+          "all": "すべてのバージョン"
+        }
+      },
+      "label": {
+        "downloads": "ダウンロード",
+        "description": "コンテンツ",
+        "categories": "カテゴリー",
+        "followers": "フォロワー",
+        "authors": "によって作成された",
+        "note": "お問い合わせ"
+      },
+      "random": {
+        "title": "退屈な感じ?",
+        "link": "ランダムなアドオンを入手!"
+      }
+    }
+  }
+}

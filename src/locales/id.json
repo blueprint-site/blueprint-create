@@ -1,0 +1,69 @@
+{
+  "translation": {
+    "navigation": {
+      "label": {
+        "addons": "- Ya",
+        "schematics": "Skema",
+        "about": "Tentang",
+        "login": "Log masuk",
+        "blog": "Blog"
+      }
+    },
+    "user-menu": {
+      "profile": "Profil",
+      "settings": "Pengaturan",
+      "admin": "Panel Admin",
+      "logout": "Log Keluar"
+    },
+    "awards": {
+      "banner": {
+        "label": "The Wrench Awards",
+        "link": "Pilih sekarang!"
+      }
+    },
+    "home": {
+      "discover": "Ditampilkan",
+      "info": {
+        "about": {
+          "title": "Apa itu Blueprint?",
+          "description": "Blueprint adalah Situs sumber daya Create Mod untuk menemukan Addon, skema, dan lebih!"
+        },
+        "links": "Link yang berguna:"
+      },
+      "contributions": {
+        "title": "Kontributor",
+        "subtitle": {
+          "main": "Berkat kontributor kita yang mengagumkan. Tanpa Anda ini tidak akan mungkin",
+          "api": "Juga berkat mereka yang membantu kami membangun API"
+        }
+      }
+    },
+    "addons": {
+      "search": {
+        "placeholder": "Cari..."
+      },
+      "dropdown": {
+        "modloader": {
+          "select": "Pilih Modloader",
+          "all": "Semua Modloaders"
+        },
+        "version": {
+          "select": "Pilih Versi",
+          "all": "Semua Versions"
+        }
+      },
+      "label": {
+        "downloads": "Unduhan",
+        "description": "Deskripsi",
+        "categories": "Kategori",
+        "followers": "Followers",
+        "authors": "Dibuat oleh",
+        "note": "Catatan"
+      },
+      "random": {
+        "title": "Merasa bosan?",
+        "link": "Dapatkan addon acak!"
+      }
+    }
+  }
+}
