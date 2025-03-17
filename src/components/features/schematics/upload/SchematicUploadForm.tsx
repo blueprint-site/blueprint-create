@@ -9,7 +9,7 @@ import { FormMarkdownEditor } from './form/FormMarkdownEditor';
 import { MultiSelectCheckboxGroup } from './form/MultiSelectCheckboxGroup';
 import { FormInput } from './form/FormInput';
 import { CategorySelectors } from './form/CategorySelectors';
-import { SchematicFormValues } from '@/types';
+import { Schematic, SchematicFormValues } from '@/types';
 import { schematicFormSchema } from '@/schemas/schematic.schema.tsx';
 import { MODLOADER_OPTIONS, CREATE_VERSIONS, MINECRAFT_VERSIONS } from '@/data';
 
@@ -19,6 +19,7 @@ interface SchematicUploadFormProps {
   onImageChange?: (files: File[]) => void;
   initialData?: Partial<SchematicFormValues>;
   isNew?: boolean;
+  existingData?: Schematic | null;
 }
 
 export function SchematicUploadForm({
@@ -26,6 +27,7 @@ export function SchematicUploadForm({
   onValueChange,
   onImageChange,
   initialData,
+  existingData,
   isNew,
 }: SchematicUploadFormProps) {
   const [schematicFilePreview, setSchematicFilePreview] = useState<File | null>(null);
@@ -70,8 +72,8 @@ export function SchematicUploadForm({
   }, [form, onValueChange]);
 
   const handleFormSubmit = form.handleSubmit(async (data) => {
-    console.log('Submitting form:', data);
     try {
+      console.log('Submitting form:', data);
       await onSubmit(data);
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -119,7 +121,13 @@ export function SchematicUploadForm({
                 }}
               />
             </div>
-
+            <div>
+              <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+                {existingData?.image_urls.map((imageUrl, index) => {
+                  return <img key={index} src={imageUrl} alt={imageUrl} />;
+                })}
+              </div>
+            </div>
             <FormInput
               name='title'
               control={form.control}
@@ -163,7 +171,21 @@ export function SchematicUploadForm({
               />
             </div>
 
-            <Button type='submit' className='w-full'>
+            <Button
+              type='button' // Important : éviter de soumettre le formulaire par défaut
+              onClick={() => {
+                // Vérifier que form.handleSubmit est bien appelé
+                form.handleSubmit(async (data) => {
+                  console.log('Form data submitted:', data);
+                  try {
+                    await onSubmit(data);
+                  } catch (error) {
+                    console.error('Error submitting form:', error);
+                  }
+                })();
+              }}
+              className='w-full'
+            >
               {isNew ? 'Upload Schematic' : 'Update Schematic'}
             </Button>
           </form>

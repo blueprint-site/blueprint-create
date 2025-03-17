@@ -141,6 +141,7 @@ function SchematicsUpload() {
             onSubmit={onSubmit}
             onValueChange={handleFieldChange}
             onImageChange={handleImagePreview}
+            existingData={existingSchematic || null}
           />
         </div>
 
