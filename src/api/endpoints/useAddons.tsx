@@ -44,6 +44,7 @@ function tryParseJson(jsonString: string) {
     return undefined;
   }
 }
+
 export const useFetchAddon = (slug?: string) => {
   return useQuery<Addon | null>({
     queryKey: ['addon', slug],

@@ -9,7 +9,7 @@ export {
   useCurrentBreakpoint,
 } from './endpoints/useBreakpoints';
 export { useSystemThemeSync } from './endpoints/useSystemThemeSync';
-export { useModrinthProject } from './endpoints/useModrinthProject';
+export { useModrinthProject } from './endpoints/useModrinth';
 
 // Export addon-related hooks directly
 export { useDeleteAddon, useFetchAddon, useFetchAddons, useSaveAddon } from './endpoints/useAddons';
