@@ -39,7 +39,7 @@ export const AddonDetailsContent = ({
       (dependencies.embedded && dependencies.embedded.length > 0));
 
   // Check if we have environment info
-  const hasEnvironmentInfo = clientSide || serverSide;
+  const hasEnvironmentInfo = clientSide ?? serverSide;
 
   return (
     <CardContent className='py-6'>

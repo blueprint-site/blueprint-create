@@ -1,6 +1,6 @@
+// src/types/addons/addon-details.ts
 import { ReactNode } from 'react';
 import { CurseForgeAddon, ModrinthAddon } from '@/types';
-import { ModrinthVersions } from '@/api/endpoints/useModrinth';
 
 /**
  * Represents a version of an addon
@@ -32,24 +32,15 @@ export interface VersionInfo {
 }
 
 /**
- * Interface for the return value of useModrinthVersionInfo
+ * Display features for version data
  */
-export interface ModrinthVersionInfo {
-  dependencies: Record<string, unknown> | null;
-  versions: ModrinthVersions[] | null;
-  createVersions: string[];
-}
-
-/**
- * Props for the VersionProcessor hook
- */
-export interface VersionProcessorProps {
-  versionInfoData: {
-    dependencies: Record<string, unknown>;
-    versions: ModrinthVersions[] | null;
-    createVersions: string[];
-  } | null;
-  allGameVersions?: Set<string>;
+export interface VersionDisplay {
+  filteredMinecraftVersions: string[];
+  uniqueLoaders: string[];
+  uniqueCreateVersions: string[];
+  sortedVersions: AddonVersion[];
+  featuredVersion: AddonVersion | null;
+  isCompatible: (mcVersion: string, loader: string) => boolean;
 }
 
 /**
@@ -92,6 +83,8 @@ export interface AddonDataProps {
   versionInfo: VersionInfo | null;
   isLoadingVersionInfo: boolean;
   slug?: string;
+  // Optional version display features
+  versionDisplay?: VersionDisplay;
 }
 
 /**

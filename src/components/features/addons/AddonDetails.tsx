@@ -1,43 +1,24 @@
-import { Card } from '@/components/ui/card';
+// src/components/features/addons/AddonDetails.tsx
 import { useParams } from 'react-router';
-import { useFetchAddon, useModrinthProject } from '@/api';
-import { CurseForgeAddon, ModrinthAddon } from '@/types';
-
-import {
-  AddonDetailsHeader,
-  AddonDetailsContent,
-  AddonDetailsDescription,
-  AddonDetailsError,
-  AddonDetailsGallery,
-  AddonDetailsFooter,
-  AddonDetailsLoading,
-  AddonDetailsDependencies,
-  AddonDetailsDonation,
-} from '@/components/features/addons/addon-details';
-import { Separator } from '@/components/ui/separator';
-import { ReactNode } from 'react';
-import { Bug, Globe } from 'lucide-react';
-import { SiGithub } from '@icons-pack/react-simple-icons';
+import { useAddonData } from '@/hooks/useAddonData';
+import { useVersionProcessor, useVersionDisplay } from '../../../hooks/useCreateVersionProcessor';
+import { AddonDetailsError } from '@/components/features/addons/addon-details/AddonDetailsError';
+import { AddonDetailsLoading } from '@/components/features/addons/addon-details/AddonDetailsLoading';
+import { AddonDataView } from '@/components/features/addons/addon-details/utils/AddonDataView';
 
 export default function AddonDetails() {
   const { slug } = useParams();
-  const { data: addon, isLoading, error } = useFetchAddon(slug);
 
-  // Parse Modrinth data
-  let modrinthData: ModrinthAddon | null = null;
-  if (addon?.modrinth_raw) {
-    if (typeof addon.modrinth_raw === 'string') {
-      modrinthData = JSON.parse(addon.modrinth_raw);
-    } else {
-      modrinthData = addon.modrinth_raw;
-    }
-  }
+  // Use our new integrated data hook
+  const { data: addon, isLoading, error, gameVersions } = useAddonData(slug);
 
-  // Fetch full Modrinth project data for HD gallery
-  const { data: modrinthProject, isLoading: isLoadingModrinth } = useModrinthProject(
-    modrinthData?.project_id
-  );
+  // Process version information in a single step
+  const versionInfo = useVersionProcessor(addon, gameVersions);
 
+  // Get display features for the versions
+  const versionDisplay = useVersionDisplay(versionInfo, addon?.loaders);
+
+  // Handle loading and error states
   if (error) {
     return <AddonDetailsError error={error} />;
   }
@@ -46,135 +27,27 @@ export default function AddonDetails() {
     return <AddonDetailsLoading />;
   }
 
-  // Parse CurseForge data
-  let curseforgeData: CurseForgeAddon | null = null;
-  if (addon.curseforge_raw) {
-    if (typeof addon.curseforge_raw === 'string') {
-      curseforgeData = JSON.parse(addon.curseforge_raw);
-    } else {
-      curseforgeData = addon.curseforge_raw;
-    }
-  }
+  // Extract CurseForge and Modrinth data for compatibility with existing components
+  const modrinthData =
+    typeof addon.modrinth_raw === 'string' ? JSON.parse(addon.modrinth_raw) : addon.modrinth_raw;
 
-  // Get gallery safely
-  const gallerySmall = modrinthData?.gallery ?? [];
+  const curseforgeData =
+    typeof addon.curseforge_raw === 'string'
+      ? JSON.parse(addon.curseforge_raw)
+      : addon.curseforge_raw;
 
-  // If we have the modrinth full project data, use its gallery for HD images
-  const galleryHD: string[] | undefined =
-    !isLoadingModrinth && modrinthProject?.gallery
-      ? modrinthProject.gallery.map(
-          (item: { raw_url: string; url: string }) => item.raw_url || item.url
-        )
-      : undefined;
-
-  // Calculate total downloads
-  const totalDownload = (modrinthData?.downloads ?? 0) + (curseforgeData?.downloadCount ?? 0);
-
-  // Get dependency information (only available in the full project data)
-  const dependencies = modrinthProject?.dependencies;
-
-  // Get donation links
-  const donationLinks = modrinthProject?.donation_urls;
-
-  // Get environment compatibility
-  const clientSide = modrinthData?.client_side || modrinthProject?.client_side;
-  const serverSide = modrinthData?.server_side || modrinthProject?.server_side;
-
-  // Get the full body content (for rich description)
-  const bodyContent = modrinthProject?.body;
-
-  // Setup links for footer
-  const { sourceUrl, issuesUrl, websiteUrl } = curseforgeData?.links || {};
-
-  const createLink = (icon: ReactNode, label: string, url?: string) => {
-    return url ? { icon, label, url, id: label.toLowerCase().replace(/\s+/g, '-') } : null;
-  };
-
-  const externalLinks = [
-    createLink(<SiGithub className='h-4 w-4' />, 'Source Code', sourceUrl ?? ''),
-    createLink(<Bug className='h-4 w-4' />, 'Issue Tracker', issuesUrl ?? ''),
-    createLink(<Globe className='h-4 w-4' />, 'Website', websiteUrl),
-  ].filter(
-    (link): link is { icon: ReactNode; label: string; url: string; id: string } => link !== null
-  );
-
-  // Available platforms
-  const availableOn = [];
-  if (curseforgeData) availableOn.push('curseforge');
-  if (modrinthData) availableOn.push('modrinth');
-
+  // Render the addon data view with all the processed information
   return (
-    <div className='container mx-auto px-4 py-8'>
-      <Card className='overflow-hidden'>
-        {/* Header */}
-        <AddonDetailsHeader
-          title={addon.name}
-          description={addon.description ?? ''}
-          downloads={totalDownload}
-          follows={modrinthData?.follows ?? 0}
-          icon={addon.icon}
-          slug={slug ?? ''}
-        />
-
-        <Separator className='mx-6' />
-
-        {/* Content/Metadata */}
-        <AddonDetailsContent
-          versions={addon.minecraft_versions ?? []}
-          loaders={addon.loaders ?? []}
-          categories={addon.categories ?? []}
-          slug={addon.slug}
-          availableOn={availableOn}
-        />
-
-        {/* Gallery */}
-        {gallerySmall.length > 0 && (
-          <AddonDetailsGallery
-            addon_name={addon.name}
-            gallery_small={gallerySmall}
-            gallery_hd={galleryHD}
-          />
-        )}
-
-        {/* Dependencies and Environment Compatibility */}
-        {(dependencies || clientSide || serverSide) && (
-          <>
-            <Separator className='mx-6' />
-            <AddonDetailsDependencies
-              dependencies={dependencies}
-              clientSide={clientSide}
-              serverSide={serverSide}
-            />
-          </>
-        )}
-
-        {/* Full Body Content */}
-        {bodyContent && (
-          <>
-            <Separator className='mx-6' />
-            <AddonDetailsDescription description={bodyContent} />
-          </>
-        )}
-
-        {/* Donation Links */}
-        {donationLinks && donationLinks.length > 0 && (
-          <>
-            <Separator className='mx-6' />
-            <AddonDetailsDonation donationLinks={donationLinks} />
-          </>
-        )}
-
-        {/* Footer */}
-        <Separator className='mx-6' />
-        <AddonDetailsFooter
-          authors={curseforgeData?.authors ?? []}
-          createdAt={addon.created_at}
-          updatedAt={addon.updated_at}
-          licence={modrinthData?.license ?? ''}
-          addon_name={addon.name}
-          externalLinks={externalLinks}
-        />
-      </Card>
-    </div>
+    <AddonDataView
+      addon={addon}
+      modrinthData={modrinthData}
+      curseforgeData={curseforgeData}
+      modrinthProject={(addon.modrinth?.project as Record<string, unknown>) || null}
+      versionInfo={versionInfo}
+      isLoadingVersionInfo={false}
+      slug={slug}
+      // Pass additional version display features
+      versionDisplay={versionDisplay}
+    />
   );
 }
