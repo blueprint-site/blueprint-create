@@ -3,10 +3,10 @@ import { BlogDetailsMain } from '@/components/features/blog/blog-details';
 import { useFetchBlog } from '@/api';
 
 const BlogDetails = () => {
-  const { slug } = useParams(); // Récupère le slug de l'URL
+  const { id } = useParams(); // Récupère le slug de l'URL
 
   // Utilise le hook pour récupérer les données du blog par son slug
-  const { data: blog, isLoading, isError, error } = useFetchBlog(undefined, slug);
+  const { data: blog, isLoading, isError, error } = useFetchBlog(id);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error?.message || 'Failed to fetch blog'}</div>;

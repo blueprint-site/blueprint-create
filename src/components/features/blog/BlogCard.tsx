@@ -35,7 +35,7 @@ const BlogCard = ({ blog }: BlogCardProps) => {
             <div key={index}>{author}</div>
           ))}
         </CardDescription>
-        <Link to={`/blog/${blog.slug}`} className='text-blue-500 hover:text-blue-700'>
+        <Link to={`/blog/${blog.$id}/${blog.slug}`} className='text-blue-500 hover:text-blue-700'>
           Read more...
         </Link>
       </CardFooter>
