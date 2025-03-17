@@ -1,6 +1,7 @@
 // src/components/layout/AppFooter.tsx
 import { cn } from '@/config/utils.ts';
 import { useLogo } from '@/hooks/useEasterEgg';
+import LanguageSwitcher from '@/components/features/settings/LanguageSwitcher.tsx';
 
 interface FooterProps {
   className?: string;
@@ -32,6 +33,7 @@ const Footer = ({ className }: FooterProps) => {
               </a>
               .
             </h6>
+            <LanguageSwitcher direction={'up'} />
           </div>
           <div className='flex-1'>
             {/* Links to site pages */}

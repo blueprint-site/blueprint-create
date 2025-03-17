@@ -7,6 +7,7 @@ import { Models } from 'appwrite';
 import OAuthProvidersDisplay from '@/components/utility/OAuthProvidersDisplay.tsx';
 import ClientDisplay from '@/components/utility/ClientDisplay.tsx';
 import { Button } from '@/components/ui/button.tsx';
+import LanguageSwitcher from '@/components/features/settings/LanguageSwitcher.tsx';
 
 export default function AccountSettings() {
   const user = useUserStore((state) => state.user);
@@ -31,6 +32,14 @@ export default function AccountSettings() {
     <div>
       <h2 className='text-2xl font-bold'>Account security</h2>
       <h3 className='text-xl font-bold'>{user?.name}</h3>
+      <section className={'space-y-4'}>
+        <div className='flex items-center gap-2'>
+          <UserCog className='h-5 w-5' />
+          <div className='text-lg font-semibold'>Account Language</div>
+        </div>
+        <p className='text-foreground-muted text-sm'>Change the language of your app </p>
+        <LanguageSwitcher direction={'down'} />
+      </section>
 
       <section className={'space-y-4'}>
         <div className='flex items-center gap-2'>
