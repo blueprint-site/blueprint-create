@@ -207,6 +207,14 @@
         "description": "Sostituisce l'attuale logo Blueprint con il classico logo legacy.",
         "hint": "Prova a cliccare su cose che rappresentano la nostra identità."
       }
+    },
+    "error": {
+      "page-not-found": {
+        "title": "Pagina non trovata",
+        "description1": "Oops! La pagina che stai cercando non esiste o è stata spostata.",
+        "description2": "Se credete che questo è un bug e-mail a noi",
+        "action": "Torna a casa"
+      }
     }
   }
 }

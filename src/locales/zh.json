@@ -207,6 +207,14 @@
         "description": "用经典的遗存标志取代目前的蓝图标志.",
         "hint": "尝试点击代表我们身份的东西."
       }
+    },
+    "error": {
+      "page-not-found": {
+        "title": "未找到页面",
+        "description1": "哎哟! 你寻找的页面不存在或已经移动.",
+        "description2": "如果你相信这是错误邮件",
+        "action": "回到家乡"
+      }
     }
   }
 }

@@ -207,6 +207,14 @@
         "description": "Mengganti logo Blueprint saat ini dengan logo warisan klasik.",
         "hint": "Cobalah mengklik hal-hal yang mewakili identitas kita."
       }
+    },
+    "error": {
+      "page-not-found": {
+        "title": "Halaman Tak Ditemukan",
+        "description1": "Oops! Halaman yang Anda cari tidak ada atau telah dipindahkan.",
+        "description2": "Jika Anda percaya ini adalah email bug kami di",
+        "action": "Kembali ke Rumah"
+      }
     }
   }
 }

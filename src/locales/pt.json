@@ -207,6 +207,14 @@
         "description": "Substitui o logotipo atual Blueprint com o logotipo legado clássico.",
         "hint": "Tente clicar em coisas que representam a nossa identidade."
       }
+    },
+    "error": {
+      "page-not-found": {
+        "title": "Página não encontrada",
+        "description1": "Oops! A página que você está procurando não existe ou foi movida.",
+        "description2": "Se você acredita que este é um e-mail de bug em",
+        "action": "Voltar para casa"
+      }
     }
   }
 }

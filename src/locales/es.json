@@ -207,6 +207,14 @@
         "description": "Reemplaza el logotipo actual de Blueprint con el logo clásico.",
         "hint": "Intente hacer clic en cosas que representan nuestra identidad."
       }
+    },
+    "error": {
+      "page-not-found": {
+        "title": "Page Not Found",
+        "description1": "Oops! La página que buscas no existe o se ha movido.",
+        "description2": "Si crees que esto es un email de error en nosotros",
+        "action": "Volver a casa"
+      }
     }
   }
 }

@@ -207,6 +207,14 @@
         "description": "Replaces the current Blueprint logo with the classic legacy logo.",
         "hint": "Try clicking on things that represent our identity."
       }
+    },
+    "error": {
+      "page-not-found": {
+        "title": "Page Not Found",
+        "description1": "Oops! The page you're looking for doesn't exist or has been moved.",
+        "description2": "If you believe this is a bug email us at",
+        "action": "Back to Home"
+      }
     }
   }
 }

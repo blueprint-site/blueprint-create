@@ -207,6 +207,14 @@
         "description": "Zastępuje obecne logo Blueprint klasycznym logo spuścizny.",
         "hint": "Spróbuj kliknąć na rzeczy, które reprezentują naszą tożsamość."
       }
+    },
+    "error": {
+      "page-not-found": {
+        "title": "Strona nie znaleziono",
+        "description1": "Oops! Strona, której szukasz nie istnieje lub została przeniesiona.",
+        "description2": "Jeśli wierzysz, że jest to błąd e-mail do nas na",
+        "action": "Powrót do domu"
+      }
     }
   }
 }

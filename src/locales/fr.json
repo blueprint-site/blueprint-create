@@ -207,6 +207,14 @@
         "description": "Remplace le logo actuel de Blueprint par le logo classique.",
         "hint": "Essayez de cliquer sur des choses qui représentent notre identité."
       }
+    },
+    "error": {
+      "page-not-found": {
+        "title": "Page introuvable",
+        "description1": "Oups ! La page que vous recherchez n'existe pas ou a été déplacée.",
+        "description2": "Si vous croyez que c'est un bug nous envoyer à",
+        "action": "Retour à la maison"
+      }
     }
   }
 }
