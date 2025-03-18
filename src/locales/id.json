@@ -163,7 +163,49 @@
             "expire": "Kadaluwarsa"
           }
         },
-        "display": {}
+        "display": {
+          "title": "Pengaturan Tampilan",
+          "theme": {
+            "title": "Tema",
+            "description": "Pilih antara mode cahaya dan gelap bagi antar muka situs.",
+            "dark-mode": "Mode gelap",
+            "light-mode": "Mode cahaya"
+          },
+          "easter-eggs": {
+            "title": "Telur Paskah",
+            "description": "Temukan dan ubah fitur khusus yang tersembunyi di seluruh aplikasi.",
+            "locked": "Terkunci",
+            "unlocked": "Tidak dikunci",
+            "keep-exploring": "Terus menjelajah untuk menemukan lebih telur Paskah!"
+          }
+        },
+        "public-profile": {
+          "title": "Informasi profil",
+          "description": "Informasi profil Anda dapat dilihat secara publik pada Blueprint dan melalui Blueprint API.",
+          "picture": {
+            "title": "Gambar profil",
+            "upload": "Unggah Gambar"
+          },
+          "username": {
+            "title": "Nama pengguna",
+            "description": "Sebuah kasus unik - nama sensitif untuk mengidentifikasi profil Anda."
+          },
+          "bio": {
+            "title": "Bio",
+            "description": "Sebuah deskripsi singkat untuk memberitahu semua orang sedikit tentang Anda."
+          },
+          "actions": {
+            "save": "Simpan perubahan",
+            "visit": "Kunjungi profil Anda"
+          }
+        }
+      }
+    },
+    "easter-eggs": {
+      "legacyLogo": {
+        "name": "Logo Legacy",
+        "description": "Mengganti logo Blueprint saat ini dengan logo warisan klasik.",
+        "hint": "Cobalah mengklik hal-hal yang mewakili identitas kita."
       }
     }
   }

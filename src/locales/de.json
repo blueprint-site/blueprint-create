@@ -163,7 +163,49 @@
             "expire": "Entfällt"
           }
         },
-        "display": {}
+        "display": {
+          "title": "Anzeigeeinstellungen",
+          "theme": {
+            "title": "Thema",
+            "description": "Wählen Sie zwischen hellem und dunklem Modus für die Seitenschnittstelle.",
+            "dark-mode": "Dark Mode",
+            "light-mode": "Lichtmodus"
+          },
+          "easter-eggs": {
+            "title": "Ostereier",
+            "description": "Entdecken und toggle spezielle Features versteckt während der gesamten Anwendung.",
+            "locked": "Gesperrt",
+            "unlocked": "Entriegelt",
+            "keep-exploring": "Entdecken Sie weitere Ostereier!"
+          }
+        },
+        "public-profile": {
+          "title": "Profilinformationen",
+          "description": "Ihre Profilinformationen sind auf Blueprint und über die Blueprint API öffentlich sichtbar.",
+          "picture": {
+            "title": "Profilbild",
+            "upload": "Bild hochladen"
+          },
+          "username": {
+            "title": "Benutzername",
+            "description": "Ein einzigartiger case-insensitiver Name, um Ihr Profil zu identifizieren."
+          },
+          "bio": {
+            "title": "Biozid",
+            "description": "Eine kurze Beschreibung, um jedem etwas über Sie zu erzählen."
+          },
+          "actions": {
+            "save": "Änderungen speichern",
+            "visit": "Besuchen Sie Ihr Profil"
+          }
+        }
+      }
+    },
+    "easter-eggs": {
+      "legacyLogo": {
+        "name": "Legacy Logo",
+        "description": "Ersetzt das aktuelle Blueprint Logo mit dem klassischen Legacy-Logo.",
+        "hint": "Klicken Sie auf Dinge, die unsere Identität repräsentieren."
       }
     }
   }

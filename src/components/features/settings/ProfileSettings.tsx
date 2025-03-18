@@ -9,6 +9,7 @@ import imageCompression from 'browser-image-compression';
 import { useUserStore } from '@/api/stores/userStore';
 import { account, storage } from '@/config/appwrite.ts';
 import logMessage from '@/components/utility/logs/sendLogs.tsx';
+import { useTranslation } from 'react-i18next';
 
 export default function ProfileSettings() {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +24,7 @@ export default function ProfileSettings() {
   const user = useUserStore((state) => state.user);
   const preferences = useUserStore((state) => state.preferences);
   const updatePreferences = useUserStore((state) => state.updatePreferences);
-
+  const { t } = useTranslation();
   useEffect(() => {
     if (user) {
       setProfile({
@@ -130,15 +131,19 @@ export default function ProfileSettings() {
   return (
     <div className='space-y-6'>
       <div>
-        <h2 className='mb-2 text-2xl font-bold'>Profile information</h2>
+        <h2 className='mb-2 text-2xl font-bold'>
+          {t('settings.user-settings.public-profile.title')}
+        </h2>
         <p className='text-foreground-muted text-sm'>
-          Your profile information is publicly viewable on Blueprint and through the Blueprint API.
+          {t('settings.user-settings.public-profile.description')}
         </p>
       </div>
 
       <div className='space-y-4'>
         <div>
-          <h3 className='mb-2 text-lg font-semibold'>Profile picture</h3>
+          <h3 className='mb-2 text-lg font-semibold'>
+            {t('settings.user-settings.public-profile.picture.title')}
+          </h3>
           <div className='flex items-center gap-4'>
             <Avatar className='h-16 w-16'>
               <AvatarImage src={profile.avatar} />
@@ -150,7 +155,7 @@ export default function ProfileSettings() {
               <Label htmlFor='picture' className='cursor-pointer'>
                 <div className='bg-secondary hover:bg-secondary/80 text-secondary-foreground flex items-center gap-2 rounded-md px-4 py-2 text-sm'>
                   <Upload className='h-4 w-4' />
-                  Upload image
+                  {t('settings.user-settings.public-profile.picture.upload')}
                 </div>
                 <input
                   id='picture'
@@ -166,9 +171,11 @@ export default function ProfileSettings() {
         </div>
 
         <div>
-          <Label htmlFor='username'>Username</Label>
+          <Label htmlFor='username'>
+            {t('settings.user-settings.public-profile.username.title')}
+          </Label>
           <p className='text-foreground-muted mb-2 text-sm'>
-            A unique case-insensitive name to identify your profile.
+            {t('settings.user-settings.public-profile.username.description')}
           </p>
           <Input
             id='username'
@@ -179,9 +186,9 @@ export default function ProfileSettings() {
         </div>
 
         <div>
-          <Label htmlFor='bio'>Bio</Label>
+          <Label htmlFor='bio'>{t('settings.user-settings.public-profile.bio.title')}</Label>
           <p className='text-foreground-muted mb-2 text-sm'>
-            A short description to tell everyone a little bit about you.
+            {t('settings.user-settings.public-profile.bio.description')}
           </p>
           <Textarea
             id='bio'
@@ -193,10 +200,10 @@ export default function ProfileSettings() {
 
         <div className='flex gap-4'>
           <Button onClick={handleSave} disabled={isLoading}>
-            Save changes
+            {t('settings.user-settings.public-profile.actions.save')}
           </Button>
           <Button variant='secondary' asChild>
-            <a href='/profile'>Visit your profile</a>
+            <a href='/profile'>{t('settings.user-settings.public-profile.actions.visit')}</a>
           </Button>
         </div>
       </div>

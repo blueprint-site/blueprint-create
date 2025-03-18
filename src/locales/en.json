@@ -163,7 +163,49 @@
             "expire": "Expire "
           }
         },
-        "display": {}
+        "display": {
+          "title": "Display Settings",
+          "theme": {
+            "title": "Theme",
+            "description": "Choose between light and dark mode for the site interface.",
+            "dark-mode": "Dark mode",
+            "light-mode": "Light mode"
+          },
+          "easter-eggs": {
+            "title": "Easter Eggs",
+            "description": "Discover and toggle special features hidden throughout the application.",
+            "locked": "Locked",
+            "unlocked": "Unlocked",
+            "keep-exploring": "Keep exploring to discover more easter eggs!"
+          }
+        },
+        "public-profile": {
+          "title": "Profile informations",
+          "description": "Your profile information is publicly viewable on Blueprint and through the Blueprint API.",
+          "picture": {
+            "title": "Profile picture",
+            "upload": "Upload Image"
+          },
+          "username": {
+            "title": "Username",
+            "description": "A unique case-insensitive name to identify your profile."
+          },
+          "bio": {
+            "title": "Bio",
+            "description": "A short description to tell everyone a little bit about you."
+          },
+          "actions": {
+            "save": "Save changes",
+            "visit": "Visit your profile"
+          }
+        }
+      }
+    },
+    "easter-eggs": {
+      "legacyLogo": {
+        "name": "Legacy Logo",
+        "description": "Replaces the current Blueprint logo with the classic legacy logo.",
+        "hint": "Try clicking on things that represent our identity."
       }
     }
   }

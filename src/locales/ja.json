@@ -163,7 +163,49 @@
             "expire": "ログイン"
           }
         },
-        "display": {}
+        "display": {
+          "title": "表示設定",
+          "theme": {
+            "title": "テーマ",
+            "description": "現場インターフェースのライトモードとダークモードを選択します.",
+            "dark-mode": "ダークモード",
+            "light-mode": "ライトモード"
+          },
+          "easter-eggs": {
+            "title": "イースターエッグ",
+            "description": "アプリケーション全体に隠されている特別な機能を発見し、トグル.",
+            "locked": "ロック",
+            "unlocked": "ロック解除",
+            "keep-exploring": "より多くのイースターの卵を発見するために探検してください!"
+          }
+        },
+        "public-profile": {
+          "title": "プロフィール情報",
+          "description": "プロフィール情報は、Blueprint API および Blueprint API を通じて公開可能です.",
+          "picture": {
+            "title": "プロフィール映像",
+            "upload": "アップロードイメージ"
+          },
+          "username": {
+            "title": "ユーザ名",
+            "description": "プロファイルを識別するためのユニークなケースに敏感な名前."
+          },
+          "bio": {
+            "title": "バイオテクノロジー",
+            "description": "皆さんに少しでもお伝えする簡単な説明です."
+          },
+          "actions": {
+            "save": "変更を保存",
+            "visit": "プロフィールを見る"
+          }
+        }
+      }
+    },
+    "easter-eggs": {
+      "legacyLogo": {
+        "name": "レガシーロゴ",
+        "description": "現在のブループリントロゴを古典的なレガシーロゴに置き換えます.",
+        "hint": "私たちのアイデンティティを表すものをクリックしてください."
       }
     }
   }

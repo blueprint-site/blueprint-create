@@ -163,7 +163,49 @@
             "expire": "Expire"
           }
         },
-        "display": {}
+        "display": {
+          "title": "Display Settings",
+          "theme": {
+            "title": "الموضوع",
+            "description": "اختر بين الضوء والوضع المظلم لواجهة الموقع.",
+            "dark-mode": "وضع الظلام",
+            "light-mode": "النور"
+          },
+          "easter-eggs": {
+            "title": "Easter Eggs",
+            "description": "الكشف عن الملامح الخاصة المخبأة في جميع مراحل التطبيق.",
+            "locked": "مقفل",
+            "unlocked": "غير مقفل",
+            "keep-exploring": "استمروا في البحث لاكتشاف المزيد من البيض الشرقى!"
+          }
+        },
+        "public-profile": {
+          "title": "معلومات موجزة",
+          "description": "معلومات ملفكِ مرئية علناً على (بلو بومتر) ومن خلال برنامج (بلو بوم).",
+          "picture": {
+            "title": "صورة موجز",
+            "upload": "رفع الصورة"
+          },
+          "username": {
+            "title": "المستعمل",
+            "description": "اسم فريد من نوعه غير حساس للقضيه لتحديد ملفك الشخصي."
+          },
+          "bio": {
+            "title": "Bio",
+            "description": "وصف قصير ليخبر الجميع قليلا عنك."
+          },
+          "actions": {
+            "save": "التغييرات",
+            "visit": "زيارة ملفك"
+          }
+        }
+      }
+    },
+    "easter-eggs": {
+      "legacyLogo": {
+        "name": "Legacy Logo",
+        "description": "يُستعاض عن شعار البصمة الحالي بشعار الإرث التقليدي.",
+        "hint": "حاول النقر على الأشياء التي تمثل هويتنا."
       }
     }
   }

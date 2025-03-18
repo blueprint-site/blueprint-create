@@ -163,7 +163,49 @@
             "expire": "过期"
           }
         },
-        "display": {}
+        "display": {
+          "title": "显示设置",
+          "theme": {
+            "title": "主题",
+            "description": "为站点界面选择光和暗模式.",
+            "dark-mode": "黑暗模式",
+            "light-mode": "光线模式"
+          },
+          "easter-eggs": {
+            "title": "复活节鸡蛋",
+            "description": "发现并切换整个应用中隐藏的特殊特性.",
+            "locked": "已锁定",
+            "unlocked": "解锁",
+            "keep-exploring": "继续探索 发现更多的东方鸡蛋!"
+          }
+        },
+        "public-profile": {
+          "title": "简介信息",
+          "description": "您的档案信息在\"蓝图\"上和通过\"蓝图API\"可以公开观看.",
+          "picture": {
+            "title": "简介图片",
+            "upload": "上传图像"
+          },
+          "username": {
+            "title": "用户名",
+            "description": "一个对大小写不敏感的独特名称来识别您的配置 ."
+          },
+          "bio": {
+            "title": "生物",
+            "description": "一个简短的描述 告诉大家一些关于你的."
+          },
+          "actions": {
+            "save": "保存更改",
+            "visit": "访问您的简介"
+          }
+        }
+      }
+    },
+    "easter-eggs": {
+      "legacyLogo": {
+        "name": "遗留日志",
+        "description": "用经典的遗存标志取代目前的蓝图标志.",
+        "hint": "尝试点击代表我们身份的东西."
       }
     }
   }
