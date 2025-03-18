@@ -6,7 +6,9 @@
         "schematics": "Schema",
         "about": "Informazioni",
         "login": "Accedi",
-        "blog": "Blog"
+        "blog": "Blog",
+        "privacy": "Privacy",
+        "terms": "Termini"
       },
       "userSettings": {
         "public": "Profilo pubblico",
@@ -215,6 +217,12 @@
         "description2": "Se credete che questo è un bug e-mail a noi",
         "action": "Torna a casa"
       }
+    },
+    "footer": {
+      "found-bug": "Hai trovato un bug? Segnalalo",
+      "github-issues": "Problemi GitHub",
+      "mojang-warning": "NON E' UN SERVIZIO DI SOCCORSO. NON APPROVATA O ASSOCIATO CON MOJANG O MICROSOFT.",
+      "create-warning": "Non affiliato a Create Mod team o uno degli addons in alcun modo."
     }
   }
 }

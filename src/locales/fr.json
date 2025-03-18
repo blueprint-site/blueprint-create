@@ -6,7 +6,9 @@
         "schematics": "Schémas",
         "about": "À propos",
         "login": "Connexion",
-        "blog": "Blog"
+        "blog": "Blog",
+        "privacy": "Confidentialité",
+        "terms": "Termes"
       },
       "userSettings": {
         "public": "Profil du public",
@@ -215,6 +217,12 @@
         "description2": "Si vous croyez que c'est un bug nous envoyer à",
         "action": "Retour à la maison"
       }
+    },
+    "footer": {
+      "found-bug": "Tu as trouvé un bug ? Signalez-le à",
+      "github-issues": "Questions concernant GitHub",
+      "mojang-warning": "PAS UN SERVICE MINECRAFT OFFICIEL. NON APPROUVÉS OU ASSOCIÉS AVEC MOJANG OU MICROSOFT.",
+      "create-warning": "Non affilié à Create Mod team ou à l'un des addons en aucune façon."
     }
   }
 }

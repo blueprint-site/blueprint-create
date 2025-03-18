@@ -6,7 +6,9 @@
         "schematics": "Schematics",
         "about": "About",
         "login": "Login",
-        "blog": "Blog"
+        "blog": "Blog",
+        "privacy": "Privacy",
+        "terms": "Terms"
       },
       "userSettings": {
         "public": "Public profile",
@@ -215,6 +217,12 @@
         "description2": "If you believe this is a bug email us at",
         "action": "Back to Home"
       }
+    },
+    "footer": {
+      "found-bug": "Found a bug? Report it to",
+      "github-issues": "GitHub issues",
+      "mojang-warning": " NOT AN OFFICIAL MINECRAFT SERVICE. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.",
+      "create-warning": "Not affiliated with Create Mod team or one of the addons in any way."
     }
   }
 }

@@ -6,7 +6,9 @@
         "schematics": "スケマティクス",
         "about": "お問い合わせ",
         "login": "ログイン",
-        "blog": "ニュース"
+        "blog": "ニュース",
+        "privacy": "プロフィール",
+        "terms": "利用規約"
       },
       "userSettings": {
         "public": "パブリックプロファイル",
@@ -215,6 +217,12 @@
         "description2": "これがバグメールだと判断した場合",
         "action": "ホームに戻る"
       }
+    },
+    "footer": {
+      "found-bug": "バグを発見しましたか? 報告する",
+      "github-issues": "GitHubの問題",
+      "mojang-warning": "非公式のMINECRAFTサービス。 または、MOJANGまたはマイクロソフトと関連付けることによって承認されない.",
+      "create-warning": "任意の方法で Mod チームまたはアドオンの 1 つを作成して提携していません."
     }
   }
 }

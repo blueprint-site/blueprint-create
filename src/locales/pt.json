@@ -6,7 +6,9 @@
         "schematics": "Esquema",
         "about": "Sobre a",
         "login": "Login",
-        "blog": "Blog"
+        "blog": "Blog",
+        "privacy": "Privacidade",
+        "terms": "Termos"
       },
       "userSettings": {
         "public": "Perfil público",
@@ -215,6 +217,12 @@
         "description2": "Se você acredita que este é um e-mail de bug em",
         "action": "Voltar para casa"
       }
+    },
+    "footer": {
+      "found-bug": "Encontrei um insecto? Informe-o para",
+      "github-issues": "Problemas com o GitHub",
+      "mojang-warning": "NÃO É UM SERVIÇO OFICIAL. NÃO SE APROPRIA DE NEM ASSOCIOU COM MOJANG OU MICROSOFT.",
+      "create-warning": "Não afiliado com a equipe Criar Mod ou um dos addons de qualquer forma."
     }
   }
 }

@@ -2,6 +2,7 @@
 import { cn } from '@/config/utils.ts';
 import { useLogo } from '@/hooks/useEasterEgg';
 import LanguageSwitcher from '@/components/features/settings/LanguageSwitcher.tsx';
+import { useTranslation } from 'react-i18next';
 
 interface FooterProps {
   className?: string;
@@ -10,7 +11,7 @@ interface FooterProps {
 const Footer = ({ className }: FooterProps) => {
   // Use non-clickable logo (default behavior)
   const { logoSrc } = useLogo();
-
+  const { t } = useTranslation();
   return (
     <footer className={cn('bg-surface-1 w-full py-4 md:pt-12', className)}>
       <div className='mx-auto px-4 md:container'>
@@ -24,12 +25,12 @@ const Footer = ({ className }: FooterProps) => {
             </div>
 
             <h6 className='text-xs font-normal'>
-              Found a bug? Report it to{' '}
+              {t('footer.found-bug')}{' '}
               <a
                 href='https://github.com/blueprint-site/blueprint-site.github.io'
                 className='hover:underline'
               >
-                GitHub issues
+                {t('footer.github-issues')}
               </a>
               .
             </h6>
@@ -39,25 +40,25 @@ const Footer = ({ className }: FooterProps) => {
             {/* Links to site pages */}
             <div className='flex flex-wrap items-center gap-4 sm:justify-center'>
               <a href='/addons' className='text-xs font-normal hover:underline'>
-                Addons
+                {t('navigation.label.addons')}
               </a>
               <a href='/schematics' className='text-xs font-normal hover:underline'>
-                Schematics
+                {t('navigation.label.schematics')}
               </a>
               <a
                 href='https://blueprint-site.github.io/blueprint-blog/'
                 className='text-xs font-normal hover:underline'
               >
-                Blog
+                {t('navigation.label.blog')}
               </a>
               <a href='/about' className='text-xs font-normal hover:underline'>
-                About
+                {t('navigation.label.about')}
               </a>
               <a href='/privacy' className='text-xs font-normal hover:underline'>
-                Privacy
+                {t('navigation.label.privacy')}
               </a>
               <a href='/terms' className='text-xs font-normal hover:underline'>
-                Terms
+                {t('navigation.label.terms')}
               </a>
             </div>
           </div>
@@ -65,11 +66,8 @@ const Footer = ({ className }: FooterProps) => {
         </div>
 
         <div className='text-foreground mt-5 flex flex-col gap-1 text-center text-xs font-normal'>
-          <div>
-            NOT AN OFFICIAL MINECRAFT SERVICE. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR
-            MICROSOFT.
-          </div>
-          <div>Not affiliated with Create Mod team or one of the addons in any way.</div>
+          <div>{t('footer.mojang-warning')}</div>
+          <div>{t('footer.create-warning')}</div>
         </div>
       </div>
     </footer>

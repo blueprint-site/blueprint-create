@@ -6,7 +6,9 @@
         "schematics": "In den Warenkorb",
         "about": "Über uns",
         "login": "Anmelden",
-        "blog": "Blog"
+        "blog": "Blog",
+        "privacy": "Datenschutz",
+        "terms": "Bedingungen"
       },
       "userSettings": {
         "public": "Öffentliches Profil",
@@ -215,6 +217,12 @@
         "description2": "Wenn Sie glauben, dass dies ein Fehler E-Mail an uns ist",
         "action": "Zurück zu Home"
       }
+    },
+    "footer": {
+      "found-bug": "Einen Fehler gefunden? Berichten Sie es",
+      "github-issues": "GitHub Probleme",
+      "mojang-warning": "NICHT EIN AMTLICHER MINECRAFT SERVICE. NICHT GENEHMIGT ODER MIT MOJANG ODER MICROSOFT.",
+      "create-warning": "Nicht mit dem Erstellen von Mod-Team oder einem der Addons in irgendeiner Weise verbunden."
     }
   }
 }

@@ -6,7 +6,9 @@
         "schematics": "Skema",
         "about": "Tentang",
         "login": "Log masuk",
-        "blog": "Blog"
+        "blog": "Blog",
+        "privacy": "Privasi",
+        "terms": "Kalimat"
       },
       "userSettings": {
         "public": "Profil Publik",
@@ -215,6 +217,12 @@
         "description2": "Jika Anda percaya ini adalah email bug kami di",
         "action": "Kembali ke Rumah"
       }
+    },
+    "footer": {
+      "found-bug": "Menemukan bug? Laporkan ke",
+      "github-issues": "Isu GitHub",
+      "mojang-warning": "BUKAN LAYANAN RESMI. TIDAK DIJUAL OLEH ATAU DISEBUT DENGAN MOJANG ATAU MICROSOFT.",
+      "create-warning": "Tidak berafiliasi dengan Create Mod tim atau salah satu addon dengan cara apapun."
     }
   }
 }

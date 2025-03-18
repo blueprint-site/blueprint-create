@@ -6,7 +6,9 @@
         "schematics": "مخططات",
         "about": "بشأن",
         "login": "Login",
-        "blog": "Blog"
+        "blog": "Blog",
+        "privacy": "الخصوصية",
+        "terms": "المصطلحات"
       },
       "userSettings": {
         "public": "لمحة عامة",
@@ -215,6 +217,12 @@
         "description2": "إذا كنت تعتقد أن هذا هو تجسس البريد الإلكتروني لنا في",
         "action": "العودة إلى البيت"
       }
+    },
+    "footer": {
+      "found-bug": "وجدت حشرة؟ Report it to",
+      "github-issues": "قضايا GitHub",
+      "mojang-warning": "ليست خدمة رسمية غير مُنَفَّذ من جانب أو مُرتبط بموجانغ أو ميكروفوت.",
+      "create-warning": "غير مرتبط بفريق (كريت مود) أو أحد الإضافات بأي حال."
     }
   }
 }

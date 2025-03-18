@@ -6,7 +6,9 @@
         "schematics": "Esquemáticos",
         "about": "Acerca de",
         "login": "Iniciar sesión",
-        "blog": "Blog"
+        "blog": "Blog",
+        "privacy": "Privacidad",
+        "terms": "Términos"
       },
       "userSettings": {
         "public": "Perfil público",
@@ -215,6 +217,12 @@
         "description2": "Si crees que esto es un email de error en nosotros",
         "action": "Volver a casa"
       }
+    },
+    "footer": {
+      "found-bug": "¿Encontraste un bicho? Informarlo",
+      "github-issues": "Problemas de GitHub",
+      "mojang-warning": "NO ES UN SERVICIO OFICIAL. NO APROBADO POR O ASSOCIA CON MOJANG O MICROSOFT.",
+      "create-warning": "No está afiliado con el equipo Create Mod o uno de los addons de ninguna manera."
     }
   }
 }

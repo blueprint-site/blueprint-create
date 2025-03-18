@@ -6,7 +6,9 @@
         "schematics": "形状",
         "about": "关于",
         "login": "登录",
-        "blog": "博客"
+        "blog": "博客",
+        "privacy": "隐私",
+        "terms": "术语"
       },
       "userSettings": {
         "public": "公众简介",
@@ -215,6 +217,12 @@
         "description2": "如果你相信这是错误邮件",
         "action": "回到家乡"
       }
+    },
+    "footer": {
+      "found-bug": "找到窃听器了吗? 报告给",
+      "github-issues": "GitHub 问题",
+      "mojang-warning": "不是正式的矿物服务。 不被莫强或微软批准或没收.",
+      "create-warning": "不以任何方式附属于Create Mod团队或其中的加人."
     }
   }
 }

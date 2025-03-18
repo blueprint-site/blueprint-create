@@ -6,7 +6,9 @@
         "schematics": "Schematy",
         "about": "O",
         "login": "Zaloguj",
-        "blog": "Blog"
+        "blog": "Blog",
+        "privacy": "Prywatność",
+        "terms": "Warunki"
       },
       "userSettings": {
         "public": "Profil publiczny",
@@ -215,6 +217,12 @@
         "description2": "Jeśli wierzysz, że jest to błąd e-mail do nas na",
         "action": "Powrót do domu"
       }
+    },
+    "footer": {
+      "found-bug": "Znalazłeś pluskwę? Zgłoś to",
+      "github-issues": "Kwestie GitHub",
+      "mojang-warning": "TO NIE JEST OFICJALNA SŁUŻBA. NIE ZATWIERDZONE PRZEZ MOJANG LUB MIKROSOFT, LUB ZWIĄZANE Z NIM.",
+      "create-warning": "Nie jest powiązany z zespołem Create Mod ani jednym z addonów."
     }
   }
 }
