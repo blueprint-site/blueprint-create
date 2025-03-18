@@ -28,13 +28,31 @@
           "title": "Apa itu Blueprint?",
           "description": "Blueprint adalah Situs sumber daya Create Mod untuk menemukan Addon, skema, dan lebih!"
         },
-        "links": "Link yang berguna:"
-      },
-      "contributions": {
-        "title": "Kontributor",
-        "subtitle": {
-          "main": "Berkat kontributor kita yang mengagumkan. Tanpa Anda ini tidak akan mungkin",
-          "api": "Juga berkat mereka yang membantu kami membangun API"
+        "forCreator": {
+          "title": "Untuk para pencipta",
+          "description": "Kami di sini untuk membantu menampilkan Anda addons untuk komunitas Blueprint",
+          "card": {
+            "title": "Tidak dapat menemukan alamat Anda?",
+            "description": "Beritahu kami dan kami akan membantu Anda addon terdaftar",
+            "content": "Proses pemindaian addon kami sepenuhnya otomatis. Hubungi kami untuk melakukan rescan dan masukkan addon-mu ke direktori kami.",
+            "button": "Us Surel"
+          }
+        },
+        "usefulLinks": {
+          "title": "Taut Berguna",
+          "description": "Sumber daya esensial untuk Membuat pengembang mod dan pengguna",
+          "link1": {
+            "title": "Buat Mode Wiki",
+            "description": "Komplete dokumentasi dan panduan"
+          },
+          "link2": {
+            "title": "Buat Mod (Forge)",
+            "description": "Unduh untuk modloader Forge"
+          },
+          "link3": {
+            "title": "Buat Mode (Fabric)",
+            "description": "Unduh untuk modloader Fabric"
+          }
         }
       }
     },
@@ -63,6 +81,51 @@
       "random": {
         "title": "Merasa bosan?",
         "link": "Dapatkan addon acak!"
+      }
+    },
+    "about": {
+      "mainTitle": "Tentang Blueprint",
+      "subTitle": "Misi kami",
+      "content1": "Cetak biru muncul dari mengenali kebutuhan untuk platform terpusat yang melayani komunitas Create Mod secara efektif. Kami membangun situs ini menggunakan teknologi web modern untuk memberikan solusi kuat untuk menemukan dan berbagi konten.",
+      "content2": "Tujuan kami adalah untuk mengkonsolidasikan Membuat sumber daya Mod di satu lokasi yang dapat diakses - menghubungkan pengembang addon dengan pengguna dan memungkinkan berbagi dengan mudah dari desain alat bantu. Kami bertujuan untuk meningkatkan penemuan dan kerjasama asuh dalam masyarakat.",
+      "cards": {
+        "card1": {
+          "title": "Temukan",
+          "description": "Ramban dan kelola ekosistem yang berkembang dari Buat ekstensi Mod.",
+          "link": "Explore"
+        },
+        "card2": {
+          "title": "Share Creation",
+          "description": "Upload dan showcase Anda otomatis alat dan desain rekayasa.",
+          "link": "Kunjungi Skema"
+        },
+        "card3": {
+          "title": "Bergabunglah dengan Komunitas kami",
+          "description": "Hubungkan dengan sesama Membuat penggemar dan berkontribusi ke ekosistem.",
+          "link": "Pelajari Lebih"
+        }
+      },
+      "socialsCard": {
+        "title": "Dapatkan berhubungan!",
+        "card1": {
+          "title": "Discord",
+          "description": "Untuk update, menyelinap mengintip, dan isu pelaporan."
+        },
+        "card2": {
+          "title": "GitHub",
+          "description": "Untuk devs di luar sana!"
+        },
+        "card3": {
+          "title": "Surel",
+          "description": "Hubungi kami di"
+        }
+      },
+      "contributions": {
+        "title": "Kontributor",
+        "subtitle": {
+          "main": "Berkat kontributor kita yang mengagumkan. Tanpa Anda ini tidak akan mungkin",
+          "api": "Juga berkat mereka yang membantu kami membangun API"
+        }
       }
     }
   }

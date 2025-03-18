@@ -28,13 +28,31 @@
           "title": "¿Qué es Blueprint?",
           "description": "Blueprint es un sitio de recursos Create Mod para encontrar addons, esquemas y más!"
         },
-        "links": "Enlaces útiles:"
-      },
-      "contributions": {
-        "title": "Distribuidores",
-        "subtitle": {
-          "main": "Gracias a nuestros increíbles colaboradores. Sin ti esto no habría sido posible",
-          "api": "También un gran agradecimiento a aquellos que nos ayudaron a construir la API"
+        "forCreator": {
+          "title": "Para los Creadores",
+          "description": "Estamos aquí para ayudar a mostrar sus addons a la comunidad Blueprint",
+          "card": {
+            "title": "¿No puedes encontrar tu addon?",
+            "description": "Avísanos y ayudaremos a conseguir tu addon en la lista",
+            "content": "Nuestro proceso de escaneo addon es totalmente automatizado. Póngase en contacto con nosotros para solicitar un rescan y obtener su addon incluido en nuestro directorio.",
+            "button": "Email Us"
+          }
+        },
+        "usefulLinks": {
+          "title": "Enlaces útiles",
+          "description": "Recursos esenciales para Crear desarrolladores y usuarios mod",
+          "link1": {
+            "title": "Crear Mod Wiki",
+            "description": "Documentación completa y guías"
+          },
+          "link2": {
+            "title": "Crear Mod (Forge)",
+            "description": "Descargar para Forge modloader"
+          },
+          "link3": {
+            "title": "Crear Mod (Fabric)",
+            "description": "Descargar para Modloader de tela"
+          }
         }
       }
     },
@@ -63,6 +81,51 @@
       "random": {
         "title": "¿Te sientes aburrido?",
         "link": "¡Consigue un addon al azar!"
+      }
+    },
+    "about": {
+      "mainTitle": "Acerca de Blueprint",
+      "subTitle": "Nuestra Misión",
+      "content1": "El proyecto surgió de reconocer la necesidad de una plataforma centralizada que sirve a la comunidad Crear Mod con eficacia. Construimos este sitio utilizando tecnologías web modernas para proporcionar una solución robusta para descubrir y compartir contenido.",
+      "content2": "Nuestro objetivo es consolidar Crear recursos Mod en una ubicación accesible - conectar desarrolladores addon con los usuarios y facilitar el intercambio fácil de diseños de contrapciones. Nos proponemos mejorar la descubribilidad y fomentar la colaboración dentro de la comunidad.",
+      "cards": {
+        "card1": {
+          "title": "Descubre Addons",
+          "description": "Explore y administre el creciente ecosistema de extensiones Create Mod.",
+          "link": "Explorar complementos"
+        },
+        "card2": {
+          "title": "Compartir creaciones",
+          "description": "Cargue y muestre sus contrapciones automatizadas y diseños de ingeniería.",
+          "link": "Visit Schematics"
+        },
+        "card3": {
+          "title": "Únase a nuestra comunidad",
+          "description": "Conectarse con el compañero Crear entusiastas y contribuir al ecosistema.",
+          "link": "Más información"
+        }
+      },
+      "socialsCard": {
+        "title": "¡En contacto!",
+        "card1": {
+          "title": "Discord",
+          "description": "Para las actualizaciones, escabulle los ojos y emita informes."
+        },
+        "card2": {
+          "title": "GitHub",
+          "description": "¡Por los devs!"
+        },
+        "card3": {
+          "title": "Email",
+          "description": "Contacta con nosotros"
+        }
+      },
+      "contributions": {
+        "title": "Distribuidores",
+        "subtitle": {
+          "main": "Gracias a nuestros increíbles colaboradores. Sin ti esto no habría sido posible",
+          "api": "También un gran agradecimiento a aquellos que nos ayudaron a construir la API"
+        }
       }
     }
   }

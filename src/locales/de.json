@@ -28,13 +28,31 @@
           "title": "Was ist Blueprint?",
           "description": "Blueprint ist eine Website zum Erstellen von Mod-Ressourcen, um Addons, Schaltpläne und vieles mehr zu finden!"
         },
-        "links": "Nützliche Links"
-      },
-      "contributions": {
-        "title": "Beiträge",
-        "subtitle": {
-          "main": "Dank unserer großartigen Mitarbeiter. Ohne dich wäre das nicht möglich gewesen ❤",
-          "api": "Auch ein großer Dank an diejenigen, die uns geholfen haben, die API zu bauen"
+        "forCreator": {
+          "title": "Für Schöpfer",
+          "description": "Wir sind hier, um Ihre Addons in der Blueprint Community zu präsentieren",
+          "card": {
+            "title": "Findest du dein Addon nicht?",
+            "description": "Lassen Sie uns wissen und wir helfen, Ihre Addon aufgeführt zu bekommen",
+            "content": "Unser Addon Scanvorgang ist vollautomatisch. Kontaktieren Sie uns, um einen Rescan anzufordern und Ihr Addon in unserem Verzeichnis enthalten zu bekommen.",
+            "button": "E-Mail an uns"
+          }
+        },
+        "usefulLinks": {
+          "title": "Nützliche Links",
+          "description": "Wesentliche Ressourcen für Mod-Entwickler und Benutzer erstellen",
+          "link1": {
+            "title": "Erstellen von Mod Wiki",
+            "description": "Vollständige Dokumentation und Anleitungen"
+          },
+          "link2": {
+            "title": "Mod erstellen (Forge)",
+            "description": "Forge modloader herunterladen"
+          },
+          "link3": {
+            "title": "Mod erstellen (Fabric)",
+            "description": "Herunterladen für Fabric modloader"
+          }
         }
       }
     },
@@ -63,6 +81,51 @@
       "random": {
         "title": "Langeweile?",
         "link": "Hol ein zufälliges Addon!"
+      }
+    },
+    "about": {
+      "mainTitle": "Über Blueprint",
+      "subTitle": "Unsere Mission",
+      "content1": "Blueprint entstand aus dem Erkennen der Notwendigkeit einer zentralisierten Plattform, die der Create Mod Community effektiv dient. Wir bauten diese Website mit modernen Web-Technologien, um eine robuste Lösung für die Entdeckung und Weitergabe von Inhalten zu bieten.",
+      "content2": "Unser Ziel ist es, die Erstellung von Mod-Ressourcen in einem barrierefreien Ort zu konsolidieren - Addon-Entwickler mit Benutzern zu verbinden und ein einfaches Teilen von Kontrainditionsdesigns zu ermöglichen. Wir wollen die Entdeckbarkeit verbessern und die Zusammenarbeit innerhalb der Gemeinschaft fördern.",
+      "cards": {
+        "card1": {
+          "title": "Entdecken Sie Addons",
+          "description": "Durchsuchen und verwalten Sie das wachsende Ökosystem von Create Mod Erweiterungen.",
+          "link": "Entdecken Sie Addons"
+        },
+        "card2": {
+          "title": "Auf den Wunschzettel",
+          "description": "Laden Sie Ihre automatisierten Kontraptions- und Engineering-Designs hoch und präsentieren Sie diese.",
+          "link": "Besuchen Sie Schematics"
+        },
+        "card3": {
+          "title": "Unsere Community",
+          "description": "Verbinden Sie mit anderen Enthusiasten erstellen und zum Ökosystem beitragen.",
+          "link": "Mehr erfahren"
+        }
+      },
+      "socialsCard": {
+        "title": "Kontakt aufnehmen!",
+        "card1": {
+          "title": "In den Warenkorb",
+          "description": "Für Updates, schnüffelpeeks und Ausgabe Berichterstattung."
+        },
+        "card2": {
+          "title": "GitHub",
+          "description": "Für die Jungs da draußen!"
+        },
+        "card3": {
+          "title": "E-Mail senden",
+          "description": "Kontaktieren Sie uns bei"
+        }
+      },
+      "contributions": {
+        "title": "Beiträge",
+        "subtitle": {
+          "main": "Dank unserer großartigen Mitarbeiter. Ohne dich wäre das nicht möglich gewesen ❤",
+          "api": "Auch ein großer Dank an diejenigen, die uns geholfen haben, die API zu bauen"
+        }
       }
     }
   }

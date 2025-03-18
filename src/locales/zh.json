@@ -28,13 +28,31 @@
           "title": "蓝图是什么?",
           "description": "蓝图是一个创建 Mod 资源网站,可以找到加词,图表等等!"
         },
-        "links": "有用链接 :"
-      },
-      "contributions": {
-        "title": "贡献者",
-        "subtitle": {
-          "main": "感谢我们出色的贡献。 没有你,这是不可能的... ..",
-          "api": "也感谢那些帮助我们建造API的人"
+        "forCreator": {
+          "title": "为创建者",
+          "description": "我们是来帮助展示你加入蓝图圈的",
+          "card": {
+            "title": "找不到你的补丁吗?",
+            "description": "告诉我们,我们会帮助你 附加物列表",
+            "content": "我们的附加扫描程序已经完全自动化了。 联系我们 请求重新扫描 并获得您的附加 列入我们的目录.",
+            "button": "电子邮件"
+          }
+        },
+        "usefulLinks": {
+          "title": "有用链接",
+          "description": "创建 Mod 开发者和用户的基本资源",
+          "link1": {
+            "title": "创建 Mod 维基",
+            "description": "完整的文件和指南"
+          },
+          "link2": {
+            "title": "创建模式( Forge)",
+            "description": "为 Forge modloader 下载"
+          },
+          "link3": {
+            "title": "创建模式( Fabric)",
+            "description": "为 Fabric modloader 下载"
+          }
         }
       }
     },
@@ -63,6 +81,51 @@
       "random": {
         "title": "觉得无聊吗?",
         "link": "拿个随机加登!"
+      }
+    },
+    "about": {
+      "mainTitle": "关于蓝图",
+      "subTitle": "我们的使命",
+      "content1": "蓝图产生于认识到需要有一个为创建模式社区有效服务的中央平台。 我们利用现代网络技术建立了这个网站,为发现和分享内容提供了有力的解决方案.",
+      "content2": "我们的目标是将“创建模块”资源整合到一个可访问的地点——将附加开发者与用户连接起来,并便于共享设备设计。 我们的目标是加强可发现性并促进社区内部的协作.",
+      "cards": {
+        "card1": {
+          "title": "发现添加",
+          "description": "浏览并管理Create Mod扩展的不断发展的生态系统.",
+          "link": "探索添加"
+        },
+        "card2": {
+          "title": "共享创建",
+          "description": "上传并展示您的自动装置和工程设计.",
+          "link": "访问图表"
+        },
+        "card3": {
+          "title": "加入我们的社区",
+          "description": "与同伴联系 创造爱好者,为生态系统做出贡献.",
+          "link": "学习更多"
+        }
+      },
+      "socialsCard": {
+        "title": "保持联络!",
+        "card1": {
+          "title": "调色板",
+          "description": "需要更新 偷看 发布报告."
+        },
+        "card2": {
+          "title": "GitHub 图像",
+          "description": "给外面的虔诚者!"
+        },
+        "card3": {
+          "title": "电子邮件",
+          "description": "联系我们"
+        }
+      },
+      "contributions": {
+        "title": "贡献者",
+        "subtitle": {
+          "main": "感谢我们出色的贡献。 没有你,这是不可能的... ..",
+          "api": "也感谢那些帮助我们建造API的人"
+        }
       }
     }
   }
