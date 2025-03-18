@@ -3,42 +3,56 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { ProcessedAddonData } from '@/types/addons/addon-details';
 import { ModrinthGalleryImage } from '@/api/endpoints/useModrinth';
 
-export interface AddonDetailsGalleryParams {
-  addon_name: string;
-  gallery_small: string[] | ModrinthGalleryImage[];
-  gallery_hd?: string[];
+export interface AddonDetailsGalleryProps {
+  data: Pick<ProcessedAddonData, 'basic' | 'gallery'>;
 }
 
-export const AddonDetailsGallery = ({
-  gallery_small = [],
-  gallery_hd,
-  addon_name = '',
-}: AddonDetailsGalleryParams) => {
+export const AddonDetailsGallery = ({ data }: AddonDetailsGalleryProps) => {
+  const { basic, gallery } = data;
+
+  // Initialize states early - before any conditional returns
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [fullscreenIndex, setFullscreenIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState<boolean[]>([]);
 
+  // Make sure we have a reference to the name that works with conditionals
+  const name = useMemo(() => basic.name, [basic]);
+
   // Handle both string arrays and ModrinthGalleryImage arrays
+  // Moved all hooks to the top level, before any conditionals
   const normalizedGallery = useMemo(() => {
+    if (!gallery) return [];
+
+    const gallery_small = gallery.small;
     return gallery_small.map((item) => {
       if (typeof item === 'string') {
         return { url: item };
       }
-      return item;
+      return item as unknown as ModrinthGalleryImage;
     });
-  }, [gallery_small]);
+  }, [gallery]);
 
   // Use HD images if available, otherwise use the gallery from the main API
   const displayImages = useMemo(() => {
-    return gallery_hd || normalizedGallery.map((img) => img.url);
-  }, [gallery_hd, normalizedGallery]);
+    if (!gallery) return [];
+    return gallery.hd || normalizedGallery.map((img) => img.url);
+  }, [gallery, normalizedGallery]);
 
   // Initialize image loading state
   useEffect(() => {
-    setImagesLoaded(new Array(normalizedGallery.length).fill(false));
+    if (normalizedGallery.length > 0) {
+      setImagesLoaded(new Array(normalizedGallery.length).fill(false));
+    }
   }, [normalizedGallery.length]);
+
+  // All hooks are now at the top level, so this is safe
+  // Now we use a render-time conditional instead of early return
+  if (!gallery) {
+    return null;
+  }
 
   const handleImageLoad = (index: number) => {
     setImagesLoaded((prev) => {
@@ -70,15 +84,6 @@ export const AddonDetailsGallery = ({
     });
   };
 
-  // Preload the next image
-  useEffect(() => {
-    const nextIndex = (currentImageIndex + 1) % normalizedGallery.length;
-    if (nextIndex !== currentImageIndex) {
-      const img = new Image();
-      img.src = displayImages[nextIndex];
-    }
-  }, [currentImageIndex, displayImages, normalizedGallery.length]);
-
   return (
     <CardContent className='py-6'>
       <div className='relative'>
@@ -86,7 +91,7 @@ export const AddonDetailsGallery = ({
           {/* Using a container with fixed aspect ratio to prevent layout shifts */}
           <img
             src={displayImages[currentImageIndex]}
-            alt={`${addon_name} screenshot ${currentImageIndex + 1}`}
+            alt={`${name} screenshot ${currentImageIndex + 1}`}
             className={`h-full w-full object-cover transition-all duration-300 hover:scale-105 ${
               imagesLoaded[currentImageIndex] ? 'opacity-100' : 'opacity-0'
             }`}
@@ -128,7 +133,7 @@ export const AddonDetailsGallery = ({
                 <div className='relative'>
                   <img
                     src={displayImages[fullscreenIndex]}
-                    alt={`${addon_name} screenshot ${fullscreenIndex + 1}`}
+                    alt={`${name} screenshot ${fullscreenIndex + 1}`}
                     className='w-full object-contain'
                     width={1200}
                     height={800}
@@ -183,7 +188,7 @@ export const AddonDetailsGallery = ({
             <div className='bg-background/70 flex items-center gap-1.5 rounded-full px-3 py-1.5 backdrop-blur-sm'>
               {normalizedGallery.map((_, idx) => (
                 <button
-                  key={`dot-${idx}`}
+                  key={`dot-${normalizedGallery[idx]?.url || idx}`}
                   onClick={() => setCurrentImageIndex(idx)}
                   className={`h-2 w-2 rounded-full transition-all ${
                     idx === currentImageIndex
@@ -204,7 +209,7 @@ export const AddonDetailsGallery = ({
         <div className='mt-4 hidden gap-2 overflow-x-auto py-2 sm:flex'>
           {normalizedGallery.map((image, idx) => (
             <button
-              key={`thumb-${idx}`}
+              key={`thumb-${normalizedGallery[idx]?.url || idx}`}
               onClick={() => setCurrentImageIndex(idx)}
               className={`h-16 w-24 flex-shrink-0 overflow-hidden rounded border-2 transition-all ${
                 idx === currentImageIndex

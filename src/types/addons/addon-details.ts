@@ -1,6 +1,5 @@
 // src/types/addons/addon-details.ts
-import { ReactNode } from 'react';
-import { CurseForgeAddon, ModrinthAddon } from '@/types';
+import { Dependencies } from './dependencies';
 
 /**
  * Represents a version of an addon
@@ -44,17 +43,17 @@ export interface VersionDisplay {
 }
 
 /**
- * External link configuration
+ * External link with iconType
  */
 export interface ExternalLink {
-  icon: ReactNode;
+  iconType: string;
   label: string;
   url: string;
   id: string;
 }
 
 /**
- * Type for addon object
+ * Type for addon object from database
  */
 export interface Addon {
   $id?: string;
@@ -73,45 +72,65 @@ export interface Addon {
 }
 
 /**
- * Props for the AddonData component
+ * Donation link type
  */
-export interface AddonDataProps {
-  addon: Addon;
-  modrinthData: ModrinthAddon | null;
-  curseforgeData: CurseForgeAddon | null;
-  modrinthProject: Record<string, unknown> | null;
-  versionInfo: VersionInfo | null;
-  isLoadingVersionInfo: boolean;
-  slug?: string;
-  // Optional version display features
-  versionDisplay?: VersionDisplay;
+export interface DonationLink {
+  id: string;
+  platform: string;
+  url: string;
 }
 
 /**
- * Props for the AddonMetaProcessor component
+ * New comprehensive data structure for processed addon data
  */
-export interface AddonMetaProcessorProps {
-  addon?: Addon;
-  modrinthData: ModrinthAddon | null;
-  curseforgeData: CurseForgeAddon | null;
-  modrinthProject: Record<string, unknown> | null;
-  versionInfo?: VersionInfo | null;
-  slug?: string;
-  children: (props: AddonMetaData) => React.ReactElement;
-}
+export interface ProcessedAddonData {
+  // Basic information
+  basic: {
+    id?: string;
+    name: string;
+    description: string;
+    slug: string;
+    icon: string;
+    created_at: string | null;
+    updated_at: string | null;
+    categories: string[];
+    loaders: string[];
+  };
 
-/**
- * Processed metadata for an addon
- */
-export interface AddonMetaData {
-  gallerySmall: Array<string | Record<string, unknown>>;
-  galleryHD?: string[];
-  totalDownload: number;
-  dependencies: Record<string, unknown> | null;
-  donationLinks: Array<Record<string, unknown>>;
-  clientSide: string | undefined;
-  serverSide: string | undefined;
-  bodyContent: string | undefined;
-  externalLinks: ExternalLink[];
-  availableOn: string[];
+  // Version information with display features
+  versions: {
+    minecraft: string[];
+    create: string[];
+    loaders: string[];
+    all: AddonVersion[];
+    featured: AddonVersion | null;
+    compatibility: {
+      isCompatible: (mcVersion: string, loader: string) => boolean;
+    };
+  };
+
+  // Gallery data
+  gallery: {
+    small: Array<string | Record<string, unknown>>;
+    hd?: string[];
+  } | null;
+
+  // Stats and metadata
+  metadata: {
+    downloads: number;
+    follows: number;
+    clientSide?: string;
+    serverSide?: string;
+    bodyContent?: string;
+    availablePlatforms: string[];
+  };
+
+  // External links
+  links: {
+    external: ExternalLink[];
+    donation: DonationLink[];
+  };
+
+  // Dependencies (typed correctly)
+  dependencies: Dependencies | null;
 }

@@ -2,24 +2,17 @@ import { Download, Heart, Star, StarOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCollectionStore } from '@/api/stores/collectionStore';
 import { CardHeader } from '@/components/ui/card';
+import { ProcessedAddonData } from '@/types/addons/addon-details';
 
-export interface AddonDetailsHeaderParams {
-  title: string;
-  description: string;
-  downloads: number;
-  follows: number;
-  icon: string;
-  slug: string;
+export interface AddonDetailsHeaderProps {
+  data: Pick<ProcessedAddonData, 'basic' | 'metadata'>;
 }
 
-export const AddonDetailsHeader = ({
-  title = '',
-  description = '',
-  downloads = 0,
-  follows = 0,
-  icon = '',
-  slug = '',
-}: AddonDetailsHeaderParams) => {
+export const AddonDetailsHeader = ({ data }: AddonDetailsHeaderProps) => {
+  const { basic, metadata } = data;
+  const { name, description, slug, icon } = basic;
+  const { downloads, follows } = metadata;
+
   const { collection, addAddon, removeAddon } = useCollectionStore();
   const isInCollection = collection.includes(slug);
 
@@ -31,10 +24,10 @@ export const AddonDetailsHeader = ({
   return (
     <CardHeader className='space-y-6'>
       <div className='flex items-start gap-4'>
-        <img src={icon} alt={`${title} icon`} className='h-20 w-20 rounded-lg border shadow-sm' />
+        <img src={icon} alt={`${name} icon`} className='h-20 w-20 rounded-lg border shadow-sm' />
         <div className='min-w-0 flex-1'>
           <div className='flex items-center justify-between'>
-            <h1 className='mb-2 text-3xl font-bold'>{title}</h1>
+            <h1 className='mb-2 text-3xl font-bold'>{name}</h1>
             <Button
               variant={isInCollection ? 'default' : 'outline'}
               size='sm'

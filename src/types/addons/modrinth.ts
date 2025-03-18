@@ -3,7 +3,6 @@
  */
 
 // Common Types
-export type ModLoaderType = string;
 export type DependencyType = 'required' | 'optional' | 'incompatible' | 'embedded';
 export type VersionType = 'release' | 'beta' | 'alpha';
 export type ProjectStatus =
@@ -61,8 +60,7 @@ export interface ModrinthProject {
   queued?: string; // ISO date string
   followers: number;
   game_versions?: string[];
-  loaders?: ModLoaderType[];
-  versions?: string[]; // Array of version IDs
+  loaders?: string[];
   gallery?: ModrinthGalleryImage[];
   license?: {
     id: string;
@@ -104,8 +102,7 @@ export interface ModrinthVersion {
   dependencies?: ModrinthVersionDependency[];
   game_versions: string[];
   version_type: VersionType;
-  loaders: ModLoaderType[];
-  featured: boolean;
+  loaders: string[];
   status: VersionStatus;
   requested_status?: VersionStatus | null;
   id: string;

@@ -2,14 +2,14 @@ import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import ModLoaderDisplay from '@/components/common/ModLoaderDisplay';
-import { AddonVersion } from './AddonVersionCompatibility';
+import { AddonVersion } from '@/types/addons/addon-details';
 import { CREATE_VERSIONS } from '@/data/createVersions';
 
 interface VersionSummaryViewProps {
   filteredMinecraftVersions: string[];
   uniqueLoaders: string[];
   uniqueCreateVersions: string[];
-  featuredVersion: AddonVersion | undefined;
+  featuredVersion: AddonVersion | null;
 }
 
 export const VersionSummaryView: React.FC<VersionSummaryViewProps> = ({
@@ -18,10 +18,16 @@ export const VersionSummaryView: React.FC<VersionSummaryViewProps> = ({
   uniqueCreateVersions,
   featuredVersion,
 }) => {
+  // Debug logging
+  console.log('Create versions in Summary:', uniqueCreateVersions);
+  console.log('CREATE_VERSIONS mapping:', CREATE_VERSIONS);
+
   // Sort Create versions based on sortOrder defined in the CREATE_VERSIONS object
   const sortedCreateVersions = [...uniqueCreateVersions].sort(
     (a, b) => (CREATE_VERSIONS[a]?.sortOrder || 99) - (CREATE_VERSIONS[b]?.sortOrder || 99)
   );
+
+  console.log('Sorted Create versions:', sortedCreateVersions);
 
   return (
     <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
@@ -46,11 +52,16 @@ export const VersionSummaryView: React.FC<VersionSummaryViewProps> = ({
           <div>
             <h4 className='mb-2 text-sm font-medium'>Create Versions</h4>
             <div className='flex flex-wrap gap-2'>
-              {sortedCreateVersions.map((version) => (
-                <Badge key={version} variant='secondary'>
-                  {version}
-                </Badge>
-              ))}
+              {sortedCreateVersions.map((version) => {
+                // Just show the version number without the "Create" prefix
+                const displayVersion = version;
+
+                return (
+                  <Badge key={version} variant='secondary'>
+                    {displayVersion}
+                  </Badge>
+                );
+              })}
             </div>
           </div>
         )}
@@ -84,13 +95,13 @@ export const VersionSummaryView: React.FC<VersionSummaryViewProps> = ({
               </div>
 
               <div className='mt-2 flex flex-wrap gap-2'>
-                {featuredVersion.game_versions.map((version) => (
+                {featuredVersion.game_versions.map((version: string) => (
                   <Badge key={version} variant='outline' className='text-xs'>
                     MC {version}
                   </Badge>
                 ))}
 
-                {featuredVersion.loaders.map((loader) => (
+                {featuredVersion.loaders.map((loader: string) => (
                   <Badge key={loader} variant='outline' className='text-xs'>
                     {loader}
                   </Badge>

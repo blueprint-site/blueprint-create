@@ -6,26 +6,9 @@ import { VersionSummaryView } from './VersionSummaryView';
 import { VersionMatrixView } from './VersionMatrixView';
 import { VersionDetailedView } from './VersionListView';
 import { VersionLoadingView } from './VersionLoadingView';
-import { VersionDisplay } from '@/types/addons/addon-details';
+import { VersionDisplay, AddonVersion } from '@/types/addons/addon-details';
 
-// Type definitions
-export interface AddonVersion {
-  id: string;
-  name: string;
-  version_number: string;
-  game_versions: string[];
-  loaders: string[];
-  dependencies?: Array<{
-    project_id: string;
-    version_id?: string;
-    name?: string;
-    slug?: string;
-    dependency_type: 'required' | 'optional' | 'incompatible' | 'embedded';
-  }>;
-  date_published: string;
-  is_featured?: boolean;
-}
-
+// Props using the new data structure
 export interface AddonVersionCompatibilityProps {
   versions?: AddonVersion[];
   minecraftVersions: string[];
@@ -34,6 +17,10 @@ export interface AddonVersionCompatibilityProps {
   className?: string;
   isLoading?: boolean;
   versionDisplayData?: VersionDisplay;
+  // Direct compatibility object from ProcessedAddonData
+  compatibility?: {
+    isCompatible: (mcVersion: string, loader: string) => boolean;
+  };
 }
 
 /**
@@ -51,17 +38,19 @@ export const AddonVersionCompatibility: React.FC<AddonVersionCompatibilityProps>
   className,
   isLoading = false,
   versionDisplayData,
+  compatibility,
 }) => {
   const [view, setView] = useState<'summary' | 'matrix' | 'detailed'>('summary');
 
-  // Use passed-in version display data or default to empty values
+  // Prioritize direct compatibility if provided, otherwise use versionDisplayData
+  // This provides a migration path from old to new data structure
   const {
     filteredMinecraftVersions = minecraftVersions,
     uniqueLoaders = loaders,
     uniqueCreateVersions = createVersions,
     sortedVersions = versions,
     featuredVersion = versions[0],
-    isCompatible = () => false,
+    isCompatible = compatibility?.isCompatible || (() => false),
   } = versionDisplayData || {};
 
   return (

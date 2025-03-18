@@ -3,18 +3,16 @@ import { Button } from '@/components/ui/button';
 import { Heart } from 'lucide-react';
 import { SiGithubsponsors, SiKofi, SiPatreon, SiPaypal } from '@icons-pack/react-simple-icons';
 import { ReactNode } from 'react';
-
-export interface DonationLink {
-  id: string;
-  platform: string;
-  url: string;
-}
+import { ProcessedAddonData } from '@/types/addons/addon-details';
 
 export interface AddonDetailsDonationProps {
-  donationLinks?: DonationLink[];
+  data: Pick<ProcessedAddonData, 'links'>;
 }
 
-export const AddonDetailsDonation = ({ donationLinks }: AddonDetailsDonationProps) => {
+export const AddonDetailsDonation = ({ data }: AddonDetailsDonationProps) => {
+  const { links } = data;
+  const { donation: donationLinks } = links;
+
   if (!donationLinks || donationLinks.length === 0) {
     return null;
   }

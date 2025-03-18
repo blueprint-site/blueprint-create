@@ -16,7 +16,7 @@ interface AddonDependency {
 /**
  * Interface for the addon object with the properties used in compatibility detection
  */
-interface AddonCompatibilityData {
+export interface AddonCompatibilityData {
   name?: string;
   description?: string;
   dependencies?: AddonDependency[];

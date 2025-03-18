@@ -1,53 +1,30 @@
 // src/components/features/addons/AddonDetails.tsx
 import { useParams } from 'react-router';
-import { useAddonData } from '@/hooks/useAddonData';
-import { useVersionProcessor, useVersionDisplay } from '../../../hooks/useCreateVersionProcessor';
+import { useAddonDetails } from '@/hooks/useAddonDetails';
 import { AddonDetailsError } from '@/components/features/addons/addon-details/AddonDetailsError';
 import { AddonDetailsLoading } from '@/components/features/addons/addon-details/AddonDetailsLoading';
-import { AddonDataView } from '@/components/features/addons/addon-details/utils/AddonDataView';
+import { AddonDetailsView } from './addon-details/AddonDetailsView';
 
 export default function AddonDetails() {
   const { slug } = useParams();
 
-  // Use our new integrated data hook
-  const { data: addon, isLoading, error, gameVersions } = useAddonData(slug);
+  // Use our new unified hook for addon details
+  const {
+    data: processedData,
+    isLoading: isLoadingProcessed,
+    error: processedError,
+  } = useAddonDetails(slug);
 
-  // Process version information in a single step
-  const versionInfo = useVersionProcessor(addon, gameVersions);
-
-  // Get display features for the versions
-  const versionDisplay = useVersionDisplay(versionInfo, addon?.loaders);
-
-  // Handle loading and error states
-  if (error) {
-    return <AddonDetailsError error={error} />;
+  // Handle errors
+  if (processedError) {
+    return <AddonDetailsError error={processedError} />;
   }
 
-  if (isLoading || !addon) {
+  // Handle loading state
+  if (isLoadingProcessed || !processedData) {
     return <AddonDetailsLoading />;
   }
 
-  // Extract CurseForge and Modrinth data for compatibility with existing components
-  const modrinthData =
-    typeof addon.modrinth_raw === 'string' ? JSON.parse(addon.modrinth_raw) : addon.modrinth_raw;
-
-  const curseforgeData =
-    typeof addon.curseforge_raw === 'string'
-      ? JSON.parse(addon.curseforge_raw)
-      : addon.curseforge_raw;
-
-  // Render the addon data view with all the processed information
-  return (
-    <AddonDataView
-      addon={addon}
-      modrinthData={modrinthData}
-      curseforgeData={curseforgeData}
-      modrinthProject={(addon.modrinth?.project as Record<string, unknown>) || null}
-      versionInfo={versionInfo}
-      isLoadingVersionInfo={false}
-      slug={slug}
-      // Pass additional version display features
-      versionDisplay={versionDisplay}
-    />
-  );
+  // Render using the new data structure
+  return <AddonDetailsView data={processedData} />;
 }

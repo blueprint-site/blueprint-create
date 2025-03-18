@@ -10,7 +10,7 @@ export const DependencyBadge = ({ dependency, variant }: DependencyBadgeProps) =
 
   return (
     <Badge key={dependency.project_id} variant={variant} className='flex items-center gap-1'>
-      {dependency.name || 'Unknown'}
+      {dependency.name ?? 'Unknown'}
       {dependency.slug && (
         <a
           href={`https://modrinth.com/mod/${dependency.slug}`}

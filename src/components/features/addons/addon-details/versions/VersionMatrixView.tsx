@@ -1,4 +1,4 @@
-// src/components/features/addons/addon-details/components/versions/VersionMatrixView.tsx
+// src/components/features/addons/addon-details/versions/VersionMatrixView.tsx
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { MODLOADER_OPTIONS } from '@/data/modloaders';
@@ -12,7 +12,7 @@ export const VersionMatrixView: React.FC<VersionMatrixViewProps> = ({
   filteredMinecraftVersions,
   isCompatible,
 }) => {
-  // Use standard modloaders for the matrix view
+  // Always use standard modloaders for the matrix view
   const standardModloaders = MODLOADER_OPTIONS.filter((opt) => opt.value !== 'all').map(
     (opt) => opt.value
   );
