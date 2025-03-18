@@ -7,6 +7,11 @@
         "about": "About",
         "login": "Login",
         "blog": "Blog"
+      },
+      "userSettings": {
+        "public": "Public profile",
+        "account": "Account settings",
+        "display": "Display"
       }
     },
     "user-menu": {
@@ -126,6 +131,39 @@
           "main": "Thanks to our awesome contributors. Without you this wouldn't have been possible ❤️",
           "api": "Also a big thanks to those who helped us building the API ❤️"
         }
+      }
+    },
+    "settings": {
+      "settings": "Settings",
+      "user-settings": {
+        "account": {
+          "title": "Account Settings",
+          "language": {
+            "title": "Language",
+            "description": "Change the language of your app"
+          },
+          "data": {
+            "title": "Account Data",
+            "description": "Retrieve all your data !",
+            "button": "Get My Data"
+          },
+          "auth": {
+            "title": "Manage authentication providers",
+            "description": "Add or remove sign-on methods from your account, including GitHub, GitLab, Microsoft, Discord, Steam, and Google."
+          },
+          "sessions": {
+            "title": "Manage Sessions",
+            "description": "See your session trough all your device !",
+            "actual": "Actual",
+            "not-provided": "Not provided",
+            "device": "Device",
+            "brand": "Brand",
+            "name": "Name",
+            "created_at": "Created at",
+            "expire": "Expire "
+          }
+        },
+        "display": {}
       }
     }
   }

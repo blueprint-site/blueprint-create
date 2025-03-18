@@ -2,7 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // Define supported language codes as a type
-type LanguageCode = 'en' | 'fr' | 'es' | 'de' | 'it' | 'id' | 'zh' | 'ar' | 'pt' | 'ja' | 'ru';
+type LanguageCode =
+  | 'en'
+  | 'fr'
+  | 'es'
+  | 'de'
+  | 'it'
+  | 'id'
+  | 'zh'
+  | 'ar'
+  | 'pt'
+  | 'ja'
+  | 'ru'
+  | 'uk'
+  | 'pl';
 
 type Direction = 'up' | 'down';
 
@@ -19,6 +32,8 @@ const languageFlags: Record<LanguageCode, string> = {
   pt: '🇵🇹',
   ja: '🇯🇵',
   ru: '🇷🇺',
+  pl: 'pl',
+  uk: 'uk',
 };
 
 // Language names in their native form
@@ -34,6 +49,8 @@ const languageNames: Record<LanguageCode, string> = {
   pt: 'Português',
   ja: '日本語',
   ru: 'Русский',
+  pl: 'Polish',
+  uk: 'ukrainian',
 };
 
 interface LanguageSwitcherProps {

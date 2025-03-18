@@ -32,7 +32,7 @@ const sourceFile = path.resolve(__dirname, "../..", "src", "locales", "en.json")
 console.log(`Source file path: ${sourceFile}`);
 
 // Target languages for translation
-const targetLanguages = ["fr", "es", "de", "it", "id", "zh", "ar", "pt", "ja", "ru"];
+const targetLanguages = ["fr", "es", "de", "it", "id", "zh", "ar", "pt", "ja", "ru" ,"pl" ,"uk"];
 const API_URL = "https://translate.blueprint-create.com/translate";
 
 // Create a new progress bar container with better formatting

@@ -7,6 +7,11 @@
         "about": "Informazioni",
         "login": "Accedi",
         "blog": "Blog"
+      },
+      "userSettings": {
+        "public": "Profilo pubblico",
+        "account": "Impostazioni account",
+        "display": "Visualizza"
       }
     },
     "user-menu": {
@@ -126,6 +131,39 @@
           "main": "Grazie ai nostri ottimi collaboratori. Senza di voi questo non sarebbe stato possibile",
           "api": "Anche un grande grazie a coloro che ci hanno aiutato a costruire l'API"
         }
+      }
+    },
+    "settings": {
+      "settings": "Impostazioni impostazioni",
+      "user-settings": {
+        "account": {
+          "title": "Impostazioni account",
+          "language": {
+            "title": "Lingua",
+            "description": "Cambia la lingua della tua app"
+          },
+          "data": {
+            "title": "Dati dell'account",
+            "description": "Recupera tutti i tuoi dati!",
+            "button": "Ottieni i miei dati"
+          },
+          "auth": {
+            "title": "Gestire i provider di autenticazione",
+            "description": "Aggiungere o rimuovere i metodi di accesso dal tuo account, tra cui GitHub, GitLab, Microsoft, Discord, Steam e Google."
+          },
+          "sessions": {
+            "title": "Gestione delle sessioni",
+            "description": "Vedere la sessione attraverso tutto il dispositivo!",
+            "actual": "Attualità",
+            "not-provided": "Non fornito",
+            "device": "Dispositivo",
+            "brand": "Marca",
+            "name": "Nome",
+            "created_at": "Creato a",
+            "expire": "Scadenza"
+          }
+        },
+        "display": {}
       }
     }
   }

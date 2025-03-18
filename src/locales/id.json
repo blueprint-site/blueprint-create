@@ -7,6 +7,11 @@
         "about": "Tentang",
         "login": "Log masuk",
         "blog": "Blog"
+      },
+      "userSettings": {
+        "public": "Profil Publik",
+        "account": "Pengaturan akun",
+        "display": "Tampilan"
       }
     },
     "user-menu": {
@@ -126,6 +131,39 @@
           "main": "Berkat kontributor kita yang mengagumkan. Tanpa Anda ini tidak akan mungkin",
           "api": "Juga berkat mereka yang membantu kami membangun API"
         }
+      }
+    },
+    "settings": {
+      "settings": "Pengaturan",
+      "user-settings": {
+        "account": {
+          "title": "Pengaturan Akun",
+          "language": {
+            "title": "Bahasa",
+            "description": "Ubah bahasa aplikasi Anda"
+          },
+          "data": {
+            "title": "Data Akun",
+            "description": "Ambil semua datamu!",
+            "button": "Dapatkan Data saya"
+          },
+          "auth": {
+            "title": "Kelola penyedia otentikasi",
+            "description": "Tambah atau hapus sinyal metode dari akun Anda, termasuk GitHub, GitLab, Microsoft, Discord, Steam, dan Google."
+          },
+          "sessions": {
+            "title": "Kelola Sesi",
+            "description": "Lihat sesi Anda melalui semua perangkat Anda!",
+            "actual": "Aktual",
+            "not-provided": "Tidak disediakan",
+            "device": "Perangkat",
+            "brand": "Brand",
+            "name": "Nama",
+            "created_at": "Dibuat pada",
+            "expire": "Kadaluwarsa"
+          }
+        },
+        "display": {}
       }
     }
   }

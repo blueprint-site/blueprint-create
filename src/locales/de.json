@@ -7,6 +7,11 @@
         "about": "Über uns",
         "login": "Anmelden",
         "blog": "Blog"
+      },
+      "userSettings": {
+        "public": "Öffentliches Profil",
+        "account": "Kontoeinstellungen",
+        "display": "Anzeige"
       }
     },
     "user-menu": {
@@ -126,6 +131,39 @@
           "main": "Dank unserer großartigen Mitarbeiter. Ohne dich wäre das nicht möglich gewesen ❤",
           "api": "Auch ein großer Dank an diejenigen, die uns geholfen haben, die API zu bauen"
         }
+      }
+    },
+    "settings": {
+      "settings": "Einstellungen",
+      "user-settings": {
+        "account": {
+          "title": "Kontoeinstellungen",
+          "language": {
+            "title": "Sprache",
+            "description": "Änderung der Sprache Ihrer App"
+          },
+          "data": {
+            "title": "Kontodaten",
+            "description": "Alle Ihre Daten abrufen!",
+            "button": "Meine Daten"
+          },
+          "auth": {
+            "title": "Authentifizierungsanbieter verwalten",
+            "description": "Fügen oder entfernen Sie Sign-on-Methoden von Ihrem Konto, einschließlich GitHub, GitLab, Microsoft, Discord, Steam und Google."
+          },
+          "sessions": {
+            "title": "Verwalten von Sitzungen",
+            "description": "Sehen Sie Ihre Sitzungsmulde all Ihr Gerät!",
+            "actual": "Tatsächlich",
+            "not-provided": "Nicht vorgesehen",
+            "device": "Gerät",
+            "brand": "Marke",
+            "name": "Name",
+            "created_at": "Erstellt bei",
+            "expire": "Entfällt"
+          }
+        },
+        "display": {}
       }
     }
   }

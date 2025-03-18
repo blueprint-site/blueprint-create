@@ -7,6 +7,11 @@
         "about": "À propos",
         "login": "Connexion",
         "blog": "Blog"
+      },
+      "userSettings": {
+        "public": "Profil du public",
+        "account": "Paramètres du compte",
+        "display": "Affichage"
       }
     },
     "user-menu": {
@@ -126,6 +131,39 @@
           "main": "Merci à nos contributeurs. Sans vous, ça n'aurait pas été possible",
           "api": "Un grand merci aussi à ceux qui nous ont aidés à construire l'API"
         }
+      }
+    },
+    "settings": {
+      "settings": "Paramètres",
+      "user-settings": {
+        "account": {
+          "title": "Paramètres du compte",
+          "language": {
+            "title": "Langue",
+            "description": "Changer la langue de votre application"
+          },
+          "data": {
+            "title": "Données du compte",
+            "description": "Récupérer toutes vos données !",
+            "button": "Obtenez mes données"
+          },
+          "auth": {
+            "title": "Gérer les fournisseurs d'authentification",
+            "description": "Ajouter ou supprimer des méthodes de connexion à votre compte, y compris GitHub, GitLab, Microsoft, Discord, Steam et Google."
+          },
+          "sessions": {
+            "title": "Gérer les sessions",
+            "description": "Voir votre session à travers tout votre appareil !",
+            "actual": "Nombre effectif",
+            "not-provided": "Non fourni",
+            "device": "Appareil",
+            "brand": "Marque",
+            "name": "Dénomination",
+            "created_at": "Créé à",
+            "expire": "Expire"
+          }
+        },
+        "display": {}
       }
     }
   }

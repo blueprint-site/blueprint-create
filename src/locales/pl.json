@@ -1,0 +1,170 @@
+{
+  "translation": {
+    "navigation": {
+      "label": {
+        "addons": "Dodatki",
+        "schematics": "Schematy",
+        "about": "O",
+        "login": "Zaloguj",
+        "blog": "Blog"
+      },
+      "userSettings": {
+        "public": "Profil publiczny",
+        "account": "Ustawienia konta",
+        "display": "Wyświetl"
+      }
+    },
+    "user-menu": {
+      "profile": "Profil",
+      "settings": "Ustawienia",
+      "admin": "Panel administracyjny",
+      "logout": "Wyloguj"
+    },
+    "awards": {
+      "banner": {
+        "label": "Nagrody Klucza",
+        "link": "Głosujcie!"
+      }
+    },
+    "home": {
+      "discover": "Addons Promowane",
+      "info": {
+        "about": {
+          "title": "Co to jest Blueprint?",
+          "description": "Blueprint to strona zasobów Create Mod, aby znaleźć addony, schematy i więcej!"
+        },
+        "forCreator": {
+          "title": "Dla stwórców",
+          "description": "Jesteśmy tu, by pokazać wasze dodatki do społeczności Blueprint",
+          "card": {
+            "title": "Nie możesz znaleźć addona?",
+            "description": "Daj nam znać, a my pomożemy zdobyć twój addon",
+            "content": "Nasz proces skanowania addonów jest w pełni zautomatyzowany. Skontaktuj się z nami, aby poprosić o rescan i uzyskać addon w naszym katalogu.",
+            "button": "Napisz do nas"
+          }
+        },
+        "usefulLinks": {
+          "title": "Przydatne linki",
+          "description": "Podstawowe zasoby dla twórców i użytkowników modów",
+          "link1": {
+            "title": "Utwórz Mod Wiki",
+            "description": "Pełna dokumentacja i przewodniki"
+          },
+          "link2": {
+            "title": "Utwórz Mod (Forge)",
+            "description": "Pobierz dla modloadera Forge"
+          },
+          "link3": {
+            "title": "Utwórz Mod (Fabric)",
+            "description": "Pobierz dla modloadera Fabric"
+          }
+        }
+      }
+    },
+    "addons": {
+      "search": {
+        "placeholder": "Addons wyszukiwania..."
+      },
+      "dropdown": {
+        "modloader": {
+          "select": "Wybierz moduł",
+          "all": "Wszystkie modele"
+        },
+        "version": {
+          "select": "Wybierz wersję",
+          "all": "Wszystkie wersje"
+        }
+      },
+      "label": {
+        "downloads": "Pliki do pobrania",
+        "description": "Opis",
+        "categories": "Kategorie",
+        "followers": "Followers",
+        "authors": "Stworzony przez",
+        "note": "Uwaga"
+      },
+      "random": {
+        "title": "Nudzisz się?",
+        "link": "Weź przypadkowy addon!"
+      }
+    },
+    "about": {
+      "mainTitle": "O planie",
+      "subTitle": "Nasza misja",
+      "content1": "Plan wyłonił się z rozpoznania potrzeby scentralizowanej platformy, która skutecznie służy społeczności Create Mod. Zbudowaliśmy tę stronę przy użyciu nowoczesnych technologii internetowych, aby zapewnić solidne rozwiązanie do odkrywania i udostępniania treści.",
+      "content2": "Naszym celem jest konsolidacja zasobów Create Mod w jednym dostępnym miejscu - połączenie deweloperów addonu z użytkownikami i umożliwienie łatwego dzielenia się projektami urządzeń. Naszym celem jest zwiększenie możliwości odkrycia i wspieranie współpracy w ramach społeczności.",
+      "cards": {
+        "card1": {
+          "title": "Odkryj dodatki",
+          "description": "Przeglądaj i zarządzaj rosnącym ekosystemem tworzenia rozszerzeń Mod.",
+          "link": "Poznaj dodatki"
+        },
+        "card2": {
+          "title": "Udostępnij kreacje",
+          "description": "Wyślij i wyświetl swoje automatyczne urządzenia i projekty inżynieryjne.",
+          "link": "Odwiedź programy"
+        },
+        "card3": {
+          "title": "Dołącz do naszej społeczności",
+          "description": "Połącz się z kolegami Create entuzjastów i przyczynić się do ekosystemu.",
+          "link": "Dowiedz się więcej"
+        }
+      },
+      "socialsCard": {
+        "title": "Skontaktuj się!",
+        "card1": {
+          "title": "Discord",
+          "description": "Dla aktualizacji, zakradać spojrzenia i raportowanie emisji."
+        },
+        "card2": {
+          "title": "GitHub",
+          "description": "Dla tych dev!"
+        },
+        "card3": {
+          "title": "E-mail",
+          "description": "Kontakt"
+        }
+      },
+      "contributions": {
+        "title": "Uczestnicy",
+        "subtitle": {
+          "main": "Dzięki naszym niesamowitym ofiarodawcom. Bez ciebie to nie byłoby możliwe",
+          "api": "Również wielkie podziękowania dla tych, którzy pomogli nam zbudować API"
+        }
+      }
+    },
+    "settings": {
+      "settings": "Ustawienia",
+      "user-settings": {
+        "account": {
+          "title": "Ustawienia konta",
+          "language": {
+            "title": "Język",
+            "description": "Zmień język aplikacji"
+          },
+          "data": {
+            "title": "Dane rachunku",
+            "description": "Odzyskaj wszystkie dane!",
+            "button": "Pobierz moje dane"
+          },
+          "auth": {
+            "title": "Zarządzanie dostawcami uwierzytelniania",
+            "description": "Dodaj lub usuń z konta metody sign- on, w tym GitHub, GitLab, Microsoft, Discord, Steam i Google."
+          },
+          "sessions": {
+            "title": "Zarządzanie sesjami",
+            "description": "Zobacz swoją sesję w całym swoim urządzeniu!",
+            "actual": "Rzeczywiste",
+            "not-provided": "Niedostarczone",
+            "device": "Urządzenie",
+            "brand": "Marka",
+            "name": "Nazwa",
+            "created_at": "Utworzono",
+            "expire": "Wygasa"
+          }
+        },
+        "display": {}
+      }
+    }
+  }
+}

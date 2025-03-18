@@ -7,6 +7,11 @@
         "about": "关于",
         "login": "登录",
         "blog": "博客"
+      },
+      "userSettings": {
+        "public": "公众简介",
+        "account": "账户设置",
+        "display": "显示"
       }
     },
     "user-menu": {
@@ -126,6 +131,39 @@
           "main": "感谢我们出色的贡献。 没有你,这是不可能的... ..",
           "api": "也感谢那些帮助我们建造API的人"
         }
+      }
+    },
+    "settings": {
+      "settings": "设置",
+      "user-settings": {
+        "account": {
+          "title": "账户设置",
+          "language": {
+            "title": "语言",
+            "description": "更改应用程序的语言"
+          },
+          "data": {
+            "title": "账户数据",
+            "description": "检索所有数据!",
+            "button": "获取我的数据"
+          },
+          "auth": {
+            "title": "管理认证提供者",
+            "description": "从您的账户中添加或删除签名方法, 包括 GitHub, GitLab, 微软, Discord, Steam, 和 Google ."
+          },
+          "sessions": {
+            "title": "管理会话",
+            "description": "看到你的会话通过你的设备!",
+            "actual": "实际数",
+            "not-provided": "未提供",
+            "device": "设备",
+            "brand": "品牌",
+            "name": "名称",
+            "created_at": "创建于",
+            "expire": "过期"
+          }
+        },
+        "display": {}
       }
     }
   }

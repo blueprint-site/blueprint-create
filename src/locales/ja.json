@@ -7,6 +7,11 @@
         "about": "お問い合わせ",
         "login": "ログイン",
         "blog": "ニュース"
+      },
+      "userSettings": {
+        "public": "パブリックプロファイル",
+        "account": "アカウント設定",
+        "display": "ディスプレイ"
       }
     },
     "user-menu": {
@@ -126,6 +131,39 @@
           "main": "素晴らしいコントリビューターのおかげで。 せっかくなっていなかったのは❤️",
           "api": "また、API ❤️ の構築にご協力いただいた方々、大歓迎です"
         }
+      }
+    },
+    "settings": {
+      "settings": "コンテンツ",
+      "user-settings": {
+        "account": {
+          "title": "アカウント設定",
+          "language": {
+            "title": "用語集",
+            "description": "アプリの言語変更"
+          },
+          "data": {
+            "title": "口座データ",
+            "description": "すべてのデータを取得します!",
+            "button": "私のデータを入手"
+          },
+          "auth": {
+            "title": "認証プロバイダの管理",
+            "description": "GitHub、GitLab、Microsoft、Discord、Steam、Googleなどのアカウントからサインインメソッドを追加または削除します."
+          },
+          "sessions": {
+            "title": "セッションの管理",
+            "description": "お使いのデバイスを全て破棄してください!",
+            "actual": "アクション",
+            "not-provided": "提供していません",
+            "device": "デバイス",
+            "brand": "ブランド",
+            "name": "お名前 (必須)",
+            "created_at": "制作実績",
+            "expire": "ログイン"
+          }
+        },
+        "display": {}
       }
     }
   }

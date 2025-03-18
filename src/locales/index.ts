@@ -9,6 +9,8 @@ import arFile from './ar.json';
 import ptFile from './pt.json';
 import jaFile from './ja.json';
 import ruFile from './ru.json';
+import plFile from './pl.json';
+import ukFile from './uk.json';
 
 export const translations = {
   en: enFile,
@@ -22,4 +24,6 @@ export const translations = {
   pt: ptFile,
   ja: jaFile,
   ru: ruFile,
+  pl: plFile,
+  uk: ukFile,
 };
