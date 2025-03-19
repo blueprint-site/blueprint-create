@@ -14,9 +14,9 @@ import { schematicFormSchema } from '@/schemas/schematic.schema.tsx';
 import { MODLOADER_OPTIONS, CREATE_VERSIONS, MINECRAFT_VERSIONS } from '@/data';
 
 interface SchematicUploadFormProps {
-  onSubmit: (data: SchematicFormValues) => Promise<void>;
-  onValueChange?: (field: keyof SchematicFormValues, value: unknown) => void;
-  onImageChange?: (files: File[]) => void;
+  readonly onSubmit: (data: SchematicFormValues) => Promise<void>;
+  readonly onValueChange?: (field: keyof SchematicFormValues, value: unknown) => void;
+  readonly onImageChange?: (files: File[]) => void;
 }
 
 export function SchematicUploadForm({
@@ -27,7 +27,10 @@ export function SchematicUploadForm({
   const [schematicFilePreview, setSchematicFilePreview] = useState<File | null>(null);
   const [imageFilePreviews, setImageFilePreviews] = useState<File[]>([]);
   const minecraftVersions = MINECRAFT_VERSIONS;
-  const createVersions = CREATE_VERSIONS;
+  const createVersions = Object.values(CREATE_VERSIONS).map((version) => ({
+    value: version.value,
+    label: version.label,
+  }));
   const modloaders = MODLOADER_OPTIONS;
 
   const form = useForm<SchematicFormValues>({
