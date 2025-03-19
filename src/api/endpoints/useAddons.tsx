@@ -45,7 +45,48 @@ function tryParseJson(jsonString: string) {
   }
 }
 
-export const useFetchAddon = (slug?: string) => {
+export const useFetchAddon = (id?: string) => {
+  return useQuery<Addon | null>({
+    queryKey: ['addon', id],
+    queryFn: async () => {
+      if (!id) return null;
+
+      const response = await databases.getDocument(DATABASE_ID, COLLECTION_ID, id);
+
+      const addonData: Addon = {
+        $id: response.$id,
+        name: response.name || '',
+        downloads: response.downloads || '',
+        description: response.description || '',
+        slug: response.slug || '',
+        author: response.author || '',
+        categories: Array.isArray(response.categories) ? response.categories : [],
+        icon: response.icon || '',
+        created_at: response.created_at,
+        updated_at: response.updated_at,
+        curseforge_raw: response.curseforge_raw ? tryParseJson(response.curseforge_raw) : undefined,
+        modrinth_raw: response.modrinth_raw ? tryParseJson(response.modrinth_raw) : undefined,
+        sources: Array.isArray(response.sources) ? response.sources : [],
+        loaders: Array.isArray(response.loaders) ? response.loaders : [],
+        isValid: response.isValid || false,
+        isChecked: response.isChecked || false,
+        minecraft_versions: Array.isArray(response.minecraft_versions)
+          ? response.minecraft_versions
+          : [],
+        create_versions: Array.isArray(response.create_versions) ? response.create_versions : [],
+      };
+
+      console.log('Addon data:', addonData);
+
+      return addonData;
+    },
+    enabled: Boolean(id),
+    staleTime: 1000 * 60 * 5,
+    retry: false,
+  });
+};
+
+export const useFetchAddonBySlug = (slug?: string) => {
   return useQuery<Addon | null>({
     queryKey: ['addon', slug],
     queryFn: async () => {
@@ -56,7 +97,7 @@ export const useFetchAddon = (slug?: string) => {
       ]);
 
       if (response.documents.length === 0) return null;
-      console.log(response);
+
       const doc = response.documents[0];
       const addonData: Addon = {
         $id: doc.$id,
