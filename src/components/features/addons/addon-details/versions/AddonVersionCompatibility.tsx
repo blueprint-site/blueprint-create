@@ -6,7 +6,8 @@ import { VersionSummaryView } from './VersionSummaryView';
 import { VersionMatrixView } from './VersionMatrixView';
 import { VersionDetailedView } from './VersionListView';
 import { VersionLoadingView } from './VersionLoadingView';
-import { VersionDisplay, AddonVersion } from '@/types/addons/addon-details';
+import { AddonVersion } from '@/types/addons/addon-details';
+import { normalizeLoaderName } from '@/data/modloaders';
 
 // Props using the new data structure
 export interface AddonVersionCompatibilityProps {
@@ -16,8 +17,6 @@ export interface AddonVersionCompatibilityProps {
   createVersions?: string[];
   className?: string;
   isLoading?: boolean;
-  versionDisplayData?: VersionDisplay;
-  // Direct compatibility object from ProcessedAddonData
   compatibility?: {
     isCompatible: (mcVersion: string, loader: string) => boolean;
   };
@@ -37,21 +36,33 @@ export const AddonVersionCompatibility: React.FC<AddonVersionCompatibilityProps>
   createVersions = [],
   className,
   isLoading = false,
-  versionDisplayData,
   compatibility,
 }) => {
   const [view, setView] = useState<'summary' | 'matrix' | 'detailed'>('summary');
 
-  // Prioritize direct compatibility if provided, otherwise use versionDisplayData
-  // This provides a migration path from old to new data structure
-  const {
-    filteredMinecraftVersions = minecraftVersions,
-    uniqueLoaders = loaders,
-    uniqueCreateVersions = createVersions,
-    sortedVersions = versions,
-    featuredVersion = versions[0],
-    isCompatible = compatibility?.isCompatible || (() => false),
-  } = versionDisplayData || {};
+  // Create a compatibility check function
+  const checkCompatibility = (mcVersion: string, loader: string): boolean => {
+    if (!versions || versions.length === 0) return false;
+
+    // Normalize loader name for case-insensitive comparison
+    const normalizedLoader = loader.toLowerCase();
+
+    // Check if any version supports this combination
+    return versions.some((version) => {
+      return (
+        version.game_versions.includes(mcVersion) &&
+        version.loaders.some((l) => l.toLowerCase() === normalizedLoader)
+      );
+    });
+  };
+
+  // Normalize and deduplicate loader names
+  const normalizedLoaders = loaders
+    .map(normalizeLoaderName)
+    .filter((value, index, self) => self.indexOf(value) === index);
+
+  // Use the provided compatibility function or our local one
+  const isCompatible = compatibility?.isCompatible || checkCompatibility;
 
   return (
     <div className={className}>
@@ -76,24 +87,25 @@ export const AddonVersionCompatibility: React.FC<AddonVersionCompatibilityProps>
             {/* Summary View */}
             <TabsContent value='summary' className='mt-0'>
               <VersionSummaryView
-                filteredMinecraftVersions={filteredMinecraftVersions}
-                uniqueLoaders={uniqueLoaders}
-                uniqueCreateVersions={uniqueCreateVersions}
-                featuredVersion={featuredVersion}
+                minecraftVersions={minecraftVersions}
+                uniqueLoaders={normalizedLoaders}
+                createVersions={createVersions}
+                featuredVersion={versions[0]}
               />
             </TabsContent>
 
             {/* Matrix View */}
             <TabsContent value='matrix' className='mt-0'>
               <VersionMatrixView
-                filteredMinecraftVersions={filteredMinecraftVersions}
+                minecraftVersions={minecraftVersions}
+                loaders={normalizedLoaders}
                 isCompatible={isCompatible}
               />
             </TabsContent>
 
             {/* Detailed View */}
             <TabsContent value='detailed' className='mt-0'>
-              <VersionDetailedView sortedVersions={sortedVersions} />
+              <VersionDetailedView sortedVersions={versions} />
             </TabsContent>
           </>
         )}

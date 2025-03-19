@@ -10,7 +10,7 @@ import {
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ChevronDown, InfoIcon } from 'lucide-react';
 import ModLoaderDisplay from '@/components/common/ModLoaderDisplay';
-import { AddonVersion } from './AddonVersionCompatibility';
+import { AddonVersion } from '@/types/addons/addon-details';
 import { useDependencyProcessor } from '@/hooks/useDependencyProcessor';
 
 interface VersionDetailedViewProps {
@@ -31,7 +31,7 @@ export const VersionDetailedView: React.FC<VersionDetailedViewProps> = ({ sorted
               <div className='flex w-full items-center justify-between'>
                 <div className='flex items-center'>
                   <span className='mr-2 font-medium'>{version.name}</span>
-                  {version.is_featured && (
+                  {version.featured && (
                     <Badge variant='default' className='text-xs'>
                       Featured
                     </Badge>
@@ -87,7 +87,7 @@ export const VersionDetailedView: React.FC<VersionDetailedViewProps> = ({ sorted
                         }
 
                         // Try to get a readable version from the version ID if available
-                        let versionDisplay = dep.name ?? modName;
+                        let versionDisplay = dep.file_name ?? modName;
 
                         if (dep.version_id) {
                           const readableVersion = mapVersionIdToReadable(
@@ -125,7 +125,7 @@ export const VersionDetailedView: React.FC<VersionDetailedViewProps> = ({ sorted
                             dep.project_id !== CREATE_FABRIC_ID
                           );
                         })
-                        .map((dep: AddonVersion['dependencies'][number]) => {
+                        .map((dep) => {
                           let badgeVariant: 'default' | 'secondary' | 'destructive' | 'outline' =
                             'outline';
 
@@ -140,7 +140,7 @@ export const VersionDetailedView: React.FC<VersionDetailedViewProps> = ({ sorted
                               variant={badgeVariant}
                               className='text-sm'
                             >
-                              {dep.name ?? 'Unknown'}
+                              {dep.file_name ?? 'Unknown'}
                               {dep.version_id && ` (${dep.version_id})`}
                             </Badge>
                           );

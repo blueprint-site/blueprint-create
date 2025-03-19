@@ -1,21 +1,35 @@
 // src/components/features/addons/addon-details/versions/VersionMatrixView.tsx
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { MODLOADER_OPTIONS } from '@/data/modloaders';
+import { MODLOADER_OPTIONS, STANDARD_LOADER_DISPLAY, normalizeLoaderName } from '@/data/modloaders';
 
 interface VersionMatrixViewProps {
-  filteredMinecraftVersions: string[];
+  minecraftVersions: string[];
   isCompatible: (mcVersion: string, loader: string) => boolean;
+  loaders?: string[];
 }
 
+/**
+ * Component that displays a matrix of Minecraft versions and mod loaders
+ * showing compatibility between them
+ */
 export const VersionMatrixView: React.FC<VersionMatrixViewProps> = ({
-  filteredMinecraftVersions,
+  minecraftVersions,
   isCompatible,
+  loaders = [],
 }) => {
-  // Always use standard modloaders for the matrix view
-  const standardModloaders = MODLOADER_OPTIONS.filter((opt) => opt.value !== 'all').map(
-    (opt) => opt.value
-  );
+  // Normalize and deduplicate loader names
+  const normalizedLoaders = loaders
+    .map(normalizeLoaderName)
+    .filter((value, index, self) => self.indexOf(value) === index);
+
+  // If no loaders provided, use standard loaders
+  const standardLoaders =
+    normalizedLoaders.length > 0
+      ? normalizedLoaders
+      : Object.values(STANDARD_LOADER_DISPLAY).filter((loader) =>
+          MODLOADER_OPTIONS.some((opt) => opt.value.toLowerCase() === loader.toLowerCase())
+        );
 
   return (
     <Card>
@@ -24,34 +38,39 @@ export const VersionMatrixView: React.FC<VersionMatrixViewProps> = ({
           <thead>
             <tr>
               <th className='p-2 text-left'>Minecraft</th>
-              {standardModloaders.map((loader) => (
+              {standardLoaders.map((loader) => (
                 <th key={loader} className='p-2 text-center'>
-                  {loader.charAt(0).toUpperCase() + loader.slice(1)}
+                  {loader}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {filteredMinecraftVersions.map((mcVersion) => (
+            {minecraftVersions.map((mcVersion) => (
               <tr key={mcVersion} className='border-t'>
                 <td className='p-2 font-medium'>{mcVersion}</td>
-                {standardModloaders.map((loader) => (
-                  <td key={`${mcVersion}-${loader}`} className='p-2 text-center'>
-                    {isCompatible(mcVersion, loader) ? (
-                      <div
-                        className='mx-auto h-4 w-4 rounded-full bg-green-500'
-                        title={`Compatible with ${mcVersion} on ${loader}`}
-                        aria-label={`Compatible with ${mcVersion} on ${loader}`}
-                      />
-                    ) : (
-                      <div
-                        className='mx-auto h-4 w-4 rounded-full bg-gray-200 dark:bg-gray-700'
-                        title={`Not compatible with ${mcVersion} on ${loader}`}
-                        aria-label={`Not compatible with ${mcVersion} on ${loader}`}
-                      />
-                    )}
-                  </td>
-                ))}
+                {standardLoaders.map((loader) => {
+                  // Check compatibility
+                  const compatible = isCompatible(mcVersion, loader);
+
+                  return (
+                    <td key={`${mcVersion}-${loader}`} className='p-2 text-center'>
+                      {compatible ? (
+                        <div
+                          className='mx-auto h-4 w-4 rounded-full bg-green-500'
+                          title={`Compatible with ${mcVersion} on ${loader}`}
+                          aria-label={`Compatible with ${mcVersion} on ${loader}`}
+                        />
+                      ) : (
+                        <div
+                          className='mx-auto h-4 w-4 rounded-full bg-gray-200 dark:bg-gray-700'
+                          title={`Not compatible with ${mcVersion} on ${loader}`}
+                          aria-label={`Not compatible with ${mcVersion} on ${loader}`}
+                        />
+                      )}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>
