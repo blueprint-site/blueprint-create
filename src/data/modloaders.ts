@@ -1,5 +1,5 @@
 export const MODLOADER_OPTIONS = [
-  { value: 'all', label: 'All Modloaders' },
+  { value: 'All', label: 'All Modloaders' },
   { value: 'forge', label: 'Forge' },
   { value: 'fabric', label: 'Fabric' },
   { value: 'quilt', label: 'Quilt' },

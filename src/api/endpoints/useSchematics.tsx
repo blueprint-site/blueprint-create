@@ -60,6 +60,7 @@ export const useFetchSchematic = (id?: string) => {
   return useQuery<Schematic | null>({
     queryKey: ['schematics', id],
     queryFn: async () => {
+      console.log('Schematics', id);
       if (!id) return null;
       const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
         Query.equal('$id', id),

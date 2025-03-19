@@ -99,6 +99,9 @@ import { AdminLogsSchema } from '@/schemas/adminLogs.schema.tsx';
 
 export type AdminLogs = z.infer<typeof AdminLogsSchema>;
 
+import { OAuthProvidersSchema } from '@/schemas/OAuthProviders.schema.tsx';
+
+export type OAuthProvidersType = z.infer<typeof OAuthProvidersSchema>;
 // LoggedUserContext type
 export interface LoggedUserContextType {
   user: User | null;

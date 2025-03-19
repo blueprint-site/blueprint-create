@@ -4,7 +4,6 @@ import { useFetchBlogBySlug } from '@/api';
 
 const BlogDetails = () => {
   const { slug } = useParams();
-
   const { data: blog, isLoading, isError, error } = useFetchBlogBySlug(slug);
 
   if (isLoading) return <div>Loading...</div>;

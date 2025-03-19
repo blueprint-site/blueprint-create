@@ -20,6 +20,14 @@ export const schematicRoutes: RouteObject[] = [
           </ProtectedRoute>
         ),
       },
+      {
+        path: 'edit/:id',
+        element: (
+          <ProtectedRoute>
+            <SchematicsUploadPage />
+          </ProtectedRoute>
+        ),
+      },
       { path: ':id/:slug', element: <SchematicDetails /> },
     ],
   },

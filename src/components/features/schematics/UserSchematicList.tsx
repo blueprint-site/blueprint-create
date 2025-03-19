@@ -18,13 +18,14 @@ import { useThemeStore } from '@/api/stores/themeStore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx';
 import MinecraftIcon from '@/components/utility/MinecraftIcon.tsx';
 import { Schematic } from '@/types';
+import { useNavigate } from 'react-router';
 
 const UserSchematicList = () => {
   const { isDarkMode } = useThemeStore();
   const user = useUserStore((state) => state.user);
   const { data: userSchematics } = useFetchUserSchematics(user?.$id || '');
   const { mutate: deleteSchematic } = useDeleteSchematics(user?.$id);
-
+  const navigate = useNavigate();
   // Delete handler
   const handleDelete = (id: string) => {
     deleteSchematic(id, {
@@ -44,6 +45,7 @@ const UserSchematicList = () => {
         {userSchematics
           ? userSchematics.map((schematic: Schematic) => (
               <Card
+                onClick={() => navigate(`/schematics/edit/${schematic.$id}`)}
                 key={schematic.$id}
                 className={`bg hover:bg-accent/50 relative mt-4 cursor-pointer transition-colors duration-200 ${
                   isDarkMode ? 'bg-shadow_steel_casing' : 'bg-refined_radiance_casing'
