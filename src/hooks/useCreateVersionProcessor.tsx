@@ -1,56 +1,24 @@
 // src/hooks/useCreateVersionProcessor.tsx
 
 import { useMemo } from 'react';
-import { IntegratedAddonData } from '@/hooks/useAddonData';
-import { VersionInfo, AddonVersion } from '@/types/addons/addon-details';
-import { ModrinthDependenciesResponse, ModrinthDependencyProject } from '@/types/addons/modrinth';
+import {
+  VersionInfo,
+  AddonVersion,
+  AddonDependency,
+  IntegratedAddonData,
+} from '@/types/addons/addon-details';
 import { getAddonCreateCompatibility } from '@/utils/createCompatibility';
-// import { sortVersions, filterValidVersions } from '@/data/createVersions';
-
-/**
- * Get dependency projects from response data
- */
-const getDependencyProjects = (
-  dependencyData:
-    | ModrinthDependenciesResponse
-    | ModrinthDependencyProject[]
-    | Record<string, unknown>
-    | null
-): ModrinthDependencyProject[] => {
-  if (!dependencyData) return [];
-
-  // If it's an array, assume it's already projects
-  if (Array.isArray(dependencyData)) {
-    return dependencyData as ModrinthDependencyProject[];
-  }
-
-  // If it has a projects property that's an array, use that
-  if (
-    typeof dependencyData === 'object' &&
-    'projects' in dependencyData &&
-    Array.isArray(dependencyData.projects)
-  ) {
-    return dependencyData.projects as ModrinthDependencyProject[];
-  }
-
-  return [];
-};
+import { ModrinthProject } from '@/types/addons/modrinth';
 
 /**
  * Extract dependency projects for a given dependency ID
  */
 const findDependencyProject = (
-  dependencies:
-    | ModrinthDependenciesResponse
-    | ModrinthDependencyProject[]
-    | Record<string, unknown>
-    | null,
+  dependencies: ModrinthProject[] | null,
   projectId: string
-): ModrinthDependencyProject | undefined => {
+): ModrinthProject | undefined => {
   if (!dependencies) return undefined;
-
-  const projects = getDependencyProjects(dependencies);
-  return projects.find((p) => p.id === projectId);
+  return dependencies.find((p) => p.id === projectId);
 };
 
 /**
@@ -83,14 +51,14 @@ export function useVersionProcessor(addon: IntegratedAddonData | null, gameVersi
 
         return {
           project_id: dep.project_id,
-          version_id: dep.version_id || undefined,
+          version_id: dep.version_id ?? undefined,
           dependency_type: dep.dependency_type,
           name: dependencyInfo?.title,
           slug: dependencyInfo?.slug,
         };
       }),
       date_published: version.date_published,
-      is_featured: version.featured,
+      featured: version.featured,
     }));
 
     // Collect all game versions from the addon versions
@@ -103,8 +71,17 @@ export function useVersionProcessor(addon: IntegratedAddonData | null, gameVersi
       });
     });
 
+    // Create a properly typed object for getAddonCreateCompatibility
+    const compatibilityData = {
+      name: addon?.name,
+      description: addon?.description,
+      dependencies: addon?.modrinth.dependencies as AddonDependency[] | undefined,
+      versions: addon?.modrinth.versions ?? [],
+      minecraft_versions: addon?.minecraft_versions ?? [],
+    };
+
     // Use the dedicated Create compatibility function to get standardized Create versions
-    const createVersions = getAddonCreateCompatibility(addon);
+    const createVersions = getAddonCreateCompatibility(compatibilityData);
 
     return {
       versions: formattedVersions,
@@ -143,7 +120,7 @@ export function useVersionDisplay(versionInfo: VersionInfo | null, loaders: stri
     });
 
     // Get featured version
-    const featuredVersion = sortedVersions.find((v) => v.is_featured) || sortedVersions[0] || null;
+    const featuredVersion = sortedVersions.find((v) => v.featured) || sortedVersions[0] || null;
 
     // Compatibility checker function
     const isCompatible = (mcVersion: string, loader: string) => {

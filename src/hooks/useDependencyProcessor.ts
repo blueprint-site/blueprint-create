@@ -1,6 +1,6 @@
 // src/hooks/useDependencyProcessor.ts
 import { useMemo } from 'react';
-import { AddonVersion } from '@/components/features/addons/addon-details/sections/AddonVersionCompatibility';
+import { AddonVersion } from '@/types/addons/addon-details';
 
 export const useDependencyProcessor = () => {
   // Get Create mod dependencies
