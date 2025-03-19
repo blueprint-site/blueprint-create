@@ -2,7 +2,7 @@ import { Schematic } from '@/types';
 import { Card, CardContent } from '@/components/ui/card.tsx';
 import { MultiImageViewer } from '@/components/utility/MultiImageViewer.tsx';
 import VersionsDisplay from '@/components/common/VersionsDisplay.tsx';
-import ModLoaderDisplay from '@/components/common/ModLoaderDisplay.tsx';
+import ModLoaders from '../../addons/addon-card/ModLoaders';
 
 export interface SchematicsDetailsContentProps {
   schematic: Schematic;
@@ -30,7 +30,7 @@ export const SchematicsDetailsContent = ({ schematic }: SchematicsDetailsContent
             <h3 className='mb-2 text-lg font-semibold'>Minecraft Versions</h3>
             <VersionsDisplay versions={schematic.game_versions} />
             <h3 className='mb-2 text-lg font-semibold'>Modloaders</h3>
-            <ModLoaderDisplay loaders={schematic.modloaders} />
+            <ModLoaders loaders={schematic.modloaders} />
           </div>
         </div>
       </CardContent>

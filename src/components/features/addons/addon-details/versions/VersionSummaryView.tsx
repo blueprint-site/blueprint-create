@@ -1,8 +1,8 @@
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import ModLoaderDisplay from '@/components/common/ModLoaderDisplay';
 import { AddonVersion } from '@/types/addons/addon-details';
+import ModLoaders from '../../addon-card/ModLoaders';
 
 interface VersionSummaryViewProps {
   minecraftVersions: string[];
@@ -33,7 +33,7 @@ export const VersionSummaryView: React.FC<VersionSummaryViewProps> = ({
 
         <div>
           <h4 className='mb-2 text-sm font-medium'>Mod Loaders</h4>
-          <ModLoaderDisplay loaders={uniqueLoaders} />
+          <ModLoaders loaders={uniqueLoaders} />
         </div>
 
         {createVersions.length > 0 && (

@@ -1,52 +1,65 @@
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip.tsx';
-import DevinsBadges from '@/components/utility/DevinsBadges.tsx';
-import { Badge } from '@/components/ui/badge.tsx';
+import DevinsBadges from '@/components/utility/DevinsBadges';
+import neoforge from '@/assets/neoforge_46h.png';
+import { normalizeLoaderName } from '@/data/modloaders';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-const MODLOADERS = ['forge', 'fabric', 'neoforge', 'quilt'];
+const ModLoaderDisplay = ({ loaders = [] }: { loaders: string[] }) => {
+  if (loaders.length === 0) {
+    return <div>No mod loaders found!</div>;
+  }
 
-const ModLoaders = ({ modloaders }: { modloaders: string[] }) => {
-  const filteredLoaders = [...new Set(modloaders.map((loader) => loader.toLowerCase()))]
-    .filter((loader) => MODLOADERS.includes(loader))
-    .map((loader) => loader.toLowerCase());
+  // Create a map of standardized names to their lowercase values
+  // This is needed because DevinsBadges expects lowercase loader names
+  const loaderDisplayMap = new Map(
+    Array.from(new Set(loaders.map((loader) => loader.toLowerCase()))).map((loader) => [
+      normalizeLoaderName(loader),
+      loader.toLowerCase(),
+    ])
+  );
+
+  // Get a sorted array of unique normalized loader names
+  const uniqueLoaders = Array.from(loaderDisplayMap.keys()).sort((a, b) => a.localeCompare(b));
 
   return (
-    <TooltipProvider>
-      <div className='flex gap-2'>
-        {filteredLoaders.map((loader) => (
-          <Tooltip key={loader}>
-            <TooltipTrigger asChild>
-              <div className='cursor-pointer p-0'>
-                {loader === 'neoforge' ? (
-                  <img
-                    src='@/assets/neoforge_46h.png'
-                    alt='NeoForge'
-                    loading='lazy'
-                    className='h-10 rounded'
-                  />
-                ) : (
+    <div className='flex flex-row gap-2'>
+      {uniqueLoaders.map((loader) => {
+        return loader === 'NeoForge' ? (
+          <div key={loader}>
+            <TooltipProvider delayDuration={0}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <img src={neoforge} alt={loader} className='h-8' />
+                </TooltipTrigger>
+                <TooltipContent className='bg-surface-2 border'>
+                  <div>{loader}</div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        ) : (
+          <TooltipProvider key={loader} delayDuration={0}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span>
                   <DevinsBadges
                     type='compact-minimal'
                     category='supported'
-                    name={loader}
+                    className={'h-8'}
+                    name={loaderDisplayMap.get(loader) ?? loader.toLowerCase()}
                     format='svg'
-                    height={40}
+                    height={32}
                   />
-                )}
-              </div>
-            </TooltipTrigger>
-            <TooltipContent className='flex flex-wrap gap-1 p-2'>
-              <Badge variant='outline'>{loader}</Badge>
-            </TooltipContent>
-          </Tooltip>
-        ))}
-      </div>
-    </TooltipProvider>
+                </span>
+              </TooltipTrigger>
+              <TooltipContent className='bg-surface-2 border'>
+                <div>{loader}</div>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        );
+      })}
+    </div>
   );
 };
 
-export default ModLoaders;
+export default ModLoaderDisplay;

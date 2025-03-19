@@ -9,9 +9,9 @@ import {
 } from '@/components/ui/accordion';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ChevronDown, InfoIcon } from 'lucide-react';
-import ModLoaderDisplay from '@/components/common/ModLoaderDisplay';
 import { AddonVersion } from '@/types/addons/addon-details';
 import { useDependencyProcessor } from '@/hooks/useDependencyProcessor';
+import ModLoaders from '../../addon-card/ModLoaders';
 
 interface VersionDetailedViewProps {
   sortedVersions: AddonVersion[];
@@ -60,7 +60,7 @@ export const VersionDetailedView: React.FC<VersionDetailedViewProps> = ({ sorted
 
                 <div>
                   <h4 className='mb-2 text-sm font-medium'>Mod Loaders</h4>
-                  <ModLoaderDisplay loaders={version.loaders} />
+                  <ModLoaders loaders={version.loaders} />
                 </div>
 
                 {createDeps.length > 0 && (

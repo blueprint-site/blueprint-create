@@ -3,13 +3,13 @@ import { memo, useEffect, useState } from 'react';
 import { useCollectionStore } from '@/api/stores/collectionStore.ts';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import ModLoaders from '@/components/features/addons/addon-card/ModLoaders';
 import CategoryBadges from '@/components/features/addons/addon-card/CategoryBadges';
 import { VersionBadges } from './VersionBadges';
 import { AddonStats } from './AddonStats';
 import { useNavigate } from 'react-router';
 import { Addon } from '@/types';
 import { ModPageLinks } from '@/components/features/addons/addon-card/ModPageLinks';
+import ModLoaders from './ModLoaders';
 
 interface AddonListItemProps {
   addon: Addon;
@@ -68,7 +68,7 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
           <p className='text-foreground-muted text-xs'>{addon.description}</p>
 
           <div className='mt-2 flex gap-2'>
-            <ModLoaders modloaders={addon.loaders || []} />
+            <ModLoaders loaders={addon.loaders || []} />
           </div>
 
           <CategoryBadges categories={addon.categories} />

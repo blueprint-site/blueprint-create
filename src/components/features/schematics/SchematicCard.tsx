@@ -10,9 +10,9 @@ import {
   CardTitle,
 } from '@/components/ui/card.tsx';
 import { Badge } from '@/components/ui/badge.tsx';
-import ModLoaderDisplay from '@/components/common/ModLoaderDisplay.tsx';
 import { useIncrementDownloads } from '@/api/endpoints/useSchematics.tsx';
 import { Schematic } from '@/types';
+import ModLoaders from '../addons/addon-card/ModLoaders';
 
 interface SchematicCardProps {
   schematic: Schematic;
@@ -22,7 +22,7 @@ interface SchematicCardProps {
 const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
   const renderVersionBadges = (versions: string[]) => {
     return versions.map((version, i) => (
-      <Badge key={i} variant='mcVersion'>
+      <Badge key={`mc-version-${version}-${i}`} variant='mcVersion'>
         {version}
       </Badge>
     ));
@@ -52,7 +52,7 @@ const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
 
       <CardContent>
         <div>
-          Modloader: <ModLoaderDisplay loaders={schematic.modloaders} />
+          Modloader: <ModLoaders loaders={schematic.modloaders} />
         </div>
         <div>
           Made for Minecraft:
