@@ -41,9 +41,11 @@ export const useDependencyProcessor = () => {
       if (versionMatch) return versionMatch[1];
 
       // For Create Fabric, sometimes version is in the format "for MC x.y.z" rather than Create version
-      if (modName.includes('Fabric') && versionId.match(/for MC \d+\.\d+(?:\.\d+)?/)) {
+      const mcRegex = /for MC \d+\.\d+(?:\.\d+)?/;
+      if (modName.includes('Fabric') && mcRegex.exec(versionId)) {
         // If it's a Minecraft version reference, try to guess the Create version based on MC version
-        const mcMatch = versionId.match(/for MC (\d+\.\d+(?:\.\d+)?)/);
+        const mcRegex = /for MC (\d+\.\d+(?:\.\d+)?)/;
+        const mcMatch = mcRegex.exec(versionId);
         if (mcMatch) {
           const mcVersion = mcMatch[1];
           // Map Minecraft versions to likely Create Fabric versions

@@ -21,7 +21,7 @@ function getCreateVersionFromMap(
   versionMap: Record<string, string>
 ): string | null {
   if (!versionId || typeof versionId !== 'string') return null;
-  return versionMap[versionId as keyof typeof versionMap] || null;
+  return versionMap[versionId] || null;
 }
 
 /**

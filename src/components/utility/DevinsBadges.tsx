@@ -101,7 +101,13 @@ const DevinsBadges = ({
     }
     badgeSrc = customBadgeUrl;
   } else {
-    const badgeFormat = format === 'png' ? `_${finalHeight}h` : format === 'svg' ? '_vector' : '';
+    let badgeFormat = '';
+    if (format === 'png') {
+      badgeFormat = `_${finalHeight}h`;
+    } else if (format === 'svg') {
+      badgeFormat = '_vector';
+    }
+
     badgeSrc = `https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/${type}/${category}/${name}${badgeFormat}.${format}`;
   }
 
