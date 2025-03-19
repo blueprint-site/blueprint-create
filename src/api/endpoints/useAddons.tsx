@@ -76,8 +76,6 @@ export const useFetchAddon = (id?: string) => {
         create_versions: Array.isArray(response.create_versions) ? response.create_versions : [],
       };
 
-      console.log('Addon data:', addonData);
-
       return addonData;
     },
     enabled: Boolean(id),
@@ -197,7 +195,6 @@ export const useSaveAddon = () => {
       return databases.updateDocument(DATABASE_ID, COLLECTION_ID, addon.$id, serializedAddon);
     },
     onSuccess: () => {
-      console.log('Successfully updated addons');
       queryClient.invalidateQueries({ queryKey: ['addons'] });
     },
   });

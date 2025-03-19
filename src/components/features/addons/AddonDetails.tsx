@@ -35,37 +35,20 @@ export default function AddonDetails() {
     error: errorDependencies,
   } = useFetchModrinthDependencies(slug);
 
-  const versionMap = versions?.map((version) => {
-    return {
-      id: version.id,
-      project_id: version.project_id,
-      version_number: version.version_number,
-    };
-  });
-  console.log(versionMap);
-  // Combine potential errors
   const error = errorAddon || errorModrinth || errorVersions || errorDependencies;
 
-  if (error) {
-    return <AddonDetailsError error={error} />;
-  }
+  if (error) return <AddonDetailsError error={error} />;
 
   const isLoading =
     isLoadingAddon || isLoadingModrinth || isLoadingVersions || isLoadingDependencies;
 
-  // Check for loading and data existence
   if (isLoading || !addon || !modrinthProject || !versions || !dependencies) {
     return <AddonDetailsLoading />;
   }
 
-  // Parse JSON data safely
   const curseforgeObject = addon.curseforge_raw ? JSON.parse(addon.curseforge_raw) : null;
-  console.log(curseforgeObject);
   const modrinthObject = addon.modrinth_raw ? JSON.parse(addon.modrinth_raw) : null;
-
-  // Extract Create versions from the addon versions
   const createVersions = getAddonCreateVersionsFromVersions(versions);
-  console.log('Detected Create versions:', createVersions);
 
   // Build the integrated data object with proper types
   const data: IntegratedAddonData = {
