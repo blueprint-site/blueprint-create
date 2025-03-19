@@ -1,58 +1,40 @@
 import { CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { ProcessedAddonData } from '@/types/addons/addon-details';
-import { ModrinthGalleryImage } from '@/api/endpoints/useModrinth';
+import { ModrinthGalleryImage } from '@/types/addons/modrinth';
 
 export interface AddonDetailsGalleryProps {
-  data: Pick<ProcessedAddonData, 'basic' | 'gallery'>;
+  gallery: ModrinthGalleryImage[];
+  name: string;
 }
 
-export const AddonDetailsGallery = ({ data }: AddonDetailsGalleryProps) => {
-  const { basic, gallery } = data;
-
+export const AddonDetailsGallery = ({ gallery, name }: AddonDetailsGalleryProps) => {
   // Initialize states early - before any conditional returns
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [fullscreenIndex, setFullscreenIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState<boolean[]>([]);
 
-  // Make sure we have a reference to the name that works with conditionals
-  const name = useMemo(() => basic.name, [basic]);
-
-  // Handle both string arrays and ModrinthGalleryImage arrays
-  // Moved all hooks to the top level, before any conditionals
-  const normalizedGallery = useMemo(() => {
-    if (!gallery) return [];
-
-    const gallery_small = gallery.small;
-    return gallery_small.map((item) => {
-      if (typeof item === 'string') {
-        return { url: item };
-      }
-      return item as unknown as ModrinthGalleryImage;
+  // Use HD images if available, otherwise use the gallery from the main API
+  const displayImages = useMemo(() => {
+    return gallery.map((image) => {
+      return image.raw_url ?? image.url;
     });
   }, [gallery]);
 
-  // Use HD images if available, otherwise use the gallery from the main API
-  const displayImages = useMemo(() => {
-    if (!gallery) return [];
-    return gallery.hd || normalizedGallery.map((img) => img.url);
-  }, [gallery, normalizedGallery]);
+  const navigateGallery = (direction: 'prev' | 'next') => {
+    setCurrentImageIndex((prev) => {
+      if (direction === 'prev') {
+        return prev > 0 ? prev - 1 : displayImages.length - 1;
+      }
+      return prev < displayImages.length - 1 ? prev + 1 : 0;
+    });
+  };
 
-  // Initialize image loading state
-  useEffect(() => {
-    if (normalizedGallery.length > 0) {
-      setImagesLoaded(new Array(normalizedGallery.length).fill(false));
-    }
-  }, [normalizedGallery.length]);
-
-  // All hooks are now at the top level, so this is safe
-  // Now we use a render-time conditional instead of early return
-  if (!gallery) {
-    return null;
-  }
+  const openFullscreen = () => {
+    setFullscreenIndex(currentImageIndex);
+  };
 
   const handleImageLoad = (index: number) => {
     setImagesLoaded((prev) => {
@@ -62,25 +44,12 @@ export const AddonDetailsGallery = ({ data }: AddonDetailsGalleryProps) => {
     });
   };
 
-  const navigateGallery = (direction: 'prev' | 'next') => {
-    setCurrentImageIndex((prev) => {
-      if (direction === 'prev') {
-        return prev > 0 ? prev - 1 : normalizedGallery.length - 1;
-      }
-      return prev < normalizedGallery.length - 1 ? prev + 1 : 0;
-    });
-  };
-
-  const openFullscreen = () => {
-    setFullscreenIndex(currentImageIndex);
-  };
-
   const navigateFullscreen = (direction: 'prev' | 'next') => {
     setFullscreenIndex((prev) => {
       if (direction === 'prev') {
-        return prev > 0 ? prev - 1 : normalizedGallery.length - 1;
+        return prev > 0 ? prev - 1 : displayImages.length - 1;
       }
-      return prev < normalizedGallery.length - 1 ? prev + 1 : 0;
+      return prev < displayImages.length - 1 ? prev + 1 : 0;
     });
   };
 
@@ -108,7 +77,7 @@ export const AddonDetailsGallery = ({ data }: AddonDetailsGalleryProps) => {
             variant='outline'
             size='icon'
             onClick={() => navigateGallery('prev')}
-            disabled={normalizedGallery.length <= 1}
+            disabled={displayImages.length <= 1}
             className='bg-background/70 hover:bg-background/90 h-9 w-9 rounded-full border-white/20 shadow-md backdrop-blur-sm'
             aria-label='Previous image'
           >
@@ -143,7 +112,7 @@ export const AddonDetailsGallery = ({ data }: AddonDetailsGalleryProps) => {
                       variant='outline'
                       size='icon'
                       onClick={() => navigateFullscreen('prev')}
-                      disabled={normalizedGallery.length <= 1}
+                      disabled={displayImages.length <= 1}
                       className='bg-background/70 h-9 w-9 rounded-full shadow-md backdrop-blur-sm'
                     >
                       <ChevronLeft className='h-5 w-5' />
@@ -153,7 +122,7 @@ export const AddonDetailsGallery = ({ data }: AddonDetailsGalleryProps) => {
                       variant='outline'
                       size='icon'
                       onClick={() => navigateFullscreen('next')}
-                      disabled={normalizedGallery.length <= 1}
+                      disabled={displayImages.length <= 1}
                       className='bg-background/70 h-9 w-9 rounded-full shadow-md backdrop-blur-sm'
                     >
                       <ChevronRight className='h-5 w-5' />
@@ -162,7 +131,7 @@ export const AddonDetailsGallery = ({ data }: AddonDetailsGalleryProps) => {
 
                   <div className='absolute inset-x-0 bottom-4 flex justify-center'>
                     <div className='bg-background/80 rounded-full px-3 py-1 text-sm backdrop-blur-sm'>
-                      {fullscreenIndex + 1} / {normalizedGallery.length}
+                      {fullscreenIndex + 1} / {displayImages.length}
                     </div>
                   </div>
                 </div>
@@ -173,7 +142,7 @@ export const AddonDetailsGallery = ({ data }: AddonDetailsGalleryProps) => {
               variant='outline'
               size='icon'
               onClick={() => navigateGallery('next')}
-              disabled={normalizedGallery.length <= 1}
+              disabled={displayImages.length <= 1}
               className='bg-background/70 hover:bg-background/90 h-9 w-9 rounded-full border-white/20 shadow-md backdrop-blur-sm'
               aria-label='Next image'
             >
@@ -183,20 +152,18 @@ export const AddonDetailsGallery = ({ data }: AddonDetailsGalleryProps) => {
         </div>
 
         {/* Thumbnail Indicators */}
-        {normalizedGallery.length > 1 && (
+        {displayImages.length > 1 && (
           <div className='absolute inset-x-0 bottom-4 flex justify-center gap-2'>
             <div className='bg-background/70 flex items-center gap-1.5 rounded-full px-3 py-1.5 backdrop-blur-sm'>
-              {normalizedGallery.map((_, idx) => (
+              {displayImages.map((_, i) => (
                 <button
-                  key={`dot-${normalizedGallery[idx]?.url || idx}`}
-                  onClick={() => setCurrentImageIndex(idx)}
+                  key={`dot-${displayImages[i] || i}`}
+                  onClick={() => setCurrentImageIndex(i)}
                   className={`h-2 w-2 rounded-full transition-all ${
-                    idx === currentImageIndex
-                      ? 'bg-primary w-6'
-                      : 'bg-primary/30 hover:bg-primary/50'
+                    i === currentImageIndex ? 'bg-primary w-6' : 'bg-primary/30 hover:bg-primary/50'
                   }`}
-                  aria-label={`Go to image ${idx + 1}`}
-                  aria-current={idx === currentImageIndex}
+                  aria-label={`Go to image ${i + 1}`}
+                  aria-current={i === currentImageIndex}
                 />
               ))}
             </div>
@@ -205,21 +172,21 @@ export const AddonDetailsGallery = ({ data }: AddonDetailsGalleryProps) => {
       </div>
 
       {/* Thumbnail Strip */}
-      {normalizedGallery.length > 1 && (
+      {displayImages.length > 1 && (
         <div className='mt-4 hidden gap-2 overflow-x-auto py-2 sm:flex'>
-          {normalizedGallery.map((image, idx) => (
+          {displayImages.map((image, i) => (
             <button
-              key={`thumb-${normalizedGallery[idx]?.url || idx}`}
-              onClick={() => setCurrentImageIndex(idx)}
+              key={`thumb-${displayImages[i] || i}`}
+              onClick={() => setCurrentImageIndex(i)}
               className={`h-16 w-24 flex-shrink-0 overflow-hidden rounded border-2 transition-all ${
-                idx === currentImageIndex
+                i === currentImageIndex
                   ? 'border-primary scale-105 shadow-md'
                   : 'hover:border-primary/30 border-transparent'
               }`}
             >
               <img
-                src={image.url}
-                alt={`Thumbnail ${idx + 1}`}
+                src={image}
+                alt={`Thumbnail ${i + 1}`}
                 className='h-full w-full object-cover'
                 loading='lazy'
                 width={96}

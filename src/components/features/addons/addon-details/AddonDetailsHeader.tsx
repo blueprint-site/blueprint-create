@@ -2,17 +2,24 @@ import { Download, Heart, Star, StarOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCollectionStore } from '@/api/stores/collectionStore';
 import { CardHeader } from '@/components/ui/card';
-import { ProcessedAddonData } from '@/types/addons/addon-details';
 
 export interface AddonDetailsHeaderProps {
-  data: Pick<ProcessedAddonData, 'basic' | 'metadata'>;
+  name: string;
+  description: string;
+  slug: string;
+  icon: string;
+  downloads: number;
+  follows: number;
 }
 
-export const AddonDetailsHeader = ({ data }: AddonDetailsHeaderProps) => {
-  const { basic, metadata } = data;
-  const { name, description, slug, icon } = basic;
-  const { downloads, follows } = metadata;
-
+export const AddonDetailsHeader = ({
+  name,
+  description,
+  slug,
+  icon,
+  downloads,
+  follows,
+}: AddonDetailsHeaderProps) => {
   const { collection, addAddon, removeAddon } = useCollectionStore();
   const isInCollection = collection.includes(slug);
 

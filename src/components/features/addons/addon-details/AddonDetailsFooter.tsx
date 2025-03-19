@@ -3,16 +3,16 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import SocialSharing from '@/components/features/social-sharing/SocialSharing';
 import { Author } from '@/types';
 import { Button } from '@/components/ui/button';
-import { ReactNode } from 'react';
 import { format } from 'date-fns';
+import { ExternalLink } from '@/types/addons/addon-details';
 
 export interface AddonDetailsFooterProps {
+  addon_name: string;
   authors: Author[];
+  externalLinks: ExternalLink[];
+  licence: string;
   createdAt: string | null;
   updatedAt: string | null;
-  licence: string;
-  addon_name: string;
-  externalLinks?: Array<{ icon: ReactNode; label: string; url: string; id?: string }>;
 }
 
 export const AddonDetailsFooter = ({
@@ -90,7 +90,7 @@ export const AddonDetailsFooter = ({
         {/* External Links */}
         <div>
           <h3 className='mb-4 text-lg font-semibold'>Links</h3>
-          {externalLinks && externalLinks.length > 0 ? (
+          {externalLinks.length > 0 ? (
             <div className='grid grid-cols-1 gap-2'>
               {externalLinks.map((link) => (
                 <Button

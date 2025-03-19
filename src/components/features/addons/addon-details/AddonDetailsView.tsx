@@ -1,13 +1,10 @@
 // src/components/features/addons/addon-details/AddonDetailsView.tsx
 
-import { Bug, Globe } from 'lucide-react';
-import { SiGithub } from '@icons-pack/react-simple-icons';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { ProcessedAddonData } from '@/types/addons/addon-details';
-import { ExternalLinks } from '@/components/features/addons/addon-card/ExternalLinks';
-import { Dependency } from '@/types/addons/dependencies';
+import { ExternalLink, IntegratedAddonData } from '@/types/addons/addon-details';
+import { ModPageLinks } from '@/components/features/addons/addon-card/ModPageLinks';
 
 import { AddonDetailsHeader } from './AddonDetailsHeader';
 import { AddonDetailsDescription } from './AddonDetailsDescription';
@@ -15,25 +12,55 @@ import { AddonDetailsGallery } from './AddonDetailsGallery';
 import { AddonDetailsFooter } from './AddonDetailsFooter';
 import { AddonDetailsDonation } from './AddonDetailsDonation';
 import { AddonVersionCompatibility } from './versions/AddonVersionCompatibility';
-
+import { ModrinthProject } from '@/types/addons/modrinth';
+import { SiDiscord, SiGithub } from '@icons-pack/react-simple-icons';
+import { Bug, Globe } from 'lucide-react';
 interface AddonDetailsViewProps {
-  data: ProcessedAddonData;
+  addon: IntegratedAddonData;
+  createVersions?: string[];
 }
 
 /**
  * Unified view component for addon details using processed data
  */
-export const AddonDetailsView = ({ data }: AddonDetailsViewProps) => {
-  const { basic, versions, gallery, metadata, links, dependencies } = data;
-
+export const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsViewProps) => {
   // Check if we have environment info
-  const hasEnvironmentInfo = metadata.clientSide ?? metadata.serverSide;
+  const hasEnvironmentInfo = addon.modrinth?.client_side ?? addon.modrinth?.server_side;
+  const externalLinks: ExternalLink[] = [
+    {
+      icon: <Bug className='h-4 w-4' />,
+      label: 'GitHub',
+      url: addon.modrinth.issues_url ?? '',
+    },
+    {
+      icon: <SiDiscord className='h-4 w-4' />,
+      label: 'Discord',
+      url: addon.modrinth.discord_url ?? '',
+    },
+    {
+      icon: <Globe className='h-4 w-4' />,
+      label: 'Wiki',
+      url: addon.modrinth.wiki_url ?? '',
+    },
+    {
+      icon: <SiGithub className='h-4 w-4' />,
+      label: 'Source',
+      url: addon.modrinth.source_url ?? '',
+    },
+  ].filter((link) => link.url !== '');
 
   return (
     <div className='container mx-auto px-4 py-8'>
       <Card className='overflow-hidden'>
         {/* Header with direct data access */}
-        <AddonDetailsHeader data={{ basic, metadata }} />
+        <AddonDetailsHeader
+          name={addon.name}
+          slug={addon.slug}
+          downloads={addon.downloads}
+          description={addon.description}
+          icon={addon.icon}
+          follows={addon.modrinth.followers ?? 0}
+        />
 
         <Separator className='mx-6' />
 
@@ -43,20 +70,11 @@ export const AddonDetailsView = ({ data }: AddonDetailsViewProps) => {
             {/* Version compatibility */}
             <div>
               <AddonVersionCompatibility
-                versions={versions.all}
-                minecraftVersions={versions.minecraft}
-                loaders={versions.loaders}
-                createVersions={versions.create}
+                versions={addon.modrinth.versions ?? []}
+                minecraftVersions={addon.minecraft_versions ?? []}
+                loaders={addon.loaders ?? []}
+                createVersions={createVersions}
                 isLoading={false}
-                compatibility={versions.compatibility}
-                versionDisplayData={{
-                  filteredMinecraftVersions: versions.minecraft,
-                  uniqueLoaders: versions.loaders,
-                  uniqueCreateVersions: versions.create,
-                  sortedVersions: versions.all,
-                  featuredVersion: versions.featured,
-                  isCompatible: versions.compatibility.isCompatible,
-                }}
               />
             </div>
 
@@ -66,7 +84,7 @@ export const AddonDetailsView = ({ data }: AddonDetailsViewProps) => {
               <div>
                 <h3 className='mb-4 text-lg font-semibold'>Categories</h3>
                 <div className='flex flex-wrap gap-2'>
-                  {basic.categories.map((category: string) => (
+                  {addon.categories.map((category: string) => (
                     <Badge key={category} variant='outline'>
                       {category}
                     </Badge>
@@ -79,22 +97,30 @@ export const AddonDetailsView = ({ data }: AddonDetailsViewProps) => {
                 <div>
                   <h3 className='mb-4 text-lg font-semibold'>Environment</h3>
                   <div className='grid grid-cols-2 gap-4'>
-                    {metadata.clientSide && (
+                    {addon.modrinth.client_side && (
                       <div className='space-y-2'>
                         <h4 className='text-sm font-medium'>Client</h4>
-                        <Badge variant={metadata.clientSide === 'required' ? 'default' : 'outline'}>
-                          {metadata.clientSide.charAt(0).toUpperCase() +
-                            metadata.clientSide.slice(1)}
+                        <Badge
+                          variant={
+                            addon.modrinth.client_side === 'required' ? 'default' : 'outline'
+                          }
+                        >
+                          {addon.modrinth.client_side.charAt(0).toUpperCase() +
+                            addon.modrinth.client_side.slice(1)}
                         </Badge>
                       </div>
                     )}
 
-                    {metadata.serverSide && (
+                    {addon.modrinth.server_side && (
                       <div className='space-y-2'>
                         <h4 className='text-sm font-medium'>Server</h4>
-                        <Badge variant={metadata.serverSide === 'required' ? 'default' : 'outline'}>
-                          {metadata.serverSide.charAt(0).toUpperCase() +
-                            metadata.serverSide.slice(1)}
+                        <Badge
+                          variant={
+                            addon.modrinth.server_side === 'required' ? 'default' : 'outline'
+                          }
+                        >
+                          {addon.modrinth.server_side.charAt(0).toUpperCase() +
+                            addon.modrinth.server_side.slice(1)}
                         </Badge>
                       </div>
                     )}
@@ -103,16 +129,16 @@ export const AddonDetailsView = ({ data }: AddonDetailsViewProps) => {
               )}
 
               {/* Dependencies */}
-              {dependencies && dependencies.required && dependencies.required.length > 0 && (
+              {addon.modrinth.dependencies && addon.modrinth.dependencies.length > 0 && (
                 <div>
                   <h3 className='mb-4 text-lg font-semibold'>Dependencies</h3>
                   {/* Simplified version of dependencies for the right column */}
                   <div className='space-y-2'>
-                    {dependencies.required && dependencies.required.length > 0 && (
+                    {addon.modrinth.dependencies.length > 0 && (
                       <div className='flex flex-wrap gap-2'>
-                        {dependencies.required.map((dep: Dependency) => (
-                          <Badge key={dep.project_id} variant='default'>
-                            {dep.name || 'Unknown'}
+                        {addon.modrinth.dependencies.map((dep: ModrinthProject) => (
+                          <Badge key={dep.slug} variant='default'>
+                            {dep.title ?? 'Unknown'}
                           </Badge>
                         ))}
                       </div>
@@ -124,10 +150,10 @@ export const AddonDetailsView = ({ data }: AddonDetailsViewProps) => {
               {/* Available On */}
               <div>
                 <h3 className='mb-4 text-lg font-semibold'>Available On</h3>
-                <ExternalLinks
-                  slug={basic.slug}
-                  curseforge={metadata.availablePlatforms.includes('curseforge')}
-                  modrinth={metadata.availablePlatforms.includes('modrinth')}
+                <ModPageLinks
+                  slug={addon.slug}
+                  curseforge={!!addon.sources.includes('CurseForge')}
+                  modrinth={!!addon.sources.includes('Modrinth')}
                 />
               </div>
             </div>
@@ -135,21 +161,21 @@ export const AddonDetailsView = ({ data }: AddonDetailsViewProps) => {
         </div>
 
         {/* Gallery with direct data access */}
-        <AddonDetailsGallery data={{ basic, gallery }} />
+        <AddonDetailsGallery gallery={addon.modrinth.gallery} name={addon.name} />
 
         {/* Description */}
-        {metadata.bodyContent && (
+        {addon.modrinth.body && (
           <>
             <Separator className='mx-6' />
-            <AddonDetailsDescription description={metadata.bodyContent} />
+            <AddonDetailsDescription description={addon.modrinth.body} />
           </>
         )}
 
         {/* Donation Links with direct data access */}
-        {links.donation.length > 0 && (
+        {addon.modrinth.donation_urls.length > 0 && (
           <>
             <Separator className='mx-6' />
-            <AddonDetailsDonation data={{ links }} />
+            <AddonDetailsDonation links={addon.modrinth.donation_urls} />
           </>
         )}
 
@@ -157,32 +183,11 @@ export const AddonDetailsView = ({ data }: AddonDetailsViewProps) => {
         <Separator className='mx-6' />
         <AddonDetailsFooter
           authors={[]} // Will need to extract authors from CurseForge data
-          createdAt={basic.created_at}
-          updatedAt={basic.updated_at}
+          createdAt={addon.created_at}
+          updatedAt={addon.updated_at}
           licence={''} // Will need to extract license from Modrinth data
-          addon_name={basic.name}
-          externalLinks={links.external.map((link) => {
-            // Convert iconType back to React component
-            let icon;
-            switch (link.iconType) {
-              case 'github':
-                icon = <SiGithub className='h-4 w-4' />;
-                break;
-              case 'bug':
-                icon = <Bug className='h-4 w-4' />;
-                break;
-              case 'globe':
-                icon = <Globe className='h-4 w-4' />;
-                break;
-              default:
-                icon = <Globe className='h-4 w-4' />;
-            }
-
-            return {
-              ...link,
-              icon,
-            };
-          })}
+          addon_name={addon.name}
+          externalLinks={externalLinks}
         />
       </Card>
     </div>

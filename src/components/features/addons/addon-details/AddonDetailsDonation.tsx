@@ -3,21 +3,16 @@ import { Button } from '@/components/ui/button';
 import { Heart } from 'lucide-react';
 import { SiGithubsponsors, SiKofi, SiPatreon, SiPaypal } from '@icons-pack/react-simple-icons';
 import { ReactNode } from 'react';
-import { ProcessedAddonData } from '@/types/addons/addon-details';
 
 export interface AddonDetailsDonationProps {
-  data: Pick<ProcessedAddonData, 'links'>;
+  links: {
+    id: string;
+    platform: string;
+    url: string;
+  }[];
 }
 
-export const AddonDetailsDonation = ({ data }: AddonDetailsDonationProps) => {
-  const { links } = data;
-  const { donation: donationLinks } = links;
-
-  if (!donationLinks || donationLinks.length === 0) {
-    return null;
-  }
-
-  // Map platforms to their icons
+export const AddonDetailsDonation = ({ links }: AddonDetailsDonationProps) => {
   const getPlatformIcon = (platform: string): ReactNode => {
     const platformLower = platform.toLowerCase();
 
@@ -42,7 +37,7 @@ export const AddonDetailsDonation = ({ data }: AddonDetailsDonationProps) => {
     <CardContent className='py-6'>
       <h3 className='mb-4 text-lg font-semibold'>Support the Developer</h3>
       <div className='grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3'>
-        {donationLinks.map((link) => (
+        {links.map((link) => (
           <Button key={link.id} variant='outline' className='justify-start gap-2' asChild>
             <a href={link.url} target='_blank' rel='noopener noreferrer'>
               {getPlatformIcon(link.platform)}
