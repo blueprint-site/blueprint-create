@@ -1,7 +1,13 @@
 import { CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Heart } from 'lucide-react';
-import { SiGithubsponsors, SiKofi, SiPatreon, SiPaypal } from '@icons-pack/react-simple-icons';
+import {
+  SiGithubsponsors,
+  SiKofi,
+  SiOpencollective,
+  SiPatreon,
+  SiPaypal,
+} from '@icons-pack/react-simple-icons';
 import { ReactNode } from 'react';
 
 export interface AddonDetailsDonationProps {
@@ -13,24 +19,59 @@ export interface AddonDetailsDonationProps {
 }
 
 export const AddonDetailsDonation = ({ links }: AddonDetailsDonationProps) => {
-  const getPlatformIcon = (platform: string): ReactNode => {
+  const getPlatformButton = (platform: string, url: string): ReactNode => {
+    if (url.includes('opencollective')) {
+      platform = 'Open Collective';
+    }
     const platformLower = platform.toLowerCase();
 
-    if (platformLower.includes('github') || platformLower.includes('sponsor')) {
-      return <SiGithubsponsors className='h-4 w-4' />;
+    if (platformLower.includes('github')) {
+      return (
+        <>
+          <SiGithubsponsors className='h-4 w-4' />
+          <span>{platform}</span>
+        </>
+      );
     }
     if (platformLower.includes('ko-fi') || platformLower.includes('kofi')) {
-      return <SiKofi className='h-4 w-4' />;
+      return (
+        <>
+          <SiKofi className='h-4 w-4' />
+          <span>{platform}</span>
+        </>
+      );
     }
     if (platformLower.includes('patreon')) {
-      return <SiPatreon className='h-4 w-4' />;
+      return (
+        <>
+          <SiPatreon className='h-4 w-4' />
+          <span>{platform}</span>
+        </>
+      );
     }
     if (platformLower.includes('paypal')) {
-      return <SiPaypal className='h-4 w-4' />;
+      return (
+        <>
+          <SiPaypal className='h-4 w-4' />
+          <span>{platform}</span>
+        </>
+      );
+    }
+    if (platformLower.includes('open collective')) {
+      return (
+        <>
+          <SiOpencollective className='h-4 w-4' />
+          <span>{platform}</span>
+        </>
+      );
     }
 
     // Default icon
-    return <Heart className='h-4 w-4' />;
+    return (
+      <>
+        <Heart className='h-4 w-4' />;<span>{platform}</span>
+      </>
+    );
   };
 
   return (
@@ -40,8 +81,7 @@ export const AddonDetailsDonation = ({ links }: AddonDetailsDonationProps) => {
         {links.map((link) => (
           <Button key={link.id} variant='outline' className='justify-start gap-2' asChild>
             <a href={link.url} target='_blank' rel='noopener noreferrer'>
-              {getPlatformIcon(link.platform)}
-              <span>{link.platform}</span>
+              {getPlatformButton(link.platform, link.url)}
             </a>
           </Button>
         ))}
