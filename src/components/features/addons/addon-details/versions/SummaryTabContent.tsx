@@ -4,14 +4,14 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { AddonVersion } from '@/types/addons/addon-details';
 import ModLoaders from '../../addon-card/ModLoaders';
 
-interface VersionSummaryViewProps {
+interface SummaryTabContentProps {
   minecraftVersions: string[];
   uniqueLoaders: string[];
   createVersions: string[];
   featuredVersion: AddonVersion | null;
 }
 
-export const VersionSummaryView: React.FC<VersionSummaryViewProps> = ({
+export const SummaryTabContent: React.FC<SummaryTabContentProps> = ({
   minecraftVersions,
   uniqueLoaders,
   createVersions,

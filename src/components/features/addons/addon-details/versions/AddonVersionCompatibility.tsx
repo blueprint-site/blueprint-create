@@ -2,12 +2,14 @@
 
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { VersionSummaryView } from './VersionSummaryView';
-import { VersionMatrixView } from './VersionMatrixView';
-import { VersionDetailedView } from './VersionListView';
-import { VersionLoadingView } from './VersionLoadingView';
 import { AddonVersion } from '@/types/addons/addon-details';
 import { normalizeLoaderName } from '@/data/modloaders';
+import {
+  MatrixTabContent,
+  SummaryTabContent,
+  TabsLoading,
+  VersionsTabContent,
+} from '@/components/features/addons/addon-details/versions';
 
 // Props using the new data structure
 export interface AddonVersionCompatibilityProps {
@@ -27,7 +29,7 @@ export interface AddonVersionCompatibilityProps {
  * Shows compatibility information in multiple views:
  * - Summary: Simple badges for quick overview
  * - Matrix: Visual matrix of version compatibility
- * - Detailed: Per-version details including specific Create mod compatibility
+ * - Versions: Per-version details including specific Create mod compatibility
  */
 export const AddonVersionCompatibility: React.FC<AddonVersionCompatibilityProps> = ({
   versions = [],
@@ -38,7 +40,7 @@ export const AddonVersionCompatibility: React.FC<AddonVersionCompatibilityProps>
   isLoading = false,
   compatibility,
 }) => {
-  const [view, setView] = useState<'summary' | 'matrix' | 'detailed'>('summary');
+  const [view, setView] = useState<'summary' | 'matrix' | 'versions'>('summary');
 
   // Create a compatibility check function
   const checkCompatibility = (mcVersion: string, loader: string): boolean => {
@@ -68,7 +70,7 @@ export const AddonVersionCompatibility: React.FC<AddonVersionCompatibilityProps>
     <div className={className}>
       <Tabs
         value={view}
-        onValueChange={(v) => setView(v as 'summary' | 'matrix' | 'detailed')}
+        onValueChange={(v) => setView(v as 'summary' | 'matrix' | 'versions')}
         className='w-full'
       >
         <div className='mb-4 flex items-center justify-between'>
@@ -76,17 +78,17 @@ export const AddonVersionCompatibility: React.FC<AddonVersionCompatibilityProps>
           <TabsList>
             <TabsTrigger value='summary'>Summary</TabsTrigger>
             <TabsTrigger value='matrix'>Matrix</TabsTrigger>
-            <TabsTrigger value='detailed'>Detailed</TabsTrigger>
+            <TabsTrigger value='versions'>Versions</TabsTrigger>
           </TabsList>
         </div>
 
         {isLoading ? (
-          <VersionLoadingView />
+          <TabsLoading />
         ) : (
           <>
-            {/* Summary View */}
+            {/* Summary */}
             <TabsContent value='summary' className='mt-0'>
-              <VersionSummaryView
+              <SummaryTabContent
                 minecraftVersions={minecraftVersions}
                 uniqueLoaders={normalizedLoaders}
                 createVersions={createVersions}
@@ -94,18 +96,18 @@ export const AddonVersionCompatibility: React.FC<AddonVersionCompatibilityProps>
               />
             </TabsContent>
 
-            {/* Matrix View */}
+            {/* Matrix */}
             <TabsContent value='matrix' className='mt-0'>
-              <VersionMatrixView
+              <MatrixTabContent
                 minecraftVersions={minecraftVersions}
                 loaders={normalizedLoaders}
                 isCompatible={isCompatible}
               />
             </TabsContent>
 
-            {/* Detailed View */}
-            <TabsContent value='detailed' className='mt-0'>
-              <VersionDetailedView sortedVersions={versions} />
+            {/* Versions */}
+            <TabsContent value='versions' className='mt-0'>
+              <VersionsTabContent sortedVersions={versions} />
             </TabsContent>
           </>
         )}

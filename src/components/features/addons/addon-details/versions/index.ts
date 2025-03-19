@@ -2,7 +2,7 @@
 export { AddonVersionCompatibility } from './AddonVersionCompatibility';
 
 // Export view components
-export { VersionSummaryView } from './VersionSummaryView';
-export { VersionMatrixView } from './VersionMatrixView';
-export { VersionDetailedView } from './VersionListView';
-export { VersionLoadingView } from './VersionLoadingView';
+export { SummaryTabContent } from './SummaryTabContent';
+export { MatrixTabContent } from './MatrixTabContent';
+export { VersionsTabContent } from './VersionsTabContent';
+export { TabsLoading } from './TabsLoading';

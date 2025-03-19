@@ -1,4 +1,4 @@
-// src/components/features/addons/addon-details/components/versions/VersionDetailedView.tsx
+// src/components/features/addons/addon-details/components/versions/VersionsTabContent.tsx
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -13,15 +13,15 @@ import { AddonVersion } from '@/types/addons/addon-details';
 import { useDependencyProcessor } from '@/hooks/useDependencyProcessor';
 import ModLoaders from '../../addon-card/ModLoaders';
 
-interface VersionDetailedViewProps {
+interface VersionsTabContentProps {
   sortedVersions: AddonVersion[];
 }
 
-export const VersionDetailedView: React.FC<VersionDetailedViewProps> = ({ sortedVersions }) => {
+export const VersionsTabContent: React.FC<VersionsTabContentProps> = ({ sortedVersions }) => {
   const { getCreateDependencies, mapVersionIdToReadable } = useDependencyProcessor();
 
   return (
-    <Accordion type='single' collapsible className='w-full'>
+    <Accordion type='single' collapsible className='max-h-64 w-full overflow-scroll'>
       {sortedVersions.map((version) => {
         const createDeps = getCreateDependencies(version);
 

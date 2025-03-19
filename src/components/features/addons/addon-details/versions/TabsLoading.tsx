@@ -1,9 +1,9 @@
-// src/components/features/addons/addon-details/components/versions/VersionLoadingView.tsx
+// src/components/features/addons/addon-details/components/versions/TabsLoading.tsx
 import React from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card } from '@/components/ui/card';
 
-export const VersionLoadingView: React.FC = () => {
+export const TabsLoading: React.FC = () => {
   return (
     <div className='space-y-6'>
       <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>

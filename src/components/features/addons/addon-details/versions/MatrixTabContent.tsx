@@ -1,9 +1,9 @@
-// src/components/features/addons/addon-details/versions/VersionMatrixView.tsx
+// src/components/features/addons/addon-details/versions/MatrixTabContent.tsx
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { MODLOADER_OPTIONS, STANDARD_LOADER_DISPLAY, normalizeLoaderName } from '@/data/modloaders';
 
-interface VersionMatrixViewProps {
+interface MatrixTabContentProps {
   minecraftVersions: string[];
   isCompatible: (mcVersion: string, loader: string) => boolean;
   loaders?: string[];
@@ -13,7 +13,7 @@ interface VersionMatrixViewProps {
  * Component that displays a matrix of Minecraft versions and mod loaders
  * showing compatibility between them
  */
-export const VersionMatrixView: React.FC<VersionMatrixViewProps> = ({
+export const MatrixTabContent: React.FC<MatrixTabContentProps> = ({
   minecraftVersions,
   isCompatible,
   loaders = [],
