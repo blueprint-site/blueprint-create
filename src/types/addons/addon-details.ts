@@ -1,5 +1,8 @@
 // src/types/addons/addon-details.ts
-import { Dependencies } from './dependencies';
+import { Addon } from '@/types';
+import { CondensedModrinthProject, ModrinthRawObject, ModrinthVersionDependency } from './modrinth';
+import { CurseForgeRawObject } from './curseforge';
+import { ReactNode } from 'react';
 
 /**
  * Represents a version of an addon
@@ -10,15 +13,9 @@ export interface AddonVersion {
   version_number: string;
   game_versions: string[];
   loaders: string[];
-  dependencies?: Array<{
-    project_id: string;
-    version_id?: string;
-    name?: string;
-    slug?: string;
-    dependency_type: 'required' | 'optional' | 'incompatible' | 'embedded';
-  }>;
+  dependencies?: ModrinthVersionDependency[];
   date_published: string;
-  is_featured?: boolean;
+  featured?: boolean;
 }
 
 /**
@@ -46,29 +43,10 @@ export interface VersionDisplay {
  * External link with iconType
  */
 export interface ExternalLink {
-  iconType: string;
+  icon: ReactNode;
   label: string;
   url: string;
-  id: string;
-}
-
-/**
- * Type for addon object from database
- */
-export interface Addon {
-  $id?: string;
-  name: string;
-  description?: string;
-  slug: string;
-  icon?: string;
-  modrinth_raw?: string | Record<string, unknown> | null;
-  curseforge_raw?: string | Record<string, unknown> | null;
-  minecraft_versions?: string[];
-  loaders?: string[];
-  categories?: string[];
-  created_at?: string | null;
-  updated_at?: string | null;
-  [key: string]: unknown;
+  id?: string;
 }
 
 /**
@@ -81,56 +59,37 @@ export interface DonationLink {
 }
 
 /**
- * New comprehensive data structure for processed addon data
+ * Integrated addon data with properly nested structure
  */
-export interface ProcessedAddonData {
-  // Basic information
-  basic: {
-    id?: string;
-    name: string;
-    description: string;
-    slug: string;
-    icon: string;
-    created_at: string | null;
-    updated_at: string | null;
-    categories: string[];
-    loaders: string[];
+export interface IntegratedAddonData extends Addon {
+  curseforgeObject?: CurseForgeRawObject;
+  modrinthObject?: ModrinthRawObject;
+  modrinth: CondensedModrinthProject;
+}
+
+/**
+ * Interface for addon dependencies
+ */
+export interface AddonDependency {
+  project_id?: string;
+  modId?: number;
+  relationType?: number;
+}
+
+/**
+ * Interface for the addon object with the properties used in compatibility detection
+ */
+export interface AddonCompatibilityData {
+  name?: string;
+  description?: string;
+  dependencies?: AddonDependency[];
+  minecraft_versions: string[];
+  modrinth_raw?: {
+    versions?: string[];
   };
-
-  // Version information with display features
-  versions: {
-    minecraft: string[];
-    create: string[];
-    loaders: string[];
-    all: AddonVersion[];
-    featured: AddonVersion | null;
-    compatibility: {
-      isCompatible: (mcVersion: string, loader: string) => boolean;
-    };
+  curseforge_raw?: {
+    latestFiles?: {
+      gameVersions?: string[];
+    }[];
   };
-
-  // Gallery data
-  gallery: {
-    small: Array<string | Record<string, unknown>>;
-    hd?: string[];
-  } | null;
-
-  // Stats and metadata
-  metadata: {
-    downloads: number;
-    follows: number;
-    clientSide?: string;
-    serverSide?: string;
-    bodyContent?: string;
-    availablePlatforms: string[];
-  };
-
-  // External links
-  links: {
-    external: ExternalLink[];
-    donation: DonationLink[];
-  };
-
-  // Dependencies (typed correctly)
-  dependencies: Dependencies | null;
 }

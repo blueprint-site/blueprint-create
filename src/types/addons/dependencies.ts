@@ -25,15 +25,6 @@ export interface Dependencies {
 }
 
 /**
- * Props for the AddonDetailsDependencies component
- */
-export interface AddonDetailsDependenciesProps {
-  dependencies?: Dependencies;
-  serverSide?: string;
-  clientSide?: string;
-}
-
-/**
  * Props for the DependencyTooltip component
  */
 export interface DependencyTooltipProps {

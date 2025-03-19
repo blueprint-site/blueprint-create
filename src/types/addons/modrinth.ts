@@ -30,15 +30,15 @@ export interface ModrinthProject {
   categories: string[];
   client_side: SideSupport;
   server_side: SideSupport;
-  body?: string;
+  body: string;
   status: ProjectStatus;
   requested_status?: ProjectStatus | null;
-  additional_categories?: string[];
+  additional_categories: string[];
   issues_url?: string | null;
   source_url?: string | null;
   wiki_url?: string | null;
   discord_url?: string | null;
-  donation_urls?: Array<{
+  donation_urls: Array<{
     id: string;
     platform: string;
     url: string;
@@ -50,7 +50,7 @@ export interface ModrinthProject {
   id: string;
   team: string;
   body_url?: string | null;
-  moderator_message?: {
+  moderator_message: {
     message: string;
     body?: string | null;
   } | null;
@@ -59,9 +59,9 @@ export interface ModrinthProject {
   approved?: string; // ISO date string
   queued?: string; // ISO date string
   followers: number;
-  game_versions?: string[];
-  loaders?: string[];
-  gallery?: ModrinthGalleryImage[];
+  game_versions: string[];
+  loaders: string[];
+  gallery: ModrinthGalleryImage[];
   license?: {
     id: string;
     name: string;
@@ -96,21 +96,21 @@ export interface ModrinthVersionDependency {
  * Version as returned from GET /project/{id|slug}/version
  */
 export interface ModrinthVersion {
-  name: string;
-  version_number: string;
-  changelog?: string | null;
-  dependencies?: ModrinthVersionDependency[];
   game_versions: string[];
-  version_type: VersionType;
   loaders: string[];
-  status: VersionStatus;
-  requested_status?: VersionStatus | null;
   id: string;
   project_id: string;
   author_id: string;
+  featured: boolean;
+  name: string;
+  version_number: string;
+  changelog?: string | null;
+  changelog_url?: string | null;
   date_published: string; // ISO date string
   downloads: number;
-  changelog_url?: string | null;
+  version_type: VersionType;
+  status: VersionStatus;
+  requested_status?: VersionStatus | null;
   files: Array<{
     hashes?: {
       sha512?: string;
@@ -122,32 +122,49 @@ export interface ModrinthVersion {
     size: number;
     file_type?: 'required-resource-pack' | 'optional-resource-pack' | null;
   }>;
+  dependencies: ModrinthVersionDependency[];
 }
+
+/**
+ * Project versions as returned from GET /project/{id|slug}/version
+ */
+export interface ModrinthVersionsResponse extends Array<ModrinthVersion> {}
 
 /**
  * Project dependencies as returned from GET /project/{id|slug}/dependencies
  */
 export interface ModrinthDependenciesResponse {
-  projects: ModrinthDependencyProject[];
-  versions?: string[]; // Version IDs that directly depend on the project
+  projects: ModrinthProject[];
+  versions?: string[];
 }
 
-/**
- * Project dependency information
- */
-export interface ModrinthDependencyProject {
-  id: string;
+export interface CondensedModrinthProject
+  extends Omit<ModrinthProject, 'versions' | 'dependencies'> {
+  versions: ModrinthVersion[] | null;
+  dependencies: ModrinthProject[] | null;
+}
+
+// modrinth_raw object
+export interface ModrinthRawObject {
+  project_id: string;
+  project_type: string;
   slug: string;
+  author: string;
   title: string;
   description: string;
   categories: string[];
-  client_side: SideSupport;
-  server_side: SideSupport;
-  project_type: ProjectType;
+  display_categories: string[];
+  versions: string[];
   downloads: number;
-  icon_url?: string | null;
-  color?: number | null;
-  thread_id?: string;
-  monetization_status?: string;
-  team: string;
+  follows: number;
+  icon_url: string;
+  date_created: string;
+  date_modified: string;
+  latest_version: string;
+  license: string;
+  client_side: 'optional' | 'required' | 'unsupported';
+  server_side: 'optional' | 'required' | 'unsupported';
+  gallery: string[];
+  featured_gallery: string;
+  color: number;
 }
