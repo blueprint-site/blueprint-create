@@ -357,3 +357,19 @@ body::-webkit-scrollbar {
     color: var(--color-secondary);
   }
 }
+
+/* For manage markdown display in addons  */
+.prose > div.img-wrapper img {
+  max-height: 10rem;
+  width: auto;
+}
+.prose > div.img-wrapper p {
+  font-family: var(--font-mono), sans-serif;
+}
+.prose > div.img-wrapper ul {
+  font-family: var(--font-mono), sans-serif;
+}
+.prose ul > li::before {
+  content: '-';
+  margin-right: 0.5em;
+}
