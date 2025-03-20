@@ -7,6 +7,8 @@ import { Models } from 'appwrite';
 import OAuthProvidersDisplay from '@/components/utility/OAuthProvidersDisplay.tsx';
 import ClientDisplay from '@/components/utility/ClientDisplay.tsx';
 import { Button } from '@/components/ui/button.tsx';
+import LanguageSwitcher from '@/components/features/settings/LanguageSwitcher.tsx';
+import { useTranslation } from 'react-i18next';
 
 export default function AccountSettings() {
   const user = useUserStore((state) => state.user);
@@ -16,6 +18,7 @@ export default function AccountSettings() {
 
   const [userProviders, setUserProviders] = useState<string[]>([]);
   const [userSessions, setUserSession] = useState<Models.Session[]>([]);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -29,17 +32,33 @@ export default function AccountSettings() {
 
   return (
     <div>
-      <h2 className='text-2xl font-bold'>Account security</h2>
+      <h2 className='text-2xl font-bold'>{t('settings.user-settings.account.title')}</h2>
       <h3 className='text-xl font-bold'>{user?.name}</h3>
+      <section className={'space-y-4'}>
+        <div className='flex items-center gap-2'>
+          <UserCog className='h-5 w-5' />
+          <div className='text-lg font-semibold'>
+            {t('settings.user-settings.account.language.title')}
+          </div>
+        </div>
+        <p className='text-foreground-muted text-sm'>
+          {t('settings.user-settings.account.language.description')}
+        </p>
+        <LanguageSwitcher direction={'down'} />
+      </section>
 
       <section className={'space-y-4'}>
         <div className='flex items-center gap-2'>
           <UserCog className='h-5 w-5' />
-          <div className='text-lg font-semibold'>Account Data</div>
+          <div className='text-lg font-semibold'>
+            {t('settings.user-settings.account.data.title')}
+          </div>
         </div>
-        <p className='text-foreground-muted text-sm'>Retrieve all your data !</p>
+        <p className='text-foreground-muted text-sm'>
+          {t('settings.user-settings.account.data.description')}
+        </p>
         <Button className={'cursor-pointer'} onClick={() => getAllUserData(user?.$id || '')}>
-          Get My Data
+          {t('settings.user-settings.account.data.button')}
         </Button>
       </section>
 
@@ -47,11 +66,12 @@ export default function AccountSettings() {
       <section className='space-y-4'>
         <div className='flex items-center gap-2'>
           <UserCog className='h-5 w-5' />
-          <div className='text-lg font-semibold'>Manage authentication providers</div>
+          <div className='text-lg font-semibold'>
+            {t('settings.user-settings.account.auth.title')}
+          </div>
         </div>
         <p className='text-foreground-muted text-sm'>
-          Add or remove sign-on methods from your account, including GitHub, GitLab, Microsoft,
-          Discord, Steam, and Google.
+          {t('settings.user-settings.account.auth.description')}
         </p>
         <div>
           <div className='grid grid-cols-1 gap-4 sm:grid-cols-3'>
@@ -81,9 +101,13 @@ export default function AccountSettings() {
       <section className={'space-y-4'}>
         <div className='flex items-center gap-2'>
           <UserCog className='h-5 w-5' />
-          <div className='text-lg font-semibold'>Manage Sessions</div>
+          <div className='text-lg font-semibold'>
+            {t('settings.user-settings.account.sessions.title')}
+          </div>
         </div>
-        <p className='text-foreground-muted text-sm'>See your session trough all your device !</p>
+        <p className='text-foreground-muted text-sm'>
+          {t('settings.user-settings.account.sessions.description')}
+        </p>
         <div>
           {userSessions.map((session, index) => (
             <Card className={'bg-surface-1 mt-2 border'} key={index}>
@@ -99,28 +123,32 @@ export default function AccountSettings() {
                 <div className={'relative float-end'}>
                   {session.current ? (
                     <div className={'flex gap-2'}>
-                      Actual <CheckCircle color={'green'}></CheckCircle>{' '}
+                      {t('settings.user-settings.account.sessions.actual')}{' '}
+                      <CheckCircle color={'green'}></CheckCircle>{' '}
                     </div>
                   ) : null}
                 </div>
                 <div className={'flex items-center gap-4'}>
                   <div>
                     <div className='flex items-center gap-2'>
-                      <span>Device :</span>
+                      <span>{t('settings.user-settings.account.sessions.device')} :</span>
                       <div className='text-foreground-muted'>
-                        {session.deviceModel || 'Not provided'}
+                        {session.deviceModel ||
+                          t('settings.user-settings.account.sessions.not-provided')}
                       </div>
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span>Brand :</span>
+                      <span>{t('settings.user-settings.account.sessions.brand')} :</span>
                       <div className='text-foreground-muted'>
-                        {session.deviceBrand || 'Not provided'}
+                        {session.deviceBrand ||
+                          t('settings.user-settings.account.sessions.not-provided')}
                       </div>
                     </div>
                     <div className='flex items-center gap-2'>
-                      <span>Name :</span>
+                      <span>{t('settings.user-settings.account.sessions.name')} :</span>
                       <div className='text-foreground-muted'>
-                        {session.deviceName || 'Not provided'}
+                        {session.deviceName ||
+                          t('settings.user-settings.account.sessions.not-provided')}
                       </div>
                     </div>
                   </div>
@@ -129,7 +157,7 @@ export default function AccountSettings() {
               <CardFooter>
                 <div className={''}>
                   <div className='flex gap-2'>
-                    <span>Created at :</span>
+                    <span>{t('settings.user-settings.account.sessions.created_at')} :</span>
                     <div className='text-foreground-muted'>
                       {new Date(session.$createdAt).toLocaleDateString(undefined, {
                         year: 'numeric',
@@ -142,7 +170,7 @@ export default function AccountSettings() {
                     </div>
                   </div>
                   <div className='flex gap-2'>
-                    <span>Expire :</span>
+                    <span>{t('settings.user-settings.account.sessions.expire')} :</span>
                     <div className='text-foreground-muted'>
                       {new Date(session.expire).toLocaleDateString(undefined, {
                         year: 'numeric',

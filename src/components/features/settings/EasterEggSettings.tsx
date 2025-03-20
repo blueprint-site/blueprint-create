@@ -8,6 +8,7 @@ import { Switch } from '@/components/ui/switch';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { LockIcon, UnlockIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Component for managing easter egg settings
@@ -15,6 +16,7 @@ import { LockIcon, UnlockIcon } from 'lucide-react';
 const EasterEggsSettings = () => {
   const { isEggDiscovered, isEggEnabled, toggleEasterEgg } = useEasterEgg();
   const [isUpdating, setIsUpdating] = useState(false);
+  const { t } = useTranslation();
   const handleToggle = async (eggId: string, enabled: boolean) => {
     setIsUpdating(true);
     await toggleEasterEgg(eggId, enabled);
@@ -24,9 +26,11 @@ const EasterEggsSettings = () => {
   return (
     <div className='space-y-6'>
       <div>
-        <h2 className='text-2xl font-bold tracking-tight'>Easter Eggs</h2>
+        <h2 className='text-2xl font-bold tracking-tight'>
+          {t('settings.user-settings.display.easter-eggs.title')}
+        </h2>
         <p className='text-muted-foreground'>
-          Discover and toggle special features hidden throughout the application.
+          {t('settings.user-settings.display.easter-eggs.description')}
         </p>
       </div>
 
@@ -46,14 +50,16 @@ const EasterEggsSettings = () => {
                         variant='outline'
                         className='bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-300'
                       >
-                        <UnlockIcon className='mr-1 h-3 w-3' /> Discovered
+                        <UnlockIcon className='mr-1 h-3 w-3' />{' '}
+                        {t('settings.user-settings.display.easter-eggs.unlocked')}
                       </Badge>
                     ) : (
                       <Badge
                         variant='outline'
                         className='bg-gray-50 text-gray-700 dark:bg-gray-900 dark:text-gray-300'
                       >
-                        <LockIcon className='mr-1 h-3 w-3' /> Locked
+                        <LockIcon className='mr-1 h-3 w-3' />{' '}
+                        {t('settings.user-settings.display.easter-eggs.locked')}
                       </Badge>
                     )}
                   </div>
@@ -86,7 +92,7 @@ const EasterEggsSettings = () => {
 
       {EASTER_EGGS.some((egg) => !isEggDiscovered(egg.id)) && (
         <div className='text-muted-foreground mt-6 text-center text-sm'>
-          Keep exploring to discover more easter eggs!
+          {t('settings.user-settings.display.easter-eggs.keep-exploring')}
         </div>
       )}
     </div>

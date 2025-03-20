@@ -1,0 +1,233 @@
+{
+  "translation": {
+    "navigation": {
+      "label": {
+        "addons": "Addons",
+        "schematics": "Schematics",
+        "about": "About",
+        "login": "Login",
+        "blog": "Blog",
+        "privacy": "Privacy",
+        "terms": "Terms"
+      },
+      "userSettings": {
+        "public": "Public profile",
+        "account": "Account settings",
+        "display": "Display"
+      }
+    },
+    "user-menu": {
+      "profile": "Profile",
+      "settings": "Settings",
+      "admin": "Admin Panel",
+      "logout": "Logout"
+    },
+    "awards": {
+      "banner": {
+        "label": "The Wrench Awards",
+        "link": "Vote now!"
+      }
+    },
+    "home": {
+      "discover": "Featured Addons",
+      "info": {
+        "about": {
+          "title": "What is Blueprint?",
+          "description": "Blueprint is a Create Mod resource site to find addons, schematics, and more!"
+        },
+        "forCreator": {
+          "title": "For Creators",
+          "description": "We're here to help showcase your addons to the Blueprint community",
+          "card": {
+            "title": "Can't find your addon?",
+            "description": "Let us know and we'll help get your addon listed",
+            "content": "Our addon scanning process is fully automated. Contact us to request a rescan and get your addon included in our directory.",
+            "button": "Email Us"
+          }
+        },
+        "usefulLinks": {
+          "title": "Useful Links",
+          "description": "Essential resources for Create mod developers and users",
+          "link1": {
+            "title": "Create Mod Wiki",
+            "description": "Complete documentation and guides"
+          },
+          "link2": {
+            "title": "Create Mod (Forge)",
+            "description": "Download for Forge modloader"
+          },
+          "link3": {
+            "title": "Create Mod (Fabric)",
+            "description": "Download for Fabric modloader"
+          }
+        }
+      }
+    },
+    "addons": {
+      "search": {
+        "placeholder": "Search Addons..."
+      },
+      "dropdown": {
+        "modloader": {
+          "select": "Select Modloader",
+          "all": "All Modloaders"
+        },
+        "version": {
+          "select": "Select Version",
+          "all": "All Versions"
+        }
+      },
+      "label": {
+        "downloads": "Downloads",
+        "description": "Description",
+        "categories": "Categories",
+        "followers": "Followers",
+        "authors": "Created by",
+        "note": "Note"
+      },
+      "random": {
+        "title": "Feeling bored?",
+        "link": "Get a random addon!"
+      }
+    },
+    "about": {
+      "mainTitle": "About Blueprint",
+      "subTitle": "Our Mission",
+      "content1": "Blueprint emerged from recognizing the need for a centralized platform that serves the Create Mod community effectively. We built this site using modern web technologies to provide a robust solution for discovering and sharing content.",
+      "content2": "Our goal is to consolidate Create Mod resources in one accessible location - connecting addon developers with users and enabling easy sharing of contraption designs. We aim to enhance discoverability and foster collaboration within the community.",
+      "cards": {
+        "card1": {
+          "title": "Discover Addons",
+          "description": "Browse and manage the growing ecosystem of Create Mod extensions.",
+          "link": "Explore Addons"
+        },
+        "card2": {
+          "title": "Share Creations",
+          "description": "Upload and showcase your automated contraptions and engineering designs.",
+          "link": "Visit Schematics"
+        },
+        "card3": {
+          "title": "Join Our Community",
+          "description": "Connect with fellow Create enthusiasts and contribute to the ecosystem.",
+          "link": "Learn More"
+        }
+      },
+      "socialsCard": {
+        "title": "Get in touch!",
+        "card1": {
+          "title": "Discord",
+          "description": "For updates, sneak peeks, and issue reporting."
+        },
+        "card2": {
+          "title": "GitHub",
+          "description": "For the devs out there!"
+        },
+        "card3": {
+          "title": "Email",
+          "description": "Contact us at"
+        }
+      },
+      "contributions": {
+        "title": "Contributors",
+        "subtitle": {
+          "main": "Thanks to our awesome contributors. Without you this wouldn't have been possible ❤️",
+          "api": "Also a big thanks to those who helped us building the API ❤️"
+        }
+      }
+    },
+    "settings": {
+      "settings": "Settings",
+      "user-settings": {
+        "account": {
+          "title": "Account Settings",
+          "language": {
+            "title": "Language",
+            "description": "Change the language of your app"
+          },
+          "data": {
+            "title": "Account Data",
+            "description": "Retrieve all your data !",
+            "button": "Get My Data"
+          },
+          "auth": {
+            "title": "Manage authentication providers",
+            "description": "Add or remove sign-on methods from your account, including GitHub, GitLab, Microsoft, Discord, Steam, and Google."
+          },
+          "sessions": {
+            "title": "Manage Sessions",
+            "description": "See your session trough all your device !",
+            "actual": "Actual",
+            "not-provided": "Not provided",
+            "device": "Device",
+            "brand": "Brand",
+            "name": "Name",
+            "created_at": "Created at",
+            "expire": "Expire "
+          }
+        },
+        "display": {
+          "title": "Display Settings",
+          "theme": {
+            "title": "Theme",
+            "description": "Choose between light and dark mode for the site interface.",
+            "dark-mode": "Dark mode",
+            "light-mode": "Light mode"
+          },
+          "easter-eggs": {
+            "title": "Easter Eggs",
+            "description": "Discover and toggle special features hidden throughout the application.",
+            "locked": "Locked",
+            "unlocked": "Unlocked",
+            "keep-exploring": "Keep exploring to discover more easter eggs!"
+          }
+        },
+        "public-profile": {
+          "title": "Profile informations",
+          "description": "Your profile information is publicly viewable on Blueprint and through the Blueprint API.",
+          "picture": {
+            "title": "Profile picture",
+            "upload": "Upload Image"
+          },
+          "username": {
+            "title": "Username",
+            "description": "A unique case-insensitive name to identify your profile."
+          },
+          "bio": {
+            "title": "Bio",
+            "description": "A short description to tell everyone a little bit about you."
+          },
+          "actions": {
+            "save": "Save changes",
+            "visit": "Visit your profile"
+          }
+        }
+      }
+    },
+    "easter-eggs": {
+      "legacyLogo": {
+        "name": "Legacy Logo",
+        "description": "Replaces the current Blueprint logo with the classic legacy logo.",
+        "hint": "Try clicking on things that represent our identity."
+      }
+    },
+    "error": {
+      "page-not-found": {
+        "title": "Page Not Found",
+        "description1": "Oops! The page you're looking for doesn't exist or has been moved.",
+        "description2": "If you believe this is a bug email us at",
+        "action": "Back to Home"
+      }
+    },
+    "footer": {
+      "found-bug": "Found a bug? Report it to",
+      "github-issues": "GitHub issues",
+      "mojang-warning": " NOT AN OFFICIAL MINECRAFT SERVICE. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.",
+      "create-warning": "Not affiliated with Create Mod team or one of the addons in any way."
+    },
+    "filters": {
+      "category": {
+        "name": "Category"
+      }
+    }
+  }
+}

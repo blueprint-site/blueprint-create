@@ -7,6 +7,7 @@ const path = require("path");
 const commands = {
     generateComponent: "generateComponent.js",
     gc: "generateComponent.js", // Alias pour `generateComponent`
+    translate: "translate.js"
 };
 
 const args = process.argv.slice(2);

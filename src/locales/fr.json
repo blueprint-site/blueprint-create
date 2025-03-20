@@ -1,0 +1,228 @@
+{
+  "translation": {
+    "navigation": {
+      "label": {
+        "addons": "Addons",
+        "schematics": "Schémas",
+        "about": "À propos",
+        "login": "Connexion",
+        "blog": "Blog",
+        "privacy": "Confidentialité",
+        "terms": "Termes"
+      },
+      "userSettings": {
+        "public": "Profil du public",
+        "account": "Paramètres du compte",
+        "display": "Affichage"
+      }
+    },
+    "user-menu": {
+      "profile": "Profil",
+      "settings": "Paramètres",
+      "admin": "Panneau d'administration",
+      "logout": "Déconnexion"
+    },
+    "awards": {
+      "banner": {
+        "label": "Les prix de la clé",
+        "link": "Votez !"
+      }
+    },
+    "home": {
+      "discover": "Addons en vedette",
+      "info": {
+        "about": {
+          "title": "Qu'est-ce que Blueprint?",
+          "description": "Blueprint est un site de ressources Create Mod pour trouver des addons, des schémas et plus encore !"
+        },
+        "forCreator": {
+          "title": "Pour les créateurs",
+          "description": "Nous sommes ici pour vous aider à présenter vos addons à la communauté Blueprint",
+          "card": {
+            "title": "Vous ne trouvez pas votre addon ?",
+            "description": "Faites-nous savoir et nous aiderons à obtenir votre addon",
+            "content": "Notre processus de numérisation addon est entièrement automatisé. Contactez-nous pour demander un rescan et obtenir votre addon inclus dans notre répertoire.",
+            "button": "Nous envoyer un courriel"
+          }
+        },
+        "usefulLinks": {
+          "title": "Liens utiles",
+          "description": "Ressources essentielles pour créer des développeurs et utilisateurs de mod",
+          "link1": {
+            "title": "Créer le Wiki Mod",
+            "description": "Documentation et guides complets"
+          },
+          "link2": {
+            "title": "Créer Mod (Forge)",
+            "description": "Téléchargement pour Forge modloader"
+          },
+          "link3": {
+            "title": "Créer Mod (Fabric)",
+            "description": "Téléchargement pour Fabric modloader"
+          }
+        }
+      }
+    },
+    "addons": {
+      "search": {
+        "placeholder": "Addons de recherche..."
+      },
+      "dropdown": {
+        "modloader": {
+          "select": "Sélectionnez Modloader",
+          "all": "Tous les Modloaders"
+        },
+        "version": {
+          "select": "Sélectionner la version",
+          "all": "Toutes les versions"
+        }
+      },
+      "label": {
+        "downloads": "Téléchargements",
+        "description": "Désignation des marchandises",
+        "categories": "Catégories",
+        "followers": "Abonnés",
+        "authors": "Créé par",
+        "note": "Remarque"
+      },
+      "random": {
+        "title": "Tu t'ennuies ?",
+        "link": "Prends un addon aléatoire !"
+      }
+    },
+    "about": {
+      "mainTitle": "À propos de Blueprint",
+      "subTitle": "Notre mission",
+      "content1": "Le plan directeur découle de la reconnaissance de la nécessité d'une plateforme centralisée qui sert efficacement la communauté Create Mod. Nous avons construit ce site en utilisant les technologies Web modernes pour fournir une solution robuste pour découvrir et partager du contenu.",
+      "content2": "Notre objectif est de consolider les ressources Create Mod dans un emplacement accessible - connecter les développeurs addon avec les utilisateurs et permettre un partage facile des conceptions de contraption. Nous visons à améliorer la découverte et à favoriser la collaboration au sein de la communauté.",
+      "cards": {
+        "card1": {
+          "title": "Découvrez les additifs",
+          "description": "Parcourir et gérer l'écosystème croissant des extensions Create Mod.",
+          "link": "Explorer les additifs"
+        },
+        "card2": {
+          "title": "Partager les créations",
+          "description": "Téléchargez et présentez vos machines automatisées et vos conceptions d'ingénierie.",
+          "link": "Visitez Schematics"
+        },
+        "card3": {
+          "title": "Rejoignez notre communauté",
+          "description": "Connectez-vous à vos amis et contribuez à l'écosystème.",
+          "link": "En savoir plus"
+        }
+      },
+      "socialsCard": {
+        "title": "Contactez-nous !",
+        "card1": {
+          "title": "Discorde",
+          "description": "Pour les mises à jour, regardez en cachette et publiez des rapports."
+        },
+        "card2": {
+          "title": "GitHub",
+          "description": "Pour les démons dehors !"
+        },
+        "card3": {
+          "title": "Courriel",
+          "description": "Contactez-nous à"
+        }
+      },
+      "contributions": {
+        "title": "Contributions",
+        "subtitle": {
+          "main": "Merci à nos contributeurs. Sans vous, ça n'aurait pas été possible",
+          "api": "Un grand merci aussi à ceux qui nous ont aidés à construire l'API"
+        }
+      }
+    },
+    "settings": {
+      "settings": "Paramètres",
+      "user-settings": {
+        "account": {
+          "title": "Paramètres du compte",
+          "language": {
+            "title": "Langue",
+            "description": "Changer la langue de votre application"
+          },
+          "data": {
+            "title": "Données du compte",
+            "description": "Récupérer toutes vos données !",
+            "button": "Obtenez mes données"
+          },
+          "auth": {
+            "title": "Gérer les fournisseurs d'authentification",
+            "description": "Ajouter ou supprimer des méthodes de connexion à votre compte, y compris GitHub, GitLab, Microsoft, Discord, Steam et Google."
+          },
+          "sessions": {
+            "title": "Gérer les sessions",
+            "description": "Voir votre session à travers tout votre appareil !",
+            "actual": "Nombre effectif",
+            "not-provided": "Non fourni",
+            "device": "Appareil",
+            "brand": "Marque",
+            "name": "Dénomination",
+            "created_at": "Créé à",
+            "expire": "Expire"
+          }
+        },
+        "display": {
+          "title": "Affichage des paramètres",
+          "theme": {
+            "title": "Thème",
+            "description": "Choisissez entre le mode clair et le mode sombre pour l'interface du site.",
+            "dark-mode": "Mode sombre",
+            "light-mode": "Mode lumière"
+          },
+          "easter-eggs": {
+            "title": "Oeufs de Pâques",
+            "description": "Découvrez et basculez des fonctionnalités spéciales cachées tout au long de l'application.",
+            "locked": "Verrouillé",
+            "unlocked": "Débloqué",
+            "keep-exploring": "Continuez à explorer pour découvrir plus d'oeufs de l'est!"
+          }
+        },
+        "public-profile": {
+          "title": "Informations sur le profil",
+          "description": "Les informations de votre profil sont accessibles au public sur Blueprint et via l'API Blueprint.",
+          "picture": {
+            "title": "Image de profil",
+            "upload": "Télécharger l'image"
+          },
+          "username": {
+            "title": "Nom d'utilisateur",
+            "description": "Un nom unique et insensible pour identifier votre profil."
+          },
+          "bio": {
+            "title": "Bio",
+            "description": "Une brève description pour parler un peu de vous à tout le monde."
+          },
+          "actions": {
+            "save": "Enregistrer les modifications",
+            "visit": "Visitez votre profil"
+          }
+        }
+      }
+    },
+    "easter-eggs": {
+      "legacyLogo": {
+        "name": "Logo historique",
+        "description": "Remplace le logo actuel de Blueprint par le logo classique.",
+        "hint": "Essayez de cliquer sur des choses qui représentent notre identité."
+      }
+    },
+    "error": {
+      "page-not-found": {
+        "title": "Page introuvable",
+        "description1": "Oups ! La page que vous recherchez n'existe pas ou a été déplacée.",
+        "description2": "Si vous croyez que c'est un bug nous envoyer à",
+        "action": "Retour à la maison"
+      }
+    },
+    "footer": {
+      "found-bug": "Tu as trouvé un bug ? Signalez-le à",
+      "github-issues": "Questions concernant GitHub",
+      "mojang-warning": "PAS UN SERVICE MINECRAFT OFFICIEL. NON APPROUVÉS OU ASSOCIÉS AVEC MOJANG OU MICROSOFT.",
+      "create-warning": "Non affilié à Create Mod team ou à l'un des addons en aucune façon."
+    }
+  }
+}
