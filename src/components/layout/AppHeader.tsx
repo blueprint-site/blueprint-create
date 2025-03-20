@@ -13,9 +13,10 @@ import SchematicIcon from '@/assets/sprite-icons/schematic.webp';
 
 interface AppHeaderProps {
   className?: string;
+  fullWidth?: boolean;
 }
 
-const AppHeader = ({ className }: AppHeaderProps) => {
+const AppHeader = ({ className, fullWidth }: AppHeaderProps) => {
   const { t } = useTranslation();
   // Use non-clickable logo (default behavior)
   const { logoSrc } = useLogo();
@@ -45,7 +46,9 @@ const AppHeader = ({ className }: AppHeaderProps) => {
 
   return (
     <nav className={`bg-background fixed z-30 h-16 w-full shadow-md ${className}`}>
-      <div className='mx-auto flex h-full items-center justify-between px-4 lg:container'>
+      <div
+        className={`flex h-full items-center justify-between px-4 ${fullWidth ? '' : 'lg:container lg:mx-auto'}`}
+      >
         <NavLink to='/' className='text-foreground flex h-8 items-center sm:h-10'>
           <img
             loading='lazy'

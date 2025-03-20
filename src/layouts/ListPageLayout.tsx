@@ -22,7 +22,7 @@ export function ListPageLayout({
         className
       )}
     >
-      <AppHeader />
+      <AppHeader fullWidth />
       {children}
       <RotatingCogwheel />
     </div>

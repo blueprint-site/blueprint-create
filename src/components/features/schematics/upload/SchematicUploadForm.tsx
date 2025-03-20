@@ -33,7 +33,10 @@ export function SchematicUploadForm({
   const [schematicFilePreview, setSchematicFilePreview] = useState<File | null>(null);
   const [imageFilePreviews, setImageFilePreviews] = useState<File[]>([]);
   const minecraftVersions = MINECRAFT_VERSIONS;
-  const createVersions = CREATE_VERSIONS;
+  const createVersions = Object.values(CREATE_VERSIONS).map((version) => ({
+    value: version.value,
+    label: version.label,
+  }));
   const modloaders = MODLOADER_OPTIONS;
   const form = useForm<SchematicFormValues>({
     resolver: zodResolver(schematicFormSchema),

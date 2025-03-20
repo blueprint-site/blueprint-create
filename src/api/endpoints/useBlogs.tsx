@@ -74,6 +74,56 @@ export const useFetchBlog = (blogId?: string) => {
 };
 
 /**
+ * Hook to fetch a single blog by slug.
+ * @param {string} slug - The slug of the blog to fetch.
+ * @returns {Query} Query object to fetch a single blog.
+ */
+export const useFetchBlogBySlug = (slug?: string) => {
+  return useQuery<Blog | null>({
+    queryKey: ['blog', slug],
+    queryFn: async () => {
+      if (!slug) return null;
+      try {
+        const queryParams = [Query.equal('slug', slug), Query.limit(1)];
+
+        const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, queryParams);
+
+        if (response.documents.length === 0) {
+          return null;
+        }
+
+        const doc = response.documents[0];
+
+        // Map the document to a Blog type as defined in the Blog schema
+        const blog: Blog = {
+          $id: doc.$id,
+          title: doc.title || '',
+          content: doc.content || '',
+          slug: doc.slug || '',
+          authors: Array.isArray(doc.authors) ? doc.authors : [],
+          $createdAt: doc.$createdAt || '',
+          $updatedAt: doc.$updatedAt || '',
+          img_url: doc.img_url || '',
+          status: doc.status || 'draft',
+          links: doc.links ? JSON.parse(doc.links as string) : null,
+          tags: doc.tags ? JSON.parse(doc.tags as string) : [],
+          blog_tags: doc.blog_tags || [],
+          likes: typeof doc.likes === 'number' ? doc.likes : 0,
+          authors_uuid: Array.isArray(doc.authors_uuid) ? doc.authors_uuid : [],
+        };
+
+        return blog;
+      } catch (err) {
+        console.error('Error fetching blog:', err);
+        throw new Error('Failed to fetch blog');
+      }
+    },
+    refetchOnWindowFocus: false,
+    retry: 2,
+  });
+};
+
+/**
  * Hook to fetch blog tags from the blog_tags collection.
  * @returns {Query} Query object with blog tags data
  */

@@ -1,74 +1,120 @@
-import { Card, CardContent } from '@/components/ui/card.tsx';
-import { Avatar } from '@/components/ui/avatar.tsx';
-import SocialSharing from '@/components/features/social-sharing/SocialSharing.tsx';
+import { CardContent } from '@/components/ui/card';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import SocialSharing from '@/components/features/social-sharing/SocialSharing';
 import { Author } from '@/types';
+import { Button } from '@/components/ui/button';
+import { format } from 'date-fns';
+import { ExternalLink } from '@/types/addons/addon-details';
 
 export interface AddonDetailsFooterProps {
+  addon_name: string;
   authors: Author[];
+  externalLinks: ExternalLink[];
+  licence: string;
   createdAt: string | null;
   updatedAt: string | null;
-  licence: string;
-  addon_name: string;
 }
+
 export const AddonDetailsFooter = ({
   authors = [],
   createdAt = '',
   updatedAt = '',
   licence = '',
   addon_name = '',
+  externalLinks = [],
 }: AddonDetailsFooterProps) => {
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return 'Unknown';
+    try {
+      return format(new Date(dateString), 'MMM d, yyyy');
+    } catch (e) {
+      return 'Invalid date';
+    }
+  };
+
   return (
-    <Card>
-      <CardContent className='p-6'>
-        <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-          <div>
-            <h3 className='mb-4 text-lg font-semibold'>Author Information</h3>
-            {authors && (
-              <div className='mt-4'>
-                <h4 className='mb-2 text-sm font-semibold'>Contributors</h4>
-                <div className='flex flex-wrap gap-2'>
-                  {authors.map((author) => (
-                    <>
-                      <Avatar className={'h-8 w-8'}>
-                        <img src={author.avatarUrl || ''} alt={author.name} />
-                      </Avatar>
-                      <a
-                        key={author.id}
-                        href={author.url}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        className='text-primary text-sm hover:underline'
-                      >
-                        {author.name}
-                      </a>
-                    </>
-                  ))}
-                </div>
-                <SocialSharing title={addon_name} />
+    <CardContent className='py-6'>
+      <h2 className='mb-6 text-xl font-semibold'>Additional Information</h2>
+
+      <div className='grid grid-cols-1 gap-8 md:grid-cols-3'>
+        {/* Author Information */}
+        <div>
+          <h3 className='mb-4 text-lg font-semibold'>Author Information</h3>
+          {authors && authors.length > 0 ? (
+            <div className='space-y-4'>
+              <div className='flex flex-col gap-2'>
+                {authors.map((author) => (
+                  <div key={author.id} className='flex items-center gap-2'>
+                    <Avatar className='h-8 w-8'>
+                      <AvatarImage src={author.avatarUrl ?? ''} alt={author.name} />
+                      <AvatarFallback>{author.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                    </Avatar>
+                    <a
+                      href={author.url}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className='text-primary text-sm hover:underline'
+                    >
+                      {author.name}
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p className='text-muted-foreground text-sm'>No author information available</p>
+          )}
+        </div>
+
+        {/* Project Details */}
+        <div>
+          <h3 className='mb-4 text-lg font-semibold'>Project Details</h3>
+          <div className='space-y-3 text-sm'>
+            <div>
+              <div className='font-medium'>Created</div>
+              <div className='text-muted-foreground'>{formatDate(createdAt)}</div>
+            </div>
+            <div>
+              <div className='font-medium'>Last Updated</div>
+              <div className='text-muted-foreground'>{formatDate(updatedAt)}</div>
+            </div>
+            {licence && (
+              <div>
+                <div className='font-medium'>License</div>
+                <div className='text-muted-foreground'>{licence}</div>
               </div>
             )}
           </div>
+        </div>
 
-          <div>
-            <h3 className='mb-4 text-lg font-semibold'>Project Details</h3>
-            <div className='space-y-2 text-sm'>
-              <p>
-                <span className='font-semibold'>Created:</span>{' '}
-                {new Date(createdAt || Date.now()).toLocaleDateString()}
-              </p>
-              <p>
-                <span className='font-semibold'>Last Updated:</span>{' '}
-                {new Date(updatedAt || Date.now()).toLocaleDateString()}
-              </p>
-              {licence && (
-                <p>
-                  <span className='font-semibold'>License:</span> {licence}
-                </p>
-              )}
+        {/* External Links */}
+        <div>
+          <h3 className='mb-4 text-lg font-semibold'>Links</h3>
+          {externalLinks.length > 0 ? (
+            <div className='grid grid-cols-1 gap-2'>
+              {externalLinks.map((link) => (
+                <Button
+                  key={link.id ?? `link-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                  variant='outline'
+                  className='w-full justify-start'
+                  asChild
+                >
+                  <a href={link.url} target='_blank' rel='noopener noreferrer'>
+                    {link.icon}
+                    <span className='ml-2'>{link.label}</span>
+                  </a>
+                </Button>
+              ))}
             </div>
+          ) : (
+            <p className='text-muted-foreground text-sm'>No external links available</p>
+          )}
+
+          <div className='mt-4'>
+            <SocialSharing title={addon_name} />
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </CardContent>
   );
 };

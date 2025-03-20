@@ -16,7 +16,11 @@ interface ContributorsSectionProps {
   error: string | null;
 }
 
-export function ContributorsSection({ contributors, isLoading, error }: ContributorsSectionProps) {
+export function ContributorsSection({
+  contributors,
+  isLoading,
+  error,
+}: Readonly<ContributorsSectionProps>) {
   const { t } = useTranslation();
 
   return (

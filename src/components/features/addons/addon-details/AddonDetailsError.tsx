@@ -5,7 +5,7 @@ export interface AddonDetailsErrorProps {
 }
 
 export const AddonDetailsError = ({ error }: AddonDetailsErrorProps) => {
-  const errorMessage = error?.message || 'An unexpected error occurred'; // Valeur par défaut si `message` est manquant
+  const errorMessage = error?.message || 'An unexpected error occurred'; // Default value if `message` is missing
 
   return (
     <div className='container mx-auto px-4 py-8'>

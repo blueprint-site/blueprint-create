@@ -90,7 +90,11 @@ const UserSchematicList = () => {
                 {/* Delete Button with AlertDialog */}
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <button className='text-destructive absolute top-1 right-1 cursor-pointer'>
+                    <button
+                      className='text-destructive absolute top-1 right-1 cursor-pointer'
+                      type='button'
+                      title='Delete'
+                    >
                       <MinecraftIcon
                         name={'trash'}
                         className={'absolute top-1 right-1'}
