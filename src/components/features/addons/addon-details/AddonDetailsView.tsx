@@ -152,8 +152,8 @@ export const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsVie
                 <h3 className='mb-4 text-lg font-semibold'>Available On</h3>
                 <ModPageLinks
                   slug={addon.slug}
-                  curseforge={!!addon.sources.includes('CurseForge')}
-                  modrinth={!!addon.sources.includes('Modrinth')}
+                  curseforge={addon.sources.includes('CurseForge')}
+                  modrinth={addon.sources.includes('Modrinth')}
                 />
               </div>
             </div>

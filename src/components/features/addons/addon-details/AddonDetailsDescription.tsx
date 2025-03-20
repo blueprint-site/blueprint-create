@@ -28,7 +28,12 @@ export const AddonDetailsDescription = ({ description = '' }: AddonDetailsDescri
           breaks: true, // Convert line breaks to <br>
         });
 
-        const sanitizedHtml = DOMPurify.sanitize(markedHtml, {
+        // Wrap images with a div for styling
+        const wrappedHtml = markedHtml
+          .replace(/<img/g, '<div class="img-wrapper"><img')
+          .replace(/<\/img>/g, '</img></div>');
+
+        const sanitizedHtml = DOMPurify.sanitize(wrappedHtml, {
           ALLOWED_TAGS: [
             'h1',
             'h2',
@@ -95,7 +100,7 @@ export const AddonDetailsDescription = ({ description = '' }: AddonDetailsDescri
         </div>
       ) : (
         <div
-          className='prose prose-slate dark:prose-invert prose-headings:font-semibold prose-a:text-primary prose-img:rounded prose-code:text-muted-foreground prose-pre:bg-muted prose-pre:text-muted-foreground max-w-none'
+          className='prose prose-slate prose:image-wrapper dark:prose-invert prose-headings:font-semibold prose-a:text-primary prose-code:text-muted-foreground prose-pre:bg-muted prose-pre:text-muted-foreground max-w-none'
           dangerouslySetInnerHTML={{ __html: formattedDescription }}
         />
       )}
