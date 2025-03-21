@@ -5,6 +5,7 @@ import { Author } from '@/types';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 import { ExternalLink } from '@/types/addons/addon-details';
+import { useTranslation } from 'react-i18next';
 
 export interface AddonDetailsFooterProps {
   addon_name: string;
@@ -31,15 +32,16 @@ export const AddonDetailsFooter = ({
       return 'Invalid date';
     }
   };
+  const { t } = useTranslation();
 
   return (
     <CardContent className='py-6'>
-      <h2 className='mb-6 text-xl font-semibold'>Additional Information</h2>
+      <h2 className='mb-6 text-xl font-semibold'>{t('addons.details.additional-info')}</h2>
 
       <div className='grid grid-cols-1 gap-8 md:grid-cols-3'>
         {/* Author Information */}
         <div>
-          <h3 className='mb-4 text-lg font-semibold'>Author Information</h3>
+          <h3 className='mb-4 text-lg font-semibold'>{t('addons.details.author-info')}</h3>
           {authors && authors.length > 0 ? (
             <div className='space-y-4'>
               <div className='flex flex-col gap-2'>
@@ -62,25 +64,25 @@ export const AddonDetailsFooter = ({
               </div>
             </div>
           ) : (
-            <p className='text-muted-foreground text-sm'>No author information available</p>
+            <p className='text-muted-foreground text-sm'>{t('addons.details.no-author-info')}</p>
           )}
         </div>
 
         {/* Project Details */}
         <div>
-          <h3 className='mb-4 text-lg font-semibold'>Project Details</h3>
+          <h3 className='mb-4 text-lg font-semibold'>{t('addons.details.project-details')}</h3>
           <div className='space-y-3 text-sm'>
             <div>
-              <div className='font-medium'>Created</div>
+              <div className='font-medium'>{t('addons.details.created')}</div>
               <div className='text-muted-foreground'>{formatDate(createdAt)}</div>
             </div>
             <div>
-              <div className='font-medium'>Last Updated</div>
+              <div className='font-medium'>{t('addons.details.last_updated')}</div>
               <div className='text-muted-foreground'>{formatDate(updatedAt)}</div>
             </div>
             {licence && (
               <div>
-                <div className='font-medium'>License</div>
+                <div className='font-medium'>{t('addons.details.license')}</div>
                 <div className='text-muted-foreground'>{licence}</div>
               </div>
             )}
@@ -89,7 +91,7 @@ export const AddonDetailsFooter = ({
 
         {/* External Links */}
         <div>
-          <h3 className='mb-4 text-lg font-semibold'>Links</h3>
+          <h3 className='mb-4 text-lg font-semibold'>{t('addons.details.links')}</h3>
           {externalLinks.length > 0 ? (
             <div className='grid grid-cols-1 gap-2'>
               {externalLinks.map((link) => (
@@ -107,7 +109,7 @@ export const AddonDetailsFooter = ({
               ))}
             </div>
           ) : (
-            <p className='text-muted-foreground text-sm'>No external links available</p>
+            <p className='text-muted-foreground text-sm'>{t('addons.details.no-external-links')}</p>
           )}
 
           <div className='mt-4'>

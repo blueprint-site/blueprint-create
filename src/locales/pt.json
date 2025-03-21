@@ -88,6 +88,39 @@
       "random": {
         "title": "Estás a ficar aborrecido?",
         "link": "Arranja um addon aleatório!"
+      },
+      "details": {
+        "available_on": "Disponível em",
+        "downloads": "downloads",
+        "followers": "seguidores",
+        "additional-info": "InformaÃ§Ãμes adicionais",
+        "author-info": "Informação do autor",
+        "no-author-info": "Nenhuma informação do autor disponível",
+        "project-details": "Detalhes do projeto",
+        "created": "Sobre Criado",
+        "last_updated": "Última atualização",
+        "license": "Licença",
+        "links": "Ligações",
+        "no-external-links": "Não existem ligações externas disponíveis",
+        "support-dev": "Suporte ao Desenvolvedor",
+        "consider-supporting": "Considere apoiar os desenvolvedores se você gosta deste addon!",
+        "description": "Descrição",
+        "no-description": "Não há descrição disponível.",
+        "compatibility": "Compatibilidade",
+        "summary": "Sumário",
+        "matrix": "Matriz",
+        "versions": "Versões",
+        "compatible-with": "Compatível com",
+        "not-compatible-with": "Não compatível com",
+        "on": "sobre",
+        "minecraft-versions": "Versões de Minecraft",
+        "loaders": "Carregadores",
+        "latest-version": "Versão mais recente",
+        "featured": "Destaques",
+        "recommended-version": "Esta é a versão recomendada pelo desenvolvedor",
+        "released": "Lançado",
+        "create-mod-required": "Criar versões mod necessárias para esta versão addon",
+        "other-dependency": "Outras dependências"
       }
     },
     "about": {
@@ -223,6 +256,11 @@
       "github-issues": "Problemas com o GitHub",
       "mojang-warning": "NÃO É UM SERVIÇO OFICIAL. NÃO SE APROPRIA DE NEM ASSOCIOU COM MOJANG OU MICROSOFT.",
       "create-warning": "Não afiliado com a equipe Criar Mod ou um dos addons de qualquer forma."
+    },
+    "filters": {
+      "category": {
+        "name": "Categoria"
+      }
     }
   }
 }

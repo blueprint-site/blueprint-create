@@ -2,6 +2,7 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { MODLOADER_OPTIONS, STANDARD_LOADER_DISPLAY, normalizeLoaderName } from '@/data/modloaders';
+import { useTranslation } from 'react-i18next';
 
 interface MatrixTabContentProps {
   minecraftVersions: string[];
@@ -22,7 +23,7 @@ export const MatrixTabContent: React.FC<MatrixTabContentProps> = ({
   const normalizedLoaders = loaders
     .map(normalizeLoaderName)
     .filter((value, index, self) => self.indexOf(value) === index);
-
+  const { t } = useTranslation();
   // If no loaders provided, use standard loaders
   const standardLoaders =
     normalizedLoaders.length > 0
@@ -58,14 +59,14 @@ export const MatrixTabContent: React.FC<MatrixTabContentProps> = ({
                       {compatible ? (
                         <div
                           className='mx-auto h-4 w-4 rounded-full bg-green-500'
-                          title={`Compatible with ${mcVersion} on ${loader}`}
-                          aria-label={`Compatible with ${mcVersion} on ${loader}`}
+                          title={`${t('addons.details.compatible-with')} ${mcVersion} ${t('addons.details.on')} ${loader}`}
+                          aria-label={`${t('addons.details.compatible-with')} ${mcVersion} ${t('addons.details.on')} ${loader}`}
                         />
                       ) : (
                         <div
                           className='mx-auto h-4 w-4 rounded-full bg-gray-200 dark:bg-gray-700'
-                          title={`Not compatible with ${mcVersion} on ${loader}`}
-                          aria-label={`Not compatible with ${mcVersion} on ${loader}`}
+                          title={`${t('addons.details.not-compatible-with')} ${mcVersion} ${t('addons.details.on')} ${loader}`}
+                          aria-label={`${t('addons.details.not-compatible-with')} ${mcVersion} ${t('addons.details.on')} ${loader}`}
                         />
                       )}
                     </td>

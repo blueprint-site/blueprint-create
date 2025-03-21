@@ -2,6 +2,7 @@ import { Download, Heart, Star, StarOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCollectionStore } from '@/api/stores/collectionStore';
 import { CardHeader } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
 
 export interface AddonDetailsHeaderProps {
   name: string;
@@ -22,11 +23,11 @@ export const AddonDetailsHeader = ({
 }: AddonDetailsHeaderProps) => {
   const { collection, addAddon, removeAddon } = useCollectionStore();
   const isInCollection = collection.includes(slug);
-
   const handleCollectionAction = () => {
     if (!slug) return;
     isInCollection ? removeAddon(slug) : addAddon(slug);
   };
+  const { t } = useTranslation();
 
   return (
     <CardHeader className='space-y-6'>
@@ -53,12 +54,16 @@ export const AddonDetailsHeader = ({
       <div className='flex flex-wrap items-center gap-4'>
         <div className='flex items-center gap-2'>
           <Download className='text-muted-foreground h-4 w-4' />
-          <span className='text-muted-foreground'>{downloads.toLocaleString()} downloads</span>
+          <span className='text-muted-foreground'>
+            {downloads.toLocaleString()} {t('addons.details.downloads')}
+          </span>
         </div>
         {follows > 0 && (
           <div className='flex items-center gap-2'>
             <Heart className='text-muted-foreground h-4 w-4' />
-            <span className='text-muted-foreground'>{follows.toLocaleString()} followers</span>
+            <span className='text-muted-foreground'>
+              {follows.toLocaleString()} {t('addons.details.followers')}
+            </span>
           </div>
         )}
       </div>

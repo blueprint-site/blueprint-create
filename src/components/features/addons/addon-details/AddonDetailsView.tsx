@@ -15,6 +15,7 @@ import { AddonVersionCompatibility } from './versions/AddonVersionCompatibility'
 import { ModrinthProject } from '@/types/addons/modrinth';
 import { SiDiscord, SiGithub } from '@icons-pack/react-simple-icons';
 import { Bug, Globe } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 interface AddonDetailsViewProps {
   addon: IntegratedAddonData;
   createVersions?: string[];
@@ -24,6 +25,7 @@ interface AddonDetailsViewProps {
  * Unified view component for addon details using processed data
  */
 export const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsViewProps) => {
+  const { t } = useTranslation();
   // Check if we have environment info
   const hasEnvironmentInfo = addon.modrinth?.client_side ?? addon.modrinth?.server_side;
   const externalLinks: ExternalLink[] = [
@@ -149,7 +151,7 @@ export const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsVie
 
               {/* Available On */}
               <div>
-                <h3 className='mb-4 text-lg font-semibold'>Available On</h3>
+                <h3 className='mb-4 text-lg font-semibold'>{t('addons.details.available_on')}</h3>
                 <ModPageLinks
                   slug={addon.slug}
                   curseforge={addon.sources.includes('CurseForge')}

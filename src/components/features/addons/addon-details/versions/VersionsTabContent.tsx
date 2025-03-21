@@ -12,6 +12,7 @@ import { ChevronDown, InfoIcon } from 'lucide-react';
 import { AddonVersion } from '@/types/addons/addon-details';
 import { useDependencyProcessor } from '@/hooks/useDependencyProcessor';
 import ModLoaders from '../../addon-card/ModLoaders';
+import { useTranslation } from 'react-i18next';
 
 interface VersionsTabContentProps {
   sortedVersions: AddonVersion[];
@@ -19,7 +20,7 @@ interface VersionsTabContentProps {
 
 export const VersionsTabContent: React.FC<VersionsTabContentProps> = ({ sortedVersions }) => {
   const { getCreateDependencies, mapVersionIdToReadable } = useDependencyProcessor();
-
+  const { t } = useTranslation();
   return (
     <Accordion type='single' collapsible className='max-h-64 w-full overflow-scroll'>
       {sortedVersions.map((version) => {
@@ -33,7 +34,7 @@ export const VersionsTabContent: React.FC<VersionsTabContentProps> = ({ sortedVe
                   <span className='mr-2 font-medium'>{version.name}</span>
                   {version.featured && (
                     <Badge variant='default' className='text-xs'>
-                      Featured
+                      {t('addons.details.featured')}
                     </Badge>
                   )}
                 </div>
@@ -48,7 +49,9 @@ export const VersionsTabContent: React.FC<VersionsTabContentProps> = ({ sortedVe
             <AccordionContent className='px-2 pb-4'>
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <div>
-                  <h4 className='mb-2 text-sm font-medium'>Minecraft Versions</h4>
+                  <h4 className='mb-2 text-sm font-medium'>
+                    {t('addons.details.minecraft_versions')}
+                  </h4>
                   <div className='flex flex-wrap gap-2'>
                     {version.game_versions.map((mcVersion) => (
                       <Badge key={mcVersion} variant='outline'>
@@ -59,21 +62,21 @@ export const VersionsTabContent: React.FC<VersionsTabContentProps> = ({ sortedVe
                 </div>
 
                 <div>
-                  <h4 className='mb-2 text-sm font-medium'>Mod Loaders</h4>
+                  <h4 className='mb-2 text-sm font-medium'>Mod {t('addons.details.loaders')}</h4>
                   <ModLoaders loaders={version.loaders} />
                 </div>
 
                 {createDeps.length > 0 && (
                   <div className='md:col-span-2'>
                     <h4 className='mb-2 flex items-center text-sm font-medium'>
-                      Create Compatibility
+                      Create {t('addons.details.compatibility')}
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>
                             <InfoIcon className='text-muted-foreground ml-1 h-4 w-4' />
                           </TooltipTrigger>
                           <TooltipContent>
-                            <p>Create mod versions required for this addon version</p>
+                            <p>{t('addons.details.create-mod-required')}</p>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
@@ -113,7 +116,9 @@ export const VersionsTabContent: React.FC<VersionsTabContentProps> = ({ sortedVe
 
                 {version.dependencies && version.dependencies.length > 0 && (
                   <div className='mt-2 md:col-span-2'>
-                    <h4 className='mb-2 text-sm font-medium'>Other Dependencies</h4>
+                    <h4 className='mb-2 text-sm font-medium'>
+                      {t('addons.details.other-dependency')}
+                    </h4>
                     <div className='flex flex-wrap gap-2'>
                       {version.dependencies
                         .filter((dep) => {

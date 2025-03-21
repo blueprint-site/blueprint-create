@@ -88,6 +88,39 @@
       "random": {
         "title": "Tu t'ennuies ?",
         "link": "Prends un addon aléatoire !"
+      },
+      "details": {
+        "available_on": "Disponible le",
+        "downloads": "téléchargements",
+        "followers": "suiveurs",
+        "additional-info": "Renseignements supplémentaires",
+        "author-info": "Renseignements sur l'auteur",
+        "no-author-info": "Aucune information disponible sur l'auteur",
+        "project-details": "Détails du projet",
+        "created": "Créé",
+        "last_updated": "Dernière mise à jour",
+        "license": "Licence",
+        "links": "Liens",
+        "no-external-links": "Aucun lien externe disponible",
+        "support-dev": "Soutenir le développeur",
+        "consider-supporting": "Envisagez de soutenir les développeurs si vous aimez cet addon!",
+        "description": "Désignation des marchandises",
+        "no-description": "Aucune description disponible.",
+        "compatibility": "Compatibilité",
+        "summary": "Résumé",
+        "matrix": "Matrice",
+        "versions": "Versions",
+        "compatible-with": "Compatible avec",
+        "not-compatible-with": "Non compatible avec",
+        "on": "le",
+        "minecraft-versions": "Minecraft Versions",
+        "loaders": "Chargeurs",
+        "latest-version": "Dernière version",
+        "featured": "En vedette",
+        "recommended-version": "C'est la version recommandée par le développeur",
+        "released": "Libéré",
+        "create-mod-required": "Créer les versions mod requises pour cette version addon",
+        "other-dependency": "Autres dépendances"
       }
     },
     "about": {
@@ -223,6 +256,11 @@
       "github-issues": "Questions concernant GitHub",
       "mojang-warning": "PAS UN SERVICE MINECRAFT OFFICIEL. NON APPROUVÉS OU ASSOCIÉS AVEC MOJANG OU MICROSOFT.",
       "create-warning": "Non affilié à Create Mod team ou à l'un des addons en aucune façon."
+    },
+    "filters": {
+      "category": {
+        "name": "Catégorie"
+      }
     }
   }
 }

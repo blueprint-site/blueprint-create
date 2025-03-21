@@ -88,6 +88,39 @@
       "random": {
         "title": "觉得无聊吗?",
         "link": "拿个随机加登!"
+      },
+      "details": {
+        "available_on": "打开可用",
+        "downloads": "下载",
+        "followers": "追随者",
+        "additional-info": "补充资料",
+        "author-info": "作者信息",
+        "no-author-info": "无作者信息",
+        "project-details": "项目细节",
+        "created": "已创建",
+        "last_updated": "上次更新",
+        "license": "许可证",
+        "links": "链接",
+        "no-external-links": "没有可用的外部链接",
+        "support-dev": "支持开发者",
+        "consider-supporting": "如果您喜欢这个附加, 考虑支持开发者 !",
+        "description": "说明",
+        "no-description": "没有可用的描述 .",
+        "compatibility": "兼容性",
+        "summary": "目 录",
+        "matrix": "矩阵",
+        "versions": "版本",
+        "compatible-with": "兼容",
+        "not-compatible-with": "不兼容",
+        "on": "打开",
+        "minecraft-versions": "矿产品版本",
+        "loaders": "装载器",
+        "latest-version": "最新版本",
+        "featured": "特性",
+        "recommended-version": "这是开发者推荐的版本",
+        "released": "释放",
+        "create-mod-required": "创建此附加版本所需的模式版本",
+        "other-dependency": "其他依赖关系"
       }
     },
     "about": {
@@ -223,6 +256,11 @@
       "github-issues": "GitHub 问题",
       "mojang-warning": "不是正式的矿物服务。 不被莫强或微软批准或没收.",
       "create-warning": "不以任何方式附属于Create Mod团队或其中的加人."
+    },
+    "filters": {
+      "category": {
+        "name": "类别"
+      }
     }
   }
 }

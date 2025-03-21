@@ -88,6 +88,39 @@
       "random": {
         "title": "¿Te sientes aburrido?",
         "link": "¡Consigue un addon al azar!"
+      },
+      "details": {
+        "available_on": "Disponible",
+        "downloads": "descargas",
+        "followers": "seguidores",
+        "additional-info": "Información adicional",
+        "author-info": "Información del autor",
+        "no-author-info": "No hay información de autor disponible",
+        "project-details": "Detalles del proyecto",
+        "created": "Creado",
+        "last_updated": "Última actualización",
+        "license": "Licencia",
+        "links": "Enlaces",
+        "no-external-links": "No hay enlaces externos disponibles",
+        "support-dev": "Support the Developer",
+        "consider-supporting": "Considere apoyar a los desarrolladores si disfruta de este addon!",
+        "description": "Descripción",
+        "no-description": "Sin descripción disponible.",
+        "compatibility": "Compatibilidad",
+        "summary": "Resumen",
+        "matrix": "Matriz",
+        "versions": "Versiones",
+        "compatible-with": "Compatible con",
+        "not-compatible-with": "No compatible con",
+        "on": "on",
+        "minecraft-versions": "Minecraft Versions",
+        "loaders": "Cargadores",
+        "latest-version": "Última versión",
+        "featured": "Destacados",
+        "recommended-version": "Esta es la versión recomendada por el desarrollador",
+        "released": "Liberado",
+        "create-mod-required": "Crear versiones mod necesarias para esta versión addon",
+        "other-dependency": "Otras dependencias"
       }
     },
     "about": {
@@ -223,6 +256,11 @@
       "github-issues": "Problemas de GitHub",
       "mojang-warning": "NO ES UN SERVICIO OFICIAL. NO APROBADO POR O ASSOCIA CON MOJANG O MICROSOFT.",
       "create-warning": "No está afiliado con el equipo Create Mod o uno de los addons de ninguna manera."
+    },
+    "filters": {
+      "category": {
+        "name": "Categoría"
+      }
     }
   }
 }

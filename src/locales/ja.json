@@ -88,6 +88,39 @@
       "random": {
         "title": "退屈な感じ?",
         "link": "ランダムなアドオンを入手!"
+      },
+      "details": {
+        "available_on": "利用できる",
+        "downloads": "ダウンロード",
+        "followers": "フォロワー",
+        "additional-info": "追加情報",
+        "author-info": "著者情報",
+        "no-author-info": "著者情報なし",
+        "project-details": "プロジェクトの詳細",
+        "created": "コンテンツ",
+        "last_updated": "更新履歴",
+        "license": "ライセンス",
+        "links": "サイトマップ",
+        "no-external-links": "外部リンクなし",
+        "support-dev": "開発者をサポート",
+        "consider-supporting": "このアドオンを楽しむなら、開発者の支援を検討しましょう!",
+        "description": "コンテンツ",
+        "no-description": "説明はありません.",
+        "compatibility": "互換性",
+        "summary": "インフォメーション",
+        "matrix": "マトリックス",
+        "versions": "バージョン",
+        "compatible-with": "互換性あり",
+        "not-compatible-with": "対応不可",
+        "on": "お問い合わせ",
+        "minecraft-versions": "Minecraft バージョン",
+        "loaders": "ローダー",
+        "latest-version": "最新バージョン",
+        "featured": "おすすめ記事",
+        "recommended-version": "開発者が推奨するバージョンです",
+        "released": "リリース",
+        "create-mod-required": "このアドオンバージョンに必要なMODバージョンを作成する",
+        "other-dependency": "その他の依存関係"
       }
     },
     "about": {
@@ -223,6 +256,11 @@
       "github-issues": "GitHubの問題",
       "mojang-warning": "非公式のMINECRAFTサービス。 または、MOJANGまたはマイクロソフトと関連付けることによって承認されない.",
       "create-warning": "任意の方法で Mod チームまたはアドオンの 1 つを作成して提携していません."
+    },
+    "filters": {
+      "category": {
+        "name": "カテゴリー"
+      }
     }
   }
 }

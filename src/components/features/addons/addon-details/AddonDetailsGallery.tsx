@@ -15,7 +15,6 @@ export const AddonDetailsGallery = ({ gallery, name }: AddonDetailsGalleryProps)
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [fullscreenIndex, setFullscreenIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState<boolean[]>([]);
-
   // Use HD images if available, otherwise use the gallery from the main API
   const displayImages = useMemo(() => {
     return gallery.map((image) => {

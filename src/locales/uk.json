@@ -88,6 +88,39 @@
       "random": {
         "title": "Почуття нудного?",
         "link": "Отримати випадковий додаток!"
+      },
+      "details": {
+        "available_on": "Доступно",
+        "downloads": "завантаження",
+        "followers": "підписка",
+        "additional-info": "Додаткові відомості",
+        "author-info": "Інформація",
+        "no-author-info": "Немає інформації про автора",
+        "project-details": "Деталі проекту",
+        "created": "Про нас",
+        "last_updated": "Останнє оновлення",
+        "license": "Ліцензії",
+        "links": "Посилання",
+        "no-external-links": "Немає зовнішніх посилань",
+        "support-dev": "Підтримка розробника",
+        "consider-supporting": "Розглядайте підтримку розробників, якщо ви користуєтеся цим доповненням!",
+        "description": "Опис",
+        "no-description": "Немає опису.",
+        "compatibility": "Сумісність",
+        "summary": "Редакція",
+        "matrix": "Матриця",
+        "versions": "Версія",
+        "compatible-with": "Сумісність з",
+        "not-compatible-with": "Не сумісний з",
+        "on": "на",
+        "minecraft-versions": "Версія Minecraft",
+        "loaders": "Навантажувачі",
+        "latest-version": "Остання версія",
+        "featured": "Популярні",
+        "recommended-version": "Це рекомендована версія розробника",
+        "released": "Випущено",
+        "create-mod-required": "Створення модних версій, необхідних для цієї версії додатків",
+        "other-dependency": "Інші залежності"
       }
     },
     "about": {
@@ -223,6 +256,11 @@
       "github-issues": "GitHub проблеми",
       "mojang-warning": "НЕ ОФІЦІЙНИЙ МІНЕКСТРАТ ПОСЛУГ. НЕ ЗАСТОСУВАТИ АБО АСОЦІАТИ З МОДЖАНГ АБО МІКРОЗОФТ.",
       "create-warning": "Не афілійовані зі створенням Mod команди або одного з додатків будь-яким чином."
+    },
+    "filters": {
+      "category": {
+        "name": "Категорії"
+      }
     }
   }
 }

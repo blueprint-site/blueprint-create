@@ -2,14 +2,16 @@
 import React from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
 
 export const TabsLoading: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <div className='space-y-6'>
       <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
         <div className='space-y-4'>
           <div>
-            <h4 className='mb-2 text-sm font-medium'>Minecraft Versions</h4>
+            <h4 className='mb-2 text-sm font-medium'>{t('addons.details.minecraft_versions')}</h4>
             <div className='flex flex-wrap gap-2'>
               {Array.from({ length: 6 }).map((_, i) => (
                 <Skeleton key={i} className='h-6 w-16 rounded-full' />
@@ -18,7 +20,7 @@ export const TabsLoading: React.FC = () => {
           </div>
 
           <div>
-            <h4 className='mb-2 text-sm font-medium'>Mod Loaders</h4>
+            <h4 className='mb-2 text-sm font-medium'>Mod {t('addons.details.loaders')}</h4>
             <div className='flex flex-wrap gap-2'>
               {Array.from({ length: 3 }).map((_, i) => (
                 <Skeleton key={i} className='h-6 w-20 rounded-full' />
@@ -27,7 +29,7 @@ export const TabsLoading: React.FC = () => {
           </div>
 
           <div>
-            <h4 className='mb-2 text-sm font-medium'>Create Versions</h4>
+            <h4 className='mb-2 text-sm font-medium'>Create {t('addons.details.versions')}</h4>
             <div className='flex flex-wrap gap-2'>
               {Array.from({ length: 2 }).map((_, i) => (
                 <Skeleton key={i} className='h-6 w-16 rounded-full' />

@@ -88,6 +88,39 @@
       "random": {
         "title": "Nudzisz się?",
         "link": "Weź przypadkowy addon!"
+      },
+      "details": {
+        "available_on": "Dostępne w dniu",
+        "downloads": "pobieranie",
+        "followers": "zwolennicy",
+        "additional-info": "Dodatkowe informacje",
+        "author-info": "Informacje o autorze",
+        "no-author-info": "Brak dostępnych informacji o autorze",
+        "project-details": "Szczegóły projektu",
+        "created": "Stworzony",
+        "last_updated": "Ostatnia aktualizacja",
+        "license": "Licencja",
+        "links": "Linki",
+        "no-external-links": "Brak zewnętrznych linków",
+        "support-dev": "Wsparcie dla programisty",
+        "consider-supporting": "Rozważ wspieranie deweloperów, jeśli podoba Ci się ten addon!",
+        "description": "Opis",
+        "no-description": "Brak opisu.",
+        "compatibility": "Zgodność",
+        "summary": "Streszczenie",
+        "matrix": "Matryca",
+        "versions": "Wersje",
+        "compatible-with": "Kompatybilny z",
+        "not-compatible-with": "Niekompatybilne z",
+        "on": "dnia",
+        "minecraft-versions": "Wersje Minecraft",
+        "loaders": "Ładowarki",
+        "latest-version": "Najnowsza wersja",
+        "featured": "Promowane",
+        "recommended-version": "Jest to zalecana wersja przez dewelopera",
+        "released": "Wydany",
+        "create-mod-required": "Utwórz wersje modu wymagane dla tej wersji addonu",
+        "other-dependency": "Inne uzależnienia"
       }
     },
     "about": {
@@ -223,6 +256,11 @@
       "github-issues": "Kwestie GitHub",
       "mojang-warning": "TO NIE JEST OFICJALNA SŁUŻBA. NIE ZATWIERDZONE PRZEZ MOJANG LUB MIKROSOFT, LUB ZWIĄZANE Z NIM.",
       "create-warning": "Nie jest powiązany z zespołem Create Mod ani jednym z addonów."
+    },
+    "filters": {
+      "category": {
+        "name": "Kategoria"
+      }
     }
   }
 }

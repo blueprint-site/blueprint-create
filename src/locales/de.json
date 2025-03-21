@@ -88,6 +88,39 @@
       "random": {
         "title": "Langeweile?",
         "link": "Hol ein zufälliges Addon!"
+      },
+      "details": {
+        "available_on": "Verfügbar auf",
+        "downloads": "downloads",
+        "followers": "anhänger",
+        "additional-info": "Weitere Informationen",
+        "author-info": "Informationen Ã1⁄4ber den Autor",
+        "no-author-info": "Keine Autoreninformationen verfügbar",
+        "project-details": "Projekt Details",
+        "created": "Erstellt",
+        "last_updated": "Letzte Aktualisierung",
+        "license": "Lizenz",
+        "links": "Links",
+        "no-external-links": "Keine externen Links verfügbar",
+        "support-dev": "Unterstützung des Entwicklers",
+        "consider-supporting": "Betrachten Sie die Unterstützung der Entwickler, wenn Sie dieses Addon genießen!",
+        "description": "Warenbezeichnung",
+        "no-description": "Keine Beschreibung verfügbar.",
+        "compatibility": "Vereinbarkeit",
+        "summary": "Zusammenfassung",
+        "matrix": "Matrix",
+        "versions": "Versionen",
+        "compatible-with": "Kompatibel mit",
+        "not-compatible-with": "Nicht kompatibel mit",
+        "on": "auf",
+        "minecraft-versions": "Minecraft Versionen",
+        "loaders": "Lastkraftwagen",
+        "latest-version": "Letzte Version",
+        "featured": "Vorgestellt",
+        "recommended-version": "Dies ist die empfohlene Version des Entwicklers",
+        "released": "Freigegeben",
+        "create-mod-required": "Mod-Versionen für diese Addon-Version erstellen",
+        "other-dependency": "Sonstige Abhängigkeiten"
       }
     },
     "about": {
@@ -223,6 +256,11 @@
       "github-issues": "GitHub Probleme",
       "mojang-warning": "NICHT EIN AMTLICHER MINECRAFT SERVICE. NICHT GENEHMIGT ODER MIT MOJANG ODER MICROSOFT.",
       "create-warning": "Nicht mit dem Erstellen von Mod-Team oder einem der Addons in irgendeiner Weise verbunden."
+    },
+    "filters": {
+      "category": {
+        "name": "Kategorie"
+      }
     }
   }
 }

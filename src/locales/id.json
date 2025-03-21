@@ -88,6 +88,39 @@
       "random": {
         "title": "Merasa bosan?",
         "link": "Dapatkan addon acak!"
+      },
+      "details": {
+        "available_on": "Tersedia Pada",
+        "downloads": "unduhan",
+        "followers": "pengikut",
+        "additional-info": "Informasi Tambahan",
+        "author-info": "Informasi Pengarang",
+        "no-author-info": "Tidak ada informasi penulis yang tersedia",
+        "project-details": "Rincian Projek",
+        "created": "Dibuat",
+        "last_updated": "Diperbarui Terakhir",
+        "license": "Lisensi",
+        "links": "Taut",
+        "no-external-links": "Tidak ada sambungan eksternal yang tersedia",
+        "support-dev": "Dukung Pengembang",
+        "consider-supporting": "Pertimbangkan mendukung pengembang jika Anda menikmati Addon ini!",
+        "description": "Deskripsi",
+        "no-description": "Tidak ada deskripsi yang tersedia.",
+        "compatibility": "Kompatibilitas",
+        "summary": "Ringkasan",
+        "matrix": "Matriks",
+        "versions": "Versions",
+        "compatible-with": "Cocok dengan",
+        "not-compatible-with": "Tidak kompatibel dengan",
+        "on": "nyala",
+        "minecraft-versions": "Versi Minecraft",
+        "loaders": "Loaders",
+        "latest-version": "Versi Terbaru",
+        "featured": "Ditampilkan",
+        "recommended-version": "Ini adalah versi yang disarankan oleh pengembang",
+        "released": "Dirilis",
+        "create-mod-required": "Buat versi mod yang diperlukan untuk versi addon ini",
+        "other-dependency": "Ketergantungan Lain"
       }
     },
     "about": {
@@ -223,6 +256,11 @@
       "github-issues": "Isu GitHub",
       "mojang-warning": "BUKAN LAYANAN RESMI. TIDAK DIJUAL OLEH ATAU DISEBUT DENGAN MOJANG ATAU MICROSOFT.",
       "create-warning": "Tidak berafiliasi dengan Create Mod tim atau salah satu addon dengan cara apapun."
+    },
+    "filters": {
+      "category": {
+        "name": "Kategori"
+      }
     }
   }
 }

@@ -3,6 +3,7 @@ import { CardContent } from '@/components/ui/card';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useTranslation } from 'react-i18next';
 
 export interface AddonDetailsDescriptionProps {
   description: string;
@@ -11,14 +12,16 @@ export interface AddonDetailsDescriptionProps {
 export const AddonDetailsDescription = ({ description = '' }: AddonDetailsDescriptionProps) => {
   const [formattedDescription, setFormattedDescription] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
+  const { t } = useTranslation();
   useEffect(() => {
     const processMarkdown = async () => {
       setIsLoading(true);
 
       try {
         if (!description) {
-          setFormattedDescription('<p class="text-muted-foreground">No description available.</p>');
+          setFormattedDescription(
+            `<p class="text-muted-foreground">${t('addons.details.no-description')}</p>`
+          ); // Use t function
           return;
         }
 
@@ -86,7 +89,7 @@ export const AddonDetailsDescription = ({ description = '' }: AddonDetailsDescri
 
   return (
     <CardContent className='py-6'>
-      <h2 className='mb-4 text-xl font-semibold'>Description</h2>
+      <h2 className='mb-4 text-xl font-semibold'>{t('addons.details.description')}</h2>
 
       {isLoading ? (
         <div className='space-y-4'>

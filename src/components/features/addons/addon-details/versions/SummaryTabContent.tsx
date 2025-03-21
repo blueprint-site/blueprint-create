@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AddonVersion } from '@/types/addons/addon-details';
 import ModLoaders from '../../addon-card/ModLoaders';
+import { useTranslation } from 'react-i18next';
 
 interface SummaryTabContentProps {
   minecraftVersions: string[];
@@ -17,11 +18,12 @@ export const SummaryTabContent: React.FC<SummaryTabContentProps> = ({
   createVersions,
   featuredVersion,
 }) => {
+  const { t } = useTranslation();
   return (
     <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
       <div className='space-y-4'>
         <div>
-          <h4 className='mb-2 text-sm font-medium'>Minecraft Versions</h4>
+          <h4 className='mb-2 text-sm font-medium'>{t('addons.details.minecraft-versions')}</h4>
           <div className='flex flex-wrap gap-2'>
             {minecraftVersions.map((version) => (
               <Badge key={version} variant='outline'>
@@ -32,13 +34,13 @@ export const SummaryTabContent: React.FC<SummaryTabContentProps> = ({
         </div>
 
         <div>
-          <h4 className='mb-2 text-sm font-medium'>Mod Loaders</h4>
+          <h4 className='mb-2 text-sm font-medium'>Mod {t('addons.details.loaders')}</h4>
           <ModLoaders loaders={uniqueLoaders} />
         </div>
 
         {createVersions.length > 0 && (
           <div>
-            <h4 className='mb-2 text-sm font-medium'>Create Versions</h4>
+            <h4 className='mb-2 text-sm font-medium'>Create {t('addons.details.versions')}</h4>
             <div className='flex flex-wrap gap-2'>
               {createVersions.map((version) => {
                 return (
@@ -56,17 +58,17 @@ export const SummaryTabContent: React.FC<SummaryTabContentProps> = ({
         <div>
           <div className='rounded-md border p-4'>
             <h4 className='mb-2 flex items-center gap-1 text-sm font-medium'>
-              Latest Version
+              {t('addons.details.latest-version')}
               {featuredVersion.featured && (
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger>
                       <Badge variant='default' className='ml-2 text-xs'>
-                        Featured
+                        {t('addons.details.featured')}
                       </Badge>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>This is the recommended version by the developer</p>
+                      <p>{t('addons.details.recommended-version')}</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -76,7 +78,8 @@ export const SummaryTabContent: React.FC<SummaryTabContentProps> = ({
             <div className='space-y-2'>
               <div className='text-lg font-medium'>{featuredVersion.name}</div>
               <div className='text-muted-foreground text-sm'>
-                Released {new Date(featuredVersion.date_published).toLocaleDateString()}
+                {t('addons.details.released')}{' '}
+                {new Date(featuredVersion.date_published).toLocaleDateString()}
               </div>
 
               <div className='mt-2 flex flex-wrap gap-2'>

@@ -9,6 +9,7 @@ import {
   SiPaypal,
 } from '@icons-pack/react-simple-icons';
 import { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface AddonDetailsDonationProps {
   links: {
@@ -19,12 +20,12 @@ export interface AddonDetailsDonationProps {
 }
 
 export const AddonDetailsDonation = ({ links }: AddonDetailsDonationProps) => {
+  const { t } = useTranslation();
   const getPlatformButton = (platform: string, url: string): ReactNode => {
     if (url.includes('opencollective')) {
       platform = 'Open Collective';
     }
     const platformLower = platform.toLowerCase();
-
     if (platformLower.includes('github')) {
       return (
         <>
@@ -76,7 +77,7 @@ export const AddonDetailsDonation = ({ links }: AddonDetailsDonationProps) => {
 
   return (
     <CardContent className='py-6'>
-      <h3 className='mb-4 text-lg font-semibold'>Support the Developer</h3>
+      <h3 className='mb-4 text-lg font-semibold'>{t('addons.details.support-dev')}</h3>
       <div className='grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3'>
         {links.map((link) => (
           <Button key={link.id} variant='outline' className='justify-start gap-2' asChild>
@@ -87,7 +88,7 @@ export const AddonDetailsDonation = ({ links }: AddonDetailsDonationProps) => {
         ))}
       </div>
       <p className='text-muted-foreground mt-3 text-sm'>
-        Consider supporting the developers if you enjoy this addon!
+        {t('addons.details.consider-supporting')}
       </p>
     </CardContent>
   );

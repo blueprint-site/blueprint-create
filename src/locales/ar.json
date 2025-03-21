@@ -88,6 +88,39 @@
       "random": {
         "title": "تشعر بالملل؟?",
         "link": "الحصول على إضافات عشوائية!"
+      },
+      "details": {
+        "available_on": "Available On",
+        "downloads": "الحمولات",
+        "followers": "أتباع",
+        "additional-info": "معلومات إضافية",
+        "author-info": "المعلومات",
+        "no-author-info": "لا توجد معلومات مقدمة",
+        "project-details": "تفاصيل المشروع",
+        "created": "المنشأة",
+        "last_updated": "آخر تحديث",
+        "license": "الرخصة",
+        "links": "الروابط",
+        "no-external-links": "لا توجد روابط خارجية",
+        "support-dev": "دعم المطور",
+        "consider-supporting": "فكر في دعم المطورين إذا استمتعت بهذا الإضافه!",
+        "description": "الوصف",
+        "no-description": "لا يوجد وصف.",
+        "compatibility": "التوافق",
+        "summary": "موجز",
+        "matrix": "Matrix",
+        "versions": "الركائز",
+        "compatible-with": "مقارنة مع",
+        "not-compatible-with": "غير متوافق مع",
+        "on": "on",
+        "minecraft-versions": "المعادن",
+        "loaders": "القروض",
+        "latest-version": "آخر صورة",
+        "featured": "المرشح",
+        "recommended-version": "هذه هي النسخة الموصى بها من المطور",
+        "released": "مفرج عنه",
+        "create-mod-required": "وضع نسخ نموذجية لازمة لهذه النسخة الإضافية",
+        "other-dependency": "إعالة أخرى"
       }
     },
     "about": {
@@ -223,6 +256,11 @@
       "github-issues": "قضايا GitHub",
       "mojang-warning": "ليست خدمة رسمية غير مُنَفَّذ من جانب أو مُرتبط بموجانغ أو ميكروفوت.",
       "create-warning": "غير مرتبط بفريق (كريت مود) أو أحد الإضافات بأي حال."
+    },
+    "filters": {
+      "category": {
+        "name": "الفئة"
+      }
     }
   }
 }

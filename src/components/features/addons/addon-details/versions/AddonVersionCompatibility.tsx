@@ -10,6 +10,7 @@ import {
   TabsLoading,
   VersionsTabContent,
 } from '@/components/features/addons/addon-details/versions';
+import { useTranslation } from 'react-i18next';
 
 // Props using the new data structure
 export interface AddonVersionCompatibilityProps {
@@ -41,7 +42,7 @@ export const AddonVersionCompatibility: React.FC<AddonVersionCompatibilityProps>
   compatibility,
 }) => {
   const [view, setView] = useState<'summary' | 'matrix' | 'versions'>('summary');
-
+  const { t } = useTranslation();
   // Create a compatibility check function
   const checkCompatibility = (mcVersion: string, loader: string): boolean => {
     if (!versions || versions.length === 0) return false;
@@ -74,11 +75,11 @@ export const AddonVersionCompatibility: React.FC<AddonVersionCompatibilityProps>
         className='w-full'
       >
         <div className='mb-4 flex items-center justify-between'>
-          <h3 className='text-lg font-semibold'>Compatibility</h3>
+          <h3 className='text-lg font-semibold'>{t('addons.details.compatibility')}</h3>
           <TabsList>
-            <TabsTrigger value='summary'>Summary</TabsTrigger>
-            <TabsTrigger value='matrix'>Matrix</TabsTrigger>
-            <TabsTrigger value='versions'>Versions</TabsTrigger>
+            <TabsTrigger value='summary'>{t('addons.details.summary')}</TabsTrigger>
+            <TabsTrigger value='matrix'>{t('addons.details.matrix')}</TabsTrigger>
+            <TabsTrigger value='versions'>{t('addons.details.versions')}</TabsTrigger>
           </TabsList>
         </div>
 

@@ -88,6 +88,39 @@
       "random": {
         "title": "Ti stai annoiando?",
         "link": "Prendi un addon casuale!"
+      },
+      "details": {
+        "available_on": "Disponibile su",
+        "downloads": "download",
+        "followers": "seguaci",
+        "additional-info": "Informazioni aggiuntive",
+        "author-info": "Informazioni sull'autore",
+        "no-author-info": "Informazioni sull'autore disponibili",
+        "project-details": "Dettagli del progetto",
+        "created": "Creato",
+        "last_updated": "Ultimo aggiornamento",
+        "license": "Licenza",
+        "links": "Collegamenti",
+        "no-external-links": "Nessun link esterno disponibile",
+        "support-dev": "Supporto dello sviluppatore",
+        "consider-supporting": "Considera di sostenere gli sviluppatori se ti piace questo addon!",
+        "description": "Designazione",
+        "no-description": "Nessuna descrizione disponibile.",
+        "compatibility": "Compatibilità",
+        "summary": "Sintesi",
+        "matrix": "Matrice",
+        "versions": "Versioni",
+        "compatible-with": "Compatibile con",
+        "not-compatible-with": "Non compatibile con",
+        "on": "su",
+        "minecraft-versions": "Versioni Minecraft",
+        "loaders": "Abitanti",
+        "latest-version": "Ultima versione",
+        "featured": "Caratteristica",
+        "recommended-version": "Questa è la versione consigliata dallo sviluppatore",
+        "released": "Rilasciato",
+        "create-mod-required": "Creare versioni mod necessarie per questa versione addon",
+        "other-dependency": "Altre dipendenze"
       }
     },
     "about": {
@@ -223,6 +256,11 @@
       "github-issues": "Problemi GitHub",
       "mojang-warning": "NON E' UN SERVIZIO DI SOCCORSO. NON APPROVATA O ASSOCIATO CON MOJANG O MICROSOFT.",
       "create-warning": "Non affiliato a Create Mod team o uno degli addons in alcun modo."
+    },
+    "filters": {
+      "category": {
+        "name": "Categoria"
+      }
     }
   }
 }
