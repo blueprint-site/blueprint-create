@@ -12,9 +12,11 @@ import { Button } from '@/components/ui/button';
 import eyes from '@/assets/eyes/eye_squint.gif';
 import axios from 'axios';
 import { cn } from '@/config/utils';
-import { useFetchAddon } from '@/api';
+import { useFetchAddon, useSaveAddon } from '@/api';
 import { Addon } from '@/types';
 import { Puzzle } from 'lucide-react';
+import { useUserStore } from '@/api/stores/userStore';
+import { LoadingSpinner } from '@/components/loading-overlays/LoadingSpinner';
 
 export default function AddonVerifyingPopup() {
   const [stage, setStage] = useState(0);
@@ -64,7 +66,21 @@ export default function AddonVerifyingPopup() {
           {
             title: 'Modrinth Confirmation',
             component: (
-              <ConfirmationStep back={prevStage} selectedAddonSlugs={selectedAddonSlugs} />
+              <ConfirmationStep
+                back={prevStage}
+                next={nextStage}
+                selectedAddonSlugs={selectedAddonSlugs}
+              />
+            ),
+          },
+          {
+            title: 'Pushing changes',
+            component: (
+              <ModrinthPushChanges
+                back={prevStage}
+                next={nextStage}
+                selectedAddonSlugs={selectedAddonSlugs}
+              />
             ),
           },
         ]
@@ -513,12 +529,14 @@ function CurseForgeStep({ back }: { next: () => void; back: () => void }) {
   );
 }
 
-// -------------------- Final Step: Confirmation --------------------
+// ---------------------------- Step  5: Confirmation --------------------------------
 function ConfirmationStep({
   back,
+  next,
   selectedAddonSlugs,
 }: {
   back: () => void;
+  next: () => void;
   selectedAddonSlugs: string[];
 }) {
   return (
@@ -542,7 +560,72 @@ function ConfirmationStep({
         <Button variant='outline' onClick={back}>
           Back
         </Button>
-        <Button variant='destructive'>Submit</Button>
+        <Button variant='destructive' onClick={next}>
+          Submit
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+// ------------------------ Step 6: Pushing changes to API ------------------------
+
+function ModrinthPushChanges({
+  back,
+  next,
+  selectedAddonSlugs,
+}: {
+  back: () => void;
+  next: () => void;
+  selectedAddonSlugs: string[];
+}) {
+  const saveAddon = useSaveAddon();
+  const user = useUserStore((state) => state.user);
+  const [isLoading, setIsLoading] = useState(true);
+  const [processedAddons, setProcessedAddons] = useState<string[]>([]);
+
+  const handleAddonFetched = (addon: Addon) => {
+    console.log('Addon fetched in parent:', addon);
+    setIsLoading(false);
+    handleClaim(addon);
+  };
+
+  const handleClaim = (addon: Addon) => {
+    saveAddon.mutate({
+      ...addon,
+      claimed_by: user?.$id, // Updating the claimed_by field
+    });
+    setProcessedAddons((prev) => [...prev, addon.slug]);
+  };
+
+  return (
+    <div className='flex flex-col gap-3'>
+      <h2>Syncing your changes with our API</h2>
+
+      {/* Render AddonFetcher components for each addon slug that hasn't been processed yet */}
+      {selectedAddonSlugs.map((slug) =>
+        !processedAddons.includes(slug) ? (
+          <AddonFetcher key={slug} slug={slug} onAddonFetched={handleAddonFetched} />
+        ) : null
+      )}
+
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <p className='text-sm'>Please wait while we sync your changes with our API.</p>
+      )}
+
+      <div className='flex justify-between'>
+        <Button variant='outline' onClick={back}>
+          Back
+        </Button>
+        <Button
+          variant='destructive'
+          onClick={next}
+          disabled={processedAddons.length < selectedAddonSlugs.length}
+        >
+          Submit
+        </Button>
       </div>
     </div>
   );
