@@ -60,6 +60,7 @@
     "cli-progress": "^3.12.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.4",
+    "cron-parser": "^5.0.6",
     "date-fns": "^4.1.0",
     "dompurify": "^3.1.7",
     "electron": "^34.1.1",

@@ -14,9 +14,11 @@ import axios from 'axios';
 import { cn } from '@/config/utils';
 import { useFetchAddon, useSaveAddon } from '@/api';
 import { Addon } from '@/types';
-import { Puzzle } from 'lucide-react';
+import { Puzzle, RefreshCcw } from 'lucide-react';
 import { useUserStore } from '@/api/stores/userStore';
 import { LoadingSpinner } from '@/components/loading-overlays/LoadingSpinner';
+import TimerProgress from '@/components/utility/TimerProgress';
+import cronParser from 'cron-parser';
 
 export default function AddonVerifyingPopup() {
   const [stage, setStage] = useState(0);
@@ -76,11 +78,7 @@ export default function AddonVerifyingPopup() {
           {
             title: 'Pushing changes',
             component: (
-              <ModrinthPushChanges
-                back={prevStage}
-                next={nextStage}
-                selectedAddonSlugs={selectedAddonSlugs}
-              />
+              <ModrinthPushChanges back={prevStage} selectedAddonSlugs={selectedAddonSlugs} />
             ),
           },
         ]
@@ -560,9 +558,7 @@ function ConfirmationStep({
         <Button variant='outline' onClick={back}>
           Back
         </Button>
-        <Button variant='destructive' onClick={next}>
-          Submit
-        </Button>
+        <Button onClick={next}>Submit</Button>
       </div>
     </div>
   );
@@ -572,11 +568,9 @@ function ConfirmationStep({
 
 function ModrinthPushChanges({
   back,
-  next,
   selectedAddonSlugs,
 }: {
   back: () => void;
-  next: () => void;
   selectedAddonSlugs: string[];
 }) {
   const saveAddon = useSaveAddon();
@@ -598,6 +592,18 @@ function ModrinthPushChanges({
     setProcessedAddons((prev) => [...prev, addon.slug]);
   };
 
+  const getNextCronDate = (cronExpression: string) => {
+    const interval = cronParser.parse(cronExpression);
+    const nextExecution = interval.next(); // Get next execution time as a Date object
+    return nextExecution; // Return as Date object
+  };
+
+  // Example usage
+  const cronExpression = '0 * * * *'; // Every hour at the top of the hour
+  const nextExecutionDate = getNextCronDate(cronExpression);
+  const countdownTime = (nextExecutionDate.getTime() - Date.now()) / 1000;
+  const roundedCountdownTime = Math.round(countdownTime);
+
   return (
     <div className='flex flex-col gap-3'>
       <h2>Syncing your changes with our API</h2>
@@ -612,20 +618,25 @@ function ModrinthPushChanges({
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <p className='text-sm'>Please wait while we sync your changes with our API.</p>
+        <p className='text-sm'>
+          All done! You can safely close this window. Your addon will be on in:
+        </p>
       )}
-
+      <TimerProgress
+        startTimestamp={Date.now()}
+        countdownTime={roundedCountdownTime}
+        description='Syncing happens exactly at this time:'
+        icon={<RefreshCcw size={18} />}
+      />
+      <h3>Frequently asked questions</h3>
+      <p>When will it show up? It takes one hour to sync the addons</p>
+      <p>Do i get the +10 ego boost? Yes</p>
+      <p>What to do to undo?: Contact us</p>
       <div className='flex justify-between'>
-        <Button variant='outline' onClick={back}>
-          Back
+        <Button variant='outline' onClick={back} disabled={true}>
+          There is no going back
         </Button>
-        <Button
-          variant='destructive'
-          onClick={next}
-          disabled={processedAddons.length < selectedAddonSlugs.length}
-        >
-          Submit
-        </Button>
+        <Button variant='success'>Press X to close</Button>
       </div>
     </div>
   );
