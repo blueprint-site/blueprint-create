@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import eyes from '@/assets/eyes/eye_squint.gif';
 import axios from 'axios';
 import { cn } from '@/config/utils';
-import { useFetchAddons } from '@/api';
+import { useFetchAddon } from '@/api';
 import { Addon } from '@/types';
 import { Puzzle } from 'lucide-react';
 
@@ -289,6 +289,28 @@ function ModrinthProfile({
 }
 
 // -------------------- Step 4: Modrinth addons validation -----------------
+interface AddonFetcherProps {
+  slug: string;
+  onAddonFetched: (addon: Addon) => void;
+}
+// A separate component that uses the useFetchAddon hook
+function AddonFetcher({ slug, onAddonFetched }: AddonFetcherProps) {
+  // Call useFetchAddon at the component level where it's allowed
+  const { data: addon } = useFetchAddon(slug);
+
+  useEffect(() => {
+    if (addon) {
+      // Pass the fetched addon back to the parent
+      onAddonFetched(addon);
+      console.log('Found addon:', addon);
+    } else {
+      console.log('No addon found for:', slug);
+    }
+  }, [addon, slug, onAddonFetched]);
+
+  // This component doesn't render anything
+  return null;
+}
 
 function ModrinthValidation({
   next,
@@ -299,14 +321,15 @@ function ModrinthValidation({
   back: () => void;
   modrinthAuth: string | null;
 }) {
-  const { data } = useFetchAddons(1, 5000);
-  const addons = useMemo(() => data?.addons ?? [], [data]); // Wrapped in useMemo()
-
   const [modrinthProjects, setModrinthProjects] = useState<{ slug: string }[]>([]);
-  const [matchingProjects, setMatchingProjects] = useState<Addon[]>([]);
+  const [fetchedAddons, setFetchedAddons] = useState<Addon[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [projectsLoaded, setProjectsLoaded] = useState<boolean>(false);
+  // Add state for selected addons
+  const [selectedAddonSlugs, setSelectedAddonSlugs] = useState<string[]>([]);
 
+  // First useEffect to fetch Modrinth projects
   useEffect(() => {
     if (!modrinthAuth) return;
 
@@ -326,17 +349,14 @@ function ModrinthValidation({
         );
 
         setModrinthProjects(projectsResponse.data);
-        console.log('Found projects: ', modrinthProjects);
-
-        const matchingAddons = addons.filter((addon) =>
-          projectsResponse.data.some((project) => project.slug === addon.slug)
-        );
-
-        setMatchingProjects(matchingAddons);
+        console.log('Fetched projects:', projectsResponse.data);
+        setProjectsLoaded(true);
       } catch (err) {
         if (axios.isAxiosError(err)) {
+          console.error('Modrinth API error:', err.response?.data || err.message);
           setError(err.response?.data?.message || 'Failed to fetch Modrinth projects');
         } else {
+          console.error('Unexpected error:', err);
           setError('An unexpected error occurred.');
         }
       } finally {
@@ -345,38 +365,107 @@ function ModrinthValidation({
     };
 
     fetchModrinthProjects();
-  }, [modrinthAuth, addons]);
+  }, [modrinthAuth]);
+
+  // Callback function for when an addon is fetched
+  const handleAddonFetched = useCallback((addon: Addon) => {
+    setFetchedAddons((prev) => {
+      // Avoid duplicates
+      if (prev.some((a) => a.slug === addon.slug)) {
+        return prev;
+      }
+      return [...prev, addon];
+    });
+
+    // Auto-select newly fetched addons
+    setSelectedAddonSlugs((prev) => {
+      if (prev.includes(addon.slug)) {
+        return prev;
+      }
+      return [...prev, addon.slug];
+    });
+  }, []);
+
+  // Handler for checkbox changes
+  const handleCheckboxChange = (slug: string, checked: boolean) => {
+    setSelectedAddonSlugs((prev) => {
+      if (checked) {
+        // Add the slug if checked
+        return [...prev, slug];
+      } else {
+        // Remove the slug if unchecked
+        return prev.filter((s) => s !== slug);
+      }
+    });
+    console.log(
+      'Selected addons updated:',
+      checked ? [...selectedAddonSlugs, slug] : selectedAddonSlugs.filter((s) => s !== slug)
+    );
+  };
 
   return (
     <div className='flex flex-col gap-3'>
       <h2 className='text-xl font-bold'>Modrinth Validation</h2>
 
-      {loading ? (
-        <p>Loading your projects...</p>
+      {/* Render AddonFetcher components for each project */}
+      {projectsLoaded &&
+        modrinthProjects.map((project) => (
+          <AddonFetcher
+            key={project.slug}
+            slug={project.slug}
+            onAddonFetched={handleAddonFetched}
+          />
+        ))}
+
+      {loading && modrinthProjects.length === 0 ? (
+        <p>Loading projects...</p>
       ) : error ? (
         <p className='text-red-500'>{error}</p>
-      ) : matchingProjects.length > 0 ? (
-        <div className='mt-4'>
-          <h3>Matching Projects</h3>
-          <ul className='list-disc pl-5'>
-            {matchingProjects.map((addon) => (
-              <li key={addon.$id}>
-                {addon.name} - {addon.slug}
+      ) : fetchedAddons.length === 0 ? (
+        <p>No addons found. {projectsLoaded ? 'Searching for addons...' : 'Loading projects...'}</p>
+      ) : (
+        <div>
+          <h3 className='font-semibold'>Found Projects:</h3>
+          <p className='mb-2 text-sm text-gray-500'>Select the addons you want to include</p>
+          <ul className='mt-2 space-y-2'>
+            {fetchedAddons.map((addon) => (
+              <li key={addon.slug} className='flex items-center rounded border p-2'>
+                <input
+                  type='checkbox'
+                  id={`addon-${addon.slug}`}
+                  checked={selectedAddonSlugs.includes(addon.slug)}
+                  onChange={(e) => handleCheckboxChange(addon.slug, e.target.checked)}
+                  className='mr-2 h-4 w-4'
+                />
+                {addon.icon && (
+                  <img src={addon.icon} alt={`${addon.name} icon`} className='mr-3 h-10 w-10' />
+                )}
+                <label htmlFor={`addon-${addon.slug}`} className='font-medium'>
+                  {addon.name}
+                </label>
               </li>
             ))}
           </ul>
+
+          <div className='mt-3'>
+            <p className='text-sm'>
+              Selected addons: <span className='font-medium'>{selectedAddonSlugs.length}</span>
+            </p>
+          </div>
         </div>
-      ) : (
-        <p className='mt-4 text-gray-500'>No matching projects found.</p>
       )}
 
-      <div className='mt-4 flex w-full justify-between'>
-        <button className='btn-outline' onClick={back}>
-          Back
-        </button>
-        <button className='btn-primary' onClick={next} disabled={matchingProjects.length === 0}>
+      <div className='mt-5 flex justify-between'>
+        <Button onClick={back}>Back</Button>
+        <Button
+          onClick={() => {
+            console.log('Selected addon slugs:', selectedAddonSlugs);
+            next();
+          }}
+          disabled={loading && fetchedAddons.length === 0}
+        >
           Next
-        </button>
+        </Button>
       </div>
     </div>
   );
