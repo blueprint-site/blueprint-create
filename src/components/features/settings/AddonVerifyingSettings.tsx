@@ -20,6 +20,7 @@ export default function AddonVerifyingPopup() {
   const [stage, setStage] = useState(0);
   const [platform, setPlatform] = useState<'modrinth' | 'curseforge' | null>(null);
   const [modrinthAuth, setModrinthAuth] = useState<string | null>(null); // Store it at top-level
+  const [selectedAddonSlugs, setSelectedAddonSlugs] = useState<string[]>([]);
 
   const nextStage = () => setStage((prev) => Math.min(prev + 1, stages.length - 1));
   const prevStage = () => setStage((prev) => Math.max(prev - 1, 0));
@@ -51,10 +52,21 @@ export default function AddonVerifyingPopup() {
           {
             title: 'Modrinth Validation',
             component: (
-              <ModrinthValidation back={prevStage} next={nextStage} modrinthAuth={modrinthAuth} />
+              <ModrinthValidation
+                back={prevStage}
+                next={nextStage}
+                modrinthAuth={modrinthAuth}
+                selectedAddonSlugs={selectedAddonSlugs}
+                setSelectedAddonSlugs={setSelectedAddonSlugs}
+              />
             ),
           },
-          { title: 'Modrinth Confirmation', component: <ConfirmationStep back={prevStage} /> },
+          {
+            title: 'Modrinth Confirmation',
+            component: (
+              <ConfirmationStep back={prevStage} selectedAddonSlugs={selectedAddonSlugs} />
+            ),
+          },
         ]
       : platform === 'curseforge'
         ? [
@@ -88,9 +100,6 @@ export default function AddonVerifyingPopup() {
         </ul>
       </h4>
       <br />
-
-      {/* Debugging: See the stored API Key */}
-      {modrinthAuth && <p className='text-red-500'>Stored Modrinth Auth: {modrinthAuth}</p>}
 
       {/* Dialog and UI */}
       <Dialog>
@@ -316,10 +325,14 @@ function ModrinthValidation({
   next,
   back,
   modrinthAuth,
+  selectedAddonSlugs,
+  setSelectedAddonSlugs,
 }: {
   next: () => void;
   back: () => void;
   modrinthAuth: string | null;
+  selectedAddonSlugs: string[];
+  setSelectedAddonSlugs: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
   const [modrinthProjects, setModrinthProjects] = useState<{ slug: string }[]>([]);
   const [fetchedAddons, setFetchedAddons] = useState<Addon[]>([]);
@@ -327,7 +340,6 @@ function ModrinthValidation({
   const [loading, setLoading] = useState<boolean>(true);
   const [projectsLoaded, setProjectsLoaded] = useState<boolean>(false);
   // Add state for selected addons
-  const [selectedAddonSlugs, setSelectedAddonSlugs] = useState<string[]>([]);
 
   // First useEffect to fetch Modrinth projects
   useEffect(() => {
@@ -502,11 +514,30 @@ function CurseForgeStep({ back }: { next: () => void; back: () => void }) {
 }
 
 // -------------------- Final Step: Confirmation --------------------
-function ConfirmationStep({ back }: { back: () => void }) {
+function ConfirmationStep({
+  back,
+  selectedAddonSlugs,
+}: {
+  back: () => void;
+  selectedAddonSlugs: string[];
+}) {
   return (
     <div className='flex flex-col gap-3'>
       <h2>Review and Confirm</h2>
       <p>Make sure your details are correct before submitting.</p>
+      <h3>What happens next?</h3>
+      <p>We show that u made the addon 100%</p>
+      <p style={{ marginTop: '-1.25rem', fontSize: '0.8rem' }} className='text-s'>
+        Your user id gets added to addon data
+      </p>
+      <h3 className='font-semibold'>Selected Addons:</h3>
+      <div className='max-h-[15rem] overflow-y-auto'>
+        <ul className='list-inside list-disc'>
+          {selectedAddonSlugs.map((slug) => (
+            <li key={slug}>{slug}</li>
+          ))}
+        </ul>
+      </div>
       <div className='flex justify-between'>
         <Button variant='outline' onClick={back}>
           Back
