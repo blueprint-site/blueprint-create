@@ -16,8 +16,6 @@ import {
   SocialLinkSchema,
   ServerAffiliationSchema,
   LatestFileSchema,
-  CurseForgeAddonSchema,
-  ModrinthAddonSchema,
 } from '@/schemas/addon.schema';
 
 export type Addon = z.infer<typeof AddonSchema>;
@@ -34,8 +32,6 @@ export type LatestFilesIndex = z.infer<typeof LatestFilesIndexSchema>;
 export type SocialLink = z.infer<typeof SocialLinkSchema>;
 export type ServerAffiliation = z.infer<typeof ServerAffiliationSchema>;
 export type LatestFile = z.infer<typeof LatestFileSchema>;
-export type CurseForgeAddon = z.infer<typeof CurseForgeAddonSchema>;
-export type ModrinthAddon = z.infer<typeof ModrinthAddonSchema>;
 
 import {
   BlogSchema,
@@ -103,6 +99,9 @@ import { AdminLogsSchema } from '@/schemas/adminLogs.schema.tsx';
 
 export type AdminLogs = z.infer<typeof AdminLogsSchema>;
 
+import { OAuthProvidersSchema } from '@/schemas/OAuthProviders.schema.tsx';
+
+export type OAuthProvidersType = z.infer<typeof OAuthProvidersSchema>;
 // LoggedUserContext type
 export interface LoggedUserContextType {
   user: User | null;

@@ -61,7 +61,7 @@ export function useSchematicFilters(options = {}) {
   );
 
   const createVersionOptions = useMemo<FilterOption[]>(() => {
-    return createVersions.map((ver) => ({
+    return Object.values(createVersions).map((ver) => ({
       value: ver.value,
       label: ver.label,
     }));

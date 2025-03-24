@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ContributorCard } from './ContributorCard';
@@ -17,16 +16,20 @@ interface ContributorsSectionProps {
   error: string | null;
 }
 
-export function ContributorsSection({ contributors, isLoading, error }: ContributorsSectionProps) {
+export function ContributorsSection({
+  contributors,
+  isLoading,
+  error,
+}: Readonly<ContributorsSectionProps>) {
   const { t } = useTranslation();
 
   return (
     <section aria-labelledby='contributors'>
       <div className='font-minecraft mb-6 space-y-2 text-center'>
         <h2 id='contributors' className='text-3xl font-bold'>
-          {t('home.contributions.title')}
+          {t('about.contributions.title')}
         </h2>
-        <p className='text-foreground-muted text-lg'>{t('home.contributions.subtitle.main')}</p>
+        <p className='text-foreground-muted text-lg'>{t('about.contributions.subtitle.main')}</p>
       </div>
 
       {error && (

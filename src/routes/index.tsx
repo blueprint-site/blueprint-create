@@ -13,6 +13,7 @@ import Home from '@/pages/Home';
 import BaseLayout from '@/layouts/BaseLayout';
 import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
 import BlogPage from '@/pages/blog/Blog';
+import { gameRoutes } from '@/routes/gamesRoutes.tsx';
 
 const SchematicsList = lazy(() => import('@/pages/schematics/SchematicsList'));
 const AddonsList = lazy(() => import('@/pages/addons/AddonListPage'));
@@ -93,6 +94,7 @@ export const routes: RouteObject[] = [
       ...blogRoutes,
       ...schematicRoutes,
       ...userRoutes,
+      ...gameRoutes,
       {
         path: '*',
         element: (

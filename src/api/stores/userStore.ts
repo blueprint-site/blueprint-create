@@ -1,19 +1,22 @@
 // src/api/stores/userStore.ts
 import { create } from 'zustand';
-import { account } from '@/config/appwrite.ts';
+import { account, functions } from '@/config/appwrite.ts';
 import { User, UserPreferences } from '@/types';
-import { OAuthProvider } from 'appwrite';
+import { ExecutionMethod, Models, OAuthProvider } from 'appwrite';
 import logMessage from '@/components/utility/logs/sendLogs.tsx';
 
 interface UserState {
   user: User | null;
   preferences: UserPreferences | null;
   error: string | null;
-
+  isLoading: boolean;
   // Methods
   fetchUser: () => Promise<void>;
+  getProviders: () => Promise<string[]>;
+  getUserSessions: () => Promise<Models.Session[]>;
+  getAllUserData: (userID: string) => Promise<{ message: string; data: object } | null>;
   updatePreferences: (prefs: UserPreferences) => Promise<void>;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<{ success: boolean; message: string } | void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   handleOAuthLogin: (provider: 'google' | 'github' | 'discord') => Promise<void>;
@@ -25,6 +28,7 @@ export const useUserStore = create<UserState>((set, get) => ({
   user: null,
   preferences: null,
   error: null,
+  isLoading: false,
 
   /**
    * Fetches the currently logged-in user's data and preferences from the Appwrite account.
@@ -42,6 +46,19 @@ export const useUserStore = create<UserState>((set, get) => ({
   },
 
   /**
+   * GET user's Sessions
+   */
+  getUserSessions: async (): Promise<Models.Session[]> => {
+    try {
+      const sessionList = await account.listSessions();
+      return sessionList.sessions; // Retourne bien un tableau de sessions
+    } catch (error) {
+      console.error('Error fetching user sessions:', error);
+      return [];
+    }
+  },
+
+  /**
    * Updates the user's preferences in the Appwrite account.
    */
   updatePreferences: async (prefs: UserPreferences) => {
@@ -54,16 +71,82 @@ export const useUserStore = create<UserState>((set, get) => ({
   },
 
   /**
+   * Get all the users data
+   */
+
+  getAllUserData: async (userID: string) => {
+    try {
+      const headers = {
+        'x-user-id': userID,
+      };
+      const res = await functions.createExecution(
+        '67bf7b35002f188635ac',
+        undefined,
+        false,
+        undefined,
+        ExecutionMethod.POST,
+        headers
+      );
+
+      if (res.responseStatusCode === 200) {
+        const result: { message: string; data: object } = JSON.parse(res.responseBody);
+
+        // Create JSON file content
+        const jsonContent = JSON.stringify(result.data, null, 2); // Pretty print JSON
+
+        // Create a Blob
+        const blob = new Blob([jsonContent], { type: 'application/json' });
+
+        // Create a link and trigger download
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${userID}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        return result; // Or return a success message
+      }
+      return null;
+    } catch (error) {
+      console.error('Error getting all the user data', error);
+      return null;
+    }
+  },
+
+  /**
+   * Get user providers in Appwrite
+   */
+  getProviders: async (): Promise<string[]> => {
+    try {
+      const sessions = await account.listSessions();
+      // Extract the provider from each session
+      const providers = sessions.sessions.map((session) => session.provider);
+      return providers;
+    } catch (error) {
+      console.error('Error getting providers:', error);
+      return []; // Or handle the error as needed
+    }
+  },
+
+  /**
    * Logs in a user using their email and password.
    */
-  login: async (email: string, password: string) => {
+  login: async (
+    email: string,
+    password: string
+  ): Promise<{ success: boolean; message: string } | void> => {
     try {
       await account.createEmailPasswordSession(email, password);
       await get().fetchUser();
-      return Promise.resolve();
+      // Resolve with a success message to trigger the redirection
+      return Promise.resolve({ success: true, message: 'Login successful' });
     } catch (error) {
       set({ error: 'Login failed. Please check your credentials.' });
       logMessage(`Error logging in: ${error}`, 2, 'auth');
+      // Reject with the error to handle it in the component
       return Promise.reject(error);
     }
   },
@@ -87,13 +170,21 @@ export const useUserStore = create<UserState>((set, get) => ({
    * Logs out the current user by deleting the current session.
    */
   logout: async () => {
+    set({ isLoading: true, error: null }); // Set loading state and clear any previous errors
     try {
       await account.deleteSession('current');
-      set({ user: null, preferences: null });
+      set({ user: null, preferences: null, error: null }); // Clear user data and error
+      // Optionally, clear any other authentication tokens/cookies here
+
+      // Redirect to login page (example using window.location, consider using react-router for SPA)
+      window.location.href = '/login'; // Or use navigate('/login') if using react-router
       return Promise.resolve();
     } catch (error) {
       console.error('Logout failed', error);
+      set({ error: 'Logout failed. Please try again.', isLoading: false }); // Set error and clear loading state
       return Promise.reject(error);
+    } finally {
+      set({ isLoading: false }); // Ensure loading state is cleared even if there's an error
     }
   },
 

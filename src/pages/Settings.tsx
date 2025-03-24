@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router';
 import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
 
 const DisplaySettings = lazy(() => import('@/components/features/settings/DisplaySettings.tsx'));
 const AccountSettings = lazy(() => import('@/components/features/settings/AccountSettings.tsx'));
@@ -16,23 +17,24 @@ const AddonVerifyingSettings = lazy(
 const SettingsPage = () => {
   const { section = 'profile' } = useParams(); // Get the section from URL params
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const settingsSections = [
     {
       id: 'profile',
-      label: 'Public profile',
+      label: t('navigation.userSettings.public'),
       icon: User,
       component: ProfileSettings,
     },
     {
       id: 'account',
-      label: 'Account security',
+      label: t('navigation.userSettings.account'),
       icon: Lock,
       component: AccountSettings,
     },
     {
       id: 'display',
-      label: 'Display',
+      label: t('navigation.userSettings.display'),
       icon: Monitor,
       component: DisplaySettings,
     },
@@ -53,7 +55,7 @@ const SettingsPage = () => {
         {/* Sidebar Navigation */}
         <Card className='shrink-0 self-start md:w-64'>
           <div className='space-y-2 p-4'>
-            <h2 className='mb-4 text-lg font-bold'>Settings</h2>
+            <h2 className='mb-4 text-lg font-bold'>{t('settings.settings')}</h2>
             {settingsSections.map(({ id, label, icon: Icon }) => (
               <Button
                 key={id}

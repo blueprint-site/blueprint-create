@@ -118,6 +118,7 @@ function SchematicsList() {
             value={filters.category}
             onChange={setCategory}
             options={categoryOptions}
+            placeholder={'Select d Category'}
           />
 
           {/* Only show subcategories if available */}

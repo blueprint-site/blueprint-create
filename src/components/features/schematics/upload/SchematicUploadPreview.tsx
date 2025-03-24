@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import ModLoaderDisplay from '@/components/common/ModLoaderDisplay';
 import MarkdownDisplay from '@/components/utility/MarkdownDisplay';
 import { User } from '@/types';
 import { MultiImageViewer } from '@/components/utility/MultiImageViewer'; // Import the new component
+import ModLoaders from '../../addons/addon-card/ModLoaders';
 
 interface SchematicPreviewProps {
   title: string;
@@ -27,7 +27,7 @@ export function SchematicPreview({
   user,
   categories,
   subCategories,
-}: SchematicPreviewProps) {
+}: Readonly<SchematicPreviewProps>) {
   return (
     <Card className='sticky top-20'>
       <CardHeader className='border-b'>
@@ -41,7 +41,7 @@ export function SchematicPreview({
           <h1 className='text-2xl font-bold md:text-3xl'>{title || 'Schematic Title'}</h1>
         </CardTitle>
         <CardDescription className='text-foreground-muted'>
-          By {user?.name || 'Anonymous'}
+          By {user?.name ?? 'Anonymous'}
         </CardDescription>
       </CardHeader>
 
@@ -126,7 +126,7 @@ export function SchematicPreview({
             <div>
               <h3 className='mb-2 text-lg font-semibold'>Modloaders</h3>
               {modloaders && modloaders.length > 0 ? (
-                <ModLoaderDisplay loaders={modloaders} />
+                <ModLoaders loaders={modloaders} />
               ) : (
                 <p className='text-foreground-muted text-sm'>No modloaders selected</p>
               )}

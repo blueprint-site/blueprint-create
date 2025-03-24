@@ -48,11 +48,26 @@ interface DevinsBadgesProps {
   /** Image format - SVG recommended for better quality */
   format: 'svg' | 'png';
 
+  /** Optional link to the badge */
+  href?: string;
+
   /** Optional className for the image wrapper */
   className?: string;
 
   /** Custom badge URL (required if category is 'custom') */
   customBadgeUrl?: string;
+
+  /** Optional target for the link (default: '_blank') */
+  target?: string;
+
+  /** Optional rel attribute for the link (default: 'noopener noreferrer') */
+  rel?: string;
+
+  /** Optional aria-label for the link */
+  ariaLabel?: string;
+
+  /** Optional onClick handler */
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }
 
 const DevinsBadges = ({
@@ -61,8 +76,13 @@ const DevinsBadges = ({
   name,
   height,
   format = 'svg',
+  href,
   className,
   customBadgeUrl,
+  target = '_blank',
+  rel = 'noopener noreferrer',
+  ariaLabel,
+  onClick,
 }: DevinsBadgesProps) => {
   // Get badge type configuration
   const typeConfig = BADGE_TYPES[type];
@@ -81,13 +101,17 @@ const DevinsBadges = ({
     }
     badgeSrc = customBadgeUrl;
   } else {
-    // Construct badge URL
-    badgeSrc = `https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/${type}/${category}/${name}${
-      format === 'png' ? `_${finalHeight}h` : format === 'svg' ? '_vector' : ''
-    }.${format}`;
+    let badgeFormat = '';
+    if (format === 'png') {
+      badgeFormat = `_${finalHeight}h`;
+    } else if (format === 'svg') {
+      badgeFormat = '_vector';
+    }
+
+    badgeSrc = `https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/${type}/${category}/${name}${badgeFormat}.${format}`;
   }
 
-  return (
+  const image = (
     <img
       loading='lazy'
       src={badgeSrc}
@@ -96,6 +120,23 @@ const DevinsBadges = ({
       height={finalHeight}
     />
   );
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        target={target}
+        rel={rel}
+        aria-label={ariaLabel ?? `Visit ${name}`}
+        onClick={onClick}
+        className='inline-block'
+      >
+        {image}
+      </a>
+    );
+  }
+
+  return image;
 };
 
 export default DevinsBadges;
