@@ -15,8 +15,6 @@ export interface AddonDetailsFooterProps {
   licence: string;
   createdAt: string | null;
   updatedAt: string | null;
-  licence: string;
-  addon_name: string;
   claimed_by: string | null | undefined;
 }
 

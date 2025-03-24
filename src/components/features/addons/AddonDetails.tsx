@@ -1,54 +1,78 @@
-// src/components/features/addons/AddonDetails.tsx
+import { Card } from '@/components/ui/card';
 import { useParams } from 'react-router';
-import { AddonDetailsError } from '@/components/features/addons/addon-details/AddonDetailsError';
-import { AddonDetailsLoading } from '@/components/features/addons/addon-details/AddonDetailsLoading';
-import { AddonDetailsView } from './addon-details/AddonDetailsView';
+import { useFetchAddon } from '@/api';
+import { CurseForgeAddon, ModrinthAddon } from '@/types';
+
 import {
-  useFetchAddonBySlug,
-  useFetchModrinthProject,
-  useFetchModrinthVersions,
-  useFetchModrinthDependencies,
-} from '@/api';
-import { IntegratedAddonData } from '@/types/addons/addon-details';
-import { getAddonCreateVersionsFromVersions } from '@/utils/createCompatibility';
+  AddonDetailsFooter,
+  AddonDetailsContent,
+  AddonDetailsDescription,
+  AddonDetailsError,
+  AddonDetailsGallery,
+  AddonDetailsHeader,
+  AddonDetailsLoading,
+} from '@/components/features/addons/addon-details';
 
 export default function AddonDetails() {
-  const { slug } = useParams<{ slug: string }>();
+  const { slug } = useParams();
+  const { data: addon, isLoading, error } = useFetchAddon(slug);
 
-  const { data: addon, isLoading: isLoadingAddon, error: errorAddon } = useFetchAddonBySlug(slug);
+  if (error) {
+    return <AddonDetailsError error={error} />;
+  }
 
-  const {
-    data: modrinthProject,
-    isLoading: isLoadingModrinth,
-    error: errorModrinth,
-  } = useFetchModrinthProject(slug);
-
-  const {
-    data: versions,
-    isLoading: isLoadingVersions,
-    error: errorVersions,
-  } = useFetchModrinthVersions(slug);
-
-  const {
-    data: dependencies,
-    isLoading: isLoadingDependencies,
-    error: errorDependencies,
-  } = useFetchModrinthDependencies(slug);
-
-  const error = errorAddon || errorModrinth || errorVersions || errorDependencies;
-
-  if (error) return <AddonDetailsError error={error} />;
-
-  const isLoading =
-    isLoadingAddon || isLoadingModrinth || isLoadingVersions || isLoadingDependencies;
-
-  if (isLoading || !addon || !modrinthProject || !versions || !dependencies) {
+  if (isLoading || !addon) {
     return <AddonDetailsLoading />;
   }
+
+  // Vérification et parsing des données Modrinth
+  const modrinthData: ModrinthAddon | null = addon.modrinth_raw
+    ? typeof addon.modrinth_raw === 'string'
+      ? JSON.parse(addon.modrinth_raw)
+      : addon.modrinth_raw
+    : null;
+
+  // Vérification et parsing des données CurseForge
+  const curseforgeData: CurseForgeAddon | null = addon.curseforge_raw
+    ? typeof addon.curseforge_raw === 'string'
+      ? JSON.parse(addon.curseforge_raw)
+      : addon.curseforge_raw
+    : null;
+
+  // Récupération sécurisée de la galerie
+  const gallery = modrinthData?.gallery ?? [];
+
+  // Sécurisation du calcul des téléchargements totaux
+  const totalDownload = (modrinthData?.downloads ?? 0) + (curseforgeData?.downloadCount ?? 0);
+
+  return (
+    <div className='container mx-auto space-y-8 px-4 py-8'>
+      <Card>
+        {/* Header Card */}
+        <AddonDetailsHeader
+          title={addon.name}
+          description={addon.description ?? ''}
+          downloads={totalDownload}
+          follows={modrinthData?.follows ?? 0}
+          icon={addon.icon}
+        />
+
+        {/* Content Card */}
+        <AddonDetailsContent
+          versions={addon.minecraft_versions ?? []}
+          loaders={addon.loaders ?? []}
+          categories={addon.categories ?? []}
+          slug={addon.slug}
+          modrinth_raw={modrinthData}
+          curseforge_raw={curseforgeData}
+        />
+      </Card>
+
       {/* Gallery Card */}
       {gallery.length > 0 && (
         <AddonDetailsGallery addon_name={addon.name} gallery_small={gallery} />
       )}
+
       {/* Description Card */}
       <AddonDetailsDescription description={modrinthData?.description ?? ''} />
 
@@ -63,5 +87,4 @@ export default function AddonDetails() {
       />
     </div>
   );
-
 }
