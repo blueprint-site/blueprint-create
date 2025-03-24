@@ -3,16 +3,12 @@ import { useParams } from 'react-router';
 import { useFetchAddon } from '@/api';
 import { CurseForgeAddon, ModrinthAddon } from '@/types';
 
-import {
-  AddonDetailsFooter,
-  AddonDetailsContent,
-  AddonDetailsDescription,
-  AddonDetailsError,
-  AddonDetailsGallery,
-  AddonDetailsHeader,
-  AddonDetailsLoading,
-} from '@/components/features/addons/addon-details';
-
+import { AddonDetailsDescription } from './addon-details/AddonDetailsDescription';
+import { AddonDetailsError } from './addon-details/AddonDetailsError';
+import { AddonDetailsLoading } from './addon-details/AddonDetailsLoading';
+import { AddonDetailsHeader } from './addon-details/AddonDetailsHeader';
+import { AddonDetailsGallery } from './addon-details/AddonDetailsGallery';
+import { AddonDetailsFooter } from './addon-details/AddonDetailsFooter';
 export default function AddonDetails() {
   const { slug } = useParams();
   const { data: addon, isLoading, error } = useFetchAddon(slug);
@@ -58,7 +54,7 @@ export default function AddonDetails() {
         />
 
         {/* Content Card */}
-        <AddonDetailsContent
+        <AddonDetailsDescription
           versions={addon.minecraft_versions ?? []}
           loaders={addon.loaders ?? []}
           categories={addon.categories ?? []}
@@ -84,6 +80,7 @@ export default function AddonDetails() {
         licence={modrinthData?.license ?? ''}
         addon_name={addon.name}
         claimed_by={addon.claimed_by}
+        externalLinks={addon.external_links}
       />
     </div>
   );
