@@ -75,7 +75,11 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
           <VersionBadges versions={addon.minecraft_versions || []} />
         </div>
 
-        <AddonStats author={addon.author} downloads={addon.downloads} />
+        <AddonStats
+          author={addon.author}
+          claimed_by={addon.claimed_by}
+          downloads={addon.downloads}
+        />
 
         <ExternalLinks
           slug={addon.slug}

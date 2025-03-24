@@ -72,7 +72,6 @@ export default function AddonDetails() {
       {gallery.length > 0 && (
         <AddonDetailsGallery addon_name={addon.name} gallery_small={gallery} />
       )}
-
       {/* Description Card */}
       <AddonDetailsDescription description={modrinthData?.description ?? ''} />
 
@@ -83,6 +82,7 @@ export default function AddonDetails() {
         updatedAt={addon.updated_at}
         licence={modrinthData?.license ?? ''}
         addon_name={addon.name}
+        claimed_by={addon.claimed_by}
       />
     </div>
   );
