@@ -65,6 +65,7 @@ export interface IntegratedAddonData extends Addon {
   curseforgeObject?: CurseForgeRawObject;
   modrinthObject?: ModrinthRawObject;
   modrinth: CondensedModrinthProject;
+  claimed_by?: string | null;
 }
 
 /**
