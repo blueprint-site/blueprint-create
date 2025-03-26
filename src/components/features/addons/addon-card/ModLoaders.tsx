@@ -1,6 +1,6 @@
 import DevinsBadges from '@/components/utility/DevinsBadges';
 import neoforge from '@/assets/neoforge_46h.png';
-import { normalizeLoaderName } from '@/data/modloaders';
+import { MODLOADER_OPTIONS, normalizeLoaderName } from '@/data/modloaders';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 const ModLoaderDisplay = ({ loaders = [] }: { loaders: string[] }) => {
@@ -8,10 +8,16 @@ const ModLoaderDisplay = ({ loaders = [] }: { loaders: string[] }) => {
     return <div>No mod loaders found!</div>;
   }
 
+  const showAll = loaders.map((loader) => loader.toLowerCase()).includes('all');
+
+  const loadersToDisplay = showAll
+    ? MODLOADER_OPTIONS.filter((loader) => loader.value !== 'All').map((loader) => loader.value)
+    : loaders.map((loader) => loader.toLowerCase());
+
   // Create a map of standardized names to their lowercase values
   // This is needed because DevinsBadges expects lowercase loader names
   const loaderDisplayMap = new Map(
-    Array.from(new Set(loaders.map((loader) => loader.toLowerCase()))).map((loader) => [
+    Array.from(new Set(loadersToDisplay)).map((loader) => [
       normalizeLoaderName(loader),
       loader.toLowerCase(),
     ])

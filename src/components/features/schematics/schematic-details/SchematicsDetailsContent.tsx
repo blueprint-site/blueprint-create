@@ -13,7 +13,7 @@ export const SchematicsDetailsContent = ({ schematic }: SchematicsDetailsContent
     <Card className={'mt-4'}>
       <CardContent className='space-y-6'>
         <div className='flex flex-col items-start gap-8 md:flex-row'>
-          <div className='w-full md:w-1/2'>
+          <div className='mt-2 w-full md:w-1/2'>
             <MultiImageViewer images={schematic.image_urls} />
           </div>
           <div className='w-full space-y-4 md:w-1/2'>
