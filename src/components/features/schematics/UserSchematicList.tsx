@@ -15,10 +15,10 @@ import { format } from 'date-fns';
 import { useDeleteSchematics, useFetchUserSchematics } from '@/api/endpoints/useSchematics.tsx';
 import { useUserStore } from '@/api/stores/userStore';
 import { useThemeStore } from '@/api/stores/themeStore';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx';
 import MinecraftIcon from '@/components/utility/MinecraftIcon.tsx';
 import { Schematic } from '@/types';
 import { useNavigate } from 'react-router';
+import Markdown from 'react-markdown';
 
 const UserSchematicList = () => {
   const { isDarkMode } = useThemeStore();
@@ -51,20 +51,34 @@ const UserSchematicList = () => {
                   isDarkMode ? 'bg-shadow_steel_casing' : 'bg-refined_radiance_casing'
                 }`}
               >
-                <CardHeader className='mt-4 flex flex-col items-start justify-between'>
+                {schematic.image_urls && schematic.image_urls.length > 0 && (
+                  <div className='absolute inset-0 z-0 overflow-hidden'>
+                    <div
+                      className='absolute inset-0'
+                      style={{
+                        backgroundImage: `url(${schematic.image_urls[0]})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        filter: 'grayscale(100%) blur(2px)',
+                      }}
+                    />
+                    <div
+                      className='absolute inset-0'
+                      style={{
+                        backgroundColor: 'rgba(0, 0, 0, 0.3)', // Adjust as needed
+                      }}
+                    />
+                  </div>
+                )}
+                <CardHeader className='relative z-10 mt-4 flex flex-col items-start justify-between'>
                   <div className='flex items-center gap-4'>
-                    <Avatar>
-                      <AvatarImage
-                        src={schematic.image_urls ? schematic.image_urls[1] : ''}
-                        alt={schematic.title}
-                      />
-                      <AvatarFallback>{schematic.title.slice(0, 2)}</AvatarFallback>
-                    </Avatar>
                     <div className=''>
                       <h3 className='text-card-foreground text-lg font-semibold'>
                         {schematic.title}
                       </h3>
-                      <p className='text-foreground-muted text-sm'>{schematic.description}</p>
+                      <p className='text-foreground-muted text-xs'>
+                        <Markdown>{schematic.description.slice(0, 50)}</Markdown>
+                      </p>
                     </div>
                   </div>
                   <div className='text-foreground-muted flex items-center gap-4 text-sm'>
@@ -78,7 +92,7 @@ const UserSchematicList = () => {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className='flex flex-col items-start justify-between'>
+                <CardContent className='relative z-10 flex flex-col items-start justify-between'>
                   <div className='flex items-center text-xs'>
                     Created : {format(new Date(schematic.$createdAt), 'dd/MM/yyyy HH:mm')}
                   </div>
@@ -91,13 +105,16 @@ const UserSchematicList = () => {
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <button
-                      className='text-destructive absolute top-1 right-1 cursor-pointer'
+                      className='text-destructive absolute top-1 right-1 z-10 cursor-pointer'
                       type='button'
                       title='Delete'
+                      onClick={(event) => {
+                        event.stopPropagation(); // Prevent navigation
+                      }}
                     >
                       <MinecraftIcon
                         name={'trash'}
-                        className={'absolute top-1 right-1'}
+                        className={'absolute top-1 right-1 z-10'}
                         size={32}
                       />
                     </button>
