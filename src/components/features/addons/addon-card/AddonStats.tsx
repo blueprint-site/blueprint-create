@@ -1,10 +1,11 @@
 import { User, Download } from 'lucide-react';
 import { BadgeCheck } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+
 interface AddonStatsProps {
   author: string;
   downloads: number;
-  claimed_by: string | null | undefined;
+  claimed_by?: string | null;
 }
 
 export const AddonStats = ({ author, downloads, claimed_by }: AddonStatsProps) => (

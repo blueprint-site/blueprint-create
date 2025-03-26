@@ -187,6 +187,7 @@ export const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsVie
           updatedAt={addon.updated_at}
           licence={''} // Will need to extract license from Modrinth data
           addon_name={addon.name}
+          claimed_by={addon.claimed_by}
           externalLinks={externalLinks}
         />
       </Card>

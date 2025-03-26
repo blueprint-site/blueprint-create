@@ -15,7 +15,7 @@ export interface AddonDetailsFooterProps {
   licence: string;
   createdAt: string | null;
   updatedAt: string | null;
-  claimed_by: string | null | undefined;
+  claimed_by?: string | null;
 }
 
 export const AddonDetailsFooter = ({
@@ -24,7 +24,7 @@ export const AddonDetailsFooter = ({
   updatedAt = '',
   licence = '',
   addon_name = '',
-  claimed_by = '',
+  claimed_by = null,
   externalLinks = [],
 }: AddonDetailsFooterProps) => {
   const formatDate = (dateString: string | null) => {
