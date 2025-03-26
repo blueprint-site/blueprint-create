@@ -9,7 +9,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import eyes from '@/assets/eyes/eye_squint.gif'; // This file needs to be copied from the addonverify branch
+import eyes from '@/assets/eyes/eye_squint.gif';
 import axios from 'axios';
 import { cn } from '@/config/utils';
 import { useFetchAddon, useSaveAddon } from '@/api';
