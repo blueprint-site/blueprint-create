@@ -74,7 +74,7 @@ export function FileUploadField({
                 {value.map((file, index) => (
                   <FileUploaderItem key={index} index={index}>
                     <Paperclip className='h-4 w-4 stroke-current' />
-                    <span>{file.name}</span>
+                    <span className='w-64 overflow-x-auto whitespace-nowrap'>{file.name}</span>
                   </FileUploaderItem>
                 ))}
               </FileUploaderContent>
