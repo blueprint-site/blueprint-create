@@ -2,6 +2,8 @@ import { CardContent } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import SocialSharing from '@/components/features/social-sharing/SocialSharing';
 import { Author } from '@/types';
+import { BadgeCheck } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 import { ExternalLink } from '@/types/addons/addon-details';
@@ -13,6 +15,7 @@ export interface AddonDetailsFooterProps {
   licence: string;
   createdAt: string | null;
   updatedAt: string | null;
+  claimed_by?: string | null;
 }
 
 export const AddonDetailsFooter = ({
@@ -21,13 +24,15 @@ export const AddonDetailsFooter = ({
   updatedAt = '',
   licence = '',
   addon_name = '',
+  claimed_by = null,
   externalLinks = [],
 }: AddonDetailsFooterProps) => {
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'Unknown';
     try {
       return format(new Date(dateString), 'MMM d, yyyy');
-    } catch (e) {
+    } catch (error) {
+      console.error('Error parsing date:', error);
       return 'Invalid date';
     }
   };
@@ -56,6 +61,20 @@ export const AddonDetailsFooter = ({
                       className='text-primary text-sm hover:underline'
                     >
                       {author.name}
+                      {claimed_by && (
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <span className='text-primary inline text-xs'>
+                                <BadgeCheck />
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              The addon has been verified and it is owned by that user
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      )}
                     </a>
                   </div>
                 ))}

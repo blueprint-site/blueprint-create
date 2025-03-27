@@ -35,7 +35,8 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
   }, [addon.curseforge_raw, addon.modrinth_raw]);
 
   const handleCollectionAction = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent navigation when clicking collection button
+    e.stopPropagation();
+    e.preventDefault();
     isInCollection ? removeAddon(addon.slug) : addAddon(addon.slug);
   };
 
@@ -75,7 +76,7 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
           <VersionBadges versions={addon.minecraft_versions || []} />
         </div>
 
-        <AddonStats author={addon.author} downloads={addon.downloads} />
+        <AddonStats author={addon.author} downloads={addon.downloads} claimed_by={addon.claimed_by} />
 
         <ModPageLinks
           slug={addon.slug}
