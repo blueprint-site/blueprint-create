@@ -3,6 +3,8 @@ import {
   ModrinthProject,
   ModrinthVersionsResponse,
   ModrinthDependenciesResponse,
+  ModrinthUser,
+  ModrinthUserProjects,
 } from '@/types/addons/modrinth';
 
 /**
@@ -102,6 +104,72 @@ export const useFetchModrinthVersions = (
       }
     },
     enabled: Boolean(projectIdOrSlug),
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+};
+
+/**
+ * Hook to fetch user profile from Modrinth using their authentication token
+ * @param authToken The Modrinth authentication token
+ * @returns Query result with typed user data
+ */
+export const useModrinthProfile = (
+  authToken: string | null
+): UseQueryResult<ModrinthUser | null, Error> => {
+  return useQuery({
+    queryKey: ['modrinth', 'profile', authToken],
+    queryFn: async () => {
+      if (!authToken) return null;
+
+      try {
+        const response = await fetch('https://api.modrinth.com/v2/user', {
+          headers: { Authorization: authToken },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch Modrinth profile: ${response.status}`);
+        }
+
+        const data: ModrinthUser = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error fetching Modrinth profile:', error);
+        throw error instanceof Error ? error : new Error(String(error));
+      }
+    },
+    enabled: !!authToken && authToken.length === 64, // Only run when authToken exists and is valid
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+};
+
+/**
+ * Hook to fetch user projects from Modrinth
+ * @param userId The Modrinth user ID
+ * @returns Query result with typed user projects data
+ */
+export const useModrinthProjects = (
+  userId: string | null
+): UseQueryResult<ModrinthUserProjects | null, Error> => {
+  return useQuery({
+    queryKey: ['modrinth', 'projects', userId],
+    queryFn: async () => {
+      if (!userId) return null;
+
+      try {
+        const response = await fetch(`https://api.modrinth.com/v2/user/${userId}/projects`);
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch Modrinth projects: ${response.status}`);
+        }
+
+        const data: ModrinthUserProjects = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error fetching Modrinth projects:', error);
+        throw error instanceof Error ? error : new Error(String(error));
+      }
+    },
+    enabled: !!userId, // Only run when userId exists
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 };

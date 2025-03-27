@@ -1,39 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from '@/hooks/useToast';
-import { databases, ID } from '@/config/appwrite';
+import { databases } from '@/config/appwrite';
 import { Query } from 'appwrite';
 import { Addon } from '@/types';
 
 const DATABASE_ID = '67b1dc430020b4fb23e3';
 const COLLECTION_ID = '67b1dc4b000762a0ccc6';
-
-export const useDeleteAddon = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (id: string) => {
-      try {
-        const response = await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
-        toast({
-          className: 'bg-surface-3 border-ring text-foreground',
-          title: '✅ Addon deleted ✅',
-        });
-        return response;
-      } catch (error) {
-        toast({
-          className: 'bg-surface-3 border-ring text-foreground',
-          title: '❌ Error deleting the addon ❌',
-        });
-        console.error('Error deleting addon:', error);
-
-        throw error;
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['addons'] });
-    },
-  });
-};
 
 function tryParseJson(jsonString: string) {
   try {
@@ -74,6 +46,7 @@ export const useFetchAddon = (id?: string) => {
           ? response.minecraft_versions
           : [],
         create_versions: Array.isArray(response.create_versions) ? response.create_versions : [],
+        claimed_by: response.claimed_by || '',
       };
 
       return addonData;
@@ -116,6 +89,7 @@ export const useFetchAddonBySlug = (slug?: string) => {
         isChecked: doc.isChecked || false,
         minecraft_versions: Array.isArray(doc.minecraft_versions) ? doc.minecraft_versions : [],
         create_versions: Array.isArray(doc.create_versions) ? doc.create_versions : [],
+        claimed_by: doc.claimed_by || '',
       };
 
       return addonData;
@@ -152,14 +126,15 @@ export const useFetchAddons = (page: number, limit: number = 10) => {
           icon: doc.icon || '',
           created_at: doc.created_at,
           updated_at: doc.updated_at,
-          curseforge_raw: JSON.parse(JSON.parse(doc.curseforge_raw)),
-          modrinth_raw: JSON.parse(doc.modrinth_raw),
+          curseforge_raw: doc.curseforge_raw ? tryParseJson(doc.curseforge_raw) : undefined,
+          modrinth_raw: doc.modrinth_raw ? tryParseJson(doc.modrinth_raw) : undefined,
           sources: Array.isArray(doc.sources) ? doc.sources : [],
           loaders: Array.isArray(doc.loaders) ? doc.loaders : [],
           isValid: doc.isValid || false,
           isChecked: doc.isChecked || false,
           minecraft_versions: Array.isArray(doc.minecraft_versions) ? doc.minecraft_versions : [],
           create_versions: Array.isArray(doc.create_versions) ? doc.create_versions : [],
+          claimed_by: doc.claimed_by || '',
         }));
 
         return {
@@ -177,22 +152,49 @@ export const useFetchAddons = (page: number, limit: number = 10) => {
   });
 };
 
-export const useSaveAddon = () => {
+/**
+ * Hook to update specific fields of an addon
+ * @returns Mutation function for updating addon fields
+ */
+export const useUpdateAddon = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (addon: Partial<Addon>) => {
-      const serializedAddon = {
-        ...addon,
-        curseforge_raw: addon.curseforge_raw ? JSON.stringify(addon.curseforge_raw) : undefined,
-        modrinth_raw: addon.modrinth_raw ? JSON.stringify(addon.modrinth_raw) : undefined,
-      };
-
-      if (!addon.$id) {
-        return databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), serializedAddon);
+    mutationFn: async ({ addonId, data }: { addonId: string; data: Partial<Addon> }) => {
+      try {
+        return await databases.updateDocument(DATABASE_ID, COLLECTION_ID, addonId, data);
+      } catch (error) {
+        console.error('Error updating addon:', error);
+        throw error;
       }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['addons'] });
+    },
+  });
+};
 
-      return databases.updateDocument(DATABASE_ID, COLLECTION_ID, addon.$id, serializedAddon);
+export const useDeleteAddon = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      try {
+        const response = await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
+        toast({
+          className: 'bg-surface-3 border-ring text-foreground',
+          title: '✅ Addon deleted ✅',
+        });
+        return response;
+      } catch (error) {
+        toast({
+          className: 'bg-surface-3 border-ring text-foreground',
+          title: '❌ Error deleting the addon ❌',
+        });
+        console.error('Error deleting addon:', error);
+
+        throw error;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['addons'] });
