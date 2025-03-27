@@ -26,6 +26,20 @@ interface AddonDetailsViewProps {
 export const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsViewProps) => {
   // Check if we have environment info
   const hasEnvironmentInfo = addon.modrinth?.client_side ?? addon.modrinth?.server_side;
+  const createdAt =
+    addon.created_at ??
+    addon.modrinth?.published ??
+    addon.modrinthObject?.date_created ??
+    addon.curseforgeObject?.dateCreated ??
+    '';
+  const updatedAt =
+    addon.updated_at ??
+    addon.modrinth?.updated ??
+    addon.modrinthObject?.date_modified ??
+    addon.curseforgeObject?.dateModified ??
+    '';
+  const authors = addon.curseforgeObject?.authors ?? addon.author;
+
   const externalLinks: ExternalLink[] = [
     {
       icon: <Bug className='h-4 w-4' />,
@@ -182,10 +196,10 @@ export const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsVie
         {/* Footer */}
         <Separator className='mx-6' />
         <AddonDetailsFooter
-          authors={[]} // Will need to extract authors from CurseForge data
-          createdAt={addon.created_at}
-          updatedAt={addon.updated_at}
-          licence={''} // Will need to extract license from Modrinth data
+          authors={authors}
+          createdAt={createdAt}
+          updatedAt={updatedAt}
+          licence={addon.modrinth.license ?? null}
           addon_name={addon.name}
           claimed_by={addon.claimed_by}
           externalLinks={externalLinks}
