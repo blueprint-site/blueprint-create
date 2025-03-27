@@ -59,6 +59,7 @@
     "babel-plugin-react-compiler": "^19.0.0-beta-aeaed83-20250323",
     "browser-image-compression": "^2.0.2",
     "class-variance-authority": "^0.7.1",
+    "cli-progress": "^3.12.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
