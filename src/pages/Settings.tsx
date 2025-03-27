@@ -1,4 +1,4 @@
-import { Lock, Monitor, User } from 'lucide-react';
+import { Lock, Monitor, User, Puzzle } from 'lucide-react';
 import { Suspense, lazy } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
@@ -10,6 +10,9 @@ import { useTranslation } from 'react-i18next';
 const DisplaySettings = lazy(() => import('@/components/features/settings/DisplaySettings.tsx'));
 const AccountSettings = lazy(() => import('@/components/features/settings/AccountSettings.tsx'));
 const ProfileSettings = lazy(() => import('@/components/features/settings/ProfileSettings.tsx'));
+const AddonVerifyingSettings = lazy(
+  () => import('@/components/features/settings/AddonVerifyingSettings.tsx')
+);
 
 const SettingsPage = () => {
   const { section = 'profile' } = useParams(); // Get the section from URL params
@@ -34,6 +37,12 @@ const SettingsPage = () => {
       label: t('navigation.userSettings.display'),
       icon: Monitor,
       component: DisplaySettings,
+    },
+    {
+      id: 'addons',
+      label: 'Addons',
+      icon: Puzzle,
+      component: AddonVerifyingSettings,
     },
   ];
 
