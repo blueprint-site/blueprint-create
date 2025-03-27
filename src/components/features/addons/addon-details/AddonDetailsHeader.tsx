@@ -25,7 +25,7 @@ export const AddonDetailsHeader = ({
 
   const handleCollectionAction = () => {
     if (!slug) return;
-    isInCollection ? removeAddon(slug) : addAddon(slug);
+    return isInCollection ? removeAddon(slug) : addAddon(slug);
   };
 
   return (
