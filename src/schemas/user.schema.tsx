@@ -10,7 +10,7 @@ export const TargetSchema = z.object({
   $updatedAt: z.string(),
   name: z.string(),
   userId: z.string(),
-  providerId: z.string(),
+  providerId: z.string().optional(),
   providerType: z.string(),
   identifier: z.string(),
 });
