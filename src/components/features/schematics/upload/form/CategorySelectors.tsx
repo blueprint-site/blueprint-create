@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
-import { Control, UseFormReturn } from 'react-hook-form';
+import { useEffect, useMemo, useState } from 'react';
+import type { Control, UseFormReturn } from 'react-hook-form';
 import { FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { SchematicFormValues } from '@/types';
-import { SCHEMATIC_CATEGORIES, SchematicSubcategory } from '@/data';
+import type { SchematicFormValues } from '@/types';
+import type { SchematicSubcategory } from '@/data';
+import { SCHEMATIC_CATEGORIES } from '@/data';
 import {
   MultiSelector,
   MultiSelectorContent,
@@ -13,15 +14,13 @@ import {
 } from '@/components/ui/multi-selector';
 
 interface CategorySelectorsProps {
-  control: Control<SchematicFormValues>;
-  form: UseFormReturn<SchematicFormValues>;
+  readonly control: Control<SchematicFormValues>;
+  readonly form: UseFormReturn<SchematicFormValues>;
 }
 
 export function CategorySelectors({ control, form }: CategorySelectorsProps) {
-  // Get form values for initial state
-  const formCategories = form.watch('categories') || [];
-  const formSubCategories = form.watch('sub_categories') || [];
-  // Initialize state with form values
+  const formCategories = useMemo(() => form.watch('categories') || [], [form]);
+  const formSubCategories = useMemo(() => form.watch('sub_categories') || [], [form]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(formCategories);
   const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(formSubCategories);
 
@@ -45,7 +44,7 @@ export function CategorySelectors({ control, form }: CategorySelectorsProps) {
       console.log('formSubCategories effect', formSubCategories);
       setSelectedSubCategories(formSubCategories);
     }
-  }, [formCategories, formSubCategories]);
+  }, [formCategories, formSubCategories, selectedCategories, selectedSubCategories]);
 
   // Update form when selections change
   useEffect(() => {
