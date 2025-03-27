@@ -12,7 +12,7 @@ import { CategorySelectors } from './form/CategorySelectors';
 import { Schematic, SchematicFormValues } from '@/types';
 import { schematicFormSchema } from '@/schemas/schematic.schema.tsx';
 import { MODLOADER_OPTIONS, CREATE_VERSIONS, MINECRAFT_VERSIONS } from '@/data';
-
+import { storage } from '@/config/appwrite.ts';
 interface SchematicUploadFormProps {
   onSubmit: (data: SchematicFormValues) => Promise<void>;
   onValueChange?: (field: keyof SchematicFormValues, value: unknown) => void;
@@ -21,7 +21,43 @@ interface SchematicUploadFormProps {
   isNew?: boolean;
   existingData?: Schematic | null;
 }
+async function fetchFileFromAppwrite(
+  bucketId: string,
+  fileId: string,
+  defaultName: string,
+  type: string
+) {
+  try {
+    // Récupérer les métadonnées du fichier
+    const fileMetadata = await storage.getFile(bucketId, fileId);
+    const fileName = fileMetadata.name || defaultName;
 
+    // Télécharger le fichier depuis son URL
+    const fileUrl = storage.getFileDownload(bucketId, fileId);
+    const response = await fetch(fileUrl);
+    const blob = await response.blob();
+
+    return new File([blob], fileName, { type });
+  } catch (error) {
+    console.error(`Failed to fetch file ${fileId} from Appwrite:`, error);
+    return null;
+  }
+}
+function extractFileInfo(url: string) {
+  // Vérifier si l'URL est un fichier de téléchargement
+  const matchDownload = url.match(/buckets\/([^/]+)\/files\/([^/]+)\/download/);
+  if (matchDownload) {
+    return { bucketId: matchDownload[1], fileId: matchDownload[2], type: 'download' };
+  }
+
+  // Vérifier si l'URL est une prévisualisation d'image
+  const matchPreview = url.match(/buckets\/([^/]+)\/files\/([^/]+)\/preview/);
+  if (matchPreview) {
+    return { bucketId: matchPreview[1], fileId: matchPreview[2], type: 'preview' };
+  }
+
+  return null;
+}
 export function SchematicUploadForm({
   onSubmit,
   onValueChange,
@@ -53,12 +89,66 @@ export function SchematicUploadForm({
     },
     mode: 'onChange',
   });
+  useEffect(() => {
+    async function fetchExistingFiles() {
+      if (existingData?.schematic_url) {
+        const fileInfo = extractFileInfo(existingData.schematic_url);
+        if (fileInfo) {
+          const schematicFile = await fetchFileFromAppwrite(
+            fileInfo.bucketId,
+            fileInfo.fileId,
+            'existing-schematic.nbt',
+            'application/octet-stream'
+          );
+          if (schematicFile) {
+            setSchematicFilePreview(schematicFile);
+            form.setValue('schematicFile', schematicFile); // Mise à jour du formulaire
+          }
+        }
+      }
+
+      if (existingData?.image_urls) {
+        const imageFiles = await Promise.all(
+          existingData.image_urls.map(async (url) => {
+            const fileInfo = extractFileInfo(url);
+            if (fileInfo) {
+              const imageFile = await fetchFileFromAppwrite(
+                fileInfo.bucketId,
+                fileInfo.fileId,
+                '',
+                'image/jpeg'
+              );
+              if (imageFile) {
+                return imageFile;
+              }
+            }
+            return null;
+          })
+        );
+
+        // Filtrer les fichiers valides
+        const validImageFiles = imageFiles.filter((file) => file !== null) as File[];
+
+        // Ajouter les nouveaux fichiers sans créer une boucle infinie
+        setImageFilePreviews((prev) => {
+          const newImageFiles = validImageFiles.filter(
+            (newFile) => !prev.some((file) => file.name === newFile.name)
+          );
+          const updatedPreviews = [...prev, ...newImageFiles];
+          form.setValue('imageFiles', updatedPreviews); // Mettre à jour les valeurs du formulaire
+          return updatedPreviews;
+        });
+      }
+    }
+
+    fetchExistingFiles();
+  }, [existingData, form]);
 
   useEffect(() => {
     if (initialData) {
       form.reset({
         ...form.getValues(), // Garde les valeurs actuelles
-        ...initialData, // Applique les valeurs initiales
+        ...initialData,
       });
     }
   }, [initialData, form]);
@@ -123,13 +213,6 @@ export function SchematicUploadForm({
                   onImageChange?.(validFiles);
                 }}
               />
-            </div>
-            <div>
-              <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-                {existingData?.image_urls.map((imageUrl, index) => {
-                  return <img key={index} src={imageUrl} alt={imageUrl} />;
-                })}
-              </div>
             </div>
             <FormInput
               name='title'
