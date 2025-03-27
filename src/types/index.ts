@@ -16,6 +16,7 @@ import {
   SocialLinkSchema,
   ServerAffiliationSchema,
   LatestFileSchema,
+  LicenseSchema,
 } from '@/schemas/addon.schema';
 
 export type Addon = z.infer<typeof AddonSchema>;
@@ -23,6 +24,7 @@ export type Screenshot = z.infer<typeof ScreenshotSchema>;
 export type Links = z.infer<typeof LinksSchema>;
 export type Category = z.infer<typeof CategorySchema>;
 export type Author = z.infer<typeof AuthorSchema>;
+export type License = z.infer<typeof LicenseSchema>;
 export type Logo = z.infer<typeof LogoSchema>;
 export type Hash = z.infer<typeof HashSchema>;
 export type SortableGameVersion = z.infer<typeof SortableGameVersionSchema>;

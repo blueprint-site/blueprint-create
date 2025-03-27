@@ -36,6 +36,12 @@ export const AuthorSchema = z.object({
   avatarUrl: z.string().optional().nullable(),
 });
 
+export const LicenseSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  url: z.string(),
+});
+
 export const LogoSchema = z.object({
   id: z.number(),
   modId: z.number(),
@@ -135,4 +141,5 @@ export const AddonSchema = z.object({
   isChecked: z.boolean(),
   minecraft_versions: z.array(z.string()).optional().nullable(),
   create_versions: z.array(z.string()).optional().nullable(),
+  claimed_by: z.string().optional().nullable(),
 });
