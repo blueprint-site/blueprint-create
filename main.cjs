@@ -1,6 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires,no-undef
+/* eslint-disable @typescript-eslint/no-require-imports */
+/* global require, __dirname */
 const { app, BrowserWindow, ipcMain } = require('electron');
-// eslint-disable-next-line @typescript-eslint/no-var-requires,no-undef
 const path = require('path');
 
 let mainWindow, logWindow;
@@ -10,8 +10,7 @@ app.whenReady().then(() => {
     width: 800,
     height: 600,
     webPreferences: {
-      // eslint-disable-next-line no-undef
-      preload: path.join(__dirname, 'preload.cjs'), // Utilisation du preload
+      preload: path.join(__dirname, 'preload.cjs'),
     },
   });
   mainWindow.loadURL('http://localhost:5173');
@@ -20,8 +19,7 @@ app.whenReady().then(() => {
     width: 600,
     height: 400,
     webPreferences: {
-      // eslint-disable-next-line no-undef
-      preload: path.join(__dirname, 'preload.cjs'), // Même preload pour la fenêtre de logs
+      preload: path.join(__dirname, 'preload.cjs'),
     },
   });
   logWindow.loadFile('logs.html');
