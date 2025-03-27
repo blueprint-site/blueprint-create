@@ -36,7 +36,6 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
 
   const handleCollectionAction = (e: React.MouseEvent) => {
     e.stopPropagation();
-    e.preventDefault();
     isInCollection ? removeAddon(addon.slug) : addAddon(addon.slug);
   };
 
