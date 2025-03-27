@@ -39,7 +39,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole 
         setHasRequiredRole(hasRole);
         authCache.current.hasRequiredRole[requiredRole] = hasRole;
       }
-    } catch (error) {
+    } catch {
       setIsAuthenticated(false);
       authCache.current.isAuthenticated = false;
     }
