@@ -69,15 +69,16 @@ const AddonsList = () => {
     { value: 'all', label: 'All' },
     { value: 'Forge', label: 'Forge' },
     { value: 'Fabric', label: 'Fabric' },
-    { value: 'NeoForge', label: 'NeoForge' },
     { value: 'Quilt', label: 'Quilt' },
+    { value: 'NeoForge', label: 'NeoForge' },
   ];
 
   const versionOptions = [
     { value: 'all', label: 'All' },
-    { value: '1.18.2', label: '1.18.2' },
-    { value: '1.19.2', label: '1.19.2' },
     { value: '1.21.1', label: '1.21.1' },
+    { value: '1.20.1', label: '1.20.1' },
+    { value: '1.19.2', label: '1.19.2' },
+    { value: '1.18.2', label: '1.18.2' },
   ];
 
   const resetFilters = () => {
