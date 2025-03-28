@@ -1,4 +1,3 @@
-import type NodeJS from 'node:events';
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
 import { Progress } from '@/components/ui/progress';
@@ -22,7 +21,7 @@ const TimerProgress = ({
   const [timeLeft, setTimeLeft] = useState(() =>
     Math.max(countdownTime - Math.floor((Date.now() - startTimestamp) / 1000), 0)
   );
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     if (timeLeft === 0 && onComplete) {
