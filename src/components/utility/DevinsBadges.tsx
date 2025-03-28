@@ -1,3 +1,5 @@
+import React from 'react';
+
 // Define the available badge types as const to enable type inference
 const BADGE_TYPES = {
   cozy: {

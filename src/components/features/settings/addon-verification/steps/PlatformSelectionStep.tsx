@@ -1,8 +1,8 @@
+import type React from 'react';
 import type { PlatformSelectionProps } from '../types';
 import { SiModrinth, SiCurseforge } from '@icons-pack/react-simple-icons';
 import { Card, CardContent } from '@/components/ui/card';
-import { DialogHeader } from '@/components/ui/dialog';
-import { DialogTitle, DialogDescription } from '@radix-ui/react-dialog';
+import { DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 export default function PlatformSelectionStep({
   selectPlatform,

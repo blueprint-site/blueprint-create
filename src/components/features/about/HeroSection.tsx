@@ -1,3 +1,4 @@
+import type React from 'react';
 interface HeroSectionProps {
   children?: React.ReactNode;
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -139,8 +139,8 @@ export default function ModrinthAuthStep({
             <CardHeader>
               <CardTitle>Why do we need your Modrinth token?</CardTitle>
               <CardDescription className='text-xs'>
-                We use your Modrinth personal access token to verify that you're the legitimate
-                owner of the addons you're claiming. We ask that you only provide{' '}
+                We use your Modrinth personal access token to verify that you&apos;re the legitimate
+                owner of the addons you&apos;re claiming. We ask that you only provide{' '}
                 <strong>read projects</strong> permissions and we never store your token after
                 verification.
               </CardDescription>

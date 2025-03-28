@@ -1,3 +1,4 @@
+import type React from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card.tsx';
 import {
   AlertDialog,
@@ -150,8 +151,8 @@ const UserSchematicList = () => {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Delete Schematic</AlertDialogTitle>
                         <AlertDialogDescription>
-                          Are you sure you want to delete "{schematic.title}"? This action cannot be
-                          undone.
+                          Are you sure you want to delete &quot;{schematic.title}&quot;? This action
+                          cannot be undone.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>

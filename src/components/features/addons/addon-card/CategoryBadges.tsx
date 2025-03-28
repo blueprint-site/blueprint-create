@@ -14,7 +14,7 @@ interface AddonCategoriesProps {
   categories: string[];
 }
 
-const CategoryBadges = memo(({ categories }: AddonCategoriesProps) => {
+const CategoryBadges = ({ categories }: AddonCategoriesProps) => {
   const processedCategories = [
     ...new Set(
       categories.filter((cat) => !MODLOADERS.includes(cat)).map((cat) => cat.toLowerCase())
@@ -30,6 +30,6 @@ const CategoryBadges = memo(({ categories }: AddonCategoriesProps) => {
       ))}
     </div>
   );
-});
+};
 
-export default CategoryBadges;
+export default memo(CategoryBadges);

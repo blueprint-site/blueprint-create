@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import type { ConfirmationProps } from '../types';
-import { DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { DialogDescription } from '@radix-ui/react-dialog';
+import { DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { CheckCircle2, Disc3, BadgeCheck, Users } from 'lucide-react';
 
 /**
@@ -72,7 +71,7 @@ export default function ConfirmationStep({
               <div>
                 <div className='text-sm font-medium'>Discord Perks</div>
                 <div className='text-muted-foreground text-sm'>
-                  You'll receive the "Verified Creator" role on our Discord server
+                  You&apos;ll receive the &quot;Verified Creator&quot; role on our Discord server
                 </div>
               </div>
             </li>

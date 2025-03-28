@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import type NodeJS from 'node:events';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
 import { Progress } from '@/components/ui/progress';
 import { Clock } from 'lucide-react';
