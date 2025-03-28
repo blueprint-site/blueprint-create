@@ -12,7 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { HexColorPicker } from 'react-colorful';
 import type { Tag } from '@/types';
 import { databases, ID } from '@/config/appwrite.ts';
-import type { Models} from 'appwrite';
+import type { Models } from 'appwrite';
 import { Query } from 'appwrite';
 import { PlusIcon } from 'lucide-react';
 
@@ -22,9 +22,9 @@ const SCHEMATICS_COLLECTION_ID = '67bf59d30021b5c117f5';
 let COLLECTION_ID = '67b2326100053d0e304f';
 
 interface TagSelectorProps {
-  value?: Tag[];
-  db: 'blog' | 'schematics';
-  onChange?: (selectedTags: Tag[]) => void;
+  readonly value?: Tag[];
+  readonly db: 'blog' | 'schematics';
+  readonly onChange?: (selectedTags: Tag[]) => void;
 }
 
 export default function TagSelector({ value, db, onChange }: TagSelectorProps) {
@@ -114,7 +114,7 @@ export default function TagSelector({ value, db, onChange }: TagSelectorProps) {
       <div className='flex flex-row gap-4'>
         <div>
           <Select
-            onValueChange={(value) => {
+            onValueChange={(value: string) => {
               const tag = tags.find((t) => t.value === value);
               if (tag) toggleTagSelection(tag);
             }}
@@ -123,12 +123,10 @@ export default function TagSelector({ value, db, onChange }: TagSelectorProps) {
               <SelectValue placeholder='Select tags' />
             </SelectTrigger>
             <SelectContent className='bg-surface-1'>
-              {tags.map((tag) => (
+              {tags.map((tag: Tag) => (
                 <SelectItem key={tag.id} value={tag.value} className={'cursor-pointer'}>
                   <span className='flex items-center justify-between'>
-                    <span className='mr-2' style={{ color: tag.color }}>
-                      {tag.value}
-                    </span>
+                    <span className={`mr-2 bg-[${tag.color}]`}>{tag.value}</span>
                     <Button
                       variant='ghost'
                       className={'absolute right-0'}
@@ -167,11 +165,7 @@ export default function TagSelector({ value, db, onChange }: TagSelectorProps) {
       <h3>Selected Tags :</h3>
       <div className='m-2 flex flex-wrap gap-2'>
         {selectedTags.map((tag) => (
-          <span
-            key={tag.id}
-            className='text-foreground rounded px-1 py-1'
-            style={{ backgroundColor: tag.color }}
-          >
+          <span key={tag.id} className={`text-foreground rounded p-1 bg-[${tag.color}]`}>
             {tag.value}
           </span>
         ))}
