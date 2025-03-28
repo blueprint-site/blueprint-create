@@ -1,7 +1,8 @@
 // src/components/features/home/WhatIsBlueprint.tsx
 import { useTranslation } from 'react-i18next';
 import { Equal, Plus } from 'lucide-react';
-import { Fragment, useEffect, useRef, useState, MouseEvent as ReactMouseEvent } from 'react';
+import type { MouseEvent as ReactMouseEvent } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { useEasterEgg } from '@/hooks/useEasterEgg';
 // Import logos
 import Logo from '@/assets/logo.webp';

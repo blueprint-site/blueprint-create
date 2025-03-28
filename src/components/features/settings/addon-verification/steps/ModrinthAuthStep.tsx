@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { SiModrinth } from '@icons-pack/react-simple-icons';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ExternalLink } from 'lucide-react';
-import { ModrinthAuthProps } from '../types';
+import type { ModrinthAuthProps } from '../types';
 import eyeSquintGif from '@/assets/eyes/eye_squint.gif';
 import { DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 

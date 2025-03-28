@@ -7,7 +7,7 @@ import CategoryBadges from '@/components/features/addons/addon-card/CategoryBadg
 import { VersionBadges } from './VersionBadges';
 import { AddonStats } from './AddonStats';
 import { useNavigate } from 'react-router';
-import { Addon } from '@/types';
+import type { Addon } from '@/types';
 import { ModPageLinks } from '@/components/features/addons/addon-card/ModPageLinks';
 import ModLoaders from './ModLoaders';
 

@@ -1,8 +1,8 @@
 // src/types/addons/addon-details.ts
-import { Addon } from '@/types';
-import { CondensedModrinthProject, ModrinthRawObject, ModrinthVersionDependency } from './modrinth';
-import { CurseForgeRawObject } from './curseforge';
-import { ReactNode } from 'react';
+import type { Addon } from '@/types';
+import type { CondensedModrinthProject, ModrinthRawObject, ModrinthVersionDependency } from './modrinth';
+import type { CurseForgeRawObject } from './curseforge';
+import type { ReactNode } from 'react';
 
 /**
  * Represents a version of an addon

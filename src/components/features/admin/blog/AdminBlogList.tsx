@@ -1,4 +1,4 @@
-import { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { MoreHorizontal, ArrowUpDown } from 'lucide-react';
 import { AdminBlogTable } from '@/components/tables/blog/AdminBlogTable.tsx';
@@ -12,7 +12,7 @@ import {
 import { Button } from '@/components/ui/button.tsx';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx';
 import { useDeleteBlog, useFetchBlogs, useSaveBlog } from '@/api';
-import { Blog } from '@/types';
+import type { Blog } from '@/types';
 
 export const BlogList = () => {
   const { data: blogs, isLoading, error } = useFetchBlogs();

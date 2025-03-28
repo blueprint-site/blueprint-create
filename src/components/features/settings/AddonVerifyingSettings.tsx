@@ -13,7 +13,7 @@ import eyes from '@/assets/eyes/eye_squint.gif';
 import axios from 'axios';
 import { cn } from '@/config/utils';
 import { useFetchAddon, useSaveAddon } from '@/api';
-import { Addon } from '@/types';
+import type { Addon } from '@/types';
 import { Puzzle, RefreshCcw } from 'lucide-react';
 import { useUserStore } from '@/api/stores/userStore';
 import { LoadingSpinner } from '@/components/loading-overlays/LoadingSpinner';

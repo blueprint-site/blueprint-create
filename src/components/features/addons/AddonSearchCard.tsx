@@ -8,7 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { MODLOADER_OPTIONS, ModloaderType } from '@/data';
+import type { ModloaderType } from '@/data';
+import { MODLOADER_OPTIONS } from '@/data';
 
 interface AddonSearchCardProps {
   query: string;

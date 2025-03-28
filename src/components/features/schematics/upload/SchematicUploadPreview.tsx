@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import MarkdownDisplay from '@/components/utility/MarkdownDisplay';
-import { User } from '@/types';
+import type { User } from '@/types';
 import { MultiImageViewer } from '@/components/utility/MultiImageViewer'; // Import the new component
 import ModLoaders from '../../addons/addon-card/ModLoaders';
 

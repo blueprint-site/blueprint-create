@@ -1,4 +1,4 @@
-import { OAuthProvidersType } from '@/types';
+import type { OAuthProvidersType } from '@/types';
 
 export const OAuthProviders: OAuthProvidersType[] = [
   {

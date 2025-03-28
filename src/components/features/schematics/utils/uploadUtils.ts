@@ -1,5 +1,5 @@
 import { storage, databases } from '@/config/appwrite.ts';
-import { LoggedUserContextType } from '@/types';
+import type { LoggedUserContextType } from '@/types';
 
 export async function handleSchematicUpload(
   file: File,

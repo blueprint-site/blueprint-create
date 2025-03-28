@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { ModrinthProfileProps } from '../types';
+import type { ModrinthProfileProps } from '../types';
 import { useModrinthProfile } from '@/api/endpoints/useModrinth';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { LoadingSpinner } from '@/components/loading-overlays/LoadingSpinner';

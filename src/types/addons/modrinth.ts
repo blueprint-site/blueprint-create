@@ -1,4 +1,4 @@
-import { License } from '..';
+import type { License } from '..';
 
 /**
  * User response from GET /user/{id|username}

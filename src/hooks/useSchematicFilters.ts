@@ -1,7 +1,7 @@
 // src/hooks/useSchematicFilters.ts
 import { useMemo } from 'react';
 import { useFilters } from './useFilters';
-import { FilterOption } from '@/components/layout/SelectFilter';
+import type { FilterOption } from '@/components/layout/SelectFilter';
 import { CREATE_VERSIONS, MINECRAFT_VERSIONS, SCHEMATIC_CATEGORIES } from '@/data';
 
 export function useSchematicFilters(options = {}) {

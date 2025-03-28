@@ -47,10 +47,6 @@ const BADGE_CATEGORIES: BadgeCategoryDetails = {
   custom: 'Custom badge',
 } as const;
 
-// Mark the constant as used for linting purposes
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const _usedForTypes = BADGE_CATEGORIES;
-
 interface DevinsBadgesProps {
   /** Badge style type */
   type: keyof typeof BADGE_TYPES;

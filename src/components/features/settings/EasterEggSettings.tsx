@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useEasterEgg } from '@/hooks/useEasterEgg';
 import { EASTER_EGGS } from '@/config/easterEggs';
-import { EasterEggDefinition } from '@/schemas/user.schema';
+import type { EasterEggDefinition } from '@/schemas/user.schema';
 
 import { Switch } from '@/components/ui/switch';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';

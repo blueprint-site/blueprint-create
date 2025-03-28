@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { RefreshCcw, CheckCircle2, AlertCircle } from 'lucide-react';
-import { PushChangesProps } from '../types';
+import type { PushChangesProps } from '../types';
 import { useUserStore } from '@/api/stores/userStore';
 import { useUpdateAddon } from '@/api/endpoints/useAddons';
 import { LoadingSpinner } from '@/components/loading-overlays/LoadingSpinner';
 import TimerProgress from '../components/TimerProgress';
 import AddonFetcher from '../components/AddonFetcher';
-import { Addon } from '@/types';
+import type { Addon } from '@/types';
 import {
   DialogClose,
   DialogDescription,

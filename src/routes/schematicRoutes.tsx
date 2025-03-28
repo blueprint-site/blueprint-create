@@ -1,7 +1,7 @@
 // src/routes/schematicRoutes.tsx
 import ProtectedRoute from '@/components/utility/ProtectedRoute';
 import { lazy } from 'react';
-import { RouteObject } from 'react-router';
+import type { RouteObject } from 'react-router';
 
 const SchematicsUploadPage = lazy(
   () => import('@/components/features/schematics/upload/SchematicsUpload')

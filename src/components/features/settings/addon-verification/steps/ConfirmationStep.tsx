@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { ConfirmationProps } from '../types';
+import type { ConfirmationProps } from '../types';
 import { DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DialogDescription } from '@radix-ui/react-dialog';
 import { CheckCircle2, Disc3, BadgeCheck, Users } from 'lucide-react';

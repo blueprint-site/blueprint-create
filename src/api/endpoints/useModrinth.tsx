@@ -1,5 +1,6 @@
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import {
+import type { UseQueryResult } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import type {
   ModrinthProject,
   ModrinthVersionsResponse,
   ModrinthDependenciesResponse,

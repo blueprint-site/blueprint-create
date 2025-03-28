@@ -1,5 +1,5 @@
 // components/SchematicUploadForm/FormInput.tsx
-import { Control } from 'react-hook-form';
+import type { Control } from 'react-hook-form';
 import {
   FormField,
   FormItem,
@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { SchematicFormValues } from '@/types';
+import type { SchematicFormValues } from '@/types';
 
 // Explicitly type allowed input fields
 type InputField = 'title' | 'description';

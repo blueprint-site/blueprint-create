@@ -1,4 +1,4 @@
-import { Addon } from '@/types';
+import type { Addon } from '@/types';
 
 /**
  * Supported platform types for addon verification

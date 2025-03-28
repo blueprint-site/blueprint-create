@@ -39,8 +39,9 @@ const mapAppwritePrefsToUserPreferences = (prefs: Models.Preferences): UserPrefe
 
 import { create } from 'zustand';
 import { account, functions } from '@/config/appwrite.ts';
-import { User, UserPreferences } from '@/types';
-import { ExecutionMethod, Models, OAuthProvider } from 'appwrite';
+import type { User, UserPreferences } from '@/types';
+import type { Models} from 'appwrite';
+import { ExecutionMethod, OAuthProvider } from 'appwrite';
 import logMessage from '@/components/utility/logs/sendLogs.tsx';
 
 interface UserState {

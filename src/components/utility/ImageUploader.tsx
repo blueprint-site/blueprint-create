@@ -38,9 +38,9 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ value, onChange }) => {
         // Directly get the view URL using getFileView
         const viewUrl = await storage.getFilePreview('67b478dd00221462624e', fileId);
 
-        setPreview(viewUrl.href); // 'href' will give the preview URL
-        setImageUrl(viewUrl.href); // Store the preview URL
-        onChange(viewUrl.href); // Update parent state with preview URL
+        setPreview(viewUrl); // Use the returned URL directly
+        setImageUrl(viewUrl); // Store the preview URL
+        onChange(viewUrl); // Update parent state with preview URL
       } catch (error) {
         console.error('Upload failed:', error);
       } finally {

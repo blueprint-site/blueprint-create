@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { AnimatePresence, motion } from 'framer-motion';
-import { VerificationPlatform } from './types';
+import type { VerificationPlatform } from './types';
 import PlatformSelectionStep from './steps/PlatformSelectionStep';
 import ModrinthAuthStep from './steps/ModrinthAuthStep';
 import ModrinthProfileStep from './steps/ModrinthProfileStep';

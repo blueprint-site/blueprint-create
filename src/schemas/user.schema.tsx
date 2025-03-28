@@ -1,5 +1,6 @@
 // src/schemas/user.schema.tsx
 import { z } from 'zod';
+import type React from 'react';
 
 /**
  * Schema for Target object in User

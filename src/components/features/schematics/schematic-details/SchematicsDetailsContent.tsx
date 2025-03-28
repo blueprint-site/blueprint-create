@@ -1,4 +1,4 @@
-import { Schematic } from '@/types';
+import type { Schematic } from '@/types';
 import { Card, CardContent } from '@/components/ui/card.tsx';
 import { MultiImageViewer } from '@/components/utility/MultiImageViewer.tsx';
 import VersionsDisplay from '@/components/common/VersionsDisplay.tsx';

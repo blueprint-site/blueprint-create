@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useFetchAddonBySlug } from '@/api/endpoints/useAddons';
-import { Addon } from '@/types';
+import type { Addon } from '@/types';
 
 interface AddonFetcherProps {
   slug: string;

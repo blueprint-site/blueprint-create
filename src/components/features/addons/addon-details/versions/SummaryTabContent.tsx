@@ -1,7 +1,7 @@
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { AddonVersion } from '@/types/addons/addon-details';
+import type { AddonVersion } from '@/types/addons/addon-details';
 import ModLoaders from '../../addon-card/ModLoaders';
 
 interface SummaryTabContentProps {

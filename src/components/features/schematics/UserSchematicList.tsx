@@ -16,7 +16,7 @@ import { useDeleteSchematics, useFetchUserSchematics } from '@/api/endpoints/use
 import { useUserStore } from '@/api/stores/userStore';
 import { useThemeStore } from '@/api/stores/themeStore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx';
-import { Schematic } from '@/types';
+import type { Schematic } from '@/types';
 import { useNavigate } from 'react-router';
 import Markdown from 'react-markdown';
 import { Button } from '@/components/ui/button';

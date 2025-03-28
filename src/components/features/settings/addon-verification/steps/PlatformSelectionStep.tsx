@@ -1,4 +1,4 @@
-import { PlatformSelectionProps } from '../types';
+import type { PlatformSelectionProps } from '../types';
 import { SiModrinth, SiCurseforge } from '@icons-pack/react-simple-icons';
 import { Card, CardContent } from '@/components/ui/card';
 import { DialogHeader } from '@/components/ui/dialog';

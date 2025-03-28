@@ -9,7 +9,7 @@ import { FormMarkdownEditor } from './form/FormMarkdownEditor';
 import { MultiSelectCheckboxGroup } from './form/MultiSelectCheckboxGroup';
 import { FormInput } from './form/FormInput';
 import { CategorySelectors } from './form/CategorySelectors';
-import { Schematic, SchematicFormValues } from '@/types';
+import type { Schematic, SchematicFormValues } from '@/types';
 import { schematicFormSchema } from '@/schemas/schematic.schema.tsx';
 import { MODLOADER_OPTIONS, CREATE_VERSIONS, MINECRAFT_VERSIONS } from '@/data';
 import { storage } from '@/config/appwrite.ts';
