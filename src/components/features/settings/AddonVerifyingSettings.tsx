@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -275,7 +275,7 @@ function ModrinthProfile({
       }
     };
 
-    fetchProfile();
+    fetchProfile().then();
   }, [modrinthAuth]);
 
   return (
@@ -346,7 +346,7 @@ function ModrinthValidation({
   back: () => void;
   modrinthAuth: string | null;
   selectedAddonSlugs: string[];
-  setSelectedAddonSlugs: React.Dispatch<React.SetStateAction<string[]>>;
+  setSelectedAddonSlugs: Dispatch<SetStateAction<string[]>>;
 }) {
   const [modrinthProjects, setModrinthProjects] = useState<{ slug: string }[]>([]);
   const [fetchedAddons, setFetchedAddons] = useState<Addon[]>([]);
@@ -392,27 +392,30 @@ function ModrinthValidation({
       }
     };
 
-    fetchModrinthProjects();
+    fetchModrinthProjects().then();
   }, [modrinthAuth]);
 
   // Callback function for when an addon is fetched
-  const handleAddonFetched = useCallback((addon: Addon) => {
-    setFetchedAddons((prev) => {
-      // Avoid duplicates
-      if (prev.some((a) => a.slug === addon.slug)) {
-        return prev;
-      }
-      return [...prev, addon];
-    });
+  const handleAddonFetched = useCallback(
+    (addon: Addon) => {
+      setFetchedAddons((prev) => {
+        // Avoid duplicates
+        if (prev.some((a) => a.slug === addon.slug)) {
+          return prev;
+        }
+        return [...prev, addon];
+      });
 
-    // Auto-select newly fetched addons
-    setSelectedAddonSlugs((prev) => {
-      if (prev.includes(addon.slug)) {
-        return prev;
-      }
-      return [...prev, addon.slug];
-    });
-  }, []);
+      // Auto-select newly fetched addons
+      setSelectedAddonSlugs((prev) => {
+        if (prev.includes(addon.slug)) {
+          return prev;
+        }
+        return [...prev, addon.slug];
+      });
+    },
+    [setFetchedAddons, setSelectedAddonSlugs]
+  );
 
   // Handler for checkbox changes
   const handleCheckboxChange = (slug: string, checked: boolean) => {
