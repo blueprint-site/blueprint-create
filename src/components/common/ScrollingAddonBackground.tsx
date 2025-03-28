@@ -66,8 +66,8 @@ export const ScrollingAddonBackground = ({
   // Initialize dimensions and set up ResizeObserver
   useEffect(() => {
     // Set initial dimensions immediately using window size as fallback
-    const initialWidth = containerRef.current?.clientWidth || window.innerWidth;
-    const initialHeight = containerRef.current?.clientHeight || window.innerHeight;
+    const initialWidth = containerRef.current?.clientWidth ?? window.innerWidth;
+    const initialHeight = containerRef.current?.clientHeight ?? window.innerHeight;
 
     setDimensions({
       width: initialWidth,

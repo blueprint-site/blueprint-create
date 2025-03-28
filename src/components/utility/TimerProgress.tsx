@@ -60,7 +60,7 @@ const TimerProgress = ({
       <HoverCardContent className='w-64 space-y-2'>
         <div className='text-sm'>Time Remaining</div>
         <Progress value={progress} className='w-full' />
-        <p className='text-sm'>{description || 'This timer is counting down.'}</p>
+        <p className='text-sm'>{description ?? 'This timer is counting down.'}</p>
       </HoverCardContent>
     </HoverCard>
   );
