@@ -25,7 +25,7 @@ import { Button } from '@/components/ui/button';
 const UserSchematicList = () => {
   const { isDarkMode } = useThemeStore();
   const user = useUserStore((state) => state.user);
-  const { data: userSchematics } = useFetchUserSchematics(user?.$id || '');
+  const { data: userSchematics } = useFetchUserSchematics(user?.$id ?? '');
   const { mutate: deleteSchematic } = useDeleteSchematics(user?.$id);
   const navigate = useNavigate();
   // Delete handler
