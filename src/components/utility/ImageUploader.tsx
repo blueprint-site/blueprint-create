@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, FC, ChangeEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { UploadCloud, XCircle } from 'lucide-react';
@@ -10,7 +10,7 @@ interface ImageUploaderProps {
   onChange: (url: string | undefined) => void;
 }
 
-const ImageUploader: React.FC<ImageUploaderProps> = ({ value, onChange }) => {
+const ImageUploader: FC<ImageUploaderProps> = ({ value, onChange }) => {
   const [preview, setPreview] = useState<string | null>(value || null);
   const [imageUrl, setImageUrl] = useState<string>('');
   const [isUploading, setIsUploading] = useState(false);
@@ -22,7 +22,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ value, onChange }) => {
     }
   }, [value]);
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setIsUploading(true);
@@ -36,11 +36,11 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ value, onChange }) => {
         const fileId = response.$id;
 
         // Directly get the view URL using getFileView
-        const viewUrl = await storage.getFilePreview('67b478dd00221462624e', fileId);
+        const viewUrl = storage.getFilePreview('67b478dd00221462624e', fileId);
 
-        setPreview(viewUrl.href); // 'href' will give the preview URL
-        setImageUrl(viewUrl.href); // Store the preview URL
-        onChange(viewUrl.href); // Update parent state with preview URL
+        setPreview(viewUrl); // 'href' will give the preview URL
+        setImageUrl(viewUrl); // Store the preview URL
+        onChange(viewUrl); // Update parent state with preview URL
       } catch (error) {
         console.error('Upload failed:', error);
       } finally {
@@ -55,7 +55,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ value, onChange }) => {
     }
   };
 
-  const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUrlChange = (event: ChangeEvent<HTMLInputElement>) => {
     const url = event.target.value;
     setImageUrl(url);
     setPreview(url);

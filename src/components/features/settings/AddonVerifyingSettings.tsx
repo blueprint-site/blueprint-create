@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -6,13 +6,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import eyes from '@/assets/eyes/eye_squint.gif';
 import axios from 'axios';
 import { cn } from '@/config/utils';
-import { useFetchAddon, useSaveAddon } from '@/api';
+import { useFetchAddon, useUpdateAddon } from '@/api';
 import { Addon } from '@/types';
 import { Puzzle, RefreshCcw } from 'lucide-react';
 import { useUserStore } from '@/api/stores/userStore';
@@ -195,7 +195,7 @@ function ModrinthStep({
   return (
     <div className='flex flex-col gap-3'>
       <h2>Modrinth Verification</h2>
-      <img src={eyes} className='w-20' />
+      <img src={eyes} alt={'eyes'} className='w-20' />
       <h4>
         How to get your Modrinth PAT Token: <a href='/blog/howto-modrinth-pat'>Read our blogpost</a>
       </h4>
@@ -275,7 +275,7 @@ function ModrinthProfile({
       }
     };
 
-    fetchProfile();
+    fetchProfile().then();
   }, [modrinthAuth]);
 
   return (
@@ -346,7 +346,7 @@ function ModrinthValidation({
   back: () => void;
   modrinthAuth: string | null;
   selectedAddonSlugs: string[];
-  setSelectedAddonSlugs: React.Dispatch<React.SetStateAction<string[]>>;
+  setSelectedAddonSlugs: Dispatch<SetStateAction<string[]>>;
 }) {
   const [modrinthProjects, setModrinthProjects] = useState<{ slug: string }[]>([]);
   const [fetchedAddons, setFetchedAddons] = useState<Addon[]>([]);
@@ -368,7 +368,9 @@ function ModrinthValidation({
           headers: { Authorization: modrinthAuth },
         });
 
-        if (!userResponse.data.id) throw new Error('User ID not found.');
+        if (!userResponse.data.id) {
+          console.error('User ID not found.');
+        }
 
         const projectsResponse = await axios.get<{ slug: string }[]>(
           `https://api.modrinth.com/v2/user/${userResponse.data.id}/projects`
@@ -390,27 +392,30 @@ function ModrinthValidation({
       }
     };
 
-    fetchModrinthProjects();
+    fetchModrinthProjects().then();
   }, [modrinthAuth]);
 
   // Callback function for when an addon is fetched
-  const handleAddonFetched = useCallback((addon: Addon) => {
-    setFetchedAddons((prev) => {
-      // Avoid duplicates
-      if (prev.some((a) => a.slug === addon.slug)) {
-        return prev;
-      }
-      return [...prev, addon];
-    });
+  const handleAddonFetched = useCallback(
+    (addon: Addon) => {
+      setFetchedAddons((prev) => {
+        // Avoid duplicates
+        if (prev.some((a) => a.slug === addon.slug)) {
+          return prev;
+        }
+        return [...prev, addon];
+      });
 
-    // Auto-select newly fetched addons
-    setSelectedAddonSlugs((prev) => {
-      if (prev.includes(addon.slug)) {
-        return prev;
-      }
-      return [...prev, addon.slug];
-    });
-  }, []);
+      // Auto-select newly fetched addons
+      setSelectedAddonSlugs((prev) => {
+        if (prev.includes(addon.slug)) {
+          return prev;
+        }
+        return [...prev, addon.slug];
+      });
+    },
+    [setFetchedAddons, setSelectedAddonSlugs]
+  );
 
   // Handler for checkbox changes
   const handleCheckboxChange = (slug: string, checked: boolean) => {
@@ -513,7 +518,7 @@ function CurseForgeStep({ back }: { next: () => void; back: () => void }) {
             Publish your addon on <a href='https://modrinth.com/'>Modrinth</a>
           </li>
           <li>
-            <a href='emailto:contact@blueprint-create.com'>Email us</a> to verify. We need
+            <a href={'emailto:contact@blueprint-create.com'}>Email us</a> to verify. We need
             legitimate proof of you creating the addon
           </li>
         </ul>
@@ -573,7 +578,7 @@ function ModrinthPushChanges({
   back: () => void;
   selectedAddonSlugs: string[];
 }) {
-  const saveAddon = useSaveAddon();
+  const updateAddon = useUpdateAddon();
   const user = useUserStore((state) => state.user);
   const [isLoading, setIsLoading] = useState(true);
   const [processedAddons, setProcessedAddons] = useState<string[]>([]);
@@ -585,17 +590,19 @@ function ModrinthPushChanges({
   };
 
   const handleClaim = (addon: Addon) => {
-    saveAddon.mutate({
-      ...addon,
-      claimed_by: user?.$id, // Updating the claimed_by field
+    updateAddon.mutate({
+      addonId: addon.$id,
+      data: {
+        claimed_by: user?.$id, // Updating the claimed_by field
+      },
     });
     setProcessedAddons((prev) => [...prev, addon.slug]);
   };
 
   const getNextCronDate = (cronExpression: string) => {
     const interval = cronParser.parse(cronExpression);
-    const nextExecution = interval.next(); // Get next execution time as a Date object
-    return nextExecution; // Return as Date object
+    // Get next execution time as a Date object
+    return interval.next(); // Return as Date object
   };
 
   // Example usage
