@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, ChangeEvent, FC } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import type { ChangeEvent, FC } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { UploadCloud, XCircle } from 'lucide-react';
