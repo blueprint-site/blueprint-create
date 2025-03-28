@@ -19,7 +19,7 @@ export const TargetSchema = z.object({
 /**
  * Schema for Easter Eggs configuration
  */
-const EasterEggsSchema = z.object({
+export const EasterEggsSchema = z.object({
   discovered: z.array(z.string()).default([]),
   enabled: z.record(z.string(), z.boolean()).default({}),
   lastDiscovery: z.number().optional(),
@@ -29,13 +29,13 @@ const EasterEggsSchema = z.object({
  * Schema for UserPreferences object
  */
 export const UserPreferencesSchema = z.object({
-  theme: z.enum(['light', 'dark']),
-  language: z.string(),
-  notificationsEnabled: z.boolean(),
+  theme: z.enum(['light', 'dark']).optional(),
+  language: z.string().optional(),
+  notificationsEnabled: z.boolean().optional(),
   avatar: z.string().optional(),
   bio: z.string().optional(),
-  roles: z.array(z.string()),
-  easterEggs: EasterEggsSchema.optional(),
+  roles: z.array(z.string()).optional(),
+  easterEggs: EasterEggsSchema.optional().nullable(),
 });
 
 /**

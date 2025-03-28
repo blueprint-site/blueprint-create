@@ -40,7 +40,7 @@ const mapAppwritePrefsToUserPreferences = (prefs: Models.Preferences): UserPrefe
 import { create } from 'zustand';
 import { account, functions } from '@/config/appwrite.ts';
 import type { User, UserPreferences } from '@/types';
-import type { Models} from 'appwrite';
+import type { Models } from 'appwrite';
 import { ExecutionMethod, OAuthProvider } from 'appwrite';
 import logMessage from '@/components/utility/logs/sendLogs.tsx';
 
@@ -75,13 +75,13 @@ export const useUserStore = create<UserState>((set, get) => ({
   fetchUser: async () => {
     try {
       const userData = await account.get();
-      // Map the Appwrite user model to our app's User model
+      console.log('User Data loaded', userData);
       set({
         user: mapAppwriteUserToUser(userData),
         preferences: mapAppwritePrefsToUserPreferences(userData.prefs),
       });
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error('User is not authenticated', error);
     }
   },
 
@@ -163,8 +163,7 @@ export const useUserStore = create<UserState>((set, get) => ({
     try {
       const sessions = await account.listSessions();
       // Extract the provider from each session
-      const providers = sessions.sessions.map((session) => session.provider);
-      return providers;
+      return sessions.sessions.map((session) => session.provider);
     } catch (error) {
       console.error('Error getting providers:', error);
       return []; // Or handle the error as needed

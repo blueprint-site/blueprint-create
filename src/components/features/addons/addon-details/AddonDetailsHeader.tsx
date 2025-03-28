@@ -24,8 +24,13 @@ export const AddonDetailsHeader = ({
   const isInCollection = collection.includes(slug);
 
   const handleCollectionAction = () => {
-    if (!slug) return;
-    return isInCollection ? removeAddon(slug) : addAddon(slug);
+    if (!slug) {
+      if (isInCollection) {
+        return removeAddon(slug);
+      } else {
+        return addAddon(slug);
+      }
+    }
   };
 
   return (
