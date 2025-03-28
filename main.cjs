@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-/* global require, __dirname */
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 
