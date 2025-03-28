@@ -83,7 +83,9 @@ export default function ProfileSettings() {
 
         logMessage('Image compressed successfully.', 0, 'action');
         if (profile.avatar) {
-          const oldFileId = profile.avatar.match(/\/files\/([^/]+)/)?.[1];
+          const fileIdRegex = /\/files\/([^/]+)/;
+          const match = fileIdRegex.exec(profile.avatar);
+          const oldFileId = match?.[1];
           if (oldFileId) {
             logMessage(`Old image file id found (${oldFileId}) !`, 0, 'action');
             try {
@@ -159,6 +161,7 @@ export default function ProfileSettings() {
                   {t('settings.user-settings.public-profile.picture.upload')}
                 </div>
                 <input
+                  title='picture'
                   id='picture'
                   type='file'
                   className='hidden'
