@@ -2,12 +2,12 @@
 import React from 'react';
 
 interface FiltersContainerProps {
-  children: React.ReactNode;
-  title?: string;
-  className?: string;
+  readonly children: React.ReactNode;
+  readonly title?: string;
+  readonly className?: string;
 }
 
-export function FiltersContainer({ children, title, className }: FiltersContainerProps) {
+export function FiltersContainer({ children, title, className }: Readonly<FiltersContainerProps>) {
   return (
     <div className={`w-full ${className}`}>
       {title && (

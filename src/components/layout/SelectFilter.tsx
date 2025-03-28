@@ -14,13 +14,13 @@ export interface FilterOption {
 }
 
 interface SelectFilterProps {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-  options: FilterOption[];
-  placeholder?: string;
-  className?: string;
-  isLoading?: boolean; // Added isLoading prop
+  readonly label: string;
+  readonly value: string;
+  readonly onChange: (value: string) => void;
+  readonly options: readonly FilterOption[];
+  readonly placeholder?: string;
+  readonly className?: string;
+  readonly isLoading?: boolean; // Added isLoading prop
 }
 
 export function SelectFilter({
@@ -30,8 +30,8 @@ export function SelectFilter({
   options,
   placeholder,
   className,
-  isLoading = false, // Default value for isLoading
-}: SelectFilterProps) {
+  isLoading = false,
+}: Readonly<SelectFilterProps>) {
   return (
     <div className={className}>
       <label className='text-foreground font-minecraft mb-2 hidden lg:block'>{label}</label>

@@ -17,6 +17,7 @@ const ItemSkeleton = () => (
 interface ItemGridProps<T> {
   readonly items: readonly T[] | undefined;
   readonly renderItem: (item: T, index: number) => React.ReactNode;
+  readonly getItemKey?: (item: T, index: number) => string | number;
   readonly isLoading?: boolean;
   readonly isError?: boolean;
   readonly emptyMessage?: string;
@@ -40,6 +41,7 @@ interface ItemGridProps<T> {
 export function ItemGrid<T>({
   items,
   renderItem,
+  getItemKey,
   isLoading = false,
   isError = false,
   emptyMessage = 'No items found.',
@@ -58,137 +60,152 @@ export function ItemGrid<T>({
   staggerItemCount = 16,
   skeletonCount = 16,
 }: ItemGridProps<T>) {
-  const [initialRender, setInitialRender] = useState(true);
-  const [prevItemsCount, setPrevItemsCount] = useState(0);
+  // Only track animation states if animation is enabled
+  const [animationState, setAnimationState] = useState(
+    animationEnabled ? { initialRender: true, prevItemsCount: 0 } : null
+  );
+
+  // Standardized grid classes
+  const gridClasses = cn(
+    'mx-auto grid max-w-[128rem]',
+    'grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4',
+    gridClassName
+  );
 
   // Handle initial animation completion
   useEffect(() => {
-    if (items?.length && !isLoading && animationEnabled) {
-      const timeoutDuration = Math.max(
-        1000,
-        staggerItemCount * animationDelay * 1000 + animationDuration * 1000
-      );
+    if (!animationEnabled || !animationState || !items?.length || isLoading) return;
 
-      const timeout = setTimeout(() => {
-        setInitialRender(false);
-        setPrevItemsCount(items.length);
-      }, timeoutDuration);
+    const timeoutDuration = Math.max(
+      1000,
+      staggerItemCount * animationDelay * 1000 + animationDuration * 1000
+    );
 
-      return () => clearTimeout(timeout);
-    }
-  }, [items, isLoading, animationEnabled, staggerItemCount, animationDelay, animationDuration]);
+    const timeout = setTimeout(() => {
+      setAnimationState({
+        initialRender: false,
+        prevItemsCount: items.length,
+      });
+    }, timeoutDuration);
+
+    return () => clearTimeout(timeout);
+  }, [
+    items,
+    isLoading,
+    animationEnabled,
+    staggerItemCount,
+    animationDelay,
+    animationDuration,
+    animationState,
+  ]);
 
   // Track newly loaded items
   useEffect(() => {
-    if (items?.length > prevItemsCount && !initialRender && animationEnabled) {
-      setPrevItemsCount(items.length);
-    }
-  }, [items, prevItemsCount, initialRender, animationEnabled]);
+    if (
+      !animationEnabled ||
+      !animationState ||
+      !items?.length ||
+      animationState.initialRender ||
+      items.length <= animationState.prevItemsCount
+    )
+      return;
 
-  // Render functions for different states
-  const renderLoadingState = () => (
-    <div className={cn('w-full', className)}>
-      <div
-        className={cn(
-          'mx-auto grid max-w-[128rem]',
-          'grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4',
-          gridClassName
-        )}
-      >
-        {loadingComponent || (
-          <>
-            {Array.from({ length: skeletonCount }).map((_, index) => (
-              <div key={`skeleton-${index}`}>
-                <ItemSkeleton />
-              </div>
-            ))}
-          </>
-        )}
-      </div>
-    </div>
-  );
+    setAnimationState({
+      ...animationState,
+      prevItemsCount: items.length,
+    });
+  }, [items, animationState, animationEnabled]);
 
-  const renderErrorState = () => (
-    <div
-      className={cn(
-        'text-destructive bg-destructive/10 rounded-md p-8 text-center font-semibold',
-        className
-      )}
-    >
-      {errorMessage}
-    </div>
-  );
-
-  const renderEmptyState = () => (
-    <div className={cn('py-12 text-center', className)}>
-      <h3 className='text-lg font-semibold'>{emptyMessage}</h3>
-    </div>
-  );
-
-  const renderWithAnimation = (item: T, index: number) => {
+  // Calculate animation delay based on item position
+  const calculateDelay = (index: number, initialRender: boolean, prevItemsCount: number) => {
     const isNewItem = index >= prevItemsCount;
 
-    const getDelay = () => {
-      if (initialRender) {
-        // Initial render gets staggered delays
-        return (animationDelay * (index % staggerItemCount)) / (staggerItemCount / 4);
-      } else if (isNewItem) {
-        // Newly loaded items get a medium stagger
-        const positionInBatch = index - prevItemsCount;
-        return (
-          ((animationDelay / 2) * (positionInBatch % staggerItemCount)) / (staggerItemCount / 4)
-        );
-      }
-      return 0; // Already visible items don't need a delay
-    };
+    if (initialRender) {
+      return (animationDelay * (index % staggerItemCount)) / 4;
+    }
 
-    return (
-      <motion.div
-        key={index}
-        initial={isNewItem || initialRender ? { opacity: 0, y: 20 } : false}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: animationDuration,
-          delay: getDelay(),
-          ease: 'easeOut',
-        }}
-      >
-        {renderItem(item, index)}
-      </motion.div>
-    );
+    if (isNewItem) {
+      return (animationDelay * ((index - prevItemsCount) % staggerItemCount)) / 8;
+    }
+
+    return 0;
   };
 
-  // Handle different rendering states
+  // Render functions for different states
   if (isLoading && (!items || items.length === 0)) {
-    return renderLoadingState();
+    return (
+      <div className={cn('w-full', className)}>
+        <div className={gridClasses}>
+          {loadingComponent || (
+            <>
+              {Array.from({ length: skeletonCount }).map((_, index) => (
+                <div key={`skeleton-${index}`}>
+                  <ItemSkeleton />
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+      </div>
+    );
   }
 
   if (isError) {
-    return renderErrorState();
+    return (
+      <div
+        className={cn(
+          'text-destructive bg-destructive/10 rounded-md p-8 text-center font-semibold',
+          className
+        )}
+      >
+        {errorMessage}
+      </div>
+    );
   }
 
   if (!items || items.length === 0) {
-    return renderEmptyState();
+    return (
+      <div className={cn('py-12 text-center', className)}>
+        <h3 className='text-lg font-semibold'>{emptyMessage}</h3>
+      </div>
+    );
   }
 
   return (
     <div className={className}>
-      <div
-        className={cn(
-          'mx-auto grid max-w-[128rem]',
-          'grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4',
-          gridClassName
-        )}
-      >
-        {items.map((item, index) =>
-          animationEnabled ? (
-            renderWithAnimation(item, index)
-          ) : (
-            <div key={index} className='h-full'>
+      <div className={gridClasses}>
+        {items.map((item, index) => {
+          // Generate a key for each item
+          const itemKey = getItemKey ? getItemKey(item, index) : `item-${index}`;
+
+          if (!animationEnabled) {
+            return (
+              <div key={itemKey} className='h-full'>
+                {renderItem(item, index)}
+              </div>
+            );
+          }
+
+          // Animation is enabled
+          const { initialRender, prevItemsCount } = animationState!;
+          const isNewItem = index >= prevItemsCount;
+          const delay = calculateDelay(index, initialRender, prevItemsCount);
+
+          return (
+            <motion.div
+              key={itemKey}
+              initial={isNewItem || initialRender ? { opacity: 0, y: 20 } : false}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: animationDuration,
+                delay,
+                ease: 'easeOut',
+              }}
+            >
               {renderItem(item, index)}
-            </div>
-          )
-        )}
+            </motion.div>
+          );
+        })}
       </div>
 
       {/* Infinite scroll elements */}
