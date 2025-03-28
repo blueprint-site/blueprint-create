@@ -16,8 +16,6 @@ interface ContributorCardProps {
 const getBackgroundColor = (points: number): string => {
   if (points >= 90) {
     return 'bg-brass_casing ';
-  } else if (points >= 70) {
-    return 'bg-copper_casing';
   } else if (points >= 50) {
     return 'bg-dark_oak_planks-copper_block ';
   } else {

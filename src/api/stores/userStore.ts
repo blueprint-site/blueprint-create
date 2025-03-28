@@ -36,7 +36,6 @@ export const useUserStore = create<UserState>((set, get) => ({
   fetchUser: async () => {
     try {
       const userData = await account.get();
-      console.error('User Data loaded', userData);
       set({
         user: userData as User,
         preferences: userData.prefs as UserPreferences,
