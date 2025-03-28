@@ -5,7 +5,7 @@ import { ArrowUpDown } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DataTable } from '@/components/tables/addonChecks/data-table';
 import { Button } from '@/components/ui/button.tsx';
-import { useFetchAddons, useSaveAddon } from '@/api/endpoints/useAddons.tsx';
+import { useFetchAddons, useUpdateAddon } from '@/api/endpoints/useAddons.tsx';
 import { toast } from '@/api';
 import { Addon } from '@/types';
 import { Switch } from '@/components/ui/switch';
@@ -13,32 +13,23 @@ import { Switch } from '@/components/ui/switch';
 export const AddonsTable = () => {
   const [page, setPage] = useState(1);
   const { data, isLoading, isError, error, refetch } = useFetchAddons(page);
-  const { mutateAsync: saveAddon } = useSaveAddon();
+  const { mutateAsync: updateAddon } = useUpdateAddon();
 
   const addons: Addon[] = data?.addons || [];
 
   const handleStatusChange = async (addon: Addon, newIsValid: boolean) => {
     try {
-      await saveAddon(
-        { ...addon, isValid: newIsValid, isChecked: true },
-        {
-          onSuccess: () => {
-            toast({
-              className: 'bg-surface-3 border-ring text-foreground',
-              title: `✅ Addon ${newIsValid ? 'activé' : 'désactivé'} ✅`,
-            });
-            refetch();
-          },
-          onError: (error) => {
-            toast({
-              className: 'bg-surface-3 border-ring text-foreground',
-              title: '❌ Erreur de mise à jour ❌',
-            });
-            console.error('Error:', error);
-          },
-        }
-      );
+      await updateAddon({ addonId: addon.$id, data: { isValid: newIsValid, isChecked: true } });
+      toast({
+        className: 'bg-surface-3 border-ring text-foreground',
+        title: `✅ Addon ${newIsValid ? 'activé' : 'désactivé'} ✅`,
+      });
+      refetch();
     } catch (error) {
+      toast({
+        className: 'bg-surface-3 border-ring text-foreground',
+        title: '❌ Erreur de mise à jour ❌',
+      });
       console.error('Unexpected error:', error);
     }
   };

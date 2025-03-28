@@ -10,8 +10,8 @@ import { useTranslation } from 'react-i18next';
 const DisplaySettings = lazy(() => import('@/components/features/settings/DisplaySettings.tsx'));
 const AccountSettings = lazy(() => import('@/components/features/settings/AccountSettings.tsx'));
 const ProfileSettings = lazy(() => import('@/components/features/settings/ProfileSettings.tsx'));
-const AddonVerifyingSettings = lazy(
-  () => import('@/components/features/settings/AddonVerifyingSettings.tsx')
+const AddonVerification = lazy(
+  () => import('@/components/features/settings/addon-verification/AddonVerification.tsx')
 );
 
 const SettingsPage = () => {
@@ -42,7 +42,7 @@ const SettingsPage = () => {
       id: 'addons',
       label: 'Addons',
       icon: Puzzle,
-      component: AddonVerifyingSettings,
+      component: AddonVerification,
     },
   ];
 

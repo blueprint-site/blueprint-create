@@ -1,7 +1,8 @@
-// Export endpoints
+// MeiliSearch API endpoints
 export { useSearchAddons } from './endpoints/useSearchAddons';
 export { useSearchSchematics } from './endpoints/useSearchSchematics';
 
+// Appwrite API endpoints
 export {
   useDeleteBlog,
   useFetchBlog,
@@ -12,24 +13,28 @@ export {
 } from './endpoints/useBlogs';
 
 export {
+  useDeleteAddon,
+  useFetchAddon,
+  useFetchAddonBySlug,
+  useFetchAddons,
+  useUpdateAddon,
+} from './endpoints/useAddons';
+
+// Modrinth API endpoints
+export {
+  useFetchModrinthProject,
+  useFetchModrinthVersions,
+  useFetchModrinthDependencies,
+  useModrinthProfile,
+  useModrinthProjects,
+} from './endpoints/useModrinth';
+
+// MOVE THESE TO HOOKS FOLDER
+export { useToast, toast } from '@/hooks/useToast';
+export { useSystemThemeSync } from './endpoints/useSystemThemeSync';
+export {
   useIsMobile,
   useIsTablet,
   useIsDesktop,
   useCurrentBreakpoint,
 } from './endpoints/useBreakpoints';
-
-export {
-  useDeleteAddon,
-  useFetchAddon,
-  useFetchAddonBySlug,
-  useFetchAddons,
-  useSaveAddon,
-} from './endpoints/useAddons';
-
-export { useSystemThemeSync } from './endpoints/useSystemThemeSync';
-export {
-  useFetchModrinthProject,
-  useFetchModrinthVersions,
-  useFetchModrinthDependencies,
-} from './endpoints/useModrinth';
-export { useToast, toast } from '@/hooks/useToast';

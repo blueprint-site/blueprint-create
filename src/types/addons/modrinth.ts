@@ -1,6 +1,35 @@
+import { License } from '..';
+
 /**
- * Comprehensive type definitions for Modrinth API responses
+ * User response from GET /user/{id|username}
  */
+export interface ModrinthUser {
+  username: string;
+  name: string | null;
+  email?: string | null; // Only displayed if requesting your own account
+  bio: string;
+  payout_data?: {
+    balance: number;
+    payout_wallet: 'paypal' | 'venmo';
+    payout_wallet_type: 'email' | 'phone' | 'user_handle';
+    payout_address: string;
+  };
+  id: string;
+  avatar_url: string;
+  created: string; // ISO date string
+  role: 'admin' | 'moderator' | 'developer';
+  badges: number; // Bitfield
+  auth_providers?: string[] | null; // Only displayed if requesting your own account
+  email_verified?: boolean | null; // Only displayed if requesting your own account
+  has_password?: boolean | null; // Only displayed if requesting your own account
+  has_totp?: boolean | null; // Only displayed if requesting your own account
+  github_id?: number | null; // Deprecated
+}
+
+/**
+ * User projects response from GET /user/{id|username}/projects
+ */
+export type ModrinthUserProjects = ModrinthProject[];
 
 // Common Types
 export type DependencyType = 'required' | 'optional' | 'incompatible' | 'embedded';
@@ -62,11 +91,7 @@ export interface ModrinthProject {
   game_versions: string[];
   loaders: string[];
   gallery: ModrinthGalleryImage[];
-  license?: {
-    id: string;
-    name: string;
-    url?: string;
-  };
+  license?: License | null;
 }
 
 /**
@@ -128,7 +153,7 @@ export interface ModrinthVersion {
 /**
  * Project versions as returned from GET /project/{id|slug}/version
  */
-export interface ModrinthVersionsResponse extends Array<ModrinthVersion> {}
+export type ModrinthVersionsResponse = ModrinthVersion[];
 
 /**
  * Project dependencies as returned from GET /project/{id|slug}/dependencies
@@ -161,7 +186,7 @@ export interface ModrinthRawObject {
   date_created: string;
   date_modified: string;
   latest_version: string;
-  license: string;
+  license: License;
   client_side: 'optional' | 'required' | 'unsupported';
   server_side: 'optional' | 'required' | 'unsupported';
   gallery: string[];

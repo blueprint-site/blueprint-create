@@ -15,8 +15,8 @@ interface AddonListItemProps {
   addon: Addon;
 }
 
-const AddonCard = memo(({ addon }: AddonListItemProps) => {
-  const navigate = useNavigate(); // Hook called at top level
+const AddonCard = ({ addon }: AddonListItemProps) => {
+  const navigate = useNavigate();
   const { collection, addAddon, removeAddon } = useCollectionStore();
   const isInCollection = collection.includes(addon.slug);
   const [availableOn, setAvailableOn] = useState<string[]>([]);
@@ -35,8 +35,8 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
   }, [addon.curseforge_raw, addon.modrinth_raw]);
 
   const handleCollectionAction = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent navigation when clicking collection button
-    isInCollection ? removeAddon(addon.slug) : addAddon(addon.slug);
+    e.stopPropagation();
+    return isInCollection ? removeAddon(addon.slug) : addAddon(addon.slug);
   };
 
   const navigateToAddon = () => {
@@ -75,7 +75,11 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
           <VersionBadges versions={addon.minecraft_versions || []} />
         </div>
 
-        <AddonStats author={addon.author} downloads={addon.downloads} claimed_by={addon.claimed_by} />
+        <AddonStats
+          author={addon.author}
+          downloads={addon.downloads}
+          claimed_by={addon.claimed_by}
+        />
 
         <ModPageLinks
           slug={addon.slug}
@@ -85,6 +89,6 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
       </CardContent>
     </Card>
   );
-});
+};
 
-export default AddonCard;
+export default memo(AddonCard);

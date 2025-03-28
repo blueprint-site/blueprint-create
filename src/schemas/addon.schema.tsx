@@ -37,6 +37,12 @@ export const AuthorSchema = z.object({
   claimed_by: z.string().optional().nullable(),
 });
 
+export const LicenseSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  url: z.string(),
+});
+
 export const LogoSchema = z.object({
   id: z.number(),
   modId: z.number(),
