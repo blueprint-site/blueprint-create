@@ -34,7 +34,7 @@ export function SelectFilter({
 }: SelectFilterProps) {
   return (
     <div className={className}>
-      <label className='text-foreground font-minecraft mb-2 hidden md:block'>{label}</label>
+      <label className='text-foreground font-minecraft mb-2 hidden lg:block'>{label}</label>
       <Select value={value} onValueChange={onChange} disabled={isLoading}>
         <SelectTrigger className='border-foreground font-minecraft w-full cursor-pointer rounded-lg p-2'>
           <SelectValue

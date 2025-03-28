@@ -13,7 +13,7 @@ export function FiltersContainer({ children, title, className }: FiltersContaine
       {title && (
         <div className='text-foreground font-minecraft mb-4 font-semibold md:text-xl'>{title}</div>
       )}
-      <div className='grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:block md:space-y-4'>
+      <div className='grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:block lg:space-y-4'>
         {children}
       </div>
     </div>

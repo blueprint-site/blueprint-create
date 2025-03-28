@@ -18,7 +18,7 @@ export function ListPageLayout({
   return (
     <div
       className={cn(
-        `flex min-h-screen w-full flex-col md:flex-row ${isDarkMode ? 'dark' : ''}`,
+        `flex min-h-screen w-full flex-col lg:flex-row ${isDarkMode ? 'dark' : ''}`,
         className
       )}
     >
@@ -37,7 +37,7 @@ export function ListPageFilters({
   className?: string;
 }) {
   return (
-    <div className={cn('bg-surface-1 mt-16 w-full shrink-0 p-4 md:w-64', className)}>
+    <div className={cn('bg-surface-1 mt-16 w-full shrink-0 p-4 lg:w-64', className)}>
       {children}
     </div>
   );
@@ -55,7 +55,7 @@ export function ListPageContent({
   return (
     <main
       className={cn(
-        'flex h-screen w-full flex-col justify-between overflow-scroll md:pt-16',
+        'flex h-screen w-full flex-col justify-between overflow-scroll lg:pt-16',
         className
       )}
     >
