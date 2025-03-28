@@ -35,7 +35,7 @@ type BadgeCategoryDetails = {
   custom: string;
 };
 
-// Define category constants
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const BADGE_CATEGORIES: BadgeCategoryDetails = {
   available: 'Places where your project may be available on',
   'built-with': 'Tools and software used to build your project',
@@ -47,7 +47,7 @@ const BADGE_CATEGORIES: BadgeCategoryDetails = {
   unsupported: 'Platforms/software not supported by your project',
   translate: 'Translation platforms and resources',
   custom: 'Custom badge',
-} as const;
+};
 
 interface DevinsBadgesProps {
   /** Badge style type */
