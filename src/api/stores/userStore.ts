@@ -36,12 +36,13 @@ export const useUserStore = create<UserState>((set, get) => ({
   fetchUser: async () => {
     try {
       const userData = await account.get();
+      console.error('User Data loaded', userData);
       set({
         user: userData as User,
         preferences: userData.prefs as UserPreferences,
       });
     } catch (error) {
-      console.log('User is not authenticated');
+      console.log('User is not authenticated', error);
     }
   },
 
@@ -123,8 +124,7 @@ export const useUserStore = create<UserState>((set, get) => ({
     try {
       const sessions = await account.listSessions();
       // Extract the provider from each session
-      const providers = sessions.sessions.map((session) => session.provider);
-      return providers;
+      return sessions.sessions.map((session) => session.provider);
     } catch (error) {
       console.error('Error getting providers:', error);
       return []; // Or handle the error as needed
