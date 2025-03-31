@@ -4,7 +4,7 @@ import { Download, Hourglass, Share } from 'lucide-react';
 import { Button } from '@/components/ui/button.tsx';
 import { useEffect, useState } from 'react';
 import { useUserStore } from '@/api/stores/userStore';
-import { Schematic } from '@/types';
+import type { Schematic } from '@/types';
 import { useIncrementDownloads } from '@/api/endpoints/useSchematics.tsx';
 
 export interface SchematicsDetailsHeaderProps {

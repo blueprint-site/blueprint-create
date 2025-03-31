@@ -1,12 +1,12 @@
 import { CardContent } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import SocialSharing from '@/components/features/social-sharing/SocialSharing';
-import { Author, License } from '@/types';
+import type { Author, License } from '@/types';
 import { BadgeCheck } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
-import { ExternalLink } from '@/types/addons/addon-details';
+import type { ExternalLink } from '@/types/addons/addon-details';
 
 export interface AddonDetailsFooterProps {
   addon_name: string;

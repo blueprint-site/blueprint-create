@@ -9,7 +9,7 @@ import {
   useFetchModrinthVersions,
   useFetchModrinthDependencies,
 } from '@/api';
-import { IntegratedAddonData } from '@/types/addons/addon-details';
+import type { IntegratedAddonData } from '@/types/addons/addon-details';
 import { getAddonCreateVersionsFromVersions } from '@/utils/createCompatibility';
 
 export default function AddonDetails() {

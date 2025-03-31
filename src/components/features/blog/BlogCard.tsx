@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/card.tsx';
 import MarkdownDisplay from '@/components/utility/MarkdownDisplay.tsx';
 import BlogTagsDisplay from '@/components/utility/blog/BlogTagsDisplay.tsx';
-import { Blog } from '@/types';
+import type { Blog } from '@/types';
 import { Link } from 'react-router';
 
 interface BlogCardProps {

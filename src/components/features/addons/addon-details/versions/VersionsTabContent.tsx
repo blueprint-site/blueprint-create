@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/accordion';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ChevronDown, InfoIcon } from 'lucide-react';
-import { AddonVersion } from '@/types/addons/addon-details';
+import type { AddonVersion } from '@/types/addons/addon-details';
 import { useDependencyProcessor } from '@/hooks/useDependencyProcessor';
 import ModLoaders from '../../addon-card/ModLoaders';
 

@@ -6,7 +6,7 @@ import Logo from '@/assets/logo.webp';
 import LegacyLogo from '@/assets/legacy_logo.webp';
 import { getEasterEggById, DEFAULT_EASTER_EGGS } from '@/config/easterEggs';
 import { useUserStore } from '@/api/stores/userStore';
-import { UserPreferences } from '@/types';
+import type { UserPreferences } from '@/types';
 
 // Rest of the imports and interfaces remain the same
 

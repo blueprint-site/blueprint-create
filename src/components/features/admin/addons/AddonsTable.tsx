@@ -1,13 +1,13 @@
 'use no memo';
 import { useState } from 'react';
-import { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DataTable } from '@/components/tables/addonChecks/data-table';
 import { Button } from '@/components/ui/button.tsx';
 import { useFetchAddons, useUpdateAddon } from '@/api/endpoints/useAddons.tsx';
 import { toast } from '@/api';
-import { Addon } from '@/types';
+import type { Addon } from '@/types';
 import { Switch } from '@/components/ui/switch';
 
 export const AddonsTable = () => {

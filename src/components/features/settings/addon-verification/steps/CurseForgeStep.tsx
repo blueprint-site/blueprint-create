@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { StepProps } from '../types';
+import type { StepProps } from '../types';
 
 /**
  * CurseForge verification step (currently not implemented)

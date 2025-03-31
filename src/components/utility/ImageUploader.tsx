@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, FC, ChangeEvent } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import type { ChangeEvent, FC } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { UploadCloud, XCircle } from 'lucide-react';
@@ -38,7 +39,7 @@ const ImageUploader: FC<ImageUploaderProps> = ({ value, onChange }) => {
         // Directly get the view URL using getFileView
         const viewUrl = storage.getFilePreview('67b478dd00221462624e', fileId);
 
-        setPreview(viewUrl); // 'href' will give the preview URL
+        setPreview(viewUrl); // Use the returned URL directly
         setImageUrl(viewUrl); // Store the preview URL
         onChange(viewUrl); // Update parent state with preview URL
       } catch (error) {

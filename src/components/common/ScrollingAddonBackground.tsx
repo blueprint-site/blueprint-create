@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useMemo } from 'react';
-import { Addon } from '@/types';
+import type { Addon } from '@/types';
 import { useSearchAddons } from '@/api';
 import { Info } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
@@ -27,7 +27,10 @@ export const ScrollingAddonBackground = ({
 }: ScrollingAddonBackgroundProps) => {
   // Component state
   const [allAddons, setAllAddons] = useState<Addon[]>([]);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [dimensions, setDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
   const [isLoading, setIsLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -54,18 +57,24 @@ export const ScrollingAddonBackground = ({
     if (hits && hits.length > 0) {
       setAllAddons((prev) => (page === 1 ? hits : [...prev, ...hits]));
       setIsLoading(false);
+    } else if (hits && hits.length === 0 && !isLoadingAddons) {
+      // No data was returned from the API, but the request finished
+      setIsLoading(false);
     }
-  }, [hits, page]);
+  }, [hits, page, isLoadingAddons]);
 
-  // Measure container dimensions with ResizeObserver
+  // Initialize dimensions and set up ResizeObserver
   useEffect(() => {
-    if (!containerRef.current) return;
+    // Set initial dimensions immediately using window size as fallback
+    const initialWidth = containerRef.current?.clientWidth ?? window.innerWidth;
+    const initialHeight = containerRef.current?.clientHeight ?? window.innerHeight;
 
-    // Set initial dimensions
     setDimensions({
-      width: containerRef.current.clientWidth,
-      height: containerRef.current.clientHeight,
+      width: initialWidth,
+      height: initialHeight,
     });
+
+    if (!containerRef.current) return;
 
     const observer = new ResizeObserver((entries) => {
       if (entries.length > 0) {
@@ -86,15 +95,16 @@ export const ScrollingAddonBackground = ({
   const { rows, cols } = useMemo(() => {
     const { width, height } = dimensions;
 
-    // Use fallback dimensions if component hasn't fully loaded yet
-    const effectiveWidth = width || window.innerWidth || 1200;
-    const effectiveHeight = height || window.innerHeight || 600;
+    // Use actual dimensions if available, otherwise use fallback
+    const effectiveWidth = width || window.innerWidth;
+    const effectiveHeight = height || window.innerHeight;
 
-    // Always ensure we have at least enough rows/cols to fill the screen
-    const calculatedCols = Math.ceil(effectiveWidth / totalAddonWidth) + 2; // Add extra columns for safety
-    const calculatedRows = Math.ceil(effectiveHeight / totalAddonHeight) + 1; // Add extra row for safety
+    // Calculate the required number of columns and rows to fill the screen
+    // Add extra columns/rows to ensure no empty space during animation
+    const calculatedCols = Math.ceil(effectiveWidth / totalAddonWidth) + 3;
+    const calculatedRows = Math.ceil(effectiveHeight / totalAddonHeight) + 2;
 
-    // Minimum values to prevent empty grids during loading
+    // Minimum values to ensure adequate coverage
     const minCols = 15;
     const minRows = 5;
 
@@ -104,12 +114,11 @@ export const ScrollingAddonBackground = ({
     };
   }, [dimensions, totalAddonWidth, totalAddonHeight]);
 
-  // Memoized icon grid creation to avoid recalculation on every render
+  // Prepare addon grid for display
   const iconGrid = useMemo(() => {
     if (allAddons.length === 0) return [];
 
-    // Ensure we have enough addons to fill multiple rows completely
-    // If not, duplicate the existing ones to fill the required space
+    // Create a working copy of addons with enough duplicated content
     let workingAddons = [...allAddons];
     const minRequiredIcons = rows * cols * 2; // Double columns for seamless scrolling
 
@@ -118,21 +127,24 @@ export const ScrollingAddonBackground = ({
       workingAddons = [...workingAddons, ...allAddons];
     }
 
+    // Pre-shuffle the working array to avoid repetitive patterns
+    const shuffledAddons = [...workingAddons].sort(() => Math.random() - 0.5);
+
     // Create grid with addon data - ensure every cell has data
     const grid = [];
     for (let row = 0; row < rows; row++) {
       const rowIcons = [];
       for (let col = 0; col < cols * 2; col++) {
-        const addonIndex = (row * cols + col) % workingAddons.length;
-        const addon = workingAddons[addonIndex];
+        // Use shuffled addons for more randomness in the grid
+        const addonIndex = (row * cols + col) % shuffledAddons.length;
+        const addon = shuffledAddons[addonIndex];
 
         // Create a properly typed version of the addon object
         rowIcons.push({
           ...addon,
-          key: `${row}-${col}-${addon.$id || col}`,
+          key: `${row}-${col}-${addon.$id || `placeholder-${col}`}`,
           icon: addon.icon || '',
           name: addon.name || 'Addon icon',
-          // Ensure create_versions is properly typed as string[]
           create_versions: Array.isArray(addon.create_versions) ? addon.create_versions : [],
         });
       }
@@ -146,26 +158,26 @@ export const ScrollingAddonBackground = ({
   const placeholderGrid = useMemo(() => {
     if (!isLoading && !isLoadingAddons && allAddons.length > 0) return null;
 
-    // Dynamically calculate how many columns we need based on window width
-    // Use the same calculation as for the real grid to ensure consistency
-    const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 1200;
-    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 800;
+    // Use dimensions from the dimensions state or window as fallback
+    const { width: viewportWidth, height: viewportHeight } = dimensions;
 
-    // Calculate how many columns we need to fill the screen with some extra margin
-    const placeholderCols = Math.ceil(viewportWidth / totalAddonWidth) + 5; // Add extra columns for safety
-    const placeholderRows = Math.ceil(viewportHeight / totalAddonHeight) + 2; // Add extra rows for safety
+    // Calculate placeholders needed to fill the screen with extra margin
+    const placeholderCols = Math.ceil(viewportWidth / totalAddonWidth) + 5;
+    const placeholderRows = Math.ceil(viewportHeight / totalAddonHeight) + 2;
 
-    // Create placeholder grid with empty cells
+    // Create placeholder grid
     const grid = [];
 
+    // Generate placeholder items for the grid
+    // Using fixed opacity placeholders to simulate loading state
     for (let row = 0; row < placeholderRows; row++) {
       const rowIcons = [];
-      // Duplicate columns for seamless scrolling (3x to handle even very wide screens)
+      // Duplicate columns for seamless scrolling
       for (let col = 0; col < placeholderCols * 3; col++) {
         rowIcons.push({
           key: `placeholder-${row}-${col}`,
-          icon: '',
-          name: 'Addon icon',
+          icon: '', // Empty icon for placeholder
+          name: 'Loading addon',
           create_versions: [],
         });
       }
@@ -173,17 +185,18 @@ export const ScrollingAddonBackground = ({
     }
 
     return grid;
-  }, [isLoading, isLoadingAddons, allAddons.length, totalAddonWidth, totalAddonHeight]);
+  }, [isLoading, isLoadingAddons, allAddons.length, dimensions, totalAddonWidth, totalAddonHeight]);
 
-  // Decide which grid to display
+  // Decide which grid to display based on data state
   const displayGrid = allAddons.length > 0 ? iconGrid : placeholderGrid;
 
-  // Don't show an empty loading state - show placeholder grid instead
+  // Flag to determine whether to show placeholder content
   const showPlaceholderContent = isLoading || isLoadingAddons || allAddons.length === 0;
 
-  const animationDuration = 160; // seconds
+  // Animation duration in seconds (adjust as needed)
+  const animationDuration = 160;
 
-  // Define animation keyframes for row scrolling
+  // Define keyframes for row scrolling animation
   const keyframesStyle = `
     @keyframes scrollRow {
       0% {
@@ -206,7 +219,7 @@ export const ScrollingAddonBackground = ({
         <div className='flex h-full w-full flex-col overflow-hidden'>
           {displayGrid?.map((row, rowIndex) => (
             <div
-              key={`row-${rowIndex}`}
+              key={`row-${rowIndex}-${row[0]?.key || rowIndex}`}
               className='flex w-fit whitespace-nowrap'
               style={{
                 animation: `scrollRow ${animationDuration}s linear infinite`,
@@ -223,11 +236,18 @@ export const ScrollingAddonBackground = ({
                       hasVersion(addon.create_versions, '0.6') ? '' : 'opacity-70 grayscale'
                     }`}
                     loading='lazy'
+                    onError={(e) => {
+                      // Replace broken images with placeholder
+                      (e.target as HTMLImageElement).src =
+                        'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"%3E%3Crect width="50" height="50" fill="%23555555" rx="25" /%3E%3C/svg%3E';
+                      (e.target as HTMLImageElement).className =
+                        'mr-[5px] mb-[5px] h-[50px] w-[50px] rounded-full opacity-30';
+                    }}
                   />
                 ) : (
                   <div
                     key={addon.key}
-                    className='mr-[5px] mb-[5px] h-[50px] w-[50px] rounded-full bg-gray-500 opacity-50'
+                    className='mr-[5px] mb-[5px] h-[50px] w-[50px] rounded-full bg-gray-500 opacity-30'
                   />
                 )
               )}

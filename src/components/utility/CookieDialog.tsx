@@ -4,12 +4,19 @@ import { cn } from '@/config/utils';
 import { motion } from 'framer-motion';
 import Cookie from '@/assets/cookie.webp';
 
+interface CookieDialogProps {
+  variant?: 'default' | 'small';
+  demo?: boolean;
+  onAcceptCallback?: () => void;
+  onDeclineCallback?: () => void;
+}
+
 export default function CookieDialog({
   variant = 'default',
   demo = false,
   onAcceptCallback = () => {},
   onDeclineCallback = () => {},
-}) {
+}: CookieDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [hide, setHide] = useState(false);
 
@@ -63,8 +70,8 @@ export default function CookieDialog({
               <br />
               <br />
               <span className='text-xs'>
-                By clicking "<span className='font-medium opacity-80'>Accept</span>", you agree to
-                our use of cookies.
+                By clicking &quot;<span className='font-medium opacity-80'>Accept</span>&quot;, you
+                agree to our use of cookies.
               </span>
               <br />
               <a href='/privacy' className='text-xs underline'>

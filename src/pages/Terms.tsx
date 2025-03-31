@@ -11,9 +11,10 @@ const Terms = () => {
           <section className='mb-8'>
             <h2 className='mb-4 text-xl font-semibold'>1. Acceptance of Terms</h2>
             <p className='text-foreground-muted'>
-              By accessing or using Blueprint (the "Service"), you agree to be bound by these Terms
-              of Service. The Service is operated by Blueprint ("we", "us", "our"). If you do not
-              agree to these terms, do not use the Service.
+              By accessing or using Blueprint (the &quot;Service&quot;), you agree to be bound by
+              these Terms of Service. The Service is operated by Blueprint (&quot;we&quot;,
+              &quot;us&quot;, &quot;our&quot;). If you do not agree to these terms, do not use the
+              Service.
             </p>
           </section>
 
@@ -45,7 +46,7 @@ const Terms = () => {
 
             <h3 className='mb-3 text-lg font-semibold'>4.1 User Content</h3>
             <ul className='text-foreground-muted mb-4 list-disc pl-6'>
-              <li>You retain all rights to content you upload ("User Content")</li>
+              <li>You retain all rights to content you upload (&quot;User Content&quot;)</li>
               <li>
                 You grant us a non-exclusive, worldwide, royalty-free license to display and
                 distribute your User Content through the Service
@@ -106,7 +107,7 @@ const Terms = () => {
 
             <h3 className='mb-3 text-lg font-semibold'>8.1 General Disclaimers</h3>
             <ul className='text-foreground-muted mb-4 list-disc pl-6'>
-              <li>THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND</li>
+              <li>THE SERVICE IS PROVIDED &quot;AS IS&quot; WITHOUT WARRANTIES OF ANY KIND</li>
               <li>WE DO NOT GUARANTEE AVAILABILITY OR RELIABILITY OF THE SERVICE</li>
               <li>WE ARE NOT RESPONSIBLE FOR USER-UPLOADED CONTENT</li>
               <li>

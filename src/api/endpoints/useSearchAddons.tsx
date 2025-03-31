@@ -1,7 +1,8 @@
 // /src/api/endpoints/useSearchAddons.tsx
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import type { UseQueryResult } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import searchClient from '@/config/meilisearch.ts';
-import { Addon } from '@/types';
+import type { Addon } from '@/types';
 import { useState, useEffect } from 'react';
 
 interface SearchAddonsResult {

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useUserStore } from '@/api/stores/userStore.ts';
 import { OAuthProviders } from '@/data/OAuthProviders.ts';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card.tsx';
-import { Models } from 'appwrite';
+import type { Models } from 'appwrite';
 import OAuthProvidersDisplay from '@/components/utility/OAuthProvidersDisplay.tsx';
 import ClientDisplay from '@/components/utility/ClientDisplay.tsx';
 import { Button } from '@/components/ui/button.tsx';

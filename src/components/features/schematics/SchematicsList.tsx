@@ -12,7 +12,7 @@ import { FiltersContainer } from '@/components/layout/FiltersContainer';
 import { ItemGrid } from '@/components/layout/ItemGrid';
 import { useSchematicFilters } from '@/hooks/useSchematicFilters';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import { Schematic } from '@/types';
+import type { Schematic } from '@/types';
 
 function SchematicsList() {
   const navigate = useNavigate();
