@@ -4,44 +4,44 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 
 // Skeleton component for the grid items
-const ItemSkeleton = () => {
-  return (
-    <div className='flex flex-col space-y-3'>
-      <Skeleton className='h-40 w-full rounded-xl' />
-      <div className='space-y-2'>
-        <Skeleton className='h-4 w-full' />
-        <Skeleton className='h-4 w-3/4' />
-      </div>
+const ItemSkeleton = () => (
+  <div className='flex flex-col space-y-3'>
+    <Skeleton className='h-40 w-full rounded-xl' />
+    <div className='space-y-2'>
+      <Skeleton className='h-4 w-full' />
+      <Skeleton className='h-4 w-3/4' />
     </div>
-  );
-};
+  </div>
+);
 
 interface ItemGridProps<T> {
-  items: T[] | undefined;
-  renderItem: (item: T, index: number) => React.ReactNode;
-  isLoading?: boolean;
-  isError?: boolean;
-  emptyMessage?: string;
-  errorMessage?: string;
-  loadingComponent?: React.ReactNode;
-  className?: string;
-  gridClassName?: string;
+  readonly items: readonly T[] | undefined;
+  readonly renderItem: (item: T, index: number) => React.ReactNode;
+  readonly getItemKey?: (item: T, index: number) => string | number;
+  readonly isLoading?: boolean;
+  readonly isError?: boolean;
+  readonly emptyMessage?: string;
+  readonly errorMessage?: string;
+  readonly loadingComponent?: React.ReactNode;
+  readonly className?: string;
+  readonly gridClassName?: string;
   // Infinite scroll props
-  infiniteScrollEnabled?: boolean;
-  loadingMore?: boolean;
-  sentinelRef?: (node: HTMLDivElement) => void;
+  readonly infiniteScrollEnabled?: boolean;
+  readonly loadingMore?: boolean;
+  readonly sentinelRef?: (node: HTMLDivElement) => void;
   // Animation props
-  animationEnabled?: boolean;
-  animationDelay?: number;
-  animationDuration?: number;
+  readonly animationEnabled?: boolean;
+  readonly animationDelay?: number;
+  readonly animationDuration?: number;
   // Stagger control
-  staggerItemCount?: number; // Number of items per stagger group
-  skeletonCount?: number; // Number of skeleton items to show
+  readonly staggerItemCount?: number;
+  readonly skeletonCount?: number;
 }
 
 export function ItemGrid<T>({
   items,
   renderItem,
+  getItemKey,
   isLoading = false,
   isError = false,
   emptyMessage = 'No items found.',
@@ -56,52 +56,86 @@ export function ItemGrid<T>({
   animationEnabled = false,
   animationDelay = 0.1,
   animationDuration = 0.4,
-  // Stagger control - defaulting to 16 items per stagger group
+  // Stagger control
   staggerItemCount = 16,
   skeletonCount = 16,
 }: ItemGridProps<T>) {
-  // Track if this is the initial render for animation purposes
-  const [initialRender, setInitialRender] = useState(true);
-  // Store the previously displayed items count to identify newly loaded ones
-  const [prevItemsCount, setPrevItemsCount] = useState(0);
+  // Only track animation states if animation is enabled
+  const [animationState, setAnimationState] = useState(
+    animationEnabled ? { initialRender: true, prevItemsCount: 0 } : null
+  );
 
-  // After the initial items are loaded and animated, set initialRender to false
+  // Standardized grid classes
+  const gridClasses = cn(
+    'mx-auto grid max-w-[128rem]',
+    'grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4',
+    gridClassName
+  );
+
+  // Handle initial animation completion
   useEffect(() => {
-    if (items && items.length > 0 && !isLoading && animationEnabled) {
-      // Calculate timeout based directly on staggerItemCount
-      // This ensures all items in the group have time to animate
-      const timeoutDuration = Math.max(
-        1000,
-        staggerItemCount * animationDelay * 1000 + animationDuration * 1000
-      );
+    if (!animationEnabled || !animationState || !items?.length || isLoading) return;
 
-      const timeout = setTimeout(() => {
-        setInitialRender(false);
-        setPrevItemsCount(items.length);
-      }, timeoutDuration);
+    const timeoutDuration = Math.max(
+      1000,
+      staggerItemCount * animationDelay * 1000 + animationDuration * 1000
+    );
 
-      return () => clearTimeout(timeout);
-    }
-  }, [items, isLoading, animationEnabled, staggerItemCount, animationDelay, animationDuration]);
+    const timeout = setTimeout(() => {
+      setAnimationState({
+        initialRender: false,
+        prevItemsCount: items.length,
+      });
+    }, timeoutDuration);
 
-  // Update prevItemsCount when new items are loaded
+    return () => clearTimeout(timeout);
+  }, [
+    items,
+    isLoading,
+    animationEnabled,
+    staggerItemCount,
+    animationDelay,
+    animationDuration,
+    animationState,
+  ]);
+
+  // Track newly loaded items
   useEffect(() => {
-    if (items && items.length > prevItemsCount && !initialRender && animationEnabled) {
-      setPrevItemsCount(items.length);
-    }
-  }, [items, prevItemsCount, initialRender, animationEnabled]);
+    if (
+      !animationEnabled ||
+      !animationState ||
+      !items?.length ||
+      animationState.initialRender ||
+      items.length <= animationState.prevItemsCount
+    )
+      return;
 
+    setAnimationState({
+      ...animationState,
+      prevItemsCount: items.length,
+    });
+  }, [items, animationState, animationEnabled]);
+
+  // Calculate animation delay based on item position
+  const calculateDelay = (index: number, initialRender: boolean, prevItemsCount: number) => {
+    const isNewItem = index >= prevItemsCount;
+
+    if (initialRender) {
+      return (animationDelay * (index % staggerItemCount)) / 4;
+    }
+
+    if (isNewItem) {
+      return (animationDelay * ((index - prevItemsCount) % staggerItemCount)) / 8;
+    }
+
+    return 0;
+  };
+
+  // Render functions for different states
   if (isLoading && (!items || items.length === 0)) {
     return (
       <div className={cn('w-full', className)}>
-        <div
-          className={cn(
-            'mx-auto grid max-w-[128rem]',
-            'grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
-            gridClassName
-          )}
-        >
-          {/* Display a set of skeleton items during initial loading */}
+        <div className={gridClasses}>
           {loadingComponent || (
             <>
               {Array.from({ length: skeletonCount }).map((_, index) => (
@@ -137,69 +171,44 @@ export function ItemGrid<T>({
     );
   }
 
-  // Function to wrap items with animation when animation is enabled
-  const renderWithAnimation = (item: T, index: number) => {
-    // Calculate if this is a newly loaded item
-    const isNewItem = index >= prevItemsCount;
-
-    // Apply different animation delays based on whether it's initial load or new items
-    const getDelay = () => {
-      if (initialRender) {
-        // Initial render gets longer staggered delays
-        // Use the staggerItemCount to determine how to group the animations
-        return (animationDelay * (index % staggerItemCount)) / (staggerItemCount / 4);
-      } else if (isNewItem) {
-        // Newly loaded items get a medium stagger
-        // Calculate position within the new batch
-        const positionInBatch = index - prevItemsCount;
-        return (
-          ((animationDelay / 2) * (positionInBatch % staggerItemCount)) / (staggerItemCount / 4)
-        );
-      } else {
-        // Already visible items don't need a delay
-        return 0;
-      }
-    };
-
-    const delay = getDelay();
-
-    return (
-      <motion.div
-        key={index}
-        initial={isNewItem || initialRender ? { opacity: 0, y: 20 } : false}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: animationDuration,
-          delay,
-          ease: 'easeOut',
-        }}
-      >
-        {renderItem(item, index)}
-      </motion.div>
-    );
-  };
-
   return (
     <div className={className}>
-      <div
-        className={cn(
-          'mx-auto grid max-w-[128rem]',
-          'grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
-          gridClassName
-        )}
-      >
-        {items.map((item, index) =>
-          animationEnabled ? (
-            renderWithAnimation(item, index)
-          ) : (
-            <div key={index} className='h-full'>
+      <div className={gridClasses}>
+        {items.map((item, index) => {
+          // Generate a key for each item
+          const itemKey = getItemKey ? getItemKey(item, index) : `item-${index}`;
+
+          if (!animationEnabled) {
+            return (
+              <div key={itemKey} className='h-full'>
+                {renderItem(item, index)}
+              </div>
+            );
+          }
+
+          // Animation is enabled
+          const { initialRender, prevItemsCount } = animationState!;
+          const isNewItem = index >= prevItemsCount;
+          const delay = calculateDelay(index, initialRender, prevItemsCount);
+
+          return (
+            <motion.div
+              key={itemKey}
+              initial={isNewItem || initialRender ? { opacity: 0, y: 20 } : false}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: animationDuration,
+                delay,
+                ease: 'easeOut',
+              }}
+            >
               {renderItem(item, index)}
-            </div>
-          )
-        )}
+            </motion.div>
+          );
+        })}
       </div>
 
-      {/* Loading more indicator and sentinel */}
+      {/* Infinite scroll elements */}
       {infiniteScrollEnabled && (
         <>
           {loadingMore && (

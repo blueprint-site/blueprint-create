@@ -107,7 +107,7 @@ const AddonsList = () => {
               Reset
             </button>
           </div>
-          <div className='md:hidden'></div>
+          <div className='lg:hidden'></div>
           <SearchFilter value={query} onChange={setQuery} placeholder='Search addons...' />
           <SelectFilter
             label='Category'
