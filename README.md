@@ -64,7 +64,10 @@ See our [installation guide](/docs/getting-started/installation.md) for detailed
 
 ## Contributing
 
-We welcome contributions from the community! Please read our [contributing guidelines](/docs/contributing/workflow.md) to get started.
+We welcome contributions from the community! Please read our [contributing guidelines](/docs/contributing/workflow.md) and [issue guidelines](/docs/contributing/issue-guidelines.md) to get started. We use GitHub issues and pull requests to manage our development workflow.
+
+- [Create a new issue](https://github.com/blueprint-site/blueprint-site.github.io/issues/new/choose)
+- [View current issues](https://github.com/blueprint-site/blueprint-site.github.io/issues)
 
 ## Community
 

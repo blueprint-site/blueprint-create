@@ -1,0 +1,73 @@
+name: ♻️ Refactor
+description: Suggest code quality improvements without changing functionality
+title: "[REFACTOR]: "
+labels: ["refactor"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping us improve our code quality!
+  
+  - type: textarea
+    id: location
+    attributes:
+      label: Code Location
+      description: Which part of the codebase needs refactoring?
+      placeholder: The code at [path/to/file] needs...
+    validations:
+      required: true
+      
+  - type: textarea
+    id: issue
+    attributes:
+      label: Issue Description
+      description: What is the problem with the current implementation?
+      placeholder: The current code...
+    validations:
+      required: true
+      
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Refactoring Suggestion
+      description: How should the code be refactored?
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: improvements
+    attributes:
+      label: Improvements
+      description: What would this refactoring improve?
+      multiple: true
+      options:
+        - Readability
+        - Maintainability
+        - Performance
+        - Type safety
+        - Testability
+        - Code reuse
+        - Bundle size
+        - Other
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope
+      description: What is the scope of this refactoring?
+      options:
+        - Small (single function or component)
+        - Medium (multiple related components)
+        - Large (entire feature or system)
+    validations:
+      required: true
+      
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context about the refactoring suggestion here
+    validations:
+      required: false
