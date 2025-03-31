@@ -1,6 +1,8 @@
 # Contribution Workflow
 
-This guide outlines the contribution workflow for the Blueprint project, including Git practices, pull request processes, and code review guidelines.
+This guide outlines the contribution workflow for the Blueprint project, including Git practices, issue management, pull request processes, and code review guidelines.
+
+> **Note:** For specific details about issue templates and pull request formatting, see the [Issue Guidelines](./issue-guidelines.md) document.
 
 ## Getting Started
 
@@ -29,19 +31,27 @@ Blueprint follows a branch-based workflow for contributions:
 
 ### Branch Naming Convention
 
-When creating branches, follow these naming conventions:
+When creating branches, follow these naming conventions that align with our issue types:
 
 - `feature/short-description` - For new features
 - `fix/issue-description` - For bug fixes
+- `hotfix/critical-issue` - For critical fixes requiring immediate attention
 - `docs/what-changed` - For documentation changes
+- `design/what-changed` - For UI/UX changes
 - `refactor/component-name` - For code refactoring
+- `infra/what-changed` - For infrastructure or tooling changes
 - `test/what-tested` - For adding tests
 
 Examples:
 - `feature/addon-collections`
 - `fix/broken-image-upload`
+- `hotfix/security-vulnerability`
 - `docs/api-endpoints`
+- `design/dark-mode-colors`
 - `refactor/search-component`
+- `infra/github-actions`
+
+Ensure your branch name corresponds to the type of issue you're addressing.
 
 ### Development Workflow
 
@@ -53,7 +63,7 @@ Examples:
 
 2. **Create a new branch** for your work:
    ```bash
-   git checkout -b feature/your-feature-name
+   git checkout -b prefix/your-feature-name
    ```
 
 3. **Make your changes**:
@@ -78,24 +88,27 @@ Blueprint uses the [Conventional Commits](https://www.conventionalcommits.org/) 
 
 Format: `type(scope): message`
 
-Types:
+Types (aligned with our issue types and PR prefixes):
 - `feat`: A new feature
 - `fix`: A bug fix
+- `hotfix`: A critical fix requiring immediate attention
 - `docs`: Documentation changes
-- `style`: Changes that don't affect code functionality (formatting, etc.)
+- `design`: UI/UX changes
 - `refactor`: Code changes that neither fix bugs nor add features
-- `perf`: Performance improvements
 - `test`: Adding or correcting tests
-- `build`: Changes to build process or tools
-- `ci`: Changes to CI configuration
-- `chore`: Other changes that don't modify src or test files
+- `infra`: Changes to infrastructure, build process, or tools (combines traditional `build` and `ci`)
+- `style`: Changes that don't affect code functionality (formatting, etc.)
 
 Examples:
 - `feat(auth): add oauth login with discord`
 - `fix(upload): resolve image upload error`
+- `hotfix(security): patch authentication vulnerability`
 - `docs(api): update endpoint documentation`
-- `style(button): adjust button padding`
+- `design(theme): implement dark mode toggle`
 - `refactor(search): improve search component performance`
+- `infra(ci): add github actions workflow`
+
+> **Note:** These commit types should align with your branch naming convention and PR title prefixes for consistency. See the [Issue Guidelines](./issue-guidelines.md) for more details on PR title prefixes.
 
 ### Handling Multiple Changes
 
@@ -124,37 +137,15 @@ Include the following in your PR description:
 4. **Testing instructions** - How to test the changes
 5. **Additional context** - Any other relevant information
 
-Example template:
-```markdown
-## Description
-Brief description of the changes.
+We now use a standardized PR template that is automatically applied when you create a pull request. The template includes:
 
-## Related Issue
-Fixes #123
+- Description of changes
+- Testing information
+- Comprehensive checklist
+- Related issues section
+- Space for screenshots or clips
 
-## Type of Change
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Breaking change
-- [ ] Documentation update
-
-## Screenshots (if applicable)
-![Description](url)
-
-## Testing Instructions
-1. Step 1
-2. Step 2
-3. Expected behavior
-
-## Checklist
-- [ ] My code follows the project's code style
-- [ ] I have performed a self-review of my code
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] I have made corresponding changes to the documentation
-- [ ] My changes generate no new warnings
-- [ ] I have added tests that prove my fix or feature works
-- [ ] New and existing tests pass with my changes
-```
+Make sure to follow the PR title format described in the [Issue Guidelines](./issue-guidelines.md) document (e.g., `fix: Resolve authentication timeout`).
 
 ### Code Review Process
 
@@ -255,6 +246,35 @@ After your PR is merged:
 
 3. Celebrate your contribution! 🎉
 
+## Issue Management
+
+### Creating an Issue
+
+1. Navigate to the [Issues page](https://github.com/blueprint-site/blueprint-site.github.io/issues)
+2. Click "New Issue"
+3. Select the appropriate issue template based on the type of issue
+4. Fill out all required fields in the template
+5. Submit the issue
+
+### Issue Labeling
+
+Our project uses labels to prioritize and categorize issues:
+
+- Priority labels indicate urgency (`priority: critical`, `priority: high`, etc.)
+- Type labels indicate the kind of issue (`bug`, `feature`, etc.)
+- Special attention labels provide additional context (`good first issue`, `help wanted`, etc.)
+
+See the [Issue Guidelines](./issue-guidelines.md) for a complete list of labels.
+
+### Working with the Project Board
+
+We use GitHub Projects to track issue progress:
+
+1. Issues start in the "Backlog" or "To Do" columns
+2. Move issues to "In Progress" when you start working on them
+3. Move issues to "Review" when ready for review
+4. Issues are moved to "Done" when completed and deployed
+
 ## Troubleshooting
 
 ### Common Issues
@@ -268,11 +288,15 @@ After your PR is merged:
    - If complex, consult with maintainers
 
 3. **Stale PRs**:
-   - If your PR becomes outdated, rebase on the latest main
+   - If your PR becomes outdated, rebase on the latest develop branch
 
 4. **Rejected PRs**:
    - Read the feedback carefully
    - Address all concerns before resubmitting
+
+5. **Issue Template Problems**:
+   - If the issue template isn't loading correctly, try a different browser
+   - Ensure you've selected the correct issue type
 
 ## Special Workflows
 
@@ -282,8 +306,9 @@ For critical bug fixes:
 
 1. Create a branch from develop: `git checkout -b hotfix/critical-issue`
 2. Fix the issue with minimal changes
-3. Submit a PR with "HOTFIX" in the title
-4. Request expedited review
+3. Submit a PR with the prefix `hotfix:` in the title (e.g., `hotfix: Fix critical security vulnerability`)  
+4. Add the `priority: critical` label
+5. Request expedited review
 
 ### Documentation-Only Changes
 
@@ -291,7 +316,8 @@ For documentation changes:
 
 1. Create a branch: `git checkout -b docs/update-readme`
 2. Make documentation changes
-3. Submit a PR with abbreviated review process
+3. Submit a PR with the prefix `docs:` in the title (e.g., `docs: Update API documentation`)
+4. The PR will follow an abbreviated review process
 
 ## Release Process
 
@@ -310,6 +336,7 @@ The release process is handled by maintainers, who will:
 
 ## Additional Resources
 
+- [Issue Guidelines](./issue-guidelines.md) - Detailed documentation on our issue templates and PR formatting
 - [GitHub Flow](https://guides.github.com/introduction/flow/)
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - [Git Documentation](https://git-scm.com/doc)
