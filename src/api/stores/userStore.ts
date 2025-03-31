@@ -75,7 +75,6 @@ export const useUserStore = create<UserState>((set, get) => ({
   fetchUser: async () => {
     try {
       const userData = await account.get();
-      console.log('User Data loaded', userData);
       set({
         user: mapAppwriteUserToUser(userData),
         preferences: mapAppwritePrefsToUserPreferences(userData.prefs),
