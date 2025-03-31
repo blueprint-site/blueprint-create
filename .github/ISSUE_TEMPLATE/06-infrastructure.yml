@@ -1,6 +1,5 @@
 name: 🔧 Infrastructure
 description: Suggest improvements to development processes or tooling
-title: "[INFRA]: "
 labels: ["infrastructure"]
 body:
   - type: markdown

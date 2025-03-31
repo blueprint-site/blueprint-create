@@ -1,6 +1,5 @@
 name: 🎨 Design
 description: Suggest changes to UI/UX or visual elements
-title: "[DESIGN]: "
 labels: ["design"]
 body:
   - type: markdown

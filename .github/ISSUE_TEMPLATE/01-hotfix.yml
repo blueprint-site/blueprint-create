@@ -1,6 +1,5 @@
 name: 🔥 Hot-Fix
 description: Critical issue requiring immediate attention
-title: "[HOTFIX]: "
 labels: ["priority: critical"]
 body:
   - type: markdown
