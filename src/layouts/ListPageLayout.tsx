@@ -9,16 +9,16 @@ import RotatingCogwheel from '@/components/common/Cogwheel';
 export function ListPageLayout({
   children,
   className,
-}: {
+}: Readonly<{
   children: React.ReactNode;
   className?: string;
-}) {
+}>) {
   const { isDarkMode } = useThemeStore();
 
   return (
     <div
       className={cn(
-        `flex min-h-screen w-full flex-col md:flex-row ${isDarkMode ? 'dark' : ''}`,
+        `flex min-h-screen w-full flex-col lg:flex-row ${isDarkMode ? 'dark' : ''}`,
         className
       )}
     >
@@ -32,12 +32,12 @@ export function ListPageLayout({
 export function ListPageFilters({
   children,
   className,
-}: {
+}: Readonly<{
   children: React.ReactNode;
   className?: string;
-}) {
+}>) {
   return (
-    <div className={cn('bg-surface-1 mt-16 w-full shrink-0 p-4 md:w-64', className)}>
+    <div className={cn('bg-surface-1 mt-16 w-full shrink-0 p-4 lg:w-64', className)}>
       {children}
     </div>
   );
@@ -46,16 +46,16 @@ export function ListPageFilters({
 export function ListPageContent({
   children,
   className,
-}: {
+}: Readonly<{
   children: React.ReactNode;
   className?: string;
-}) {
+}>) {
   const { isDarkMode } = useThemeStore();
 
   return (
     <main
       className={cn(
-        'flex h-screen w-full flex-col justify-between overflow-scroll md:pt-16',
+        'flex h-screen w-full flex-col justify-between overflow-scroll lg:pt-16',
         className
       )}
     >

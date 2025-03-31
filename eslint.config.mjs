@@ -56,6 +56,9 @@ export default defineConfig([
       'react-compiler': reactCompiler,
       'react-hooks': reactHooks,
     },
+    linterOptions: {
+      reportUnusedDisableDirectives: false,
+    },
     languageOptions: {
       globals: {
         ...globals.browser,
@@ -77,6 +80,9 @@ export default defineConfig([
       // React Hooks recommended rules
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
+      
+      // Disable the index as key rule
+      'react/no-array-index-key': 'off',
     },
     settings: {
       react: {
