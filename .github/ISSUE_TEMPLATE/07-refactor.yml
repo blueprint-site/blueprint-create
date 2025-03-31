@@ -1,6 +1,5 @@
 name: ♻️ Refactor
 description: Suggest code quality improvements without changing functionality
-title: "[REFACTOR]: "
 labels: ["refactor"]
 body:
   - type: markdown
