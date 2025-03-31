@@ -1,5 +1,5 @@
 import { Star, StarOff } from 'lucide-react';
-import { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useCollectionStore } from '@/api/stores/collectionStore.ts';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,7 +7,7 @@ import CategoryBadges from '@/components/features/addons/addon-card/CategoryBadg
 import { VersionBadges } from './VersionBadges';
 import { AddonStats } from './AddonStats';
 import { useNavigate } from 'react-router';
-import { Addon } from '@/types';
+import type { Addon } from '@/types';
 import { ModPageLinks } from '@/components/features/addons/addon-card/ModPageLinks';
 import ModLoaders from './ModLoaders';
 

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { Addon } from '@/types';
+import type { Addon } from '@/types';
 import { useSearchAddons } from '@/api';
 import { Info } from 'lucide-react';
 

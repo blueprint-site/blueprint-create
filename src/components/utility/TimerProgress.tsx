@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
 import { Progress } from '@/components/ui/progress';
 import { Clock } from 'lucide-react';
@@ -21,7 +21,7 @@ const TimerProgress = ({
   const [timeLeft, setTimeLeft] = useState(() =>
     Math.max(countdownTime - Math.floor((Date.now() - startTimestamp) / 1000), 0)
   );
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     if (timeLeft === 0 && onComplete) {
@@ -60,7 +60,7 @@ const TimerProgress = ({
       <HoverCardContent className='w-64 space-y-2'>
         <div className='text-sm'>Time Remaining</div>
         <Progress value={progress} className='w-full' />
-        <p className='text-sm'>{description || 'This timer is counting down.'}</p>
+        <p className='text-sm'>{description ?? 'This timer is counting down.'}</p>
       </HoverCardContent>
     </HoverCard>
   );

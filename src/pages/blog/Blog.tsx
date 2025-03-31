@@ -4,7 +4,7 @@ import { ItemGrid } from '@/components/layout/ItemGrid';
 import { SearchFilter } from '@/components/layout/SearchFilter';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { ListPageContent, ListPageLayout, ListPageFilters } from '@/layouts/ListPageLayout';
-import { Blog } from '@/types';
+import type { Blog } from '@/types';
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import BlogCard from '@/components/features/blog/BlogCard';
 

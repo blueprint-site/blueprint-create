@@ -29,8 +29,8 @@ export default function ProfileSettings() {
     if (user) {
       setProfile({
         username: user?.name || '',
-        bio: preferences?.bio || '',
-        avatar: preferences?.avatar || '',
+        bio: preferences?.bio ?? '',
+        avatar: preferences?.avatar ?? '',
       });
     }
   }, [user, preferences]);
@@ -44,8 +44,8 @@ export default function ProfileSettings() {
 
       // Use the store's updatePreferences function
       await updatePreferences({
-        theme: preferences?.theme || 'light',
-        language: preferences?.language || 'en',
+        theme: preferences?.theme ?? 'light',
+        language: preferences?.language ?? 'en',
         notificationsEnabled: preferences?.notificationsEnabled || false,
         roles: preferences?.roles || [],
         bio: profile.bio,
@@ -56,6 +56,7 @@ export default function ProfileSettings() {
     } catch (error) {
       logMessage('Error while saving the profile ', 3, 'action');
       setError('Error while saving the profile');
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -82,13 +83,15 @@ export default function ProfileSettings() {
 
         logMessage('Image compressed successfully.', 0, 'action');
         if (profile.avatar) {
-          const oldFileId = profile.avatar.match(/\/files\/([^/]+)/)?.[1];
+          const fileIdRegex = /\/files\/([^/]+)/;
+          const match = fileIdRegex.exec(profile.avatar);
+          const oldFileId = match?.[1];
           if (oldFileId) {
             logMessage(`Old image file id found (${oldFileId}) !`, 0, 'action');
             try {
               await storage.deleteFile('67aee2b30000b9e21407', oldFileId);
               logMessage(`Old image have been deleted (${oldFileId}) !`, 0, 'action');
-            } catch (deleteError) {
+            } catch {
               logMessage(`Error while deleting old file (${oldFileId}) !`, 3, 'action');
             }
           } else {
@@ -106,7 +109,7 @@ export default function ProfileSettings() {
         const avatarUrl = storage.getFilePreview('67aee2b30000b9e21407', response.$id).toString();
         console.log(avatarUrl);
         setProfile((prev) => ({ ...prev, avatar: avatarUrl }));
-      } catch (error) {
+      } catch {
         logMessage('Error while uploading avatar image', 3, 'action');
         setError('Error while uploading avatar image');
       } finally {
@@ -158,6 +161,7 @@ export default function ProfileSettings() {
                   {t('settings.user-settings.public-profile.picture.upload')}
                 </div>
                 <input
+                  title='picture'
                   id='picture'
                   type='file'
                   className='hidden'

@@ -1,3 +1,4 @@
+import type React from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card.tsx';
 import {
   AlertDialog,
@@ -16,7 +17,7 @@ import { useDeleteSchematics, useFetchUserSchematics } from '@/api/endpoints/use
 import { useUserStore } from '@/api/stores/userStore';
 import { useThemeStore } from '@/api/stores/themeStore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx';
-import { Schematic } from '@/types';
+import type { Schematic } from '@/types';
 import { useNavigate } from 'react-router';
 import Markdown from 'react-markdown';
 import { Button } from '@/components/ui/button';
@@ -24,7 +25,7 @@ import { Button } from '@/components/ui/button';
 const UserSchematicList = () => {
   const { isDarkMode } = useThemeStore();
   const user = useUserStore((state) => state.user);
-  const { data: userSchematics } = useFetchUserSchematics(user?.$id || '');
+  const { data: userSchematics } = useFetchUserSchematics(user?.$id ?? '');
   const { mutate: deleteSchematic } = useDeleteSchematics(user?.$id);
   const navigate = useNavigate();
   // Delete handler
@@ -150,8 +151,8 @@ const UserSchematicList = () => {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Delete Schematic</AlertDialogTitle>
                         <AlertDialogDescription>
-                          Are you sure you want to delete "{schematic.title}"? This action cannot be
-                          undone.
+                          Are you sure you want to delete &quot;{schematic.title}&quot;? This action
+                          cannot be undone.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>

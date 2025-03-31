@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { ModrinthGalleryImage } from '@/types/addons/modrinth';
+import type { ModrinthGalleryImage } from '@/types/addons/modrinth';
 
 export interface AddonDetailsGalleryProps {
   gallery: ModrinthGalleryImage[];

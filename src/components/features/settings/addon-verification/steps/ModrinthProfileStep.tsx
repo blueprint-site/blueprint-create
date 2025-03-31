@@ -1,10 +1,9 @@
 import { Button } from '@/components/ui/button';
-import { ModrinthProfileProps } from '../types';
+import type { ModrinthProfileProps } from '../types';
 import { useModrinthProfile } from '@/api/endpoints/useModrinth';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { LoadingSpinner } from '@/components/loading-overlays/LoadingSpinner';
-import { DialogFooter, DialogHeader } from '@/components/ui/dialog';
-import { DialogTitle, DialogDescription } from '@radix-ui/react-dialog';
+import { DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 /**
  * Step for confirming Modrinth profile identity
@@ -69,7 +68,7 @@ export default function ModrinthProfileStep({
           Back
         </Button>
         <Button onClick={next} disabled={!username || isLoading || hasError}>
-          Yes, it's Me
+          Yes, it&apos;s Me
         </Button>
       </DialogFooter>
     </div>

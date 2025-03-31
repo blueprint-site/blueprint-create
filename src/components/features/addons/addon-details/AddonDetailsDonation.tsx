@@ -8,7 +8,7 @@ import {
   SiPatreon,
   SiPaypal,
 } from '@icons-pack/react-simple-icons';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 export interface AddonDetailsDonationProps {
   links: {

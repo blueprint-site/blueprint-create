@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { SiModrinth } from '@icons-pack/react-simple-icons';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ExternalLink } from 'lucide-react';
-import { ModrinthAuthProps } from '../types';
+import type { ModrinthAuthProps } from '../types';
 import eyeSquintGif from '@/assets/eyes/eye_squint.gif';
 import { DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
@@ -139,8 +139,8 @@ export default function ModrinthAuthStep({
             <CardHeader>
               <CardTitle>Why do we need your Modrinth token?</CardTitle>
               <CardDescription className='text-xs'>
-                We use your Modrinth personal access token to verify that you're the legitimate
-                owner of the addons you're claiming. We ask that you only provide{' '}
+                We use your Modrinth personal access token to verify that you&apos;re the legitimate
+                owner of the addons you&apos;re claiming. We ask that you only provide{' '}
                 <strong>read projects</strong> permissions and we never store your token after
                 verification.
               </CardDescription>

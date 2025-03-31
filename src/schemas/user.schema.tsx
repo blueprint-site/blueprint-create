@@ -1,5 +1,6 @@
 // src/schemas/user.schema.tsx
 import { z } from 'zod';
+import type React from 'react';
 
 /**
  * Schema for Target object in User
@@ -10,7 +11,7 @@ export const TargetSchema = z.object({
   $updatedAt: z.string(),
   name: z.string(),
   userId: z.string(),
-  providerId: z.string(),
+  providerId: z.string().optional(),
   providerType: z.string(),
   identifier: z.string(),
 });

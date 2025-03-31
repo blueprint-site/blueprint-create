@@ -1,3 +1,5 @@
+import React from 'react';
+
 // Define the available badge types as const to enable type inference
 const BADGE_TYPES = {
   cozy: {
@@ -19,7 +21,22 @@ const BADGE_TYPES = {
 } as const;
 
 // Badge categories with descriptions for better DX
-const BADGE_CATEGORIES = {
+// Using type instead of const as it's only used for type checking
+type BadgeCategoryDetails = {
+  available: string;
+  'built-with': string;
+  documentation: string;
+  donate: string;
+  requires: string;
+  social: string;
+  supported: string;
+  unsupported: string;
+  translate: string;
+  custom: string;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const BADGE_CATEGORIES: BadgeCategoryDetails = {
   available: 'Places where your project may be available on',
   'built-with': 'Tools and software used to build your project',
   documentation: 'Places where documentation can be found',
@@ -30,7 +47,7 @@ const BADGE_CATEGORIES = {
   unsupported: 'Platforms/software not supported by your project',
   translate: 'Translation platforms and resources',
   custom: 'Custom badge',
-} as const;
+};
 
 interface DevinsBadgesProps {
   /** Badge style type */
