@@ -33,18 +33,6 @@ body:
     validations:
       required: false
       
-  - type: dropdown
-    id: priority
-    attributes:
-      label: Priority
-      description: How important is this feature to you?
-      options:
-        - Nice to have
-        - Important
-        - Critical
-    validations:
-      required: true
-      
   - type: textarea
     id: mockups
     attributes:
