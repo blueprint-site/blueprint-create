@@ -1,19 +1,9 @@
-# Pull Request Title
-
-## Description
+## Description (required)
 <!-- Provide a clear and concise description of what this PR accomplishes -->
+<!-- Use bullets for key changes and features -->
 
 ## Testing
-<!-- Provide any information that might be useful for reviewers to test your PR -->
-
-## Checklist
-<!-- Mark the appropriate options with an "x" (e.g. [x]) -->
-- [ ] My changes generate no new warnings or console errors
-- [ ] My code follows the code style of this project (Naming conventions, data management, etc)
-- [ ] I have properly commented my code, particularly in hard-to-understand areas
-- [ ] I have updated the documentation as necessary
-- [ ] I have verified that my changes are responsive on various screen sizes
-- [ ] I have verified that my changes maintain light and dark mode compatibility
+<!-- Explain how you've tested these changes or provide instructions for the reviewer to test -->
 
 ## Related Issues
 <!-- Link any related issues using the format: Fixes #123, Addresses #456 -->

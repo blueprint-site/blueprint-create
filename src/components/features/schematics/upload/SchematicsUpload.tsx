@@ -6,7 +6,7 @@ import { SchematicUploadForm } from './SchematicUploadForm';
 import { SchematicPreview } from './SchematicUploadPreview';
 import { generateSlug } from '../utils/generateSlug';
 import { useSaveSchematics, useFetchSchematic } from '@/api/endpoints/useSchematics';
-import { SchematicFormValues } from '@/types';
+import type { SchematicFormValues } from '@/types';
 import SchematicUploadLoadingOverlay from '@/components/loading-overlays/SchematicUploadLoadingOverlay';
 
 function SchematicsUpload() {

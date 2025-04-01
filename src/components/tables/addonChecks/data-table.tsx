@@ -1,14 +1,15 @@
 // components/tables/addonChecks/data-table.tsx
 'use client';
 import { Input } from '@/components/ui/input';
-import {
+import type {
   ColumnDef,
   ColumnFiltersState,
+  SortingState} from '@tanstack/react-table';
+import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getSortedRowModel,
-  SortingState,
   useReactTable,
 } from '@tanstack/react-table';
 import {

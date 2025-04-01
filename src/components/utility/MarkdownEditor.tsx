@@ -1,6 +1,7 @@
 // /src/componets/utility/MarkdownEditor.tsx
 import { useThemeStore } from '@/api/stores/themeStore';
 import '@mdxeditor/editor/style.css';
+import type { SandpackConfig, RealmPlugin } from '@mdxeditor/editor';
 import {
   MDXEditor,
   toolbarPlugin,
@@ -30,10 +31,8 @@ import {
   ConditionalContents,
   ChangeCodeMirrorLanguage,
   ShowSandpackInfo,
-  SandpackConfig,
   markdownShortcutPlugin,
   quotePlugin,
-  RealmPlugin,
 } from '@mdxeditor/editor';
 // Constants
 const DEFAULT_SNIPPET_CONTENT = `
@@ -181,7 +180,11 @@ const MarkdownEditor = ({
               {showFrontmatter && <InsertFrontmatter />}
               {showImages && <InsertImage />}
               {showUndoRedo && <UndoRedo />}
-              {showDiffSource && <DiffSourceToggleWrapper children={undefined} />}
+              {showDiffSource && (
+                <DiffSourceToggleWrapper>
+                  <></>
+                </DiffSourceToggleWrapper>
+              )}
               {showCodeBlocks && (
                 <ConditionalContents
                   options={[

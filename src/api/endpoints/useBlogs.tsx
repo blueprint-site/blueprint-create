@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Blog } from '@/types';
+import type { Blog } from '@/types';
 import { toast } from '@/hooks/useToast';
 import { databases, ID } from '@/config/appwrite.ts';
 import { Query } from 'appwrite';

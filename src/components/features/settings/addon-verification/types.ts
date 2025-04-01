@@ -1,4 +1,5 @@
-import { Addon } from '@/types';
+import type React from 'react';
+import type { Addon } from '@/types';
 
 /**
  * Supported platform types for addon verification

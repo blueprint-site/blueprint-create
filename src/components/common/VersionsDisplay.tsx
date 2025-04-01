@@ -16,8 +16,8 @@ const VersionsDisplay = ({ versions = [] }: { versions?: string[] }) => {
   return (
     <div className='flex flex-row gap-2'>
       {versions.includes('All') ? 'All' : null}
-      {versionsToDisplay.map((version, i) => (
-        <div key={i}>{version} </div>
+      {versionsToDisplay.map((version) => (
+        <div key={version}>{version} </div>
       ))}
     </div>
   );

@@ -1,8 +1,8 @@
 // components/SchematicUploadForm/MultiSelectCheckboxGroup.tsx
-import { Control } from 'react-hook-form';
+import type { Control } from 'react-hook-form';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Checkbox } from '@/components/ui/checkbox';
-import { SchematicFormValues } from '@/types';
+import type { SchematicFormValues } from '@/types';
 
 // Explicitly type allowed array fields
 type ArrayField = 'game_versions' | 'create_versions' | 'modloaders';

@@ -1,7 +1,7 @@
 // src/types/index.ts
-import { z } from 'zod';
+import type { z } from 'zod';
 
-import {
+import type {
   AddonSchema,
   ScreenshotSchema,
   LinksSchema,
@@ -35,7 +35,7 @@ export type SocialLink = z.infer<typeof SocialLinkSchema>;
 export type ServerAffiliation = z.infer<typeof ServerAffiliationSchema>;
 export type LatestFile = z.infer<typeof LatestFileSchema>;
 
-import {
+import type {
   BlogSchema,
   TagSchema,
   CreateBlogSchema,
@@ -53,7 +53,7 @@ export type BlogFilter = z.infer<typeof BlogFilterSchema>;
 export type SearchBlogProps = z.infer<typeof SearchBlogPropsSchema>;
 export type SearchBlogResult = z.infer<typeof SearchBlogResultSchema>;
 
-import {
+import type {
   UserSchema,
   TargetSchema,
   UserPreferencesSchema,
@@ -69,7 +69,7 @@ export type CreateUserInput = z.infer<typeof CreateUserSchema>;
 export type UpdateUserProfileInput = z.infer<typeof UpdateUserProfileSchema>;
 export type UpdateUserPreferencesInput = z.infer<typeof UpdateUserPreferencesSchema>;
 
-import {
+import type {
   createSchematicSchema,
   partialSchematicSchema,
   schematicFormSchema,
@@ -85,7 +85,7 @@ export type PartialSchematic = z.infer<typeof partialSchematicSchema>;
 export type CreateSchematic = z.infer<typeof createSchematicSchema>;
 export type SearchSchematicsResult = z.infer<typeof searchSchematicsResultSchema>;
 
-import {
+import type {
   GitHubUserSchema,
   ContributorStatsSchema,
   GitHubRepoSchema,
@@ -97,11 +97,11 @@ export type ContributorStats = z.infer<typeof ContributorStatsSchema>;
 export type GitHubRepo = z.infer<typeof GitHubRepoSchema>;
 export type GitHubContributorsResponse = z.infer<typeof GitHubContributorsResponseSchema>;
 
-import { AdminLogsSchema } from '@/schemas/adminLogs.schema.tsx';
+import type { AdminLogsSchema } from '@/schemas/adminLogs.schema.tsx';
 
 export type AdminLogs = z.infer<typeof AdminLogsSchema>;
 
-import { OAuthProvidersSchema } from '@/schemas/OAuthProviders.schema.tsx';
+import type { OAuthProvidersSchema } from '@/schemas/OAuthProviders.schema.tsx';
 
 export type OAuthProvidersType = z.infer<typeof OAuthProvidersSchema>;
 // LoggedUserContext type

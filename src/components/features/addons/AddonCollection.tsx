@@ -65,8 +65,8 @@ const CollectionSheet = () => {
                     Empty Collection
                   </CardTitle>
                   <CardDescription>
-                    Add addons to your collection using the "Add to Collection" button on addon
-                    cards.
+                    Add addons to your collection using the &quot;Add to Collection&quot; button on
+                    addon cards.
                   </CardDescription>
                 </CardHeader>
               </Card>

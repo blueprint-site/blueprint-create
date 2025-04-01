@@ -1,5 +1,5 @@
 // src/config/easterEggs.ts
-import { EasterEggDefinition } from '@/schemas/user.schema';
+import type { EasterEggDefinition } from '@/schemas/user.schema';
 import i18next from 'i18next';
 
 /**

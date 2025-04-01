@@ -7,7 +7,7 @@ import { FiltersContainer } from '@/components/layout/FiltersContainer';
 import { ItemGrid } from '@/components/layout/ItemGrid';
 import AddonCard from '@/components/features/addons/addon-card/AddonCard.tsx';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import { Addon } from '@/types';
+import type { Addon } from '@/types';
 
 const AddonsList = () => {
   const [query, setQuery] = useState('');
@@ -107,7 +107,7 @@ const AddonsList = () => {
               Reset
             </button>
           </div>
-          <div className='md:hidden'></div>
+          <div className='lg:hidden'></div>
           <SearchFilter value={query} onChange={setQuery} placeholder='Search addons...' />
           <SelectFilter
             label='Category'

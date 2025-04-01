@@ -1,0 +1,57 @@
+name: 📚 Documentation
+description: Suggest improvements to documentation
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping us improve our documentation!
+  
+  - type: dropdown
+    id: doc_type
+    attributes:
+      label: Documentation Type
+      description: What type of documentation needs improvement?
+      options:
+        - User guides
+        - API documentation
+        - Code comments
+        - README files
+        - Development guidelines
+        - Other
+    validations:
+      required: true
+      
+  - type: textarea
+    id: location
+    attributes:
+      label: Location
+      description: Where is the documentation that needs improvement?
+      placeholder: The documentation at [location] needs...
+    validations:
+      required: true
+      
+  - type: textarea
+    id: issue
+    attributes:
+      label: Issue Description
+      description: What is wrong or missing in the current documentation?
+      placeholder: The current documentation lacks...
+    validations:
+      required: true
+      
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested Improvement
+      description: What would you like to see added or changed?
+    validations:
+      required: true
+      
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context about the documentation request here
+    validations:
+      required: false

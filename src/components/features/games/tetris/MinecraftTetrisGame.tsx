@@ -226,59 +226,38 @@ const MinecraftTetris = () => {
     }
   }, [currentPiece, currentPosition, gameOver, isValidPosition]);
 
-  // Move a piece
-  const movePiece = useCallback(
-    (direction: 'left' | 'right' | 'down'): boolean => {
-      if (!currentPiece || gameOver) return false;
-      const newPosition: PositionInterface = { ...currentPosition };
-      switch (direction) {
-        case 'left':
-          newPosition.x -= 1;
-          break;
-        case 'right':
-          newPosition.x += 1;
-          break;
-        case 'down':
-          newPosition.y += 1;
-          break;
-        default:
-          return false;
+  // Clear completed lines
+  const clearLines = useCallback(
+    (board: BoardType): void => {
+      let newLinesCleared = 0;
+      for (let y = BOARD_HEIGHT - 1; y >= 0; y--) {
+        if (board[y].every((cell) => cell !== null)) {
+          newLinesCleared += 1;
+          // Remove completed line
+          for (let yy = y; yy > 0; yy--) {
+            board[yy] = [...board[yy - 1]];
+          }
+          // Add new empty line at the top
+          board[0] = Array(BOARD_WIDTH).fill(null);
+          // Check the same line again
+          y += 1;
+        }
       }
-      if (isValidPosition(currentPiece, newPosition)) {
-        setCurrentPosition(newPosition);
-        return true;
+      if (newLinesCleared > 0) {
+        const totalLinesCleared = linesCleared + newLinesCleared;
+        setLinesCleared(totalLinesCleared);
+        const newScore = score + newLinesCleared * 100 * level;
+        setScore(newScore);
+        // Increase level every 10 lines
+        const newLevel = Math.floor(totalLinesCleared / 10) + 1;
+        if (newLevel > level) {
+          setLevel(newLevel);
+          setSpeed(Math.max(100, 1000 - (newLevel - 1) * 100));
+        }
       }
-      // If we can't move down, place the piece
-      if (direction === 'down') {
-        placePiece();
-        return false;
-      }
-      return false;
     },
-    [currentPosition, currentPiece, gameOver, isValidPosition]
+    [score, level, linesCleared]
   );
-
-  // Hard drop - Fixed function
-  const hardDrop = useCallback((): void => {
-    if (!currentPiece || gameOver) return;
-
-    let newPosition = { ...currentPosition };
-    let canMoveDown = true;
-
-    // Keep moving down until we hit something
-    while (canMoveDown) {
-      if (isValidPosition(currentPiece, { ...newPosition, y: newPosition.y + 1 })) {
-        newPosition = { ...newPosition, y: newPosition.y + 1 };
-      } else {
-        canMoveDown = false;
-      }
-    }
-
-    // Update position
-    setCurrentPosition(newPosition);
-    // Place the piece immediately
-    placePiece();
-  }, [currentPiece, currentPosition, gameOver, isValidPosition]);
 
   // Place a piece on the board
   const placePiece = useCallback((): void => {
@@ -360,40 +339,62 @@ const MinecraftTetris = () => {
     score,
     highScore,
     canPlacePiece,
+    clearLines,
   ]);
 
-  // Clear completed lines
-  const clearLines = useCallback(
-    (board: BoardType): void => {
-      let newLinesCleared = 0;
-      for (let y = BOARD_HEIGHT - 1; y >= 0; y--) {
-        if (board[y].every((cell) => cell !== null)) {
-          newLinesCleared += 1;
-          // Remove completed line
-          for (let yy = y; yy > 0; yy--) {
-            board[yy] = [...board[yy - 1]];
-          }
-          // Add new empty line at the top
-          board[0] = Array(BOARD_WIDTH).fill(null);
-          // Check the same line again
-          y += 1;
-        }
+  // Move a piece
+  const movePiece = useCallback(
+    (direction: 'left' | 'right' | 'down'): boolean => {
+      if (!currentPiece || gameOver) return false;
+      const newPosition: PositionInterface = { ...currentPosition };
+      switch (direction) {
+        case 'left':
+          newPosition.x -= 1;
+          break;
+        case 'right':
+          newPosition.x += 1;
+          break;
+        case 'down':
+          newPosition.y += 1;
+          break;
+        default:
+          return false;
       }
-      if (newLinesCleared > 0) {
-        const totalLinesCleared = linesCleared + newLinesCleared;
-        setLinesCleared(totalLinesCleared);
-        const newScore = score + newLinesCleared * 100 * level;
-        setScore(newScore);
-        // Increase level every 10 lines
-        const newLevel = Math.floor(totalLinesCleared / 10) + 1;
-        if (newLevel > level) {
-          setLevel(newLevel);
-          setSpeed(Math.max(100, 1000 - (newLevel - 1) * 100));
-        }
+      if (isValidPosition(currentPiece, newPosition)) {
+        setCurrentPosition(newPosition);
+        return true;
       }
+      // If we can't move down, place the piece
+      if (direction === 'down') {
+        placePiece();
+        return false;
+      }
+      return false;
     },
-    [score, level, linesCleared]
+    [currentPosition, currentPiece, gameOver, isValidPosition, placePiece]
   );
+
+  // Hard drop - Fixed function
+  const hardDrop = useCallback((): void => {
+    if (!currentPiece || gameOver) return;
+
+    let newPosition = { ...currentPosition };
+    let canMoveDown = true;
+
+    // Keep moving down until we hit something
+    while (canMoveDown) {
+      if (isValidPosition(currentPiece, { ...newPosition, y: newPosition.y + 1 })) {
+        newPosition = { ...newPosition, y: newPosition.y + 1 };
+      } else {
+        canMoveDown = false;
+      }
+    }
+
+    // Update position
+    setCurrentPosition(newPosition);
+    // Place the piece immediately
+    placePiece();
+  }, [currentPosition, currentPiece, gameOver, isValidPosition, placePiece]);
 
   // Toggle keyboard layout
   const toggleKeyboardLayout = () => {

@@ -1,14 +1,14 @@
 // src/hooks/useCreateVersionProcessor.tsx
 
 import { useMemo } from 'react';
-import {
+import type {
   VersionInfo,
   AddonVersion,
   AddonDependency,
   IntegratedAddonData,
 } from '@/types/addons/addon-details';
 import { getAddonCreateCompatibility } from '@/utils/createCompatibility';
-import { ModrinthProject } from '@/types/addons/modrinth';
+import type { ModrinthProject } from '@/types/addons/modrinth';
 
 /**
  * Extract dependency projects for a given dependency ID

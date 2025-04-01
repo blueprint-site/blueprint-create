@@ -1,8 +1,47 @@
-// src/api/stores/userStore.ts
+/**
+ * Helper function to map Appwrite user data to our application's User type
+ */
+const mapAppwriteUserToUser = (appwriteUser: Models.User<Models.Preferences>): User => {
+  return {
+    $id: appwriteUser.$id,
+    $createdAt: appwriteUser.$createdAt,
+    $updatedAt: appwriteUser.$updatedAt,
+    name: appwriteUser.name,
+    registration: appwriteUser.registration,
+    status: appwriteUser.status,
+    labels: appwriteUser.labels || [],
+    passwordUpdate: appwriteUser.passwordUpdate,
+    email: appwriteUser.email,
+    phone: appwriteUser.phone,
+    emailVerification: appwriteUser.emailVerification,
+    phoneVerification: appwriteUser.phoneVerification,
+    mfa: appwriteUser.mfa,
+    prefs: mapAppwritePrefsToUserPreferences(appwriteUser.prefs),
+    targets: appwriteUser.targets || [],
+    accessedAt: appwriteUser.accessedAt,
+  };
+};
+
+/**
+ * Helper function to map Appwrite preferences to our application's UserPreferences type
+ */
+const mapAppwritePrefsToUserPreferences = (prefs: Models.Preferences): UserPreferences => {
+  return {
+    theme: prefs?.theme || 'light',
+    language: prefs?.language || 'en',
+    notificationsEnabled: prefs?.notificationsEnabled || false,
+    avatar: prefs?.avatar,
+    bio: prefs?.bio,
+    roles: prefs?.roles || [],
+    easterEggs: prefs?.easterEggs,
+  };
+};
+
 import { create } from 'zustand';
 import { account, functions } from '@/config/appwrite.ts';
-import { User, UserPreferences } from '@/types';
-import { ExecutionMethod, Models, OAuthProvider } from 'appwrite';
+import type { User, UserPreferences } from '@/types';
+import type { Models } from 'appwrite';
+import { ExecutionMethod, OAuthProvider } from 'appwrite';
 import logMessage from '@/components/utility/logs/sendLogs.tsx';
 
 interface UserState {
@@ -36,13 +75,12 @@ export const useUserStore = create<UserState>((set, get) => ({
   fetchUser: async () => {
     try {
       const userData = await account.get();
-      console.error('User Data loaded', userData);
       set({
-        user: userData as User,
-        preferences: userData.prefs as UserPreferences,
+        user: mapAppwriteUserToUser(userData),
+        preferences: mapAppwritePrefsToUserPreferences(userData.prefs),
       });
     } catch (error) {
-      console.log('User is not authenticated', error);
+      console.error('User is not authenticated', error);
     }
   },
 
@@ -147,7 +185,7 @@ export const useUserStore = create<UserState>((set, get) => ({
       set({ error: 'Login failed. Please check your credentials.' });
       logMessage(`Error logging in: ${error}`, 2, 'auth');
       // Reject with the error to handle it in the component
-      return Promise.reject(error);
+      return Promise.reject(new Error(`Login failed: ${error}`));
     }
   },
 
@@ -162,7 +200,7 @@ export const useUserStore = create<UserState>((set, get) => ({
     } catch (error) {
       set({ error: 'Registration failed. Please try again.' });
       logMessage(`Error registering: ${error}`, 2, 'auth');
-      return Promise.reject(error);
+      return Promise.reject(new Error(`Registration failed: ${error}`));
     }
   },
 
@@ -182,7 +220,7 @@ export const useUserStore = create<UserState>((set, get) => ({
     } catch (error) {
       console.error('Logout failed', error);
       set({ error: 'Logout failed. Please try again.', isLoading: false }); // Set error and clear loading state
-      return Promise.reject(error);
+      return Promise.reject(new Error(`Logout failed: ${error}`));
     } finally {
       set({ isLoading: false }); // Ensure loading state is cleared even if there's an error
     }
@@ -205,7 +243,7 @@ export const useUserStore = create<UserState>((set, get) => ({
       return Promise.resolve();
     } catch (error) {
       console.error('Error during OAuth authentication', error);
-      return Promise.reject(error);
+      return Promise.reject(new Error(`OAuth authentication failed: ${error}`));
     }
   },
 
@@ -224,7 +262,7 @@ export const useUserStore = create<UserState>((set, get) => ({
       }
     } catch (error) {
       console.error('Error during OAuth callback:', error);
-      return Promise.reject(error);
+      return Promise.reject(new Error(`OAuth callback failed: ${error}`));
     }
   },
 

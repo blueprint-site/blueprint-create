@@ -1,4 +1,4 @@
-import { Blog } from '@/types';
+import type { Blog } from '@/types';
 import { Card, CardContent } from '@/components/ui/card.tsx';
 import BlogTagsDisplay from '@/components/utility/blog/BlogTagsDisplay.tsx';
 import MarkdownDisplay from '@/components/utility/MarkdownDisplay.tsx';

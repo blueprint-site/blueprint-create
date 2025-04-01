@@ -6,12 +6,12 @@ import {
   createFabricVersionMap,
 } from '@/data/createVersions';
 
-import {
+import type {
   AddonCompatibilityData,
   AddonDependency,
   AddonVersion,
 } from '@/types/addons/addon-details';
-import { ModrinthVersionDependency } from '@/types/addons/modrinth';
+import type { ModrinthVersionDependency } from '@/types/addons/modrinth';
 
 /**
  * Helper function to check if a version ID is valid and get its normalized Create version

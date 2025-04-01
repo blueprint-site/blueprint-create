@@ -1,6 +1,6 @@
 // src/routes/gameRoutes.tsx
 import { lazy } from 'react';
-import { RouteObject } from 'react-router';
+import type { RouteObject } from 'react-router';
 
 const MinecraftTetris = lazy(
   () => import('@/components/features/games/tetris/MinecraftTetrisGame.tsx')

@@ -1,5 +1,5 @@
 // components/SchematicUploadForm/FileUploadField.tsx
-import { Control } from 'react-hook-form';
+import type { Control } from 'react-hook-form';
 import {
   FileUploader,
   FileUploaderContent,
@@ -15,7 +15,7 @@ import {
   FormDescription,
   FormMessage,
 } from '@/components/ui/form';
-import { SchematicFormValues } from '@/types';
+import type { SchematicFormValues } from '@/types';
 
 // Explicitly type allowed file fields
 type FileField = 'schematicFile' | 'imageFiles';
