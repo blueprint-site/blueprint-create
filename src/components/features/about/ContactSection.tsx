@@ -15,7 +15,7 @@ export function ContactSection() {
           title={t('about.socialsCard.card1.title')}
           badgeName='discord-plural'
           description={t('about.socialsCard.card1.description')}
-          link='https://discord.gg/WSJUCWZD'
+          link='https://discord.gg/kDa8YC8u5J'
         />
 
         <ContactCard

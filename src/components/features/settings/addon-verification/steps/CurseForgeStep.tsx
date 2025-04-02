@@ -26,7 +26,7 @@ export default function CurseForgeStep({ next, back }: StepProps) {
           <li>
             Get verified manually on our{' '}
             <a
-              href='https://discord.gg/AvAWFU5rhB'
+              href='https://discord.gg/kDa8YC8u5J'
               className='text-primary hover:underline'
               target='_blank'
               rel='noopener noreferrer'
