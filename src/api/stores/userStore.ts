@@ -1,42 +1,3 @@
-/**
- * Helper function to map Appwrite user data to our application's User type
- */
-const mapAppwriteUserToUser = (appwriteUser: Models.User<Models.Preferences>): User => {
-  return {
-    $id: appwriteUser.$id,
-    $createdAt: appwriteUser.$createdAt,
-    $updatedAt: appwriteUser.$updatedAt,
-    name: appwriteUser.name,
-    registration: appwriteUser.registration,
-    status: appwriteUser.status,
-    labels: appwriteUser.labels || [],
-    passwordUpdate: appwriteUser.passwordUpdate,
-    email: appwriteUser.email,
-    phone: appwriteUser.phone,
-    emailVerification: appwriteUser.emailVerification,
-    phoneVerification: appwriteUser.phoneVerification,
-    mfa: appwriteUser.mfa,
-    prefs: mapAppwritePrefsToUserPreferences(appwriteUser.prefs),
-    targets: appwriteUser.targets || [],
-    accessedAt: appwriteUser.accessedAt,
-  };
-};
-
-/**
- * Helper function to map Appwrite preferences to our application's UserPreferences type
- */
-const mapAppwritePrefsToUserPreferences = (prefs: Models.Preferences): UserPreferences => {
-  return {
-    theme: prefs?.theme || 'light',
-    language: prefs?.language || 'en',
-    notificationsEnabled: prefs?.notificationsEnabled || false,
-    avatar: prefs?.avatar,
-    bio: prefs?.bio,
-    roles: prefs?.roles || [],
-    easterEggs: prefs?.easterEggs,
-  };
-};
-
 import { create } from 'zustand';
 import { account, functions } from '@/config/appwrite.ts';
 import type { User, UserPreferences } from '@/types';
@@ -70,14 +31,14 @@ export const useUserStore = create<UserState>((set, get) => ({
   isLoading: false,
 
   /**
-   * Fetches the currently logged-in user's data and preferences from the Appwrite account.
+   * Fetch and handle the user data, casting to our extended User type
    */
   fetchUser: async () => {
     try {
-      const userData = await account.get();
+      const userData = (await account.get()) as User;
       set({
-        user: mapAppwriteUserToUser(userData),
-        preferences: mapAppwritePrefsToUserPreferences(userData.prefs),
+        user: userData,
+        preferences: userData.prefs,
       });
     } catch (error) {
       console.error('User is not authenticated', error);
@@ -90,7 +51,7 @@ export const useUserStore = create<UserState>((set, get) => ({
   getUserSessions: async (): Promise<Models.Session[]> => {
     try {
       const sessionList = await account.listSessions();
-      return sessionList.sessions; // Retourne bien un tableau de sessions
+      return sessionList.sessions;
     } catch (error) {
       console.error('Error fetching user sessions:', error);
       return [];
