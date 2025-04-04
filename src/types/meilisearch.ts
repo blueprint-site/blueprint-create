@@ -1,12 +1,8 @@
-import type { Hits, SearchResponse } from 'meilisearch';
-import type { Addon, Schematic, Blog } from '@/types/appwrite';
-import type { AddonWithParsedFields } from '@/types/addons/addon-details';
+import type { Blog, RawBlog, Addon, Schematic } from './appwrite';
+import type { SearchResponse, Hits } from 'meilisearch';
 
 /**
  * Type definitions for Meilisearch responses
- *
- * These types build on our canonical Appwrite document types
- * to provide proper typing for search results.
  */
 
 // Addon search types
@@ -24,9 +20,20 @@ export type MeiliBlogResponse = SearchResponse<Blog>;
 export type MeiliBlogHits = Hits<Blog>;
 export type MeiliBlogHit = MeiliBlogHits[number];
 
+// Raw blog search types (before parsing JSON fields)
+export type MeiliRawBlogResponse = SearchResponse<RawBlog>;
+export type MeiliRawBlogHits = Hits<RawBlog>;
+export type MeiliRawBlogHit = MeiliRawBlogHits[number];
+
+// Simple Meilisearch result type for direct API responses
+export interface MeiliSearchResult<T> {
+  hits: T[];
+  query: string;
+  processingTimeMs: number;
+  estimatedTotalHits: number;
+}
 /**
- * Utility type for search results that combines React Query's result
- * with document-specific data
+ * Utility type for search results with React Query metadata
  */
 export interface SearchResult<T> {
   data: T[];
@@ -41,7 +48,7 @@ export interface SearchResult<T> {
   limit?: number;
 }
 
-// Use the extended addon type for search results
-export type SearchAddonResult = SearchResult<AddonWithParsedFields>;
+// Define search result types using the generic SearchResult
+export type SearchAddonResult = SearchResult<Addon>;
 export type SearchSchematicResult = SearchResult<Schematic>;
 export type SearchBlogResult = SearchResult<Blog>;
