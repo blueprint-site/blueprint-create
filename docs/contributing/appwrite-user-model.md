@@ -31,12 +31,10 @@ export interface UserPreferences extends Models.Preferences {
     lastDiscovery?: number;
   } | null;
   betaTester?: BetaTesterPrefs;
-}
+};
 
 // Extended user model
-export interface User extends Models.User<UserPreferences> {
-  // No additional fields needed
-}
+export type User = Models.User<UserPreferences>;
 ```
 
 ## Using the User Model
