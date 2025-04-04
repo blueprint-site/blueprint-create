@@ -1,9 +1,13 @@
 import searchClient from '@/config/meilisearch';
 
 import { useQuery } from '@tanstack/react-query';
-import type { SearchSchematicsProps, SearchSchematicsResult } from '@/types';
-import type { Schematic } from '@/types/appwrite';
-import type { MeiliSchematicResponse, MeiliSchematicHits } from '@/types/meilisearch';
+import type {
+  MeiliSchematicHits,
+  MeiliSchematicResponse,
+  Schematic,
+  SearchSchematicResult,
+  SearchSchematicsProps,
+} from '@/types';
 
 export const useSearchSchematics = ({
   query = '',
@@ -14,7 +18,7 @@ export const useSearchSchematics = ({
   loaders = 'all',
   create_versions = 'All',
   id = 'all',
-}: SearchSchematicsProps): SearchSchematicsResult => {
+}: SearchSchematicsProps): SearchSchematicResult => {
   console.log('search triggered');
   if (query === '') {
     query = '*';

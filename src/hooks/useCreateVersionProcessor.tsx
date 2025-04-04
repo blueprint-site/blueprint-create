@@ -6,9 +6,9 @@ import type {
   AddonVersion,
   AddonDependency,
   IntegratedAddonData,
-} from '@/types/addons/addon-details';
+  ModrinthProject,
+} from '@/types';
 import { getAddonCreateCompatibility } from '@/utils/createCompatibility';
-import type { ModrinthProject } from '@/types/addons/modrinth';
 
 /**
  * Extract dependency projects for a given dependency ID

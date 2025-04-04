@@ -1,10 +1,10 @@
-import type { ChangeEvent} from 'react';
+import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Input } from '@/components/ui/input.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Card, CardContent } from '@/components/ui/card.tsx';
-import type { Blog, Tag } from '@/types';
+import type { Blog, BlogTag } from '@/types';
 import { useUserStore } from '@/api/stores/userStore';
 import ImageUploader from '@/components/utility/ImageUploader.tsx';
 import MarkdownEditor from '@/components/utility/MarkdownEditor.tsx';
@@ -122,7 +122,7 @@ export const BlogEditor = () => {
               <TagSelector
                 value={blogState?.tags || []}
                 db='blog'
-                onChange={(value: Tag[]) =>
+                onChange={(value: BlogTag[]) =>
                   setBlogState((prev) => (prev ? { ...prev, tags: value ?? undefined } : null))
                 }
               />

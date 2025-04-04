@@ -1,8 +1,5 @@
 // src/types/index.ts
 import type { z } from 'zod';
-import type { UseQueryResult } from '@tanstack/react-query';
-import type { Schematic } from '@/types/appwrite';
-import type { AddonWithParsedFields } from '@/types/addons/addon-details';
 
 export type {
   User,
@@ -11,9 +8,31 @@ export type {
   FeatureFlag,
   Schematic,
   Addon,
+  Blog,
+  BlogTag,
+  BlogLink,
+  RawBlog,
+  Tag,
 } from '@/types/appwrite';
 
-export type { AddonWithParsedFields } from '@/types/addons/addon-details';
+export type {
+  AddonWithParsedFields,
+  AddonCompatibilityData,
+  AddonDependency,
+  AddonVersion,
+  IntegratedAddonData,
+  VersionInfo,
+  ExternalLink,
+} from '@/types/addons/addon-details';
+
+export type {
+  EnvironmentCompatibilityProps,
+  Dependencies,
+  Dependency,
+  DependencyTooltipProps,
+  DependencyBadgeProps,
+  DependencySectionProps,
+} from '@/types/addons/dependencies';
 
 import type {
   ScreenshotSchema,
@@ -23,7 +42,6 @@ import type {
   LogoSchema,
   HashSchema,
   SortableGameVersionSchema,
-  DependencySchema,
   ModuleSchema,
   LatestFilesIndexSchema,
   SocialLinkSchema,
@@ -31,6 +49,20 @@ import type {
   LatestFileSchema,
   LicenseSchema,
 } from '@/schemas/addon.schema';
+
+export type { CurseForgeRawObject } from '@/types/addons/curseforge';
+export type {
+  ModrinthRawObject,
+  ModrinthVersionDependency,
+  ModrinthVersion,
+  ModrinthGalleryImage,
+  ModrinthProject,
+  ModrinthVersionsResponse,
+  ModrinthDependenciesResponse,
+  ModrinthUser,
+  ModrinthUserProjects,
+  CondensedModrinthProject,
+} from '@/types/addons/modrinth';
 
 export type Screenshot = z.infer<typeof ScreenshotSchema>;
 export type Links = z.infer<typeof LinksSchema>;
@@ -40,30 +72,27 @@ export type License = z.infer<typeof LicenseSchema>;
 export type Logo = z.infer<typeof LogoSchema>;
 export type Hash = z.infer<typeof HashSchema>;
 export type SortableGameVersion = z.infer<typeof SortableGameVersionSchema>;
-export type Dependency = z.infer<typeof DependencySchema>;
 export type Module = z.infer<typeof ModuleSchema>;
 export type LatestFilesIndex = z.infer<typeof LatestFilesIndexSchema>;
 export type SocialLink = z.infer<typeof SocialLinkSchema>;
 export type ServerAffiliation = z.infer<typeof ServerAffiliationSchema>;
 export type LatestFile = z.infer<typeof LatestFileSchema>;
 
+// These schemas are imported for Zod inference only
 import type {
-  BlogSchema,
-  TagSchema,
+  BlogFormSchema,
   CreateBlogSchema,
   UpdateBlogSchema,
   BlogFilterSchema,
   SearchBlogPropsSchema,
-  SearchBlogResultSchema,
 } from '@/schemas/blog.schema';
 
-export type Blog = z.infer<typeof BlogSchema>;
-export type Tag = z.infer<typeof TagSchema>;
+// Blog types with schema-based validation
+export type BlogFormValues = z.infer<typeof BlogFormSchema>;
 export type CreateBlogInput = z.infer<typeof CreateBlogSchema>;
 export type UpdateBlogInput = z.infer<typeof UpdateBlogSchema>;
 export type BlogFilter = z.infer<typeof BlogFilterSchema>;
 export type SearchBlogProps = z.infer<typeof SearchBlogPropsSchema>;
-export type SearchBlogResult = z.infer<typeof SearchBlogResultSchema>;
 
 import type {
   createSchematicSchema,
@@ -75,28 +104,25 @@ export type SearchSchematicsProps = z.infer<typeof searchSchematicsPropsSchema>;
 export type SchematicFormValues = z.infer<typeof schematicFormSchema>;
 export type CreateSchematic = z.infer<typeof createSchematicSchema>;
 
-export type SearchSchematicsResult = Pick<
-  UseQueryResult<unknown>,
-  'isLoading' | 'isError' | 'error' | 'isFetching'
-> & {
-  data: Schematic[];
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-  totalHits: number;
-  page: number;
-};
-
-export type SearchAddonResult = Pick<
-  UseQueryResult<unknown>,
-  'isLoading' | 'isError' | 'error' | 'isFetching'
-> & {
-  data: AddonWithParsedFields[];
-  hasNextPage: boolean;
-  hasPreviousPage?: boolean;
-  totalHits: number;
-  page: number;
-  limit?: number;
-};
+// Import search result types from meilisearch.ts
+export type {
+  SearchSchematicResult,
+  SearchAddonResult,
+  SearchBlogResult,
+  MeiliSearchResult,
+  MeiliBlogResponse,
+  MeiliBlogHit,
+  MeiliRawBlogResponse,
+  MeiliRawBlogHit,
+  MeiliAddonResponse,
+  MeiliAddonHits,
+  MeiliAddonHit,
+  MeiliSchematicResponse,
+  MeiliSchematicHits,
+  MeiliSchematicHit,
+  MeiliBlogHits,
+  MeiliRawBlogHits,
+} from '@/types/meilisearch.ts';
 
 import type {
   CreateFeatureFlagSchema,

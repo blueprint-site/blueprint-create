@@ -1,6 +1,6 @@
 // src/hooks/useDependencyProcessor.ts
 import { useMemo } from 'react';
-import type { AddonVersion } from '@/types/addons/addon-details';
+import type { AddonVersion } from '@/types';
 import {
   CREATE_MOD_IDS,
   createForgeVersionMap,
