@@ -23,10 +23,11 @@ const COLLECTION_ID = '67b2310d00356b0cb53c';
 /**
  * Query hook to fetch a single schematic by its ID.
  */
-export const useFetchSchematic = (id: string) => {
+export const useFetchSchematic = (id?: string) => {
   return useQuery<Schematic | null>({
     queryKey: ['schematics', id],
     queryFn: async () => {
+      if (!id) return null;
       try {
         const response = await databases.getDocument<Schematic>(DATABASE_ID, COLLECTION_ID, id);
 
