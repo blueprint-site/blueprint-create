@@ -59,7 +59,7 @@ export const updateSchematicSchema = z.object({
   create_versions: z.array(z.string()).optional(),
   modloaders: z.array(z.string()).optional(),
   categories: z.array(z.string()).min(1, 'At least one category is required').optional(),
-  sub_categories: z.array(z.string()).optional().optional(),
+  sub_categories: z.array(z.string()).optional(),
   slug: z.string().optional(),
   status: z.enum(['draft', 'published', 'archived']).default('published').optional(),
 });
