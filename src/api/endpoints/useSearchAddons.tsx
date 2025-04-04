@@ -1,53 +1,71 @@
 // /src/api/endpoints/useSearchAddons.tsx
-import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import searchClient from '@/config/meilisearch.ts';
-import type { Addon } from '@/types';
 import { useState, useEffect } from 'react';
+import type { Addon } from '@/types/appwrite';
+import type { AddonWithParsedFields } from '@/types/addons/addon-details';
+import type { MeiliAddonResponse, SearchAddonResult } from '@/types/meilisearch';
+import type { CurseForgeRawObject } from '@/types/addons/curseforge';
+import type { ModrinthRawObject } from '@/types/addons/modrinth';
 
-interface SearchAddonsResult {
-  data: Addon[];
-  isLoading: boolean;
-  isError: boolean;
-  error: Error | null;
-  isFetching: boolean;
-  hasNextPage: boolean;
-  totalHits: number;
+interface SearchAddonsProps {
+  query: string;
   page: number;
+  category?: string;
+  version?: string;
+  loaders?: string;
   limit?: number;
 }
 
-interface MeilisearchResponse {
-  hits: Addon[];
-  estimatedTotalHits: number;
+/**
+ * Process an addon to add parsed JSON fields
+ */
+function processAddon(addon: Addon): AddonWithParsedFields {
+  const processed: AddonWithParsedFields = { ...addon };
+
+  // If curseforge_raw or modrinth_raw are strings, parse them
+  if (typeof processed.curseforge_raw === 'string') {
+    try {
+      processed.curseforge_raw_parsed = JSON.parse(processed.curseforge_raw) as CurseForgeRawObject;
+    } catch (e) {
+      console.error('Failed to parse curseforge_raw JSON', e);
+      processed.curseforge_raw_parsed = null;
+    }
+  }
+
+  if (typeof processed.modrinth_raw === 'string') {
+    try {
+      processed.modrinth_raw_parsed = JSON.parse(processed.modrinth_raw) as ModrinthRawObject;
+    } catch (e) {
+      console.error('Failed to parse modrinth_raw JSON', e);
+      processed.modrinth_raw_parsed = null;
+    }
+  }
+
+  return processed;
 }
 
 /**
  * Hook to search for addons with filtering options
  *
- * @param query Search query string
- * @param page Current page number (1-indexed)
- * @param category Category filter
- * @param version Minecraft version filter
- * @param loaders Mod loaders filter
- * @param limit Number of results per page
+ * @param props Search parameters
  * @returns Search results with pagination info
  */
-export const useSearchAddons = (
-  query: string,
-  page: number,
-  category: string,
-  version: string,
-  loaders: string,
-  limit?: number
-): SearchAddonsResult => {
+export const useSearchAddons = ({
+  query,
+  page,
+  category,
+  version,
+  loaders,
+  limit = 16,
+}: SearchAddonsProps): SearchAddonResult => {
   const queryInput = query || '*'; // Default to '*' if query is empty
 
   // Define filter logic for category, version, and loaders
-  const filter = (): string => {
+  const buildFilter = (): string => {
     const filters: string[] = [];
 
-    const addFilter = (field: string, value: string) => {
+    const addFilter = (field: string, value?: string) => {
       if (value && value !== 'all' && value !== 'All') {
         const formattedValue = value.includes(' ') ? `"${value}"` : value;
         filters.push(`${field} = ${formattedValue}`);
@@ -59,29 +77,29 @@ export const useSearchAddons = (
     addFilter('minecraft_versions', version);
 
     // Add additional filters if needed
-    filters.push(`isValid = 'true'`); // Ensure only valid addons are returned
+    filters.push(`isValid = true`); // Ensure only valid addons are returned
 
     return filters.length > 0 ? filters.join(' AND ') : '';
   };
 
-  const queryResult: UseQueryResult<MeilisearchResponse, Error> = useQuery({
+  const { data, isLoading, isError, error, isFetching } = useQuery({
     queryKey: ['searchAddons', queryInput, page, category, version, loaders, limit],
-    queryFn: async (): Promise<MeilisearchResponse> => {
+    queryFn: async () => {
       const index = searchClient.index('addons');
-      const result = await index.search(queryInput, {
-        limit: limit ?? 16,
-        offset: (page - 1) * (limit ?? 16),
-        filter: filter(),
-      });
+
+      // Use the MeiliAddonResponse type to ensure proper typing
+      const result = (await index.search(queryInput, {
+        limit,
+        offset: (page - 1) * limit,
+        filter: buildFilter(),
+      })) as MeiliAddonResponse;
+
       return {
-        hits: result.hits as Addon[],
-        estimatedTotalHits: result.estimatedTotalHits,
+        hits: result.hits,
+        totalHits: result.estimatedTotalHits || 0,
       };
     },
-    enabled: true,
   });
-
-  const { data, isLoading, isError, error, isFetching } = queryResult;
 
   // State to store hasNextPage
   const [hasNextPage, setHasNextPage] = useState<boolean>(false);
@@ -89,21 +107,46 @@ export const useSearchAddons = (
   // Update hasNextPage only when data is available
   useEffect(() => {
     if (data) {
-      const newHasNextPage =
-        (page - 1) * (limit ?? 16) + data.hits.length < data.estimatedTotalHits;
+      const newHasNextPage = (page - 1) * limit + (data.hits?.length || 0) < (data.totalHits || 0);
       setHasNextPage(newHasNextPage);
     }
   }, [data, page, limit]);
 
+  // Process the addons to parse JSON fields if needed
+  const processedAddons = data?.hits?.map(processAddon) || [];
+
+  // Return the search result with proper typing
   return {
-    data: data?.hits || [],
+    data: processedAddons,
     isLoading,
     isError,
     error,
     isFetching,
     hasNextPage,
-    totalHits: data?.estimatedTotalHits ?? 0,
+    totalHits: data?.totalHits || 0,
     page,
     limit,
   };
+};
+
+/**
+ * Hook to search for addons with simplified parameters
+ * @deprecated Use the object parameter version instead
+ */
+export const useSearchAddonsLegacy = (
+  query: string,
+  page: number,
+  category: string,
+  version: string,
+  loaders: string,
+  limit?: number
+): SearchAddonResult => {
+  return useSearchAddons({
+    query,
+    page,
+    category,
+    version,
+    loaders,
+    limit,
+  });
 };

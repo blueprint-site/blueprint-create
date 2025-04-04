@@ -1,7 +1,8 @@
 // src/types/index.ts
 import type { z } from 'zod';
-
+import type { UseQueryResult } from '@tanstack/react-query';
 import type { Schematic } from '@/types/appwrite';
+import type { AddonWithParsedFields } from '@/types/addons/addon-details';
 
 export type {
   User,
@@ -9,10 +10,12 @@ export type {
   BetaTesterPrefs,
   FeatureFlag,
   Schematic,
+  Addon,
 } from '@/types/appwrite';
 
+export type { AddonWithParsedFields } from '@/types/addons/addon-details';
+
 import type {
-  AddonSchema,
   ScreenshotSchema,
   LinksSchema,
   CategorySchema,
@@ -29,7 +32,6 @@ import type {
   LicenseSchema,
 } from '@/schemas/addon.schema';
 
-export type Addon = z.infer<typeof AddonSchema>;
 export type Screenshot = z.infer<typeof ScreenshotSchema>;
 export type Links = z.infer<typeof LinksSchema>;
 export type Category = z.infer<typeof CategorySchema>;
@@ -72,15 +74,28 @@ import type {
 export type SearchSchematicsProps = z.infer<typeof searchSchematicsPropsSchema>;
 export type SchematicFormValues = z.infer<typeof schematicFormSchema>;
 export type CreateSchematic = z.infer<typeof createSchematicSchema>;
+
 export type SearchSchematicsResult = Pick<
   UseQueryResult<unknown>,
   'isLoading' | 'isError' | 'error' | 'isFetching'
 > & {
-  data: Schematic[]; // Use the canonical Schematic type here
+  data: Schematic[];
   hasNextPage: boolean;
   hasPreviousPage: boolean;
   totalHits: number;
   page: number;
+};
+
+export type SearchAddonResult = Pick<
+  UseQueryResult<unknown>,
+  'isLoading' | 'isError' | 'error' | 'isFetching'
+> & {
+  data: AddonWithParsedFields[];
+  hasNextPage: boolean;
+  hasPreviousPage?: boolean;
+  totalHits: number;
+  page: number;
+  limit?: number;
 };
 
 import type {
@@ -106,13 +121,7 @@ export type GitHubRepo = z.infer<typeof GitHubRepoSchema>;
 export type GitHubContributorsResponse = z.infer<typeof GitHubContributorsResponseSchema>;
 
 import type { AdminLogsSchema } from '@/schemas/adminLogs.schema.tsx';
-
 export type AdminLogs = z.infer<typeof AdminLogsSchema>;
 
 import type { OAuthProvidersSchema } from '@/schemas/OAuthProviders.schema.tsx';
-// Import UseQueryResult explicitly at the top
-import type { UseQueryResult } from '@tanstack/react-query';
-
-// Remove redundant import since we already have export type { Schematic } above
-
 export type OAuthProvidersType = z.infer<typeof OAuthProvidersSchema>;
