@@ -2,11 +2,14 @@
 import { useQuery } from '@tanstack/react-query';
 import searchClient from '@/config/meilisearch.ts';
 import { useState, useEffect } from 'react';
-import type { Addon } from '@/types/appwrite';
-import type { AddonWithParsedFields } from '@/types/addons/addon-details';
-import type { MeiliAddonResponse, SearchAddonResult } from '@/types/meilisearch';
-import type { CurseForgeRawObject } from '@/types/addons/curseforge';
-import type { ModrinthRawObject } from '@/types/addons/modrinth';
+import type {
+  Addon,
+  AddonWithParsedFields,
+  CurseForgeRawObject,
+  ModrinthRawObject,
+  SearchAddonResult,
+  MeiliAddonResponse,
+} from '@/types';
 
 interface SearchAddonsProps {
   query: string;

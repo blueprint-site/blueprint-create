@@ -14,7 +14,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from '@/api';
 import { databases, ID } from '@/config/appwrite.ts';
 import { Query } from 'appwrite';
-import type { Schematic } from '@/types/appwrite';
+import type { Schematic } from '@/types';
 
 // Appwrite database configuration
 const DATABASE_ID = '67b1dc430020b4fb23e3';

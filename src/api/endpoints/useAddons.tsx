@@ -2,10 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from '@/hooks/useToast';
 import { databases } from '@/config/appwrite';
 import { Query } from 'appwrite';
-import type { Addon } from '@/types/appwrite';
-import type { AddonWithParsedFields } from '@/types/addons/addon-details';
-import type { CurseForgeRawObject } from '@/types/addons/curseforge';
-import type { ModrinthRawObject } from '@/types/addons/modrinth';
+import type { Addon, AddonWithParsedFields, CurseForgeRawObject, ModrinthRawObject } from '@/types';
 
 const DATABASE_ID = '67b1dc430020b4fb23e3';
 const COLLECTION_ID = '67b1dc4b000762a0ccc6';
