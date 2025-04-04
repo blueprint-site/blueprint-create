@@ -121,3 +121,15 @@ export interface LoggedUserContextType {
 
   setError: (error: string | null) => void;
 }
+
+import type {
+  FeaturedAddonSchema,
+  updateFeaturedAddonSchema,
+} from '@/schemas/featuredAddon.schema';
+
+// Import canonical types from appwrite.ts
+export type { FeaturedAddon } from '@/types/appwrite';
+
+// Form validation types - NOT document types
+export type FeaturedAddonFormValues = z.infer<typeof FeaturedAddonSchema>;
+export type UpdateFeaturedAddonFormValues = z.infer<typeof updateFeaturedAddonSchema>;
