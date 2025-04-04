@@ -3,6 +3,7 @@ import type { FeaturedAddon } from '@/types';
 import { FeaturedAddonSchema } from '@/schemas/featuredAddon.schema';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { ID, Query } from 'appwrite';
+import { toast } from '@/hooks/useToast';
 
 const DATABASE_ID = '67ed41fb000467814396';
 const COLLECTION_ID = 'featured_addons';
@@ -59,8 +60,16 @@ export const useCreateFeaturedAddon = () => {
           ID.unique(),
           addon
         );
+        toast({
+          className: 'bg-surface-3 border-ring text-foreground',
+          title: 'Featured addon created',
+        });
         return response;
       } catch (error) {
+        toast({
+          className: 'bg-surface-3 border-ring text-foreground',
+          title: 'Error creating featured addon',
+        });
         console.error('Error creating featured addon:', error);
         throw error;
       }
@@ -79,8 +88,16 @@ export const useUpdateFeaturedAddon = () => {
           addon.$id,
           addon
         );
+        toast({
+          className: 'bg-surface-3 border-ring text-foreground',
+          title: 'Featured addon updated',
+        });
         return response;
       } catch (error) {
+        toast({
+          className: 'bg-surface-3 border-ring text-foreground',
+          title: 'Error updating featured addon',
+        });
         console.error('Error updating featured addon:', error);
         throw error;
       }
@@ -94,8 +111,16 @@ export const useDeleteFeaturedAddon = () => {
     mutationFn: async (id: string) => {
       try {
         const response = await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
+        toast({
+          className: 'bg-surface-3 border-ring text-foreground',
+          title: 'Featured addon deleted',
+        });
         return response;
       } catch (error) {
+        toast({
+          className: 'bg-surface-3 border-ring text-foreground',
+          title: 'Error deleting featured addon',
+        });
         console.error('Error deleting featured addon:', error);
         throw error;
       }
