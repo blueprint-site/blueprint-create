@@ -1,7 +1,15 @@
 // src/types/index.ts
 import type { z } from 'zod';
 
-export type { User, UserPreferences, BetaTesterPrefs, FeatureFlag } from '@/types/appwrite';
+import type { Schematic } from '@/types/appwrite';
+
+export type {
+  User,
+  UserPreferences,
+  BetaTesterPrefs,
+  FeatureFlag,
+  Schematic,
+} from '@/types/appwrite';
 
 import type {
   AddonSchema,
@@ -57,19 +65,23 @@ export type SearchBlogResult = z.infer<typeof SearchBlogResultSchema>;
 
 import type {
   createSchematicSchema,
-  partialSchematicSchema,
   schematicFormSchema,
-  schematicSchema,
   searchSchematicsPropsSchema,
-  searchSchematicsResultSchema,
 } from '@/schemas/schematic.schema';
 
 export type SearchSchematicsProps = z.infer<typeof searchSchematicsPropsSchema>;
 export type SchematicFormValues = z.infer<typeof schematicFormSchema>;
-export type Schematic = z.infer<typeof schematicSchema>;
-export type PartialSchematic = z.infer<typeof partialSchematicSchema>;
 export type CreateSchematic = z.infer<typeof createSchematicSchema>;
-export type SearchSchematicsResult = z.infer<typeof searchSchematicsResultSchema>;
+export type SearchSchematicsResult = Pick<
+  UseQueryResult<unknown>,
+  'isLoading' | 'isError' | 'error' | 'isFetching'
+> & {
+  data: Schematic[]; // Use the canonical Schematic type here
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  totalHits: number;
+  page: number;
+};
 
 import type {
   CreateFeatureFlagSchema,
@@ -98,5 +110,9 @@ import type { AdminLogsSchema } from '@/schemas/adminLogs.schema.tsx';
 export type AdminLogs = z.infer<typeof AdminLogsSchema>;
 
 import type { OAuthProvidersSchema } from '@/schemas/OAuthProviders.schema.tsx';
+// Import UseQueryResult explicitly at the top
+import type { UseQueryResult } from '@tanstack/react-query';
+
+// Remove redundant import since we already have export type { Schematic } above
 
 export type OAuthProvidersType = z.infer<typeof OAuthProvidersSchema>;

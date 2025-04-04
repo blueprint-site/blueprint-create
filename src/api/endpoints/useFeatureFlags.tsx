@@ -43,7 +43,6 @@ export async function fetchFeatureFlag(userId: string, flagKey: string): Promise
 
     if (response.total === 0) return false;
 
-    // Now TypeScript knows all the properties in our FeatureFlag
     const feature: FeatureFlag = response.documents[0];
 
     return evaluateFlag(feature, userId);
