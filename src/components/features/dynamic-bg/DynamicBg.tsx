@@ -29,7 +29,14 @@ export const DynamicBg = ({
   const [containerHeight, setContainerHeight] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { data: hits } = useSearchAddons(query, page, category, version, loaders, limit);
+  const { data: hits } = useSearchAddons({
+    query,
+    page,
+    category,
+    version,
+    loaders,
+    limit,
+  });
 
   useEffect(() => {
     if (hits && hits.length > 0) {

@@ -26,6 +26,8 @@ export interface Addon extends Models.Document {
   categories: string[];
   downloads: number;
   icon: string;
+  created_at: string | null;
+  updated_at: string | null;
   curseforge_raw: string | null;
   modrinth_raw: string | null;
   sources: string[];

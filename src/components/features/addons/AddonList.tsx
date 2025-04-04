@@ -25,7 +25,14 @@ const AddonsList = () => {
     isLoading,
     isFetching,
     hasNextPage,
-  } = useSearchAddons(query, page, category, version, loaders, ITEMS_PER_PAGE);
+  } = useSearchAddons({
+    query,
+    page,
+    category,
+    version,
+    loaders,
+    limit: ITEMS_PER_PAGE,
+  });
 
   // Use the useInfiniteScroll hook
   const { sentinelRef, loadingMore } = useInfiniteScroll({
