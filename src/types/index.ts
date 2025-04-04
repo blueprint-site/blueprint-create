@@ -123,10 +123,10 @@ export interface LoggedUserContextType {
 }
 
 import type {
-  createFeaturedAddonSchema,
+  FeaturedAddonSchema,
   updateFeaturedAddonSchema,
 } from '@/schemas/featuredAddon.schema';
 
 // Form value types
-export type CreateFeaturedAddonFormValues = z.infer<typeof createFeaturedAddonSchema>;
+export type FeaturedAddon = z.infer<typeof FeaturedAddonSchema>;
 export type UpdateFeaturedAddonFormValues = z.infer<typeof updateFeaturedAddonSchema>;

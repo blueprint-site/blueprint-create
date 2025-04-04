@@ -1,5 +1,5 @@
 // Interface for featured addon, used in: admin Panel, /home slideshow
-export interface FeaturedAddon {
+export interface FeaturedAddonSchema {
   addon_id: string;
   title: string;
   description: string;
@@ -8,5 +8,5 @@ export interface FeaturedAddon {
   display_order: number;
   slug: string;
   active: boolean;
-  category: string;
+  category: string[] | null;
 }

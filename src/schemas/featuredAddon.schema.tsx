@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
 // Form validation schema for creating a featured addon
-export const createFeaturedAddonSchema = z.object({
+export const FeaturedAddonSchema = z.object({
+  $id: z.string(),
   addon_id: z.string().min(1, 'Addon ID is required').max(100),
   title: z.string().min(1, 'Title is required').max(150),
   description: z
@@ -14,7 +15,9 @@ export const createFeaturedAddonSchema = z.object({
   slug: z.string().min(1, 'Slug is required').max(100),
   active: z.boolean(),
   category: z.array(z.string()).nullable(),
+  $createdAt: z.string().datetime(),
+  $updatedAt: z.string().datetime(),
 });
 
 // Partial (optional values) schema for updating a featured addon
-export const updateFeaturedAddonSchema = createFeaturedAddonSchema.partial();
+export const updateFeaturedAddonSchema = FeaturedAddonSchema.partial();
