@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { HexColorPicker } from 'react-colorful';
-import type { Tag } from '@/types';
+import type { BlogTag } from '@/types';
 import { databases, ID } from '@/config/appwrite.ts';
 import type { Models } from 'appwrite';
 import { Query } from 'appwrite';
@@ -22,14 +22,14 @@ const SCHEMATICS_COLLECTION_ID = '67bf59d30021b5c117f5';
 let COLLECTION_ID = '67b2326100053d0e304f';
 
 interface TagSelectorProps {
-  readonly value?: Tag[];
+  readonly value?: BlogTag[];
   readonly db: 'blog' | 'schematics';
-  readonly onChange?: (selectedTags: Tag[]) => void;
+  readonly onChange?: (selectedTags: BlogTag[]) => void;
 }
 
 export default function TagSelector({ value, db, onChange }: TagSelectorProps) {
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+  const [tags, setTags] = useState<BlogTag[]>([]);
+  const [selectedTags, setSelectedTags] = useState<BlogTag[]>([]);
   const [newTag, setNewTag] = useState('');
   const [newTagColor, setNewTagColor] = useState('#3498db');
 
@@ -53,8 +53,8 @@ export default function TagSelector({ value, db, onChange }: TagSelectorProps) {
         Query.limit(100),
       ]);
 
-      const fetchedTags = response.documents.map((doc: Models.Document) => ({
-        id: doc.$id,
+      const fetchedTags: BlogTag[] = response.documents.map((doc: Models.Document) => ({
+        $id: doc.$id,
         value: doc.value,
         color: doc.color,
       }));
@@ -77,8 +77,8 @@ export default function TagSelector({ value, db, onChange }: TagSelectorProps) {
         color: newTagColor,
       });
 
-      const newCreatedTag: Tag = {
-        id: response.$id,
+      const newCreatedTag: BlogTag = {
+        $id: response.$id,
         value: response.value,
         color: response.color,
       };
@@ -94,16 +94,16 @@ export default function TagSelector({ value, db, onChange }: TagSelectorProps) {
   async function deleteTag(id: string) {
     try {
       await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
-      setTags((prev) => prev.filter((tag) => tag.id !== id));
+      setTags((prev) => prev.filter((tag) => tag.$id !== id));
     } catch (error) {
       console.error('Erreur lors de la suppression du tag :', error);
     }
   }
 
-  function toggleTagSelection(tag: Tag) {
+  function toggleTagSelection(tag: BlogTag) {
     setSelectedTags((prev) => {
-      const exists = prev.find((t) => t.id === tag.id);
-      const updatedTags = exists ? prev.filter((t) => t.id !== tag.id) : [...prev, tag];
+      const exists = prev.find((t) => t.$id === tag.$id);
+      const updatedTags = exists ? prev.filter((t) => t.$id !== tag.$id) : [...prev, tag];
       onChange?.(updatedTags);
       return updatedTags;
     });
@@ -123,15 +123,15 @@ export default function TagSelector({ value, db, onChange }: TagSelectorProps) {
               <SelectValue placeholder='Select tags' />
             </SelectTrigger>
             <SelectContent className='bg-surface-1'>
-              {tags.map((tag: Tag) => (
-                <SelectItem key={tag.id} value={tag.value} className={'cursor-pointer'}>
+              {tags.map((tag) => (
+                <SelectItem key={tag.$id} value={tag.value} className={'cursor-pointer'}>
                   <span className='flex items-center justify-between'>
                     <span className={`mr-2 bg-[${tag.color}]`}>{tag.value}</span>
                     <Button
                       variant='ghost'
                       className={'absolute right-0'}
                       size='sm'
-                      onClick={() => deleteTag(tag.id)}
+                      onClick={() => deleteTag(tag.$id)}
                     >
                       ❌
                     </Button>
@@ -165,7 +165,7 @@ export default function TagSelector({ value, db, onChange }: TagSelectorProps) {
       <h3>Selected Tags :</h3>
       <div className='m-2 flex flex-wrap gap-2'>
         {selectedTags.map((tag) => (
-          <span key={tag.id} className={`text-foreground rounded p-1 bg-[${tag.color}]`}>
+          <span key={tag.$id} className={`text-foreground rounded p-1 bg-[${tag.color}]`}>
             {tag.value}
           </span>
         ))}
