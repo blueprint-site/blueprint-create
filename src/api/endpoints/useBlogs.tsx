@@ -1,46 +1,18 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { databases } from '@/config/appwrite';
 import type { Blog } from '@/types';
+import { ID, Query } from 'appwrite';
+import { parseJsonFields, serializeJsonFields } from '../utils/json-fields';
 import { toast } from '@/hooks/useToast';
-import { databases, ID } from '@/config/appwrite.ts';
-import { Query } from 'appwrite';
 
-// Constantes pour votre base de données
 const DATABASE_ID = '67b1dc430020b4fb23e3';
 const COLLECTION_ID = '67b232540003ed4d8e4f';
-
-/**
- * Hook to delete a blog.
- * @returns {Mutation} Mutation object to delete a blog.
- */
-export const useDeleteBlog = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (id: string) => {
-      try {
-        await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
-        toast({
-          className: 'bg-surface-3 border-ring text-foreground',
-          title: '✅ Article deleted ✅',
-        });
-      } catch (error) {
-        toast({
-          className: 'bg-surface-3 border-ring text-foreground',
-          title: '❌ Error deleting the article ❌',
-        });
-        console.error('Error deleting blog:', error);
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['blogs'] });
-    },
-  });
-};
 
 /**
  * Hook to fetch a single blog by ID.
  * @param {string} blogId - The ID of the blog to fetch.
  * @returns {Query} Query object to fetch a single blog.
+ * @throws {Error} Throws an error if the blog cannot be fetched, or if the blogId is invalid.
  */
 export const useFetchBlog = (blogId?: string) => {
   return useQuery<Blog | null>({
@@ -48,28 +20,16 @@ export const useFetchBlog = (blogId?: string) => {
     queryFn: async () => {
       if (!blogId || blogId === 'new') return null;
 
-      const response = await databases.getDocument(DATABASE_ID, COLLECTION_ID, blogId);
-      const blogData: Blog = {
-        $id: response.$id,
-        title: response.title || '',
-        content: response.content || '',
-        slug: response.slug || '',
-        authors: response.author || '',
-        $createdAt: response.$createdAt || '',
-        $updatedAt: response.$updatedAt || '',
-        img_url: response.img_url || '',
-        status: response.status || '',
-        links: response.links ? JSON.parse(response.links as string) : [],
-        tags: response.tags ? JSON.parse(response.tags as string) : [],
-        likes: response.likes || '',
-        authors_uuid: response.authors_uuid || '',
-      };
-
-      return blogData;
+      try {
+        const response = await databases.getDocument(DATABASE_ID, COLLECTION_ID, blogId);
+        // Parse JSON fields before returning
+        return parseJsonFields(response);
+      } catch (error) {
+        console.error('Error fetching blog:', error);
+        return null;
+      }
     },
     enabled: Boolean(blogId),
-    staleTime: 1000 * 60 * 5, // Rafraîchissement tous les 5 minutes
-    retry: false, // Ne pas essayer en cas d'échec
   });
 };
 
@@ -86,33 +46,17 @@ export const useFetchBlogBySlug = (slug?: string) => {
       try {
         const queryParams = [Query.equal('slug', slug), Query.limit(1)];
 
-        const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, queryParams);
+        const response = await databases.listDocuments<Blog>(
+          DATABASE_ID,
+          COLLECTION_ID,
+          queryParams
+        );
 
         if (response.documents.length === 0) {
           return null;
         }
 
-        const doc = response.documents[0];
-
-        // Map the document to a Blog type as defined in the Blog schema
-        const blog: Blog = {
-          $id: doc.$id,
-          title: doc.title || '',
-          content: doc.content || '',
-          slug: doc.slug || '',
-          authors: Array.isArray(doc.authors) ? doc.authors : [],
-          $createdAt: doc.$createdAt || '',
-          $updatedAt: doc.$updatedAt || '',
-          img_url: doc.img_url || '',
-          status: doc.status || 'draft',
-          links: doc.links ? JSON.parse(doc.links as string) : null,
-          tags: doc.tags ? JSON.parse(doc.tags as string) : [],
-          blog_tags: doc.blog_tags || [],
-          likes: typeof doc.likes === 'number' ? doc.likes : 0,
-          authors_uuid: Array.isArray(doc.authors_uuid) ? doc.authors_uuid : [],
-        };
-
-        return blog;
+        return parseJsonFields(response.documents[0]);
       } catch (err) {
         console.error('Error fetching blog:', err);
         throw new Error('Failed to fetch blog');
@@ -183,31 +127,20 @@ export const useFetchBlogs = (
           queryParams.unshift(Query.search('tags', tagId));
         }
 
-        const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, queryParams);
+        const response = await databases.listDocuments<Blog>(
+          DATABASE_ID,
+          COLLECTION_ID,
+          queryParams
+        );
 
-        const blogs: Blog[] = response.documents.map((doc) => ({
-          $id: doc.$id,
-          title: doc.title || '',
-          content: doc.content || '',
-          slug: doc.slug || '',
-          authors: doc.authors || [],
-          $createdAt: doc.$createdAt || '',
-          $updatedAt: doc.$updatedAt || '',
-          img_url: doc.img_url || '',
-          status: doc.status || '',
-          links: doc.links ? JSON.parse(doc.links as string) : [],
-          tags: doc.tags ? JSON.parse(doc.tags as string) : [],
-          likes: doc.likes || 0,
-          authors_uuid: doc.authors_uuid || [],
-          // Add missing fields based on Blog schema
-          blog_tags: [], // This might need to be populated from somewhere else
-        }));
+        // Parse JSON fields for each blog
+        const parsedBlogs = response.documents.map((blog) => parseJsonFields(blog));
 
         const hasNextPage = page * limit < response.total;
         const hasPreviousPage = page > 1;
 
         return {
-          data: blogs,
+          data: parsedBlogs,
           isLoading: false,
           isFetching: false,
           hasNextPage,
@@ -225,35 +158,59 @@ export const useFetchBlogs = (
 };
 
 /**
- * Hook to save or update a blog.
- * @returns {Mutation} Mutation object to save or update a blog.
+ * Hook for saving a blog.
  */
 export const useSaveBlog = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (blog: Partial<Blog>) => {
-      // Sérialiser les objets JSON avant de les envoyer à Appwrite
-      const serializedBlog = {
-        ...blog,
-        authors: blog.authors ? blog.authors : [],
-        likes: blog.likes ? blog.likes : 0,
-        links: blog.links ? JSON.stringify(blog.links) : undefined,
-        tags: blog.tags ? JSON.stringify(blog.tags) : undefined,
-      };
+      // Serialize before saving
+      const serializedBlog = serializeJsonFields(blog);
 
-      // Si l'ID du blog n'est pas présent, créer un nouveau document
-      if (!blog.$id) {
-        return databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), serializedBlog);
+      if (blog.$id) {
+        return await databases.updateDocument(DATABASE_ID, COLLECTION_ID, blog.$id, serializedBlog);
+      } else {
+        return await databases.createDocument(
+          DATABASE_ID,
+          COLLECTION_ID,
+          ID.unique(),
+          serializedBlog
+        );
       }
-      // Si un ID existe, mettre à jour le document existant
-      return databases.updateDocument(DATABASE_ID, COLLECTION_ID, blog.$id, serializedBlog);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['blogs'] });
+      queryClient.invalidateQueries({ queryKey: ['blog'] });
     },
-    onError: (error) => {
-      console.log(error);
+  });
+};
+
+/**
+ * Hook to delete a blog.
+ * @returns {Mutation} Mutation object to delete a blog.
+ */
+export const useDeleteBlog = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      try {
+        await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
+        toast({
+          className: 'bg-surface-3 border-ring text-foreground',
+          title: '✅ Article deleted ✅',
+        });
+      } catch (error) {
+        toast({
+          className: 'bg-surface-3 border-ring text-foreground',
+          title: '❌ Error deleting the article ❌',
+        });
+        console.error('Error deleting blog:', error);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['blogs'] });
     },
   });
 };
