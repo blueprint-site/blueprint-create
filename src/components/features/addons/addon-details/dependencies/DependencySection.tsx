@@ -1,6 +1,6 @@
 import { DependencyBadge } from './DependencyBadge';
 import { DependencyTooltip } from './DependencyTooltip';
-import type { DependencySectionProps } from '@/types/addons/dependencies';
+import type { DependencySectionProps } from '@/types';
 
 /**
  * Maps dependency types to badge variants
