@@ -1,6 +1,8 @@
 // src/types/index.ts
 import type { z } from 'zod';
 
+export type { User, UserPreferences, BetaTesterPrefs, FeatureFlag } from '@/types/appwrite';
+
 import type {
   AddonSchema,
   ScreenshotSchema,
@@ -54,22 +56,6 @@ export type SearchBlogProps = z.infer<typeof SearchBlogPropsSchema>;
 export type SearchBlogResult = z.infer<typeof SearchBlogResultSchema>;
 
 import type {
-  UserSchema,
-  TargetSchema,
-  UserPreferencesSchema,
-  CreateUserSchema,
-  UpdateUserProfileSchema,
-  UpdateUserPreferencesSchema,
-} from '@/schemas/user.schema';
-
-export type User = z.infer<typeof UserSchema>;
-export type Target = z.infer<typeof TargetSchema>;
-export type UserPreferences = z.infer<typeof UserPreferencesSchema>;
-export type CreateUserInput = z.infer<typeof CreateUserSchema>;
-export type UpdateUserProfileInput = z.infer<typeof UpdateUserProfileSchema>;
-export type UpdateUserPreferencesInput = z.infer<typeof UpdateUserPreferencesSchema>;
-
-import type {
   createSchematicSchema,
   partialSchematicSchema,
   schematicFormSchema,
@@ -86,13 +72,11 @@ export type CreateSchematic = z.infer<typeof createSchematicSchema>;
 export type SearchSchematicsResult = z.infer<typeof searchSchematicsResultSchema>;
 
 import type {
-  FeatureFlagSchema,
   CreateFeatureFlagSchema,
   UpdateFeatureFlagSchema,
   FeatureFlagKeySchema,
 } from '@/schemas/featureFlag.schema';
 
-export type FeatureFlag = z.infer<typeof FeatureFlagSchema>;
 export type CreateFeatureFlag = z.infer<typeof CreateFeatureFlagSchema>;
 export type UpdateFeatureFlag = z.infer<typeof UpdateFeatureFlagSchema>;
 export type FeatureFlagKey = z.infer<typeof FeatureFlagKeySchema>;
@@ -116,20 +100,3 @@ export type AdminLogs = z.infer<typeof AdminLogsSchema>;
 import type { OAuthProvidersSchema } from '@/schemas/OAuthProviders.schema.tsx';
 
 export type OAuthProvidersType = z.infer<typeof OAuthProvidersSchema>;
-// LoggedUserContext type
-export interface LoggedUserContextType {
-  user: User | null;
-  preferences: UserPreferences | null;
-  error: string | null;
-
-  updatePreferences: (prefs: UserPreferences) => Promise<void>;
-
-  register: (name: string, email: string, password: string) => Promise<void>;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
-
-  handleOAuthLogin: (provider: 'google' | 'github' | 'discord') => void;
-  handleOAuthCallback: () => Promise<void>;
-
-  setError: (error: string | null) => void;
-}
