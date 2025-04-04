@@ -15,8 +15,8 @@ export const FeaturedAddonSchema = z.object({
   slug: z.string().min(1, 'Slug is required').max(100),
   active: z.boolean(),
   category: z.array(z.string()).nullable(),
-  $createdAt: z.string().datetime(),
-  $updatedAt: z.string().datetime(),
+  $createdAt: z.string().datetime().or(z.string()),
+  $updatedAt: z.string().datetime().or(z.string()),
 });
 
 // Partial (optional values) schema for updating a featured addon

@@ -5,8 +5,8 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { ID, Query } from 'appwrite';
 import { toast } from '@/hooks/useToast';
 
-const DATABASE_ID = '67ed41fb000467814396';
-const COLLECTION_ID = 'featured_addons';
+const DATABASE_ID = '67e6ec5c0032a90a14e6';
+const COLLECTION_ID = '67ed41fb000467814396';
 
 // Fetching only active addons
 export const useFetchFeaturedAddons = () => {
