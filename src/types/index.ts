@@ -121,3 +121,12 @@ export interface LoggedUserContextType {
 
   setError: (error: string | null) => void;
 }
+
+import type {
+  createFeaturedAddonSchema,
+  updateFeaturedAddonSchema,
+} from '@/schemas/featuredAddon.schema';
+
+// Form value types
+export type CreateFeaturedAddonFormValues = z.infer<typeof createFeaturedAddonSchema>;
+export type UpdateFeaturedAddonFormValues = z.infer<typeof updateFeaturedAddonSchema>;
