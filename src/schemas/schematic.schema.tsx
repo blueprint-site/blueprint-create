@@ -30,9 +30,8 @@ export const searchSchematicsPropsSchema = z.object({
   id: z.string().optional(),
 });
 
-// Database schema for stored schematics
-export const schematicSchema = z.object({
-  $id: z.string(),
+// For creating a new schematic (omit ID and other auto-generated fields)
+export const createSchematicSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string(),
   schematic_url: z.string().url('Must be a valid URL'),
@@ -45,28 +44,28 @@ export const schematicSchema = z.object({
   categories: z.array(z.string()).min(1, 'At least one category is required'),
   sub_categories: z.array(z.string()).optional(),
   slug: z.string(),
-  downloads: z.number().int().nonnegative().default(0),
   status: z.enum(['draft', 'published', 'archived']).default('published'),
-  $createdAt: z.string().datetime(),
-  $updatedAt: z.string().datetime(),
-  likes: z.number().int().nonnegative().default(0),
 });
 
-// For retrieving a schematic with optional fields
-export const partialSchematicSchema = schematicSchema.partial();
-
-// For creating a new schematic (omit ID and other auto-generated fields)
-export const createSchematicSchema = schematicSchema.omit({
-  $id: true,
-  downloads: true,
-  $createdAt: true,
-  $updatedAt: true,
-  likes: true, // Omit likes for creation schema
+// For updating a schematic
+export const updateSchematicSchema = z.object({
+  title: z.string().min(1, 'Title is required').optional(),
+  description: z.string().optional(),
+  schematic_url: z.string().url('Must be a valid URL').optional(),
+  image_urls: z.array(z.string().url('Must be a valid URL')).optional(),
+  user_id: z.string().optional(),
+  authors: z.array(z.string()).optional(),
+  game_versions: z.array(z.string()).optional(),
+  create_versions: z.array(z.string()).optional(),
+  modloaders: z.array(z.string()).optional(),
+  categories: z.array(z.string()).min(1, 'At least one category is required').optional(),
+  sub_categories: z.array(z.string()).optional().optional(),
+  slug: z.string().optional(),
+  status: z.enum(['draft', 'published', 'archived']).default('published').optional(),
 });
 
 // Schema for search results
 export const searchSchematicsResultSchema = z.object({
-  data: z.array(schematicSchema),
   isLoading: z.boolean(),
   isError: z.boolean(),
   error: z.instanceof(Error).nullable(),

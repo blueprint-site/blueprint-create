@@ -14,11 +14,87 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from '@/api';
 import { databases, ID } from '@/config/appwrite.ts';
 import { Query } from 'appwrite';
-import type { Schematic } from '@/types';
+import type { Schematic } from '@/types/appwrite';
 
 // Appwrite database configuration
 const DATABASE_ID = '67b1dc430020b4fb23e3';
 const COLLECTION_ID = '67b2310d00356b0cb53c';
+
+/**
+ * Query hook to fetch a single schematic by its ID.
+ */
+export const useFetchSchematic = (id: string) => {
+  return useQuery<Schematic | null>({
+    queryKey: ['schematics', id],
+    queryFn: async () => {
+      try {
+        const response = await databases.getDocument<Schematic>(DATABASE_ID, COLLECTION_ID, id);
+
+        return response;
+      } catch (error) {
+        console.error('Error fetching schematic:', error);
+        return null;
+      }
+    },
+    enabled: Boolean(id),
+    staleTime: 1000 * 60 * 5,
+    retry: false,
+  });
+};
+
+/**
+ * Query hook to fetch all schematics with optional category filtering.
+ */
+export const useFetchSchematics = (categories?: string[]) => {
+  return useQuery<Schematic[]>({
+    queryKey: ['schematics', categories],
+    queryFn: async () => {
+      try {
+        const filters = categories ? [Query.equal('categories', categories)] : [];
+
+        const response = await databases.listDocuments<Schematic>(
+          DATABASE_ID,
+          COLLECTION_ID,
+          filters
+        );
+
+        return response.documents;
+      } catch (error) {
+        console.error('Error fetching schematics:', error);
+        return [];
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    retry: false,
+  });
+};
+
+/**
+ * Query hook to fetch schematics for a specific user.
+ */
+export const useFetchUserSchematics = (user_id?: string) => {
+  return useQuery<Schematic[]>({
+    queryKey: ['usersSchematics', user_id],
+    queryFn: async () => {
+      try {
+        const filters = user_id ? [Query.equal('user_id', user_id)] : [];
+
+        const response = await databases.listDocuments<Schematic>(
+          DATABASE_ID,
+          COLLECTION_ID,
+          filters
+        );
+
+        return response.documents;
+      } catch (error) {
+        console.error('Error fetching user schematics:', error);
+        return [];
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    retry: false,
+  });
+};
 
 /**
  * Mutation hook to delete a schematic from the database.
@@ -47,133 +123,8 @@ export const useDeleteSchematics = (user_id?: string) => {
       }
     },
     onSuccess: async () => {
-      // Invalidating the query to refetch the list of schematics after the deletion
       await queryClient.invalidateQueries({ queryKey: ['usersSchematics', user_id] });
     },
-  });
-};
-
-/**
- * Query hook to fetch a single schematic by its ID.
- */
-export const useFetchSchematic = (id?: string) => {
-  return useQuery<Schematic | null>({
-    queryKey: ['schematics', id],
-    queryFn: async () => {
-      console.log('Schematics', id);
-      if (!id) return null;
-      const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
-        Query.equal('$id', id),
-      ]);
-
-      if (response.documents.length === 0) return null;
-
-      const doc = response.documents[0];
-      console.log(doc);
-      const schematicData: Schematic = {
-        $id: doc.$id,
-        title: doc.title,
-        description: doc.description || '',
-        schematic_url: doc.schematic_url || '',
-        likes: doc.likes || 0,
-        downloads: doc.downloads || 0,
-        image_urls: Array.isArray(doc.image_urls) ? doc.image_urls : [],
-        authors: Array.isArray(doc.authors) ? doc.authors : [],
-        user_id: doc.user_id || '',
-        game_versions: Array.isArray(doc.game_versions) ? doc.game_versions : [],
-        modloaders: Array.isArray(doc.game_versions) ? doc.game_versions : [],
-        slug: doc.slug || '',
-        create_versions: Array.isArray(doc.create_versions) ? doc.create_versions : [],
-        categories: Array.isArray(doc.categories) ? doc.categories : [],
-        sub_categories: Array.isArray(doc.sub_categories) ? doc.sub_categories : [],
-        status: doc.status || 'draft',
-        $createdAt: doc.$createdAt,
-        $updatedAt: doc.$updatedAt,
-      };
-
-      return schematicData;
-    },
-    enabled: Boolean(id),
-    staleTime: 1000 * 60 * 5,
-    retry: false,
-  });
-};
-
-/**
- * Query hook to fetch all schematics with optional category filtering.
- */
-export const useFetchSchematics = (categories?: string[]) => {
-  return useQuery<Schematic[]>({
-    queryKey: ['schematics', categories],
-    queryFn: async () => {
-      const filters = categories ? [Query.equal('schematics', categories)] : [];
-
-      const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, filters);
-
-      const schematics: Schematic[] = response.documents.map((doc) => ({
-        $id: doc.$id,
-        $createdAt: doc.$createdAt,
-        $updatedAt: doc.$updatedAt,
-        title: doc.title,
-        description: doc.description || '',
-        schematic_url: doc.schematic_url || '',
-        image_urls: Array.isArray(doc.image_urls) ? doc.image_urls : [],
-        downloads: doc.downloads || 0,
-        likes: doc.likes || 0,
-        authors: Array.isArray(doc.authors) ? doc.authors : [],
-        user_id: doc.user_id || '',
-        game_versions: Array.isArray(doc.game_versions) ? doc.game_versions : [],
-        modloaders: Array.isArray(doc.game_versions) ? doc.game_versions : [],
-        slug: doc.slug || '',
-        create_versions: Array.isArray(doc.create_versions) ? doc.create_versions : [],
-        categories: Array.isArray(doc.categories) ? doc.categories : [],
-        sub_categories: Array.isArray(doc.sub_categories) ? doc.sub_categories : [],
-        status: doc.status || 'draft',
-      }));
-
-      return schematics;
-    },
-    staleTime: 1000 * 60 * 5,
-    retry: false,
-  });
-};
-
-/**
- * Query hook to fetch schematics for a specific user.
- */
-export const useFetchUserSchematics = (user_id?: string) => {
-  return useQuery<Schematic[]>({
-    queryKey: ['usersSchematics', user_id],
-    queryFn: async () => {
-      const filters = user_id ? [Query.equal('user_id', user_id)] : [];
-
-      const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, filters);
-
-      const schematics: Schematic[] = response.documents.map((doc) => ({
-        $id: doc.$id,
-        $createdAt: doc.$createdAt,
-        $updatedAt: doc.$updatedAt,
-        title: doc.title,
-        description: doc.description || '',
-        schematic_url: doc.schematic_url || '',
-        image_urls: Array.isArray(doc.image_urls) ? doc.image_urls : [],
-        downloads: doc.downloads || 0,
-        likes: doc.likes || 0,
-        authors: Array.isArray(doc.authors) ? doc.authors : [],
-        user_id: doc.user_id || '',
-        game_versions: Array.isArray(doc.game_versions) ? doc.game_versions : [],
-        modloaders: Array.isArray(doc.game_versions) ? doc.game_versions : [],
-        slug: doc.slug || '',
-        create_versions: Array.isArray(doc.create_versions) ? doc.create_versions : [],
-        categories: Array.isArray(doc.categories) ? doc.categories : [],
-        sub_categories: Array.isArray(doc.sub_categories) ? doc.sub_categories : [],
-        status: doc.status || 'draft',
-      }));
-
-      return schematics;
-    },
-    staleTime: 1000 * 60 * 5,
-    retry: false,
   });
 };
 
@@ -187,8 +138,8 @@ export const useIncrementDownloads = () => {
     mutationFn: async (id: string) => {
       console.log(id);
       try {
-        // Récupérer les données actuelles du schématique
-        const response = await databases.getDocument(DATABASE_ID, COLLECTION_ID, id);
+        // Fetch the current schematic data with proper typing
+        const response = await databases.getDocument<Schematic>(DATABASE_ID, COLLECTION_ID, id);
         const updatedDownloads = (response.downloads || 0) + 1;
 
         // Mettre à jour le document avec le nombre de downloads incrémenté
@@ -224,8 +175,8 @@ export const useIncrementLikes = () => {
   return useMutation({
     mutationFn: async (id: string) => {
       try {
-        // Récupérer les données actuelles du schématique
-        const response = await databases.getDocument(DATABASE_ID, COLLECTION_ID, id);
+        // Fetch the current schematic data with proper typing
+        const response = await databases.getDocument<Schematic>(DATABASE_ID, COLLECTION_ID, id);
         const updatedLikes = (response.likes || 0) + 1;
 
         // Mettre à jour le document avec le nombre de likes incrémenté
@@ -262,10 +213,20 @@ export const useSaveSchematics = () => {
     mutationFn: async (schematic: Partial<Schematic>) => {
       // If the schematic does not have an ID, create a new document
       if (!schematic.$id) {
-        return databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), schematic);
+        return databases.createDocument<Schematic>(
+          DATABASE_ID,
+          COLLECTION_ID,
+          ID.unique(),
+          schematic
+        );
       }
 
-      return databases.updateDocument(DATABASE_ID, COLLECTION_ID, schematic.$id, schematic);
+      return databases.updateDocument<Schematic>(
+        DATABASE_ID,
+        COLLECTION_ID,
+        schematic.$id,
+        schematic
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['schematics'] }).then();

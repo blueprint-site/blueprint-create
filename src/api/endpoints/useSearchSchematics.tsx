@@ -1,7 +1,9 @@
 import searchClient from '@/config/meilisearch';
 
 import { useQuery } from '@tanstack/react-query';
-import type { Schematic, SearchSchematicsProps, SearchSchematicsResult } from '@/types';
+import type { SearchSchematicsProps, SearchSchematicsResult } from '@/types';
+import type { Schematic } from '@/types/appwrite';
+import type { MeiliSchematicResponse, MeiliSchematicHits } from '@/types/meilisearch';
 
 export const useSearchSchematics = ({
   query = '',
@@ -50,34 +52,20 @@ export const useSearchSchematics = ({
     ],
     queryFn: async () => {
       const index = searchClient.index('schematics');
-      const result = await index.search(query, {
+      // Fetch raw results from Meilisearch with proper typing
+      const result = (await index.search(query, {
         limit: 20,
         offset: (page - 1) * 20,
         filter: filter(),
-      });
-      const schematicsList = result.hits as Schematic[];
-      console.log(filter());
+      })) as MeiliSchematicResponse;
 
-      // Transform `Hits<SchematicsAnswer>` into `Schematic[]`
-      const schematics: Schematic[] = schematicsList.map((hit) => ({
-        $id: hit.$id, // Ensure this matches the property returned by Meilisearch
-        $createdAt: hit.$createdAt,
-        $updatedAt: hit.$updatedAt,
-        title: hit.title,
-        description: hit.description,
-        schematic_url: hit.schematic_url,
-        image_urls: hit.image_urls,
-        authors: hit.authors,
-        user_id: hit.user_id,
-        downloads: hit.downloads,
-        likes: hit.likes,
-        game_versions: hit.game_versions,
-        create_versions: hit.create_versions,
-        modloaders: hit.modloaders,
-        categories: hit.categories,
-        slug: hit.slug,
-        status: hit.status,
-      }));
+      // Access the hits with proper typing
+      const hits: MeiliSchematicHits = result.hits;
+
+      // Since Meilisearch already returns data in the Appwrite format,
+      // we can use the hits directly as Schematics with minimal transformation
+      // Convert to Schematic array, ensuring type safety without explicit 'any'
+      const schematics: Schematic[] = Array.isArray(hits) ? hits : [];
 
       return {
         data: schematics,
