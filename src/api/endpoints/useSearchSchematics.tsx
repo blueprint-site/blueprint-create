@@ -19,7 +19,7 @@ export const useSearchSchematics = ({
   if (query === '') {
     query = '*';
   }
-  // Define filter logic for category, version, and loaders
+
   const filter = (): string => {
     const filters: string[] = [];
     const addFilter = (field: string, value: string) => {
@@ -38,6 +38,7 @@ export const useSearchSchematics = ({
 
     return filters.length > 0 ? filters.join(' AND ') : '';
   };
+
   const queryResult = useQuery({
     queryKey: [
       'searchSchematics',
@@ -52,19 +53,13 @@ export const useSearchSchematics = ({
     ],
     queryFn: async () => {
       const index = searchClient.index('schematics');
-      // Fetch raw results from Meilisearch with proper typing
       const result = (await index.search(query, {
         limit: 20,
         offset: (page - 1) * 20,
         filter: filter(),
       })) as MeiliSchematicResponse;
 
-      // Access the hits with proper typing
       const hits: MeiliSchematicHits = result.hits;
-
-      // Since Meilisearch already returns data in the Appwrite format,
-      // we can use the hits directly as Schematics with minimal transformation
-      // Convert to Schematic array, ensuring type safety without explicit 'any'
       const schematics: Schematic[] = Array.isArray(hits) ? hits : [];
 
       return {
@@ -78,9 +73,7 @@ export const useSearchSchematics = ({
 
   const { data, isLoading, isError, error, isFetching } = queryResult;
 
-  // `data` is now an array of Schematic objects
   const schematics = data?.data ?? [];
-
   const totalHits = data?.totalHits ?? 0;
   const hasNextPage = (page - 1) * 20 + schematics.length < totalHits;
   const hasPreviousPage = page > 1;
