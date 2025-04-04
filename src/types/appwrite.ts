@@ -61,7 +61,30 @@ export interface Schematic extends Models.Document {
 }
 
 /**
+ * BlogTag structure for parsed JSON tags
+ * @internal This is used internally for parsing tags from JSON
+ */
+export interface BlogTag {
+  $id: string; // Standardize on $id to match Appwrite
+  value: string;
+  color: string;
+}
+
+/**
+ * BlogLink structure for parsed JSON links
+ */
+export interface BlogLink {
+  url: string;
+  title: string;
+}
+
+/**
  * Blog structure that extends Appwrite Document
+ *
+ * Note: The 'tags' and 'links' fields are stored as JSON strings in Appwrite.
+ * When retrieved via API hooks like useFetchBlog or useSearchBlogs,
+ * these fields are automatically parsed to their respective object types.
+ * When saving, they are automatically serialized back to strings.
  */
 export interface Blog extends Models.Document {
   title: string;
@@ -69,12 +92,21 @@ export interface Blog extends Models.Document {
   slug: string;
   img_url: string;
   status: 'draft' | 'published' | 'archived';
-  links: string | null; // Stored as JSON string in Appwrite
-  tags: string | null; // Stored as JSON string in Appwrite
+  // Define as the types components expect
+  tags: BlogTag[];
+  links: BlogLink[] | null;
   blog_tags?: string[];
   likes: number;
   authors_uuid: string[];
   authors: string[];
+}
+
+/**
+ * Type for documents with JSON fields still in string format (as stored in database)
+ */
+export interface RawBlog extends Omit<Blog, 'tags' | 'links'> {
+  tags: string | null;
+  links: string | null;
 }
 
 /**
