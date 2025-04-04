@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import { databases } from '@/config/appwrite';
 import { Query } from 'appwrite';
 import type { FeatureFlag } from '@/types';
-import type { FeatureFlagDocument } from '@/types/appwrite';
 
 /**
  * Constants for database and collection IDs
@@ -38,15 +37,13 @@ function evaluateFlag(flag: FeatureFlag | null, userId: string): boolean {
  */
 export async function fetchFeatureFlag(userId: string, flagKey: string): Promise<boolean> {
   try {
-    const response = await databases.listDocuments<FeatureFlagDocument>(
-      DATABASE_ID,
-      COLLECTION_ID,
-      [Query.equal('key', flagKey)]
-    );
+    const response = await databases.listDocuments<FeatureFlag>(DATABASE_ID, COLLECTION_ID, [
+      Query.equal('key', flagKey),
+    ]);
 
     if (response.total === 0) return false;
 
-    // Now TypeScript knows all the properties in our FeatureFlagDocument
+    // Now TypeScript knows all the properties in our FeatureFlag
     const feature: FeatureFlag = response.documents[0];
 
     return evaluateFlag(feature, userId);
@@ -66,7 +63,7 @@ export async function fetchFeatureFlags(userId: string): Promise<Record<string, 
   const featureFlags: Record<string, boolean> = {};
 
   try {
-    const response = await databases.listDocuments<FeatureFlagDocument>(DATABASE_ID, COLLECTION_ID);
+    const response = await databases.listDocuments<FeatureFlag>(DATABASE_ID, COLLECTION_ID);
 
     for (const doc of response.documents) {
       const flag: FeatureFlag = doc;

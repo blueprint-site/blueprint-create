@@ -1,20 +1,6 @@
 import { z } from 'zod';
 
 /**
- * Schema for a feature flag configuration
- */
-export const FeatureFlagSchema = z.object({
-  $id: z.string(),
-  key: z.string().min(1, 'Key must not be empty'),
-  enabled: z.boolean().default(false),
-  users: z.array(z.string()).nullable().optional(),
-  groups: z.array(z.string()).nullable().optional(),
-  description: z.string().optional(),
-  $createdAt: z.string(),
-  $updatedAt: z.string(),
-});
-
-/**
  * Schema for creating new feature flags
  */
 export const CreateFeatureFlagSchema = z.object({

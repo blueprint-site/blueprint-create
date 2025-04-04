@@ -10,7 +10,7 @@ import type { Models } from 'appwrite';
 /**
  * Feature flag document structure in Appwrite
  */
-export interface FeatureFlagDocument extends Models.Document {
+export interface FeatureFlag extends Models.Document {
   key: string;
   enabled: boolean;
   users?: string[];
