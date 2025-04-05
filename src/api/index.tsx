@@ -29,6 +29,20 @@ export {
   useModrinthProjects,
 } from './endpoints/useModrinth';
 
+export {
+  useBlogTags,
+  useCreateBlogTag,
+  useDeleteBlogTag,
+  useUpdateBlogTag,
+} from './endpoints/useBlogTags';
+
+export {
+  useSchematicTags,
+  useCreateSchematicTag,
+  useDeleteSchematicTag,
+  useUpdateSchematicTag,
+} from './endpoints/useSchematicTags';
+
 // MOVE THESE TO HOOKS FOLDER
 export { useToast, toast } from '@/hooks/useToast';
 export { useSystemThemeSync } from './endpoints/useSystemThemeSync';

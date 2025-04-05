@@ -12,7 +12,7 @@ export type {
   BlogTag,
   BlogLink,
   RawBlog,
-  Tag,
+  SchematicTag,
 } from '@/types/appwrite';
 
 export type {
@@ -151,3 +151,9 @@ export type AdminLogs = z.infer<typeof AdminLogsSchema>;
 
 import type { OAuthProvidersSchema } from '@/schemas/OAuthProviders.schema.tsx';
 export type OAuthProvidersType = z.infer<typeof OAuthProvidersSchema>;
+
+import type { baseTagSchema, blogTagSchema, schematicTagSchema } from '@/schemas/tag.schema.ts';
+
+export type TagFormValues = z.infer<typeof baseTagSchema>;
+export type BlogTagFormValues = z.infer<typeof blogTagSchema>;
+export type SchematicTagFormValues = z.infer<typeof schematicTagSchema>;

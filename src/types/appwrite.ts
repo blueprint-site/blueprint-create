@@ -61,11 +61,17 @@ export interface Schematic extends Models.Document {
 }
 
 /**
- * BlogTag structure for parsed JSON tags
- * @internal This is used internally for parsing tags from JSON
+ * Blog-specific tags
  */
-export interface BlogTag {
-  $id: string; // Standardize on $id to match Appwrite
+export interface BlogTag extends Models.Document {
+  value: string;
+  color: string;
+}
+
+/**
+ * Schematic-specific tags
+ */
+export interface SchematicTag extends Models.Document {
   value: string;
   color: string;
 }
@@ -110,15 +116,6 @@ export interface RawBlog extends Omit<Blog, 'tags' | 'links'> {
 }
 
 /**
- * Tag structure that extends Appwrite Document
- */
-export interface Tag extends Models.Document {
-  name: string;
-  value: string;
-  color: string;
-}
-
-/**
  * User structure that extends Appwrite User
  */
 export type User = Models.User<UserPreferences>;
@@ -155,14 +152,10 @@ export interface UserPreferences extends Models.Preferences {
  * Admin log structure that extends Appwrite Document
  */
 export interface AdminLog extends Models.Document {
-  action: string;
-  userEmail: string;
-  userId: string;
-  details: string;
-  timestamp: string;
-  targetId?: string;
-  targetType?: string;
-  status: 'success' | 'error' | 'warning';
+  type: string;
+  content: string;
+  category: string;
+  user_uuid: string;
 }
 
 /**
