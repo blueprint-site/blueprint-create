@@ -3,6 +3,7 @@ import { toast } from '@/hooks/useToast';
 import { databases } from '@/config/appwrite';
 import { Query } from 'appwrite';
 import type { Addon, AddonWithParsedFields, CurseForgeRawObject, ModrinthRawObject } from '@/types';
+import { UpdateAddonSchema } from '@/schemas/addon.schema';
 
 const DATABASE_ID = '67b1dc430020b4fb23e3';
 const COLLECTION_ID = '67b1dc4b000762a0ccc6';
@@ -150,17 +151,15 @@ export const useUpdateAddon = () => {
   return useMutation({
     mutationFn: async ({ addonId, data }: { addonId: string; data: Partial<Addon> }) => {
       try {
-        // Handle JSON fields that need to be stringified
-        const updateData = { ...data };
+        const { curseforge_raw, modrinth_raw, ...dataWithoutRaw } = data;
+        const validationResult = UpdateAddonSchema.safeParse(dataWithoutRaw);
 
-        // If raw data is provided as an object, stringify it
-        if (updateData.curseforge_raw && typeof updateData.curseforge_raw === 'object') {
-          updateData.curseforge_raw = JSON.stringify(updateData.curseforge_raw);
+        if (!validationResult.success) {
+          console.error('Validation error:', validationResult.error.format());
+          throw new Error('Invalid addon data provided');
         }
 
-        if (updateData.modrinth_raw && typeof updateData.modrinth_raw === 'object') {
-          updateData.modrinth_raw = JSON.stringify(updateData.modrinth_raw);
-        }
+        const updateData = { ...validationResult.data };
 
         return await databases.updateDocument<Addon>(
           DATABASE_ID,
@@ -173,15 +172,12 @@ export const useUpdateAddon = () => {
         throw error;
       }
     },
-    onSuccess: (_, variables) => {
-      // Invalidate specific queries
-      queryClient.invalidateQueries({ queryKey: ['addon', variables.addonId] });
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['addons', 'list'] });
       queryClient.invalidateQueries({ queryKey: ['searchAddons'] });
     },
   });
 };
-
 /**
  * Hook to delete an addon
  * @returns Mutation function for deleting an addon
