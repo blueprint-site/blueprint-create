@@ -1,6 +1,6 @@
 // MeiliSearch API endpoints
-export { useSearchAddons } from './endpoints/useSearchAddons';
-export { useSearchSchematics } from './endpoints/useSearchSchematics';
+export { useSearchAddons } from './meilisearch/useSearchAddons';
+export { useSearchSchematics } from './meilisearch/useSearchSchematics';
 
 // Appwrite API endpoints
 export {
@@ -10,7 +10,7 @@ export {
   useFetchBlogBySlug,
   useFetchBlogTags,
   useSaveBlog,
-} from './endpoints/useBlogs';
+} from './appwrite/useBlogs';
 
 export {
   useDeleteAddon,
@@ -18,7 +18,7 @@ export {
   useFetchAddonBySlug,
   useFetchAddons,
   useUpdateAddon,
-} from './endpoints/useAddons';
+} from './appwrite/useAddons';
 
 // Modrinth API endpoints
 export {
@@ -27,28 +27,20 @@ export {
   useFetchModrinthDependencies,
   useModrinthProfile,
   useModrinthProjects,
-} from './endpoints/useModrinth';
+} from './external/useModrinth';
 
 export {
   useBlogTags,
   useCreateBlogTag,
   useDeleteBlogTag,
   useUpdateBlogTag,
-} from './endpoints/useBlogTags';
+} from './appwrite/useBlogTags';
 
 export {
   useSchematicTags,
   useCreateSchematicTag,
   useDeleteSchematicTag,
   useUpdateSchematicTag,
-} from './endpoints/useSchematicTags';
+} from './appwrite/useSchematicTags';
 
-// MOVE THESE TO HOOKS FOLDER
-export { useToast, toast } from '@/hooks/useToast';
-export { useSystemThemeSync } from './endpoints/useSystemThemeSync';
-export {
-  useIsMobile,
-  useIsTablet,
-  useIsDesktop,
-  useCurrentBreakpoint,
-} from './endpoints/useBreakpoints';
+export { useGitHubContributors } from './external/useGithubContributors';
