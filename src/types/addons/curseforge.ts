@@ -31,7 +31,7 @@ export interface CurseForgeRawObject {
   featuredProjectTag: number;
 }
 
-export interface CurseForgeScreenshot {
+interface CurseForgeScreenshot {
   id: number;
   modId: number;
   title: string;
@@ -40,14 +40,14 @@ export interface CurseForgeScreenshot {
   url: string;
 }
 
-export interface CurseForgeLinks {
+interface CurseForgeLinks {
   websiteUrl: string;
   wikiUrl: string;
   issuesUrl: string;
   sourceUrl: string;
 }
 
-export interface CurseForgeCategory {
+interface CurseForgeCategory {
   id: number;
   gameId: number;
   name: string;
@@ -60,14 +60,14 @@ export interface CurseForgeCategory {
   parentCategoryId: number;
 }
 
-export interface CurseForgeAuthor {
+interface CurseForgeAuthor {
   id: number;
   name: string;
   url: string;
   avatarUrl: string;
 }
 
-export interface CurseForgeLogo {
+interface CurseForgeLogo {
   id: number;
   modId: number;
   title: string;
@@ -76,7 +76,7 @@ export interface CurseForgeLogo {
   url: string;
 }
 
-export interface CurseForgeFile {
+interface CurseForgeFile {
   id: number;
   gameId: number;
   modId: number;
@@ -100,12 +100,12 @@ export interface CurseForgeFile {
   modules: CurseForgeFileModule[];
 }
 
-export interface CurseForgeHash {
+interface CurseForgeHash {
   value: string;
   algo: number; // 1 = SHA1, 2 = MD5
 }
 
-export interface CurseForgeSortableGameVersion {
+interface CurseForgeSortableGameVersion {
   gameVersionName: string;
   gameVersionPadded: string;
   gameVersion: string;
