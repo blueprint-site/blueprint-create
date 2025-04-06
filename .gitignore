@@ -43,3 +43,5 @@ coverage
 
 # Debug
 .debug
+functions/*
+appwrite.json
