@@ -3,11 +3,11 @@ import {
   MissionSection,
   ContactSection,
   ContributorsSection,
-  useGitHubContributors,
 } from '@/components/features/about';
 import { HeroLayout, HeroContent, HeroHeader } from '@/layouts/HeroLayout';
 import ScrollingAddonBackground from '@/components/common/ScrollingAddonBackground';
 import { useTranslation } from 'react-i18next';
+import { useGitHubContributors } from '@/api';
 
 export default function About() {
   const { contributors, isLoading, error } = useGitHubContributors();

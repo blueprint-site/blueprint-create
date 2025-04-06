@@ -10,7 +10,7 @@ import {
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ChevronDown, InfoIcon } from 'lucide-react';
 import type { AddonVersion } from '@/types';
-import { useDependencyProcessor } from '@/hooks/useDependencyProcessor';
+import { useDependencyProcessor } from '@/hooks';
 import ModLoaders from '../../addon-card/ModLoaders';
 
 interface VersionsTabContentProps {

@@ -2,7 +2,7 @@ import { SchematicsDetailsHeader } from '@/components/features/schematics/schema
 import { SchematicsDetailsContent } from '@/components/features/schematics/schematic-details/SchematicsDetailsContent.tsx';
 import { SchematicsDetailsFooter } from '@/components/features/schematics/schematic-details/SchematicsDetailsFooter.tsx';
 import { useParams } from 'react-router';
-import { useFetchSchematic } from '@/api/endpoints/useSchematics.tsx';
+import { useFetchSchematic } from '@/api/appwrite/useSchematics';
 
 export const SchematicsDetailsMain = () => {
   const { id } = useParams<{ id: string }>();

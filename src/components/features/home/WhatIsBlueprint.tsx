@@ -2,7 +2,7 @@
 import { useTranslation } from 'react-i18next';
 import { Equal, Plus } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
-import { useEasterEgg } from '@/hooks/useEasterEgg';
+import { useEasterEgg } from '@/hooks';
 // Import logos
 import Logo from '@/assets/logo.webp';
 import OldLogo from '@/assets/legacy_logo.webp';

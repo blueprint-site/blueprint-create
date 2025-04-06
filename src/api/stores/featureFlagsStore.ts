@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { useUserStore } from '@/api/stores/userStore';
-import { fetchFeatureFlags } from '@/api/endpoints/useFeatureFlags';
+import { fetchFeatureFlags } from '@/api/appwrite/useFeatureFlags';
 
 /**
  * Feature flags store state interface
