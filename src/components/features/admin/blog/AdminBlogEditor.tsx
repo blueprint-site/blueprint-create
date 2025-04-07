@@ -9,7 +9,7 @@ import { useUserStore } from '@/api/stores/userStore';
 import ImageUploader from '@/components/utility/ImageUploader.tsx';
 import MarkdownEditor from '@/components/utility/MarkdownEditor.tsx';
 import TagSelector from '@/components/utility/TagSelector';
-import { useToast } from '@/api';
+import { useToast } from '@/hooks';
 import { useFetchBlog, useSaveBlog, useBlogTags, useCreateBlogTag, useDeleteBlogTag } from '@/api';
 
 export const BlogEditor = () => {
