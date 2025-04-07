@@ -11,7 +11,7 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from '@/api';
+import { toast } from '@/hooks';
 import { databases, ID } from '@/config/appwrite.ts';
 import { Query } from 'appwrite';
 import type { Schematic } from '@/types';
