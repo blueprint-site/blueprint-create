@@ -86,6 +86,17 @@ export type CreateSchematic = z.infer<typeof createSchematicSchema>;
 export type SearchSchematicsResult = z.infer<typeof searchSchematicsResultSchema>;
 
 import type {
+  CreateFeatureFlagSchema,
+  UpdateFeatureFlagSchema,
+  FeatureFlagKeySchema,
+} from '@/schemas/featureFlag.schema';
+
+export type { FeatureFlag } from '@/types/appwrite';
+export type CreateFeatureFlag = z.infer<typeof CreateFeatureFlagSchema>;
+export type UpdateFeatureFlag = z.infer<typeof UpdateFeatureFlagSchema>;
+export type FeatureFlagKey = z.infer<typeof FeatureFlagKeySchema>;
+
+import type {
   GitHubUserSchema,
   ContributorStatsSchema,
   GitHubRepoSchema,
