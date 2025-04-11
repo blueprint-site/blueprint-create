@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { Copy, GripVertical } from 'lucide-react';
 
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
-import { useToast } from '@/api';
+import { useToast } from '@/hooks';
 
 export const ChangelogsEditor = () => {
   const [version, setVersion] = useState('');

@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/alert-dialog.tsx';
 import { Download, Edit, Heart, TrashIcon } from 'lucide-react';
 import { format } from 'date-fns';
-import { useDeleteSchematics, useFetchUserSchematics } from '@/api/endpoints/useSchematics.tsx';
+import { useDeleteSchematics, useFetchUserSchematics } from '@/api/appwrite/useSchematics';
 import { useUserStore } from '@/api/stores/userStore';
 import { useThemeStore } from '@/api/stores/themeStore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx';

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { AddonVersion } from '@/types/addons/addon-details';
+import type { AddonVersion } from '@/types';
 import { normalizeLoaderName } from '@/data/modloaders';
 import {
   MatrixTabContent,

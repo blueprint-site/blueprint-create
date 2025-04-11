@@ -1,8 +1,8 @@
-import { useFetchBlogs } from '@/api/endpoints/useBlogs';
+import { useFetchBlogs } from '@/api/appwrite/useBlogs';
 import { FiltersContainer } from '@/components/layout/FiltersContainer';
 import { ItemGrid } from '@/components/layout/ItemGrid';
 import { SearchFilter } from '@/components/layout/SearchFilter';
-import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { useInfiniteScroll } from '@/hooks';
 import { ListPageContent, ListPageLayout, ListPageFilters } from '@/layouts/ListPageLayout';
 import type { Blog } from '@/types';
 import { useState, useEffect, useCallback, useMemo } from 'react';

@@ -26,6 +26,8 @@ export interface Addon extends Models.Document {
   categories: string[];
   downloads: number;
   icon: string;
+  created_at: string | null;
+  updated_at: string | null;
   curseforge_raw: string | null;
   modrinth_raw: string | null;
   sources: string[];
@@ -59,7 +61,36 @@ export interface Schematic extends Models.Document {
 }
 
 /**
+ * Blog-specific tags
+ */
+export interface BlogTag extends Models.Document {
+  value: string;
+  color: string;
+}
+
+/**
+ * Schematic-specific tags
+ */
+export interface SchematicTag extends Models.Document {
+  value: string;
+  color: string;
+}
+
+/**
+ * BlogLink structure for parsed JSON links
+ */
+export interface BlogLink {
+  url: string;
+  title: string;
+}
+
+/**
  * Blog structure that extends Appwrite Document
+ *
+ * Note: The 'tags' and 'links' fields are stored as JSON strings in Appwrite.
+ * When retrieved via API hooks like useFetchBlog or useSearchBlogs,
+ * these fields are automatically parsed to their respective object types.
+ * When saving, they are automatically serialized back to strings.
  */
 export interface Blog extends Models.Document {
   title: string;
@@ -67,8 +98,9 @@ export interface Blog extends Models.Document {
   slug: string;
   img_url: string;
   status: 'draft' | 'published' | 'archived';
-  links: string | null; // Stored as JSON string in Appwrite
-  tags: string | null; // Stored as JSON string in Appwrite
+  // Define as the types components expect
+  tags: BlogTag[];
+  links: BlogLink[] | null;
   blog_tags?: string[];
   likes: number;
   authors_uuid: string[];
@@ -76,12 +108,11 @@ export interface Blog extends Models.Document {
 }
 
 /**
- * Tag structure that extends Appwrite Document
+ * Type for documents with JSON fields still in string format (as stored in database)
  */
-export interface Tag extends Models.Document {
-  name: string;
-  value: string;
-  color: string;
+export interface RawBlog extends Omit<Blog, 'tags' | 'links'> {
+  tags: string | null;
+  links: string | null;
 }
 
 /**
@@ -121,14 +152,10 @@ export interface UserPreferences extends Models.Preferences {
  * Admin log structure that extends Appwrite Document
  */
 export interface AdminLog extends Models.Document {
-  action: string;
-  userEmail: string;
-  userId: string;
-  details: string;
-  timestamp: string;
-  targetId?: string;
-  targetType?: string;
-  status: 'success' | 'error' | 'warning';
+  type: string;
+  content: string;
+  category: string;
+  user_uuid: string;
 }
 
 /**

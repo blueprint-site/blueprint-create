@@ -32,3 +32,5 @@ export const FeatureFlagKeySchema = z.enum([
   'experimental_ui',
   // Add more feature flags here as needed
 ]);
+
+export type FeatureFlagKey = z.infer<typeof FeatureFlagKeySchema>;

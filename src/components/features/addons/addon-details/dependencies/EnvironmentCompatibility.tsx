@@ -1,5 +1,5 @@
 import { Badge } from '@/components/ui/badge';
-import type { EnvironmentCompatibilityProps } from '@/types/addons/dependencies';
+import type { EnvironmentCompatibilityProps } from '@/types';
 
 /**
  * Renders client and server compatibility information

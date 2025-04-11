@@ -1,7 +1,7 @@
 // src/schemas/schematic.schema.tsx
 import { z } from 'zod';
 
-// Form schema for schematic uploads
+// Form schema for schematic uploads (used directly with react-hook-form)
 export const schematicFormSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z
@@ -19,20 +19,8 @@ export const schematicFormSchema = z.object({
   sub_categories: z.array(z.string()).optional(),
 });
 
-export const searchSchematicsPropsSchema = z.object({
-  query: z.string().optional(),
-  page: z.number().optional(),
-  category: z.string().optional(),
-  sub_categories: z.string().optional(),
-  create_versions: z.string().optional(),
-  version: z.string().optional(),
-  loaders: z.string().optional(),
-  id: z.string().optional(),
-});
-
-// Database schema for stored schematics
-export const schematicSchema = z.object({
-  $id: z.string(),
+// Schema for API operations - creating a new schematic
+export const createSchematicSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string(),
   schematic_url: z.string().url('Must be a valid URL'),
@@ -45,34 +33,26 @@ export const schematicSchema = z.object({
   categories: z.array(z.string()).min(1, 'At least one category is required'),
   sub_categories: z.array(z.string()).optional(),
   slug: z.string(),
-  downloads: z.number().int().nonnegative().default(0),
   status: z.enum(['draft', 'published', 'archived']).default('published'),
-  $createdAt: z.string().datetime(),
-  $updatedAt: z.string().datetime(),
-  likes: z.number().int().nonnegative().default(0),
 });
 
-// For retrieving a schematic with optional fields
-export const partialSchematicSchema = schematicSchema.partial();
+// Schema for API operations - updating an existing schematic
+export const updateSchematicSchema = createSchematicSchema.partial();
 
-// For creating a new schematic (omit ID and other auto-generated fields)
-export const createSchematicSchema = schematicSchema.omit({
-  $id: true,
-  downloads: true,
-  $createdAt: true,
-  $updatedAt: true,
-  likes: true, // Omit likes for creation schema
+// Schema for search parameters
+export const searchSchematicsPropsSchema = z.object({
+  query: z.string().optional(),
+  page: z.number().optional(),
+  category: z.string().optional(),
+  sub_categories: z.string().optional(),
+  create_versions: z.string().optional(),
+  version: z.string().optional(),
+  loaders: z.string().optional(),
+  id: z.string().optional(),
 });
 
-// Schema for search results
-export const searchSchematicsResultSchema = z.object({
-  data: z.array(schematicSchema),
-  isLoading: z.boolean(),
-  isError: z.boolean(),
-  error: z.instanceof(Error).nullable(),
-  isFetching: z.boolean(),
-  hasNextPage: z.boolean(),
-  hasPreviousPage: z.boolean(),
-  totalHits: z.number().int().nonnegative(),
-  page: z.number().int().positive(),
-});
+// Export types derived from validation schemas
+export type SchematicFormValues = z.infer<typeof schematicFormSchema>;
+export type CreateSchematicFormValues = z.infer<typeof createSchematicSchema>;
+export type UpdateSchematicFormValues = z.infer<typeof updateSchematicSchema>;
+export type SearchSchematicsProps = z.infer<typeof searchSchematicsPropsSchema>;

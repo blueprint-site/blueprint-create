@@ -3,15 +3,22 @@ export type OAuthProvidersDisplayProps = {
   size: number;
 };
 
-export const OAuthProvidersDisplay = ({ provider = '', size = 32 }: OAuthProvidersDisplayProps) => {
+const OAuthProvidersDisplay = ({ provider = '', size = 32 }: OAuthProvidersDisplayProps) => {
   if (!provider) {
     return null;
   }
   if (provider === 'email') {
-    return <img height={size} width={size} src={`https://cdn.simpleicons.org/Gmail`} />;
+    return <img height={size} width={size} src={`https://cdn.simpleicons.org/Gmail`} alt='email' />;
   }
   if (provider != '') {
-    return <img height={size} width={size} src={`https://cdn.simpleicons.org/${provider}`} />;
+    return (
+      <img
+        height={size}
+        width={size}
+        src={`https://cdn.simpleicons.org/${provider}`}
+        alt={provider}
+      />
+    );
   }
 };
 

@@ -6,7 +6,7 @@ import { BadgeCheck } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
-import type { ExternalLink } from '@/types/addons/addon-details';
+import type { ExternalLink } from '@/types';
 
 export interface AddonDetailsFooterProps {
   addon_name: string;

@@ -1,364 +1,321 @@
 # Data Architecture and Flow
 
-Blueprint implements a dual-database architecture combining Appwrite for primary data storage and Meilisearch for optimized search functionality. This document outlines the key components, data flows, and best practices for working with Blueprint's data layer.
+Blueprint implements a robust data architecture combining Appwrite for primary data storage and authentication, Meilisearch for optimized search, and TanStack Query for frontend state management and caching. This document outlines the key components, data flows, and best practices for working with Blueprint's data layer.
 
 ## Core Components
 
 ### 1. Appwrite
 
-**Role**: Primary database and authentication system
+**Role**: Primary database, authentication system, and file storage. Source of truth for data.
 
 **Use Cases**:
-- CRUD operations for all data entities
-- User authentication and session management
-- File storage for images and schematics
-- Data persistence and integrity
+- CRUD operations for all data entities (Addons, Schematics, Blogs, Tags, Users, Feature Flags).
+- User authentication (OAuth, email/password) and session management via `account` service.
+- File storage via `storage` service.
+- Data persistence and integrity via `databases` service.
 
 **Configuration Location**: `/src/config/appwrite.ts`
+* Exports typed service instances (`databases`, `account`, `storage`, `functions`).
 
 ```typescript
-import { Client, Account, Databases, Storage } from 'appwrite';
+// src/config/appwrite.ts (Simplified)
+import { Client, Account, Databases, Storage, Functions, ID, Query } from 'appwrite';
 
 export const client = new Client();
+// ... endpoint and project ID setup from window._env_ ...
+client.setEndpoint(url).setProject(projectId);
 
-const url = window._env_?.APPWRITE_URL || '';
-const id = window._env_?.APPWRITE_PROJECT_ID || '';
-
-client.setEndpoint(url).setProject(id);
-
+// Typed service instances
 export const databases = new Databases(client);
 export const account = new Account(client);
 export const storage = new Storage(client);
-export { ID } from 'appwrite';
+export const functions = new Functions(client);
+
+// Export Appwrite utilities
+export { ID, Query, Permission, Role };
 ```
 
 ### 2. Meilisearch
 
-**Role**: Search index and fast read operations
+**Role**: Search index providing fast, typo-tolerant search and filtering.
 
 **Use Cases**:
-- Full-text search across all content
-- Filtered queries with complex conditions
-- Quick data retrieval with low latency
-- Typo-tolerant search functionality
+- Full-text search across Addons, Schematics, and Blogs.
+- Advanced filtering capabilities.
+- Rapid retrieval of search results.
 
 **Configuration Location**: `/src/config/meilisearch.ts`
+* Exports a configured `MeiliSearch` client instance.
 
 ```typescript
+// src/config/meilisearch.ts (Simplified)
 import { MeiliSearch } from 'meilisearch';
 
-const url = window._env_?.MEILISEARCH_URL || '';
-const apiKey = window._env_?.MEILISEARCH_API_KEY || '';
-const searchClient = new MeiliSearch({
-  host: url,
-  apiKey: apiKey,
-});
-export default searchClient;
+// ... host and apiKey setup from window._env_ ...
+export const searchClient = new MeiliSearch({ host: url, apiKey });
 ```
 
 ### 3. TanStack Query
 
-**Role**: Frontend state management and data synchronization
+**Role**: Frontend server state management, caching, and data synchronization UI layer.
 
 **Use Cases**:
-- Cache management for API responses
-- Server state handling
-- Mutation management
-- Automatic refetching and background updates
+- Managing asynchronous data fetching states (loading, error, success).
+- Caching responses from Appwrite and Meilisearch/Search API to improve performance and reduce redundant requests.
+- Handling mutations (create, update, delete) and automatically invalidating/refetching relevant data.
+- Providing hooks (`useQuery`, `useMutation`) for declarative data fetching and manipulation in components.
 
-**Implementation**: Used in custom hooks under `/src/api/endpoints/`
+**Implementation**: Core logic resides in custom hooks within `/src/api/endpoints/`.
+
+### 4. Canonical Types & Validation Schemas
+
+**Role**: Ensuring data consistency and type safety.
+
+**Implementation**:
+- **Canonical Types**: Defined in `src/types/appwrite.ts`, representing the source-of-truth structure of data stored in Appwrite (e.g., `Addon`, `Blog`, `User`). These extend Appwrite's `Models.Document` or `Models.User`.
+- **Validation Schemas**: Defined in `src/schemas/` using Zod (e.g., `CreateBlogSchema`, `UpdateAddonSchema`). Used primarily for validating form/API inputs *before* data is sent to mutation hooks or Appwrite. See [Zod Validation Guide](./zod-validation-guide.md).
 
 ## Data Flow Patterns
 
 ### Read Operations
 
-Blueprint implements different read patterns depending on the use case:
+#### 1. Search & List Pattern (via Meilisearch or Local API)
 
-#### 1. Search & Display Pattern (via Meilisearch)
-
-Used for list views and search functionality where performance is critical.
+Used for list views, Browse, and search functionality where fast filtering and full-text search are needed.
 
 ```typescript
-// Example from useSearchAddons.tsx
-const useSearchAddons = ({
-  query = '',
-  page = 1,
-  category = 'all',
-  version = 'all',
-  loaders = 'all',
-}) => {
-  return useQuery({
-    queryKey: ['searchAddons', query, page, category, version, loaders],
+// Example: src/api/endpoints/useSearchAddons.tsx
+import type { SearchAddonResult, AddonWithParsedFields } from '@/types';
+
+export const useSearchAddons = (searchParams: SearchAddonsProps): SearchAddonResult => {
+  return useQuery({ // Simplified representation
+    queryKey: ['searchAddons', searchParams],
     queryFn: async () => {
-      const index = searchClient.index('addons');
-      
-      // Build filter string based on parameters
-      const filters = buildFilters({ category, version, loaders });
-      
-      // Execute search with pagination
-      return index.search(query, {
-        filter: filters,
-        limit: ITEMS_PER_PAGE,
-        offset: (page - 1) * ITEMS_PER_PAGE,
-      });
+      // 1. Calls Meilisearch via searchClient or a local API endpoint
+      const rawResults = await searchMeiliAddons(searchParams); // Simplified
+
+      // 2. Processes hits (e.g., parses JSON strings in Addon data)
+      const processedData: AddonWithParsedFields[] = rawResults.hits.map(processAddon);
+
+      // 3. Returns structured result with metadata
+      return {
+        data: processedData,
+        totalHits: rawResults.totalHits,
+        // page, limit, hasNextPage, etc.
+        // isLoading, isError, etc. provided by TanStack Query
+      };
     },
-    staleTime: 1000 * 60 * 5, // 5 minute cache
+    staleTime: 1000 * 60 * 1, // Example: Cache search results for 1 minute
   });
 };
 ```
 
 **Data Path**:
-1. User triggers search or filter action
-2. React component calls `useSearchAddons` hook
-3. TanStack Query checks its cache for matching query
-4. If cache miss or stale, request is sent to Meilisearch
-5. Meilisearch returns matching documents
-6. Results are cached in TanStack Query store
-7. Data is displayed to user
+1. User interacts with search input or filters.
+2. Component calls the relevant search hook (`useSearchAddons`, `useSearchBlogs`, `useSearchSchematics`).
+3. TanStack Query checks cache.
+4. If cache miss/stale, hook executes query function:
+    * For Addons/Schematics: Calls Meilisearch directly via `searchClient`.
+    * For Blogs: Calls the local `/api/search` endpoint (which likely calls Meilisearch).
+5. Search engine returns results.
+6. Hook processes results (e.g., parsing JSON fields) to match application types (`AddonWithParsedFields`, `Blog`).
+7. Results are cached by TanStack Query and returned to the component.
 
-#### 2. Detail Pattern (via Appwrite)
+#### 2. Detail Fetch Pattern (via Appwrite)
 
-Used for detailed views where complete and up-to-date data is required.
+Used for viewing a specific item (e.g., a single addon page, blog post) where the complete, most up-to-date data from the source of truth is needed.
 
 ```typescript
-// Example from useAddons.tsx
-const useAddon = (slug: string) => {
-  return useQuery({
-    queryKey: ['addon', slug],
+// Example: src/api/endpoints/useAddons.tsx
+import type { Addon, AddonWithParsedFields } from '@/types';
+
+export const useFetchAddon = (id?: string) => {
+  return useQuery<AddonWithParsedFields | null>({ // Returns parsed type
+    queryKey: ['addon', id],
     queryFn: async () => {
-      // Query Appwrite for the addon with matching slug
-      const response = await databases.listDocuments(
-        DATABASE_ID,
-        ADDON_COLLECTION_ID,
-        [Query.equal('slug', slug)]
-      );
-      
-      if (response.documents.length === 0) {
-        throw new Error('Addon not found');
-      }
-      
-      return response.documents[0];
+      if (!id) return null;
+      // 1. Fetches directly from Appwrite using typed SDK method
+      const addonDoc = await databases.getDocument<Addon>(DATABASE_ID, COLLECTION_ID, id);
+      // 2. Hook internally parses JSON fields (e.g., curseforge_raw)
+      return addParsedFields(addonDoc); // Simplified representation
     },
-    staleTime: 1000 * 60 * 10, // 10 minute cache
+    enabled: Boolean(id),
+    staleTime: 1000 * 60 * 10, // Example: Cache detail views longer
   });
 };
 ```
 
 **Data Path**:
-1. User navigates to detail page
-2. React component calls `useAddon` hook with slug
-3. TanStack Query checks its cache for matching query
-4. If cache miss or stale, request is sent to Appwrite
-5. Appwrite returns complete document
-6. Result is cached in TanStack Query store
-7. Full data is displayed to user
+1. User navigates to a detail page (e.g., `/addons/[id]`).
+2. Component calls the relevant fetch hook (`useFetchAddon`, `useFetchBlog`, `useFetchSchematic`) with the ID/slug.
+3. TanStack Query checks cache.
+4. If cache miss/stale, hook executes query function:
+    * Calls Appwrite using typed methods (`databases.getDocument<Type>`).
+    * Parses/processes data if needed (e.g., JSON strings).
+5. Appwrite returns the full document.
+6. Hook returns the processed, typed data (e.g., `AddonWithParsedFields`, `Blog`).
+7. Result is cached by TanStack Query and returned to the component.
 
-### Write Operations
+### Write Operations (via Appwrite)
 
-All write operations go through Appwrite as the source of truth.
+All data modifications (Create, Update, Delete) **must** go through Appwrite, as it is the source of truth. Meilisearch is updated subsequently via the synchronization process.
 
 #### 1. Create Pattern
 
-Used when creating new resources.
-
 ```typescript
-// Example for saving a new schematic
-const useSaveSchematic = () => {
+// Example: src/api/endpoints/useBlogs.tsx
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { databases, ID } from '@/config/appwrite';
+import type { Blog, RawBlog } from '@/types';
+import { CreateBlogSchema, type CreateBlogInput } from '@/schemas/blog.schema'; // Validation schema
+import { serializeJsonFields } from '@/api/utils/json-fields'; // Helper for serialization
+
+export const useSaveBlog = () => {
   const queryClient = useQueryClient();
-  
   return useMutation({
-    mutationFn: async (schematic: Partial<Schematic>) => {
-      return databases.createDocument(
+    // Mutation expects validated input, matching CreateBlogInput (or similar)
+    mutationFn: async (blogInput: CreateBlogInput) => {
+      // 1. (Validation should happen *before* calling mutate)
+      // const validatedData = CreateBlogSchema.parse(blogInput); // Example
+
+      // 2. Prepare data for Appwrite (e.g., serialize JSON fields)
+      const dataToSave: Partial<RawBlog> = serializeJsonFields(blogInput);
+
+      // 3. Call Appwrite using typed SDK method
+      const newBlogDoc = await databases.createDocument<Blog>(
         DATABASE_ID,
-        SCHEMATICS_COLLECTION_ID,
+        COLLECTION_ID,
         ID.unique(),
-        {
-          ...schematic,
-          created_at: new Date().toISOString(),
-        }
+        dataToSave // Send serialized data
       );
+      return newBlogDoc; // Return the created document
     },
-    onSuccess: () => {
-      // Invalidate relevant queries to trigger refetch
-      queryClient.invalidateQueries({ queryKey: ['schematics'] });
-      queryClient.invalidateQueries({ queryKey: ['searchSchematics'] });
+    onSuccess: (newBlogDoc) => {
+      // 4. Invalidate queries to refetch lists/searches
+      queryClient.invalidateQueries({ queryKey: ['blogs', 'list'] });
+      // Optional: Update cache for the newly created item
+      queryClient.setQueryData(['blog', newBlogDoc.$id], newBlogDoc);
     },
   });
 };
 ```
 
 **Data Path**:
-1. User submits form to create resource
-2. React component calls `useSaveSchematic().mutate()` with data
-3. Mutation function sends create request to Appwrite
-4. Appwrite creates document and returns result
-5. On success, related queries are invalidated
-6. Background process syncs new data to Meilisearch (1-minute delay)
-7. Users will see the new data in search results after sync completes
+1. User submits a form to create a resource.
+2. Form handler validates input using the appropriate Zod schema (e.g., `CreateBlogSchema`).
+3. On successful validation, component calls `mutation.mutate(validatedData)`.
+4. Mutation hook's `mutationFn` executes:
+    * Prepares data (e.g., serializes JSON fields).
+    * Sends create request to Appwrite using typed `databases.createDocument<Type>`.
+5. Appwrite creates the document.
+6. On success (`onSuccess` callback): TanStack Query invalidates relevant list/search queries.
+7. (Background) Data synchronization process updates Meilisearch.
 
 #### 2. Update Pattern
 
-Used when modifying existing resources.
-
 ```typescript
-// Example for updating a schematic
-const useUpdateSchematic = () => {
+// Example: src/api/endpoints/useAddons.tsx
+import type { Addon } from '@/types';
+import { UpdateAddonSchema, type UpdateAddonInput } from '@/schemas/addon.schema'; // Validation
+
+export const useUpdateAddon = () => {
   const queryClient = useQueryClient();
-  
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: Partial<Schematic> }) => {
-      return databases.updateDocument(
+    mutationFn: async ({ addonId, data }: { addonId: string; data: UpdateAddonInput }) => {
+      // 1. (Validation should happen *before* calling mutate)
+      // const validatedData = UpdateAddonSchema.parse(data);
+
+      // 2. Prepare data (serialize JSON etc.)
+      const dataToSave = prepareAddonForUpdate(data); // Simplified
+
+      // 3. Call Appwrite using typed SDK method
+      const updatedDoc = await databases.updateDocument<Addon>(
         DATABASE_ID,
-        SCHEMATICS_COLLECTION_ID,
-        id,
-        {
-          ...data,
-          updated_at: new Date().toISOString(),
-        }
+        COLLECTION_ID,
+        addonId,
+        dataToSave
       );
+      return updatedDoc;
     },
-    onSuccess: (result) => {
-      // Update cache with new data
-      queryClient.setQueryData(['schematic', result.$id], result);
-      
-      // Invalidate list queries
-      queryClient.invalidateQueries({ queryKey: ['schematics'] });
-      queryClient.invalidateQueries({ queryKey: ['searchSchematics'] });
+    onSuccess: (updatedDoc) => {
+      // 4. Invalidate queries & potentially update specific cache entry
+      queryClient.invalidateQueries({ queryKey: ['addons', 'list'] });
+      queryClient.invalidateQueries({ queryKey: ['searchAddons'] });
+      queryClient.setQueryData(['addon', updatedDoc.$id], updatedDoc); // Update detail view cache
     },
   });
 };
 ```
 
-**Data Path**:
-1. User submits form to update resource
-2. React component calls `useUpdateSchematic().mutate()` with ID and data
-3. Mutation function sends update request to Appwrite
-4. Appwrite updates document and returns result
-5. On success, cache is updated and related queries are invalidated
-6. Background process syncs updated data to Meilisearch (1-minute delay)
-7. Users will see the updated data in search results after sync completes
+**Data Path**: Similar to Create, but uses `databases.updateDocument<Type>` and updates specific cache entries (`setQueryData`) in addition to invalidating lists.
 
 #### 3. Delete Pattern
 
-Used when removing resources.
-
 ```typescript
-// Example for deleting a schematic
-const useDeleteSchematic = () => {
+// Example: src/api/endpoints/useSchematics.tsx
+export const useDeleteSchematic = () => {
   const queryClient = useQueryClient();
-  
   return useMutation({
     mutationFn: async (id: string) => {
-      await databases.deleteDocument(
-        DATABASE_ID,
-        SCHEMATICS_COLLECTION_ID,
-        id
-      );
-      return id;
+      // 1. Call Appwrite
+      await databases.deleteDocument(DATABASE_ID, SCHEMATIC_COLLECTION_ID, id);
+      return id; // Return ID for cache manipulation
     },
     onSuccess: (id) => {
-      // Remove from cache
+      // 2. Remove specific item from cache and invalidate lists
       queryClient.removeQueries({ queryKey: ['schematic', id] });
-      
-      // Invalidate list queries
-      queryClient.invalidateQueries({ queryKey: ['schematics'] });
+      queryClient.invalidateQueries({ queryKey: ['schematics', 'list'] });
       queryClient.invalidateQueries({ queryKey: ['searchSchematics'] });
     },
   });
 };
 ```
 
-**Data Path**:
-1. User triggers delete action
-2. React component calls `useDeleteSchematic().mutate()` with ID
-3. Mutation function sends delete request to Appwrite
-4. Appwrite removes document
-5. On success, cache entry is removed and related queries are invalidated
-6. Background process syncs deletion to Meilisearch (1-minute delay)
-7. Item will disappear from search results after sync completes
+**Data Path**: Similar to Create/Update, but uses `databases.deleteDocument`, removes items from cache (`removeQueries`), and invalidates lists.
 
-## Data Synchronization
+## Data Synchronization (Appwrite -> Meilisearch)
 
 ### Process Overview
 
-Data synchronization between Appwrite and Meilisearch follows this flow:
+(Conceptual flow remains the same: Appwrite change -> Trigger (Webhook/Function) -> Sync Logic -> Meilisearch Update)
 
-1. Data is written to Appwrite (primary database)
-2. Appwrite triggers a webhook on document changes
-3. The webhook calls a serverless function or API endpoint
-4. The function processes the change and updates Meilisearch
-5. Updated data becomes available for search
+* **Mechanism:** Typically handled by Appwrite Functions triggered by database events (e.g., `databases.*.collections.*.documents.*.create`).
+* **Lag:** Expect a potential delay (e.g., up to 1 minute, configurable) between an Appwrite write and the update reflecting in Meilisearch results.
+* **Data Handling:** The synchronization function must fetch the document from Appwrite and format it correctly (handling JSON strings, selecting appropriate fields) for the Meilisearch index, respecting the canonical types.
 
-There is typically a 1-minute lag between write operations in Appwrite and the data becoming available in Meilisearch search results.
+### Events & Consistency
 
-### Synchronization Events
-
-The following events trigger synchronization:
-
-- Document creation
-- Document update
-- Document deletion
-- Collection changes (schema updates)
-
-### Ensuring Data Consistency
-
-To ensure data consistency:
-
-1. **Write Validation**: Data is validated before writing to Appwrite
-2. **Schema Validation**: Schema ensures data structure consistency
-3. **Sync Validation**: Data is validated again during synchronization
-4. **Error Handling**: Failed syncs are logged and retried
-5. **Periodic Full Sync**: Regular full synchronization to catch any missed changes
+(Events and consistency points remain largely the same as the original doc).
 
 ## Caching Strategy
 
-Blueprint uses a multi-layered caching strategy:
-
-### 1. TanStack Query Cache
-
-- **Stale Time**: How long data stays fresh
-  - Search results: 5 minutes
-  - Detail views: 10 minutes
-  - User data: 5 minutes
-- **Cache Time**: How long unused data stays in memory (default: 5 minutes)
-- **Refetch On**: When automatic refetching occurs
-  - Window focus: Enabled
-  - Network reconnection: Enabled
-  - Component mount: Disabled (uses cache)
-
-### 2. Browser Cache
-
-- **HTTP Caching**: For static assets and images
-- **localStorage**: For user preferences and filter settings
-- **Service Worker**: For offline support (planned feature)
+(Caching strategy description using TanStack Query, Browser Cache remains largely the same, but stale times should reflect current hook configurations).
 
 ## Best Practices
 
 ### Data Access
 
-Always use the appropriate patterns for data access:
+- Use search hooks (`useSearch*`) for list/browse/search views.
+- Use detail fetch hooks (`useFetch*`) for specific item views.
+- Use mutation hooks (`useSave*`, `useUpdate*`, `useDelete*`) for all write operations.
+- Avoid direct calls to `databases` or `searchClient` within UI components; encapsulate logic within hooks.
+
+### Data Validation
+
+- **Validate Inputs First:** Always validate user input or API payloads using the appropriate Zod schema (e.g., `CreateProjectSchema`, `UpdateAddonSchema`) *before* calling mutation hooks (`mutate(validatedData)`).
+- **Separate Concerns:** Use Zod schemas (`/src/schemas/`) for validation and canonical types (`/src/types/appwrite.ts`) for representing data structure and interacting with typed Appwrite SDK methods. Refer to the [Zod Validation Guide](./zod-validation-guide.md).
 
 ```typescript
-// ✅ Good - Using appropriate hooks for operations
-const Component = () => {
-  // For displaying/searching (Meilisearch)
-  const { data: searchResults } = useSearchAddons(searchParams);
-  
-  // For detailed views (Appwrite)
-  const { data: addonDetails } = useAddon(slug);
-  
-  // For mutations (Appwrite)
-  const { mutate: saveAddon } = useSaveAddon();
-};
+// ✅ Good - Validate before mutation
+try {
+  const validatedData = CreateBlogSchema.parse(formData);
+  createBlogMutation.mutate(validatedData);
+} catch (error) {
+  // Handle Zod validation errors
+}
 
-// ❌ Bad - Mixing concerns or bypassing patterns
-const Component = () => {
-  // Don't directly access databases
-  const results = await databases.listDocuments(...);
-  
-  // Don't bypass caching layer
-  const searchResults = await searchClient.index('addons').search(...);
-};
+// ❌ Bad - Passing raw form data directly to mutation
+createBlogMutation.mutate(formData); // Risk of invalid data reaching API hook
 ```
 
 ### Error Handling
@@ -369,18 +326,18 @@ Implement robust error handling:
 // ✅ Good - Proper error handling
 const Component = () => {
   const { data, isLoading, error } = useAddon(slug);
-  
+
   if (isLoading) return <LoadingSpinner />;
   if (error) return <ErrorDisplay message={error.message} />;
   if (!data) return <NotFoundMessage />;
-  
+
   return <AddonDisplay addon={data} />;
 };
 
 // ❌ Bad - Inadequate error handling
 const Component = () => {
   const { data } = useAddon(slug);
-  
+
   return <AddonDisplay addon={data} />; // May cause null reference errors
 };
 ```
@@ -406,7 +363,7 @@ For better user experience, implement optimistic updates:
 // ✅ Good - Using optimistic updates
 const useUpdateDownloads = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: async ({ id, count }: { id: string; count: number }) => {
       return databases.updateDocument(
@@ -419,16 +376,16 @@ const useUpdateDownloads = () => {
     onMutate: async ({ id, count }) => {
       // Cancel outgoing refetches
       await queryClient.cancelQueries({ queryKey: ['addon', id] });
-      
+
       // Get current data
       const previousData = queryClient.getQueryData(['addon', id]);
-      
+
       // Optimistically update the cache
       queryClient.setQueryData(['addon', id], (old: any) => ({
         ...old,
         downloads: count,
       }));
-      
+
       // Return context for potential rollback
       return { previousData };
     },

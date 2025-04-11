@@ -47,9 +47,3 @@ export interface EasterEggDefinition {
   discoveryHint: string;
   component?: React.ComponentType<{ enabled: boolean }>;
 }
-
-// Export types based on the schemas
-export type EasterEggs = z.infer<typeof EasterEggsSchema>;
-export type CreateUserInput = z.infer<typeof CreateUserSchema>;
-export type UpdateUserProfileInput = z.infer<typeof UpdateUserProfileSchema>;
-export type UpdateUserPreferencesInput = z.infer<typeof UpdateUserPreferencesSchema>;

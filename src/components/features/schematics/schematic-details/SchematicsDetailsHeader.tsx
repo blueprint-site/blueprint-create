@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button.tsx';
 import { useEffect, useState } from 'react';
 import { useUserStore } from '@/api/stores/userStore';
 import type { Schematic } from '@/types';
-import { useIncrementDownloads } from '@/api/endpoints/useSchematics.tsx';
+import { useIncrementDownloads } from '@/api/appwrite/useSchematics';
 
 export interface SchematicsDetailsHeaderProps {
   schematic: Schematic;

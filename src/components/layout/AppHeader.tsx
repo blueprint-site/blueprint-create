@@ -4,7 +4,7 @@ import { NavLink } from 'react-router';
 
 import NavItem from '@/components/layout/NavItem';
 import HeaderNavMenu from '@/components/layout/HeaderNavMenu';
-import { useLogo } from '@/hooks/useEasterEgg';
+import { useLogo } from '@/hooks';
 
 import Blog from '@/assets/sprite-icons/clipboard_and_quill.png';
 import AboutIcon from '@/assets/sprite-icons/crafting_blueprint.png';

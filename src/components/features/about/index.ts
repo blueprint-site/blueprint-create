@@ -6,6 +6,3 @@ export * from './ContactSection';
 export * from './MissionSection';
 export * from './ContributorsSection';
 export * from './HeroSection';
-
-// Re-export hooks
-export * from '@/api/endpoints/useGithubContributors.tsx';
