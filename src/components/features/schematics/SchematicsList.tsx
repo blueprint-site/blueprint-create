@@ -10,8 +10,8 @@ import { SearchFilter } from '@/components/layout/SearchFilter';
 import { SelectFilter } from '@/components/layout/SelectFilter';
 import { FiltersContainer } from '@/components/layout/FiltersContainer';
 import { ItemGrid } from '@/components/layout/ItemGrid';
-import { useSchematicFilters } from '@/hooks/useSchematicFilters';
-import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { useSchematicFilters } from '@/hooks';
+import { useInfiniteScroll } from '@/hooks';
 import type { Schematic } from '@/types';
 
 function SchematicsList() {

@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import type { ModrinthProfileProps } from '../types';
-import { useModrinthProfile } from '@/api/endpoints/useModrinth';
+import { useModrinthProfile } from '@/api/external/useModrinth';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { LoadingSpinner } from '@/components/loading-overlays/LoadingSpinner';
 import { DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';

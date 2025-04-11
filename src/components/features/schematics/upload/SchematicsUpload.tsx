@@ -5,7 +5,7 @@ import { useUserStore } from '@/api/stores/userStore';
 import { SchematicUploadForm } from './SchematicUploadForm';
 import { SchematicPreview } from './SchematicUploadPreview';
 import { generateSlug } from '../utils/generateSlug';
-import { useSaveSchematics, useFetchSchematic } from '@/api/endpoints/useSchematics';
+import { useSaveSchematics, useFetchSchematic } from '@/api/appwrite/useSchematics';
 import type { SchematicFormValues } from '@/types';
 import SchematicUploadLoadingOverlay from '@/components/loading-overlays/SchematicUploadLoadingOverlay';
 

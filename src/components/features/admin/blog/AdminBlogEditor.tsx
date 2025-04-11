@@ -1,16 +1,16 @@
-import type { ChangeEvent} from 'react';
+import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Input } from '@/components/ui/input.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Card, CardContent } from '@/components/ui/card.tsx';
-import type { Blog, Tag } from '@/types';
+import type { Blog, BlogTag } from '@/types';
 import { useUserStore } from '@/api/stores/userStore';
 import ImageUploader from '@/components/utility/ImageUploader.tsx';
 import MarkdownEditor from '@/components/utility/MarkdownEditor.tsx';
-import TagSelector from '@/components/utility/blog/TagSelector.tsx';
-import { useToast } from '@/api';
-import { useFetchBlog, useSaveBlog } from '@/api';
+import TagSelector from '@/components/utility/TagSelector';
+import { useToast } from '@/hooks';
+import { useFetchBlog, useSaveBlog, useBlogTags, useCreateBlogTag, useDeleteBlogTag } from '@/api';
 
 export const BlogEditor = () => {
   const { id } = useParams<{ id: string }>();
@@ -20,6 +20,11 @@ export const BlogEditor = () => {
   const { data: blog, isLoading } = useFetchBlog(id);
   const saveBlogMutation = useSaveBlog();
   const [blogState, setBlogState] = useState<Partial<Blog> | null>(null);
+
+  // Add tag hooks
+  const { data: blogTags = [], isLoading: isLoadingTags } = useBlogTags();
+  const createTagMutation = useCreateBlogTag();
+  const deleteTagMutation = useDeleteBlogTag();
 
   useEffect(() => {
     if (!user) return;
@@ -45,6 +50,10 @@ export const BlogEditor = () => {
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setBlogState((prev) => (prev ? { ...prev, [name]: value } : null));
+  };
+
+  const handleTagsChange = (selectedTags: BlogTag[]) => {
+    setBlogState((prev) => (prev ? { ...prev, tags: selectedTags } : null));
   };
 
   const handleSave = async () => {
@@ -98,7 +107,6 @@ export const BlogEditor = () => {
               }
             />
             <div className='space-y-2'>
-              <h3 className='text-sm font-medium'>Title</h3>
               <Input
                 name='title'
                 value={blogState?.title || ''}
@@ -108,7 +116,6 @@ export const BlogEditor = () => {
               />
             </div>
             <div className='space-y-2'>
-              <h3 className='text-sm font-medium'>Slug</h3>
               <Input
                 name='slug'
                 value={blogState?.slug || ''}
@@ -117,14 +124,17 @@ export const BlogEditor = () => {
                 className='w-full'
               />
             </div>
+
+            {/* Add the new TagSelector component */}
             <div className='space-y-2'>
-              <h3 className='text-sm font-medium'>Tags</h3>
+              <div className='text-sm font-medium'>Tags</div>
               <TagSelector
-                value={blogState?.tags || []}
-                db='blog'
-                onChange={(value: Tag[]) =>
-                  setBlogState((prev) => (prev ? { ...prev, tags: value ?? undefined } : null))
-                }
+                tags={blogTags}
+                selectedTags={blogState?.tags || []}
+                isLoading={isLoadingTags}
+                onCreate={createTagMutation.mutateAsync}
+                onDelete={deleteTagMutation.mutateAsync}
+                onChange={handleTagsChange}
               />
             </div>
           </CardContent>

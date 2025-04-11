@@ -6,93 +6,87 @@ Blueprint implements a multi-layered state management approach designed to handl
 
 Blueprint uses a three-tiered approach to state management:
 
-1. **Server State**: Managed by TanStack Query
-2. **Global Client State**: Managed by Zustand
-3. **Local Component State**: Managed by React's built-in state
+1.  **Server State**: Managed by TanStack Query (React Query). Handles data fetched from external sources.
+2.  **Global Client State**: Managed by Zustand. Handles application-wide state not directly tied to server data.
+3.  **Local Component State**: Managed by React's built-in state hooks (`useState`, `useReducer`).
 
 ### State Management Layers
 
-![State Management Layers](../assets/state-management-layers.png)
+![State Management Layers](about:sanitized)
 
 #### Server State (TanStack Query)
 
-Server state represents data fetched from external services like Appwrite and Meilisearch. This includes:
+Manages asynchronous data fetched from external services like Appwrite (directly) and Meilisearch (directly or via `/api/search`). This includes:
 
-- Addons data
-- Schematics data
-- User profiles
-- Blog posts
-- Search results
+  - Addons data (`useFetchAddons`, `useSearchAddons`)
+  - Schematics data (`useFetchSchematics`, `useSearchSchematics`)
+  - User profiles (`useUserStore` fetches initially, but related data might use TanStack Query)
+  - Blog posts (`useFetchBlogs`, `useSearchBlogs`)
+  - Tags (`useBlogTags`, `useSchematicTags`)
+  - Search results
 
 #### Global Client State (Zustand)
 
-Global client state represents application-wide state that's not tied to server data. This includes:
+Manages synchronous, application-wide state accessible across components. This includes:
 
-- Authentication state
-- Theme preferences
-- UI settings
-- Modal/dialog states
-- Navigation state
+  - Authentication state (`userStore`)
+  - User preferences (`userStore`)
+  - Feature flag states (`featureFlagsStore`)
+  - Theme preferences (`themeStore`)
+  - Global UI states (e.g., modals, notifications - if managed globally)
 
-#### Local Component State (React useState/useReducer)
+#### Local Component State (React `useState`/`useReducer`)
 
-Local component state is specific to individual components and not needed elsewhere. This includes:
+Manages state that is temporary, component-specific, and not needed elsewhere. This includes:
 
-- Form input values
-- Open/closed states for dropdowns
-- Scroll positions
-- Temporary UI states
+  - Form input values before submission (often managed by React Hook Form).
+  - Open/closed states for UI elements like dropdowns, accordions.
+  - Component-specific loading or error states not covered by TanStack Query.
+  - Temporary UI interaction states.
 
 ## TanStack Query Implementation
 
 ### API Endpoint Hooks
 
-Blueprint organizes TanStack Query hooks in the `/src/api/endpoints` directory. Each file typically exports a set of hooks for a specific feature:
+Custom TanStack Query hooks are centralized in `/src/api/endpoints/`. These hooks encapsulate data fetching logic, caching, and type safety. See `docs/api/endpoints.md` for detailed usage.
 
 ```typescript
-// src/api/endpoints/useAddons.tsx
+// Example structure: src/api/endpoints/useAddons.tsx
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { databases, ID } from '@/config/appwrite';
-import { Addon } from '@/types';
+import type { Addon, AddonWithParsedFields } from '@/types'; // Use canonical types
+import { addParsedFields } from './helpers'; // Example helper
 
-// Fetch a single addon by slug
-export const useFetchAddon = (slug?: string) => {
-  return useQuery<Addon | null>({
-    queryKey: ['addon', slug],
+// Fetch a single addon by ID (simplified)
+export const useFetchAddon = (id?: string) => {
+  return useQuery<AddonWithParsedFields | null>({ // Returns processed type
+    queryKey: ['addon', id],
     queryFn: async () => {
-      if (!slug) return null;
-      // Implementation details...
+      if (!id) return null;
+      // Uses typed SDK method
+      const addonDoc = await databases.getDocument<Addon>(DATABASE_ID, COLLECTION_ID, id);
+      // Handles internal processing (e.g., parsing JSON strings)
+      return addParsedFields(addonDoc);
     },
-    enabled: Boolean(slug),
+    enabled: Boolean(id),
     staleTime: 1000 * 60 * 5, // Cache for 5 minutes
   });
 };
 
-// Fetch a list of addons
-export const useFetchAddons = (page: number, limit: number = 10) => {
-  return useQuery<{
-    addons: Addon[];
-    total: number;
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
-  }>({
-    queryKey: ['addons', page, limit],
-    queryFn: async () => {
-      // Implementation details...
-    },
-  });
-};
-
-// Save an addon
-export const useSaveAddon = () => {
+// Save (Create/Update) an addon (simplified)
+export const useUpdateAddon = () => {
   const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: async (addon: Partial<Addon>) => {
-      // Implementation details...
+    // Expects validated input data, prepares it for Appwrite
+    mutationFn: async ({ addonId, data }: { addonId: string; data: Partial<Addon> }) => {
+      const dataToSave = prepareAddonForUpdate(data); // Handles serialization internaly
+      // Uses typed SDK method
+      return databases.updateDocument<Addon>(DATABASE_ID, COLLECTION_ID, addonId, dataToSave);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['addons'] });
+    onSuccess: (updatedDoc) => {
+      // Invalidate relevant queries
+      queryClient.invalidateQueries({ queryKey: ['addons', 'list'] });
+      queryClient.setQueryData(['addon', updatedDoc.$id], updatedDoc); // Update specific cache entry
     },
   });
 };
@@ -100,122 +94,188 @@ export const useSaveAddon = () => {
 
 ### Search Hooks
 
-Search functionality uses TanStack Query with Meilisearch:
+Search hooks interact with Meilisearch (or the local `/api/search` endpoint) and return processed, typed results.
 
 ```typescript
-// src/api/endpoints/useSearchAddons.tsx
+// Example structure: src/api/endpoints/useSearchAddons.tsx
 import { useQuery } from '@tanstack/react-query';
-import { meilisearch } from '@/config/meilisearch';
-import { Addon } from '@/types';
+import type { AddonWithParsedFields, SearchAddonResult, SearchAddonsProps } from '@/types';
+import { processAddon } from './helpers'; // Example helper
 
-export const useSearchAddons = (
-  query: string,
-  filters?: string,
-  page: number = 1,
-  hitsPerPage: number = 20
-) => {
-  return useQuery<{
-    hits: Addon[];
-    total: number;
-    page: number;
-    hitsPerPage: number;
-    totalPages: number;
-  }>({
-    queryKey: ['search', 'addons', query, filters, page, hitsPerPage],
+export const useSearchAddons = (searchParams: SearchAddonsProps): SearchAddonResult => {
+  return useQuery({ // Return type includes TanStack Query state + SearchResult fields
+    queryKey: ['searchAddons', searchParams],
     queryFn: async () => {
-      const index = meilisearch.index('addons');
-      const results = await index.search(query, {
-        filter: filters,
-        page,
-        hitsPerPage,
-      });
-      
+      // Fetches from Meilisearch/API...
+      const rawResults = await fetchFromSearchEngine(searchParams);
+      // Processes results...
+      const processedHits: AddonWithParsedFields[] = rawResults.hits.map(processAddon);
       return {
-        hits: results.hits as Addon[],
-        total: results.estimatedTotalHits,
-        page: results.page,
-        hitsPerPage: results.hitsPerPage,
-        totalPages: Math.ceil(results.estimatedTotalHits / results.hitsPerPage),
+        data: processedHits,
+        totalHits: rawResults.totalHits,
+        // page, limit, hasNextPage etc.
       };
     },
-    staleTime: 1000 * 60, // Cache for 1 minute
+    staleTime: 1000 * 60 * 1, // Cache search results briefly
+    keepPreviousData: true, // Keep previous data visible while fetching new results
   });
 };
 ```
 
 ### Query Client Configuration
 
-The TanStack Query client is configured in `src/main.tsx`:
+The TanStack Query client is configured in `src/providers/AppProviders.tsx` (or `src/main.tsx`):
 
 ```typescript
+// src/providers/AppProviders.tsx (Example location)
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'; // Import DevTools
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60, // 1 minute
-      retry: 1,
-      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5, // Default stale time: 5 minutes
+      retry: 1, // Default retry attempts
+      refetchOnWindowFocus: true, // Refetch when window gains focus
     },
   },
 });
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+export function AppProviders({ children }: { children: React.ReactNode }) {
+  return (
     <QueryClientProvider client={queryClient}>
-      <App />
+      {children}
+      {/* Add DevTools only in development */}
+      {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
     </QueryClientProvider>
-  </React.StrictMode>
-);
+  );
+}
+
+// Wrap your App component with AppProviders in main.tsx or similar entry point
 ```
 
 ## Zustand Implementation
 
 ### Store Organization
 
-Zustand stores are organized in the `/src/api/stores` directory, with each store focused on a specific feature or concern:
+Zustand stores are located in `/src/api/stores/`, each managing a specific slice of global client state.
+
+### User Store (`userStore.ts`)
+
+Manages authentication state, user profile data, and preferences fetched from Appwrite `account` service.
 
 ```typescript
 // src/api/stores/userStore.ts
 import { create } from 'zustand';
-import { User, UserPreferences } from '@/types';
+import type { User, UserPreferences } from '@/types'; // Use canonical types
+import { account } from '@/config/appwrite';
 
 interface UserState {
   user: User | null;
   preferences: UserPreferences | null;
+  isLoading: boolean;
   error: string | null;
-  
-  // Methods
   fetchUser: () => Promise<void>;
-  updatePreferences: (prefs: UserPreferences) => Promise<void>;
-  // Other methods...
+  updatePreferences: (prefs: Partial<UserPreferences>) => Promise<void>;
+  logout: () => Promise<void>;
+  // Other auth methods...
 }
 
 export const useUserStore = create<UserState>((set, get) => ({
   user: null,
   preferences: null,
+  isLoading: false,
   error: null,
-  
+
   fetchUser: async () => {
-    // Implementation...
+    set({ isLoading: true });
+    try {
+      // Uses type casting for extended User type
+      const userData = (await account.get()) as User;
+      set({ user: userData, preferences: userData.prefs, isLoading: false, error: null });
+    } catch (error) {
+      console.error('User is not authenticated', error);
+      set({ user: null, preferences: null, isLoading: false, error: 'Failed to fetch user' });
+    }
   },
-  
-  updatePreferences: async (prefs: UserPreferences) => {
-    // Implementation...
+
+  updatePreferences: async (prefs: Partial<UserPreferences>) => {
+    try {
+      await account.updatePrefs(prefs);
+      // Refresh user state after update
+      await get().fetchUser();
+    } catch (error) {
+      console.error('Failed to update preferences', error);
+      // Handle error state
+    }
   },
-  
+
+  logout: async () => {
+    try {
+      await account.deleteSession('current');
+      set({ user: null, preferences: null });
+    } catch (error) {
+      console.error('Logout failed', error);
+      // Handle error appropriately
+    }
+  },
   // Other methods...
 }));
 ```
 
-### Theme Store Example
+### Feature Flag Store (`featureFlagsStore.ts`) (New)
 
-The theme store manages theme preferences:
+Manages the state of feature flags fetched from Appwrite.
+
+```typescript
+// src/api/stores/featureFlagsStore.ts
+import { create } from 'zustand';
+import { fetchFeatureFlags } from '@/api/endpoints/useFeatureFlags'; // Import fetch function
+import { useUserStore } from './userStore'; // Depends on user ID
+
+interface FeatureFlagsState {
+  flags: Record<string, boolean>; // Map of flag keys to boolean status
+  isLoading: boolean;
+  error: Error | null;
+  isEnabled: (flagKey: string) => boolean; // Helper to check flag status
+  refreshFlags: () => Promise<void>; // Action to fetch/update flags
+}
+
+export const useFeatureFlagsStore = create<FeatureFlagsState>((set, get) => ({
+  flags: {},
+  isLoading: true,
+  error: null,
+
+  isEnabled: (flagKey: string): boolean => {
+    return Boolean(get().flags[flagKey]);
+  },
+
+  refreshFlags: async (): Promise<void> => {
+    // Uses current user ID (or anonymous)
+    const userId = useUserStore.getState().user?.$id ?? 'anonymous';
+    set({ isLoading: true });
+    try {
+      const featureFlags = await fetchFeatureFlags(userId); // Calls API endpoint
+      set({ flags: featureFlags, isLoading: false, error: null });
+    } catch (e) {
+      console.error('Failed to fetch feature flags:', e);
+      set({ isLoading: false, error: e instanceof Error ? e : new Error(String(e)) });
+    }
+  },
+}));
+
+// Store initializes and refreshes flags automatically on load and user change
+// (See implementation in featureFlagsStore.ts for details)
+```
+
+### Theme Store (`themeStore.ts`)
+
+Manages theme preferences, often persisted to `localStorage`.
 
 ```typescript
 // src/api/stores/themeStore.ts
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist } from 'zustand/middleware'; // Uses persistence
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -227,11 +287,11 @@ interface ThemeState {
 export const useThemeStore = create<ThemeState>()(
   persist(
     (set) => ({
-      theme: 'system',
+      theme: 'system', // Default theme
       setTheme: (theme) => set({ theme }),
     }),
     {
-      name: 'blueprint-theme',
+      name: 'blueprint-theme-storage', // localStorage key
     }
   )
 );
@@ -239,27 +299,38 @@ export const useThemeStore = create<ThemeState>()(
 
 ### Using Stores in Components
 
-Stores are used in components by importing the store hook and selecting the specific state or actions needed:
+Import the store hook and use selectors for optimized re-renders.
 
 ```tsx
+// Example Component
 import { useUserStore } from '@/api/stores/userStore';
 import { useThemeStore } from '@/api/stores/themeStore';
+import { useFeatureFlagsStore } from '@/api/stores/featureFlagsStore';
 
-const Header = () => {
-  // Select only the specific state needed
-  const user = useUserStore((state) => state.user);
-  const logout = useUserStore((state) => state.logout);
-  
-  const theme = useThemeStore((state) => state.theme);
-  const setTheme = useThemeStore((state) => state.setTheme);
-  
-  // Component implementation...
+const UserStatus = () => {
+  // Select only the user's name - component only re-renders if name changes
+  const userName = useUserStore((state) => state.user?.name);
+  const logout = useUserStore((state) => state.logout); // Select action
+
+  const theme = useThemeStore((state) => state.theme); // Select state
+  const setTheme = useThemeStore((state) => state.setTheme); // Select action
+
+  // Use the helper function from the feature flag store
+  const isNewDashboardEnabled = useFeatureFlagsStore((state) => state.isEnabled('new_dashboard'));
+
+  return (
+    <div>
+      {userName ? `Welcome, ${userName}` : 'Welcome, Guest'}
+      {/* ... UI elements using theme, setTheme, logout, isNewDashboardEnabled ... */}
+      {isNewDashboardEnabled && <p>Check out the new dashboard!</p>}
+    </div>
+  );
 };
 ```
 
 ## Local Component State
 
-Local component state uses React's built-in hooks:
+Local component state uses React's built-in hooks (`useState`, `useReducer`) for state that is temporary, component-specific, and not needed elsewhere.
 
 ```tsx
 import { useState, useReducer } from 'react';
@@ -268,7 +339,7 @@ const FormComponent = () => {
   // Simple state with useState
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  
+
   // Complex state with useReducer
   const [formState, dispatch] = useReducer(
     (state, action) => {
@@ -276,7 +347,7 @@ const FormComponent = () => {
         case 'SET_FIELD':
           return { ...state, [action.field]: action.value };
         case 'RESET':
-          return initialState;
+          return initialState; // Assume initialState is defined
         default:
           return state;
       }
@@ -287,7 +358,7 @@ const FormComponent = () => {
       errors: {},
     }
   );
-  
+
   // Component implementation...
 };
 ```
@@ -296,35 +367,38 @@ const FormComponent = () => {
 
 ### When to Use Each Type of State
 
-| State Type | When to Use |
-|------------|-------------|
-| TanStack Query | For data from external sources that needs caching, refetching, background updates |
-| Zustand | For application-wide state that persists across pages and components |
-| React State | For component-specific state that doesn't need to be shared |
+| State Type     | When to Use                                                                           |
+| -------------- | ------------------------------------------------------------------------------------- |
+| TanStack Query | For data from external sources that needs caching, refetching, background updates.    |
+| Zustand        | For application-wide client state that needs to be shared across unrelated components. |
+| React State    | For component-specific state not needed elsewhere (UI state, temporary form values).  |
 
 ### Data Flow Patterns
 
 Follow these patterns for consistent data flow:
 
-1. **Unidirectional Data Flow**: Data flows down, actions flow up
-2. **Container/Presentational Pattern**: Separate data fetching from presentation
-3. **Derived State**: Calculate derived state in components rather than storing it
+1.  **Unidirectional Data Flow**: Data generally flows down from hooks/stores to components, and actions/events flow up from components to trigger state changes via hook mutations or store actions.
+2.  **Container/Presentational Pattern**: Consider separating components responsible for data fetching/logic (containers, often using hooks) from components focused solely on rendering UI (presentational).
 
 Example of Container/Presentational pattern:
 
 ```tsx
-// Container component
+// Container component using hooks
 const AddonListContainer = () => {
-  const { data, isLoading, error } = useFetchAddons(1, 10);
-  
+  const { data, isLoading, error } = useFetchAddons(1, 10); // Example fetch hook
+
   if (isLoading) return <LoadingOverlay />;
   if (error) return <ErrorMessage error={error} />;
-  
-  return <AddonList addons={data.addons} />;
+
+  // Pass only the necessary data down
+  return <AddonList addons={data?.addons} />;
 };
 
-// Presentational component
+// Presentational component only receiving props
 const AddonList = ({ addons }) => {
+  if (!addons || addons.length === 0) {
+     return <p>No addons found.</p>;
+  }
   return (
     <div className="grid grid-cols-3 gap-4">
       {addons.map(addon => (
@@ -339,103 +413,54 @@ const AddonList = ({ addons }) => {
 
 Some state needs to persist across sessions:
 
-1. **Theme Preferences**: Stored using Zustand persist middleware
-2. **User Settings**: Stored in Appwrite user preferences
-3. **Authentication**: Managed by Appwrite sessions
+1.  **Theme Preferences**: Stored in `localStorage` using Zustand `persist` middleware (`themeStore`).
+2.  **User Settings/Preferences**: Stored in the Appwrite user's `prefs` object (`userStore` fetches and updates these).
+3.  **Authentication**: Managed by secure HTTP-only cookies set by Appwrite during session creation. The frontend checks session validity via `account.get()`.
 
 ### State Debugging
 
 For debugging state:
 
-1. **TanStack Query DevTools**: Include in development builds
-   ```tsx
-   import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-   
-   // In App component
-   <>
-     <RouterProvider router={router} />
-     {process.env.NODE_ENV === 'development' && <ReactQueryDevtools />}
-   </>
-   ```
+1.  **TanStack Query DevTools**: Include in development builds for visualizing query states, cache, etc.
+    ```tsx
+    // In AppProviders or similar
+    import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+     <>
+       {/* ... other providers */}
+       {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+     </>
+    ```
+2.  **Redux DevTools for Zustand**: Connect Zustand stores to the Redux DevTools browser extension for inspecting state changes and actions.
+    ```typescript
+    // In your store definition
+    import { devtools } from 'zustand/middleware';
 
-2. **Redux DevTools for Zustand**: Connect Zustand to Redux DevTools
-   ```tsx
-   import { devtools } from 'zustand/middleware';
-   
-   export const useStore = create<State>()(
-     devtools(
-       (set) => ({
-         // store implementation
-       })
-     )
-   );
-   ```
+    export const useMyStore = create<MyState>()(
+      devtools(
+        (set) => ({
+          // store implementation...
+        }),
+        { name: "MyStore" } // Optional name for DevTools
+      )
+    );
+    ```
 
 ## Performance Considerations
 
-1. **State Selectors**: Use selectors to prevent unnecessary re-renders
-   ```tsx
-   // Bad: selecting the entire state
-   const state = useStore();
-   
-   // Good: selecting only what's needed
-   const count = useStore(state => state.count);
-   ```
-
-2. **Memoization**: Use `useMemo` and `useCallback` for expensive calculations or callbacks
-   ```tsx
-   const memoizedValue = useMemo(
-     () => computeExpensiveValue(a, b),
-     [a, b]
-   );
-   ```
-
-3. **Query Cache Configuration**: Configure TanStack Query cache settings for optimal performance
-   ```tsx
-   useQuery({
-     queryKey: ['data'],
-     queryFn: fetchData,
-     staleTime: 1000 * 60 * 5, // 5 minutes
-     cacheTime: 1000 * 60 * 30, // 30 minutes
-   });
-   ```
+1.  **State Selectors**: Use selectors (`useStore(state => state.specificValue)`) with Zustand and TanStack Query's `select` option to prevent components from re-rendering when unrelated parts of the state change.
+2.  **Memoization**: Use `useMemo` for expensive calculations derived from state and `useCallback` for stabilizing function references passed as props, preventing unnecessary re-renders in child components.
+3.  **Query Cache Configuration**: Tune TanStack Query's `staleTime` and `gcTime` (cacheTime) based on how frequently data updates, balancing freshness with performance.
 
 ## Error Handling Strategy
 
-1. **Query Error Handling**: Handle errors at the query level
-   ```tsx
-   const { data, error, isError } = useQuery({
-     queryKey: ['data'],
-     queryFn: fetchData,
-     onError: (error) => {
-       console.error('Query error:', error);
-       // Show toast or other user feedback
-     },
-   });
-   ```
-
-2. **Mutation Error Handling**: Handle errors during data mutations
-   ```tsx
-   const mutation = useMutation({
-     mutationFn: updateData,
-     onError: (error) => {
-       console.error('Mutation error:', error);
-       // Show error feedback
-     },
-   });
-   ```
-
-3. **Global Error State**: Track global error state for critical errors
-   ```tsx
-   // In a global error store
-   interface ErrorState {
-     globalError: Error | null;
-     setGlobalError: (error: Error | null) => void;
-   }
-   ```
+1.  **Query/Mutation Errors**: Handle errors returned by TanStack Query hooks (`error`, `isError` states) within components to display appropriate UI feedback (e.g., error messages, retry buttons). Use `onError` callbacks in `useMutation` for side effects like logging or showing toasts.
+2.  **Global Errors**: Consider a global Zustand store or React Context to handle critical application-wide errors (e.g., failed initial data load, major API outages).
+3.  **Error Boundaries**: Use React Error Boundaries to catch rendering errors in specific parts of the UI and prevent crashing the entire application.
 
 ## Related Documentation
 
-- [Architecture Overview](./overview.md)
-- [Data Flow](./data-flow.md)
-- [API Integration](../api/endpoints.md)
+  - [Architecture Overview](./overview.md)
+  - [Data Flow](./data-flow.md)
+  - [API Endpoints](../api/endpoints.md)
+  - [Appwrite Integration](../api/appwrite.md)
+  - [Zod Validation Guide](../guides/zod-validation-guide.md)

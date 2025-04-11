@@ -1,7 +1,7 @@
 // src/hooks/useEasterEgg.ts - Fixed version with proper trigger handling
 import { useRef, useCallback, useEffect } from 'react';
 import { useEasterEggStore } from '@/api/stores/easterEggStore';
-import { useToast } from '@/hooks/useToast';
+import { useToast } from '@/hooks';
 import Logo from '@/assets/logo.webp';
 import LegacyLogo from '@/assets/legacy_logo.webp';
 import { getEasterEggById, DEFAULT_EASTER_EGGS } from '@/config/easterEggs';

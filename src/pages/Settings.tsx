@@ -1,4 +1,4 @@
-import { Lock, Monitor, User, Puzzle } from 'lucide-react';
+import { Lock, Monitor, User, Puzzle, BugIcon } from 'lucide-react';
 import { Suspense, lazy } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
@@ -6,7 +6,7 @@ import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
-
+const TesterMain = lazy(() => import('@/components/features/tester/TesterMain.tsx'));
 const DisplaySettings = lazy(() => import('@/components/features/settings/DisplaySettings.tsx'));
 const AccountSettings = lazy(() => import('@/components/features/settings/AccountSettings.tsx'));
 const ProfileSettings = lazy(() => import('@/components/features/settings/ProfileSettings.tsx'));
@@ -43,6 +43,12 @@ const SettingsPage = () => {
       label: 'Addons',
       icon: Puzzle,
       component: AddonVerification,
+    },
+    {
+      id: 'beta-tester',
+      label: 'Beta tester',
+      icon: BugIcon,
+      component: TesterMain,
     },
   ];
 

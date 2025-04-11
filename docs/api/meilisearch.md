@@ -1,533 +1,294 @@
-# Meilisearch Integration
-
-Blueprint uses Meilisearch as its search engine, providing fast, typo-tolerant search and powerful filtering capabilities. This document outlines how Meilisearch is integrated into the application.
+# Meilisearch & Appwrite Type Integration Guide
 
 ## Overview
 
-Meilisearch is a powerful, fast, open-source search engine that is easy to use and deploy. Blueprint leverages Meilisearch for:
+This document outlines Blueprint's approach for integrating Meilisearch with Appwrite in a type-safe manner. It ensures consistent data types throughout the application, regardless of whether data originates directly from Appwrite or via Meilisearch results.
 
-- Full-text search across addons, schematics, and blog posts
-- Advanced filtering by multiple attributes (versions, categories, etc.)
-- Typo-tolerant search to handle spelling mistakes
-- Fast search results with millisecond response times
-- Relevant ranking based on custom criteria
+### The Challenge
 
-## Setup and Configuration
+Working with both Appwrite (database) and Meilisearch (search index) presents challenges:
 
-### Environment Configuration
+1.  **Multiple Data Sources**: Data exists in Appwrite and is mirrored/indexed in Meilisearch.
+2.  **Type Consistency**: A unified data model is needed across the application, irrespective of the source.
+3.  **Type Safety**: Maintain strong TypeScript typing when interacting with both Appwrite SDK and Meilisearch results.
+4.  **Handling Differences**: Account for potential variations, like fields stored as JSON strings in Appwrite vs. how they might be indexed or returned by Meilisearch.
+5.  **Code Duplication**: Avoid redundant type definitions and data mapping logic.
 
-Meilisearch requires the following environment variables:
+### Our Solution
 
-```
-APP_MEILISEARCH_URL=your_meilisearch_url
-APP_MEILISEARCH_API_KEY=your_meilisearch_api_key
-```
+Blueprint establishes a pattern where:
 
-### Client Configuration
+1.  Appwrite document interfaces defined in `src/types/appwrite.ts` are considered the **canonical types**.
+2.  Meilisearch type definitions in `src/types/meilisearch.ts` leverage these canonical types, adding search-specific metadata if needed.
+3.  API hooks (`/src/api/endpoints/`) abstract the data fetching and provide consistent, typed data to the UI, handling necessary conversions (like JSON string parsing) internally.
+4.  Zod schemas (`/src/schemas/`) are used primarily for form/input validation, separate from the canonical data structure types.
 
-The Meilisearch client is configured in `/src/config/meilisearch.ts`:
+## Implementation Steps
+
+Follow these steps when integrating an Appwrite collection that is also indexed in Meilisearch (using `Addon` as an example):
+
+### 1. Define Canonical Types in `appwrite.ts`
+
+Ensure your document interface exists in `src/types/appwrite.ts`:
 
 ```typescript
-import { MeiliSearch } from 'meilisearch';
+// src/types/appwrite.ts
+import type { Models } from 'appwrite';
 
-const url = window._env_?.APP_MEILISEARCH_URL || '';
-const apiKey = window._env_?.APP_MEILISEARCH_API_KEY || '';
-
-export const meilisearch = new MeiliSearch({
-  host: url,
-  apiKey: apiKey,
-});
-```
-
-## Index Structure
-
-Blueprint uses the following Meilisearch indexes:
-
-### Addons Index
-
-The addons index contains all Create Mod addons with their metadata:
-
-```json
-{
-  "indexUid": "addons",
-  "primaryKey": "$id",
-  "searchableAttributes": [
-    "name",
-    "description",
-    "author",
-    "categories"
-  ],
-  "filterableAttributes": [
-    "categories",
-    "minecraft_versions",
-    "create_versions",
-    "loaders",
-    "author"
-  ],
-  "sortableAttributes": [
-    "downloads",
-    "created_at",
-    "updated_at"
-  ],
-  "typoTolerance": {
-    "enabled": true,
-    "minWordSizeForTypos": {
-      "oneTypo": 4,
-      "twoTypos": 8
-    }
-  }
+export interface Addon extends Models.Document {
+  name: string;
+  description: string;
+  slug: string;
+  author: string;
+  categories: string[];
+  downloads: number;
+  // ... other fields
+  // Fields stored as JSON strings
+  curseforge_raw: string | null;
+  modrinth_raw: string | null;
 }
 ```
 
-### Schematics Index
+*(Define other types like `Blog`, `Schematic`, `User`, `FeatureFlag` similarly)*
 
-The schematics index contains user-created schematics:
+### 2. Create Meilisearch Type Definitions in `meilisearch.ts`
 
-```json
-{
-  "indexUid": "schematics",
-  "primaryKey": "$id",
-  "searchableAttributes": [
-    "name",
-    "description",
-    "author",
-    "tags"
-  ],
-  "filterableAttributes": [
-    "tags",
-    "minecraft_version",
-    "create_version",
-    "author"
-  ],
-  "sortableAttributes": [
-    "downloads",
-    "created_at",
-    "updated_at",
-    "likes"
-  ]
-}
+Define types for Meilisearch responses in `src/types/meilisearch.ts`:
+
+```typescript
+// src/types/meilisearch.ts
+import type { Hits, SearchResponse } from 'meilisearch';
+import type { Addon, Blog, Schematic } from '@/types/appwrite'; // Import canonical types
+
+// Type for a full Meilisearch search response for Addons
+export type MeiliAddonResponse = SearchResponse<Addon>;
+
+// Type for an array of Meilisearch hits containing Addon data
+export type MeiliAddonHits = Hits<Addon>;
+
+// Type for a single Meilisearch hit for an Addon
+export type MeiliAddonHit = MeiliAddonHits[number];
+
+// Define similar types for Blog (MeiliBlogResponse, etc.) and Schematic
 ```
 
-### Blogs Index
+### 3. Update API Hooks for Appwrite (`useQuery`, `useMutation`)
 
-The blogs index contains blog posts:
+Use generics with your canonical types in Appwrite API hooks (e.g., in `src/api/endpoints/useAddons.tsx`):
 
-```json
-{
-  "indexUid": "blogs",
-  "primaryKey": "$id",
-  "searchableAttributes": [
-    "title",
-    "content",
-    "author",
-    "tags"
-  ],
-  "filterableAttributes": [
-    "tags",
-    "author",
-    "category"
-  ],
-  "sortableAttributes": [
-    "published_at",
-    "updated_at",
-    "views"
-  ]
-}
+```typescript
+// src/api/endpoints/useAddons.tsx
+import type { Addon, AddonWithParsedFields } from '@/types';
+import { Query, ID } from 'appwrite';
+
+// Fetch a single addon
+export const useFetchAddon = (id?: string) => {
+  return useQuery<AddonWithParsedFields | null>({ // Use helper type if parsing needed
+    queryKey: ['addon', id],
+    queryFn: async () => {
+      if (!id) return null;
+      // Uses Appwrite SDK with generic type
+      const addon = await databases.getDocument<Addon>(DATABASE_ID, COLLECTION_ID, id);
+      // Internal helper parses JSON fields
+      return addParsedFields(addon);
+    },
+    enabled: Boolean(id),
+  });
+};
+
+// Fetch multiple addons
+export const useFetchAddons = (page: number, limit: number = 10) => {
+  return useQuery<{ addons: AddonWithParsedFields[]; total: number; ... }>({
+    queryKey: ['addons', 'list', page, limit],
+    queryFn: async () => {
+      const response = await databases.listDocuments<Addon>(
+        DATABASE_ID,
+        COLLECTION_ID,
+        [Query.limit(limit), Query.offset((page - 1) * limit)]
+      );
+      // Process results to parse JSON fields
+      const addons = response.documents.map(addParsedFields);
+      return {
+        addons,
+        total: response.total,
+        // pagination logic...
+      };
+    },
+  });
+};
+
+// Create or update an addon
+export const useUpdateAddon = () => {
+  return useMutation({
+    // Accepts Partial<Addon> but handles serialization internally
+    mutationFn: async ({ addonId, data }: { addonId: string; data: Partial<Addon> }) => {
+      // Internal logic stringifies raw JSON fields if provided as objects
+      const updateData = prepareAddonForUpdate(data);
+
+      return databases.updateDocument<Addon>( // Use generic type
+        DATABASE_ID,
+        COLLECTION_ID,
+        addonId,
+        updateData
+      );
+    },
+    // onSuccess invalidation...
+  });
+};
 ```
 
-## Search Implementation
+### 4. Create Search Hooks for Meilisearch
 
-### Basic Search Hooks
-
-Blueprint implements search functionality through custom hooks in the `/src/api/endpoints` directory:
+Implement search hooks using the Meilisearch types (e.g., in `src/api/endpoints/useSearchAddons.tsx`):
 
 ```typescript
 // src/api/endpoints/useSearchAddons.tsx
-import { useQuery } from '@tanstack/react-query';
-import { meilisearch } from '@/config/meilisearch';
-import { Addon } from '@/types';
+import type { Addon, AddonWithParsedFields } from '@/types';
+import type { MeiliAddonResponse } from '@/types/meilisearch'; // Import Meili type
+import searchClient from '@/config/meilisearch';
 
-export interface SearchAddonsParams {
-  query: string;
-  filters?: string;
-  page?: number;
-  hitsPerPage?: number;
-  sort?: string[];
-}
-
-export const useSearchAddons = ({
-  query,
-  filters,
-  page = 1,
-  hitsPerPage = 20,
-  sort,
-}: SearchAddonsParams) => {
-  return useQuery<{
-    hits: Addon[];
-    total: number;
-    page: number;
-    hitsPerPage: number;
-    totalPages: number;
-  }>({
-    queryKey: ['search', 'addons', query, filters, page, hitsPerPage, sort],
-    queryFn: async () => {
-      try {
-        const index = meilisearch.index('addons');
-        const results = await index.search(query, {
-          filter: filters,
-          page,
-          hitsPerPage,
-          sort,
-        });
-        
-        return {
-          hits: results.hits as Addon[],
-          total: results.estimatedTotalHits,
-          page: results.page,
-          hitsPerPage: results.hitsPerPage,
-          totalPages: Math.ceil(results.estimatedTotalHits / results.hitsPerPage),
-        };
-      } catch (error) {
-        console.error('Error searching addons:', error);
-        throw new Error('Failed to search addons');
-      }
-    },
-    staleTime: 1000 * 60, // Cache for 1 minute
-    keepPreviousData: true,
-  });
-};
-```
-
-### Filter Building
-
-To construct complex filters, Blueprint uses a filter builder utility:
-
-```typescript
-// src/lib/search/filterBuilder.ts
-export class FilterBuilder {
-  private filters: string[] = [];
-
-  /**
-   * Add an equality filter
-   */
-  equals(field: string, value: string | number | boolean): FilterBuilder {
-    this.filters.push(`${field} = ${JSON.stringify(value)}`);
-    return this;
-  }
-
-  /**
-   * Add an array contains filter
-   */
-  contains(field: string, value: string | number): FilterBuilder {
-    this.filters.push(`${field} = ${JSON.stringify(value)}`);
-    return this;
-  }
-
-  /**
-   * Add a greater than filter
-   */
-  greaterThan(field: string, value: number): FilterBuilder {
-    this.filters.push(`${field} > ${value}`);
-    return this;
-  }
-
-  /**
-   * Add a less than filter
-   */
-  lessThan(field: string, value: number): FilterBuilder {
-    this.filters.push(`${field} < ${value}`);
-    return this;
-  }
-
-  /**
-   * Add an OR condition group
-   */
-  or(callback: (builder: FilterBuilder) => void): FilterBuilder {
-    const nestedBuilder = new FilterBuilder();
-    callback(nestedBuilder);
-    const nestedFilters = nestedBuilder.build();
-    if (nestedFilters) {
-      this.filters.push(`(${nestedFilters})`);
-    }
-    return this;
-  }
-
-  /**
-   * Build the final filter string
-   */
-  build(): string {
-    if (this.filters.length === 0) {
-      return '';
-    }
-    return this.filters.join(' AND ');
-  }
-}
-```
-
-Example usage of the filter builder:
-
-```typescript
-// Example of building complex filters
-const filter = new FilterBuilder()
-  .contains('minecraft_versions', '1.19.2')
-  .or(builder => {
-    builder
-      .contains('loaders', 'forge')
-      .contains('loaders', 'fabric');
-  })
-  .build();
-
-// Results in: minecraft_versions = "1.19.2" AND (loaders = "forge" OR loaders = "fabric")
-```
-
-### Search UI Components
-
-Blueprint includes several components for integrating search into the UI:
-
-```tsx
-// src/components/common/SearchBar.tsx
-import { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Search } from 'lucide-react';
-
-interface SearchBarProps {
-  onSearch: (query: string) => void;
-  placeholder?: string;
-  initialValue?: string;
-}
-
-export const SearchBar: React.FC<SearchBarProps> = ({
-  onSearch,
-  placeholder = 'Search...',
-  initialValue = '',
-}) => {
-  const [query, setQuery] = useState(initialValue);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSearch(query);
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="relative w-full">
-      <Input
-        type="text"
-        placeholder={placeholder}
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        className="pr-10"
-      />
-      <Button
-        type="submit"
-        variant="ghost"
-        size="sm"
-        className="absolute right-0 top-0 h-full"
-      >
-        <Search className="h-4 w-4" />
-      </Button>
-    </form>
-  );
-};
-```
-
-## Data Synchronization
-
-### Appwrite to Meilisearch Sync
-
-Blueprint synchronizes data from Appwrite to Meilisearch to ensure search indexes stay up-to-date. This is handled through background processes after data changes:
-
-1. **Real-time Synchronization**: Updates are synchronized with a small delay
-2. **Batch Synchronization**: Full reindexing is performed periodically
-
-The synchronization is currently managed through Appwrite Functions:
-
-```javascript
-// Appwrite Function example for syncing an addon to Meilisearch
-const { Client } = require('node-appwrite');
-const { MeiliSearch } = require('meilisearch');
-
-module.exports = async function(req, res) {
-  // Initialize Appwrite client
-  const client = new Client()
-    .setEndpoint(process.env.APPWRITE_ENDPOINT)
-    .setProject(process.env.APPWRITE_PROJECT_ID)
-    .setKey(process.env.APPWRITE_API_KEY);
-
-  // Initialize Meilisearch client
-  const meilisearch = new MeiliSearch({
-    host: process.env.MEILISEARCH_HOST,
-    apiKey: process.env.MEILISEARCH_API_KEY,
-  });
-
-  // Get addon data from Appwrite
-  const databases = new Databases(client);
-  const document = req.body;
-
-  // Prepare document for Meilisearch
-  const addonData = {
-    $id: document.$id,
-    name: document.name,
-    description: document.description,
-    slug: document.slug,
-    author: document.author,
-    categories: document.categories,
-    downloads: document.downloads,
-    icon: document.icon,
-    minecraft_versions: document.minecraft_versions,
-    create_versions: document.create_versions,
-    loaders: document.loaders,
-    created_at: document.created_at,
-    updated_at: document.updated_at,
-  };
-
-  // Update document in Meilisearch
-  try {
-    await meilisearch.index('addons').addDocuments([addonData]);
-    console.log(`Synced addon ${document.$id} to Meilisearch`);
-    return res.json({ success: true });
-  } catch (error) {
-    console.error('Error syncing to Meilisearch:', error);
-    return res.json({ success: false, error: error.message });
-  }
-};
-```
-
-## Advanced Search Features
-
-### Search Ranking
-
-Blueprint configures Meilisearch ranking rules to provide the most relevant results:
-
-```json
-{
-  "rankingRules": [
-    "words",
-    "typo",
-    "proximity",
-    "attribute",
-    "sort",
-    "exactness",
-    "downloads:desc"
-  ]
-}
-```
-
-This configuration prioritizes:
-1. Matching more words from the query
-2. Having fewer typos
-3. Having query terms closer together
-4. Matching more important attributes
-5. Explicit sort criteria
-6. Exact matches over partial matches
-7. Higher download counts
-
-### Faceted Search
-
-Blueprint implements faceted search for filtering results by categories, versions, etc.:
-
-```typescript
-// src/api/endpoints/useSearchFacets.tsx
-import { useQuery } from '@tanstack/react-query';
-import { meilisearch } from '@/config/meilisearch';
-
-export const useAddonFacets = (query: string, filters?: string) => {
+export const useSearchAddons = (searchParams) => {
   return useQuery({
-    queryKey: ['facets', 'addons', query, filters],
+    queryKey: ['searchAddons', searchParams],
     queryFn: async () => {
-      const index = meilisearch.index('addons');
-      const results = await index.search(query, {
-        filter: filters,
-        facets: ['categories', 'minecraft_versions', 'create_versions', 'loaders'],
-        limit: 0, // We only need facets, not results
-      });
-      
-      return results.facetDistribution || {};
+      const index = searchClient.index('addons');
+
+      // Use Meilisearch types for the raw response
+      const result = (await index.search(searchParams.query, {
+        limit: searchParams.limit,
+        offset: (searchParams.page - 1) * searchParams.limit,
+        filter: buildFilter(searchParams.filters), // Assume buildFilter exists
+      })) as MeiliAddonResponse; // Cast to the specific Meili response type
+
+      // Meilisearch hits might contain raw JSON strings. Process them.
+      const processedHits: AddonWithParsedFields[] = result.hits.map(processAddon); // Assume processAddon helper exists
+
+      return {
+        data: processedHits, // Return data conforming to application needs
+        totalHits: result.estimatedTotalHits || 0,
+        // pagination...
+      };
     },
-    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
   });
 };
 ```
+*(Note: `useSearchBlogs` currently uses a local API endpoint `/api/search` which encapsulates Meilisearch interaction, but the principle of returning parsed, canonical types remains)*
 
-## Performance Considerations
+### 5. Define Unified Search Result Types
 
-1. **Query Caching**: TanStack Query caches search results to reduce API calls
-2. **Pagination**: Results are paginated to improve performance
-3. **Attribute Pruning**: Only necessary attributes are returned in search results
-4. **Index Optimization**: Indexes are optimized for faster searching
-
-## Error Handling
-
-Blueprint implements error handling for search operations:
+Define consistent result types for search hooks in `src/types/meilisearch.ts` (or `src/types/index.ts`):
 
 ```typescript
-// Example of error handling in search hooks
-const { data, error, isLoading, isError } = useSearchAddons({
-  query,
-  filters,
-  page,
+// src/types/meilisearch.ts
+import type { Addon, Blog, Schematic } from './appwrite'; // Use canonical types
+
+// Generic utility type for search results with metadata
+export interface SearchResult<T> {
+  data: T[]; // Holds the canonical data type
+  isLoading: boolean;
+  isError: boolean;
+  error: Error | null;
+  isFetching: boolean;
+  hasNextPage: boolean;
+  hasPreviousPage?: boolean;
+  totalHits: number;
+  page: number;
+  limit?: number;
+}
+
+// Define specific search result types
+export type SearchAddonResult = SearchResult<AddonWithParsedFields>; // Use helper type if needed
+export type SearchSchematicResult = SearchResult<Schematic>;
+export type SearchBlogResult = SearchResult<Blog>; // Assumes parsing happens before return
+```
+
+### 6. Update Schema Definitions (Zod)
+
+Focus Zod schemas (`/src/schemas/`) on **form and input validation**, not duplicating the data structure defined in `src/types/appwrite.ts`:
+
+```typescript
+// src/schemas/addon.schema.ts
+import { z } from 'zod';
+
+// Example: Schema for UPDATING an addon (all fields optional)
+export const UpdateAddonSchema = z.object({
+  name: z.string().min(3).optional(),
+  description: z.string().optional(),
+  // Only include fields that can be updated via a form/API input
+}).partial();
+
+// src/schemas/blog.schema.ts
+// Example: Schema for CREATING a blog post
+export const CreateBlogSchema = z.object({
+  title: z.string().min(5, 'Title must be at least 5 characters long'),
+  content: z.string().min(20, 'Content must be at least 20 characters long'),
+  slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug must be URL-friendly'),
+  // ... other required fields for creation
 });
 
-// In component
-if (isLoading) return <LoadingOverlay />;
-if (isError) return <ErrorMessage message={`Search failed: ${error.message}`} />;
+// Schemas for Search Parameters
+export const SearchAddonsPropsSchema = z.object({
+  query: z.string(),
+  page: z.number().int().positive(),
+  limit: z.number().int().positive().optional(),
+  category: z.string().optional(),
+  // ... other filter params
+});
 ```
 
-## Testing Search Functionality
+### 7. Export Types Correctly from `index.ts`
 
-For testing search functionality, Blueprint provides utility functions:
+Consolidate and export types cleanly from `src/types/index.ts`:
 
 ```typescript
-// src/lib/search/testUtils.ts
-export const testSearch = async (query: string, filters?: string) => {
-  const index = meilisearch.index('addons');
-  return await index.search(query, { filter: filters });
-};
+// src/types/index.ts
+
+// Export the CANONICAL Appwrite document types
+export type {
+  Addon,
+  Blog,
+  Schematic,
+  User,
+  UserPreferences,
+  BlogTag,
+  SchematicTag,
+  FeatureFlag,
+  // etc.
+} from '@/types/appwrite';
+
+// Export HELPER types if they are used externally
+export type { AddonWithParsedFields } from '@/types/addons/addon-details';
+
+// Export SEARCH RESULT types
+export type {
+  SearchAddonResult,
+  SearchBlogResult,
+  SearchSchematicResult,
+  // Export MeiliSearchResult<T> if used directly
+} from '@/types/meilisearch';
+
+// Export types derived from Zod SCHEMAS (for forms, inputs)
+export type { BlogFormValues } from '@/schemas/blog.schema';
+export type { TagFormValues } from '@/schemas/tag.schema';
+// ... other Zod-derived types
+
+// DO NOT export internal Meilisearch response types like MeiliAddonResponse unless necessary outside API hooks.
 ```
 
-## Security Considerations
+## Benefits of This Approach
 
-1. **API Key Permissions**: Different API keys with appropriate permissions:
-   - Search-only key for frontend operations
-   - Admin key for indexing operations (server-side only)
+1.  **Single Source of Truth**: `src/types/appwrite.ts` defines the core data structures.
+2.  **Type Safety**: Interactions with Appwrite and processing of Meilisearch data are strongly typed.
+3.  **DRY**: Reduces redundancy in type definitions and eliminates manual mapping in many places.
+4.  **Clear Separation**: Distinguishes between data structure definitions (`*.ts`), validation rules (`*.schema.ts`), and API interaction logic (`use*.tsx`).
+5.  **Improved DX**: Better autocompletion and compile-time checks in the IDE.
+6.  **Maintainability**: Easier to update types when Appwrite collection structures change.
 
-2. **Input Sanitization**: All user inputs are sanitized before use in search queries
+## Handling Specific Cases
 
-## Best Practices
+1.  **JSON String Fields**: For fields like `addon.curseforge_raw` or `blog.tags`, API hooks (queries and mutations) must handle the parsing (string -> object/array) and serialization (object/array -> string). Helper types (e.g., `AddonWithParsedFields`) or utility functions (`parseJsonFields`, `addParsedFields`) are used to manage this, providing the parsed version to the application code.
+2.  **Field Mismatches**: Ensure field names are consistent between Appwrite attributes and Meilisearch index attributes.
+3.  **Meilisearch-Specific Fields**: If you need fields only present in Meilisearch results (like `_matchesPosition`), extend the canonical type or handle them explicitly within the search hook.
 
-1. **Use Appropriate Filters**: Build filters that match user needs
-   ```typescript
-   // Good: Specific filter
-   const filter = new FilterBuilder()
-     .contains('minecraft_versions', selectedVersion)
-     .build();
-   
-   // Bad: Overly complex filter
-   const filter = `minecraft_versions = "${selectedVersion}" AND created_at > ${Date.now() - 86400000}`;
-   ```
-
-2. **Optimize Query Parameters**: Only include necessary parameters
-   ```typescript
-   // Good: Only request what's needed
-   const results = await index.search(query, {
-     filter: filters,
-     limit: 10,
-     offset: (page - 1) * 10,
-     attributesToRetrieve: ['$id', 'name', 'description', 'icon'],
-   });
-   
-   // Bad: Requesting everything
-   const results = await index.search(query);
-   ```
-
-3. **Handle Empty Queries**: Provide meaningful results for empty searches
-   ```typescript
-   // Empty query handling
-   const searchQuery = query.trim() || '*'; // Use * for empty queries to match everything
-   ```
-
-## Related Documentation
-
-- [API Overview](./endpoints.md)
-- [Appwrite Integration](./appwrite.md)
-- [Search Components](../components/feature-components.md)
+By adhering to this pattern, Blueprint maintains a robust and type-safe data layer when interacting with both Appwrite and Meilisearch.
+```

@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from '@/components/ui/card.tsx';
 import { Badge } from '@/components/ui/badge.tsx';
-import { useIncrementDownloads } from '@/api/endpoints/useSchematics.tsx';
+import { useIncrementDownloads } from '@/api/appwrite/useSchematics';
 import type { Schematic } from '@/types';
 import ModLoaders from '../addons/addon-card/ModLoaders';
 

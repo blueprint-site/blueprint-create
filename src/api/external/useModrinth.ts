@@ -6,7 +6,7 @@ import type {
   ModrinthDependenciesResponse,
   ModrinthUser,
   ModrinthUserProjects,
-} from '@/types/addons/modrinth';
+} from '@/types';
 
 /**
  * Custom hook to fetch a project from Modrinth

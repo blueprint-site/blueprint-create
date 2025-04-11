@@ -31,6 +31,7 @@ export default defineConfig([
     'cli/**',
     '**/node_modules/',
     'public/**',
+    'functions/**'
   ]),
 
   // Base JavaScript config (ESLint recommended)
