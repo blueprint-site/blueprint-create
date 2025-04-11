@@ -49,7 +49,7 @@ export function HeroContent({
   const { isDarkMode } = useThemeStore();
 
   return (
-    <main className={cn('flex h-screen w-full flex-col justify-between', className)}>
+    <main className={cn('flex h-100 w-full flex-col justify-between', className)}>
       <div
         className={`flex-1 ${isDarkMode ? 'bg-shadow_steel_casing' : 'bg-refined_radiance_casing'}`}
       >
