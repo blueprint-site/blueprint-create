@@ -85,44 +85,36 @@ export interface Tag extends Models.Document {
 }
 
 /**
- * User structure that extends Appwrite Document
- * Note: This extends the user structure from Appwrite's Account service
+ * User structure that extends Appwrite User
  */
-export interface User extends Models.Document {
-  name: string;
-  registration: string;
-  status: boolean;
-  labels: string[];
-  passwordUpdate: string;
-  email: string;
-  phone: string;
-  emailVerification: boolean;
-  phoneVerification: boolean;
-  mfa: boolean;
-  prefs: {
-    theme?: 'light' | 'dark';
-    language?: string;
-    notificationsEnabled?: boolean;
-    avatar?: string;
-    bio?: string;
-    roles?: string[];
-    easterEggs?: {
-      discovered: string[];
-      enabled: Record<string, boolean>;
-      lastDiscovery?: number;
-    } | null;
-  };
-  targets: Array<{
-    $id: string;
-    $createdAt: string;
-    $updatedAt: string;
-    name: string;
-    userId: string;
-    providerId?: string;
-    providerType: string;
-    identifier: string;
-  }>;
-  accessedAt: string;
+export type User = Models.User<UserPreferences>;
+
+/**
+ * Beta tester preferences structure
+ */
+export interface BetaTesterPrefs {
+  isActive: boolean;
+  joinDate: string;
+  features: string[]; // Features they have access to test
+  group?: string; // For A/B testing or phased rollout
+}
+
+/**
+ * Extended user preferences that build on Appwrite's Models.Preferences
+ */
+export interface UserPreferences extends Models.Preferences {
+  theme?: 'light' | 'dark';
+  language?: string;
+  notificationsEnabled?: boolean;
+  avatar?: string;
+  bio?: string;
+  roles?: string[];
+  easterEggs?: {
+    discovered: string[];
+    enabled: Record<string, boolean>;
+    lastDiscovery?: number;
+  } | null;
+  betaTester?: BetaTesterPrefs;
 }
 
 /**
