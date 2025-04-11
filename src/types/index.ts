@@ -1,4 +1,6 @@
 // src/types/index.ts
+import type z from 'zod';
+
 export type {
   User,
   UserPreferences,
@@ -22,7 +24,6 @@ export type {
   VersionInfo,
   ExternalLink,
 } from '@/types/addons/addon-details';
-
 export type {
   EnvironmentCompatibilityProps,
   Dependencies,
