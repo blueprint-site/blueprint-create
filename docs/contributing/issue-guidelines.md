@@ -6,7 +6,7 @@ This document outlines how we use GitHub's issue types, labels, and pull request
 
 ### Issue Types
 
-When creating a new issue, please select the appropriate issue type:
+When creating a new issue, please select the appropriate issue type using GitHub's native Type field (not labels):
 
 - **Hot-Fix**: Critical fixes requiring immediate attention and expedited deployment
 - **Bug**: An unexpected problem or behavior
@@ -15,6 +15,8 @@ When creating a new issue, please select the appropriate issue type:
 - **Design**: Changes to user interface, user experience, or visual elements of the project
 - **Infrastructure**: Work on development processes, tooling, CI/CD pipelines, or deployment systems
 - **Refactor**: Code quality improvements that enhance maintainability without changing user-facing functionality
+
+**Important**: Do NOT add issue types as labels. Use GitHub's Type field instead.
 
 ### Issue Labels
 
@@ -25,6 +27,8 @@ In addition to the issue type, we use the following labels to provide additional
 - `priority: high` - Important for current iteration/milestone
 - `priority: medium` - Should be addressed soon but not urgent
 - `priority: low` - Nice to have, can be deferred
+
+**Note**: Labels should only indicate priority and special conditions, not the issue type.
 
 #### Special Attention Labels
 - `good first issue` - Good for newcomers
