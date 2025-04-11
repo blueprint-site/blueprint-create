@@ -7,7 +7,7 @@ export const CreateFeatureFlagSchema = z.object({
   key: z.string().min(1, 'Key must not be empty'),
   enabled: z.boolean().default(false),
   users: z.array(z.string()).optional(),
-  groups: z.array(z.string()).optional(),
+  teams: z.array(z.string()).optional(),
   description: z.string().optional(),
 });
 
@@ -18,7 +18,7 @@ export const UpdateFeatureFlagSchema = z.object({
   key: z.string().min(1, 'Key must not be empty').optional(),
   enabled: z.boolean().optional(),
   users: z.array(z.string()).optional(),
-  groups: z.array(z.string()).optional(),
+  teams: z.array(z.string()).optional(),
   description: z.string().optional(),
 });
 

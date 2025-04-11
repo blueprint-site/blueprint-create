@@ -164,7 +164,7 @@ export interface FeatureFlag extends Models.Document {
   key: string;
   enabled: boolean;
   users?: string[];
-  groups?: string[];
+  teams?: string[];
   description?: string;
 }
 
