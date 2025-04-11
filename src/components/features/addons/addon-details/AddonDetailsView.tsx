@@ -175,7 +175,9 @@ export const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsVie
         </div>
 
         {/* Gallery with direct data access */}
-        <AddonDetailsGallery gallery={addon.modrinth.gallery} name={addon.name} />
+        {addon.modrinth.gallery.length > 0 ? (
+          <AddonDetailsGallery gallery={addon.modrinth.gallery} name={addon.name} />
+        ) : null}
 
         {/* Description */}
         {addon.modrinth.body && (
