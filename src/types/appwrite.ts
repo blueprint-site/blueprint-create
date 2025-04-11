@@ -98,7 +98,6 @@ export interface Blog extends Models.Document {
   slug: string;
   img_url: string;
   status: 'draft' | 'published' | 'archived';
-  // Define as the types components expect
   tags: BlogTag[];
   links: BlogLink[] | null;
   blog_tags?: string[];
@@ -167,4 +166,19 @@ export interface FeatureFlag extends Models.Document {
   users?: string[];
   groups?: string[];
   description?: string;
+}
+
+/**
+ * Featured Addon document from Appwrite
+ */
+export interface FeaturedAddon extends Models.Document {
+  addon_id: string;
+  title: string;
+  description: string;
+  image_url: string;
+  banner_url: string;
+  display_order: number;
+  slug: string;
+  active: boolean;
+  category: string[] | null;
 }
