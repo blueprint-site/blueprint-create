@@ -56,7 +56,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             url: '/admin/schematics/list',
             isActive: pathSegments[1] === 'schematics',
           },
-          { title: 'Blog', url: '/admin/blogs/list', isActive: pathSegments[1] === 'blogs' },
+          { title: 'Blog', url: '/admin/blogs', isActive: pathSegments[1] === 'blogs' },
         ],
       },
       {
