@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BookOpen, Bot, Map, Settings2, SquareTerminal } from 'lucide-react';
+import { Bot, Settings2, SquareTerminal } from 'lucide-react';
 
 import { NavMain } from '@/components/layout/AdminPanel/NavMain.tsx';
 import { NavUser } from '@/components/layout/AdminPanel/NavUser.tsx';
@@ -32,52 +32,31 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         title: 'Dashboard',
         url: '/admin',
         icon: SquareTerminal,
+        isActive: pathSegments[0] === 'admin' && pathSegments[1] === undefined,
+        items: [
+          {
+            title: 'Admin',
+            url: '/admin',
+            isActive: pathSegments[0] === 'admin' && pathSegments[1] === undefined,
+          },
+        ],
+      },
+      {
+        title: 'Modules',
+        url: '#',
+        icon: Bot,
         isActive:
-          pathSegments[1] === undefined ||
-          pathSegments[1] === 'stats' ||
-          pathSegments[1] === 'logs',
+          pathSegments[1] === 'addons' ||
+          pathSegments[1] === 'schematics' ||
+          pathSegments[1] === 'blogs',
         items: [
-          { title: 'Stats', url: '/admin/stats' },
-          { title: 'Logs', url: '/admin/logs' },
-        ],
-      },
-      {
-        title: 'Addons',
-        url: '#',
-        icon: Bot,
-        isActive: pathSegments[1] === 'addons',
-        items: [
-          { title: 'List', url: '/admin/addons/list' },
-          { title: 'Add', url: '/admin/addons/add' },
-        ],
-      },
-      {
-        title: 'Blogs',
-        url: '#',
-        icon: Bot,
-        isActive: pathSegments[1] === 'blogs',
-        items: [
-          { title: 'List', url: '/admin/blogs/list' },
-          { title: 'Add', url: '/admin/blogs/editor/new' },
-        ],
-      },
-      {
-        title: 'Schematics',
-        url: '#',
-        icon: Map,
-        isActive: pathSegments[1] === 'schematics',
-        items: [{ title: 'List', url: '/admin/schematics/list' }],
-      },
-      {
-        title: 'Documentation',
-        url: '#',
-        icon: BookOpen,
-        isActive: pathSegments[1] === 'documentation',
-        items: [
-          { title: 'Introduction', url: '#' },
-          { title: 'Get Started', url: '#' },
-          { title: 'Tutorials', url: '#' },
-          { title: 'Changelog', url: '#' },
+          { title: 'Addons', url: '/admin/addons/list', isActive: pathSegments[1] === 'addons' },
+          {
+            title: 'Schematics',
+            url: '/admin/schematics/list',
+            isActive: pathSegments[1] === 'schematics',
+          },
+          { title: 'Blog', url: '/admin/blogs/list', isActive: pathSegments[1] === 'blogs' },
         ],
       },
       {

@@ -39,7 +39,7 @@ const AddonsCarousel = () => {
   if (isLoading) return <p>Loading addons...</p>;
   if (error) return <p>Error loading addons!</p>;
   if (!addons || addons.length === 0) return <p>No featured addons available.</p>;
-
+  console.log(addons);
   return (
     <div className='mx-auto flex h-full max-w-6xl items-center justify-center gap-4'>
       <Button
