@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { LoadingSpinner } from '@/components/loading-overlays/LoadingSpinner';
 import type { ModrinthValidationProps } from '../types';
-import { useModrinthProfile, useModrinthProjects } from '@/api/endpoints/useModrinth';
+import { useModrinthProfile, useModrinthProjects } from '@/api/external/useModrinth';
 import { DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 export default function ModrinthValidationStep({

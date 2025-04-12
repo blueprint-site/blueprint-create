@@ -1,6 +1,6 @@
 import { HelpCircle } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import type { DependencyTooltipProps } from '@/types/addons/dependencies';
+import type { DependencyTooltipProps } from '@/types';
 
 /**
  * Renders a tooltip explaining what each dependency type means

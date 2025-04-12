@@ -3,7 +3,7 @@
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import type { ExternalLink, IntegratedAddonData } from '@/types/addons/addon-details';
+import type { ExternalLink, IntegratedAddonData } from '@/types';
 import { ModPageLinks } from '@/components/features/addons/addon-card/ModPageLinks';
 
 import { AddonDetailsHeader } from './AddonDetailsHeader';
@@ -12,7 +12,7 @@ import { AddonDetailsGallery } from './AddonDetailsGallery';
 import { AddonDetailsFooter } from './AddonDetailsFooter';
 import { AddonDetailsDonation } from './AddonDetailsDonation';
 import { AddonVersionCompatibility } from './versions/AddonVersionCompatibility';
-import type { ModrinthProject } from '@/types/addons/modrinth';
+import type { ModrinthProject } from '@/types';
 import { SiDiscord, SiGithub } from '@icons-pack/react-simple-icons';
 import { Bug, Globe } from 'lucide-react';
 interface AddonDetailsViewProps {
@@ -175,7 +175,9 @@ export const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsVie
         </div>
 
         {/* Gallery with direct data access */}
-        <AddonDetailsGallery gallery={addon.modrinth.gallery} name={addon.name} />
+        {addon.modrinth.gallery.length > 0 ? (
+          <AddonDetailsGallery gallery={addon.modrinth.gallery} name={addon.name} />
+        ) : null}
 
         {/* Description */}
         {addon.modrinth.body && (

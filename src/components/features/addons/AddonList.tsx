@@ -6,7 +6,7 @@ import { SelectFilter } from '@/components/layout/SelectFilter';
 import { FiltersContainer } from '@/components/layout/FiltersContainer';
 import { ItemGrid } from '@/components/layout/ItemGrid';
 import AddonCard from '@/components/features/addons/addon-card/AddonCard.tsx';
-import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { useInfiniteScroll } from '@/hooks';
 import type { Addon } from '@/types';
 
 const AddonsList = () => {
@@ -25,7 +25,14 @@ const AddonsList = () => {
     isLoading,
     isFetching,
     hasNextPage,
-  } = useSearchAddons(query, page, category, version, loaders, ITEMS_PER_PAGE);
+  } = useSearchAddons({
+    query,
+    page,
+    category,
+    version,
+    loaders,
+    limit: ITEMS_PER_PAGE,
+  });
 
   // Use the useInfiniteScroll hook
   const { sentinelRef, loadingMore } = useInfiniteScroll({

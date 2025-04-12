@@ -1,6 +1,10 @@
 // src/types/addons/addon-details.ts
 import type { Addon } from '@/types';
-import type { CondensedModrinthProject, ModrinthRawObject, ModrinthVersionDependency } from './modrinth';
+import type {
+  CondensedModrinthProject,
+  ModrinthRawObject,
+  ModrinthVersionDependency,
+} from './modrinth';
 import type { CurseForgeRawObject } from './curseforge';
 import type { ReactNode } from 'react';
 
@@ -61,7 +65,7 @@ export interface DonationLink {
 /**
  * Integrated addon data with properly nested structure
  */
-export interface IntegratedAddonData extends Addon {
+export interface IntegratedAddonData extends Omit<Addon, 'claimed_by'> {
   curseforgeObject?: CurseForgeRawObject;
   modrinthObject?: ModrinthRawObject;
   modrinth: CondensedModrinthProject;
@@ -93,4 +97,20 @@ export interface AddonCompatibilityData {
       gameVersions?: string[];
     }[];
   };
+}
+
+/**
+ * Extended Addon type that includes parsed JSON fields
+ * This allows us to maintain type safety when working with parsed JSON data
+ */
+export interface AddonWithParsedFields extends Addon {
+  /**
+   * Parsed CurseForge data object
+   */
+  curseforge_raw_parsed?: CurseForgeRawObject | null;
+
+  /**
+   * Parsed Modrinth data object
+   */
+  modrinth_raw_parsed?: ModrinthRawObject | null;
 }

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useFetchAddonBySlug } from '@/api/endpoints/useAddons';
+import { useFetchAddonBySlug } from '@/api/appwrite/useAddons';
 import type { Addon } from '@/types';
 
 interface AddonFetcherProps {

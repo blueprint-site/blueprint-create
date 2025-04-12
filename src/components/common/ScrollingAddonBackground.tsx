@@ -43,14 +43,14 @@ export const ScrollingAddonBackground = ({
   const totalAddonHeight = addonHeight + addonMarginBottom;
 
   // API hook for fetching addon data with prefetch enabled
-  const { data: hits, isLoading: isLoadingAddons } = useSearchAddons(
+  const { data: hits, isLoading: isLoadingAddons } = useSearchAddons({
     query,
     page,
     category,
     version,
     loaders,
-    limit
-  );
+    limit,
+  });
 
   // Update addons when data is fetched
   useEffect(() => {

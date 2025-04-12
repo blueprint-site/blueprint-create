@@ -1,6 +1,5 @@
 import { databases } from '@/config/appwrite';
 import type { FeaturedAddon } from '@/types';
-import { FeaturedAddonSchema } from '@/schemas/featuredAddon.schema';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { ID, Query } from 'appwrite';
 import { toast } from '@/hooks/useToast';
@@ -14,12 +13,11 @@ export const useFetchFeaturedAddons = () => {
     queryKey: ['featuredAddons'],
     queryFn: async () => {
       try {
-        const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
+        const response = await databases.listDocuments<FeaturedAddon>(DATABASE_ID, COLLECTION_ID, [
           Query.equal('active', true),
           Query.orderAsc('display_order'),
         ]);
-
-        return response.documents.map((document) => FeaturedAddonSchema.parse(document));
+        return response.documents;
       } catch (err) {
         console.error('Error fetching featured addons:', err);
         throw new Error('Failed to fetch featured addons');
@@ -35,11 +33,10 @@ export const useFetchAllFeaturedAddons = () => {
     queryKey: ['featuredAddons'],
     queryFn: async () => {
       try {
-        const response = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [
+        const response = await databases.listDocuments<FeaturedAddon>(DATABASE_ID, COLLECTION_ID, [
           Query.orderAsc('display_order'),
         ]);
-
-        return response.documents.map((document) => FeaturedAddonSchema.parse(document));
+        return response.documents;
       } catch (err) {
         console.error('Error fetching featured addons:', err);
         throw new Error('Failed to fetch featured addons');

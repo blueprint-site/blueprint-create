@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { ExternalLink } from 'lucide-react';
-import type { DependencyBadgeProps } from '@/types/addons/dependencies';
+import type { DependencyBadgeProps } from '@/types';
 
 /**
  * Renders a badge for a single dependency with an optional external link

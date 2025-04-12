@@ -43,3 +43,6 @@ coverage
 
 # Debug
 .debug
+functions/*
+appwrite.json
+/package-lock.json

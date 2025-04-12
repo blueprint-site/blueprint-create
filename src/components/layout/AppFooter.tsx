@@ -1,6 +1,6 @@
 // src/components/layout/AppFooter.tsx
 import { cn } from '@/config/utils.ts';
-import { useLogo } from '@/hooks/useEasterEgg';
+import { useLogo } from '@/hooks';
 import LanguageSwitcher from '@/components/features/settings/LanguageSwitcher.tsx';
 import { useTranslation } from 'react-i18next';
 

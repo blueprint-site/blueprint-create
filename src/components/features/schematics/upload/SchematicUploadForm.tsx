@@ -9,8 +9,8 @@ import { FormMarkdownEditor } from './form/FormMarkdownEditor';
 import { MultiSelectCheckboxGroup } from './form/MultiSelectCheckboxGroup';
 import { FormInput } from './form/FormInput';
 import { CategorySelectors } from './form/CategorySelectors';
-import type { Schematic, SchematicFormValues } from '@/types';
-import { schematicFormSchema } from '@/schemas/schematic.schema.tsx';
+import type { Schematic, SchematicFormValues } from '@/types'; // From canonical types
+import { schematicFormSchema } from '@/schemas/schematic.schema';
 import { MODLOADER_OPTIONS, CREATE_VERSIONS, MINECRAFT_VERSIONS } from '@/data';
 import { storage } from '@/config/appwrite.ts';
 interface SchematicUploadFormProps {

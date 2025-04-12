@@ -5,8 +5,8 @@ import { ArrowUpDown } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DataTable } from '@/components/tables/addonChecks/data-table';
 import { Button } from '@/components/ui/button.tsx';
-import { useFetchAddons, useUpdateAddon } from '@/api/endpoints/useAddons.tsx';
-import { toast } from '@/api';
+import { useFetchAddons, useUpdateAddon } from '@/api/appwrite/useAddons';
+import { toast } from '@/hooks';
 import type { Addon } from '@/types';
 import { Switch } from '@/components/ui/switch';
 

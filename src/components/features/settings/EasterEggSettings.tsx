@@ -1,6 +1,6 @@
 // src/components/features/settings/EasterEggsSettings.tsx
 import { useState } from 'react';
-import { useEasterEgg } from '@/hooks/useEasterEgg';
+import { useEasterEgg } from '@/hooks';
 import { EASTER_EGGS } from '@/config/easterEggs';
 import type { EasterEggDefinition } from '@/schemas/user.schema';
 
