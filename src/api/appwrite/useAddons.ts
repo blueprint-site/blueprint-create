@@ -102,6 +102,33 @@ export const useFetchAddonBySlug = (slug?: string) => {
   });
 };
 
+export const useFetchAllAddons = () => {
+  return useQuery<AddonWithParsedFields[]>({
+    queryKey: ['addons', 'all'],
+    queryFn: async () => {
+      const limit = 100;
+      let offset = 0;
+      let allAddons: AddonWithParsedFields[] = [];
+
+      while (true) {
+        const response = await databases.listDocuments<Addon>(DATABASE_ID, COLLECTION_ID, [
+          Query.limit(limit),
+          Query.offset(offset),
+        ]);
+
+        const parsed = response.documents.map((addon) => addParsedFields(addon));
+        allAddons = [...allAddons, ...parsed];
+
+        if (response.documents.length < limit) break;
+        offset += limit;
+      }
+
+      return allAddons;
+    },
+    staleTime: 1000 * 60 * 10, // 10 minutes
+  });
+};
+
 /**
  * Hook to fetch paginated addons
  * @param page Current page number
