@@ -14,6 +14,11 @@ const BlogList = lazy(() =>
   import('@/components/features/admin/blog').then((m) => ({ default: m.BlogList }))
 );
 
+// LAZY IMPORT BLOG MAIN
+const AdminBlogMain = lazy(() =>
+  import('@/components/features/admin/blog').then((m) => ({ default: m.AdminBlogMain }))
+);
+
 // LAZY IMPORT Blog Editor
 const BlogEditor = lazy(() =>
   import('@/components/features/admin/blog').then((m) => ({ default: m.BlogEditor }))
@@ -36,6 +41,10 @@ const AddAddon = lazy(() =>
   import('@/components/features/admin/addons').then((m) => ({ default: m.AddAddon }))
 );
 
+//LAZY IMPORT ADMINADDONMAIN
+const AdminAddonsMain = lazy(() =>
+  import('@/components/features/admin/addons').then((m) => ({ default: m.AdminAddonsMain }))
+);
 // LAZY IMPORT AddonsTable
 const AddonsTable = lazy(() =>
   import('@/components/features/admin/addons').then((mod) => ({ default: mod.AddonsTable }))
@@ -75,10 +84,26 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
+    path: 'admin/addons',
+    element: (
+      <ProtectedRoute requiredRole={'admin'}>
+        <AdminAddonsMain />
+      </ProtectedRoute>
+    ),
+  },
+  {
     path: 'admin/addons/list',
     element: (
       <ProtectedRoute requiredRole={'admin'}>
         <AddonsTable />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: 'admin/blogs',
+    element: (
+      <ProtectedRoute requiredRole={'admin'}>
+        <AdminBlogMain />
       </ProtectedRoute>
     ),
   },
