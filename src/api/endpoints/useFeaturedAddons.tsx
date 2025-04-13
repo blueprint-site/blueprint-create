@@ -3,6 +3,7 @@ import type { FeaturedAddon } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { ID, Query } from 'appwrite';
 import { toast } from '@/hooks/useToast';
+import type { Models } from 'appwrite';
 
 const DATABASE_ID = '67e6ec5c0032a90a14e6';
 const COLLECTION_ID = '67ed41fb000467814396';
@@ -73,18 +74,16 @@ export const useCreateFeaturedAddon = () => {
     },
   });
 };
-
+type UpdateFeaturedAddonArgs = {
+  id: string;
+  addon: Partial<FeaturedAddon>;
+};
 // Update a featured addon
 export const useUpdateFeaturedAddon = () => {
   return useMutation({
-    mutationFn: async (addon: FeaturedAddon) => {
+    mutationFn: async ({ id, addon }: UpdateFeaturedAddonArgs): Promise<Models.Document> => {
       try {
-        const response = await databases.updateDocument(
-          DATABASE_ID,
-          COLLECTION_ID,
-          addon.$id,
-          addon
-        );
+        const response = await databases.updateDocument(DATABASE_ID, COLLECTION_ID, id, addon);
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
           title: 'Featured addon updated',

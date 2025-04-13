@@ -1,12 +1,14 @@
 'use no memo';
-import { useFetchFeaturedAddons } from '@/api/endpoints/useFeaturedAddons.tsx';
+import {
+  useFetchFeaturedAddons,
+  useUpdateFeaturedAddon,
+} from '@/api/endpoints/useFeaturedAddons.tsx';
 import { useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, PlusIcon } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DataTable } from '@/components/tables/addonChecks/data-table';
 import { Button } from '@/components/ui/button.tsx';
-import { useUpdateAddon } from '@/api/appwrite/useAddons';
 import { toast } from '@/hooks';
 import type { FeaturedAddon } from '@/types';
 import { Switch } from '@/components/ui/switch';
@@ -14,13 +16,13 @@ import { Switch } from '@/components/ui/switch';
 export const FeaturedAddonsTable = () => {
   const [page, setPage] = useState(1);
   const { data, isLoading, isError, error, refetch } = useFetchFeaturedAddons();
-  const { mutateAsync: updateAddon } = useUpdateAddon();
+  const { mutateAsync: updateAddon } = useUpdateFeaturedAddon();
 
   const addons: FeaturedAddon[] = data || [];
 
   const handleStatusChange = async (addon: FeaturedAddon, newIsValid: boolean) => {
     try {
-      await updateAddon({ addonId: addon.$id, data: { isValid: newIsValid, isChecked: true } });
+      await updateAddon({ id: addon.$id, addon: { active: newIsValid } });
       toast({
         className: 'bg-surface-3 border-ring text-foreground',
         title: `✅ Addon ${newIsValid ? 'activé' : 'désactivé'} ✅`,
