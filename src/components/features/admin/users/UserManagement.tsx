@@ -79,9 +79,6 @@ export const UserManagement = () => {
       accessorKey: 'lastAccessedAt',
       // Use SortableHeader
       header: ({ column }) => <SortableHeader column={column} title='Last Active' />,
-      cell: ({ getValue }) => {
-        /* ... date formatting ... */
-      },
     },
     // Actions column
     {

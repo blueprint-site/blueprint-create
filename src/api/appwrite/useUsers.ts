@@ -1,13 +1,22 @@
 import type { QueryKey } from '@tanstack/react-query';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { account, functions } from '@/config/appwrite';
-import { ExecutionMethod } from 'appwrite'; // Import ExecutionMethod
+import { ExecutionMethod } from 'appwrite';
 import { useToast } from '@/hooks/useToast';
-
-import type { User as BaseUser } from '@/types'; // Assuming this is your base type
+import type { User as BaseUser } from '@/types';
 
 export type AdminUser = BaseUser & {
   teamIds: string[];
+};
+
+type TeamMembership = {
+  teamId: string;
+};
+
+type UserWithTeams = AdminUser & {
+  teams?: {
+    memberships?: TeamMembership[];
+  };
 };
 
 type UserListData = {
@@ -39,7 +48,7 @@ export const useFetchUsers = (params: FetchUsersParams = {}) => {
   const queryKey: QueryKey = adminUserKeys.list(params);
 
   return useQuery<UserListData, Error>({
-    queryKey: queryKey,
+    queryKey,
     queryFn: async (): Promise<UserListData> => {
       try {
         const jwt = await account.createJWT();
@@ -57,7 +66,6 @@ export const useFetchUsers = (params: FetchUsersParams = {}) => {
           JSON.stringify(payload),
           false,
           '/',
-          // --- Use ExecutionMethod Enum ---
           ExecutionMethod.POST,
           {
             Authorization: `Bearer ${jwt.jwt}`,
@@ -66,37 +74,50 @@ export const useFetchUsers = (params: FetchUsersParams = {}) => {
         );
 
         if (result.status !== 'completed') {
-          // --- Adjust Error Handling ---
-          // Use result.errors if available (for function logs via error()), otherwise use status code/body
           const errorDetails = result.errors
             ? ` Errors: ${result.errors}`
             : ` Status Code: ${result.responseStatusCode}. Response: ${result.responseBody}`;
-          throw new Error(
-            `Function execution failed with status: ${result.status}.${errorDetails}`
+          return Promise.reject(
+            new Error(`Function execution failed with status: ${result.status}.${errorDetails}`)
           );
         }
 
         const responseBody = JSON.parse(result.responseBody);
         if (!responseBody.success) {
-          throw new Error(responseBody.message || 'Failed to fetch users from function.');
+          return Promise.reject(
+            new Error(responseBody.message || 'Failed to fetch users from function.')
+          );
         }
-        if (
-          !responseBody.data ||
-          typeof responseBody.data.total !== 'number' ||
-          !Array.isArray(responseBody.data.documents)
-        ) {
-          console.error('Received unexpected data structure:', responseBody.data);
-          throw new Error('Received unexpected data structure from listUsers function.');
+
+        const rawData: { total: number; users: UserWithTeams[] } = responseBody.data;
+
+        if (!Array.isArray(rawData.users)) {
+          console.error('Received unexpected data structure:', rawData);
+          return Promise.reject(
+            new Error('Received unexpected data structure from listUsers function.')
+          );
         }
-        return responseBody.data as UserListData;
+
+        const documents: AdminUser[] = rawData.users.map(
+          (user): AdminUser => ({
+            ...user,
+            teamIds: user.teams?.memberships?.map((m) => m.teamId) ?? [],
+          })
+        );
+
+        return {
+          total: rawData.total,
+          documents,
+        };
       } catch (error) {
         console.error('Error fetching users:', error);
-        throw error instanceof Error
-          ? error
-          : new Error('An unknown error occurred while fetching users.');
+        return Promise.reject(
+          error instanceof Error
+            ? error
+            : new Error('An unknown error occurred while fetching users.')
+        );
       }
     },
-    // keepPreviousData: true, // Consider uncommenting for pagination UX
   });
 };
 
@@ -118,7 +139,6 @@ export const useUpdateUserTeam = () => {
           JSON.stringify(payload),
           false,
           '/',
-          // --- Use ExecutionMethod Enum ---
           ExecutionMethod.POST,
           {
             Authorization: `Bearer ${jwt.jwt}`,
@@ -127,30 +147,33 @@ export const useUpdateUserTeam = () => {
         );
 
         if (result.status !== 'completed') {
-          // --- Adjust Error Handling ---
           const errorDetails = result.errors
             ? ` Errors: ${result.errors}`
             : ` Status Code: ${result.responseStatusCode}. Response: ${result.responseBody}`;
-          throw new Error(
-            `Function execution failed with status: ${result.status}.${errorDetails}`
+          return Promise.reject(
+            new Error(`Function execution failed with status: ${result.status}.${errorDetails}`)
           );
         }
 
         const responseBody = JSON.parse(result.responseBody);
         if (!responseBody.success) {
-          throw new Error(responseBody.message || 'Failed to update team membership.');
+          return Promise.reject(
+            new Error(responseBody.message || 'Failed to update team membership.')
+          );
         }
+
         return responseBody.message || 'Team membership updated successfully.';
       } catch (error) {
         console.error('Error updating team membership:', error);
-        throw error instanceof Error
-          ? error
-          : new Error('An unknown error occurred while updating team membership.');
+        return Promise.reject(
+          error instanceof Error
+            ? error
+            : new Error('An unknown error occurred while updating team membership.')
+        );
       }
     },
     onSuccess: (message) => {
-      // Consider more granular invalidation if performance becomes an issue
-      queryClient.invalidateQueries({ queryKey: adminUserKeys.list() });
+      queryClient.invalidateQueries({ queryKey: adminUserKeys.list() }).then();
       toast({ title: 'Success', description: message });
     },
     onError: (error) => {
