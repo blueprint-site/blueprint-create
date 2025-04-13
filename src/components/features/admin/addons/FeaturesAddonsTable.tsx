@@ -2,7 +2,7 @@
 import { useFetchFeaturedAddons } from '@/api/endpoints/useFeaturedAddons.tsx';
 import { useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown } from 'lucide-react';
+import { ArrowUpDown, PlusIcon } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DataTable } from '@/components/tables/addonChecks/data-table';
 import { Button } from '@/components/ui/button.tsx';
@@ -37,30 +37,30 @@ export const FeaturedAddonsTable = () => {
 
   const columns: ColumnDef<FeaturedAddon>[] = [
     {
-      accessorKey: 'icon',
-      header: 'Icone',
+      accessorKey: 'image_url',
+      header: 'Image',
       cell: ({ row }) => (
         <Avatar>
-          <AvatarImage src={row.original.icon || ''} />
+          <AvatarImage src={row.original.image_url || ''} />
           <AvatarFallback>ADDON</AvatarFallback>
         </Avatar>
       ),
     },
     {
-      accessorKey: 'name',
-      header: 'Nom',
-      cell: ({ row }) => <span className='font-medium'>{row.original.name}</span>,
+      accessorKey: 'addon_id',
+      header: 'Addon ID',
     },
     {
-      accessorKey: 'author',
-      header: 'Auteur',
+      accessorKey: 'title',
+      header: 'Title',
+      cell: ({ row }) => <span className='font-medium'>{row.original.title}</span>,
     },
     {
       accessorKey: 'description',
       header: 'Description',
     },
     {
-      accessorKey: 'isValid',
+      accessorKey: 'active',
       header: ({ column }) => (
         <Button
           variant='ghost'
@@ -72,21 +72,9 @@ export const FeaturedAddonsTable = () => {
       ),
       cell: ({ row }) => (
         <Switch
-          checked={row.original.isValid}
+          checked={row.original.active}
           onCheckedChange={(checked) => handleStatusChange(row.original, checked)}
         />
-      ),
-    },
-    {
-      accessorKey: 'downloads',
-      header: ({ column }) => (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Téléchargements
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
       ),
     },
   ];
@@ -95,13 +83,20 @@ export const FeaturedAddonsTable = () => {
   if (isError) return <div>Erreur: {error?.message}</div>;
 
   return (
-    <div className='px-4 md:px-8'>
-      <DataTable columns={columns} data={addons} />
+    <div>
+      <div className={'float-end'}>
+        <Button variant={'success'} className={'cursor-pointer'}>
+          <PlusIcon /> ADD ADDON
+        </Button>
+      </div>
+      <div className='px-4 md:px-8'>
+        <DataTable columns={columns} data={addons} />
 
-      <div className='mt-4 flex items-center justify-between'>
-        <Button onClick={() => setPage((prev) => Math.max(prev - 1, 1))}>Précédent</Button>
-        <span>Page {page}</span>
-        <Button onClick={() => setPage((prev) => prev + 1)}>Suivant</Button>
+        <div className='mt-4 flex items-center justify-between'>
+          <Button onClick={() => setPage((prev) => Math.max(prev - 1, 1))}>Précédent</Button>
+          <span>Page {page}</span>
+          <Button onClick={() => setPage((prev) => prev + 1)}>Suivant</Button>
+        </div>
       </div>
     </div>
   );
