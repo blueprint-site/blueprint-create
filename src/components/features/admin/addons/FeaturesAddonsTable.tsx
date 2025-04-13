@@ -15,7 +15,7 @@ import { Switch } from '@/components/ui/switch';
 
 export const FeaturedAddonsTable = () => {
   const [page, setPage] = useState(1);
-  const { data, isLoading, isError, error, refetch } = useFetchFeaturedAddons();
+  const { data, isLoading, isError, error, refetch } = useFetchFeaturedAddons(false);
   const { mutateAsync: updateAddon } = useUpdateFeaturedAddon();
 
   const addons: FeaturedAddon[] = data || [];

@@ -9,15 +9,22 @@ const DATABASE_ID = '67e6ec5c0032a90a14e6';
 const COLLECTION_ID = '67ed41fb000467814396';
 
 // Fetching only active addons
-export const useFetchFeaturedAddons = () => {
-  return useQuery<FeaturedAddon[]>({
-    queryKey: ['featuredAddons'],
+export const useFetchFeaturedAddons = (onlyActive: boolean) => {
+  return useQuery({
+    queryKey: ['featuredAddons', { onlyActive }],
     queryFn: async () => {
       try {
-        const response = await databases.listDocuments<FeaturedAddon>(DATABASE_ID, COLLECTION_ID, [
-          Query.equal('active', true),
-          Query.orderAsc('display_order'),
-        ]);
+        const queries = [Query.orderAsc('display_order')];
+        if (onlyActive) {
+          queries.unshift(Query.equal('active', true));
+        }
+
+        const response = await databases.listDocuments<FeaturedAddon>(
+          DATABASE_ID,
+          COLLECTION_ID,
+          queries
+        );
+
         return response.documents;
       } catch (err) {
         console.error('Error fetching featured addons:', err);
