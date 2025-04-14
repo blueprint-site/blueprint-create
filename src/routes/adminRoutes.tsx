@@ -1,8 +1,12 @@
-// src/routes/authRoutes.tsx
+// src/routes/adminRoutes.tsx
 import type { RouteObject } from 'react-router';
-import { lazy } from 'react';
+import type { ComponentType} from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import ProtectedRoute from '@/components/utility/ProtectedRoute';
+import { UserManagement } from '@/components/features/admin/users/UserManagement';
+import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
+import { RouteErrorBoundary } from '@/components/error/RouteErrorBoundary';
 
 // LAZY IMPORT Logs Li st
 const LogsList = lazy(() =>
@@ -41,69 +45,60 @@ const AddonsTable = lazy(() =>
   import('@/components/features/admin/addons').then((mod) => ({ default: mod.AddonsTable }))
 );
 
+/**
+ * Creates a protected admin route with consistent error handling and loading states
+ */
+function createAdminRoute(
+  Component: React.LazyExoticComponent<ComponentType<unknown>> | ComponentType<unknown>,
+  role: string = 'admin'
+): RouteObject {
+  return {
+    element: (
+      <ProtectedRoute requiredRole={role}>
+        <Suspense fallback={<LoadingOverlay />}>
+          {typeof Component === 'function' ? <Component /> : Component}
+        </Suspense>
+      </ProtectedRoute>
+    ),
+    errorElement: <RouteErrorBoundary />,
+  };
+}
+
 export const AdminRoutes: RouteObject[] = [
   {
     path: 'admin',
-    element: (
-      <ProtectedRoute requiredRole={'admin'}>
-        <Admin />
-      </ProtectedRoute>
-    ),
+    ...createAdminRoute(Admin),
   },
   {
     path: 'admin/blogs/editor/:id',
-    element: (
-      <ProtectedRoute requiredRole={'admin'}>
-        <BlogEditor />
-      </ProtectedRoute>
-    ),
+    ...createAdminRoute(BlogEditor),
   },
   {
     path: 'admin/blogs/list',
-    element: (
-      <ProtectedRoute requiredRole={'admin'}>
-        <BlogList />
-      </ProtectedRoute>
-    ),
+    ...createAdminRoute(BlogList),
   },
   {
     path: 'admin/stats',
-    element: (
-      <ProtectedRoute requiredRole={'admin'}>
-        <AddonStatsWrapper />
-      </ProtectedRoute>
-    ),
+    ...createAdminRoute(AddonStatsWrapper),
   },
   {
     path: 'admin/addons/list',
-    element: (
-      <ProtectedRoute requiredRole={'admin'}>
-        <AddonsTable />
-      </ProtectedRoute>
-    ),
+    ...createAdminRoute(AddonsTable),
   },
   {
     path: 'admin/logs',
-    element: (
-      <ProtectedRoute requiredRole={'admin'}>
-        <LogsList />
-      </ProtectedRoute>
-    ),
+    ...createAdminRoute(LogsList),
   },
   {
     path: 'admin/addons/add',
-    element: (
-      <ProtectedRoute requiredRole={'admin'}>
-        <AddAddon />
-      </ProtectedRoute>
-    ),
+    ...createAdminRoute(AddAddon),
   },
   {
     path: 'admin/schematics/list',
-    element: (
-      <ProtectedRoute requiredRole={'admin'}>
-        <SchematicsDisplay></SchematicsDisplay>
-      </ProtectedRoute>
-    ),
+    ...createAdminRoute(SchematicsDisplay),
+  },
+  {
+    path: 'admin/users',
+    ...createAdminRoute(UserManagement),
   },
 ];

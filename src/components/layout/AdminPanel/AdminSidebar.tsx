@@ -69,6 +69,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         items: [{ title: 'List', url: '/admin/schematics/list' }],
       },
       {
+        title: 'User',
+        url: '#',
+        icon: Map,
+        isActive: pathSegments[1] === 'users',
+        items: [{ title: 'List', url: '/admin/users' }],
+      },
+      {
         title: 'Documentation',
         url: '#',
         icon: BookOpen,

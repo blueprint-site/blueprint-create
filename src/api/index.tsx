@@ -43,4 +43,10 @@ export {
   useUpdateSchematicTag,
 } from './appwrite/useSchematicTags';
 
+export {
+  useFetchBetaTesters,
+  useInviteBetaTester,
+  useRemoveBetaTester,
+} from './appwrite/useBetaTesters';
+
 export { useGitHubContributors } from './external/useGithubContributors';

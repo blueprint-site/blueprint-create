@@ -6,6 +6,7 @@ declare global {
             MEILISEARCH_API_KEY: string;
             APPWRITE_URL: string;
             APPWRITE_PROJECT_ID: string;
+            APPWRITE_MANAGE_USERS_FUNCTION_ID: string;
         };
     }
 }
