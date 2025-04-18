@@ -11,7 +11,9 @@ import {
 import MinecraftIcon from '../../utility/MinecraftIcon';
 import { useFetchFeaturedAddons } from '@/api/endpoints/useFeaturedAddons';
 import { Link } from 'react-router';
-
+import { Skeleton } from '@/components/ui/skeleton';
+import { toast } from '@/hooks';
+import { OctagonX } from 'lucide-react';
 const AddonsCarousel = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -32,8 +34,27 @@ const AddonsCarousel = () => {
     api?.scrollTo(index);
   };
 
-  if (isLoading) return <p>Loading addons...</p>;
-  if (error) return <p>Error loading addons!</p>;
+  if (isLoading) {
+    return (
+      <div className='mx-auto flex h-full max-w-6xl items-center justify-center gap-4'>
+        <Skeleton className='h-96 w-160 rounded-lg' />
+        <Skeleton className='h-96 w-80 rounded-lg' />
+      </div>
+    );
+  }
+
+  if (error) {
+    toast({
+      className: 'bg-red-600 text-white',
+      title: 'Error',
+      description: (
+        <div className='flex items-center gap-2'>
+          <OctagonX className='h-5 w-5 text-white' />
+          <span>Error loading addons!</span>
+        </div>
+      ),
+    });
+  }
   if (!addons || addons.length === 0) return <p>No featured addons available.</p>;
 
   const currentAddon = addons[current];

@@ -9,7 +9,11 @@ import {
   type CarouselApi,
 } from '@/components/ui/carousel';
 
+import { Skeleton } from '@/components/ui/skeleton';
+
 import { useFetchFeaturedAddons } from '@/api/endpoints/useFeaturedAddons';
+import { toast } from '@/hooks';
+import { OctagonX } from 'lucide-react';
 
 const AddonsCarousel = () => {
   const [api, setApi] = useState<CarouselApi>();
@@ -28,8 +32,25 @@ const AddonsCarousel = () => {
     };
   }, [api]);
 
-  if (isLoading) return <p>Loading featured addons...</p>;
-  if (error) return <p>Error loading addons!</p>;
+  if (error) {
+    toast({
+      className: 'bg-red-600 text-white',
+      title: 'Error',
+      description: (
+        <div className='flex items-center gap-2'>
+          <OctagonX className='h-5 w-5 text-white' />
+          <span>Error loading addons!</span>
+        </div>
+      ),
+    });
+  }
+  if (isLoading) {
+    return (
+      <div className='w-full'>
+        <Skeleton className='h-[50vh]' />
+      </div>
+    );
+  }
   if (!addons || addons.length === 0) return <p>No featured addons found.</p>;
 
   return (
