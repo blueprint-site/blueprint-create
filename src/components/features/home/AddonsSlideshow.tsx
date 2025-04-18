@@ -49,7 +49,10 @@ const AddonsCarousel = () => {
         <MinecraftIcon name='chevron-left' size={32} />
       </Button>
 
-      <Link to={`/addons/${currentSlug}`} className='group relative flex-1'>
+      <Link
+        to={`/addons/${currentSlug}`}
+        className='group relative flex-1 text-inherit no-underline'
+      >
         <Carousel
           setApi={setApi}
           opts={{ align: 'end', loop: true }}
@@ -70,7 +73,7 @@ const AddonsCarousel = () => {
         </Carousel>
       </Link>
 
-      <Link to={`/addons/${currentSlug}`} className='group h-96 w-80'>
+      <Link to={`/addons/${currentSlug}`} className='group h-96 w-80 text-inherit no-underline'>
         <Card className='bg-background group-hover:bg-accent h-full cursor-pointer transition'>
           <CardHeader>
             <CardTitle className='text-center text-2xl underline'>{currentAddon?.title}</CardTitle>
