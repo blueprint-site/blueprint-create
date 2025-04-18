@@ -16,7 +16,6 @@ const AddonsCarousel = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const { data: addons, isLoading, error } = useFetchFeaturedAddons();
-
   useEffect(() => {
     if (!api) return;
 
@@ -35,7 +34,6 @@ const AddonsCarousel = () => {
     api?.scrollTo(index);
   };
 
-  // 🔥 Handle loading and errors
   if (isLoading) return <p>Loading addons...</p>;
   if (error) return <p>Error loading addons!</p>;
   if (!addons || addons.length === 0) return <p>No featured addons available.</p>;

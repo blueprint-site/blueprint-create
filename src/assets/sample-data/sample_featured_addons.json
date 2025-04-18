@@ -1,0 +1,90 @@
+[
+    {
+      "addon_id": "67b1e26c6a39452cda10",
+      "title": "Create Nuclear",
+      "description": "A Create addon that adds nuclear reactors to Create, along with all the dangers associated with radiation!",
+      "image_url": "https://media.forgecdn.net/avatars/thumbnails/1174/771/256/256/638746897312681600.png",
+      "banner_url": "https://cdn.modrinth.com/data/z611fdf7/images/cf1ceb2e8e45ce7ded81ece7cd0c6a2c04555697_350.webp",
+      "display_order": 0,
+      "slug": "createnuclear",
+      "active": true,
+      "category": [
+        "decoration",
+        "game-mechanics",
+        "technology",
+        "utility",
+        "worldgen"
+      ],
+      "$id": "680282960032fdee9d2a",
+      "$createdAt": "2025-04-18T16:49:27.019+00:00",
+      "$updatedAt": "2025-04-18T16:49:27.019+00:00",
+      "$permissions": [],
+      "$databaseId": "67e6ec5c0032a90a14e6",
+      "$collectionId": "67ed41fb000467814396"
+    },
+    {
+      "addon_id": "67b1dfe360d819f6796e",
+      "title": "Create Railways Navigator",
+      "description": "Get possible train connections in your world from one station to another using the Create Railways Navigator. An addon for the Create Mod.",
+      "image_url": "https://media.forgecdn.net/avatars/thumbnails/1066/720/256/256/638600887691727882.png",
+      "banner_url": "https://cdn.modrinth.com/data/Dq3STxps/images/f6486f7c9d0b2aee956402a864af9347c607ee0a.png",
+      "display_order": 1,
+      "slug": "create-railways-navigator",
+      "active": true,
+      "category": [
+        "decoration",
+        "technology",
+        "transportation",
+        "utility"
+      ],
+      "$id": "680283e30038677d8f22",
+      "$createdAt": "2025-04-18T16:55:00.140+00:00",
+      "$updatedAt": "2025-04-18T16:55:00.140+00:00",
+      "$permissions": [],
+      "$databaseId": "67e6ec5c0032a90a14e6",
+      "$collectionId": "67ed41fb000467814396"
+    },
+    {
+      "addon_id": "67b1e2bd522bbd80b66d",
+      "title": "Create: Pantographs & Wires",
+      "description": "A mod with catenary wires, pantographs and more for electric modern trains in Create.",
+      "image_url": "https://cdn.modrinth.com/data/VzdCnMqW/86d874140963047f059c1d9cf88db55037d76a08_96.webp",
+      "banner_url": "https://cdn.modrinth.com/data/VzdCnMqW/images/00ddfa88334febd2799e6314691d6bda8c201c6b_350.webp",
+      "display_order": 2,
+      "slug": "67b1e2bd522bbd80b66d",
+      "active": true,
+      "category": [
+        "decoration",
+        "technology",
+        "transportation",
+        "utility"
+      ],
+      "$id": "680285b3000df647511f",
+      "$createdAt": "2025-04-18T17:02:43.460+00:00",
+      "$updatedAt": "2025-04-18T17:02:43.460+00:00",
+      "$permissions": [],
+      "$databaseId": "67e6ec5c0032a90a14e6",
+      "$collectionId": "67ed41fb000467814396"
+    },
+    {
+      "addon_id": "67b1e26ddb8b66ed4413",
+      "title": "Create: New Beginnings",
+      "description": "Unique, vanilla+ structures added to villages and the world, featuring Create technology",
+      "image_url": "https://cdn.modrinth.com/data/XDDw6edF/7ff47a338f4e20e849ffee90783ca71b7a261d07_96.webp",
+      "banner_url": "https://cdn.modrinth.com/data/XDDw6edF/images/3f334abcf14988a3b7ef66618bda7d1f180baac7_350.webp",
+      "display_order": 3,
+      "slug": "create-new-beginnings",
+      "active": true,
+      "category": [
+        "decoration",
+        "technology",
+        "worldgen"
+      ],
+      "$id": "680286ea00077439973f",
+      "$createdAt": "2025-04-18T17:07:54.372+00:00",
+      "$updatedAt": "2025-04-18T17:07:54.372+00:00",
+      "$permissions": [],
+      "$databaseId": "67e6ec5c0032a90a14e6",
+      "$collectionId": "67ed41fb000467814396"
+    }
+  ]

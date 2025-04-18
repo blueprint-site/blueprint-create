@@ -41,6 +41,11 @@ const AddonsTable = lazy(() =>
   import('@/components/features/admin/addons').then((mod) => ({ default: mod.AddonsTable }))
 );
 
+// LAZY IMPORT AddFeaturedAddon
+const AddFeaturedAddon = lazy(() =>
+  import('@/components/features/admin/addons').then((mod) => ({ default: mod.AddFeaturedAddon }))
+);
+
 export const AdminRoutes: RouteObject[] = [
   {
     path: 'admin',
@@ -95,6 +100,14 @@ export const AdminRoutes: RouteObject[] = [
     element: (
       <ProtectedRoute requiredRole={'admin'}>
         <AddAddon />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: 'admin/addons/featured/add',
+    element: (
+      <ProtectedRoute requiredRole={'admin'}>
+        <AddFeaturedAddon />
       </ProtectedRoute>
     ),
   },
