@@ -49,7 +49,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         items: [
           { title: 'List', url: '/admin/addons/list' },
           { title: 'Add', url: '/admin/addons/add' },
-          { title: 'Featured Add', url: '/admin/addons/featured/add' },
+          { title: 'Featured Addons', url: '/admin/addons/featured/list' },
+          { title: 'Add Featured', url: '/admin/addons/featured/add' },
+          { title: 'Auto Add Featured', url: '/admin/addons/featured/auto-add' },
         ],
       },
       {
