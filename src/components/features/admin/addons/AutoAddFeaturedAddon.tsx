@@ -26,11 +26,11 @@ interface GalleryImageItemProps {
 
 function GalleryImageItem({ imageUrl, index, isSelected, onSelect }: GalleryImageItemProps) {
   const [isFullRes, setIsFullRes] = useState(true);
-  const fullResUrl = imageUrl.replace('_350.webp', '.webp');
+  const rawUrl = imageUrl.replace(/_\d+\.webp$/, '.webp');
 
   useEffect(() => {
-    // Check if full resolution image exists
-    fetch(fullResUrl, { method: 'HEAD' })
+    // Check if raw image exists
+    fetch(rawUrl, { method: 'HEAD' })
       .then((response) => {
         if (!response.ok) {
           setIsFullRes(false);
@@ -39,11 +39,11 @@ function GalleryImageItem({ imageUrl, index, isSelected, onSelect }: GalleryImag
       .catch(() => {
         setIsFullRes(false);
       });
-  }, [fullResUrl]);
+  }, [rawUrl]);
 
   return (
     <button
-      onClick={() => onSelect(isFullRes ? fullResUrl : imageUrl)}
+      onClick={() => onSelect(isFullRes ? rawUrl : imageUrl)}
       className={`relative aspect-video overflow-hidden rounded-lg border-2 transition-all ${
         isSelected
           ? 'border-primary scale-105 shadow-md'
@@ -51,7 +51,7 @@ function GalleryImageItem({ imageUrl, index, isSelected, onSelect }: GalleryImag
       }`}
     >
       <img
-        src={isFullRes ? fullResUrl : imageUrl}
+        src={isFullRes ? rawUrl : imageUrl}
         alt={`Modrinth gallery image ${index + 1}`}
         className='h-full w-full object-cover'
         loading='lazy'
@@ -229,7 +229,7 @@ export default function AutoAddFeaturedAddon() {
                       imageUrl={imageUrl}
                       index={index}
                       isSelected={
-                        selectedBannerImage === imageUrl.replace('_350.webp', '.webp') ||
+                        selectedBannerImage === imageUrl.replace(/_\d+\.webp$/, '.webp') ||
                         selectedBannerImage === imageUrl
                       }
                       onSelect={handleBannerImageSelect}
