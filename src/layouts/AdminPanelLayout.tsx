@@ -9,7 +9,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { AppSidebar } from '@/components/layout/AdminPanel/AppSidebar.tsx';
+import { AppSidebar } from '@/components/layout/AdminPanel/AdminSidebar';
 
 const Layout = () => {
   const location = useLocation();

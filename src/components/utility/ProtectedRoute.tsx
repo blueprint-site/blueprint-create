@@ -34,6 +34,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole 
 
       if (requiredRole) {
         const user = await account.get();
+        console.log(user);
         const userRoles = user.prefs?.roles || [];
         const hasRole = userRoles.includes(requiredRole);
         setHasRequiredRole(hasRole);
