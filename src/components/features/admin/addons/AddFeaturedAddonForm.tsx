@@ -18,13 +18,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 
 const formSchema = z.object({
-  addonid: z.string().min(1).min(20).max(20),
-  title: z.string().min(1).min(1).max(150),
-  description: z.string().min(1).max(500),
+  addonid: z.string().min(1).max(20),
+  title: z.string().min(1).max(150),
+  description: z.string().max(500),
   icon_url: z.string().min(1),
   banner_url: z.string().min(1),
   display_order: z.number().min(0).max(20),
-  slug: z.string().min(1).min(1).max(100),
+  slug: z.string().min(1).max(100),
   active: z.boolean(),
   category: z.string().min(1).optional(),
 });
