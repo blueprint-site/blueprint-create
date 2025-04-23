@@ -29,21 +29,28 @@ function GalleryImageItem({ imageUrl, index, isSelected, onSelect }: GalleryImag
   const rawUrl = imageUrl.replace(/_\d+\.webp$/, '.webp');
 
   useEffect(() => {
-    // Check if raw image exists
     fetch(rawUrl, { method: 'HEAD' })
       .then((response) => {
         if (!response.ok) {
           setIsFullRes(false);
+          console.log(`[GalleryImageItem - ${index}] Full res check failed for: ${rawUrl}`);
+        } else {
+          console.log(`[GalleryImageItem - ${index}] Full res exists for: ${rawUrl}`);
         }
       })
       .catch(() => {
         setIsFullRes(false);
+        console.log(`[GalleryImageItem - ${index}] Full res check error for: ${rawUrl}`);
       });
   }, [rawUrl]);
 
   return (
     <button
-      onClick={() => onSelect(isFullRes ? rawUrl : imageUrl)}
+      onClick={() => {
+        const selectedUrl = isFullRes ? rawUrl : imageUrl;
+        console.log(`[GalleryImageItem - ${index}] Calling onSelect with: ${selectedUrl}`);
+        onSelect(selectedUrl);
+      }}
       className={`relative aspect-video overflow-hidden rounded-lg border-2 transition-all ${
         isSelected
           ? 'border-primary scale-105 shadow-md'
@@ -122,7 +129,6 @@ export default function AutoAddFeaturedAddon() {
       });
       return;
     }
-
     const newFeaturedAddon = {
       addon_id: selectedAddon.$id,
       title: selectedAddon.name,

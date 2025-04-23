@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BookOpen, Bot, Map, Settings2, SquareTerminal } from 'lucide-react';
+import { BookOpen, Bot, Feather, Map, Puzzle, Settings2, SquareTerminal, Star } from 'lucide-react';
 
 import { NavMain } from '@/components/layout/AdminPanel/NavMain.tsx';
 import { NavUser } from '@/components/layout/AdminPanel/NavUser.tsx';
@@ -10,13 +10,13 @@ import {
   SidebarHeader,
   SidebarRail,
 } from '@/components/ui/sidebar.tsx';
+import { useLocation } from 'react-router';
 import { useUserStore } from '@/api/stores/userStore.ts';
 import logo from '@/assets/logo.webp';
-import { useLocation } from 'react-router';
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const location = useLocation();
   const pathSegments = location.pathname.split('/').filter((segment) => segment !== '');
-  console.log(pathSegments[1]);
   const user = useUserStore((state) => state.user);
   const preferences = useUserStore((state) => state.preferences);
 
@@ -44,20 +44,28 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {
         title: 'Addons',
         url: '#',
-        icon: Bot,
+        icon: Puzzle,
         isActive: pathSegments[1] === 'addons',
         items: [
           { title: 'List', url: '/admin/addons/list' },
           { title: 'Add', url: '/admin/addons/add' },
-          { title: 'Featured Addons', url: '/admin/addons/featured/list' },
-          { title: 'Add Featured', url: '/admin/addons/featured/add' },
-          { title: 'Auto Add Featured', url: '/admin/addons/featured/auto-add' },
+        ],
+      },
+      {
+        title: 'Featured Addons',
+        url: '/admin/featured-addons',
+        icon: Star,
+        isActive: pathSegments[1] === 'featured-addons',
+        items: [
+          { title: 'List/Remove', url: '/admin/featured-addons/list' },
+          { title: 'Add', url: '/admin/featured-addons/add' },
+          { title: 'Auto Add', url: '/admin/featured-addons/auto-add' },
         ],
       },
       {
         title: 'Blogs',
         url: '#',
-        icon: Bot,
+        icon: Feather,
         isActive: pathSegments[1] === 'blogs',
         items: [
           { title: 'List', url: '/admin/blogs/list' },

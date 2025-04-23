@@ -115,7 +115,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'admin/addons/featured/add',
+    path: 'admin/featured-addons/add',
     element: (
       <ProtectedRoute requiredRole={'admin'}>
         <AddFeaturedAddon />
@@ -123,7 +123,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'admin/addons/featured/auto-add',
+    path: 'admin/featured-addons/auto-add',
     element: (
       <ProtectedRoute requiredRole={'admin'}>
         <AutoAddFeaturedAddon />
@@ -131,7 +131,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'admin/addons/featured/list',
+    path: 'admin/featured-addons/list',
     element: (
       <ProtectedRoute requiredRole={'admin'}>
         <FeaturedAddonsList />
