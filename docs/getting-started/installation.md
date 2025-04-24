@@ -67,6 +67,19 @@ Visit `http://localhost:5173` to see the application.
   - `curseforge_raw` (JSON object)
   - `modrinth_raw` (JSON object)
 
+#### Featured Addons Collection
+- Create a collection named `featured_addons`
+- Add the following attributes:
+  - `addon_id` (string, required)
+  - `title` (string, required)
+  - `description` (string, required, max 500 characters)
+  - `image_url` (string, required, URL to icon/image)
+  - `banner_url` (string, required, URL to banner image)
+  - `display_order` (number, required, 0-20)
+  - `slug` (string, required)
+  - `active` (boolean, required)
+  - `category` (string array, optional)
+
 #### Schematics Collection
 - Create a collection named `schematics`
 - Add the following attributes:
@@ -166,6 +179,7 @@ To ensure your installation is working correctly:
 2. Verify that you can log in with at least one OAuth provider
 3. Confirm that the addons page loads data (you'll need some sample data first)
 4. Test searching and filtering functionality
+5. Verify the featured addons slideshow works on the homepage
 
 ## Troubleshooting
 
@@ -189,6 +203,12 @@ To ensure your installation is working correctly:
 - Ensure you have data in the collections
 - Check the console for specific error messages
 - Verify that your user has the correct permissions to access the data
+
+#### "Featured Addons not displaying"
+- Verify the `featured_addons` collection exists and has data
+- Check that at least one addon is marked as active
+- Ensure the display order is set correctly
+- Verify image URLs are accessible
 
 #### Build Errors
 - Make sure you're using the correct Node.js version

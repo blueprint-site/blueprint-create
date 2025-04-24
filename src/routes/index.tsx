@@ -1,5 +1,5 @@
 // src/routes/index.tsx
-import type { ComponentType} from 'react';
+import type { ComponentType } from 'react';
 import React, { lazy, Suspense } from 'react';
 import type { RouteObject } from 'react-router';
 

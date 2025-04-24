@@ -1,6 +1,6 @@
 import { databases } from '@/config/appwrite';
 import type { FeaturedAddon } from '@/types';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ID, Query } from 'appwrite';
 import { toast } from '@/hooks/useToast';
 
@@ -46,30 +46,38 @@ export const useFetchAllFeaturedAddons = () => {
   });
 };
 
-// Creating a new featured addon
+// Create a new featured addon
 export const useCreateFeaturedAddon = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: async (addon: FeaturedAddon) => {
+    mutationFn: async (data: Omit<FeaturedAddon, '$id' | '$createdAt' | '$updatedAt'>) => {
       try {
-        const response = await databases.createDocument(
+        const response = await databases.createDocument<FeaturedAddon>(
           DATABASE_ID,
           COLLECTION_ID,
           ID.unique(),
-          addon
+          data
         );
-        toast({
-          className: 'bg-surface-3 border-ring text-foreground',
-          title: 'Featured addon created',
-        });
         return response;
-      } catch (error) {
-        toast({
-          className: 'bg-surface-3 border-ring text-foreground',
-          title: 'Error creating featured addon',
-        });
-        console.error('Error creating featured addon:', error);
-        throw error;
+      } catch (err) {
+        console.error('Error creating featured addon:', err);
+        throw new Error('Failed to create featured addon');
       }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['featuredAddons'] });
+      toast({
+        title: 'Success',
+        description: 'Featured addon created successfully',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Error',
+        description: 'Failed to create featured addon',
+        variant: 'destructive',
+      });
     },
   });
 };
@@ -121,6 +129,13 @@ export const useDeleteFeaturedAddon = () => {
         console.error('Error deleting featured addon:', error);
         throw error;
       }
+    },
+    onError: (_error) => {
+      toast({
+        title: 'Error',
+        description: 'Failed to delete featured addon',
+        variant: 'destructive',
+      });
     },
   });
 };

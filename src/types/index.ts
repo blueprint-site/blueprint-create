@@ -1,6 +1,4 @@
 // src/types/index.ts
-import type z from 'zod';
-
 export type {
   User,
   UserPreferences,
@@ -56,11 +54,6 @@ export type {
   UpdateSchematicFormValues,
   SearchSchematicsProps,
 } from '@/schemas/schematic.schema';
-
-export type {
-  FeaturedAddonFormValues,
-  UpdateFeaturedAddonFormValues,
-} from '@/schemas/featuredAddon.schema';
 
 export type { FeatureFlagKey } from '@/schemas/featureFlag.schema';
 

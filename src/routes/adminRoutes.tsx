@@ -1,6 +1,6 @@
 // src/routes/adminRoutes.tsx
 import type { RouteObject } from 'react-router';
-import type { ComponentType} from 'react';
+import type { ComponentType } from 'react';
 import React, { lazy, Suspense } from 'react';
 
 import ProtectedRoute from '@/components/utility/ProtectedRoute';
@@ -45,6 +45,22 @@ const AddonsTable = lazy(() =>
   import('@/components/features/admin/addons').then((mod) => ({ default: mod.AddonsTable }))
 );
 
+// LAZY IMPORT AddFeaturedAddon
+const AddFeaturedAddon = lazy(() =>
+  import('@/components/features/admin/addons').then((mod) => ({ default: mod.AddFeaturedAddon }))
+);
+const FeaturedAddonsList = lazy(() =>
+  import('@/components/features/admin/addons/FeaturedAddonsList').then((mod) => ({
+    default: mod.default,
+  }))
+);
+
+// LAZY IMPORT AutoAddFeaturedAddon
+const AutoAddFeaturedAddon = lazy(() =>
+  import('@/components/features/admin/addons/AutoAddFeaturedAddon').then((mod) => ({
+    default: mod.default,
+  }))
+);
 /**
  * Creates a protected admin route with consistent error handling and loading states
  */
@@ -92,6 +108,30 @@ export const AdminRoutes: RouteObject[] = [
   {
     path: 'admin/addons/add',
     ...createAdminRoute(AddAddon),
+  },
+  {
+    path: 'admin/featured-addons/add',
+    element: (
+      <ProtectedRoute requiredRole={'admin'}>
+        <AddFeaturedAddon />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: 'admin/featured-addons/auto-add',
+    element: (
+      <ProtectedRoute requiredRole={'admin'}>
+        <AutoAddFeaturedAddon />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: 'admin/featured-addons/list',
+    element: (
+      <ProtectedRoute requiredRole={'admin'}>
+        <FeaturedAddonsList />
+      </ProtectedRoute>
+    ),
   },
   {
     path: 'admin/schematics/list',
