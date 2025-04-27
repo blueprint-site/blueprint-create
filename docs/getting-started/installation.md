@@ -13,8 +13,8 @@ This guide will walk you through setting up the Blueprint platform for local dev
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/blueprint-site/blueprint-site.github.io.git
-cd blueprint-site.github.io
+git clone https://github.com/blueprint-site/blueprint-create.git
+cd blueprint-create
 ```
 
 2. **Install dependencies**

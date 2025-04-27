@@ -20,8 +20,8 @@ Blueprint follows a branch-based workflow for contributions:
 
 1. Clone the repository locally:
    ```bash
-   git clone https://github.com/blueprint-site/blueprint-site.github.io.git
-   cd blueprint-site.github.io
+   git clone https://github.com/blueprint-site/blueprint-create.git
+   cd blueprint-create
    ```
 
 2. Verify your remote:
@@ -122,7 +122,7 @@ If you're working on multiple changes:
 
 ### Creating a Pull Request
 
-1. Go to the [repository](https://github.com/blueprint-site/blueprint-site.github.io)
+1. Go to the [repository](https://github.com/blueprint-site/blueprint-create)
 2. Click "Pull Requests" > "New Pull Request"
 3. Select your branch as the source and `develop` as the target branch
 4. Click "Create Pull Request"
@@ -250,7 +250,7 @@ After your PR is merged:
 
 ### Creating an Issue
 
-1. Navigate to the [Issues page](https://github.com/blueprint-site/blueprint-site.github.io/issues)
+1. Navigate to the [Issues page](https://github.com/blueprint-site/blueprint-create/issues)
 2. Click "New Issue"
 3. Select the appropriate issue template based on the type of issue
 4. Fill out all required fields in the template
@@ -348,6 +348,6 @@ The release process is handled by maintainers, who will:
 If you have questions about contributing:
 
 1. Check the [documentation](../)
-2. Search for existing [issues](https://github.com/blueprint-site/blueprint-site.github.io/issues)
+2. Search for existing [issues](https://github.com/blueprint-site/blueprint-create/issues)
 3. Join our [Discord server](https://discord.gg/kDa8YC8u5J)
-4. Ask in the repository [discussions](https://github.com/blueprint-site/blueprint-site.github.io/discussions)
+4. Ask in the repository [discussions](https://github.com/blueprint-site/blueprint-create/discussions)
