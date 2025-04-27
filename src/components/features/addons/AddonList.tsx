@@ -15,6 +15,7 @@ const AddonsList = () => {
   const [category, setCategory] = useState('');
   const [loaders, setLoaders] = useState('');
   const [version, setVersion] = useState('');
+  const [sort, setSort] = useState('downloads:desc'); // Default sort option
   const [allAddons, setAllAddons] = useState<Addon[]>([]);
 
   // Set a consistent item limit for all fetches
@@ -32,6 +33,7 @@ const AddonsList = () => {
     version,
     loaders,
     limit: ITEMS_PER_PAGE,
+    sort, // Pass the sort option to the hook
   });
 
   // Use the useInfiniteScroll hook
@@ -46,11 +48,11 @@ const AddonsList = () => {
     },
   });
 
-  // Reset accumulated addons when filters change (except page)
+  // Reset accumulated addons when filters or sort change (except page)
   useEffect(() => {
     setAllAddons([]);
     setPage(1);
-  }, [query, category, loaders, version]);
+  }, [query, category, loaders, version, sort]);
 
   // Append new addons to the accumulated list
   useEffect(() => {
@@ -64,41 +66,18 @@ const AddonsList = () => {
     }
   }, [hits, page]);
 
-  // Filter options
-  const categoryOptions = [
-    { value: 'all', label: 'All' },
-    { value: 'tech', label: 'Tech' },
-    { value: 'energy', label: 'Energy' },
-    { value: 'magic', label: 'Magic' },
+  // Sort options
+  const sortOptions = [
+    { value: 'downloads:desc', label: 'Downloads (most to least)' },
+    { value: 'downloads:asc', label: 'Downloads (least to most)' },
+    // created_at and updated_at does not get properly handled by our API
+    // { value: 'createdAt:desc', label: 'Creation date (newest first)' },
+    // { value: 'updatedAt:desc', label: 'Last update (newest first)' },
+    { value: 'followers:desc', label: 'Followers (most to least)' },
+    { value: 'followers:asc', label: 'Followers (least to most)' },
+    { value: 'name:asc', label: 'Name (A-Z)' },
+    { value: 'name:desc', label: 'Name (Z-A)' },
   ];
-
-  const loaderOptions = [
-    { value: 'all', label: 'All' },
-    { value: 'Forge', label: 'Forge' },
-    { value: 'Fabric', label: 'Fabric' },
-    { value: 'NeoForge', label: 'NeoForge' },
-    { value: 'Quilt', label: 'Quilt' },
-  ];
-
-  const versionOptions = [
-    { value: 'all', label: 'All' },
-    { value: '1.18.2', label: '1.18.2' },
-    { value: '1.19.2', label: '1.19.2' },
-    { value: '1.21.1', label: '1.21.1' },
-  ];
-
-  const resetFilters = () => {
-    setQuery('');
-    setCategory('');
-    setLoaders('');
-    setVersion('');
-    setPage(1);
-  };
-
-  // Simple render function - no need for animation wrapper since ItemGrid handles it
-  const renderAddon = (addon: Addon) => {
-    return <AddonCard key={addon.$id} addon={addon} />;
-  };
 
   return (
     <ListPageLayout>
@@ -107,40 +86,63 @@ const AddonsList = () => {
           <div className='flex items-center justify-between'>
             <div className='text-foreground font-minecraft font-semibold md:text-xl'>Filters</div>
             <button
-              onClick={resetFilters}
+              onClick={() => {
+                setQuery('');
+                setCategory('');
+                setLoaders('');
+                setVersion('');
+                setSort('downloads:desc');
+                setPage(1);
+              }}
               className='text-primary text-sm'
               aria-label='Reset filters'
             >
               Reset
             </button>
           </div>
-          <div className='lg:hidden'></div>
           <SearchFilter value={query} onChange={setQuery} placeholder='Search addons...' />
           <SelectFilter
             label='Category'
             value={category}
             onChange={setCategory}
-            options={categoryOptions}
+            options={[
+              { value: 'all', label: 'All' },
+              { value: 'tech', label: 'Tech' },
+              { value: 'energy', label: 'Energy' },
+              { value: 'magic', label: 'Magic' },
+            ]}
           />
           <SelectFilter
             label='Loaders'
             value={loaders}
             onChange={setLoaders}
-            options={loaderOptions}
+            options={[
+              { value: 'all', label: 'All' },
+              { value: 'Forge', label: 'Forge' },
+              { value: 'Fabric', label: 'Fabric' },
+              { value: 'NeoForge', label: 'NeoForge' },
+              { value: 'Quilt', label: 'Quilt' },
+            ]}
           />
           <SelectFilter
             label='Version'
             value={version}
             onChange={setVersion}
-            options={versionOptions}
+            options={[
+              { value: 'all', label: 'All' },
+              { value: '1.18.2', label: '1.18.2' },
+              { value: '1.19.2', label: '1.19.2' },
+              { value: '1.21.1', label: '1.21.1' },
+            ]}
           />
+          <SelectFilter label='Sort by' value={sort} onChange={setSort} options={sortOptions} />
         </FiltersContainer>
       </ListPageFilters>
 
       <ListPageContent>
         <ItemGrid
           items={allAddons}
-          renderItem={renderAddon}
+          renderItem={(addon) => <AddonCard key={addon.$id} addon={addon} />}
           isLoading={isLoading && page === 1} // Only show loading state for initial page
           isError={false}
           emptyMessage='No addons found.'

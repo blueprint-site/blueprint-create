@@ -41,7 +41,6 @@ export const VersionsTabContent: React.FC<VersionsTabContentProps> = ({ sortedVe
                   <span className='mr-2'>
                     {new Date(version.date_published).toLocaleDateString()}
                   </span>
-                  <ChevronDown className='h-4 w-4' />
                 </div>
               </div>
             </AccordionTrigger>
