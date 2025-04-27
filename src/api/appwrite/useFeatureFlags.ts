@@ -23,7 +23,7 @@ function evaluateFlag(flag: FeatureFlag | null, userId: string): boolean {
   return (
     flag.enabled === true ||
     flag.users?.includes(userId) ||
-    flag.groups?.some((group: string) => group === 'default') ||
+    flag.teams?.some((team: string) => team === 'default') ||
     false
   );
 }

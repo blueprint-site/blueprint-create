@@ -1,9 +1,9 @@
-import AdminUsersTable from '@/components/features/admin/users/AdminUsersTable';
+import { UserManagement } from './UserManagement';
 
 export const AdminUsersDisplay = () => {
   return (
     <div>
-      <AdminUsersTable />
+      <UserManagement />
     </div>
   );
 };
