@@ -1,3 +1,5 @@
+import SchematicsTable from '@/components/features/admin/schematics/SchematicsTable.tsx';
+
 export const SchematicsDisplay = () => {
-  return <div> Schematics Display work </div>;
+  return <SchematicsTable />;
 };

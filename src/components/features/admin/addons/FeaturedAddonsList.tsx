@@ -5,15 +5,8 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/hooks/useToast';
 import { useUpdateFeaturedAddon, useDeleteFeaturedAddon } from '@/api/endpoints/useFeaturedAddons';
-import type {
-  DropResult,
-  DroppableProvided,
-  DraggableProvided} from '@hello-pangea/dnd';
-import {
-  DragDropContext,
-  Droppable,
-  Draggable
-} from '@hello-pangea/dnd';
+import type { DropResult, DroppableProvided, DraggableProvided } from '@hello-pangea/dnd';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import type { FeaturedAddon } from '@/types';
 import { Trash2 } from 'lucide-react';
 import {

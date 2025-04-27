@@ -17,7 +17,7 @@ import { OctagonX } from 'lucide-react';
 const AddonsCarousel = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
-  const { data: addons, isLoading, error } = useFetchFeaturedAddons();
+  const { data: addons, isLoading, error } = useFetchFeaturedAddons(true);
 
   useEffect(() => {
     if (!api) return;

@@ -16,7 +16,6 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar.tsx';
-import { useLocation } from 'react-router';
 
 export function NavMain({
   items,
@@ -29,14 +28,10 @@ export function NavMain({
     items?: {
       title: string;
       url: string;
+      isActive?: boolean;
     }[];
   }[];
 }) {
-  const location = useLocation();
-  const IsActive = (url: string) => {
-    return location.pathname === url;
-  };
-
   return (
     <SidebarGroup>
       <SidebarMenu>
@@ -49,7 +44,7 @@ export function NavMain({
           >
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
-                <SidebarMenuButton tooltip={item.title}>
+                <SidebarMenuButton className={'cursor-pointer'} tooltip={item.title}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
                   <ChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' />
@@ -61,7 +56,7 @@ export function NavMain({
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton
                         asChild
-                        className={IsActive(subItem.url) ? 'bg-surface-1' : undefined}
+                        className={subItem.isActive ? 'bg-success-foreground/10' : undefined}
                       >
                         <a href={subItem.url}>
                           <span>{subItem.title}</span>
