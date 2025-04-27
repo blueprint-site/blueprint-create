@@ -1,6 +1,4 @@
 // src/types/index.ts
-import type z from 'zod';
-
 export type {
   User,
   UserPreferences,
@@ -13,6 +11,7 @@ export type {
   BlogLink,
   RawBlog,
   SchematicTag,
+  FeaturedAddon,
 } from '@/types/appwrite';
 
 export type {
@@ -55,18 +54,6 @@ export type {
   UpdateSchematicFormValues,
   SearchSchematicsProps,
 } from '@/schemas/schematic.schema';
-
-import type {
-  FeaturedAddonSchema,
-  updateFeaturedAddonSchema,
-} from '@/schemas/featuredAddon.schema';
-
-// Import canonical types from appwrite.ts
-export type { FeaturedAddon } from '@/types/appwrite';
-
-// Form validation types - NOT document types
-export type FeaturedAddonFormValues = z.infer<typeof FeaturedAddonSchema>;
-export type UpdateFeaturedAddonFormValues = z.infer<typeof updateFeaturedAddonSchema>;
 
 export type { FeatureFlagKey } from '@/schemas/featureFlag.schema';
 

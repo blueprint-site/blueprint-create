@@ -24,6 +24,7 @@ Blueprint is a modern web platform that serves as the central hub for Create Mod
 - **🌙 Theme Support**: Toggle between light and dark modes
 - **🌍 Internationalization**: Multi-language support with i18next
 - **📱 Responsive Design**: Optimized for all screen sizes
+- **🌟 Featured Addons**: Highlight exceptional addons through an interactive homepage slideshow
 
 ## Documentation Structure
 

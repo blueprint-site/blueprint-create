@@ -102,6 +102,33 @@ export const useFetchAddonBySlug = (slug?: string) => {
   });
 };
 
+export const useFetchAllAddons = () => {
+  return useQuery<AddonWithParsedFields[]>({
+    queryKey: ['addons', 'all'],
+    queryFn: async () => {
+      const limit = 100;
+      let offset = 0;
+      let allAddons: AddonWithParsedFields[] = [];
+
+      while (true) {
+        const response = await databases.listDocuments<Addon>(DATABASE_ID, COLLECTION_ID, [
+          Query.limit(limit),
+          Query.offset(offset),
+        ]);
+
+        const parsed = response.documents.map((addon) => addParsedFields(addon));
+        allAddons = [...allAddons, ...parsed];
+
+        if (response.documents.length < limit) break;
+        offset += limit;
+      }
+
+      return allAddons;
+    },
+    staleTime: 1000 * 60 * 10, // 10 minutes
+  });
+};
+
 /**
  * Hook to fetch paginated addons
  * @param page Current page number
@@ -109,12 +136,7 @@ export const useFetchAddonBySlug = (slug?: string) => {
  * @returns Query result with addons and pagination data
  */
 export const useFetchAddons = (page: number, limit: number = 10) => {
-  return useQuery<{
-    addons: AddonWithParsedFields[];
-    total: number;
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
-  }>({
+  return useQuery({
     queryKey: ['addons', 'list', page, limit],
     queryFn: async () => {
       try {
@@ -123,13 +145,14 @@ export const useFetchAddons = (page: number, limit: number = 10) => {
           Query.offset((page - 1) * limit),
         ]);
 
-        // Process JSON fields for each addon
-        const addons = response.documents.map((addon) => addParsedFields(addon));
+        const addons = response.documents.map(addParsedFields);
+        const totalPages = Math.ceil(response.total / limit);
 
         return {
           addons,
           total: response.total,
-          hasNextPage: page * limit < response.total,
+          totalPages,
+          hasNextPage: page < totalPages,
           hasPreviousPage: page > 1,
         };
       } catch (error) {
@@ -137,7 +160,7 @@ export const useFetchAddons = (page: number, limit: number = 10) => {
         throw new Error('Failed to fetch addons');
       }
     },
-    retry: 2,
+    staleTime: 1000 * 60 * 5,
   });
 };
 
@@ -157,7 +180,6 @@ export const useUpdateAddon = () => {
 
         if (!validationResult.success) {
           console.error('Validation error:', validationResult.error.format());
-          throw new Error('Invalid addon data provided');
         }
 
         const updateData = { ...validationResult.data };

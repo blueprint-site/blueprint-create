@@ -26,3 +26,7 @@ export const FeaturedAddonSchema = FeaturedAddonFormSchema.extend({
 
 // Partial schema for updates
 export const updateFeaturedAddonSchema = FeaturedAddonFormSchema.partial();
+
+// Form validation schema for updating a featured addon
+export type FeaturedAddonFormValues = z.infer<typeof FeaturedAddonSchema>;
+export type UpdateFeaturedAddonFormValues = z.infer<typeof updateFeaturedAddonSchema>;

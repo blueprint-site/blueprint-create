@@ -1,13 +1,14 @@
 import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { Input } from '@/components/ui/input.tsx';
-import { Button } from '@/components/ui/button.tsx';
-import { Card, CardContent } from '@/components/ui/card.tsx';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
 import type { Blog, BlogTag } from '@/types';
 import { useUserStore } from '@/api/stores/userStore';
-import ImageUploader from '@/components/utility/ImageUploader.tsx';
-import MarkdownEditor from '@/components/utility/MarkdownEditor.tsx';
+import ImageUploader from '@/components/utility/ImageUploader';
+import MarkdownEditor from '@/components/utility/MarkdownEditor';
 import TagSelector from '@/components/utility/TagSelector';
 import { useToast } from '@/hooks';
 import { useFetchBlog, useSaveBlog, useBlogTags, useCreateBlogTag, useDeleteBlogTag } from '@/api';
@@ -21,7 +22,6 @@ export const BlogEditor = () => {
   const saveBlogMutation = useSaveBlog();
   const [blogState, setBlogState] = useState<Partial<Blog> | null>(null);
 
-  // Add tag hooks
   const { data: blogTags = [], isLoading: isLoadingTags } = useBlogTags();
   const createTagMutation = useCreateBlogTag();
   const deleteTagMutation = useDeleteBlogTag();
@@ -30,7 +30,6 @@ export const BlogEditor = () => {
     if (!user) return;
 
     if (id && !isNew && blog) {
-      console.log(blog);
       setBlogState(blog);
     } else {
       setBlogState({
@@ -66,16 +65,14 @@ export const BlogEditor = () => {
       return;
     }
     saveBlogMutation.mutate(blogState, {
-      onSuccess: async (response) => {
-        console.log(response);
+      onSuccess: () => {
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
           title: '✅ Success ✅',
           description: `${blogState.title} has been saved successfully!`,
         });
       },
-      onError: async (error) => {
-        console.log(error);
+      onError: () => {
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
           title: '❌ Error ❌',
@@ -88,68 +85,75 @@ export const BlogEditor = () => {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <Card className='mx-auto w-full p-4'>
-      <div className='mb-4 flex items-center justify-between'>
-        <h1 className='text-xl font-semibold'>Blog Article Editor</h1>
-        <Button onClick={handleSave} disabled={saveBlogMutation.isPending} className='ml-auto'>
+    <Card className='h-full w-full space-y-4 p-4'>
+      {/* Header button */}
+      <div className='flex justify-end'>
+        <Button onClick={handleSave} disabled={saveBlogMutation.isPending}>
           {saveBlogMutation.isPending ? 'Saving...' : 'Save'}
         </Button>
       </div>
 
-      <div className='grid grid-cols-1 gap-4 md:grid-cols-4'>
-        {/* Sidebar (Metadata) */}
-        <div className='md:col-span-1'>
-          <CardContent className='space-y-4'>
+      {/* Inputs + Image */}
+      <div className='flex w-full flex-col gap-6 md:flex-row md:items-start'>
+        {/* Left: Inputs */}
+        <div className='grid flex-1 grid-cols-1 gap-4 md:grid-cols-2'>
+          <div className='space-y-2'>
+            <Label htmlFor='title'>Title</Label>
+            <Input
+              id='title'
+              name='title'
+              value={blogState?.title || ''}
+              onChange={handleChange}
+              placeholder='Enter a title'
+            />
+          </div>
+          <div className='space-y-2'>
+            <Label htmlFor='slug'>Slug</Label>
+            <Input
+              id='slug'
+              name='slug'
+              value={blogState?.slug || ''}
+              onChange={handleChange}
+              placeholder='auto-generated-slug'
+            />
+          </div>
+          <div className='space-y-2 md:col-span-2'>
+            <Label>Tags</Label>
+            <TagSelector
+              tags={blogTags}
+              selectedTags={blogState?.tags || []}
+              isLoading={isLoadingTags}
+              onCreate={createTagMutation.mutateAsync}
+              onDelete={deleteTagMutation.mutateAsync}
+              onChange={handleTagsChange}
+            />
+          </div>
+        </div>
+
+        {/* Right: Cover image */}
+        <div className='w-full space-y-2 md:w-1/3'>
+          <Label>Cover Image</Label>
+          <div className='flex flex-col gap-2'>
             <ImageUploader
               value={blogState?.img_url}
               onChange={(base64) =>
                 setBlogState((prev) => (prev ? { ...prev, img_url: base64 ?? undefined } : null))
               }
             />
-            <div className='space-y-2'>
-              <Input
-                name='title'
-                value={blogState?.title || ''}
-                onChange={handleChange}
-                placeholder='Title'
-                className='w-full'
-              />
-            </div>
-            <div className='space-y-2'>
-              <Input
-                name='slug'
-                value={blogState?.slug || ''}
-                onChange={handleChange}
-                placeholder='Slug'
-                className='w-full'
-              />
-            </div>
-
-            {/* Add the new TagSelector component */}
-            <div className='space-y-2'>
-              <div className='text-sm font-medium'>Tags</div>
-              <TagSelector
-                tags={blogTags}
-                selectedTags={blogState?.tags || []}
-                isLoading={isLoadingTags}
-                onCreate={createTagMutation.mutateAsync}
-                onDelete={deleteTagMutation.mutateAsync}
-                onChange={handleTagsChange}
-              />
-            </div>
-          </CardContent>
-        </div>
-
-        {/* Main Content (Markdown Editor) */}
-        <div className='md:col-span-3'>
-          <div className='h-[calc(100vh-200px)] overflow-auto'>
-            <MarkdownEditor
-              value={blog?.content ?? ''}
-              onChange={(value) =>
-                setBlogState((prev) => (prev ? { ...prev, content: value ?? undefined } : null))
-              }
-            />
           </div>
+        </div>
+      </div>
+
+      {/* Markdown Editor */}
+      <div className='space-y-2'>
+        <Label className='text-base'>Content</Label>
+        <div className='rounded-md border'>
+          <MarkdownEditor
+            value={blogState?.content ?? ''}
+            onChange={(value) =>
+              setBlogState((prev) => (prev ? { ...prev, content: value ?? undefined } : null))
+            }
+          />
         </div>
       </div>
     </Card>
