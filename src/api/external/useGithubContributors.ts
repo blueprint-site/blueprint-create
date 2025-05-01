@@ -46,7 +46,7 @@ export function useGitHubContributors() {
 
         // Fetch contributors from both repositories concurrently
         const [frontend, api] = await Promise.all([
-          getContributors('blueprint-site.github.io'),
+          getContributors('blueprint-create'),
           getContributors('blueprint-api'),
         ]);
 

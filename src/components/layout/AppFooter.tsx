@@ -27,7 +27,7 @@ const Footer = ({ className }: FooterProps) => {
             <h6 className='text-xs font-normal'>
               {t('footer.found-bug')}{' '}
               <a
-                href='https://github.com/blueprint-site/blueprint-site.github.io'
+                href='https://github.com/blueprint-site/blueprint-create'
                 className='hover:underline'
               >
                 {t('footer.github-issues')}
@@ -46,7 +46,7 @@ const Footer = ({ className }: FooterProps) => {
                 {t('navigation.label.schematics')}
               </a>
               <a
-                href='https://blueprint-site.github.io/blueprint-blog/'
+                href='https://blueprint-create.com/blueprint-blog/'
                 className='text-xs font-normal hover:underline'
               >
                 {t('navigation.label.blog')}

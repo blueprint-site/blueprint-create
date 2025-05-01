@@ -26,8 +26,8 @@ Here's a quick overview of the Blueprint contribution process:
 If you need help with contributing:
 
 - **[Join our Discord](https://discord.gg/kDa8YC8u5J)** - Connect with the Blueprint community
-- **[GitHub Discussions](https://github.com/blueprint-site/blueprint-site.github.io/discussions)** - Ask questions and share ideas
-- **[Issue Tracker](https://github.com/blueprint-site/blueprint-site.github.io/issues)** - Report bugs or request features
+- **[GitHub Discussions](https://github.com/blueprint-site/blueprint-create/discussions)** - Ask questions and share ideas
+- **[Issue Tracker](https://github.com/blueprint-site/blueprint-create/issues)** - Report bugs or request features
 
 ## First-Time Contributors
 

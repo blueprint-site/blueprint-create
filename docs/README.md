@@ -57,7 +57,7 @@ Blueprint is built with:
 
 - Join our [Discord Server](https://discord.gg/kDa8YC8u5J)
 - Follow us on [GitHub](https://github.com/blueprint-site)
-- Report issues [here](https://github.com/blueprint-site/blueprint-site.github.io/issues)
+- Report issues [here](https://github.com/blueprint-site/blueprint-create/issues)
 
 ## License
 
