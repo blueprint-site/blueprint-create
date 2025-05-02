@@ -61,7 +61,8 @@ export const useSearchAddons = ({
   version,
   loaders,
   limit = 16,
-}: SearchAddonsProps): SearchAddonResult => {
+  sort,
+}: SearchAddonsProps & { sort?: string }): SearchAddonResult => {
   const queryInput = query || '*'; // Default to '*' if query is empty
 
   // Define filter logic for category, version, and loaders
@@ -86,7 +87,7 @@ export const useSearchAddons = ({
   };
 
   const { data, isLoading, isError, error, isFetching } = useQuery({
-    queryKey: ['searchAddons', queryInput, page, category, version, loaders, limit],
+    queryKey: ['searchAddons', queryInput, page, category, version, loaders, limit, sort],
     queryFn: async () => {
       const index = searchClient.index('addons');
 
@@ -95,6 +96,7 @@ export const useSearchAddons = ({
         limit,
         offset: (page - 1) * limit,
         filter: buildFilter(),
+        sort: sort ? [sort] : undefined, // Pass sort parameter if provided
       })) as MeiliAddonResponse;
 
       return {
