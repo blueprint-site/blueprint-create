@@ -21,14 +21,14 @@ Before you begin, make sure you have the following installed:
 2. Clone your fork to your local machine:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/blueprint-site.github.io.git
-cd blueprint-site.github.io
+git clone https://github.com/YOUR_USERNAME/blueprint-create.git
+cd blueprint-create
 ```
 
 3. Add the original repository as an upstream remote:
 
 ```bash
-git remote add upstream https://github.com/blueprint-site/blueprint-site.github.io.git
+git remote add upstream https://github.com/blueprint-site/blueprint-create.git
 ```
 
 ### 2. Install Dependencies
@@ -80,7 +80,7 @@ For a more detailed breakdown, see the [Blueprint Project Structure](../architec
 
 ### 1. Find an Issue
 
-1. Browse the [GitHub Issues](https://github.com/blueprint-site/blueprint-site.github.io/issues) for something you'd like to work on
+1. Browse the [GitHub Issues](https://github.com/blueprint-site/blueprint-create/issues) for something you'd like to work on
 2. Look for issues labeled `good first issue` if you're new to the project
 3. Comment on the issue to let others know you're working on it
 
@@ -155,9 +155,9 @@ git push origin feature/add-schematic-preview
 If you're stuck or have questions:
 
 1. Check the existing [documentation](../)
-2. Look for similar issues in the [issue tracker](https://github.com/blueprint-site/blueprint-site.github.io/issues)
+2. Look for similar issues in the [issue tracker](https://github.com/blueprint-site/blueprint-create/issues)
 3. Join our [Discord server](https://discord.gg/kDa8YC8u5J) for real-time help
-4. Ask in the repository [discussions](https://github.com/blueprint-site/blueprint-site.github.io/discussions)
+4. Ask in the repository [discussions](https://github.com/blueprint-site/blueprint-create/discussions)
 
 ## Next Steps
 

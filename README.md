@@ -50,8 +50,8 @@ Browse the [full documentation](/docs/README.md) for more details.
 
 ```bash
 # Clone the repository
-git clone https://github.com/blueprint-site/blueprint-site.github.io.git
-cd blueprint-site.github.io
+git clone https://github.com/blueprint-site/blueprint-create.git
+cd blueprint-create
 
 # Install dependencies
 npm install
@@ -66,14 +66,14 @@ See our [installation guide](/docs/getting-started/installation.md) for detailed
 
 We welcome contributions from the community! Please read our [contributing guidelines](/docs/contributing/workflow.md) and [issue guidelines](/docs/contributing/issue-guidelines.md) to get started. We use GitHub issues and pull requests to manage our development workflow.
 
-- [Create a new issue](https://github.com/blueprint-site/blueprint-site.github.io/issues/new/choose)
-- [View current issues](https://github.com/blueprint-site/blueprint-site.github.io/issues)
+- [Create a new issue](https://github.com/blueprint-site/blueprint-create/issues/new/choose)
+- [View current issues](https://github.com/blueprint-site/blueprint-create/issues)
 
 ## Community
 
 - Join our [Discord Server](https://discord.gg/kDa8YC8u5J)
 - Follow us on [GitHub](https://github.com/blueprint-site)
-- Report issues [here](https://github.com/blueprint-site/blueprint-site.github.io/issues)
+- Report issues [here](https://github.com/blueprint-site/blueprint-create/issues)
 
 ## License
 
@@ -89,4 +89,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - [Create Mod Team](https://github.com/Creators-of-Create/Create)
 - [Minecraft Modding Community](https://modrinth.com)
-- All our [contributors](https://github.com/blueprint-site/blueprint-site.github.io/graphs/contributors)
+- All our [contributors](https://github.com/blueprint-site/blueprint-create/graphs/contributors)

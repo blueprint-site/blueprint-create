@@ -22,7 +22,7 @@ export function ContactSection() {
           title={t('about.socialsCard.card2.title')}
           badgeName='github-plural'
           description={t('about.socialsCard.card2.description')}
-          link='https://github.com/blueprint-site/blueprint-site.github.io'
+          link='https://github.com/blueprint-site/blueprint-create'
         />
 
         <ContactCard
