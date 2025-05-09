@@ -3,6 +3,8 @@ import type { Addon } from '@/types';
 import { useSearchAddons } from '@/api';
 import { Info } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
+import { useToast } from '@/hooks';
+import { Button } from '../ui/button';
 
 export interface ScrollingAddonBackgroundProps {
   title?: string;
@@ -25,6 +27,7 @@ export const ScrollingAddonBackground = ({
   title = '',
   subtitle = '',
 }: ScrollingAddonBackgroundProps) => {
+  const { toast } = useToast();
   // Component state
   const [allAddons, setAllAddons] = useState<Addon[]>([]);
   const [dimensions, setDimensions] = useState({
@@ -33,6 +36,7 @@ export const ScrollingAddonBackground = ({
   });
   const [isLoading, setIsLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [displayPopup, setDisplayPopup] = useState(false);
 
   // Addon dimensions for calculations
   const addonWidth = 50;
@@ -85,6 +89,50 @@ export const ScrollingAddonBackground = ({
 
     observer.observe(containerRef.current);
     return () => observer.disconnect();
+  }, []);
+
+  // Konami Code detection with overlay
+  const [sequence, setSequence] = useState<string[]>([]);
+
+  useEffect(() => {
+    const konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // Up, Up, Down, Down, Left, Right, Left, Right, B, A
+    let konamiIndex = 0;
+
+    const keyMap: { [key: number]: string } = {
+      38: '↑',
+      40: '↓',
+      37: '←',
+      39: '→',
+      66: 'B',
+      65: 'A',
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const key = keyMap[event.keyCode];
+      if (key) {
+        setSequence((prev) => [...prev, key]);
+      }
+
+      if (event.keyCode === konamiCode[konamiIndex]) {
+        konamiIndex++;
+        if (konamiIndex === konamiCode.length) {
+          konamiIndex = 0;
+          setSequence([]); // Clear sequence on success
+          console.log('Konami Code activated!');
+          toast({
+            title: 'Easter egg activated!',
+            description: 'Let the dance begin!',
+          });
+          setDisplayPopup(true);
+        }
+      } else {
+        konamiIndex = 0;
+        setSequence([]); // Reset sequence on failure
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   function hasVersion(versions: unknown, version: string): boolean {
@@ -214,7 +262,26 @@ export const ScrollingAddonBackground = ({
       ref={containerRef}
     >
       <style>{keyframesStyle}</style>
-
+      {displayPopup && (
+        <div className='fixed inset-0 flex items-center justify-center bg-black/50'>
+          <div className='rounded-lg border border-gray-800 bg-black/80 p-6 shadow-lg'>
+            <h1 className='text-3xl font-bold text-white'>Party time!</h1>
+            <span className='text-lg text-gray-300'>You entered the Konami code, congrats!</span>
+            <iframe
+              width='560'
+              height='315'
+              src='https://www.youtube.com/embed/SoI_ETK30OU?si=fevfOnoovPqMZt5K&amp;controls=0'
+              title='YouTube video player'
+              allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+              className='mt-4 rounded-lg'
+            />
+            <br />
+            <Button className='mt-4' onClick={() => setDisplayPopup(false)}>
+              Close embed
+            </Button>
+          </div>
+        </div>
+      )}
       <div className='absolute inset-0'>
         <div className='flex h-full w-full flex-col overflow-hidden'>
           {displayGrid?.map((row, rowIndex) => (
@@ -273,6 +340,15 @@ export const ScrollingAddonBackground = ({
         <p className='text-center text-xl italic'>
           {subtitle || '"That accounts to ~0 addons totally" - Says our expert'}
         </p>
+      </div>
+
+      {/* Konami Code overlay */}
+      <div className='konami-overlay'>
+        {sequence.map((key, index) => (
+          <span key={index} className='konami-key'>
+            {key}
+          </span>
+        ))}
       </div>
 
       <div className='absolute top-2 right-2 flex items-center'>
