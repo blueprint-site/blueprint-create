@@ -56,7 +56,9 @@ const AddonsTable = lazy(() =>
 
 // LAZY IMPORT AddFeaturedAddon
 const AddFeaturedAddon = lazy(() =>
-  import('@/components/features/admin/addons').then((mod) => ({ default: mod.AddFeaturedAddon }))
+  import('@/components/features/admin/addons/AddFeaturedAddon').then((mod) => ({
+    default: mod.AddFeaturedAddon,
+  }))
 );
 const FeaturedAddonsList = lazy(() =>
   import('@/components/features/admin/addons/FeaturedAddonsList').then((mod) => ({
@@ -92,19 +94,35 @@ function createAdminRoute(
 export const AdminRoutes: RouteObject[] = [
   {
     path: 'admin',
-    ...createAdminRoute(Admin),
+    element: (
+      <ProtectedRoute requiredRole={'admin'}>
+        <Admin />
+      </ProtectedRoute>
+    ),
   },
   {
     path: 'admin/blogs/editor/:id',
-    ...createAdminRoute(BlogEditor),
+    element: (
+      <ProtectedRoute requiredRole={'admin'}>
+        <BlogEditor />
+      </ProtectedRoute>
+    ),
   },
   {
     path: 'admin/blogs/list',
-    ...createAdminRoute(BlogList),
+    element: (
+      <ProtectedRoute requiredRole={'admin'}>
+        <BlogList />
+      </ProtectedRoute>
+    ),
   },
   {
     path: 'admin/stats',
-    ...createAdminRoute(AddonStatsWrapper),
+    element: (
+      <ProtectedRoute requiredRole={'admin'}>
+        <AddonStatsWrapper />
+      </ProtectedRoute>
+    ),
   },
   {
     path: 'admin/addons',
@@ -116,7 +134,11 @@ export const AdminRoutes: RouteObject[] = [
   },
   {
     path: 'admin/addons/list',
-    ...createAdminRoute(AddonsTable),
+    element: (
+      <ProtectedRoute requiredRole={'admin'}>
+        <AddonsTable />
+      </ProtectedRoute>
+    ),
   },
   {
     path: 'admin/blogs',
@@ -128,11 +150,19 @@ export const AdminRoutes: RouteObject[] = [
   },
   {
     path: 'admin/logs',
-    ...createAdminRoute(LogsList),
+    element: (
+      <ProtectedRoute requiredRole={'admin'}>
+        <LogsList />
+      </ProtectedRoute>
+    ),
   },
   {
     path: 'admin/addons/add',
-    ...createAdminRoute(AddAddon),
+    element: (
+      <ProtectedRoute requiredRole={'admin'}>
+        <AddAddon />
+      </ProtectedRoute>
+    ),
   },
   {
     path: 'admin/featured-addons/add',
@@ -160,10 +190,18 @@ export const AdminRoutes: RouteObject[] = [
   },
   {
     path: 'admin/schematics/list',
-    ...createAdminRoute(SchematicsDisplay),
+    element: (
+      <ProtectedRoute requiredRole={'admin'}>
+        <SchematicsDisplay />
+      </ProtectedRoute>
+    ),
   },
   {
     path: 'admin/users',
-    ...createAdminRoute(UserManagement),
+    element: (
+      <ProtectedRoute requiredRole={'admin'}>
+        <UserManagement />
+      </ProtectedRoute>
+    ),
   },
 ];
