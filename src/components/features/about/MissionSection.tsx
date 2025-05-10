@@ -1,7 +1,16 @@
 import { useState } from 'react';
 import { ContactLink } from './ContactLink';
 import { motion } from 'framer-motion';
-import { Compass, Share2, Code, Cog } from 'lucide-react';
+import {
+  Compass,
+  Share2,
+  Code,
+  Cog,
+  ArrowUp,
+  ArrowLeft,
+  ArrowDown,
+  ArrowRight,
+} from 'lucide-react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 
@@ -90,6 +99,18 @@ export function MissionSection() {
               </ContactLink>
             </motion.div>
           ))}
+          <div className='inline-flex w-full items-center gap-2 self-start opacity-30'>
+            <ArrowUp />
+            <ArrowUp />
+            <ArrowDown />
+            <ArrowDown />
+            <ArrowLeft />
+            <ArrowRight />
+            <ArrowLeft />
+            <ArrowRight />
+            <span>B</span>
+            <span>A</span>
+          </div>
         </div>
       </CardContent>
     </Card>

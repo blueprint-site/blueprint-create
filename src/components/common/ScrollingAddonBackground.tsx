@@ -263,7 +263,7 @@ export const ScrollingAddonBackground = ({
     >
       <style>{keyframesStyle}</style>
       {displayPopup && (
-        <div className='fixed inset-0 flex items-center justify-center bg-black/50'>
+        <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'>
           <div className='rounded-lg border border-gray-800 bg-black/80 p-6 shadow-lg'>
             <h1 className='text-3xl font-bold text-white'>Party time!</h1>
             <span className='text-lg text-gray-300'>You entered the Konami code, congrats!</span>
