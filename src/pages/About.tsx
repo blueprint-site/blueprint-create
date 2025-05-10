@@ -8,12 +8,14 @@ import { HeroLayout, HeroContent, HeroHeader } from '@/layouts/HeroLayout';
 import ScrollingAddonBackground from '@/components/common/ScrollingAddonBackground';
 import { useTranslation } from 'react-i18next';
 import { useGitHubContributors } from '@/api';
+import { ConamiCodeEasterEgg } from '@/components/features/games/tetris/ConamiCodeEasterEgg';
 
 export default function About() {
   const { contributors, isLoading, error } = useGitHubContributors();
   const { t } = useTranslation();
   return (
     <HeroLayout>
+      <ConamiCodeEasterEgg />
       <HeroHeader>
         <HeroSection>
           <ScrollingAddonBackground />

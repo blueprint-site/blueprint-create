@@ -3,8 +3,6 @@ import type { Addon } from '@/types';
 import { useSearchAddons } from '@/api';
 import { Info } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
-import { useToast } from '@/hooks';
-import { Button } from '../ui/button';
 
 export interface ScrollingAddonBackgroundProps {
   title?: string;
@@ -27,7 +25,6 @@ export const ScrollingAddonBackground = ({
   title = '',
   subtitle = '',
 }: ScrollingAddonBackgroundProps) => {
-  const { toast } = useToast();
   // Component state
   const [allAddons, setAllAddons] = useState<Addon[]>([]);
   const [dimensions, setDimensions] = useState({
@@ -36,7 +33,6 @@ export const ScrollingAddonBackground = ({
   });
   const [isLoading, setIsLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [displayPopup, setDisplayPopup] = useState(false);
 
   // Addon dimensions for calculations
   const addonWidth = 50;
@@ -89,50 +85,6 @@ export const ScrollingAddonBackground = ({
 
     observer.observe(containerRef.current);
     return () => observer.disconnect();
-  }, []);
-
-  // Konami Code detection with overlay
-  const [sequence, setSequence] = useState<string[]>([]);
-
-  useEffect(() => {
-    const konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // Up, Up, Down, Down, Left, Right, Left, Right, B, A
-    let konamiIndex = 0;
-
-    const keyMap: { [key: number]: string } = {
-      38: '↑',
-      40: '↓',
-      37: '←',
-      39: '→',
-      66: 'B',
-      65: 'A',
-    };
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      const key = keyMap[event.keyCode];
-      if (key) {
-        setSequence((prev) => [...prev, key]);
-      }
-
-      if (event.keyCode === konamiCode[konamiIndex]) {
-        konamiIndex++;
-        if (konamiIndex === konamiCode.length) {
-          konamiIndex = 0;
-          setSequence([]); // Clear sequence on success
-          console.log('Konami Code activated!');
-          toast({
-            title: 'Easter egg activated!',
-            description: 'Let the dance begin!',
-          });
-          setDisplayPopup(true);
-        }
-      } else {
-        konamiIndex = 0;
-        setSequence([]); // Reset sequence on failure
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   function hasVersion(versions: unknown, version: string): boolean {
@@ -244,44 +196,22 @@ export const ScrollingAddonBackground = ({
   // Animation duration in seconds (adjust as needed)
   const animationDuration = 160;
 
-  // Define keyframes for row scrolling animation
-  const keyframesStyle = `
-    @keyframes scrollRow {
-      0% {
-        transform: translateX(-${cols * totalAddonWidth}px);
-      }
-      100% {
-        transform: translateX(0);
-      }
-    }
-  `;
-
   return (
     <div
       className='bg-background relative h-full w-full overflow-hidden rounded-b-2xl'
       ref={containerRef}
     >
-      <style>{keyframesStyle}</style>
-      {displayPopup && (
-        <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'>
-          <div className='rounded-lg border border-gray-800 bg-black/80 p-6 shadow-lg'>
-            <h1 className='text-3xl font-bold text-white'>Party time!</h1>
-            <span className='text-lg text-gray-300'>You entered the Konami code, congrats!</span>
-            <iframe
-              width='560'
-              height='315'
-              src='https://www.youtube.com/embed/SoI_ETK30OU?si=fevfOnoovPqMZt5K&amp;controls=0'
-              title='YouTube video player'
-              allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-              className='mt-4 rounded-lg'
-            />
-            <br />
-            <Button className='mt-4' onClick={() => setDisplayPopup(false)}>
-              Close embed
-            </Button>
-          </div>
-        </div>
-      )}
+      <style>{`
+        @keyframes scrollRow {
+          0% {
+            transform: translateX(-${cols * totalAddonWidth}px);
+          }
+          100% {
+            transform: translateX(0);
+          }
+        }
+      `}</style>
+
       <div className='absolute inset-0'>
         <div className='flex h-full w-full flex-col overflow-hidden'>
           {displayGrid?.map((row, rowIndex) => (
@@ -290,7 +220,7 @@ export const ScrollingAddonBackground = ({
               className='flex w-fit whitespace-nowrap'
               style={{
                 animation: `scrollRow ${animationDuration}s linear infinite`,
-                animationDelay: `${((rowIndex % 2) * -animationDuration) / 2}s`, // Alternate row direction
+                animationDelay: `${((rowIndex % 2) * -animationDuration) / 2}s`,
               }}
             >
               {row.map((addon) =>
@@ -299,12 +229,9 @@ export const ScrollingAddonBackground = ({
                     key={addon.key}
                     src={addon.icon}
                     alt={addon.name || 'Addon icon'}
-                    className={`mr-[5px] mb-[5px] h-[50px] w-[50px] rounded-full object-contain ${
-                      hasVersion(addon.create_versions, '0.6') ? '' : 'opacity-70 grayscale'
-                    }`}
+                    className={`mr-[5px] mb-[5px] h-[50px] w-[50px] rounded-full object-contain ${hasVersion(addon.create_versions, '0.6') ? '' : 'opacity-70 grayscale'}`}
                     loading='lazy'
                     onError={(e) => {
-                      // Replace broken images with placeholder
                       (e.target as HTMLImageElement).src =
                         'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"%3E%3Crect width="50" height="50" fill="%23555555" rx="25" /%3E%3C/svg%3E';
                       (e.target as HTMLImageElement).className =
@@ -323,10 +250,8 @@ export const ScrollingAddonBackground = ({
         </div>
       </div>
 
-      {/* Semi-transparent overlay */}
       <div className='absolute inset-0 bg-black opacity-30'></div>
 
-      {/* Main content */}
       <div className='relative flex h-full flex-col items-center justify-center font-bold text-white'>
         <h1 className='mb-4 text-center text-4xl'>
           {showPlaceholderContent ? (
@@ -342,17 +267,7 @@ export const ScrollingAddonBackground = ({
         </p>
       </div>
 
-      {/* Konami Code overlay */}
-      <div className='konami-overlay'>
-        {sequence.map((key, index) => (
-          <span key={index} className='konami-key'>
-            {key}
-          </span>
-        ))}
-      </div>
-
       <div className='absolute top-2 right-2 flex items-center'>
-        {/* Info tooltip */}
         <TooltipProvider delayDuration={100}>
           <Tooltip>
             <TooltipTrigger asChild>
