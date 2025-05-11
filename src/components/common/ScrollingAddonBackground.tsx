@@ -32,6 +32,7 @@ export const ScrollingAddonBackground = ({
     height: window.innerHeight,
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [supportingAddons, setSupportingAddons] = useState<Addon[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Addon dimensions for calculations
@@ -90,6 +91,19 @@ export const ScrollingAddonBackground = ({
   function hasVersion(versions: unknown, version: string): boolean {
     return Array.isArray(versions) && versions.includes(version);
   }
+
+  // Calculate percentage of addons supporting Create 0.6
+  const percentageSupportingCreate6 = useMemo(() => {
+    if (allAddons.length === 0) return 0;
+
+    const supportingAddons = allAddons.filter((addon) => hasVersion(addon.create_versions, '0.6'));
+
+    return Math.round((supportingAddons.length / allAddons.length) * 100);
+  }, [allAddons.length]); // Updated dependency array
+
+  // Update title to include percentage
+  const displayTitle =
+    title || `${percentageSupportingCreate6}% of addons have support for Create 0.6`;
 
   // Calculate grid dimensions
   const { rows, cols } = useMemo(() => {
@@ -255,15 +269,14 @@ export const ScrollingAddonBackground = ({
       <div className='relative flex h-full flex-col items-center justify-center font-bold text-white'>
         <h1 className='mb-4 text-center text-4xl'>
           {showPlaceholderContent ? (
-            <span className='inline-block animate-pulse'>
-              {title || '0% of addons have support for Create 0.6'}
-            </span>
+            <span className='inline-block animate-pulse'>{displayTitle}</span>
           ) : (
-            title || '0% of addons have support for Create 0.6'
+            displayTitle
           )}
         </h1>
         <p className='text-center text-xl italic'>
-          {subtitle || '"That accounts to ~0 addons totally" - Says our expert'}
+          {subtitle ||
+            `"That accounts to ~${supportingAddons.length} addons totally" - Says our expert`}
         </p>
       </div>
 

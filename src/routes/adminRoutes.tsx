@@ -72,24 +72,11 @@ const AutoAddFeaturedAddon = lazy(() =>
     default: mod.default,
   }))
 );
-/**
- * Creates a protected admin route with consistent error handling and loading states
- */
-function createAdminRoute(
-  Component: React.LazyExoticComponent<ComponentType<unknown>> | ComponentType<unknown>,
-  role: string = 'admin'
-): RouteObject {
-  return {
-    element: (
-      <ProtectedRoute requiredRole={role}>
-        <Suspense fallback={<LoadingOverlay />}>
-          {typeof Component === 'function' ? <Component /> : Component}
-        </Suspense>
-      </ProtectedRoute>
-    ),
-    errorElement: <RouteErrorBoundary />,
-  };
-}
+const CreateVAddons = lazy(() =>
+  import('@/components/features/admin/addons/CreateVAddons').then((mod) => ({
+    default: mod.default,
+  }))
+);
 
 export const AdminRoutes: RouteObject[] = [
   {
@@ -161,6 +148,14 @@ export const AdminRoutes: RouteObject[] = [
     element: (
       <ProtectedRoute requiredRole={'admin'}>
         <AddAddon />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: 'admin/addons/createv',
+    element: (
+      <ProtectedRoute requiredRole={'admin'}>
+        <CreateVAddons />
       </ProtectedRoute>
     ),
   },

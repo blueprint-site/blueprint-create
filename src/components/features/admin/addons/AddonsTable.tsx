@@ -92,12 +92,15 @@ export const AddonsTable = () => {
   // Handle addon review status change
   const handleReviewStatusChange = async (addon: Addon, isChecked: boolean) => {
     try {
+      // Optimistically update the UI
+      addon.isChecked = isChecked;
+      refetch();
+
       await updateAddon({ addonId: addon.$id, data: { isChecked } });
       toast({
         title: `Addon ${isChecked ? 'marked as reviewed' : 'marked for review'}`,
         description: `${addon.name} has been ${isChecked ? 'reviewed' : 'marked for review'}.`,
       });
-      refetch();
     } catch (error) {
       toast({
         variant: 'destructive',
@@ -105,6 +108,9 @@ export const AddonsTable = () => {
         description: 'There was an error updating the review status.',
       });
       console.error('Unexpected error:', error);
+      // Revert the optimistic update in case of an error
+      addon.isChecked = !isChecked;
+      refetch();
     }
   };
 

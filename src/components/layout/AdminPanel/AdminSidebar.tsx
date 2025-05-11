@@ -63,6 +63,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         items: [
           { title: 'List', url: '/admin/addons/list' },
           { title: 'Add', url: '/admin/addons/add' },
+          { title: 'Validate Create Versions', url: '/admin/addons/createv' },
         ],
       },
       {
