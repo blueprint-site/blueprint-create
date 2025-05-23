@@ -7,7 +7,7 @@ interface AddonStatsProps {
   claimed_by?: string | null;
 }
 
-export const AddonStats = ({ author, downloads, claimed_by }: AddonStatsProps) => (
+const AddonStats = ({ author, downloads, claimed_by }: AddonStatsProps) => (
   <div className='text-foreground-muted mt-3 flex items-center justify-between text-xs'>
     <div className='flex items-center gap-1.5 border-b px-2 pb-1'>
       <User className='h-3.5' />
@@ -33,3 +33,5 @@ export const AddonStats = ({ author, downloads, claimed_by }: AddonStatsProps) =
     </div>
   </div>
 );
+
+export default AddonStats;
