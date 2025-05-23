@@ -51,7 +51,7 @@ const UserSchematicList = () => {
 
   return (
     <div className='mt-2'>
-      <h2>My schematics</h2>
+      <h5>My schematics</h5>
       <div className='mt-2 grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
         {userSchematics
           ? userSchematics.map((schematic: Schematic) => (
