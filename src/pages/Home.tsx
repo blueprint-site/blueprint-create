@@ -35,9 +35,7 @@ function Home() {
           </div>
         </section>
 
-        <section className='font-minecraft bg-blueprint container py-6 md:rounded-lg md:py-12'>
-          <WhatIsBlueprint />
-        </section>
+        <WhatIsBlueprint />
 
         <section className='py-12'>
           <div className='mx-auto px-4'>
