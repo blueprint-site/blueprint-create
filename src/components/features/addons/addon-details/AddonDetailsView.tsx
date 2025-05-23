@@ -99,7 +99,7 @@ export const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsVie
                 <h3 className='mb-4 text-lg font-semibold'>Categories</h3>
                 <div className='flex flex-wrap gap-2'>
                   {addon.categories.map((category: string) => (
-                    <Badge key={category} variant='outline'>
+                    <Badge key={category} variant='default'>
                       {category}
                     </Badge>
                   ))}
@@ -108,36 +108,47 @@ export const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsVie
 
               {/* Environment Compatibility */}
               {hasEnvironmentInfo && (
-                <div>
-                  <h3 className='mb-4 text-lg font-semibold'>Environment</h3>
-                  <div className='grid grid-cols-2 gap-4'>
-                    {addon.modrinth.client_side && (
-                      <div className='space-y-2'>
-                        <h4 className='text-sm font-medium'>Client</h4>
-                        <Badge
-                          variant={
-                            addon.modrinth.client_side === 'required' ? 'default' : 'outline'
-                          }
-                        >
-                          {addon.modrinth.client_side.charAt(0).toUpperCase() +
-                            addon.modrinth.client_side.slice(1)}
-                        </Badge>
-                      </div>
+                <div className='grid grid-cols-3 items-center gap-2 text-center'>
+                  <div></div>
+                  <div className='font-semibold'>Required</div>
+                  <div className='font-semibold'>Optional</div>
+                  {/* Client row */}
+                  <div className='text-left'>Client</div>
+                  <div>
+                    {addon.modrinth.client_side === 'required' ? (
+                      <span className='inline-flex items-center gap-1 text-green-600'>
+                        <span className='inline-block h-3 w-3 rounded-full bg-green-500' />
+                        Yes
+                      </span>
+                    ) : (
+                      <span className='inline-flex items-center gap-1 text-gray-400'>
+                        <span className='inline-block h-3 w-3 rounded-full bg-gray-300' />
+                        No
+                      </span>
                     )}
-
-                    {addon.modrinth.server_side && (
-                      <div className='space-y-2'>
-                        <h4 className='text-sm font-medium'>Server</h4>
-                        <Badge
-                          variant={
-                            addon.modrinth.server_side === 'required' ? 'default' : 'outline'
-                          }
-                        >
-                          {addon.modrinth.server_side.charAt(0).toUpperCase() +
-                            addon.modrinth.server_side.slice(1)}
-                        </Badge>
-                      </div>
+                  </div>
+                  <div>
+                    {/* N/A for optional for now */}
+                    <span className='inline-flex items-center gap-1 text-gray-400'>N/A</span>
+                  </div>
+                  {/* Server row */}
+                  <div className='text-left'>Server</div>
+                  <div>
+                    {addon.modrinth.server_side === 'required' ? (
+                      <span className='inline-flex items-center gap-1 text-green-600'>
+                        <span className='inline-block h-3 w-3 rounded-full bg-green-500' />
+                        Yes
+                      </span>
+                    ) : (
+                      <span className='inline-flex items-center gap-1 text-gray-400'>
+                        <span className='inline-block h-3 w-3 rounded-full bg-gray-300' />
+                        No
+                      </span>
                     )}
+                  </div>
+                  <div>
+                    {/* N/A for optional for now */}
+                    <span className='inline-flex items-center gap-1 text-gray-400'>N/A</span>
                   </div>
                 </div>
               )}
@@ -151,7 +162,7 @@ export const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsVie
                     {addon.modrinth.dependencies.length > 0 && (
                       <div className='flex flex-wrap gap-2'>
                         {addon.modrinth.dependencies.map((dep: ModrinthProject) => (
-                          <Badge key={dep.slug} variant='default'>
+                          <Badge key={dep.slug} variant='accent'>
                             {dep.title ?? 'Unknown'}
                           </Badge>
                         ))}
@@ -163,7 +174,6 @@ export const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsVie
 
               {/* Available On */}
               <div>
-                <h3 className='mb-4 text-lg font-semibold'>Available On</h3>
                 <ModPageLinks
                   slug={addon.slug}
                   curseforge={addon.sources.includes('CurseForge')}

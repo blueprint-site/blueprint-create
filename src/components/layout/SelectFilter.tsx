@@ -2,7 +2,6 @@
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -35,29 +34,28 @@ export function SelectFilter({
   return (
     <div className={className}>
       <label className='text-foreground font-minecraft mb-2 hidden lg:block'>{label}</label>
+
       <Select value={value} onValueChange={onChange} disabled={isLoading}>
-        <SelectTrigger className='border-foreground font-minecraft w-full cursor-pointer rounded-lg p-2'>
+        <SelectTrigger className='font-minecraft [&_[data-placeholder]]:text-foreground-muted text-[color:var(--sidebar-foreground)]'>
           <SelectValue
             className='text-foreground font-minecraft'
             placeholder={placeholder || `Select ${label}`}
           />
         </SelectTrigger>
         <SelectContent>
-          <SelectGroup>
-            {isLoading ? (
-              <div className='text-foreground font-minecraft p-2'>Loading...</div>
-            ) : (
-              options.map((option) => (
-                <SelectItem
-                  key={option.value}
-                  className='text-foreground font-minecraft cursor-pointer'
-                  value={option.value}
-                >
-                  {option.label}
-                </SelectItem>
-              ))
-            )}
-          </SelectGroup>
+          {isLoading ? (
+            <div className='font-minecraft p-2'>Loading...</div>
+          ) : (
+            options.map((option) => (
+              <SelectItem
+                key={option.value}
+                className='font-minecraft cursor-pointer'
+                value={option.value}
+              >
+                {option.label}
+              </SelectItem>
+            ))
+          )}
         </SelectContent>
       </Select>
     </div>

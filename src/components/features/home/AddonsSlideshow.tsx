@@ -95,7 +95,7 @@ const AddonsCarousel = () => {
       </Link>
 
       <Link to={`/addons/${currentSlug}`} className='group h-96 w-80 text-inherit no-underline'>
-        <Card className='bg-background group-hover:bg-accent h-full cursor-pointer transition'>
+        <Card className='bg-background h-full cursor-pointer transition'>
           <CardHeader>
             <CardTitle className='text-center text-2xl underline'>{currentAddon?.title}</CardTitle>
           </CardHeader>

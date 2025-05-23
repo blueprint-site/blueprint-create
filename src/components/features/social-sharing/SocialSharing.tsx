@@ -26,7 +26,7 @@ export const SocialSharing = ({ title, details = true, size = 32 }: SocialSharin
 
   return (
     <>
-      {details ? <h3>Share on socials</h3> : null}
+      {details ? <h5>Share on socials</h5> : null}
       <div className={'row-4 flex flex-row items-center gap-4'}>
         <RedditShareButton url={currentUrl} windowWidth={640} windowHeight={420} title={title}>
           <RedditIcon className={'rounded-full'} size={size} />

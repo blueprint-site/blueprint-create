@@ -24,7 +24,7 @@ export const SummaryTabContent: React.FC<SummaryTabContentProps> = ({
           <h4 className='mb-2 text-sm font-medium'>Minecraft Versions</h4>
           <div className='flex flex-wrap gap-2'>
             {minecraftVersions.map((version) => (
-              <Badge key={version} variant='outline'>
+              <Badge key={version} variant='default'>
                 {version}
               </Badge>
             ))}
@@ -42,7 +42,7 @@ export const SummaryTabContent: React.FC<SummaryTabContentProps> = ({
             <div className='flex flex-wrap gap-2'>
               {createVersions.map((version) => {
                 return (
-                  <Badge key={version} variant='secondary'>
+                  <Badge key={version} variant='accent'>
                     {version}
                   </Badge>
                 );

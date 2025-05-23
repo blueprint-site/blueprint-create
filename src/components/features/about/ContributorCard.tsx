@@ -61,9 +61,9 @@ export const ContributorCard = ({ contributor, className }: ContributorCardProps
             href={`https://github.com/${contributor.login}`}
             target='_blank'
             rel='noopener noreferrer'
-            className='text-foreground text-shadow-md mx-2 text-center hover:underline'
+            className='text-foreground m-2 text-center text-shadow-md hover:underline'
           >
-            <h3>{contributor.login}</h3>
+            <h6>{contributor.login}</h6>
           </a>
 
           <div className='flex-center flex gap-4 space-y-1 text-sm'>
