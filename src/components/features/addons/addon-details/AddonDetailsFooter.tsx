@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 import type { ExternalLink } from '@/types';
 
-export interface AddonDetailsFooterProps {
+interface AddonDetailsFooterProps {
   addon_name: string;
   authors: Author[] | string;
   externalLinks: ExternalLink[];
@@ -18,7 +18,7 @@ export interface AddonDetailsFooterProps {
   claimed_by?: string | null;
 }
 
-export const AddonDetailsFooter = ({
+const AddonDetailsFooter = ({
   authors = [],
   createdAt = '',
   updatedAt = '',
@@ -163,3 +163,5 @@ export const AddonDetailsFooter = ({
     </CardContent>
   );
 };
+
+export default AddonDetailsFooter;

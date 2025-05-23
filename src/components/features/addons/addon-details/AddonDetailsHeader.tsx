@@ -9,7 +9,7 @@ interface AddonDetailsHeaderProps {
   follows: number;
 }
 
-export const AddonDetailsHeader = ({
+const AddonDetailsHeader = ({
   name,
   description,
   icon,
@@ -44,3 +44,5 @@ export const AddonDetailsHeader = ({
     </CardHeader>
   );
 };
+
+export default AddonDetailsHeader;
