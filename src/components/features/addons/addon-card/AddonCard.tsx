@@ -1,15 +1,14 @@
-import { Star, StarOff } from 'lucide-react';
-import React, { memo, useEffect, useState } from 'react';
-import { useCollectionStore } from '@/api/stores/collectionStore.ts';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import CategoryBadges from '@/components/features/addons/addon-card/CategoryBadges';
-import { VersionBadges } from './VersionBadges';
-import { AddonStats } from './AddonStats';
+import { memo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import type { Addon } from '@/types';
-import { ModPageLinks } from '@/components/features/addons/addon-card/ModPageLinks';
+
+import CategoryBadges from './CategoryBadges';
+import VersionBadges from './VersionBadges';
+import AddonStats from './AddonStats';
+import ModPageLinks from './ModPageLinks';
 import ModLoaders from './ModLoaders';
+
+import type { Addon } from '@/types';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 interface AddonListItemProps {
   addon: Addon;
@@ -17,8 +16,6 @@ interface AddonListItemProps {
 
 const AddonCard = ({ addon }: AddonListItemProps) => {
   const navigate = useNavigate();
-  const { collection, addAddon, removeAddon } = useCollectionStore();
-  const isInCollection = collection.includes(addon.slug);
   const [availableOn, setAvailableOn] = useState<string[]>([]);
 
   useEffect(() => {
@@ -34,11 +31,6 @@ const AddonCard = ({ addon }: AddonListItemProps) => {
     setAvailableOn(platforms);
   }, [addon.curseforge_raw, addon.modrinth_raw]);
 
-  const handleCollectionAction = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    return isInCollection ? removeAddon(addon.slug) : addAddon(addon.slug);
-  };
-
   const navigateToAddon = () => {
     navigate(`/addons/${addon.slug}`);
   };
@@ -53,14 +45,6 @@ const AddonCard = ({ addon }: AddonListItemProps) => {
           className='h-12 w-12 object-cover'
         />
         <h3 className='truncate text-sm font-medium'>{addon.name}</h3>
-        <Button
-          variant='outline'
-          size='icon'
-          className='absolute top-3 right-3 h-8 w-8 rounded-full'
-          onClick={handleCollectionAction}
-        >
-          {isInCollection ? <Star /> : <StarOff />}
-        </Button>
       </CardHeader>
 
       <CardContent className='flex flex-1 flex-col gap-3'>
