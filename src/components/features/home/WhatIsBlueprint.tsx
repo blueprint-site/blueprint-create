@@ -58,71 +58,76 @@ const WhatIsBlueprint = () => {
   }, []);
 
   return (
-    <div className='flex flex-col items-center space-y-5 text-center'>
-      <div className='text-3xl font-bold tracking-tighter text-white/90 sm:text-4xl md:py-4 md:text-5xl'>
-        {t('home.info.about.title')}
-      </div>
+    <section className='font-minecraft bg-blueprint container py-6 md:rounded-lg md:py-12'>
+      <div className='text-blueprint-foreground flex flex-col items-center space-y-5 text-center'>
+        <div className='text-3xl font-bold tracking-tighter sm:text-4xl md:py-4 md:text-5xl'>
+          {t('home.info.about.title')}
+        </div>
 
-      <p className='font-italic text-xl text-white/80'>{t('home.info.about.description')}</p>
+        <p className='font-italic text-xl'>{t('home.info.about.description')}</p>
 
-      <div className='flex items-center justify-center gap-4 px-2'>
-        {/* Addons Icon */}
-        <a
-          href='/addons'
-          className='text-foreground mt-4 flex flex-col items-center transition-transform duration-200 hover:scale-110'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          <img
-            loading='lazy'
-            src={AddonIcon}
-            alt='Addon Icon'
-            className='w-8 cursor-pointer object-contain sm:w-10 md:w-14 lg:w-20'
-          />
-          <div className='mt-2 text-base md:text-lg'>Addons</div>
-        </a>
-
-        {/* Explicit "+" Icon */}
-        <Plus className='h-8 sm:h-10 md:w-14 lg:h-24' />
-
-        {/* Schematics Icon */}
-        <a
-          href='/schematics'
-          className='text-foreground mt-4 flex flex-col items-center transition-transform duration-200 hover:scale-110'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          <img
-            loading='lazy'
-            src={SchematicIcon}
-            alt='Schematic Icon'
-            className='w-8 cursor-pointer object-contain sm:w-10 md:w-14 lg:w-20'
-          />
-          <div className='mt-2 text-base md:text-lg'>Schematics</div>
-        </a>
-
-        {/* Explicit "=" Icon */}
-        <Equal className='h-8 sm:h-10 md:w-14 lg:h-24' />
-
-        {/* Blueprint Logo */}
-        <div className='text-foreground mt-4 flex flex-col items-center transition-transform duration-200 hover:scale-110'>
-          <Button
-            onClick={handleLogoClick}
-            variant='ghost' // Use a variant that removes most styles
-            className='bg-transparent p-0 hover:bg-transparent focus:ring-0 focus:outline-none'
+        <div className='flex items-center justify-center gap-4 px-2'>
+          {/* Addons Icon */}
+          <a
+            href='/addons'
+            className='text-blueprint-foreground-muted mt-4 flex flex-col items-center transition-transform duration-200 hover:scale-110'
+            target='_blank'
+            rel='noopener noreferrer'
           >
             <img
-              ref={logoRef} // Assign the ref to the <img> element
               loading='lazy'
-              src={logoSrc}
-              alt='Blueprint Logo'
-              className='w-8 object-contain sm:w-10 md:w-14 lg:w-20'
+              src={AddonIcon}
+              alt='Addon Icon'
+              className='w-8 cursor-pointer object-contain sm:w-10 md:w-14 lg:w-20'
             />
-          </Button>
-          <div className='mt-2 text-base md:text-lg'>Blueprint</div>
+            <div className='text-md mt-2 md:text-lg'>Addons</div>
+          </a>
+
+          <span className='flex items-center justify-center px-2 text-3xl select-none md:text-5xl'>
+            +
+          </span>
+
+          {/* Schematics Icon */}
+          <a
+            href='/schematics'
+            className='text-blueprint-foreground-muted mt-4 flex flex-col items-center transition-transform duration-200 hover:scale-110'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            <img
+              loading='lazy'
+              src={SchematicIcon}
+              alt='Schematic Icon'
+              className='w-8 cursor-pointer object-contain sm:w-10 md:w-14 lg:w-20'
+            />
+            <div className='text-md mt-2 md:text-lg'>Schematics</div>
+          </a>
+
+          <span className='flex items-center justify-center px-2 text-3xl font-extrabold select-none md:text-5xl'>
+            =
+          </span>
+
+          {/* Blueprint Logo */}
+          <button
+            onClick={handleLogoClick}
+            className='mt-4 flex flex-col items-center border-0 bg-transparent p-0 transition-transform duration-200 hover:scale-110 focus:outline-none'
+            type='button'
+            aria-label='Blueprint Logo'
+          >
+            <span className='flex flex-col items-center'>
+              <img
+                ref={logoRef}
+                loading='lazy'
+                src={logoSrc}
+                alt='Blueprint Logo'
+                className='w-8 cursor-pointer object-contain sm:w-10 md:w-14 lg:w-20'
+              />
+              <div className='text-md mt-2 md:text-lg'>Blueprint</div>
+            </span>
+          </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

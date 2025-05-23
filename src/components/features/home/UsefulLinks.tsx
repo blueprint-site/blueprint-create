@@ -61,8 +61,12 @@ const UsefulLinks = () => {
                 className='h-16 w-16 object-contain'
               />
               <div className='text-center'>
-                <div className='font-minecraft text-xl font-bold text-white/90'>{link.text}</div>
-                <div className='line-clamp-2 text-sm text-white/80'>{link.description}</div>
+                <div className='font-minecraft text-semantic-foreground text-xl font-bold'>
+                  {link.text}
+                </div>
+                <div className='text-semantic-foreground-muted line-clamp-2 text-sm'>
+                  {link.description}
+                </div>
               </div>
             </a>
           ))}
