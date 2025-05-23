@@ -15,7 +15,7 @@ export const SchematicsDetailsMain = () => {
   }
 
   return (
-    <div className='container'>
+    <div className='container pb-8'>
       <SchematicsDetailsHeader schematic={schematic} />
       <SchematicsDetailsContent schematic={schematic} />
       <SchematicsDetailsFooter title={schematic.title} />
