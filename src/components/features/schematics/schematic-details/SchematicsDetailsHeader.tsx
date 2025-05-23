@@ -11,7 +11,7 @@ export interface SchematicsDetailsHeaderProps {
   schematic: Schematic;
 }
 
-const SchematicsDetailsHeader = ({ schematic }: SchematicsDetailsHeaderProps) => {
+export const SchematicsDetailsHeader = ({ schematic }: SchematicsDetailsHeaderProps) => {
   const [createdAtTimestamp, setCreatedAtTimestamp] = useState<number | null>(null);
   const [isTimerComplete, setIsTimerComplete] = useState(false);
   const { mutate: incrementDownloads } = useIncrementDownloads();
@@ -89,5 +89,3 @@ const SchematicsDetailsHeader = ({ schematic }: SchematicsDetailsHeaderProps) =>
     </Card>
   );
 };
-
-export default SchematicsDetailsHeader;

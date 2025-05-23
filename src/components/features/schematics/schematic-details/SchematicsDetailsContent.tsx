@@ -9,7 +9,7 @@ export interface SchematicsDetailsContentProps {
   schematic: Schematic;
 }
 
-const SchematicsDetailsContent = ({ schematic }: SchematicsDetailsContentProps) => {
+export const SchematicsDetailsContent = ({ schematic }: SchematicsDetailsContentProps) => {
   return (
     <Card className='mt-4'>
       <CardContent className='space-y-6 pt-2'>
@@ -42,5 +42,3 @@ const SchematicsDetailsContent = ({ schematic }: SchematicsDetailsContentProps) 
     </Card>
   );
 };
-
-export default SchematicsDetailsContent;
