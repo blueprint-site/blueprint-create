@@ -19,45 +19,51 @@ import { Mail, Plus, Search, Settings, User } from 'lucide-react';
 const ComponentSection = () => {
   return (
     <>
-      <div className='space-y-4'>
-        <h2 className='text-2xl font-semibold'>Buttons</h2>
-        <div className='flex flex-wrap gap-4'>
-          <Button>Default</Button>
-          <Button variant='secondary'>Secondary</Button>
-          <Button variant='success'>Success</Button>
-          <Button variant='warning'>Warning</Button>
-          <Button variant='destructive'>Destructive</Button>
-          <Button variant='outline'>Outline</Button>
-          <Button variant='ghost'>Ghost</Button>
-          <Button variant='link'>Link</Button>
-        </div>
-        <div className='flex flex-wrap gap-4'>
-          <Button size='sm'>Small</Button>
-          <Button>Default</Button>
-          <Button size='lg'>Large</Button>
-          <Button size='icon'>
-            <Settings />
-          </Button>
-        </div>
-      </div>
-
-      <Separator className='my-8' />
+      {/* Buttons */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Buttons</CardTitle>
+        </CardHeader>
+        <CardContent className='space-y-4'>
+          <div className='flex flex-wrap gap-4'>
+            <Button>Default</Button>
+            <Button variant='secondary'>Secondary</Button>
+            <Button variant='accent'>Accent</Button>
+            <Button variant='success'>Success</Button>
+            <Button variant='warning'>Warning</Button>
+            <Button variant='destructive'>Destructive</Button>
+            <Button variant='outline'>Outline</Button>
+            <Button variant='ghost'>Ghost</Button>
+            <Button variant='link'>Link</Button>
+          </div>
+          <div className='flex flex-wrap gap-4'>
+            <Button size='sm'>Small</Button>
+            <Button>Default</Button>
+            <Button size='lg'>Large</Button>
+            <Button size='icon'>
+              <Settings />
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Inputs */}
-      <div className='space-y-4'>
-        <h2 className='text-2xl font-semibold'>Inputs</h2>
-        <div className='grid max-w-sm gap-4'>
-          <Input placeholder='Default input' />
-          <Input placeholder='Outlined input' startIcon={Search} />
-          <Input placeholder='Disabled input' disabled />
-          <div className='flex gap-2'>
-            <Input placeholder='With button' />
-            <Button>Send</Button>
+      <Card className='mt-8'>
+        <CardHeader>
+          <CardTitle>Inputs</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className='grid max-w-sm gap-4'>
+            <Input placeholder='Default input' />
+            <Input placeholder='Outlined input' startIcon={Search} />
+            <Input placeholder='Disabled input' disabled />
+            <div className='flex gap-2'>
+              <Input placeholder='With button' />
+              <Button>Send</Button>
+            </div>
           </div>
-        </div>
-      </div>
-
-      <Separator className='my-8' />
+        </CardContent>
+      </Card>
 
       {/* Cards */}
       <div className='space-y-4'>
@@ -65,8 +71,10 @@ const ComponentSection = () => {
         <div className='grid gap-6 md:grid-cols-2'>
           <Card>
             <CardHeader>
-              <CardTitle>Card Title</CardTitle>
-              <CardDescription>Card Description</CardDescription>
+              <CardTitle>Default Card</CardTitle>
+              <CardDescription>
+                This is a default card with a title and description.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <p>Card content goes here.</p>
@@ -76,13 +84,18 @@ const ComponentSection = () => {
             </CardFooter>
           </Card>
 
-          <Card className='bg-blueprint'>
+          <Card className='bg-primary'>
             <CardHeader>
-              <CardTitle>Card Title</CardTitle>
-              <CardDescription>Card Description</CardDescription>
+              <CardTitle>Blueprint Card (WIP)</CardTitle>
+              <CardDescription>
+                A card component designed to mimic the in-game blueprint item
+              </CardDescription>
             </CardHeader>
             <CardContent>
-              <p>Card content goes here.</p>
+              <p>
+                This card will be styled to look like a blueprint item in the game. It has a unique
+                design and layout.
+              </p>
             </CardContent>
             <CardFooter>
               <Button>Action</Button>
@@ -109,74 +122,75 @@ const ComponentSection = () => {
         </div>
       </div>
 
-      <Separator className='my-8' />
-
       {/* Badges */}
-      <div className='space-y-4'>
-        <h2 className='text-2xl font-semibold'>Badges</h2>
-        <div className='flex flex-wrap gap-4'>
-          <Badge>Default</Badge>
-          <Badge variant='secondary'>Secondary</Badge>
-          <Badge variant='success'>Success</Badge>
-          <Badge variant='warning'>Warning</Badge>
-          <Badge variant='destructive'>Destructive</Badge>
-          <Badge variant='outline'>Outline</Badge>
-        </div>
-      </div>
-
-      <Separator className='my-8' />
+      <Card>
+        <CardHeader>
+          <CardTitle>Badges</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className='flex flex-wrap gap-4'>
+            <Badge>Default</Badge>
+            <Badge variant='secondary'>Secondary</Badge>
+            <Badge variant='accent'>Accent</Badge>
+            <Badge variant='success'>Success</Badge>
+            <Badge variant='warning'>Warning</Badge>
+            <Badge variant='destructive'>Destructive</Badge>
+            <Badge variant='outline'>Outline</Badge>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Avatar */}
-      <div className='space-y-4'>
-        <h2 className='text-2xl font-semibold'>Avatars</h2>
-        <div className='flex flex-wrap gap-4'>
-          <Avatar>
-            <AvatarImage src='https://github.com/shadcn.png' />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <Avatar>
-            <AvatarFallback>
-              <User className='h-4 w-4' />
-            </AvatarFallback>
-          </Avatar>
-        </div>
-      </div>
-
-      <Separator className='my-8' />
+      <Card className='mt-8'>
+        <CardHeader>
+          <CardTitle>Avatars</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className='flex flex-wrap gap-4'>
+            <Avatar>
+              <AvatarImage src='https://github.com/shadcn.png' />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <Avatar>
+              <AvatarFallback>
+                <User className='h-6 w-6' />
+              </AvatarFallback>
+            </Avatar>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Tooltips */}
-      <div className='space-y-4'>
-        <h2 className='text-2xl font-semibold'>Tooltips</h2>
-        <div className='flex flex-wrap gap-4'>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant='outline' size='icon'>
-                  <Plus className='h-4 w-4' />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Add new item</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+      <Card className='mt-8'>
+        <CardHeader>
+          <CardTitle>Tooltips</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className='flex flex-wrap gap-4'>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant='outline' size='icon'>
+                    <Plus className='h-4 w-4' />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Add new item</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
 
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant='outline' size='icon'>
-                  <Mail className='h-4 w-4' />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Send email</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-      </div>
-
-      <Separator className='my-8' />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant='outline' size='icon'>
+                    <Mail className='h-4 w-4' />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Send email</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Skeleton */}
       <div className='space-y-4'>
