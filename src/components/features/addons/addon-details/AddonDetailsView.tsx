@@ -5,15 +5,16 @@ import { Bug, Globe } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import type { ExternalLink, IntegratedAddonData } from '@/types';
-import { ModPageLinks } from '@/components/features/addons/addon-card/ModPageLinks';
 
-import { AddonDetailsHeader } from './AddonDetailsHeader';
-import { AddonDetailsDescription } from './AddonDetailsDescription';
-import { AddonDetailsGallery } from './AddonDetailsGallery';
-import { AddonDetailsFooter } from './AddonDetailsFooter';
-import { AddonDetailsDonation } from './AddonDetailsDonation';
+import ModPageLinks from '@/components/features/addons/addon-card/ModPageLinks';
+import AddonDetailsHeader from './AddonDetailsHeader';
+import AddonDetailsDescription from './AddonDetailsDescription';
+import AddonDetailsGallery from './AddonDetailsGallery';
+import AddonDetailsFooter from './AddonDetailsFooter';
+import AddonDetailsDonation from './AddonDetailsDonation';
 import { AddonVersionCompatibility } from './versions/AddonVersionCompatibility';
+
+import type { ExternalLink, IntegratedAddonData } from '@/types';
 import type { ModrinthProject } from '@/types';
 
 interface AddonDetailsViewProps {
