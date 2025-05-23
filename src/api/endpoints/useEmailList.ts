@@ -15,6 +15,7 @@ export const useDeleteEmail = () => {
         console.log('Email deleted successfully');
       } catch (error) {
         console.error('Error deleting email:', error);
+        throw new Error('Error deleting email:', error);
       }
     },
     onSuccess: () => {
