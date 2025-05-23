@@ -1,6 +1,6 @@
 // src/components/filters/SearchFilter.tsx
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Input } from '@/components/ui/input';
+import { Search } from 'lucide-react';
 
 interface SearchFilterProps {
   value: string;
@@ -9,21 +9,21 @@ interface SearchFilterProps {
   className?: string;
 }
 
-export function SearchFilter({ 
-  value, 
-  onChange, 
-  placeholder = "Search...", 
-  className 
+export function SearchFilter({
+  value,
+  onChange,
+  placeholder = 'Search...',
+  className,
 }: SearchFilterProps) {
   return (
-    <div className={className}>
+    <div className={`flex flex-col justify-baseline align-baseline ${className}`}>
       <Input
-        type="text"
+        type='text'
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         startIcon={Search}
-        className="w-full font-minecraft"
+        className='font-minecraft w-full'
       />
     </div>
   );

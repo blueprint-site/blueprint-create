@@ -1,3 +1,5 @@
+import React from 'react';
+
 // Define the available badge types as const to enable type inference
 const BADGE_TYPES = {
   cozy: {
@@ -19,7 +21,22 @@ const BADGE_TYPES = {
 } as const;
 
 // Badge categories with descriptions for better DX
-const BADGE_CATEGORIES = {
+// Using type instead of const as it's only used for type checking
+type BadgeCategoryDetails = {
+  available: string;
+  'built-with': string;
+  documentation: string;
+  donate: string;
+  requires: string;
+  social: string;
+  supported: string;
+  unsupported: string;
+  translate: string;
+  custom: string;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const BADGE_CATEGORIES: BadgeCategoryDetails = {
   available: 'Places where your project may be available on',
   'built-with': 'Tools and software used to build your project',
   documentation: 'Places where documentation can be found',
@@ -29,7 +46,8 @@ const BADGE_CATEGORIES = {
   supported: 'Platforms/software supported by your project',
   unsupported: 'Platforms/software not supported by your project',
   translate: 'Translation platforms and resources',
-} as const;
+  custom: 'Custom badge',
+};
 
 interface DevinsBadgesProps {
   /** Badge style type */
@@ -47,8 +65,26 @@ interface DevinsBadgesProps {
   /** Image format - SVG recommended for better quality */
   format: 'svg' | 'png';
 
+  /** Optional link to the badge */
+  href?: string;
+
   /** Optional className for the image wrapper */
   className?: string;
+
+  /** Custom badge URL (required if category is 'custom') */
+  customBadgeUrl?: string;
+
+  /** Optional target for the link (default: '_blank') */
+  target?: string;
+
+  /** Optional rel attribute for the link (default: 'noopener noreferrer') */
+  rel?: string;
+
+  /** Optional aria-label for the link */
+  ariaLabel?: string;
+
+  /** Optional onClick handler */
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }
 
 const DevinsBadges = ({
@@ -57,7 +93,13 @@ const DevinsBadges = ({
   name,
   height,
   format = 'svg',
+  href,
   className,
+  customBadgeUrl,
+  target = '_blank',
+  rel = 'noopener noreferrer',
+  ariaLabel,
+  onClick,
 }: DevinsBadgesProps) => {
   // Get badge type configuration
   const typeConfig = BADGE_TYPES[type];
@@ -67,12 +109,26 @@ const DevinsBadges = ({
     ? Math.min(Math.max(height, typeConfig.heightRange.min), typeConfig.heightRange.max)
     : typeConfig.recommendedHeight;
 
-  // Construct badge URL
-  const badgeSrc = `https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/${type}/${category}/${name}${
-    format === 'png' ? `_${finalHeight}h` : format === 'svg' ? '_vector' : ''
-  }.${format}`;
+  let badgeSrc = '';
 
-  return (
+  if (category === 'custom') {
+    if (!customBadgeUrl) {
+      console.error('Custom badge URL is required when category is "custom"');
+      return null; // Or display a placeholder image
+    }
+    badgeSrc = customBadgeUrl;
+  } else {
+    let badgeFormat = '';
+    if (format === 'png') {
+      badgeFormat = `_${finalHeight}h`;
+    } else if (format === 'svg') {
+      badgeFormat = '_vector';
+    }
+
+    badgeSrc = `https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/${type}/${category}/${name}${badgeFormat}.${format}`;
+  }
+
+  const image = (
     <img
       loading='lazy'
       src={badgeSrc}
@@ -81,6 +137,23 @@ const DevinsBadges = ({
       height={finalHeight}
     />
   );
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        target={target}
+        rel={rel}
+        aria-label={ariaLabel ?? `Visit ${name}`}
+        onClick={onClick}
+        className='inline-block'
+      >
+        {image}
+      </a>
+    );
+  }
+
+  return image;
 };
 
 export default DevinsBadges;

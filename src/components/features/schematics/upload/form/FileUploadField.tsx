@@ -1,5 +1,5 @@
 // components/SchematicUploadForm/FileUploadField.tsx
-import { Control } from 'react-hook-form';
+import type { Control } from 'react-hook-form';
 import {
   FileUploader,
   FileUploaderContent,
@@ -15,7 +15,7 @@ import {
   FormDescription,
   FormMessage,
 } from '@/components/ui/form';
-import { SchematicFormValues } from '@/schemas/schematic.schema.tsx';
+import type { SchematicFormValues } from '@/types';
 
 // Explicitly type allowed file fields
 type FileField = 'schematicFile' | 'imageFiles';
@@ -60,7 +60,7 @@ export function FileUploadField({
               dropzoneOptions={{ accept, maxFiles }}
               className='bg-background rounded-lg p-2'
             >
-              <FileInput className='outline-1 outline-foreground outline-dashed'>
+              <FileInput className='outline-foreground outline-1 outline-dashed'>
                 <div className='flex w-full flex-col items-center justify-center p-8'>
                   <CloudUpload className='text-foreground-muted h-10 w-10' />
                   <p className='text-foreground-muted mb-1 text-sm'>
@@ -74,7 +74,7 @@ export function FileUploadField({
                 {value.map((file, index) => (
                   <FileUploaderItem key={index} index={index}>
                     <Paperclip className='h-4 w-4 stroke-current' />
-                    <span>{file.name}</span>
+                    <span className='w-64 overflow-x-auto whitespace-nowrap'>{file.name}</span>
                   </FileUploaderItem>
                 ))}
               </FileUploaderContent>

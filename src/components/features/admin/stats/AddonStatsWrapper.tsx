@@ -1,16 +1,13 @@
-import {
-  AddonStatsDisplayScanned,
-  AddonStatsDisplayValidated,
-} from '@/components/features/admin/stats/AddonStats';
-import { UsersStatsDisplayRegistered } from '@/components/features/admin/stats/UsersStats';
+// src/components/features/admin/stats/AddonStatsWrapper.tsx
+import { AddonStatsDisplayScanned, AddonStatsDisplayValidated } from './AddonStats';
+import { UsersStatsDisplayRegistered } from './UsersStats';
 
-const AddonStatsWrapper = () => {
+export const AddonStatsWrapper = () => {
   return (
-    <div className='mt-4 flex flex-wrap gap-4'>
+    <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
       <AddonStatsDisplayScanned />
       <AddonStatsDisplayValidated />
       <UsersStatsDisplayRegistered />
     </div>
   );
 };
-export default AddonStatsWrapper;

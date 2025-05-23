@@ -1,8 +1,8 @@
 // src/routes/index.tsx
-import { lazy, Suspense } from 'react';
-import { RouteObject } from 'react-router-dom';
+import type { ComponentType } from 'react';
+import React, { lazy, Suspense } from 'react';
+import type { RouteObject } from 'react-router';
 
-import { addonRoutes } from '@/routes/addonRoutes';
 import { authRoutes } from '@/routes/authRoutes';
 import { schematicRoutes } from '@/routes/schematicRoutes';
 import { settingsRoutes } from '@/routes/settings';
@@ -13,7 +13,13 @@ import { userRoutes } from '@/routes/userRoutes';
 import Home from '@/pages/Home';
 import BaseLayout from '@/layouts/BaseLayout';
 import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
+import { gameRoutes } from '@/routes/gamesRoutes.tsx';
+import { RouteErrorBoundary } from '@/components/error/RouteErrorBoundary';
 
+const BlogPage = lazy(() => import('@/pages/blog/BlogDetails'));
+const SchematicsList = lazy(() => import('@/pages/schematics/SchematicsList'));
+const AddonsList = lazy(() => import('@/pages/addons/AddonListPage'));
+const AddonDetails = lazy(() => import('@/pages/addons/AddonDetailsPage'));
 const About = lazy(() => import('@/pages/About'));
 const Design = lazy(() => import('@/pages/Design'));
 const Terms = lazy(() => import('@/pages/Terms'));
@@ -24,9 +30,33 @@ const Changelogs = lazy(() => import('@/pages/Changelogs'));
 const ChangelogsEditor = lazy(
   () => import('@/components/features/changelogs/ChangelogsEditor.tsx')
 );
+
+/**
+ * Creates a protected route with proper typing
+ */
+// src/routes/index.tsx
+function createProtectedRoute(
+  Component: React.LazyExoticComponent<ComponentType<unknown>> | ComponentType<unknown>,
+  additionalProps: Partial<Omit<RouteObject, 'element' | 'errorElement' | 'index'>> = {}
+): RouteObject {
+  const baseRoute: RouteObject = {
+    element: (
+      <Suspense fallback={<LoadingOverlay />}>
+        <Component />
+      </Suspense>
+    ),
+    errorElement: <RouteErrorBoundary />,
+    index: undefined,
+  };
+
+  // Merge with additional props, ensuring proper typing
+  return { ...baseRoute, ...additionalProps };
+}
+
 export const routes: RouteObject[] = [
   {
     element: <BaseLayout />,
+    errorElement: <RouteErrorBoundary />,
     children: [
       {
         path: '/',
@@ -37,71 +67,60 @@ export const routes: RouteObject[] = [
         ),
       },
       {
-        path: 'about',
-        element: (
-          <Suspense fallback={<LoadingOverlay />}>
-            <About />
-          </Suspense>
-        ),
+        path: 'addons/:slug',
+        ...createProtectedRoute(AddonDetails),
       },
       {
         path: 'design',
-        element: (
-          <Suspense fallback={<LoadingOverlay />}>
-            <Design />
-          </Suspense>
-        ),
+        ...createProtectedRoute(Design),
       },
       {
         path: 'terms',
-        element: (
-          <Suspense fallback={<LoadingOverlay />}>
-            <Terms />
-          </Suspense>
-        ),
+        ...createProtectedRoute(Terms),
       },
       {
         path: 'privacy',
-        element: (
-          <Suspense fallback={<LoadingOverlay />}>
-            <Privacy />
-          </Suspense>
-        ),
+        ...createProtectedRoute(Privacy),
       },
       {
         path: 'changelogs',
-        element: (
-          <Suspense fallback={<LoadingOverlay />}>
-            <Changelogs />
-          </Suspense>
-        ),
+        ...createProtectedRoute(Changelogs),
       },
       {
         path: 'changelogs/editor',
-        element: (
-          <Suspense fallback={<LoadingOverlay />}>
-            <ChangelogsEditor />
-          </Suspense>
-        ),
+        ...createProtectedRoute(ChangelogsEditor),
       },
       ...authRoutes,
       ...settingsRoutes,
       ...blogRoutes,
-      ...addonRoutes,
       ...schematicRoutes,
       ...userRoutes,
+      ...gameRoutes,
       {
         path: '*',
-        element: (
-          <Suspense fallback={<LoadingOverlay />}>
-            <NotFound />
-          </Suspense>
-        ),
+        ...createProtectedRoute(NotFound),
       },
     ],
   },
   {
+    path: 'about',
+    ...createProtectedRoute(About),
+  },
+  {
+    path: 'addons',
+    ...createProtectedRoute(AddonsList),
+  },
+  {
+    path: 'schematics',
+    ...createProtectedRoute(SchematicsList),
+  },
+  {
+    path: 'blog',
+    ...createProtectedRoute(BlogPage),
+  },
+  {
     element: <AdminPanelLayout />,
+    errorElement: <RouteErrorBoundary />,
     children: [...AdminRoutes],
   },
 ];

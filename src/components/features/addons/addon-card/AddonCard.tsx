@@ -1,28 +1,42 @@
 import { Star, StarOff } from 'lucide-react';
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useCollectionStore } from '@/api/stores/collectionStore.ts';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import ModLoaders from '@/components/features/addons/addon-card/ModLoaders';
 import CategoryBadges from '@/components/features/addons/addon-card/CategoryBadges';
 import { VersionBadges } from './VersionBadges';
 import { AddonStats } from './AddonStats';
-import { ExternalLinks } from './ExternalLinks';
-import { useNavigate } from 'react-router-dom';
-import { Addon } from '@/schemas/addon.schema.tsx';
+import { useNavigate } from 'react-router';
+import type { Addon } from '@/types';
+import { ModPageLinks } from '@/components/features/addons/addon-card/ModPageLinks';
+import ModLoaders from './ModLoaders';
 
 interface AddonListItemProps {
   addon: Addon;
 }
 
-const AddonCard = memo(({ addon }: AddonListItemProps) => {
-  const navigate = useNavigate(); // Hook called at top level
+const AddonCard = ({ addon }: AddonListItemProps) => {
+  const navigate = useNavigate();
   const { collection, addAddon, removeAddon } = useCollectionStore();
   const isInCollection = collection.includes(addon.slug);
+  const [availableOn, setAvailableOn] = useState<string[]>([]);
+
+  useEffect(() => {
+    const platforms: string[] = [];
+
+    if (addon.curseforge_raw) {
+      platforms.push('curseforge');
+    }
+    if (addon.modrinth_raw) {
+      platforms.push('modrinth');
+    }
+
+    setAvailableOn(platforms);
+  }, [addon.curseforge_raw, addon.modrinth_raw]);
 
   const handleCollectionAction = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent navigation when clicking collection button
-    isInCollection ? removeAddon(addon.slug) : addAddon(addon.slug);
+    e.stopPropagation();
+    return isInCollection ? removeAddon(addon.slug) : addAddon(addon.slug);
   };
 
   const navigateToAddon = () => {
@@ -30,7 +44,7 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
   };
 
   return (
-    <Card className='flex flex-col overflow-hidden hover:shadow-xs'>
+    <Card className='flex h-full flex-col overflow-hidden hover:shadow-xs'>
       <CardHeader className='relative flex cursor-pointer flex-row gap-3' onClick={navigateToAddon}>
         <img
           src={addon.icon || '/assets/wrench.webp'}
@@ -54,24 +68,27 @@ const AddonCard = memo(({ addon }: AddonListItemProps) => {
           <p className='text-foreground-muted text-xs'>{addon.description}</p>
 
           <div className='mt-2 flex gap-2'>
-            <ModLoaders addon={addon} />
+            <ModLoaders loaders={addon.loaders || []} />
           </div>
 
           <CategoryBadges categories={addon.categories} />
+          <VersionBadges versions={addon.minecraft_versions || []} />
         </div>
 
-        <VersionBadges versions={addon.minecraft_versions || []} />
+        <AddonStats
+          author={addon.author}
+          downloads={addon.downloads}
+          claimed_by={addon.claimed_by}
+        />
 
-        <AddonStats author={addon.author} downloads={addon.downloads} />
-
-        <ExternalLinks
+        <ModPageLinks
           slug={addon.slug}
-          curseforge_raw={addon.curseforge_raw || {}}
-          modrinth_raw={addon.modrinth_raw || {}}
+          curseforge={availableOn.includes('curseforge')}
+          modrinth={availableOn.includes('modrinth')}
         />
       </CardContent>
     </Card>
   );
-});
+};
 
-export default AddonCard;
+export default memo(AddonCard);

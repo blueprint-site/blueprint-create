@@ -1,6 +1,7 @@
 // /src/componets/utility/MarkdownEditor.tsx
-
+import { useThemeStore } from '@/api/stores/themeStore';
 import '@mdxeditor/editor/style.css';
+import type { SandpackConfig, RealmPlugin } from '@mdxeditor/editor';
 import {
   MDXEditor,
   toolbarPlugin,
@@ -30,12 +31,9 @@ import {
   ConditionalContents,
   ChangeCodeMirrorLanguage,
   ShowSandpackInfo,
-  SandpackConfig,
   markdownShortcutPlugin,
   quotePlugin,
-  RealmPlugin,
 } from '@mdxeditor/editor';
-
 // Constants
 const DEFAULT_SNIPPET_CONTENT = `
 export default function App() {
@@ -81,7 +79,6 @@ const SANDPACK_CONFIG: SandpackConfig = {
     },
   ],
 };
-
 const CODE_MIRROR_LANGUAGES = {
   js: 'JavaScript',
   javascript: 'JavaScript',
@@ -100,10 +97,11 @@ type PluginConfig = {
 };
 
 const createPlugins = (configs: PluginConfig[]) =>
-  configs.filter(c => c.condition).map(c => c.createPlugin());
+  configs.filter((c) => c.condition).map((c) => c.createPlugin());
 
 interface MarkdownEditorProps {
   value: string;
+  className?: string;
   onChange: (val: string) => void;
   showCodeBlocks?: boolean;
   showImages?: boolean;
@@ -118,6 +116,7 @@ interface MarkdownEditorProps {
 }
 
 const MarkdownEditor = ({
+  className = '',
   value,
   onChange,
   showCodeBlocks = true,
@@ -142,76 +141,82 @@ const MarkdownEditor = ({
     { condition: showFrontmatter, createPlugin: () => frontmatterPlugin() },
     {
       condition: showCodeBlocks,
-      createPlugin: () => codeBlockPlugin({ defaultCodeBlockLanguage: 'js' })
+      createPlugin: () => codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
     },
     {
       condition: showCodeBlocks,
-      createPlugin: () => codeMirrorPlugin({ codeBlockLanguages: CODE_MIRROR_LANGUAGES })
+      createPlugin: () => codeMirrorPlugin({ codeBlockLanguages: CODE_MIRROR_LANGUAGES }),
     },
     {
       condition: showSandpack,
-      createPlugin: () => sandpackPlugin({ sandpackConfig: SANDPACK_CONFIG })
+      createPlugin: () => sandpackPlugin({ sandpackConfig: SANDPACK_CONFIG }),
     },
     {
       condition: showImages,
-      createPlugin: () => imagePlugin({
-        imageUploadHandler: handleImageUpload,
-        imageAutocompleteSuggestions: IMAGE_SUGGESTIONS,
-      })
+      createPlugin: () =>
+        imagePlugin({
+          imageUploadHandler: handleImageUpload,
+          imageAutocompleteSuggestions: IMAGE_SUGGESTIONS,
+        }),
     },
     {
       condition: showDiffSource,
-      createPlugin: () => diffSourcePlugin({ diffMarkdown: value })
+      createPlugin: () => diffSourcePlugin({ diffMarkdown: value }),
     },
     {
       condition: true,
-      createPlugin: () => toolbarPlugin({
-        toolbarContents: () => (
-          <>
-            <BlockTypeSelect />
-            <BoldItalicUnderlineToggles />
-            <CreateLink />
-            {showCodeBlocks && <CodeToggle />}
-            {showLists && <ListsToggle />}
-            {showThematicBreak && <InsertThematicBreak />}
-            {showCodeBlocks && <InsertCodeBlock />}
-            {showTables && <InsertTable />}
-            {showFrontmatter && <InsertFrontmatter />}
-            {showImages && <InsertImage />}
-            {showUndoRedo && <UndoRedo />}
-            {showDiffSource && <DiffSourceToggleWrapper children={undefined} />}
-            {showCodeBlocks && (
-              <ConditionalContents
-                options={[
-                  {
-                    when: (editor) => editor?.editorType === 'codeblock',
-                    contents: () => <ChangeCodeMirrorLanguage />,
-                  },
-                  {
-                    when: (editor) => editor?.editorType === 'sandpack',
-                    contents: () => <ShowSandpackInfo />,
-                  },
-                  {
-                    fallback: () => (
-                      <>
-                        <InsertCodeBlock />
-                        {showSandpack && <InsertSandpack />}
-                      </>
-                    ),
-                  },
-                ]}
-              />
-            )}
-          </>
-        ),
-      })
+      createPlugin: () =>
+        toolbarPlugin({
+          toolbarContents: () => (
+            <>
+              <BlockTypeSelect />
+              <BoldItalicUnderlineToggles />
+              <CreateLink />
+              {showCodeBlocks && <CodeToggle />}
+              {showLists && <ListsToggle />}
+              {showThematicBreak && <InsertThematicBreak />}
+              {showCodeBlocks && <InsertCodeBlock />}
+              {showTables && <InsertTable />}
+              {showFrontmatter && <InsertFrontmatter />}
+              {showImages && <InsertImage />}
+              {showUndoRedo && <UndoRedo />}
+              {showDiffSource && (
+                <DiffSourceToggleWrapper>
+                  <></>
+                </DiffSourceToggleWrapper>
+              )}
+              {showCodeBlocks && (
+                <ConditionalContents
+                  options={[
+                    {
+                      when: (editor) => editor?.editorType === 'codeblock',
+                      contents: () => <ChangeCodeMirrorLanguage />,
+                    },
+                    {
+                      when: (editor) => editor?.editorType === 'sandpack',
+                      contents: () => <ShowSandpackInfo />,
+                    },
+                    {
+                      fallback: () => (
+                        <>
+                          <InsertCodeBlock />
+                          {showSandpack && <InsertSandpack />}
+                        </>
+                      ),
+                    },
+                  ]}
+                />
+              )}
+            </>
+          ),
+        }),
     },
   ]);
-
+  const { isDarkMode } = useThemeStore();
   return (
     <MDXEditor
-      className='mdxEditor flex flex-col gap-[1px]'
-      markdown={value}
+      className={`${isDarkMode ? 'dark-theme' : ''} ${className || ''}`}
+      markdown={value || ''}
       onChange={onChange}
       plugins={plugins}
       placeholder={placeholder || 'Write something...'}

@@ -1,173 +1,161 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
 import { storage } from '@/config/appwrite';
-import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext';
-import SchematicUploadLoadingOverlay from '@/components/loading-overlays/SchematicUploadLoadingOverlay';
+import { useUserStore } from '@/api/stores/userStore';
 import { SchematicUploadForm } from './SchematicUploadForm';
-import { type SchematicFormValues } from '@/schemas/schematic.schema';
 import { SchematicPreview } from './SchematicUploadPreview';
 import { generateSlug } from '../utils/generateSlug';
-import { useSaveSchematics } from '@/api/endpoints/useSchematics';
-import {createVersion, minecraftVersion} from "@/config/minecraft.ts";
+import { useSaveSchematics, useFetchSchematic } from '@/api/appwrite/useSchematics';
+import type { SchematicFormValues } from '@/types';
+import SchematicUploadLoadingOverlay from '@/components/loading-overlays/SchematicUploadLoadingOverlay';
 
 function SchematicsUpload() {
   const navigate = useNavigate();
-  const loggedUser = useLoggedUser();
+  const { id } = useParams();
+  const user = useUserStore((state) => state.user);
   const [loading, setLoading] = useState<boolean>(false);
+  const [dataReady, setDataReady] = useState<boolean>(false);
   const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
+  const [isNew, setIsNew] = useState<boolean>(true);
+  const { mutateAsync: saveSchematic } = useSaveSchematics();
+  const { data: existingSchematic, isLoading: isLoadingExisting } = useFetchSchematic(id);
+
   const [formValues, setFormValues] = useState<Partial<SchematicFormValues>>({
     title: '',
     description: '',
-    gameVersions: [],
-    createVersions: [],
+    game_versions: [],
+    create_versions: [],
     modloaders: [],
+    categories: [],
+    sub_categories: [],
   });
-  const allCompatibilities = Array.from(new Set(minecraftVersion.flatMap(item => item.compatibility)));
-  const versions = Array.from(new Set(minecraftVersion.flatMap(item => item.version)))
-  // Define available options
-  const options = {
-    minecraftVersions: versions || [],
-    createVersionOptions: createVersion || [],
-    modloaderOptions: allCompatibilities || [],
+
+  useEffect(() => {
+    if (id === undefined) {
+      setIsNew(true);
+      setDataReady(true);
+    }
+    if (existingSchematic) {
+      setIsNew(false);
+      setFormValues(existingSchematic);
+      setImagePreviewUrls(existingSchematic.image_urls || []);
+      setDataReady(true); // Définir que les données sont prêtes après mise à jour
+    }
+  }, [id, existingSchematic]);
+
+  if (loading || isLoadingExisting || !dataReady) {
+    return <SchematicUploadLoadingOverlay message='Loading schematic...' />;
+  }
+
+  const handleFieldChange = (field: keyof SchematicFormValues, value: unknown): void => {
+    setFormValues((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
-  // Use the mutation hook
-  const { mutateAsync: saveSchematic } = useSaveSchematics();
+  const handleImagePreview = (files: File[]): void => {
+    const urls = files.map((file) => URL.createObjectURL(file));
+    setImagePreviewUrls(urls);
+  };
 
-  // Form submission
-  const onSubmit = async (data: SchematicFormValues) => {
-    if (!loggedUser.user) {
+  const onSubmit = async (data: SchematicFormValues): Promise<void> => {
+    if (!user) {
       alert('You must be logged in to upload schematics');
       return;
     }
 
-    if (!data.schematicFile) {
+    if (!data.schematicFile && !existingSchematic?.schematic_url) {
       alert('Please upload schematic file');
       return;
     }
 
-    if (!data.imageFiles || data.imageFiles.length === 0) {
-      alert('Please upload at least one image');
-      return;
-    }
-
     setLoading(true);
-
     try {
-      // Upload schematic file
-      const uploadedSchematic = await storage.createFile(
-        '67b2241e0032c25c8216',
-        'unique()',
-        data.schematicFile
-      );
+      let schematicUrl = existingSchematic?.schematic_url;
+      if (data.schematicFile) {
+        const uploadedSchematic = await storage.createFile(
+          '67b2241e0032c25c8216',
+          'unique()',
+          data.schematicFile
+        );
+        schematicUrl = storage
+          .getFileDownload('67b2241e0032c25c8216', uploadedSchematic.$id)
+          .toString();
+      }
 
-      // Upload multiple image files
       const uploadedImages = await Promise.all(
-        data.imageFiles.map(async (file) => {
+        data.imageFiles.map(async (file: File) => {
           const uploadedFile = await storage.createFile('67b22481001e99d90888', 'unique()', file);
           return uploadedFile.$id;
         })
       );
 
-      // Get file URLs
-      const schematicUrl = storage.getFileDownload('67b2241e0032c25c8216', uploadedSchematic.$id).toString();
-      const imageUrls = uploadedImages.map((id) =>
-        storage.getFilePreview('67b22481001e99d90888', id).toString()
-      );
+      const imageUrls =
+        uploadedImages.length > 0
+          ? uploadedImages.map((id) =>
+              storage.getFilePreview('67b22481001e99d90888', id).toString()
+            )
+          : existingSchematic?.image_urls || [];
 
       const slug = generateSlug(data.title);
 
-      // Use the mutation to save to database
       const document = await saveSchematic({
+        $id: existingSchematic?.$id,
         title: data.title,
         description: data.description,
         schematic_url: schematicUrl,
         image_urls: imageUrls,
-        user_id: loggedUser.user.$id,
-        authors: [loggedUser.user.name], // Ensure authors is an array
-        game_versions: data.gameVersions, // Ensure game_versions is an array
-        create_versions: data.createVersions, // Ensure create_versions is an array
-        modloaders: data.modloaders, // Ensure modloaders is an array
-        categories: data.categories, // Ensure categories is an array
-        sub_categories: data.subCategories ? data.subCategories : [],
+        user_id: user?.$id,
+        authors: [user.name],
+        game_versions: data.game_versions,
+        create_versions: data.create_versions,
+        modloaders: data.modloaders,
+        categories: data.categories,
+        sub_categories: data.sub_categories || [],
         slug,
-        status: 'published', // Default to published state
-        downloads: 0,
-        likes: 0,
+        status: 'published',
+        downloads: existingSchematic?.downloads || 0,
+        likes: existingSchematic?.likes || 0,
       });
 
       navigate(`/schematics/${document.$id}/${slug}`);
     } catch (error) {
-      console.error('Error uploading schematic:', error);
-      alert('Failed to upload schematic. Please try again.');
+      console.error('Error submitting form:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  // Update form values for preview
-  const handleFieldChange = (field: keyof SchematicFormValues, value: unknown) => {
-    // Special handling for description
-    if (field === 'description') {
-      setFormValues((prev) => ({
-        ...prev,
-        [field]: String(value), // Ensure string type
-      }));
-      return;
-    }
-    setFormValues((prev) => ({ ...prev, [field]: value }));
-  };
-
-  // Handle multiple image previews
-  const handleImagePreview = (files: File[]) => {
-    const readers = files.map((file) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      return reader;
-    });
-
-    Promise.all(
-      readers.map(
-        (reader) =>
-          new Promise<string>((resolve) => {
-            reader.onload = () => resolve(reader.result as string);
-          })
-      )
-    ).then((urls) => setImagePreviewUrls(urls));
-  };
-
-  // Show loading state
-  if (loading) {
-    return <SchematicUploadLoadingOverlay message='Uploading schematic...' />;
-  }
-
   return (
     <div className='container mx-auto px-4 py-8'>
-      <h1 className='mb-8 text-center text-3xl font-bold'>Upload a Schematic</h1>
+      <h1 className='mb-8 text-center text-3xl font-bold'>
+        {id ? 'Edit Schematic' : 'Upload a Schematic'}
+      </h1>
 
       <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
-        {/* Form Section */}
         <div>
           <SchematicUploadForm
+            isNew={isNew}
+            initialData={formValues}
             onSubmit={onSubmit}
-            options={options}
             onValueChange={handleFieldChange}
             onImageChange={handleImagePreview}
+            existingData={existingSchematic || null}
           />
         </div>
 
-        {/* Preview Section */}
         <div>
           <SchematicPreview
             title={formValues.title || ''}
             description={formValues.description || ''}
             imagePreviewUrls={imagePreviewUrls}
-            gameVersions={formValues.gameVersions || []}
-            createVersions={formValues.createVersions || []}
+            gameVersions={formValues.game_versions || []}
+            createVersions={formValues.create_versions || []}
             modloaders={formValues.modloaders || []}
-            user={loggedUser.user}
+            user={user}
             categories={formValues.categories || []}
-            subCategories={formValues.subCategories || []}
+            subCategories={formValues.sub_categories || []}
           />
         </div>
       </div>

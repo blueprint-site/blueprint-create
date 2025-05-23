@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires,no-undef
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electron', {

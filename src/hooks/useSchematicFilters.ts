@@ -1,9 +1,8 @@
 // src/hooks/useSchematicFilters.ts
 import { useMemo } from 'react';
 import { useFilters } from './useFilters';
-import schematicCategories from '@/config/schematicsCategory';
-import { FilterOption } from '@/components/layout/SelectFilter';
-import {createVersion, minecraftVersion} from "@/config/minecraft.ts";
+import type { FilterOption } from '@/components/layout/SelectFilter';
+import { CREATE_VERSIONS, MINECRAFT_VERSIONS, SCHEMATIC_CATEGORIES } from '@/data';
 
 export function useSchematicFilters(options = {}) {
   const {
@@ -16,50 +15,57 @@ export function useSchematicFilters(options = {}) {
     setLoaders,
     setCreateVersion,
     resetFilters,
-    loadMore // Make sure this is included from useFilters
+    loadMore, // Make sure this is included from useFilters
   } = useFilters(options);
+
+  const schematicCategories = SCHEMATIC_CATEGORIES;
+  const minecraftVersions = MINECRAFT_VERSIONS;
+  const createVersions = CREATE_VERSIONS;
 
   // Convert to FilterOption format and memoize to prevent unnecessary recalculations
   const categoryOptions = useMemo<FilterOption[]>(() => {
-    return schematicCategories.map(cat => ({
+    return schematicCategories.map((cat) => ({
       value: cat.category,
-      label: cat.category
+      label: cat.category,
     }));
-  }, []);
+  }, [schematicCategories]);
 
   const selectedCategory = useMemo(() => {
-    return schematicCategories.find(cat => cat.category === filters.category);
-  }, [filters.category]);
+    return schematicCategories.find((cat) => cat.category === filters.category);
+  }, [filters.category, schematicCategories]);
 
   const subCategoryOptions = useMemo<FilterOption[]>(() => {
     if (!selectedCategory?.subcategories?.length) {
       return [];
     }
-    return selectedCategory.subcategories.map(subCat => ({
+    return selectedCategory.subcategories.map((subCat) => ({
       value: subCat,
-      label: subCat
+      label: subCat,
     }));
   }, [selectedCategory]);
 
   const versionOptions = useMemo<FilterOption[]>(() => {
-    return minecraftVersion.map(ver => ({
-      value: ver.version,
-      label: ver.version
+    return minecraftVersions.map((version) => ({
+      value: version.value,
+      label: version.value,
     }));
-  }, []);
+  }, [minecraftVersions]);
 
-  const loaderOptions = useMemo<FilterOption[]>(() => [
-    { value: 'all', label: 'All' },
-    { value: 'forge', label: 'Forge' },
-    { value: 'fabric', label: 'Fabric' }
-  ], []);
+  const loaderOptions = useMemo<FilterOption[]>(
+    () => [
+      { value: 'all', label: 'All' },
+      { value: 'forge', label: 'Forge' },
+      { value: 'fabric', label: 'Fabric' },
+    ],
+    []
+  );
 
   const createVersionOptions = useMemo<FilterOption[]>(() => {
-    return createVersion.map(ver => ({
-    value: ver,
-    label: ver
-    }))
-  }, [])
+    return Object.values(createVersions).map((ver) => ({
+      value: ver.value,
+      label: ver.label,
+    }));
+  }, [createVersions]);
 
   return {
     filters,
@@ -77,6 +83,6 @@ export function useSchematicFilters(options = {}) {
     subCategoryOptions,
     versionOptions,
     loaderOptions,
-    hasSubCategories: subCategoryOptions.length > 0
+    hasSubCategories: subCategoryOptions.length > 0,
   };
 }

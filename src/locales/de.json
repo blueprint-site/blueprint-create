@@ -1,0 +1,228 @@
+{
+  "translation": {
+    "navigation": {
+      "label": {
+        "addons": "Addons",
+        "schematics": "In den Warenkorb",
+        "about": "Über uns",
+        "login": "Anmelden",
+        "blog": "Blog",
+        "privacy": "Datenschutz",
+        "terms": "Bedingungen"
+      },
+      "userSettings": {
+        "public": "Öffentliches Profil",
+        "account": "Kontoeinstellungen",
+        "display": "Anzeige"
+      }
+    },
+    "user-menu": {
+      "profile": "Profil",
+      "settings": "Einstellungen",
+      "admin": "Admin-Panel",
+      "logout": "Anmeldung"
+    },
+    "awards": {
+      "banner": {
+        "label": "Die Wrench Awards",
+        "link": "Jetzt abstimmen!"
+      }
+    },
+    "home": {
+      "discover": "Vorgestellte Addons",
+      "info": {
+        "about": {
+          "title": "Was ist Blueprint?",
+          "description": "Blueprint ist eine Website zum Erstellen von Mod-Ressourcen, um Addons, Schaltpläne und vieles mehr zu finden!"
+        },
+        "forCreator": {
+          "title": "Für Schöpfer",
+          "description": "Wir sind hier, um Ihre Addons in der Blueprint Community zu präsentieren",
+          "card": {
+            "title": "Findest du dein Addon nicht?",
+            "description": "Lassen Sie uns wissen und wir helfen, Ihre Addon aufgeführt zu bekommen",
+            "content": "Unser Addon Scanvorgang ist vollautomatisch. Kontaktieren Sie uns, um einen Rescan anzufordern und Ihr Addon in unserem Verzeichnis enthalten zu bekommen.",
+            "button": "E-Mail an uns"
+          }
+        },
+        "usefulLinks": {
+          "title": "Nützliche Links",
+          "description": "Wesentliche Ressourcen für Mod-Entwickler und Benutzer erstellen",
+          "link1": {
+            "title": "Erstellen von Mod Wiki",
+            "description": "Vollständige Dokumentation und Anleitungen"
+          },
+          "link2": {
+            "title": "Mod erstellen (Forge)",
+            "description": "Forge modloader herunterladen"
+          },
+          "link3": {
+            "title": "Mod erstellen (Fabric)",
+            "description": "Herunterladen für Fabric modloader"
+          }
+        }
+      }
+    },
+    "addons": {
+      "search": {
+        "placeholder": "Suche nach Addons..."
+      },
+      "dropdown": {
+        "modloader": {
+          "select": "Wählen Sie Modloader",
+          "all": "Alle Modloader"
+        },
+        "version": {
+          "select": "Wählen Sie die Version",
+          "all": "Alle Versionen"
+        }
+      },
+      "label": {
+        "downloads": "Downloads",
+        "description": "Warenbezeichnung",
+        "categories": "Kategorien",
+        "followers": "Folgen",
+        "authors": "Erstellt von",
+        "note": "Anmerkung"
+      },
+      "random": {
+        "title": "Langeweile?",
+        "link": "Hol ein zufälliges Addon!"
+      }
+    },
+    "about": {
+      "mainTitle": "Über Blueprint",
+      "subTitle": "Unsere Mission",
+      "content1": "Blueprint entstand aus dem Erkennen der Notwendigkeit einer zentralisierten Plattform, die der Create Mod Community effektiv dient. Wir bauten diese Website mit modernen Web-Technologien, um eine robuste Lösung für die Entdeckung und Weitergabe von Inhalten zu bieten.",
+      "content2": "Unser Ziel ist es, die Erstellung von Mod-Ressourcen in einem barrierefreien Ort zu konsolidieren - Addon-Entwickler mit Benutzern zu verbinden und ein einfaches Teilen von Kontrainditionsdesigns zu ermöglichen. Wir wollen die Entdeckbarkeit verbessern und die Zusammenarbeit innerhalb der Gemeinschaft fördern.",
+      "cards": {
+        "card1": {
+          "title": "Entdecken Sie Addons",
+          "description": "Durchsuchen und verwalten Sie das wachsende Ökosystem von Create Mod Erweiterungen.",
+          "link": "Entdecken Sie Addons"
+        },
+        "card2": {
+          "title": "Auf den Wunschzettel",
+          "description": "Laden Sie Ihre automatisierten Kontraptions- und Engineering-Designs hoch und präsentieren Sie diese.",
+          "link": "Besuchen Sie Schematics"
+        },
+        "card3": {
+          "title": "Unsere Community",
+          "description": "Verbinden Sie mit anderen Enthusiasten erstellen und zum Ökosystem beitragen.",
+          "link": "Mehr erfahren"
+        }
+      },
+      "socialsCard": {
+        "title": "Kontakt aufnehmen!",
+        "card1": {
+          "title": "In den Warenkorb",
+          "description": "Für Updates, schnüffelpeeks und Ausgabe Berichterstattung."
+        },
+        "card2": {
+          "title": "GitHub",
+          "description": "Für die Jungs da draußen!"
+        },
+        "card3": {
+          "title": "E-Mail senden",
+          "description": "Kontaktieren Sie uns bei"
+        }
+      },
+      "contributions": {
+        "title": "Beiträge",
+        "subtitle": {
+          "main": "Dank unserer großartigen Mitarbeiter. Ohne dich wäre das nicht möglich gewesen ❤",
+          "api": "Auch ein großer Dank an diejenigen, die uns geholfen haben, die API zu bauen"
+        }
+      }
+    },
+    "settings": {
+      "settings": "Einstellungen",
+      "user-settings": {
+        "account": {
+          "title": "Kontoeinstellungen",
+          "language": {
+            "title": "Sprache",
+            "description": "Änderung der Sprache Ihrer App"
+          },
+          "data": {
+            "title": "Kontodaten",
+            "description": "Alle Ihre Daten abrufen!",
+            "button": "Meine Daten"
+          },
+          "auth": {
+            "title": "Authentifizierungsanbieter verwalten",
+            "description": "Fügen oder entfernen Sie Sign-on-Methoden von Ihrem Konto, einschließlich GitHub, GitLab, Microsoft, Discord, Steam und Google."
+          },
+          "sessions": {
+            "title": "Verwalten von Sitzungen",
+            "description": "Sehen Sie Ihre Sitzungsmulde all Ihr Gerät!",
+            "actual": "Tatsächlich",
+            "not-provided": "Nicht vorgesehen",
+            "device": "Gerät",
+            "brand": "Marke",
+            "name": "Name",
+            "created_at": "Erstellt bei",
+            "expire": "Entfällt"
+          }
+        },
+        "display": {
+          "title": "Anzeigeeinstellungen",
+          "theme": {
+            "title": "Thema",
+            "description": "Wählen Sie zwischen hellem und dunklem Modus für die Seitenschnittstelle.",
+            "dark-mode": "Dark Mode",
+            "light-mode": "Lichtmodus"
+          },
+          "easter-eggs": {
+            "title": "Ostereier",
+            "description": "Entdecken und toggle spezielle Features versteckt während der gesamten Anwendung.",
+            "locked": "Gesperrt",
+            "unlocked": "Entriegelt",
+            "keep-exploring": "Entdecken Sie weitere Ostereier!"
+          }
+        },
+        "public-profile": {
+          "title": "Profilinformationen",
+          "description": "Ihre Profilinformationen sind auf Blueprint und über die Blueprint API öffentlich sichtbar.",
+          "picture": {
+            "title": "Profilbild",
+            "upload": "Bild hochladen"
+          },
+          "username": {
+            "title": "Benutzername",
+            "description": "Ein einzigartiger case-insensitiver Name, um Ihr Profil zu identifizieren."
+          },
+          "bio": {
+            "title": "Biozid",
+            "description": "Eine kurze Beschreibung, um jedem etwas über Sie zu erzählen."
+          },
+          "actions": {
+            "save": "Änderungen speichern",
+            "visit": "Besuchen Sie Ihr Profil"
+          }
+        }
+      }
+    },
+    "easter-eggs": {
+      "legacyLogo": {
+        "name": "Legacy Logo",
+        "description": "Ersetzt das aktuelle Blueprint Logo mit dem klassischen Legacy-Logo.",
+        "hint": "Klicken Sie auf Dinge, die unsere Identität repräsentieren."
+      }
+    },
+    "error": {
+      "page-not-found": {
+        "title": "Seite nicht gefunden",
+        "description1": "Ups! Die gesuchte Seite existiert nicht oder wurde verschoben.",
+        "description2": "Wenn Sie glauben, dass dies ein Fehler E-Mail an uns ist",
+        "action": "Zurück zu Home"
+      }
+    },
+    "footer": {
+      "found-bug": "Einen Fehler gefunden? Berichten Sie es",
+      "github-issues": "GitHub Probleme",
+      "mojang-warning": "NICHT EIN AMTLICHER MINECRAFT SERVICE. NICHT GENEHMIGT ODER MIT MOJANG ODER MICROSOFT.",
+      "create-warning": "Nicht mit dem Erstellen von Mod-Team oder einem der Addons in irgendeiner Weise verbunden."
+    }
+  }
+}

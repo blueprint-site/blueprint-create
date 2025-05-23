@@ -1,5 +1,5 @@
 import { cn } from '@/config/utils.ts';
-import { useThemeStore } from '@/api/stores/themeStore.tsx';
+import { useThemeStore } from '@/api/stores/themeStore';
 
 interface MinecraftIconProps {
   name: keyof typeof iconPositions;
@@ -111,8 +111,8 @@ const iconPositions = {
 } as const;
 
 const MinecraftIcon = ({ name, size = 16, className }: MinecraftIconProps) => {
-  const lightIcons = 'src/assets/icons/create_icons.png';
-  const darkIcons = 'src/assets/icons/create_icons_dark.png';
+  const lightIcons = '/icons/create_icons.png';
+  const darkIcons = '/icons/create_icons_dark.png';
   const { isDarkMode } = useThemeStore();
 
   const [x, y] = iconPositions[name];

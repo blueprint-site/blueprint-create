@@ -1,73 +1,79 @@
-import React, { useEffect, useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { account } from '@/config/appwrite';
 import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
-import { useToast } from '@/api';
+import AuthError from '@/pages/auth/AuthError.tsx';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  // Optional role requirement for future expansion
   requiredRole?: string;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [hasRequiredRole, setHasRequiredRole] = useState<boolean>(true);
-  const location = useLocation();
-  const { toast } = useToast();
+
+  // Use useRef to hold the cache, so it persists across renders but doesn't trigger re-renders
+  const authCache = useRef({
+    isAuthenticated: null as boolean | null,
+    hasRequiredRole: {} as { [role: string]: boolean },
+    timestamp: null as number | null,
+  });
+
+  const checkSession = useCallback(async () => {
+    try {
+      const session = await account.getSession('current');
+
+      if (!session) {
+        setIsAuthenticated(false);
+        authCache.current.isAuthenticated = false;
+        return;
+      }
+
+      setIsAuthenticated(true);
+      authCache.current.isAuthenticated = true;
+
+      if (requiredRole) {
+        const user = await account.get();
+        console.log(user);
+        const userRoles = user.prefs?.roles || [];
+        const hasRole = userRoles.includes(requiredRole);
+        setHasRequiredRole(hasRole);
+        authCache.current.hasRequiredRole[requiredRole] = hasRole;
+      }
+    } catch {
+      setIsAuthenticated(false);
+      authCache.current.isAuthenticated = false;
+    }
+  }, [requiredRole]);
 
   useEffect(() => {
-    const checkSession = async () => {
-      try {
-        const session = await account.getSession('current');
-
-        // Basic authentication check
-        if (!session) {
-          setIsAuthenticated(false);
-          return;
-        }
-
-        // Optional role check if requiredRole is specified
-        if (requiredRole) {
-          const user = await account.get();
-          const userRoles = user.prefs?.roles || [];
-          setHasRequiredRole(userRoles.includes(requiredRole));
-        }
-
-        setIsAuthenticated(true);
-      } catch (error) {
-        setIsAuthenticated(false);
-        toast({
-          title: 'Authentication Error',
-          description: 'Please log in again',
-          variant: 'destructive',
-        });
+    // Check if the cache is valid (e.g., within a certain time frame)
+    if (
+      authCache.current.isAuthenticated === null ||
+      (authCache.current.timestamp && Date.now() - authCache.current.timestamp > 60000)
+    ) {
+      checkSession();
+      authCache.current.timestamp = Date.now();
+    } else {
+      setIsAuthenticated(authCache.current.isAuthenticated);
+      if (requiredRole && Object.hasOwn(authCache.current.hasRequiredRole, requiredRole)) {
+        setHasRequiredRole(authCache.current.hasRequiredRole[requiredRole]);
       }
-    };
+    }
+  }, [checkSession, requiredRole]);
 
-    checkSession();
-  }, [requiredRole, toast]);
-
-  // Show Blueprint's standard loading overlay during check
   if (isAuthenticated === null) {
     return <LoadingOverlay message='Verifying authentication...' />;
   }
 
-  // Handle authentication failure
   if (!isAuthenticated) {
-    // Include the current path as return URL
-    const returnUrl = encodeURIComponent(location.pathname + location.search);
-    return <Navigate to={`/login?returnUrl=${returnUrl}`} replace />;
+    return <AuthError message='Authentication Error. Please log in again.' redirectTo='/login' />;
   }
 
-  // Handle role requirement failure
   if (requiredRole && !hasRequiredRole) {
-    toast({
-      title: 'Access Denied',
-      description: `Required role: ${requiredRole}`,
-      variant: 'destructive',
-    });
-    return <Navigate to='/' replace />;
+    return (
+      <AuthError message={`Access Denied. Required role: ${requiredRole}`} redirectTo='/login' />
+    );
   }
 
   return <>{children}</>;

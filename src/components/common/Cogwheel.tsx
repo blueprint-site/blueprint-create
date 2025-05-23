@@ -1,6 +1,16 @@
 import CogwheelImage from '@/assets/cogwheel.png';
 import { useEffect, useState } from 'react';
-import logMessage from "@/components/utility/logs/sendLogs.tsx";
+import logMessage from '@/components/utility/logs/sendLogs.tsx';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer';
+import { ToolsBox } from '@/components/layout/ToolsBox.tsx';
+import { useThemeStore } from '@/api/stores/themeStore.ts';
 
 const useWindowSize = () => {
   const [size, setSize] = useState({
@@ -27,7 +37,7 @@ const RotatingCogwheel = () => {
   const [rotation, setRotation] = useState(0);
   const [clickCount, setClickCount] = useState(0);
   const { width } = useWindowSize();
-
+  const { isDarkMode } = useThemeStore();
   const size = Math.min(width * 0.28, 400);
   const offset = size / 2.35;
 
@@ -41,8 +51,8 @@ const RotatingCogwheel = () => {
   const handleClick = () => {
     setClickCount((prev) => {
       const newCount = prev + 1;
-      if (newCount >= 15) {
-        logMessage(`You have clicked ${clickCount} `, 0 , 'default');
+      if (newCount >= 100) {
+        logMessage(`You have clicked ${clickCount} `, 0, 'default');
         window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
       }
       return newCount;
@@ -50,26 +60,41 @@ const RotatingCogwheel = () => {
   };
 
   return (
-      <div
-          className='fixed'
-          style={{
-            width: size,
-            height: size,
-            bottom: -offset,
-            right: -offset,
-          }}
-          onClick={handleClick}
-      >
-        <img
+    <div
+      className='fixed'
+      style={{
+        width: size,
+        height: size,
+        bottom: -offset,
+        right: -offset,
+      }}
+      onClick={handleClick}
+    >
+      <Drawer>
+        <DrawerTrigger>
+          {' '}
+          <img
             src={CogwheelImage}
             alt='Rotating cogwheel'
-            className='h-full w-full'
+            className='h-full w-full cursor-pointer'
             style={{
               transform: `rotate(${rotation}deg)`,
               transformOrigin: 'center',
             }}
-        />
-      </div>
+          />
+        </DrawerTrigger>
+        <DrawerContent className={isDarkMode ? 'bg-brass_casing' : 'bg-refined_radiance_casing'}>
+          <DrawerHeader>
+            <DrawerTitle className={'text-center'}>
+              {' '}
+              <div className={'text-foreground'}>Blueprint ToolBox</div>{' '}
+            </DrawerTitle>
+            <ToolsBox></ToolsBox>
+          </DrawerHeader>
+          <DrawerFooter></DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </div>
   );
 };
 

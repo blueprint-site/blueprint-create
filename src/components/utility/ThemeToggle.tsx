@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { useThemeStore } from '@/api/stores/themeStore.tsx';
+import { useThemeStore } from '@/api/stores/themeStore';
 import NightVisionIcon from '/src/assets/sprite-icons/night_vision.png';
 
 interface ThemeToggleProps {
@@ -21,7 +21,7 @@ const ThemeToggle = ({ onClick, variant = 'outline', size = 'default' }: ThemeTo
       onClick={handleClick}
       variant={variant}
       size={size}
-      className='flex items-center rounded-full p-2 cursor-pointer'
+      className='flex cursor-pointer items-center rounded-full p-2'
       aria-label='Change theme'
     >
       <img src={NightVisionIcon} alt='' className='h-6 w-6 object-contain' />

@@ -1,132 +1,461 @@
-import { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { cn } from '@/config/utils.ts';
-import { BarChart, LayoutDashboard, Users, Package, FileText, Files } from 'lucide-react';
-import AdminAddonsTable from '@/components/features/admin/addons/AdminAddonsTable';
-import AddonStatsWrapper from '@/components/features/admin/stats/AddonStatsWrapper';
-import AdminUsersDisplay from '@/components/features/admin/users/AdminUsersDisplay';
-import AdminBlogDisplay from '@/components/features/admin/blog/components/AdminBlogDisplay.tsx';
-import AdminSchematicsDisplay from '@/components/features/admin/schematics/AdminSchematicsDisplay';
-import { Button } from '@/components/ui/button.tsx';
-import { useNavigate } from 'react-router-dom';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { BarChart, BookOpen, Box, FileText, Package, Plus, Upload } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
-const AdminPage = () => {
-  const [activePage, setActivePage] = useState('dashboard');
-  const navigate = useNavigate();
+export const Admin = () => {
+  // Mock data
+  const recentAddons = [
+    {
+      id: 1,
+      name: 'Create Crafts & Additions',
+      author: 'MRHminer',
+      downloads: 145879,
+      status: 'approved',
+    },
+    { id: 2, name: 'Create Deco', author: 'talrey', downloads: 98562, status: 'approved' },
+    {
+      id: 3,
+      name: 'Create Enchantment Industry',
+      author: 'Creators_Team',
+      downloads: 76543,
+      status: 'pending',
+    },
+    {
+      id: 4,
+      name: "Create: Steam 'n' Rails",
+      author: 'mattentosh',
+      downloads: 187654,
+      status: 'approved',
+    },
+  ];
+
+  const recentSchematics = [
+    {
+      id: 1,
+      name: 'Automated Ore Processing',
+      author: 'EngineeringMC',
+      downloads: 12543,
+      category: 'Factory',
+    },
+    {
+      id: 2,
+      name: 'Train Station Deluxe',
+      author: 'RailwayBuilder',
+      downloads: 8976,
+      category: 'Transport',
+    },
+    {
+      id: 3,
+      name: 'Compact Crusher Setup',
+      author: 'MechanicalWizard',
+      downloads: 7645,
+      category: 'Compact',
+    },
+    {
+      id: 4,
+      name: 'Medieval Windmill',
+      author: 'HistoryBuilder',
+      downloads: 10234,
+      category: 'Decoration',
+    },
+  ];
+
+  const recentBlogPosts = [
+    {
+      id: 1,
+      title: 'Guide: Automation with Create',
+      author: 'Admin',
+      comments: 32,
+      published: true,
+    },
+    {
+      id: 2,
+      title: "Update 0.5.1 - What's New",
+      author: 'Moderator',
+      comments: 18,
+      published: true,
+    },
+    {
+      id: 3,
+      title: 'Contraption Building Contest',
+      author: 'Admin',
+      comments: 0,
+      published: false,
+    },
+  ];
+
   return (
-    <div className='flex h-screen'>
-      {/* Sidebar */}
-      <div className='flex w-64 flex-col space-y-4 p-4 text-white'>
-        <h2 className='text-xl font-bold'>Admin Panel</h2>
-        <div className='flex flex-col space-y-2'>
-          <div
-            className={cn(
-              'flex cursor-pointer items-center space-x-2 rounded p-2',
-              activePage === 'dashboard' ? 'bg-gray-700' : 'hover:bg-gray-800'
-            )}
-            onClick={() => setActivePage('dashboard')}
-          >
-            <LayoutDashboard className='h-5 w-5' />
-            <span>Dashboard</span>
-          </div>
-          <div
-            className={cn(
-              'flex cursor-pointer items-center space-x-2 rounded p-2',
-              activePage === 'blog' ? 'bg-gray-700' : 'hover:bg-gray-800'
-            )}
-            onClick={() => setActivePage('blog')}
-          >
-            <Files className='h-5 w-5' />
-            <span>Blog</span>
-          </div>
-          <div
-            className={cn(
-              'flex cursor-pointer items-center space-x-2 rounded p-2',
-              activePage === 'users' ? 'bg-gray-700' : 'hover:bg-gray-800'
-            )}
-            onClick={() => setActivePage('users')}
-          >
-            <Users className='h-5 w-5' />
-            <span>Users</span>
-          </div>
-          <div
-            className={cn(
-              'flex cursor-pointer items-center space-x-2 rounded p-2',
-              activePage === 'stats' ? 'bg-gray-700' : 'hover:bg-gray-800'
-            )}
-            onClick={() => setActivePage('stats')}
-          >
-            <BarChart className='h-5 w-5' />
-            <span>Stats</span>
-          </div>
-          <div
-            className={cn(
-              'flex cursor-pointer items-center space-x-2 rounded p-2',
-              activePage === 'addons' ? 'bg-gray-700' : 'hover:bg-gray-800'
-            )}
-            onClick={() => setActivePage('addons')}
-          >
-            <Package className='h-5 w-5' />
-            <span>Addons</span>
-          </div>
-          <div
-            className={cn(
-              'flex cursor-pointer items-center space-x-2 rounded p-2',
-              activePage === 'schematics' ? 'bg-gray-700' : 'hover:bg-gray-800'
-            )}
-            onClick={() => setActivePage('schematics')}
-          >
-            <FileText className='h-5 w-5' />
-            <span>Schematics</span>
-          </div>
+    <div className='flex flex-col p-4'>
+      {/* Tabs sections - takes up remaining height */}
+      <Tabs defaultValue='addons' className='flex flex-1 flex-col'>
+        <TabsList className='mb-2'>
+          <TabsTrigger value='addons'>Addons</TabsTrigger>
+          <TabsTrigger value='schematics'>Schematics</TabsTrigger>
+          <TabsTrigger value='blog'>Blog</TabsTrigger>
+          <TabsTrigger value='analytics'>Analytics</TabsTrigger>
+        </TabsList>
+
+        {/* Tab Content Container - make this scrollable if needed */}
+        <div className='flex-1 overflow-hidden'>
+          {/* Addons Tab */}
+          <TabsContent value='addons' className='h-100'>
+            <div className='grid h-full grid-cols-3 gap-4'>
+              <Card>
+                <CardHeader className='pb-1'>
+                  <CardTitle className='text-sm'>Recent Addons</CardTitle>
+                  <CardDescription className='text-xs'>
+                    Recently submitted to the platform
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className='p-0'>
+                  <ScrollArea className='h-64 px-6'>
+                    <div className='space-y-4 py-4'>
+                      {recentAddons.map((addon) => (
+                        <div key={addon.id} className='flex items-center justify-between space-x-4'>
+                          <div className='space-y-1'>
+                            <p className='text-sm leading-none font-medium'>{addon.name}</p>
+                            <p className='text-muted-foreground text-xs'>by {addon.author}</p>
+                          </div>
+                          <Badge variant={addon.status === 'approved' ? 'default' : 'outline'}>
+                            {addon.status === 'approved' ? 'Approved' : 'Pending'}
+                          </Badge>
+                        </div>
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className='pb-1'>
+                  <CardTitle className='text-sm'>Popular Addons</CardTitle>
+                  <CardDescription className='text-xs'>Ranked by downloads</CardDescription>
+                </CardHeader>
+                <CardContent className='p-0'>
+                  <ScrollArea className='h-64 px-6'>
+                    <div className='space-y-4 py-4'>
+                      {recentAddons
+                        .sort((a, b) => b.downloads - a.downloads)
+                        .map((addon, index) => (
+                          <div key={index} className='space-y-1'>
+                            <div className='flex items-center justify-between'>
+                              <p className='text-sm leading-none font-medium'>{addon.name}</p>
+                              <p className='text-sm font-medium'>
+                                {addon.downloads.toLocaleString()}
+                              </p>
+                            </div>
+                            <Progress value={(addon.downloads / 200000) * 100} className='h-1' />
+                          </div>
+                        ))}
+                    </div>
+                  </ScrollArea>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className='pb-1'>
+                  <CardTitle className='text-sm'>Quick Actions</CardTitle>
+                  <CardDescription className='text-xs'>Manage Create mod addons</CardDescription>
+                </CardHeader>
+                <CardContent className='p-0'>
+                  <ScrollArea className='h-64 px-6'>
+                    <div className='space-y-2 py-4'>
+                      <Button className='w-full justify-start'>
+                        <Plus className='mr-2 h-4 w-4' />
+                        Add new addon
+                      </Button>
+                      <Button variant='outline' className='w-full justify-start'>
+                        <Package className='mr-2 h-4 w-4' />
+                        Manage categories
+                      </Button>
+                      <Button variant='outline' className='w-full justify-start'>
+                        <FileText className='mr-2 h-4 w-4' />
+                        Moderate comments
+                      </Button>
+                      <Separator className='my-2' />
+                      <Button variant='destructive' className='w-full justify-start'>
+                        Pending addons (2)
+                      </Button>
+                    </div>
+                  </ScrollArea>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          {/* Schematics Tab */}
+          <TabsContent value='schematics' className='h-100'>
+            <div className='grid h-full grid-cols-3 gap-4'>
+              <Card>
+                <CardHeader className='pb-1'>
+                  <CardTitle className='text-sm'>Recent Schematics</CardTitle>
+                  <CardDescription className='text-xs'>
+                    Recently uploaded blueprints
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className='p-0'>
+                  <ScrollArea className='h-64 px-6'>
+                    <div className='space-y-4 py-4'>
+                      {recentSchematics.map((schematic) => (
+                        <div
+                          key={schematic.id}
+                          className='flex items-center justify-between space-x-4'
+                        >
+                          <div className='space-y-1'>
+                            <p className='text-sm leading-none font-medium'>{schematic.name}</p>
+                            <p className='text-muted-foreground text-xs'>by {schematic.author}</p>
+                          </div>
+                          <Badge variant='outline'>{schematic.category}</Badge>
+                        </div>
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className='pb-1'>
+                  <CardTitle className='text-sm'>Popular Schematics</CardTitle>
+                  <CardDescription className='text-xs'>Ranked by downloads</CardDescription>
+                </CardHeader>
+                <CardContent className='p-0'>
+                  <ScrollArea className='h-64 px-6'>
+                    <div className='space-y-4 py-4'>
+                      {recentSchematics
+                        .sort((a, b) => b.downloads - a.downloads)
+                        .map((schematic, index) => (
+                          <div key={index} className='space-y-1'>
+                            <div className='flex items-center justify-between'>
+                              <p className='text-sm leading-none font-medium'>{schematic.name}</p>
+                              <p className='text-sm font-medium'>
+                                {schematic.downloads.toLocaleString()}
+                              </p>
+                            </div>
+                            <Progress value={(schematic.downloads / 15000) * 100} className='h-1' />
+                          </div>
+                        ))}
+                    </div>
+                  </ScrollArea>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className='pb-1'>
+                  <CardTitle className='text-sm'>Quick Actions</CardTitle>
+                  <CardDescription className='text-xs'>
+                    Manage schematics and categories
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className='p-0'>
+                  <ScrollArea className='h-64 px-6'>
+                    <div className='space-y-2 py-4'>
+                      <Button className='w-full justify-start'>
+                        <Upload className='mr-2 h-4 w-4' />
+                        Upload schematic
+                      </Button>
+                      <Button variant='outline' className='w-full justify-start'>
+                        <Box className='mr-2 h-4 w-4' />
+                        Manage tags
+                      </Button>
+                      <Button variant='outline' className='w-full justify-start'>
+                        <FileText className='mr-2 h-4 w-4' />
+                        Batch validation
+                      </Button>
+                      <Separator className='my-2' />
+                      <Button variant='secondary' className='w-full justify-start'>
+                        Moderation guidelines
+                      </Button>
+                    </div>
+                  </ScrollArea>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          {/* Blog Tab */}
+          <TabsContent value='blog' className='h-100'>
+            <div className='grid h-full grid-cols-2 gap-4'>
+              <Card>
+                <CardHeader className='pb-1'>
+                  <CardTitle className='text-sm'>Recent Articles</CardTitle>
+                  <CardDescription className='text-xs'>Manage blog posts</CardDescription>
+                </CardHeader>
+                <CardContent className='p-0'>
+                  <ScrollArea className='h-64 px-6'>
+                    <div className='space-y-4 py-4'>
+                      {recentBlogPosts.map((post) => (
+                        <div
+                          key={post.id}
+                          className='flex items-start justify-between space-x-4 border-b pb-4'
+                        >
+                          <div className='space-y-1'>
+                            <p className='text-sm leading-none font-medium'>{post.title}</p>
+                            <p className='text-muted-foreground text-xs'>by {post.author}</p>
+                            <div className='flex items-center pt-1'>
+                              <BookOpen className='mr-1 h-3 w-3' />
+                              <span className='text-muted-foreground text-xs'>
+                                {post.comments} comments
+                              </span>
+                            </div>
+                          </div>
+                          <Badge variant={post.published ? 'default' : 'outline'}>
+                            {post.published ? 'Published' : 'Draft'}
+                          </Badge>
+                        </div>
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className='pb-1'>
+                  <CardTitle className='text-sm'>Blog Tools</CardTitle>
+                  <CardDescription className='text-xs'>
+                    Create and manage blog content
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className='p-0'>
+                  <ScrollArea className='h-100 px-6'>
+                    <div className='space-y-3 py-4'>
+                      <Button className='w-full justify-start'>
+                        <Plus className='mr-2 h-4 w-4' />
+                        New article
+                      </Button>
+                      <Button variant='outline' className='w-full justify-start'>
+                        <BookOpen className='mr-2 h-4 w-4' />
+                        Manage categories
+                      </Button>
+                      <Button variant='outline' className='w-full justify-start'>
+                        <FileText className='mr-2 h-4 w-4' />
+                        Moderate comments
+                      </Button>
+                      <Separator className='my-2' />
+                      <div className='bg-muted rounded-md p-3'>
+                        <div className='text-sm font-medium'>Editorial Calendar</div>
+                        <div className='text-muted-foreground mt-1 text-xs'>
+                          Next article scheduled: April 15, 2025
+                        </div>
+                        <Button variant='secondary' size='sm' className='mt-2'>
+                          View calendar
+                        </Button>
+                      </div>
+                    </div>
+                  </ScrollArea>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          {/* Analytics Tab */}
+          <TabsContent value='analytics' className='h-150'>
+            <div className='grid h-full grid-cols-2 gap-4'>
+              <Card className='col-span-2 row-span-1'>
+                <CardHeader className='pb-1'>
+                  <CardTitle className='text-sm'>Statistics Overview</CardTitle>
+                  <CardDescription className='text-xs'>
+                    Site activity for the last 30 days
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className='flex h-40 items-center justify-center'>
+                  <div className='space-y-2 text-center'>
+                    <BarChart className='text-muted-foreground mx-auto h-8 w-8' />
+                    <p className='text-muted-foreground text-xs'>Statistics chart placeholder</p>
+                    <Button size='sm'>View detailed stats</Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className='pb-1'>
+                  <CardTitle className='text-sm'>Performance by Category</CardTitle>
+                  <CardDescription className='text-xs'>Download distribution</CardDescription>
+                </CardHeader>
+                <CardContent className='p-0'>
+                  <ScrollArea className='h-100 px-6'>
+                    <div className='space-y-3 py-4'>
+                      <div className='space-y-1'>
+                        <div className='flex items-center justify-between'>
+                          <div className='text-xs font-medium'>Automation</div>
+                          <div className='text-xs font-medium'>42%</div>
+                        </div>
+                        <Progress value={42} className='h-2' />
+                      </div>
+                      <div className='space-y-1'>
+                        <div className='flex items-center justify-between'>
+                          <div className='text-xs font-medium'>Transport</div>
+                          <div className='text-xs font-medium'>27%</div>
+                        </div>
+                        <Progress value={27} className='h-2' />
+                      </div>
+                      <div className='space-y-1'>
+                        <div className='flex items-center justify-between'>
+                          <div className='text-xs font-medium'>Decoration</div>
+                          <div className='text-xs font-medium'>18%</div>
+                        </div>
+                        <Progress value={18} className='h-2' />
+                      </div>
+                      <div className='space-y-1'>
+                        <div className='flex items-center justify-between'>
+                          <div className='text-xs font-medium'>Others</div>
+                          <div className='text-xs font-medium'>13%</div>
+                        </div>
+                        <Progress value={13} className='h-2' />
+                      </div>
+                    </div>
+                  </ScrollArea>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className='pb-1'>
+                  <CardTitle className='text-sm'>New Visits</CardTitle>
+                  <CardDescription className='text-xs'>Traffic sources</CardDescription>
+                </CardHeader>
+                <CardContent className='p-0'>
+                  <ScrollArea className='h-100 px-6'>
+                    <div className='space-y-3 py-4'>
+                      <div className='space-y-1'>
+                        <div className='flex items-center justify-between'>
+                          <div className='text-xs font-medium'>CurseForge</div>
+                          <div className='text-xs font-medium'>38%</div>
+                        </div>
+                        <Progress value={38} className='h-2' />
+                      </div>
+                      <div className='space-y-1'>
+                        <div className='flex items-center justify-between'>
+                          <div className='text-xs font-medium'>Modrinth</div>
+                          <div className='text-xs font-medium'>31%</div>
+                        </div>
+                        <Progress value={31} className='h-2' />
+                      </div>
+                      <div className='space-y-1'>
+                        <div className='flex items-center justify-between'>
+                          <div className='text-xs font-medium'>YouTube</div>
+                          <div className='text-xs font-medium'>22%</div>
+                        </div>
+                        <Progress value={22} className='h-2' />
+                      </div>
+                      <div className='space-y-1'>
+                        <div className='flex items-center justify-between'>
+                          <div className='text-xs font-medium'>Discord</div>
+                          <div className='text-xs font-medium'>9%</div>
+                        </div>
+                        <Progress value={9} className='h-2' />
+                      </div>
+                    </div>
+                  </ScrollArea>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
         </div>
-      </div>
-
-      {/* Main Content */}
-      <div className='flex-1 p-6'>
-        {activePage === 'dashboard' && (
-          <Card className='border border-gray-200 shadow-lg dark:border-gray-700'>
-            <CardContent className='p-6'>
-              <h3 className='text-xl font-bold'>Welcome to the Dashboard</h3>
-              <p>Here you can see an overview of your application.</p>
-            </CardContent>
-          </Card>
-        )}
-
-        {activePage === 'users' && <AdminUsersDisplay></AdminUsersDisplay>}
-
-        {activePage === 'stats' && <AddonStatsWrapper />}
-
-        {activePage === 'addons' && (
-          <div>
-            <AdminAddonsTable />
-          </div>
-        )}
-        {activePage === 'blog' && (
-          <>
-            <Button
-              className={'float-end'}
-              variant='default'
-              onClick={() => navigate('blog-editor/new')}
-            >
-              <Files /> New Article
-            </Button>
-
-            <h3 className='text-xl font-bold'>Blog Management</h3>
-
-            <AdminBlogDisplay />
-          </>
-        )}
-        {activePage === 'schematics' && (
-          <>
-            <h3 className='text-xl font-bold'>Schematics</h3>
-            <p>Manage and generate schematics for your application.</p>
-            <AdminSchematicsDisplay />
-          </>
-        )}
-      </div>
+      </Tabs>
     </div>
   );
 };
-
-export default AdminPage;

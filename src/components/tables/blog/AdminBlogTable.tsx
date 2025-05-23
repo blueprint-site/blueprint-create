@@ -1,15 +1,16 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
+import type {
   ColumnDef,
   ColumnFiltersState,
+  SortingState} from '@tanstack/react-table';
+import {
   getFilteredRowModel,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
   useReactTable,
 } from '@tanstack/react-table';
 
@@ -22,7 +23,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 interface DataWithId {
   $id: string | number;
 }
@@ -92,7 +93,7 @@ export function AdminBlogTable<TData extends DataWithId, TValue>({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row, index) => (
                 <TableRow
-                  onClick={() => navigate(`/admin/blog-editor/${row.original.$id}`)}
+                  onClick={() => navigate(`/admin/blogs/editor/${row.original.$id}`)}
                   className='cursor-pointer'
                   key={index}
                   data-state={row.getIsSelected() && 'selected'}

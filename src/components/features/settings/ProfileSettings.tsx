@@ -6,9 +6,10 @@ import { Input } from '@/components/ui/input.tsx';
 import { Label } from '@/components/ui/label.tsx';
 import { Textarea } from '@/components/ui/textarea.tsx';
 import imageCompression from 'browser-image-compression';
-import { useLoggedUser } from '@/api/context/loggedUser/loggedUserContext.tsx';
+import { useUserStore } from '@/api/stores/userStore';
 import { account, storage } from '@/config/appwrite.ts';
 import logMessage from '@/components/utility/logs/sendLogs.tsx';
+import { useTranslation } from 'react-i18next';
 
 export default function ProfileSettings() {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,17 +20,47 @@ export default function ProfileSettings() {
     avatar: '',
   });
 
-  const LoggedUser = useLoggedUser();
-
+  // Get user data and the updatePreferences function from the store
+  const user = useUserStore((state) => state.user);
+  const preferences = useUserStore((state) => state.preferences);
+  const updatePreferences = useUserStore((state) => state.updatePreferences);
+  const { t } = useTranslation();
   useEffect(() => {
-    if (LoggedUser) {
+    if (user) {
       setProfile({
-        username: LoggedUser?.user?.name || '',
-        bio: LoggedUser.preferences?.bio || '',
-        avatar: LoggedUser.preferences?.avatar || '',
+        username: user?.name || '',
+        bio: preferences?.bio ?? '',
+        avatar: preferences?.avatar ?? '',
       });
     }
-  }, [LoggedUser]);
+  }, [user, preferences]);
+
+  const handleSave = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      logMessage('Saving of the profile in progress', 0, 'action');
+
+      await account.updateName(profile.username);
+
+      // Use the store's updatePreferences function
+      await updatePreferences({
+        theme: preferences?.theme ?? 'light',
+        language: preferences?.language ?? 'en',
+        notificationsEnabled: preferences?.notificationsEnabled || false,
+        roles: preferences?.roles || [],
+        bio: profile.bio,
+        avatar: profile.avatar,
+      });
+
+      logMessage('Saving of the profile done', 0, 'action');
+    } catch (error) {
+      logMessage('Error while saving the profile ', 3, 'action');
+      setError('Error while saving the profile');
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [preferences, profile, updatePreferences]);
 
   const onUploadImage = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,13 +83,15 @@ export default function ProfileSettings() {
 
         logMessage('Image compressed successfully.', 0, 'action');
         if (profile.avatar) {
-          const oldFileId = profile.avatar.match(/\/files\/([^/]+)/)?.[1];
+          const fileIdRegex = /\/files\/([^/]+)/;
+          const match = fileIdRegex.exec(profile.avatar);
+          const oldFileId = match?.[1];
           if (oldFileId) {
             logMessage(`Old image file id found (${oldFileId}) !`, 0, 'action');
             try {
               await storage.deleteFile('67aee2b30000b9e21407', oldFileId);
               logMessage(`Old image have been deleted (${oldFileId}) !`, 0, 'action');
-            } catch (deleteError) {
+            } catch {
               logMessage(`Error while deleting old file (${oldFileId}) !`, 3, 'action');
             }
           } else {
@@ -76,7 +109,7 @@ export default function ProfileSettings() {
         const avatarUrl = storage.getFilePreview('67aee2b30000b9e21407', response.$id).toString();
         console.log(avatarUrl);
         setProfile((prev) => ({ ...prev, avatar: avatarUrl }));
-      } catch (error) {
+      } catch {
         logMessage('Error while uploading avatar image', 3, 'action');
         setError('Error while uploading avatar image');
       } finally {
@@ -86,50 +119,34 @@ export default function ProfileSettings() {
         });
       }
     },
-    [profile.avatar]
+    [profile.avatar, handleSave]
   );
-
-  const handleSave = async () => {
-    setIsLoading(true);
-    try {
-      logMessage('Saving of the profile in progress', 0, 'action');
-
-      await account.updateName(profile.username);
-
-      await account.updatePrefs({
-        bio: profile.bio,
-        avatar: profile.avatar,
-      });
-
-      logMessage('Saving of the profile done', 0, 'action');
-    } catch (error) {
-      logMessage('Error while saving the profile ', 3, 'action');
-      setError('Error while saving the profile');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   if (error) {
     return <div className='text-destructive'>{error}</div>;
   }
 
-  if (!LoggedUser) {
+  // Show loading state if user data isn't available yet
+  if (!user) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className='space-y-6'>
       <div>
-        <h2 className='mb-2 text-2xl font-bold'>Profile information</h2>
+        <h2 className='mb-2 text-2xl font-bold'>
+          {t('settings.user-settings.public-profile.title')}
+        </h2>
         <p className='text-foreground-muted text-sm'>
-          Your profile information is publicly viewable on Blueprint and through the Blueprint API.
+          {t('settings.user-settings.public-profile.description')}
         </p>
       </div>
 
       <div className='space-y-4'>
         <div>
-          <h3 className='mb-2 text-lg font-semibold'>Profile picture</h3>
+          <h3 className='mb-2 text-lg font-semibold'>
+            {t('settings.user-settings.public-profile.picture.title')}
+          </h3>
           <div className='flex items-center gap-4'>
             <Avatar className='h-16 w-16'>
               <AvatarImage src={profile.avatar} />
@@ -141,9 +158,10 @@ export default function ProfileSettings() {
               <Label htmlFor='picture' className='cursor-pointer'>
                 <div className='bg-secondary hover:bg-secondary/80 text-secondary-foreground flex items-center gap-2 rounded-md px-4 py-2 text-sm'>
                   <Upload className='h-4 w-4' />
-                  Upload image
+                  {t('settings.user-settings.public-profile.picture.upload')}
                 </div>
                 <input
+                  title='picture'
                   id='picture'
                   type='file'
                   className='hidden'
@@ -157,9 +175,11 @@ export default function ProfileSettings() {
         </div>
 
         <div>
-          <Label htmlFor='username'>Username</Label>
+          <Label htmlFor='username'>
+            {t('settings.user-settings.public-profile.username.title')}
+          </Label>
           <p className='text-foreground-muted mb-2 text-sm'>
-            A unique case-insensitive name to identify your profile.
+            {t('settings.user-settings.public-profile.username.description')}
           </p>
           <Input
             id='username'
@@ -170,9 +190,9 @@ export default function ProfileSettings() {
         </div>
 
         <div>
-          <Label htmlFor='bio'>Bio</Label>
+          <Label htmlFor='bio'>{t('settings.user-settings.public-profile.bio.title')}</Label>
           <p className='text-foreground-muted mb-2 text-sm'>
-            A short description to tell everyone a little bit about you.
+            {t('settings.user-settings.public-profile.bio.description')}
           </p>
           <Textarea
             id='bio'
@@ -184,10 +204,10 @@ export default function ProfileSettings() {
 
         <div className='flex gap-4'>
           <Button onClick={handleSave} disabled={isLoading}>
-            Save changes
+            {t('settings.user-settings.public-profile.actions.save')}
           </Button>
           <Button variant='secondary' asChild>
-            <a href='/profile'>Visit your profile</a>
+            <a href='/profile'>{t('settings.user-settings.public-profile.actions.visit')}</a>
           </Button>
         </div>
       </div>

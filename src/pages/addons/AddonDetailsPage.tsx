@@ -1,5 +1,4 @@
-// src/pages/addons/AddonDetailPage.tsx
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import AddonDetails from '@/components/features/addons/AddonDetails';
 
 export default function AddonDetailPage() {

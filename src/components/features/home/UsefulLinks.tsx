@@ -13,22 +13,22 @@ const UsefulLinks = () => {
     {
       href: 'https://create.fandom.com/wiki/Create_Mod_Wiki',
       icon: WikiLogo,
-      text: 'Create Mod wiki',
-      description: 'Complete documentation and guides',
+      text: t('home.info.usefulLinks.link1.title'),
+      description: t('home.info.usefulLinks.link1.description'),
       color: 'success',
     },
     {
       href: 'https://modrinth.com/mod/create',
       icon: CreateLogo,
-      text: 'Create Mod (Forge)',
-      description: 'Download for Forge modloader',
+      text: t('home.info.usefulLinks.link2.title'),
+      description: t('home.info.usefulLinks.link2.description'),
       color: 'warning',
     },
     {
       href: 'https://modrinth.com/mod/create-fabric',
       icon: CreateFabricLogo,
-      text: 'Create Mod (Fabric)',
-      description: 'Download for Fabric modloader',
+      text: t('home.info.usefulLinks.link3.title'),
+      description: t('home.info.usefulLinks.link3.description'),
       color: 'destructive',
     },
   ];
@@ -36,9 +36,11 @@ const UsefulLinks = () => {
   return (
     <div className='flex flex-col items-center space-y-4 text-center'>
       <div className='space-y-2'>
-        <h2 className='text-3xl font-bold tracking-tighter sm:text-4xl'>{t('home.info.links')}</h2>
+        <h2 className='text-3xl font-bold tracking-tighter sm:text-4xl'>
+          {t('home.info.usefulLinks.title')}
+        </h2>
         <p className='text-foreground/90 bg-background/10 mx-auto max-w-[700px]'>
-          Essential resources for Create mod developers and users
+          {t('home.info.usefulLinks.description')}
         </p>
       </div>
 

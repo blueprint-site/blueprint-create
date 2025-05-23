@@ -22,146 +22,58 @@ Blueprint is a modern web platform that serves as the central hub for Create Mod
 - **🌍 Internationalization**: Multi-language support with i18next
 - **📱 Responsive Design**: Optimized for all screen sizes
 
+## Documentation
+
+We maintain comprehensive documentation for both users and developers:
+
+- **[Getting Started](/docs/getting-started/)** - Installation and setup instructions
+- **[Architecture](/docs/architecture/)** - System architecture and data flow diagrams
+- **[Features](/docs/features/)** - Detailed feature documentation
+- **[Components](/docs/components/)** - UI component library and usage
+- **[API](/docs/api/)** - API documentation and integration details
+- **[Guides](/docs/guides/)** - Development guides and best practices
+- **[Contributing](/docs/contributing/)** - Contribution guidelines
+
+Browse the [full documentation](/docs/README.md) for more details.
+
 ## Tech Stack
 
 - **Framework**: React 19 with TypeScript
 - **Styling**: Tailwind CSS, Shadcn/UI components
-- **State Management**:
-  - TanStack Query for server state
-  - Zustand for local state
-  - Signals for reactive state
+- **State Management**: TanStack Query, Zustand, Signals
 - **Backend Integration**: Appwrite
 - **Search**: Meilisearch
 - **Authentication**: OAuth 2.0 with multiple providers
 - **Build Tool**: Vite
-- **Testing**: TBD
 
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18.0 or higher
-- npm 9.0 or higher
-- Git
-
-### Development Setup
-
-1. Clone the repository:
+## Quick Start
 
 ```bash
-git clone https://github.com/blueprint-site/blueprint-site.github.io.git
-cd blueprint-site.github.io
-```
+# Clone the repository
+git clone https://github.com/blueprint-site/blueprint-create.git
+cd blueprint-create
 
-2. Install dependencies:
-
-```bash
+# Install dependencies
 npm install
-```
 
-3. Create environment configuration:
-   (Contact us on Discord for access)
-
-```bash
-# Create .env file with required variables
-APP_APPWRITE_URL=your_appwrite_url
-APP_APPWRITE_PROJECT_ID=your_project_id
-APP_MEILISEARCH_URL=your_meilisearch_url
-APP_MEILISEARCH_API_KEY=your_api_key
-```
-
-4. Start the development server:
-
-```bash
+# Start the development server
 npm run dev
 ```
 
-Visit `http://localhost:5173` to see the application.
-
-## Project Structure
-
-```
-src/
-├── api/                 # API integration hooks and utilities
-├── assets/             # Static assets (images, icons, fonts)
-├── components/         # React components
-│   ├── common/         # Shared components
-│   ├── features/       # Feature-specific components
-│   ├── layout/         # Layout components
-│   └── ui/             # UI components (shadcn)
-├── config/             # Configuration files
-├── context/            # React context providers
-├── hooks/             # Custom React hooks
-├── lib/               # Utility libraries and functions
-├── pages/             # Page components
-├── routes/            # Route definitions
-├── schemas/           # Type definitions and schemas
-├── stores/            # State management stores
-└── styles/            # Global styles and Tailwind config
-```
-
-## Development Guidelines
-
-### Component Structure
-
-- Use TypeScript for all components
-- Follow React 19 best practices
-- Implement proper prop validation
-- Include error boundaries where needed
-- Add loading states for async operations
-
-### Styling Guidelines
-
-- Use Tailwind CSS core utilities only
-- Avoid arbitrary values in utility classes
-- Follow responsive design patterns
-- Maintain dark mode compatibility
-- Use Shadcn/UI components when possible
-
-### Code Quality
-
-- Follow ESLint configuration
-- Write clear component documentation
-- Include type definitions
-- Maintain accessibility standards
-- Use meaningful component names
-
-### Git Workflow
-
-1. Create feature branch from develop
-
-```bash
-git checkout -b feature/your-feature-name
-```
-
-2. Make changes and commit using conventional commits
-
-```bash
-git commit -m "feat: add new feature"
-git commit -m "fix: resolve issue"
-```
-
-3. Push changes and create pull request
-
-```bash
-git push origin feature/your-feature-name
-```
+See our [installation guide](/docs/getting-started/installation.md) for detailed setup instructions.
 
 ## Contributing
 
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
+We welcome contributions from the community! Please read our [contributing guidelines](/docs/contributing/workflow.md) and [issue guidelines](/docs/contributing/issue-guidelines.md) to get started. We use GitHub issues and pull requests to manage our development workflow.
 
-Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on our code of conduct and development process.
+- [Create a new issue](https://github.com/blueprint-site/blueprint-create/issues/new/choose)
+- [View current issues](https://github.com/blueprint-site/blueprint-create/issues)
 
 ## Community
 
-- Join our [Discord Server](https://discord.gg/blueprint)
+- Join our [Discord Server](https://discord.gg/kDa8YC8u5J)
 - Follow us on [GitHub](https://github.com/blueprint-site)
-- Report issues [here](https://github.com/blueprint-site/blueprint-site.github.io/issues)
+- Report issues [here](https://github.com/blueprint-site/blueprint-create/issues)
 
 ## License
 
@@ -169,12 +81,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-- Email: blueprint-site@proton.me
-- Discord: [Blueprint Server](https://discord.gg/blueprint)
+- Email: contact@blueprint-create.com
+- Discord: [Blueprint Server](https://discord.gg/kDa8YC8u5J)
 - GitHub: [@blueprint-site](https://github.com/blueprint-site)
 
 ## Acknowledgments
 
 - [Create Mod Team](https://github.com/Creators-of-Create/Create)
 - [Minecraft Modding Community](https://modrinth.com)
-- All our [contributors](https://github.com/blueprint-site/blueprint-site.github.io/graphs/contributors)
+- All our [contributors](https://github.com/blueprint-site/blueprint-create/graphs/contributors)

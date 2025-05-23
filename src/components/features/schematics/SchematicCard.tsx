@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Download } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button.tsx';
 import {
@@ -10,9 +10,9 @@ import {
   CardTitle,
 } from '@/components/ui/card.tsx';
 import { Badge } from '@/components/ui/badge.tsx';
-import ModLoaderDisplay from '@/components/common/ModLoaderDisplay.tsx';
-import { Schematic } from '@/types';
-import { useIncrementDownloads } from '@/api/endpoints/useSchematics.tsx';
+import { useIncrementDownloads } from '@/api/appwrite/useSchematics';
+import type { Schematic } from '@/types';
+import ModLoaders from '../addons/addon-card/ModLoaders';
 
 interface SchematicCardProps {
   schematic: Schematic;
@@ -22,7 +22,7 @@ interface SchematicCardProps {
 const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
   const renderVersionBadges = (versions: string[]) => {
     return versions.map((version, i) => (
-      <Badge key={i} variant='mcVersion'>
+      <Badge key={`mc-version-${version}-${i}`} variant='mcVersion'>
         {version}
       </Badge>
     ));
@@ -34,14 +34,15 @@ const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
       className='bg flex h-full cursor-pointer flex-col rounded-lg transition-shadow hover:shadow-lg'
       onClick={onClick}
     >
-      <div className="h-40 overflow-hidden">
+      <div className='h-40 overflow-hidden'>
         <img
-            className="h-full w-full rounded-t-md object-cover"
-            alt={schematic.title}
-            src={Array.isArray(schematic.image_urls) && schematic.image_urls.length > 0
-                ? schematic.image_urls[0]
-                : ''
-            }
+          className='h-full w-full rounded-t-md object-cover'
+          alt={schematic.title}
+          src={
+            Array.isArray(schematic.image_urls) && schematic.image_urls.length > 0
+              ? schematic.image_urls[0]
+              : ''
+          }
         />
       </div>
       <CardHeader className='grow'>
@@ -51,7 +52,7 @@ const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
 
       <CardContent>
         <div>
-          Modloader: <ModLoaderDisplay loaders={schematic.modloaders} />
+          Modloader: <ModLoaders loaders={schematic.modloaders} />
         </div>
         <div>
           Made for Minecraft:

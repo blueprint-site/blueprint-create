@@ -1,26 +1,21 @@
-
 import { useEffect, useState } from 'react';
-import {Tag} from "@/schemas/blog.schema.tsx";
+import type { BlogTag } from '@/types';
 
 interface BlogTagsDisplayProps {
-  value?: Tag[];
+  value?: BlogTag[];
 }
 
 const BlogTagsDisplay = ({ value }: BlogTagsDisplayProps) => {
-  const [tags, setTags] = useState<Tag[]>([]);
+  const [tags, setTags] = useState<BlogTag[]>([]);
 
   useEffect(() => {
     setTags(value || []);
-  }, [value]); // ✅ Seulement `value` en dépendance
+  }, [value]);
 
   return (
     <div className='flex flex-wrap gap-2'>
       {tags.map((tag) => (
-        <span
-          key={tag.id}
-          className='text-foreground rounded px-1 py-1'
-          style={{ backgroundColor: tag.color }}
-        >
+        <span key={tag.$id} className={`text-foreground rounded p-1 bg-[${tag.color}]`}>
           {tag.value}
         </span>
       ))}

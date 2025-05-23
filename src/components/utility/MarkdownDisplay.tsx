@@ -1,60 +1,55 @@
-import React, { useEffect, useState } from 'react';
-import '@mdxeditor/editor/style.css';
-import {
-  MDXEditor,
-  headingsPlugin,
-  tablePlugin,
-  listsPlugin,
-  thematicBreakPlugin,
-  markdownShortcutPlugin,
-  quotePlugin,
-  frontmatterPlugin,
-  codeBlockPlugin,
-  sandpackPlugin,
-  codeMirrorPlugin,
-  imagePlugin,
-} from '@mdxeditor/editor';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 
-const MarkdownDisplay = ({ content }: { content: string }) => {
-  // Local state to ensure proper updates
-  const [markdownContent, setMarkdownContent] = useState(content);
+interface MarkdownDisplayProps {
+  content: string;
+  className?: string;
+}
 
-  // Keep local state in sync with props
-  useEffect(() => {
-    setMarkdownContent(content);
-  }, [content]);
+const MarkdownDisplay = ({ content, className = '' }: MarkdownDisplayProps) => {
+  // Ensure content is a string
+  const unescapedContent = content
+    .replace(/\\#/g, '#') // Fix headings
+    .replace(/\\\*/g, '*') // Fix bold/italic
+    .replace(/\\\[/g, '[') // Fix links and images
+    .replace(/\\]/g, ']')
+    .replace(/\\\(/g, '(')
+    .replace(/\\\)/g, ')')
+    .replace(/\\`/g, '`') // Fix code blocks
+    .replace(/\\~/g, '~') // Fix strikethrough
+    .replace(/\\>/g, '>') // Fix blockquotes
+    .replace(/\\\+/g, '+')
+    .replace(/\\!-/g, '-')
+    .replace(/\\---/g, '---')
+    .replace(/\\\|/g, '|') // Fix tables
+    .replace(/\\\\/g, '\\'); // Fix actual backslashes
 
-  // Generate plugins only once
-  const plugins = React.useMemo(() => [
-    headingsPlugin(),
-    tablePlugin(),
-    listsPlugin(),
-    thematicBreakPlugin(),
-    markdownShortcutPlugin(),
-    quotePlugin(),
-    frontmatterPlugin(),
-    codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
-    sandpackPlugin(),
-    codeMirrorPlugin({
-      codeBlockLanguages: {
-        javascript: 'JavaScript',
-        python: 'Python',
-        css: 'CSS',
-        html: 'HTML',
-      },
-    }),
-    imagePlugin(),
-  ], []);
-
-  // Force re-render if content changes
   return (
-    <MDXEditor
-      key={`markdown-display-${markdownContent.length}`}
-      markdown={markdownContent}
-      readOnly
-      plugins={plugins}
-      contentEditableClassName="prose max-w-none"
-    />
+    <div className={`prose max-w-none overflow-hidden ${className}`}>
+      {' '}
+      {/* Use styles.markdown */}
+      <Markdown
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeRaw]}
+        components={{
+          // Customize link rendering
+          a: ({ ...props }) => (
+            <a
+              {...props}
+              target='_blank'
+              rel='noopener noreferrer'
+              className='text-blueprint hover:text-blueprint underline'
+            />
+          ),
+          // Add other component customizations as needed
+          img: ({ ...props }) => <img {...props} className='my-4 h-auto max-w-full rounded-lg' />,
+          code: ({ ...props }) => <code className='rounded bg-gray-100 px-1 py-0.5' {...props} />,
+        }}
+      >
+        {unescapedContent}
+      </Markdown>
+    </div>
   );
 };
 
