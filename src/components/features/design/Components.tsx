@@ -10,7 +10,13 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -53,13 +59,35 @@ const ComponentSection = () => {
           <CardTitle>Inputs</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className='grid max-w-sm gap-4'>
-            <Input placeholder='Default input' />
-            <Input placeholder='Outlined input' startIcon={Search} />
-            <Input placeholder='Disabled input' disabled />
-            <div className='flex gap-2'>
-              <Input placeholder='With button' />
-              <Button>Send</Button>
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+            <div className='flex flex-col gap-4'>
+              <Input placeholder='Default input' />
+              <Input placeholder='Disabled input' disabled />
+              <div className='flex gap-2'>
+                <Input placeholder='With button' />
+                <Button>Send</Button>
+              </div>
+            </div>
+            <div className='flex flex-col gap-4'>
+              {/* Select components */}
+              <Select>
+                <SelectTrigger>
+                  <SelectValue placeholder='Select option' />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value='option1'>Option 1</SelectItem>
+                  <SelectItem value='option2'>Option 2</SelectItem>
+                  <SelectItem value='option3'>Option 3</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select disabled>
+                <SelectTrigger>
+                  <SelectValue placeholder='Disabled select' />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value='disabled'>Disabled</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </CardContent>
