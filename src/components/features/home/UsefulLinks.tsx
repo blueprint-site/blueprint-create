@@ -39,7 +39,7 @@ const UsefulLinks = () => {
         <h2 className='text-3xl font-bold tracking-tighter sm:text-4xl'>
           {t('home.info.usefulLinks.title')}
         </h2>
-        <p className='text-foreground/90 bg-background/10 mx-auto max-w-[700px]'>
+        <p className='text-foreground/90 bg-background/25 mx-auto max-w-[700px] p-2'>
           {t('home.info.usefulLinks.description')}
         </p>
       </div>
