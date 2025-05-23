@@ -1,4 +1,5 @@
 import { MINECRAFT_VERSIONS } from '@/data/minecraftVersions';
+import { Badge } from '@/components/ui/badge';
 
 const VersionsDisplay = ({ versions = [] }: { versions?: string[] }) => {
   if (versions.length === 0) {
@@ -14,10 +15,9 @@ const VersionsDisplay = ({ versions = [] }: { versions?: string[] }) => {
     : versions;
 
   return (
-    <div className='flex flex-row gap-2'>
-      {versions.includes('All') ? 'All' : null}
+    <div className='flex flex-row flex-wrap gap-2'>
       {versionsToDisplay.map((version) => (
-        <div key={version}>{version} </div>
+        <Badge key={version}>{version} </Badge>
       ))}
     </div>
   );

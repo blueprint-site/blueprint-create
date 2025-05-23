@@ -20,9 +20,13 @@ const ModLoaderDisplay = ({ loaders = [] }: { loaders: string[] }) => {
   // Get a sorted array of unique normalized loader names
   const uniqueLoaders = Array.from(loaderDisplayMap.keys()).sort((a, b) => a.localeCompare(b));
 
+  // If "All" is present, show all four loaders instead
+  const hasAll = uniqueLoaders.includes('All');
+  const displayLoaders = hasAll ? ['Forge', 'Fabric', 'Quilt', 'NeoForge'] : uniqueLoaders;
+
   return (
     <div className='flex flex-row gap-2'>
-      {uniqueLoaders.map((loader) => {
+      {displayLoaders.map((loader) => {
         return loader === 'NeoForge' ? (
           <div key={loader}>
             <TooltipProvider delayDuration={0}>
