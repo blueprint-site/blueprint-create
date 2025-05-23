@@ -11,6 +11,7 @@ import {
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
+  ContextMenuLabel,
 } from '@/components/ui/context-menu';
 import {
   DropdownMenu,
@@ -21,7 +22,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Trash, Ban, MoreVertical } from 'lucide-react';
-import { ContextMenuLabel } from '@radix-ui/react-context-menu';
 import { useNavigate } from 'react-router';
 
 export const SchematicsTable = () => {

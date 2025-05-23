@@ -7,8 +7,8 @@ export interface SchematicsDetailsFooterProps {
 
 export const SchematicsDetailsFooter = ({ title = '' }: SchematicsDetailsFooterProps) => {
   return (
-    <Card className={'my-8 mt-4'}>
-      <CardFooter>
+    <Card className='mt-4 p-4'>
+      <CardFooter className='flex items-center gap-4'>
         <SocialSharing title={title} />
       </CardFooter>
     </Card>

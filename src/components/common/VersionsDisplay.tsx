@@ -1,6 +1,12 @@
 import { MINECRAFT_VERSIONS } from '@/data/minecraftVersions';
+import { Badge } from '@/components/ui/badge';
 
-const VersionsDisplay = ({ versions = [] }: { versions?: string[] }) => {
+type VersionsDisplayProps = {
+  versions?: string[];
+  variant?: 'default' | 'secondary' | 'accent' | 'warning' | 'destructive' | 'outline';
+};
+
+const VersionsDisplay = ({ versions = [], variant = 'secondary' }: VersionsDisplayProps) => {
   if (versions.length === 0) {
     return <div>No versions found!</div>;
   }
@@ -14,10 +20,11 @@ const VersionsDisplay = ({ versions = [] }: { versions?: string[] }) => {
     : versions;
 
   return (
-    <div className='flex flex-row gap-2'>
-      {versions.includes('All') ? 'All' : null}
+    <div className='flex flex-row flex-wrap gap-2'>
       {versionsToDisplay.map((version) => (
-        <div key={version}>{version} </div>
+        <Badge key={version} variant={variant}>
+          {version}
+        </Badge>
       ))}
     </div>
   );

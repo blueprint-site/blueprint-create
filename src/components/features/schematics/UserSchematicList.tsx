@@ -51,7 +51,7 @@ const UserSchematicList = () => {
 
   return (
     <div className='mt-2'>
-      <h2>My schematics</h2>
+      <h5>My schematics</h5>
       <div className='mt-2 grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
         {userSchematics
           ? userSchematics.map((schematic: Schematic) => (
@@ -65,22 +65,13 @@ const UserSchematicList = () => {
                 {schematic.image_urls && schematic.image_urls.length > 0 && (
                   <div className='absolute inset-0 z-0 overflow-hidden'>
                     <div
-                      className='absolute inset-0'
+                      className={`absolute inset-0 scale-[1.1] bg-cover bg-center blur-sm grayscale transition-all`}
                       style={{
                         backgroundImage: `url(${schematic.image_urls[0]})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        transform: 'scale(1.1) ',
-                        filter: 'grayscale(100%) blur(5px)',
                       }}
                     />
                     <div
-                      className='absolute inset-0'
-                      style={{
-                        backgroundColor: isDarkMode
-                          ? 'rgba(0, 0, 0, 0.3)'
-                          : 'rgba(255, 255, 255, 0.4)', // Adjust as needed
-                      }}
+                      className={`absolute inset-0 ${isDarkMode ? 'bg-black/30' : 'bg-white/40'} `}
                     />
                   </div>
                 )}
@@ -123,7 +114,7 @@ const UserSchematicList = () => {
                 </CardContent>
                 <div className='absolute top-1 right-1 z-10 flex gap-1'>
                   <Button
-                    variant='warning'
+                    variant='default'
                     className={'cursor-pointer'}
                     size='icon'
                     onClick={(event) => handleEditClick(event, schematic)}

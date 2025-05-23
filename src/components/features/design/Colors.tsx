@@ -2,30 +2,6 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 const ColorsSection = () => {
   const colorSystem = {
-    base: [
-      {
-        name: 'Blueprint',
-        class: 'bg-blueprint',
-        description: 'Primary brand color, used for main UI elements',
-      },
-    ],
-    surfaces: [
-      {
-        name: 'Surface 1',
-        class: 'bg-surface-1',
-        description: 'Primary surface, main content areas',
-      },
-      {
-        name: 'Surface 2',
-        class: 'bg-surface-2',
-        description: 'Secondary surface, raised elements',
-      },
-      {
-        name: 'Surface 3',
-        class: 'bg-surface-3',
-        description: 'Tertiary surface, highest elevation',
-      },
-    ],
     semantic: [
       {
         name: 'Primary',
@@ -58,6 +34,23 @@ const ColorsSection = () => {
         description: 'Dangerous or destructive actions',
       },
     ],
+    surfaces: [
+      {
+        name: 'Surface 1',
+        class: 'bg-surface-1',
+        description: 'Primary surface, main content areas',
+      },
+      {
+        name: 'Surface 2',
+        class: 'bg-surface-2',
+        description: 'Secondary surface, raised elements',
+      },
+      {
+        name: 'Surface 3',
+        class: 'bg-surface-3',
+        description: 'Tertiary surface, highest elevation',
+      },
+    ],
     text: [
       {
         name: 'Foreground',
@@ -71,12 +64,6 @@ const ColorsSection = () => {
         cardClass: 'bg-success',
       },
       {
-        name: 'Blueprint Foreground',
-        class: 'bg-blueprint-foreground',
-        description: 'Text on blueprint background',
-        cardClsas: 'bg-blueprint',
-      },
-      {
         name: 'Foreground Muted',
         class: 'bg-foreground-muted',
         description: 'Secondary text and disabled states',
@@ -86,12 +73,6 @@ const ColorsSection = () => {
         class: 'bg-semantic-foreground-muted',
         description: 'Secondary text on colored backgrounds',
         cardClass: 'bg-accent',
-      },
-      {
-        name: 'Blueprint Foreground Muted',
-        class: 'bg-blueprint-foreground-muted',
-        description: 'Secondary text on blueprint background',
-        cardClass: 'bg-blueprint',
       },
     ],
     states: [

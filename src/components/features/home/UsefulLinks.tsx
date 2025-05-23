@@ -39,7 +39,7 @@ const UsefulLinks = () => {
         <h2 className='text-3xl font-bold tracking-tighter sm:text-4xl'>
           {t('home.info.usefulLinks.title')}
         </h2>
-        <p className='text-foreground/90 bg-background/10 mx-auto max-w-[700px]'>
+        <p className='text-foreground/90 bg-background/25 mx-auto max-w-[700px] p-2'>
           {t('home.info.usefulLinks.description')}
         </p>
       </div>
@@ -61,8 +61,12 @@ const UsefulLinks = () => {
                 className='h-16 w-16 object-contain'
               />
               <div className='text-center'>
-                <div className='font-minecraft text-xl font-bold text-white/90'>{link.text}</div>
-                <div className='line-clamp-2 text-sm text-white/80'>{link.description}</div>
+                <div className='font-minecraft text-semantic-foreground text-xl font-bold'>
+                  {link.text}
+                </div>
+                <div className='text-semantic-foreground-muted line-clamp-2 text-sm'>
+                  {link.description}
+                </div>
               </div>
             </a>
           ))}

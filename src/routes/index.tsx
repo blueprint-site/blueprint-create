@@ -4,7 +4,6 @@ import React, { lazy, Suspense } from 'react';
 import type { RouteObject } from 'react-router';
 
 import { authRoutes } from '@/routes/authRoutes';
-import { schematicRoutes } from '@/routes/schematicRoutes';
 import { settingsRoutes } from '@/routes/settings';
 import { AdminRoutes } from '@/routes/adminRoutes';
 import { blogRoutes } from '@/routes/blogRoutes';
@@ -18,6 +17,10 @@ import { RouteErrorBoundary } from '@/components/error/RouteErrorBoundary';
 
 const BlogPage = lazy(() => import('@/pages/blog/BlogDetails'));
 const SchematicsList = lazy(() => import('@/pages/schematics/SchematicsList'));
+const SchematicDetails = lazy(() => import('@/pages/schematics/SchematicDetailsPage'));
+const SchematicsUploadPage = lazy(
+  () => import('@/components/features/schematics/upload/SchematicsUpload')
+);
 const AddonsList = lazy(() => import('@/pages/addons/AddonListPage'));
 const AddonDetails = lazy(() => import('@/pages/addons/AddonDetailsPage'));
 const About = lazy(() => import('@/pages/About'));
@@ -71,6 +74,18 @@ export const routes: RouteObject[] = [
         ...createProtectedRoute(AddonDetails),
       },
       {
+        path: 'schematics/upload',
+        ...createProtectedRoute(SchematicsUploadPage),
+      },
+      {
+        path: 'schematics/edit/:id',
+        ...createProtectedRoute(SchematicsUploadPage),
+      },
+      {
+        path: 'schematics/:id/:slug',
+        element: <SchematicDetails />,
+      },
+      {
         path: 'design',
         ...createProtectedRoute(Design),
       },
@@ -93,7 +108,6 @@ export const routes: RouteObject[] = [
       ...authRoutes,
       ...settingsRoutes,
       ...blogRoutes,
-      ...schematicRoutes,
       ...userRoutes,
       ...gameRoutes,
       {

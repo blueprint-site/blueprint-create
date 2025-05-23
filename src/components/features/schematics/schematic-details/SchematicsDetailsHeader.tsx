@@ -23,6 +23,7 @@ export const SchematicsDetailsHeader = ({ schematic }: SchematicsDetailsHeaderPr
   const openUrl = (url: string) => {
     window.open(url, '_blank');
   };
+
   useEffect(() => {
     if (currentSchematicTimestamp) {
       const timestamp = new Date(currentSchematicTimestamp).getTime();
@@ -34,8 +35,9 @@ export const SchematicsDetailsHeader = ({ schematic }: SchematicsDetailsHeaderPr
       }
     }
   }, [currentSchematicTimestamp, isUploadedByUser]);
+
   return (
-    <Card className={'mt-8'}>
+    <Card className='mt-8'>
       <CardHeader className='text-center'>
         <div className='flex w-full justify-between'>
           <div className='flex items-center justify-start gap-4'>
@@ -60,15 +62,15 @@ export const SchematicsDetailsHeader = ({ schematic }: SchematicsDetailsHeaderPr
             )}
           </div>
           <div className='flex items-center justify-end gap-4'>
-            <Button variant='default' className='transition-all duration-300 hover:shadow-lg'>
+            {/* <Button variant='default' className='transition-all duration-300 hover:shadow-lg'>
               <Share className='mr-2' /> Share
-            </Button>
+            </Button> */}
             <Button
               onClick={() => {
                 openUrl(schematic.schematic_url);
                 incrementDownloads(schematic.$id);
               }}
-              variant='success'
+              variant='accent'
               className='transition-all duration-300 hover:shadow-lg'
             >
               <Download className='mr-2' />
