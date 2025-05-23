@@ -99,18 +99,6 @@ export function MissionSection() {
               </ContactLink>
             </motion.div>
           ))}
-          <div className='inline-flex w-full items-center gap-2 self-start opacity-30'>
-            <ArrowUp />
-            <ArrowUp />
-            <ArrowDown />
-            <ArrowDown />
-            <ArrowLeft />
-            <ArrowRight />
-            <ArrowLeft />
-            <ArrowRight />
-            <span>B</span>
-            <span>A</span>
-          </div>
         </div>
       </CardContent>
     </Card>

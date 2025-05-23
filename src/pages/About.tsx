@@ -8,7 +8,7 @@ import { HeroLayout, HeroContent, HeroHeader } from '@/layouts/HeroLayout';
 import ScrollingAddonBackground from '@/components/common/ScrollingAddonBackground';
 import { useTranslation } from 'react-i18next';
 import { useGitHubContributors } from '@/api';
-import { ConamiCodeEasterEgg } from '@/components/features/games/tetris/ConamiCodeEasterEgg';
+import { ConamiCodeEasterEgg } from '@/components/features/easter-eggs/KonamiCodeEasterEgg';
 
 export default function About() {
   const { contributors, isLoading, error } = useGitHubContributors();

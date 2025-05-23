@@ -4,7 +4,8 @@
   "version": "2.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --open",
+    "dev": "vite",
+    "host": "vite --host",
     "build": "tsc --noEmit && vite build",
     "prebuild": "npm run lint",
     "fix": "npm run lint --fix",
