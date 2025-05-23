@@ -5,7 +5,7 @@ export interface SchematicsDetailsFooterProps {
   title: string;
 }
 
-export const SchematicsDetailsFooter = ({ title = '' }: SchematicsDetailsFooterProps) => {
+const SchematicsDetailsFooter = ({ title = '' }: SchematicsDetailsFooterProps) => {
   return (
     <Card className='mt-4 p-4'>
       <CardFooter className='flex items-center gap-4'>
@@ -14,3 +14,5 @@ export const SchematicsDetailsFooter = ({ title = '' }: SchematicsDetailsFooterP
     </Card>
   );
 };
+
+export default SchematicsDetailsFooter;

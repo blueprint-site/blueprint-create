@@ -1,6 +1,6 @@
-import { SchematicsDetailsHeader } from '@/components/features/schematics/schematic-details/SchematicsDetailsHeader.tsx';
-import { SchematicsDetailsContent } from '@/components/features/schematics/schematic-details/SchematicsDetailsContent.tsx';
-import { SchematicsDetailsFooter } from '@/components/features/schematics/schematic-details/SchematicsDetailsFooter.tsx';
+import SchematicsDetailsHeader from '@/components/features/schematics/schematic-details/SchematicsDetailsHeader.tsx';
+import SchematicsDetailsContent from '@/components/features/schematics/schematic-details/SchematicsDetailsContent.tsx';
+import SchematicsDetailsFooter from '@/components/features/schematics/schematic-details/SchematicsDetailsFooter.tsx';
 import { useParams } from 'react-router';
 import { useFetchSchematic } from '@/api/appwrite/useSchematics';
 

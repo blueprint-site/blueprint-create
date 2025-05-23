@@ -9,7 +9,7 @@ export interface SchematicsDetailsContentProps {
   schematic: Schematic;
 }
 
-export const SchematicsDetailsContent = ({ schematic }: SchematicsDetailsContentProps) => {
+const SchematicsDetailsContent = ({ schematic }: SchematicsDetailsContentProps) => {
   return (
     <Card className='mt-4'>
       <CardContent className='space-y-6 pt-2'>
@@ -20,11 +20,11 @@ export const SchematicsDetailsContent = ({ schematic }: SchematicsDetailsContent
           <div className='flex flex-col items-start gap-4 md:w-1/3'>
             <div className='space-y-4'>
               <h3 className='mb-2 text-lg font-semibold'>Create Versions</h3>
-              <VersionsDisplay versions={schematic.create_versions} />
+              <VersionsDisplay versions={schematic.create_versions} variant='default' />
             </div>
             <div className='space-y-4'>
               <h3 className='mb-2 text-lg font-semibold'>Minecraft Versions</h3>
-              <VersionsDisplay versions={schematic.game_versions} />
+              <VersionsDisplay versions={schematic.game_versions} variant='secondary' />
               <h3 className='mb-2 text-lg font-semibold'>Modloaders</h3>
               <ModLoaders loaders={schematic.modloaders} />
             </div>
@@ -42,3 +42,5 @@ export const SchematicsDetailsContent = ({ schematic }: SchematicsDetailsContent
     </Card>
   );
 };
+
+export default SchematicsDetailsContent;
