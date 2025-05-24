@@ -54,6 +54,7 @@ export function ListPageContent({
 
   return (
     <main
+      id='main'
       className={cn(
         'flex h-screen w-full flex-col justify-between overflow-scroll lg:pt-16',
         className
