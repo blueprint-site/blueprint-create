@@ -1,6 +1,5 @@
 // src/components/features/home/WhatIsBlueprint.tsx
 import { useTranslation } from 'react-i18next';
-import { Equal, Plus } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useEasterEgg } from '@/hooks';
 // Import logos
@@ -9,7 +8,7 @@ import OldLogo from '@/assets/legacy_logo.webp';
 // Import icons
 import AddonIcon from '@/assets/sprite-icons/minecart_coupling.webp';
 import SchematicIcon from '@/assets/sprite-icons/schematic.webp';
-import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 
 const WhatIsBlueprint = () => {
   const { t } = useTranslation();
@@ -58,7 +57,7 @@ const WhatIsBlueprint = () => {
   }, []);
 
   return (
-    <section className='font-minecraft bg-blueprint container py-6 md:rounded-lg md:py-12'>
+    <Card className='font-minecraft bg-blueprint container rounded-none py-6 md:rounded-xl md:py-12'>
       <div className='text-blueprint-foreground flex flex-col items-center space-y-5 text-center'>
         <div className='text-3xl font-bold tracking-tighter sm:text-4xl md:py-4 md:text-5xl'>
           {t('home.info.about.title')}
@@ -127,7 +126,7 @@ const WhatIsBlueprint = () => {
           </button>
         </div>
       </div>
-    </section>
+    </Card>
   );
 };
 

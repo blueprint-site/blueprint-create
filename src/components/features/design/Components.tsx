@@ -112,7 +112,7 @@ const ComponentSection = () => {
             </CardFooter>
           </Card>
 
-          <Card className='bg-primary'>
+          <Card className='bg-blueprint'>
             <CardHeader>
               <CardTitle>Blueprint Card (WIP)</CardTitle>
               <CardDescription>
