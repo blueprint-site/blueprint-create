@@ -49,7 +49,9 @@ export function ContributorsSection({
         <h2 id='contributors' className='text-3xl font-bold'>
           {t('about.contributions.title')}
         </h2>
-        <p className='text-foreground-muted text-lg'>{t('about.contributions.subtitle.main')}</p>
+        <p className='text-foreground bg-background/20 text-lg'>
+          {t('about.contributions.subtitle.main')}
+        </p>
       </div>
 
       {error && (

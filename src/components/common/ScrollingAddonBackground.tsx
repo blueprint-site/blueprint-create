@@ -196,24 +196,21 @@ export const ScrollingAddonBackground = ({
   // Animation duration in seconds (adjust as needed)
   const animationDuration = 160;
 
-  // Define keyframes for row scrolling animation
-  const keyframesStyle = `
-    @keyframes scrollRow {
-      0% {
-        transform: translateX(-${cols * totalAddonWidth}px);
-      }
-      100% {
-        transform: translateX(0);
-      }
-    }
-  `;
-
   return (
     <div
       className='bg-background relative h-full w-full overflow-hidden rounded-b-2xl'
       ref={containerRef}
     >
-      <style>{keyframesStyle}</style>
+      <style>{`
+        @keyframes scrollRow {
+          0% {
+            transform: translateX(-${cols * totalAddonWidth}px);
+          }
+          100% {
+            transform: translateX(0);
+          }
+        }
+      `}</style>
 
       <div className='absolute inset-0'>
         <div className='flex h-full w-full flex-col overflow-hidden'>
@@ -223,7 +220,7 @@ export const ScrollingAddonBackground = ({
               className='flex w-fit whitespace-nowrap'
               style={{
                 animation: `scrollRow ${animationDuration}s linear infinite`,
-                animationDelay: `${((rowIndex % 2) * -animationDuration) / 2}s`, // Alternate row direction
+                animationDelay: `${((rowIndex % 2) * -animationDuration) / 2}s`,
               }}
             >
               {row.map((addon) =>
@@ -232,12 +229,9 @@ export const ScrollingAddonBackground = ({
                     key={addon.key}
                     src={addon.icon}
                     alt={addon.name || 'Addon icon'}
-                    className={`mr-[5px] mb-[5px] h-[50px] w-[50px] rounded-full object-contain ${
-                      hasVersion(addon.create_versions, '0.6') ? '' : 'opacity-70 grayscale'
-                    }`}
+                    className={`mr-[5px] mb-[5px] h-[50px] w-[50px] rounded-full object-contain ${hasVersion(addon.create_versions, '0.6') ? '' : 'opacity-70 grayscale'}`}
                     loading='lazy'
                     onError={(e) => {
-                      // Replace broken images with placeholder
                       (e.target as HTMLImageElement).src =
                         'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"%3E%3Crect width="50" height="50" fill="%23555555" rx="25" /%3E%3C/svg%3E';
                       (e.target as HTMLImageElement).className =
@@ -256,10 +250,8 @@ export const ScrollingAddonBackground = ({
         </div>
       </div>
 
-      {/* Semi-transparent overlay */}
       <div className='absolute inset-0 bg-black opacity-30'></div>
 
-      {/* Main content */}
       <div className='relative flex h-full flex-col items-center justify-center font-bold text-white'>
         <h1 className='mb-4 text-center text-4xl'>
           {showPlaceholderContent ? (
@@ -276,7 +268,6 @@ export const ScrollingAddonBackground = ({
       </div>
 
       <div className='absolute top-2 right-2 flex items-center'>
-        {/* Info tooltip */}
         <TooltipProvider delayDuration={100}>
           <Tooltip>
             <TooltipTrigger asChild>
