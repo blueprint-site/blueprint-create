@@ -5,9 +5,9 @@
 
 /* Root CSS Variables - HSL values wrapped in hsl() */
 :root {
-  --background: hsl(220 15% 96%);
-  --foreground: hsl(220 15% 20%);
-  --foreground-muted: hsl(220 15% 35%);
+  --background: hsl(220, 14%, 96%);
+  --foreground: hsl(220 15% 18%);
+  --foreground-muted: hsl(220 15% 23%);
 
   --blueprint: hsl(220, 100%, 75%);
   --blueprint-foreground: hsl(0, 0%, 16%);
@@ -16,8 +16,8 @@
   --semantic-foreground: hsl(0, 0%, 98%);
   --semantic-foreground-muted: hsl(0 0% 90%);
 
-  --primary: hsl(220, 84%, 75%);
-  --primary-foreground: var(--foreground);
+  --primary: hsl(220, 90%, 56%);
+  --primary-foreground: var(--semantic-foreground);
 
   --secondary: hsl(215, 30%, 45%);
   --secondary-foreground: var(--semantic-foreground);

@@ -1,6 +1,9 @@
-import { Link } from 'react-router';
+import React from 'react';
+import { useNavigate } from 'react-router';
 import { Download } from 'lucide-react';
-import { buttonVariants } from '@/components/ui/button.tsx';
+
+import { Badge } from '@/components/ui/badge.tsx';
+import { Button } from '@/components/ui/button.tsx';
 import {
   Card,
   CardContent,
@@ -9,10 +12,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card.tsx';
-import { Badge } from '@/components/ui/badge.tsx';
+import ModLoaders from '../addons/addon-card/ModLoaders';
+
 import { useIncrementDownloads } from '@/api/appwrite/useSchematics';
 import type { Schematic } from '@/types';
-import ModLoaders from '../addons/addon-card/ModLoaders';
 
 interface SchematicCardProps {
   schematic: Schematic;
@@ -20,14 +23,21 @@ interface SchematicCardProps {
 }
 
 const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
+  const navigate = useNavigate();
   const renderVersionBadges = (versions: string[]) => {
     return versions.map((version, i) => (
-      <Badge key={`mc-version-${version}-${i}`} variant='mcVersion'>
+      <Badge key={`mc-version-${version}-${i}`} variant='accent'>
         {version}
       </Badge>
     ));
   };
   const { mutate: incrementDownloads } = useIncrementDownloads();
+
+  const handleDownload = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    incrementDownloads(schematic.$id);
+    navigate(schematic.schematic_url);
+  };
 
   return (
     <Card
@@ -61,19 +71,9 @@ const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
       </CardContent>
 
       <CardFooter className='mt-auto'>
-        <Link
-          className={buttonVariants({
-            variant: 'default',
-            className: 'w-full text-center',
-          })}
-          to={schematic.schematic_url}
-          onClick={(e) => {
-            incrementDownloads(schematic.$id);
-            e.stopPropagation();
-          }}
-        >
+        <Button variant='default' className='w-full text-center' onClick={handleDownload}>
           <Download /> Download
-        </Link>
+        </Button>
       </CardFooter>
     </Card>
   );
