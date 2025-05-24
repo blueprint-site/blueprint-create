@@ -10,7 +10,7 @@ import {
 } from '@icons-pack/react-simple-icons';
 import type { ReactNode } from 'react';
 
-export interface AddonDetailsDonationProps {
+interface AddonDetailsDonationProps {
   links: {
     id: string;
     platform: string;
@@ -18,7 +18,7 @@ export interface AddonDetailsDonationProps {
   }[];
 }
 
-export const AddonDetailsDonation = ({ links }: AddonDetailsDonationProps) => {
+const AddonDetailsDonation = ({ links }: AddonDetailsDonationProps) => {
   const getPlatformButton = (platform: string, url: string): ReactNode => {
     if (url.includes('opencollective')) {
       platform = 'Open Collective';
@@ -92,3 +92,5 @@ export const AddonDetailsDonation = ({ links }: AddonDetailsDonationProps) => {
     </CardContent>
   );
 };
+
+export default AddonDetailsDonation;

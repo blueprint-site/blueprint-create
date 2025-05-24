@@ -1,30 +1,28 @@
 // src/components/features/addons/addon-details/AddonDetailsView.tsx
+import { SiDiscord, SiGithub } from '@icons-pack/react-simple-icons';
+import { Bug, Globe } from 'lucide-react';
 
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import type { ExternalLink, IntegratedAddonData } from '@/types';
-import { ModPageLinks } from '@/components/features/addons/addon-card/ModPageLinks';
 
-import { AddonDetailsHeader } from './AddonDetailsHeader';
-import { AddonDetailsDescription } from './AddonDetailsDescription';
-import { AddonDetailsGallery } from './AddonDetailsGallery';
-import { AddonDetailsFooter } from './AddonDetailsFooter';
-import { AddonDetailsDonation } from './AddonDetailsDonation';
+import ModPageLinks from '@/components/features/addons/addon-card/ModPageLinks';
+import AddonDetailsHeader from './AddonDetailsHeader';
+import AddonDetailsDescription from './AddonDetailsDescription';
+import AddonDetailsGallery from './AddonDetailsGallery';
+import AddonDetailsFooter from './AddonDetailsFooter';
+import AddonDetailsDonation from './AddonDetailsDonation';
 import { AddonVersionCompatibility } from './versions/AddonVersionCompatibility';
+
+import type { ExternalLink, IntegratedAddonData } from '@/types';
 import type { ModrinthProject } from '@/types';
-import { SiDiscord, SiGithub } from '@icons-pack/react-simple-icons';
-import { Bug, Globe } from 'lucide-react';
+
 interface AddonDetailsViewProps {
   addon: IntegratedAddonData;
   createVersions?: string[];
 }
 
-/**
- * Unified view component for addon details using processed data
- */
-export const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsViewProps) => {
-  // Check if we have environment info
+const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsViewProps) => {
   const hasEnvironmentInfo = addon.modrinth?.client_side ?? addon.modrinth?.server_side;
   const createdAt =
     addon.created_at ??
@@ -64,12 +62,11 @@ export const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsVie
   ].filter((link) => link.url !== '');
 
   return (
-    <div className='container mx-auto px-4 py-8'>
-      <Card className='overflow-hidden'>
+    <div className='container p-0 sm:mx-auto sm:px-4 sm:py-8'>
+      <Card className='overflow-hidden rounded-none sm:rounded'>
         {/* Header with direct data access */}
         <AddonDetailsHeader
           name={addon.name}
-          slug={addon.slug}
           downloads={addon.downloads}
           description={addon.description}
           icon={addon.icon}
@@ -185,9 +182,7 @@ export const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsVie
         </div>
 
         {/* Gallery with direct data access */}
-        {addon.modrinth.gallery.length > 0 ? (
-          <AddonDetailsGallery gallery={addon.modrinth.gallery} name={addon.name} />
-        ) : null}
+        <AddonDetailsGallery gallery={addon.modrinth.gallery} name={addon.name} />
 
         {/* Description */}
         {addon.modrinth.body && (
@@ -220,3 +215,5 @@ export const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsVie
     </div>
   );
 };
+
+export default AddonDetailsView;

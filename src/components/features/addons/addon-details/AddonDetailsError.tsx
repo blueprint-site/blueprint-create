@@ -1,10 +1,10 @@
 import { Card, CardContent } from '@/components/ui/card.tsx';
 
-export interface AddonDetailsErrorProps {
+interface AddonDetailsErrorProps {
   error: { message: string };
 }
 
-export const AddonDetailsError = ({ error }: AddonDetailsErrorProps) => {
+const AddonDetailsError = ({ error }: AddonDetailsErrorProps) => {
   const errorMessage = error?.message || 'An unexpected error occurred'; // Default value if `message` is missing
 
   return (
@@ -17,3 +17,5 @@ export const AddonDetailsError = ({ error }: AddonDetailsErrorProps) => {
     </div>
   );
 };
+
+export default AddonDetailsError;

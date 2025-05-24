@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton.tsx';
 
-export const AddonDetailsLoading = () => {
+const AddonDetailsLoading = () => {
   return (
     <div className='container mx-auto space-y-6 px-4 py-8'>
       <div className='flex gap-4'>
@@ -15,3 +15,5 @@ export const AddonDetailsLoading = () => {
     </div>
   );
 };
+
+export default AddonDetailsLoading;
