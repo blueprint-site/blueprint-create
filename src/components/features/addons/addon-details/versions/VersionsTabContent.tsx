@@ -8,7 +8,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { ChevronDown, InfoIcon } from 'lucide-react';
+import { InfoIcon } from 'lucide-react';
 import type { AddonVersion } from '@/types';
 import { useDependencyProcessor } from '@/hooks';
 import ModLoaders from '../../addon-card/ModLoaders';
@@ -41,7 +41,6 @@ export const VersionsTabContent: React.FC<VersionsTabContentProps> = ({ sortedVe
                   <span className='mr-2'>
                     {new Date(version.date_published).toLocaleDateString()}
                   </span>
-                  <ChevronDown className='h-4 w-4' />
                 </div>
               </div>
             </AccordionTrigger>

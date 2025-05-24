@@ -1,14 +1,17 @@
 // src/components/features/addons/AddonDetails.tsx
 import { useParams } from 'react-router';
-import { AddonDetailsError } from '@/components/features/addons/addon-details/AddonDetailsError';
-import { AddonDetailsLoading } from '@/components/features/addons/addon-details/AddonDetailsLoading';
-import { AddonDetailsView } from './addon-details/AddonDetailsView';
+
+import AddonDetailsError from './addon-details/AddonDetailsError';
+import AddonDetailsLoading from './addon-details/AddonDetailsLoading';
+import AddonDetailsView from './addon-details/AddonDetailsView';
+
 import {
   useFetchAddonBySlug,
   useFetchModrinthProject,
   useFetchModrinthVersions,
   useFetchModrinthDependencies,
 } from '@/api';
+
 import type { IntegratedAddonData } from '@/types';
 import { getAddonCreateVersionsFromVersions } from '@/utils/createCompatibility';
 

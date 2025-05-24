@@ -60,6 +60,8 @@ const AddFeaturedAddon = lazy(() =>
     default: mod.AddFeaturedAddon,
   }))
 );
+
+// LAZY IMPORT FeaturedAddonsList
 const FeaturedAddonsList = lazy(() =>
   import('@/components/features/admin/addons/FeaturedAddonsList').then((mod) => ({
     default: mod.default,
