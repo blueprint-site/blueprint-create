@@ -6,7 +6,7 @@ interface ModPageLinksProps {
   modrinth: boolean;
 }
 
-export const ModPageLinks = ({ slug, curseforge, modrinth }: ModPageLinksProps) => (
+const ModPageLinks = ({ slug, curseforge, modrinth }: ModPageLinksProps) => (
   <div className='flex flex-col justify-between gap-2 md:flex-row'>
     {curseforge && (
       <div className='flex h-full w-full items-center justify-center md:w-1/2'>
@@ -34,3 +34,5 @@ export const ModPageLinks = ({ slug, curseforge, modrinth }: ModPageLinksProps) 
     )}
   </div>
 );
+
+export default ModPageLinks;

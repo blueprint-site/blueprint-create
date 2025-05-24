@@ -4,7 +4,7 @@ interface VersionBadgesProps {
   versions: string[];
 }
 
-export const VersionBadges = ({ versions }: VersionBadgesProps) => {
+const VersionBadges = ({ versions }: VersionBadgesProps) => {
   if (!versions?.length) return null;
 
   return (
@@ -17,3 +17,5 @@ export const VersionBadges = ({ versions }: VersionBadgesProps) => {
     </div>
   );
 };
+
+export default VersionBadges;

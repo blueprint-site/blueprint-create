@@ -4,11 +4,11 @@ import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import { Skeleton } from '@/components/ui/skeleton';
 
-export interface AddonDetailsDescriptionProps {
+interface AddonDetailsDescriptionProps {
   description: string;
 }
 
-export const AddonDetailsDescription = ({ description = '' }: AddonDetailsDescriptionProps) => {
+const AddonDetailsDescription = ({ description = '' }: AddonDetailsDescriptionProps) => {
   const [formattedDescription, setFormattedDescription] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -22,18 +22,13 @@ export const AddonDetailsDescription = ({ description = '' }: AddonDetailsDescri
           return;
         }
 
-        // Process markdown description
         const markedHtml = await marked(description, {
-          gfm: true, // GitHub Flavored Markdown
-          breaks: true, // Convert line breaks to <br>
+          gfm: true,
+          breaks: true,
         });
 
-        // Wrap images with a div for styling
-        const wrappedHtml = markedHtml
-          .replace(/<img/g, '<div class="img-wrapper"><img')
-          .replace(/<\/img>/g, '</img></div>');
-
-        const sanitizedHtml = DOMPurify.sanitize(wrappedHtml, {
+        const sanitizedHtml = DOMPurify.sanitize(markedHtml, {
+          // or wrappedHtml if you keep it
           ALLOWED_TAGS: [
             'h1',
             'h2',
@@ -65,11 +60,26 @@ export const AddonDetailsDescription = ({ description = '' }: AddonDetailsDescri
             'dd',
             'div',
             'span',
+            'iframe',
           ],
-          ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'id', 'target', 'rel', 'style'],
+          ALLOWED_ATTR: [
+            'href',
+            'src',
+            'alt',
+            'title',
+            'class',
+            'id',
+            'target',
+            'rel',
+            'style',
+            'allowfullscreen',
+            'frameborder',
+            'height',
+            'width',
+            'scrolling',
+            'loading',
+          ],
           FORBID_ATTR: ['onerror', 'onload', 'onclick'],
-          ADD_ATTR: ['target'], // Allow target="_blank" for links
-          ADD_URI_SAFE_ATTR: ['target'], // Safe attributes for links
         });
 
         setFormattedDescription(sanitizedHtml);
@@ -99,11 +109,10 @@ export const AddonDetailsDescription = ({ description = '' }: AddonDetailsDescri
           <Skeleton className='h-4 w-5/6' />
         </div>
       ) : (
-        <div
-          className='prose prose-slate prose:image-wrapper dark:prose-invert prose-headings:font-semibold prose-a:text-primary prose-code:text-muted-foreground prose-pre:bg-muted prose-pre:text-muted-foreground max-w-none'
-          dangerouslySetInnerHTML={{ __html: formattedDescription }}
-        />
+        <div className='markdown-body' dangerouslySetInnerHTML={{ __html: formattedDescription }} />
       )}
     </CardContent>
   );
 };
+
+export default AddonDetailsDescription;
