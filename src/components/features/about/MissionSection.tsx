@@ -1,7 +1,16 @@
 import { useState } from 'react';
 import { ContactLink } from './ContactLink';
 import { motion } from 'framer-motion';
-import { Compass, Share2, Code, Cog } from 'lucide-react';
+import {
+  Compass,
+  Share2,
+  Code,
+  Cog,
+  ArrowUp,
+  ArrowLeft,
+  ArrowDown,
+  ArrowRight,
+} from 'lucide-react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 
