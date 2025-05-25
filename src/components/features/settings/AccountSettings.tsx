@@ -154,7 +154,7 @@ export default function AccountSettings() {
                   </div>
                 </div>
               </CardContent>
-              <CardFooter>
+              <CardFooter className='pt-0'>
                 <div className={''}>
                   <div className='flex gap-2'>
                     <span>{t('settings.user-settings.account.sessions.created_at')} :</span>
