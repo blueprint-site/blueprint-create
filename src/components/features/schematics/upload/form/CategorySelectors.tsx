@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Control, UseFormReturn } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 import { FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import type { SchematicFormValues } from '@/types';
 import type { SchematicSubcategory } from '@/data';
@@ -19,8 +20,8 @@ interface CategorySelectorsProps {
 }
 
 export function CategorySelectors({ control, form }: CategorySelectorsProps) {
-  const formCategories = useMemo(() => form.watch('categories') || [], [form]);
-  const formSubCategories = useMemo(() => form.watch('sub_categories') || [], [form]);
+  const formCategories = useWatch({ control: form.control, name: 'categories' }) || [];
+  const formSubCategories = useWatch({ control: form.control, name: 'sub_categories' }) || [];
   const [selectedCategories, setSelectedCategories] = useState<string[]>(formCategories);
   const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(formSubCategories);
 

@@ -14,7 +14,7 @@ const BaseLayout = () => {
       className={`bg-background text-foreground min-h-screen w-full ${isDarkMode ? 'dark' : ''}`}
     >
       <AppHeader />
-      <main className='flex h-screen flex-col justify-between overflow-y-auto pt-16'>
+      <main id='main' className='flex h-screen flex-col justify-between overflow-y-auto pt-16'>
         <div
           className={`flex-1 ${isDarkMode ? 'bg-shadow_steel_casing' : 'bg-refined_radiance_casing'}`}
         >

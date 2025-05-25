@@ -42,6 +42,23 @@ const RotatingCogwheel = () => {
   const offset = size / 2.35;
 
   useEffect(() => {
+    const main = document.getElementById('main');
+    if (!main) return;
+
+    let lastScrollTop = main.scrollTop;
+
+    const handleScroll = () => {
+      const scrollTop = main.scrollTop;
+      const delta = scrollTop - lastScrollTop;
+      lastScrollTop = scrollTop;
+      setRotation((prev) => prev + delta / 10); // Change this value to adjust scroll rotation sensitivity
+    };
+
+    main.addEventListener('scroll', handleScroll);
+    return () => main.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       setRotation((prev) => (prev + 0.1) % 360);
     }, 50);

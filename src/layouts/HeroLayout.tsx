@@ -17,6 +17,7 @@ export function HeroLayout({
 
   return (
     <div
+      id='main'
       className={cn(
         `flex min-h-screen w-full flex-col overflow-scroll ${isDarkMode ? 'dark' : ''}`,
         className
