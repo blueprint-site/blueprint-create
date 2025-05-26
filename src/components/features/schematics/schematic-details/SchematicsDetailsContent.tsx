@@ -1,6 +1,6 @@
 import type { Schematic } from '@/types';
-import { Card, CardContent, CardHeader } from '@/components/ui/card.tsx';
-import { MultiImageViewer } from '@/components/utility/MultiImageViewer.tsx';
+import { Card, CardContent } from '@/components/ui/card.tsx';
+import Gallery from '@/components/ui/gallery';
 import VersionsDisplay from '@/components/common/VersionsDisplay.tsx';
 import ModLoaders from '../../addons/addon-card/ModLoaders';
 import MarkdownDisplay from '@/components/utility/MarkdownDisplay.tsx';
@@ -15,7 +15,7 @@ export const SchematicsDetailsContent = ({ schematic }: SchematicsDetailsContent
       <CardContent className='space-y-6 pt-2'>
         <div className='flex flex-col items-start gap-8 md:flex-row'>
           <div className='mt-2 w-full md:w-2/3'>
-            <MultiImageViewer images={schematic.image_urls} />
+            <Gallery images={schematic.image_urls} />
           </div>
           <div className='flex flex-col items-start gap-4 md:w-1/3'>
             <div className='space-y-4'>

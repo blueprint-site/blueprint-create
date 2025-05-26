@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 import MarkdownDisplay from '@/components/utility/MarkdownDisplay';
 import type { User } from '@/types';
-import { MultiImageViewer } from '@/components/utility/MultiImageViewer'; // Import the new component
+import Gallery from '@/components/ui/gallery';
 import ModLoaders from '../../addons/addon-card/ModLoaders';
 
 interface SchematicPreviewProps {
@@ -48,8 +48,8 @@ export function SchematicPreview({
       <CardContent className='space-y-6'>
         <div className='flex flex-col items-start gap-8 md:flex-row'>
           <div className='w-full md:w-full'>
-            {/* Use the MultiImageViewer component */}
-            <MultiImageViewer images={imagePreviewUrls} />
+            {/* Use the Gallery component */}
+            <Gallery images={imagePreviewUrls} />
           </div>
         </div>
 
