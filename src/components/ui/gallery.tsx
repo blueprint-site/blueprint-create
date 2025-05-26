@@ -6,10 +6,11 @@ export interface GalleryProps {
   images: string[];
   enableLightbox?: boolean;
   alt?: string;
+  showNavigation?: boolean;
   className?: string;
 }
 
-const Gallery: React.FC<GalleryProps> = ({ images, enableLightbox = false, alt = '', className }) => {
+const Gallery: React.FC<GalleryProps> = ({ images, enableLightbox = false, alt = '', showNavigation = false, className }) => {
   const [mainApi, setMainApi] = useState<any>(null);
   const [thumbApi, setThumbApi] = useState<any>(null);
   const [current, setCurrent] = useState(0);
@@ -50,7 +51,7 @@ const Gallery: React.FC<GalleryProps> = ({ images, enableLightbox = false, alt =
       <Carousel setApi={setMainApi} aria-label="Image gallery">
         <CarouselContent>
           {images.map((image, index) => (
-            <CarouselItem key={index}>
+            <CarouselItem key={index} className="flex justify-center items-center">
               <img
                 src={image}
                 alt={alt || `Image ${index + 1}`}
@@ -63,15 +64,19 @@ const Gallery: React.FC<GalleryProps> = ({ images, enableLightbox = false, alt =
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        {showNavigation && (
+          <>
+            <CarouselPrevious />
+            <CarouselNext />}
+          </>
+        )}
       </Carousel>
 
       {/* Thumbnail carousel */}
       <Carousel setApi={setThumbApi} opts={{ dragFree: true }} aria-label="Image thumbnails">
         <CarouselContent>
           {images.map((image, index) => (
-            <CarouselItem key={index} className="basis-1/6">
+            <CarouselItem key={index} className="basis-1/6 flex justify-center items-center aspect-video">
               <button
                 onClick={() => onThumbClick(index)}
                 className={current === index ? 'ring-2 ring-primary' : ''}
