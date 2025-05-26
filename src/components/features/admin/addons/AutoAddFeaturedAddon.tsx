@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchAddons } from '@/api';
-import { useFetchAllFeaturedAddons } from '@/api/endpoints/useFeaturedAddons';
-import { useCreateFeaturedAddon } from '@/api/endpoints/useFeaturedAddons';
+import { useCreateFeaturedAddon, useFetchFeaturedAddons } from '@/api/endpoints/useFeaturedAddons';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -86,7 +85,7 @@ export default function AutoAddFeaturedAddon() {
     limit: 10,
   });
 
-  const { data: featuredAddons } = useFetchAllFeaturedAddons();
+  const { data: featuredAddons } = useFetchFeaturedAddons();
   const { mutate: createFeaturedAddon } = useCreateFeaturedAddon();
 
   // Get used display orders

@@ -1,9 +1,8 @@
-import { useFetchAllFeaturedAddons } from '@/api/endpoints/useFeaturedAddons';
+import { useFetchFeaturedAddons } from '@/api/endpoints/useFeaturedAddons';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { toast } from '@/hooks/useToast';
 import { useUpdateFeaturedAddon, useDeleteFeaturedAddon } from '@/api/endpoints/useFeaturedAddons';
 import type { DropResult, DroppableProvided, DraggableProvided } from '@hello-pangea/dnd';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
@@ -20,7 +19,7 @@ import {
 import { useState } from 'react';
 
 export default function FeaturedAddonsList() {
-  const { data: featuredAddons, isLoading, refetch } = useFetchAllFeaturedAddons();
+  const { data: featuredAddons, isLoading, refetch } = useFetchFeaturedAddons();
   const { mutate: updateFeaturedAddon } = useUpdateFeaturedAddon();
   const { mutate: deleteFeaturedAddon } = useDeleteFeaturedAddon();
   const [addonToDelete, setAddonToDelete] = useState<FeaturedAddon | null>(null);

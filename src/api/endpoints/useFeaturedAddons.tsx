@@ -8,15 +8,29 @@ import type { Models } from 'appwrite';
 const DATABASE_ID = '67e6ec5c0032a90a14e6';
 const COLLECTION_ID = '67ed41fb000467814396';
 
-// Fetching only active addons
-export const useFetchFeaturedAddons = (onlyActive: boolean) => {
+interface FetchFeaturedAddonsOptions {
+  active?: boolean;
+  orderBy?: 'display_order' | 'title' | '$createdAt' | '$updatedAt';
+  orderDirection?: 'asc' | 'desc';
+}
+
+export const useFetchFeaturedAddons = (options: FetchFeaturedAddonsOptions = {}) => {
+  const { active = false, orderBy = 'display_order', orderDirection = 'asc' } = options;
+
   return useQuery({
-    queryKey: ['featuredAddons', { onlyActive }],
+    queryKey: ['featuredAddons', options],
     queryFn: async () => {
       try {
-        const queries = [Query.orderAsc('display_order')];
-        if (onlyActive) {
-          queries.unshift(Query.equal('active', true));
+        const queries: string[] = [];
+
+        if (orderDirection === 'asc') {
+          queries.push(Query.orderAsc(orderBy));
+        } else {
+          queries.push(Query.orderDesc(orderBy));
+        }
+
+        if (active) {
+          queries.push(Query.equal('active', true));
         }
 
         const response = await databases.listDocuments<FeaturedAddon>(
@@ -25,25 +39,6 @@ export const useFetchFeaturedAddons = (onlyActive: boolean) => {
           queries
         );
 
-        return response.documents;
-      } catch (err) {
-        console.error('Error fetching featured addons:', err);
-        throw new Error('Failed to fetch featured addons');
-      }
-    },
-    staleTime: 1000 * 60 * 5, // 5 minutes
-  });
-};
-
-// Fetching all addons (featured and not featured made for admin panel)
-export const useFetchAllFeaturedAddons = () => {
-  return useQuery<FeaturedAddon[]>({
-    queryKey: ['featuredAddons'],
-    queryFn: async () => {
-      try {
-        const response = await databases.listDocuments<FeaturedAddon>(DATABASE_ID, COLLECTION_ID, [
-          Query.orderAsc('display_order'),
-        ]);
         return response.documents;
       } catch (err) {
         console.error('Error fetching featured addons:', err);
@@ -80,7 +75,7 @@ export const useCreateFeaturedAddon = () => {
         description: 'Featured addon created successfully',
       });
     },
-    onError: (error) => {
+    onError: (_error) => {
       toast({
         title: 'Error',
         description: 'Failed to create featured addon',
