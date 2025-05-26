@@ -38,10 +38,10 @@ interface FeaturedAddon {
 
 ```typescript
 // Fetch only active featured addons
-const { data: addons, isLoading, error } = useFetchFeaturedAddons();
+const { data: addons, isLoading, error } = useFetchFeaturedAddons({ active: true });
 
 // Fetch all featured addons (including inactive)
-const { data: allAddons } = useFetchAllFeaturedAddons();
+const { data: allAddons } = useFetchFeaturedAddons(); // Gets all addons (default behavior)
 ```
 
 ### Creating a Featured Addon

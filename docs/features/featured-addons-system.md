@@ -106,26 +106,44 @@ export interface FeaturedAddonResponse {
 
 ### Fetching Featured Addons
 
+The `useFetchFeaturedAddons` hook provides a flexible interface for querying featured addons. **By default, it fetches ALL addons (active and inactive)** - this is logical for admin panels that need to manage all addons. For public displays like slideshows, explicitly pass `{ active: true }` to get only active addons.
+
 ```typescript
-// Fetch active featured addons
-const { data: addons, isLoading, error } = useFetchFeaturedAddons();
+interface FetchFeaturedAddonsOptions {
+  active?: boolean;           // Filter to active addons only (default: false - gets all)
+  orderBy?: 'display_order' | 'title' | '$createdAt' | '$updatedAt';
+  orderDirection?: 'asc' | 'desc';
+}
 
-// Fetch all featured addons (admin)
-const { data: allAddons } = useFetchAllFeaturedAddons();
+// Default usage - gets ALL featured addons (active and inactive)
+const { data: allAddons, isLoading, error } = useFetchFeaturedAddons();
 
-// Create a new featured addon
-const { mutate: createFeaturedAddon } = useCreateFeaturedAddon();
+// Public usage - only active addons for slideshows/public display
+const { data: activeAddons } = useFetchFeaturedAddons({ active: true });
 
-// Update an existing featured addon
-const { mutate: updateFeaturedAddon } = useUpdateFeaturedAddon();
+// Custom sorting with all addons
+const { data: sortedAllAddons } = useFetchFeaturedAddons({
+  orderBy: 'title',
+  orderDirection: 'asc'
+});
+
+// Active addons with custom sorting
+const { data: sortedActiveAddons } = useFetchFeaturedAddons({
+  active: true,
+  orderBy: '$createdAt',
+  orderDirection: 'desc'
+});
+```
+
+### Other Mutations
 ```
 
 ### Example Usage
 
 ```tsx
-// Homepage slideshow
+// Homepage slideshow - only active addons for public display
 function HomeSlideshow() {
-  const { data: addons, isLoading } = useFetchFeaturedAddons();
+  const { data: addons, isLoading } = useFetchFeaturedAddons({ active: true });
 
   if (isLoading) return <LoadingSpinner />;
   if (!addons?.length) return <EmptyState />;
@@ -137,6 +155,27 @@ function HomeSlideshow() {
       ))}
     </Carousel>
   );
+}
+
+// Admin panel - all addons including inactive (default behavior)
+function AdminFeaturedAddons() {
+  const { data: allAddons, isLoading } = useFetchFeaturedAddons();
+  
+  return (
+    <AdminTable addons={allAddons} loading={isLoading} />
+  );
+}
+
+// Active addons with custom sorting
+function SortedActiveSlideshow() {
+  const { data: addons } = useFetchFeaturedAddons({
+    active: true,
+    orderBy: 'title',
+    orderDirection: 'asc'
+  });
+  
+  return <SortedCarousel addons={addons} />;
+}
 }
 
 // Admin panel
