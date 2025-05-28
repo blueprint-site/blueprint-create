@@ -5,11 +5,11 @@ import { Bug, Globe } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
+import Gallery from '@/components/ui/gallery';
 
 import ModPageLinks from '@/components/features/addons/addon-card/ModPageLinks';
 import AddonDetailsHeader from './AddonDetailsHeader';
 import AddonDetailsDescription from './AddonDetailsDescription';
-import AddonDetailsGallery from './AddonDetailsGallery';
 import AddonDetailsFooter from './AddonDetailsFooter';
 import AddonDetailsDonation from './AddonDetailsDonation';
 import { AddonVersionCompatibility } from './versions/AddonVersionCompatibility';
@@ -182,7 +182,10 @@ const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsViewProps)
         </div>
 
         {/* Gallery with direct data access */}
-        <AddonDetailsGallery gallery={addon.modrinth.gallery} name={addon.name} />
+        <Gallery
+          images={addon.modrinth.gallery.map((img) => img.raw_url ?? img.url)}
+          enableLightbox
+        />
 
         {/* Description */}
         {addon.modrinth.body && (
