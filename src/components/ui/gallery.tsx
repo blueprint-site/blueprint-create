@@ -67,7 +67,7 @@ const Gallery: React.FC<GalleryProps> = ({ images, enableLightbox = false, alt =
         {showNavigation && (
           <>
             <CarouselPrevious />
-            <CarouselNext />}
+            <CarouselNext />
           </>
         )}
       </Carousel>
