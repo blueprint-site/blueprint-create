@@ -15,7 +15,7 @@ import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
 import { gameRoutes } from '@/routes/gamesRoutes.tsx';
 import { RouteErrorBoundary } from '@/components/error/RouteErrorBoundary';
 
-const BlogPage = lazy(() => import('@/pages/blog/BlogDetails'));
+const BlogList = lazy(() => import('@/pages/blog/Blog'));
 const SchematicsList = lazy(() => import('@/pages/schematics/SchematicsList'));
 const SchematicDetails = lazy(() => import('@/pages/schematics/SchematicDetailsPage'));
 const SchematicsUploadPage = lazy(
@@ -130,7 +130,7 @@ export const routes: RouteObject[] = [
   },
   {
     path: 'blog',
-    ...createProtectedRoute(BlogPage),
+    ...createProtectedRoute(BlogList),
   },
   {
     element: <AdminPanelLayout />,
