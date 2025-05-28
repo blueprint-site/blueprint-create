@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { Search, Filter, RefreshCw, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -28,22 +28,17 @@ export function MobileSearchFilterDrawer({
   const [isExpanded, setIsExpanded] = useState(false);
   const filterContentRef = useRef<HTMLDivElement>(null);
 
-  // Close expanded filters when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (filterContentRef.current && !filterContentRef.current.contains(event.target as Node)) {
-        setIsExpanded(false);
-      }
-    };
-
-    if (isExpanded) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
-    }
-  }, [isExpanded]);
-
   return (
     <div className={cn('lg:hidden', className)}>
+      {/* Invisible Overlay - Covers the area above the drawer when expanded */}
+      {isExpanded && (
+        <div
+          className='fixed inset-0 z-30 bg-transparent'
+          onClick={() => setIsExpanded(false)}
+          aria-label='Close filters'
+        />
+      )}
+
       {/* Filter Options Drawer - Expands upward above the search bar */}
       {isExpanded && (
         <div
@@ -82,7 +77,10 @@ export function MobileSearchFilterDrawer({
       )}
 
       {/* Search Bar - Always sticky at bottom */}
-      <div className='bg-background fixed right-0 bottom-0 left-0 z-50 border-t shadow-lg'>
+      <div
+        className='bg-background fixed right-0 bottom-0 left-0 z-50 border-t shadow-lg'
+        data-search-bar
+      >
         <div className='flex items-center gap-3 p-4'>
           <div className='relative flex-1'>
             <Search className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2' />
