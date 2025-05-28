@@ -5,30 +5,30 @@
 
 /* Root CSS Variables - HSL values wrapped in hsl() */
 :root {
-  --background: hsl(220 15% 96%);
-  --foreground: hsl(220 15% 20%);
-  --foreground-muted: hsl(220 15% 35%);
+  --background: hsl(220 14% 96%);
+  --foreground: hsl(220 15% 18%);
+  --foreground-muted: hsl(220 15% 23%);
 
-  --blueprint: hsl(220, 100%, 75%);
-  --blueprint-foreground: hsl(0, 0%, 16%);
-  --blueprint-foreground-muted: hsl(0, 0%, 13%);
+  --blueprint: hsl(220 100% 75%);
+  --blueprint-foreground: hsl(0 0% 16%);
+  --blueprint-foreground-muted: hsl(0 0% 13%);
 
-  --semantic-foreground: hsl(0, 0%, 98%);
+  --semantic-foreground: hsl(0 0% 98%);
   --semantic-foreground-muted: hsl(0 0% 90%);
 
-  --primary: hsl(220, 84%, 75%);
-  --primary-foreground: var(--foreground);
+  --primary: hsl(220 90% 56%);
+  --primary-foreground: var(--semantic-foreground);
 
-  --secondary: hsl(215, 30%, 45%);
+  --secondary: hsl(215 30% 45%);
   --secondary-foreground: var(--semantic-foreground);
 
   --accent: hsl(265 58% 45%);
   --accent-foreground: hsl(0 0% 98%);
 
-  --success: hsl(86, 36%, 36%);
+  --success: hsl(86 36% 36%);
   --success-foreground: var(--semantic-foreground);
 
-  --warning: hsl(49, 100%, 34%);
+  --warning: hsl(49 100% 34%);
   --warning-foreground: var(--semantic-foreground);
 
   --destructive: hsl(3 57% 36%);
@@ -67,30 +67,30 @@
   --foreground: hsl(220 15% 97%);
   --foreground-muted: hsl(220 13% 70%);
 
-  --blueprint: hsl(220, 100%, 75%);
-  --blueprint-foreground: hsl(0, 0%, 16%);
-  --blueprint-foreground-muted: hsl(0, 0%, 13%);
+  --blueprint: hsl(220 100% 75%);
+  --blueprint-foreground: hsl(0 0% 16%);
+  --blueprint-foreground-muted: hsl(0 0% 13%);
 
   --surface-1: hsl(222 14% 12%);
   --surface-2: hsl(222 14% 16%);
   --surface-3: hsl(222 14% 22%);
 
-  --semantic-foreground: hsl(0, 0%, 98%);
+  --semantic-foreground: hsl(0 0% 98%);
   --semantic-foreground-muted: hsl(0 0% 90%);
 
-  --primary: hsl(220, 80%, 54%);
+  --primary: hsl(220 80% 54%);
   --primary-foreground: var(--foreground);
 
-  --secondary: hsl(215, 60%, 55%);
+  --secondary: hsl(215 60% 55%);
   --secondary-foreground: var(--semantic-foreground);
 
   --accent: hsl(265 58% 52%);
   --accent-foreground: var(--semantic-foreground);
 
-  --success: hsl(86, 36%, 33%);
+  --success: hsl(86 36% 33%);
   --success-foreground: var(--semantic-foreground);
 
-  --warning: hsl(49, 100%, 30%);
+  --warning: hsl(49 100% 30%);
   --warning-foreground: var(--semantic-foreground);
 
   --destructive: hsl(3 57% 33%);

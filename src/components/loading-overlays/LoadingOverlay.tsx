@@ -15,7 +15,7 @@ export function LoadingOverlay({ message = 'Blueprint', className }: LoadingOver
         className
       )}
     >
-      <h1 className='font-minecraft mb-6 text-4xl text-white/80'>{message}</h1>
+      <h1 className='font-minecraft text-foreground/90 mb-6 text-4xl'>{message}</h1>
       <img src={LoadingGif} alt='Loading animation' className='w-64 max-w-[80vw]' />
     </div>
   );
