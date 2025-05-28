@@ -4,11 +4,9 @@ import { useNavigate, Link } from 'react-router';
 import SchematicCard from '@/components/features/schematics/SchematicCard';
 import { useSearchSchematics } from '@/api';
 import { buttonVariants } from '@/components/ui/button';
-import { Upload, RefreshCw } from 'lucide-react';
-import { ListPageLayout, ListPageFilters, ListPageContent } from '@/layouts/ListPageLayout';
-import { SearchFilter } from '@/components/layout/SearchFilter';
+import { Upload } from 'lucide-react';
+import { ListPageLayout } from '@/layouts/ListPageLayout';
 import { SelectFilter } from '@/components/layout/SelectFilter';
-import { FiltersContainer } from '@/components/layout/FiltersContainer';
 import { ItemGrid } from '@/components/layout/ItemGrid';
 import { useSchematicFilters } from '@/hooks';
 import { useInfiniteScroll } from '@/hooks';
@@ -35,6 +33,13 @@ function SchematicsList() {
     loaderOptions,
     hasSubCategories,
   } = useSchematicFilters();
+
+  // Search functionality that integrates with schematic filters
+  const handleSearchChange = (value: string) => {
+    setQuery(value);
+    setPage(1);
+    setAllSchematics([]);
+  };
 
   // Modify to use the separate page state
   const {
@@ -91,93 +96,91 @@ function SchematicsList() {
     setAllSchematics([]);
   };
 
-  return (
-    <ListPageLayout>
-      <ListPageFilters>
-        <FiltersContainer>
-          <div className='flex items-center justify-between'>
-            <div className='text-foreground font-minecraft text-xl font-semibold'>Filters</div>
-            <button
-              onClick={handleResetFilters}
-              className='text-primary flex items-center gap-1 text-sm'
-              aria-label='Reset filters'
-            >
-              <RefreshCw size={14} />
-              Reset
-            </button>
-          </div>
+  // Check if there are active filters
+  const hasActiveFilters =
+    filters.category !== '' ||
+    filters.subCategory !== '' ||
+    filters.version !== '' ||
+    filters.loaders !== '' ||
+    filters.createVersion !== '' ||
+    filters.query !== '';
 
-          <SearchFilter
-            value={filters.query}
-            onChange={setQuery}
-            placeholder='Search schematics...'
-          />
+  const filtersContent = (
+    <>
+      <SelectFilter
+        label='Category'
+        value={filters.category}
+        onChange={setCategory}
+        options={categoryOptions}
+        placeholder={'Select Category'}
+      />
 
-          <SelectFilter
-            label='Category'
-            value={filters.category}
-            onChange={setCategory}
-            options={categoryOptions}
-            placeholder={'Select d Category'}
-          />
-
-          {/* Only show subcategories if available */}
-          {hasSubCategories && (
-            <SelectFilter
-              label='Subcategory'
-              value={filters.subCategory || ''}
-              onChange={setSubCategory}
-              options={subCategoryOptions}
-            />
-          )}
-
-          <SelectFilter
-            label='Version'
-            value={filters.version}
-            onChange={setVersion}
-            options={versionOptions}
-          />
-
-          <SelectFilter
-            label='Loaders'
-            value={filters.loaders}
-            onChange={setLoaders}
-            options={loaderOptions}
-          />
-          <SelectFilter
-            label='Create version'
-            value={filters.createVersion}
-            onChange={setCreateVersion}
-            options={createVersionOptions}
-          />
-        </FiltersContainer>
-      </ListPageFilters>
-
-      <ListPageContent>
-        <div className='mb-4 flex justify-end'>
-          <Link className={buttonVariants({ variant: 'default' })} to='../schematics/upload'>
-            <Upload className='mr-2 h-4 w-4' /> Upload Schematic
-          </Link>
-        </div>
-
-        <ItemGrid
-          items={allSchematics}
-          renderItem={(schematic) => (
-            <SchematicCard
-              key={schematic.$id}
-              schematic={schematic}
-              onClick={() => navigate(`../schematics/${schematic.$id}/${schematic.slug}`)}
-            />
-          )}
-          isLoading={isLoading && page === 1}
-          isError={isError}
-          emptyMessage='No schematics found.'
-          errorMessage='Oops! Failed to load schematics.'
-          infiniteScrollEnabled={true}
-          loadingMore={loadingMore}
-          sentinelRef={sentinelRef}
+      {/* Only show subcategories if available */}
+      {hasSubCategories && (
+        <SelectFilter
+          label='Subcategory'
+          value={filters.subCategory || ''}
+          onChange={setSubCategory}
+          options={subCategoryOptions}
         />
-      </ListPageContent>
+      )}
+
+      <SelectFilter
+        label='Version'
+        value={filters.version}
+        onChange={setVersion}
+        options={versionOptions}
+      />
+
+      <SelectFilter
+        label='Loaders'
+        value={filters.loaders}
+        onChange={setLoaders}
+        options={loaderOptions}
+      />
+      <SelectFilter
+        label='Create version'
+        value={filters.createVersion}
+        onChange={setCreateVersion}
+        options={createVersionOptions}
+      />
+    </>
+  );
+
+  const headerContent = (
+    <Link className={buttonVariants({ variant: 'default' })} to='../schematics/upload'>
+      <Upload className='mr-2 h-4 w-4' /> Upload Schematic
+    </Link>
+  );
+
+  return (
+    <ListPageLayout
+      searchValue={filters.query}
+      onSearchChange={handleSearchChange}
+      searchPlaceholder='Search schematics...'
+      filters={filtersContent}
+      onResetFilters={handleResetFilters}
+      filterTitle='Schematic Filters'
+      hasActiveFilters={hasActiveFilters}
+      headerContent={headerContent}
+    >
+      <ItemGrid
+        items={allSchematics}
+        renderItem={(schematic) => (
+          <SchematicCard
+            key={schematic.$id}
+            schematic={schematic}
+            onClick={() => navigate(`../schematics/${schematic.$id}/${schematic.slug}`)}
+          />
+        )}
+        isLoading={isLoading && page === 1}
+        isError={isError}
+        emptyMessage='No schematics found.'
+        errorMessage='Oops! Failed to load schematics.'
+        infiniteScrollEnabled={true}
+        loadingMore={loadingMore}
+        sentinelRef={sentinelRef}
+      />
     </ListPageLayout>
   );
 }
