@@ -2,6 +2,7 @@
 import type { ComponentType } from 'react';
 import React, { lazy, Suspense } from 'react';
 import type { RouteObject } from 'react-router';
+import { Navigate } from 'react-router-dom';
 
 import { authRoutes } from '@/routes/authRoutes';
 import { settingsRoutes } from '@/routes/settings';
@@ -25,8 +26,7 @@ const AddonsList = lazy(() => import('@/pages/addons/AddonListPage'));
 const AddonDetails = lazy(() => import('@/pages/addons/AddonDetailsPage'));
 const About = lazy(() => import('@/pages/About'));
 const Design = lazy(() => import('@/pages/Design'));
-const Terms = lazy(() => import('@/pages/Terms'));
-const Privacy = lazy(() => import('@/pages/Privacy'));
+const Legal = lazy(() => import('@/pages/Legal'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 const AdminPanelLayout = lazy(() => import('@/layouts/AdminPanelLayout'));
 const Changelogs = lazy(() => import('@/pages/Changelogs'));
@@ -90,12 +90,16 @@ export const routes: RouteObject[] = [
         ...createProtectedRoute(Design),
       },
       {
+        path: 'legal',
+        ...createProtectedRoute(Legal),
+      },
+      {
         path: 'terms',
-        ...createProtectedRoute(Terms),
+        element: <Navigate to='/legal?tab=terms' replace />,
       },
       {
         path: 'privacy',
-        ...createProtectedRoute(Privacy),
+        element: <Navigate to='/legal?tab=privacy' replace />,
       },
       {
         path: 'changelogs',
