@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, CarouselApi } from './carousel';
 import Lightbox from './lightbox';
 
 export interface GalleryProps {
@@ -8,12 +8,20 @@ export interface GalleryProps {
   alt?: string;
   showNavigation?: boolean;
   className?: string;
+  initialIndex?: number;
 }
 
-const Gallery: React.FC<GalleryProps> = ({ images, enableLightbox = false, alt = '', showNavigation = false, className }) => {
-  const [mainApi, setMainApi] = useState<any>(null);
-  const [thumbApi, setThumbApi] = useState<any>(null);
-  const [current, setCurrent] = useState(0);
+const Gallery: React.FC<GalleryProps> = ({
+  images,
+  enableLightbox = false,
+  alt = '',
+  showNavigation = false,
+  className,
+  initialIndex = 0,
+}) => {
+  const [mainApi, setMainApi] = useState<CarouselApi | null>(null);
+  const [thumbApi, setThumbApi] = useState<CarouselApi | null>(null);
+  const [current, setCurrent] = useState(initialIndex);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
   // Sync thumbnail carousel when main carousel changes
@@ -48,7 +56,7 @@ const Gallery: React.FC<GalleryProps> = ({ images, enableLightbox = false, alt =
   return (
     <div className={className}>
       {/* Main image carousel */}
-      <Carousel setApi={setMainApi} aria-label="Image gallery">
+      <Carousel setApi={setMainApi} opts={{ startIndex: initialIndex }} aria-label="Image gallery">
         <CarouselContent>
           {images.map((image, index) => (
             <CarouselItem key={index} className="flex justify-center items-center">
@@ -73,7 +81,7 @@ const Gallery: React.FC<GalleryProps> = ({ images, enableLightbox = false, alt =
       </Carousel>
 
       {/* Thumbnail carousel */}
-      <Carousel setApi={setThumbApi} opts={{ dragFree: true }} aria-label="Image thumbnails">
+      <Carousel setApi={setThumbApi} opts={{ dragFree: true, startIndex: initialIndex }} aria-label="Image thumbnails">
         <CarouselContent>
           {images.map((image, index) => (
             <CarouselItem key={index} className="basis-1/6 flex justify-center items-center aspect-video">
@@ -95,7 +103,6 @@ const Gallery: React.FC<GalleryProps> = ({ images, enableLightbox = false, alt =
           images={images}
           currentIndex={current}
           onClose={() => setLightboxOpen(false)}
-          setCurrent={setCurrent}
         />
       )}
     </div>
