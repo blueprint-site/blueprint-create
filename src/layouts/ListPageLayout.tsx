@@ -89,7 +89,7 @@ export function ListPageLayout({
           {headerContent && <div className='mb-4 flex justify-end'>{headerContent}</div>}
           {children}
         </div>
-        <AppFooter className='pb-18' />
+        <AppFooter />
       </main>
 
       <RotatingCogwheel />
