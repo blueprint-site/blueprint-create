@@ -56,9 +56,7 @@ const AppHeader = ({ className, fullWidth }: AppHeaderProps) => {
             alt='Blueprint Logo'
             className='h-full object-contain'
           />
-          <span className='font-minecraft ml-3 hidden text-2xl font-medium sm:block'>
-            Blueprint
-          </span>
+          <span className='font-minecraft ml-3 hidden text-2xl font-bold sm:block'>Blueprint</span>
         </NavLink>
 
         <div className='flex items-center space-x-4'>

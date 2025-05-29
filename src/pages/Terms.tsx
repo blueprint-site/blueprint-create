@@ -112,7 +112,11 @@ const Terms = () => {
               <li>WE ARE NOT RESPONSIBLE FOR USER-UPLOADED CONTENT</li>
               <li>
                 THIS IS NOT AN OFFICIAL MINECRAFT SERVICE AND IS NOT AFFILIATED WITH MOJANG OR
-                MICROSOFT
+                MICROSOFT.
+              </li>
+              <li>
+                BLUEPRINT IS NOT AFFILIATED WITH THE CREATE MOD TEAM OR ANY OF ITS ADDONS IN ANY
+                WAY.
               </li>
             </ul>
 
