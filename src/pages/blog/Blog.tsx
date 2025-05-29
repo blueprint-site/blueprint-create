@@ -1,20 +1,25 @@
 import { useFetchBlogs } from '@/api/appwrite/useBlogs';
-import { FiltersContainer } from '@/components/layout/FiltersContainer';
 import { ItemGrid } from '@/components/layout/ItemGrid';
-import { SearchFilter } from '@/components/layout/SearchFilter';
+import { ListPageLayout } from '@/layouts/ListPageLayout';
+import { useListPageFilters } from '@/hooks/useListPageFilters';
 import { useInfiniteScroll } from '@/hooks';
-import { ListPageContent, ListPageLayout, ListPageFilters } from '@/layouts/ListPageLayout';
 import type { Blog } from '@/types';
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import BlogCard from '@/components/features/blog/BlogCard';
 
 const BlogPage = () => {
-  const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
   const [allBlogs, setAllBlogs] = useState<Blog[]>([]);
 
+  // Use the simplified list page filters hook
+  const { searchValue, handleSearchChange, resetFilters } = useListPageFilters({
+    onFilterChange: () => {
+      setPage(1);
+    },
+  });
+
   // Fetch blogs based on filters
-  const { data, isLoading, isFetching } = useFetchBlogs(query, 'all', page);
+  const { data, isLoading, isFetching } = useFetchBlogs(searchValue, 'all', page);
 
   // Extract the needed properties from the data
   const blogs = useMemo(() => data?.data || [], [data?.data]);
@@ -44,7 +49,7 @@ const BlogPage = () => {
   useEffect(() => {
     setAllBlogs([]);
     setPage(1);
-  }, [query]);
+  }, [searchValue]);
 
   // Append new blogs to the accumulated list
   useEffect(() => {
@@ -55,43 +60,36 @@ const BlogPage = () => {
     }
   }, [blogs, page, processBlogs]);
 
-  // Reset filters handler
-  const resetFilters = useCallback(() => {
-    setQuery('');
-    setPage(1);
-  }, []);
+  // Check if there are active filters
+  const hasActiveFilters = searchValue !== '';
+
+  // Blog pages don't need additional filters beyond search
+  const filters = (
+    <div className='text-muted-foreground text-sm'>
+      Use the search bar above to find blog posts by title or content.
+    </div>
+  );
 
   return (
-    <ListPageLayout>
-      <ListPageFilters>
-        <FiltersContainer>
-          <div className='flex items-center justify-between'>
-            <div className='text-foreground font-minecraft text-xl font-semibold'>Filters</div>
-            <button
-              onClick={resetFilters}
-              className='text-primary flex items-center gap-1 text-sm'
-              aria-label='Reset filters'
-            >
-              Reset
-            </button>
-          </div>
-
-          <SearchFilter value={query} onChange={setQuery} placeholder='Search blog posts...' />
-        </FiltersContainer>
-      </ListPageFilters>
-
-      <ListPageContent>
-        <ItemGrid
-          items={allBlogs}
-          renderItem={(item) => <BlogCard key={item.$id} blog={item} />}
-          isLoading={isLoading}
-          isError={false}
-          emptyMessage='No blog posts found.'
-          infiniteScrollEnabled={true}
-          loadingMore={loadingMore}
-          sentinelRef={sentinelRef}
-        />
-      </ListPageContent>
+    <ListPageLayout
+      searchValue={searchValue}
+      onSearchChange={handleSearchChange}
+      searchPlaceholder='Search blog posts...'
+      filters={filters}
+      onResetFilters={resetFilters}
+      filterTitle='Blog Filters'
+      hasActiveFilters={hasActiveFilters}
+    >
+      <ItemGrid
+        items={allBlogs}
+        renderItem={(item) => <BlogCard key={item.$id} blog={item} />}
+        isLoading={isLoading}
+        isError={false}
+        emptyMessage='No blog posts found.'
+        infiniteScrollEnabled={true}
+        loadingMore={loadingMore}
+        sentinelRef={sentinelRef}
+      />
     </ListPageLayout>
   );
 };
