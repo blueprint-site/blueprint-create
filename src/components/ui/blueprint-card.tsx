@@ -89,11 +89,11 @@ const BlueprintCard = React.forwardRef<HTMLDivElement, BlueprintCardProps>(
           }}
         >
           <div
-            className='testing absolute right-0 bottom-0 left-0 z-10 bg-[#7092f2]'
+            className='edge-highlight absolute right-0 bottom-0 left-0 z-10 bg-[#7092f2]'
             style={{ height: `${dynamicGridUnitPx}px` }}
           />
           <div
-            className='testing absolute top-0 right-0 bottom-0 z-10 bg-[#7092f2]'
+            className='edge-highlight absolute top-0 right-0 bottom-0 z-10 bg-[#7092f2]'
             style={{ width: `${dynamicGridUnitPx}px` }}
           />
           <div
