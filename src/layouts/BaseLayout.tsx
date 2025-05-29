@@ -5,6 +5,7 @@ import AppFooter from '@/components/layout/AppFooter';
 import AppHeader from '@/components/layout/AppHeader';
 
 import { useThemeStore } from '@/api/stores/themeStore';
+import Toolbox from '@/components/common/Toolbox';
 
 const BaseLayout = () => {
   const { isDarkMode } = useThemeStore();
@@ -24,6 +25,7 @@ const BaseLayout = () => {
       </main>
 
       <RotatingCogwheel />
+      <Toolbox />
     </div>
   );
 };

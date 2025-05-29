@@ -1,16 +1,6 @@
 import CogwheelImage from '@/assets/cogwheel.png';
 import { useEffect, useState } from 'react';
 import logMessage from '@/components/utility/logs/sendLogs.tsx';
-import {
-  Drawer,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from '@/components/ui/drawer';
-import { ToolsBox } from '@/components/layout/ToolsBox.tsx';
-import { useThemeStore } from '@/api/stores/themeStore.ts';
 
 const useWindowSize = () => {
   const [size, setSize] = useState({
@@ -37,8 +27,7 @@ const RotatingCogwheel = () => {
   const [rotation, setRotation] = useState(0);
   const [clickCount, setClickCount] = useState(0);
   const { width } = useWindowSize();
-  const { isDarkMode } = useThemeStore();
-  const size = Math.min(width * 0.28, 350);
+  const size = Math.min(width * 0.22, 300);
   const offset = size / 2.35;
 
   useEffect(() => {
@@ -51,7 +40,7 @@ const RotatingCogwheel = () => {
       const scrollTop = main.scrollTop;
       const delta = scrollTop - lastScrollTop;
       lastScrollTop = scrollTop;
-      setRotation((prev) => prev + delta / 10); // Change this value to adjust scroll rotation sensitivity
+      setRotation((prev) => prev + delta / 10);
     };
 
     main.addEventListener('scroll', handleScroll);
@@ -87,30 +76,15 @@ const RotatingCogwheel = () => {
       }}
       onClick={handleClick}
     >
-      <Drawer>
-        <DrawerTrigger>
-          {' '}
-          <img
-            src={CogwheelImage}
-            alt='Rotating cogwheel'
-            className='h-full w-full cursor-pointer'
-            style={{
-              transform: `rotate(${rotation}deg)`,
-              transformOrigin: 'center',
-            }}
-          />
-        </DrawerTrigger>
-        <DrawerContent className={isDarkMode ? 'bg-brass_casing' : 'bg-refined_radiance_casing'}>
-          <DrawerHeader>
-            <DrawerTitle className={'text-center'}>
-              {' '}
-              <div className={'text-foreground'}>Blueprint ToolBox</div>{' '}
-            </DrawerTitle>
-            <ToolsBox></ToolsBox>
-          </DrawerHeader>
-          <DrawerFooter></DrawerFooter>
-        </DrawerContent>
-      </Drawer>
+      <img
+        src={CogwheelImage}
+        alt='Rotating cogwheel'
+        className='h-full w-full cursor-pointer'
+        style={{
+          transform: `rotate(${rotation}deg)`,
+          transformOrigin: 'center',
+        }}
+      />
     </div>
   );
 };
