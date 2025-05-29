@@ -1,11 +1,21 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BarChart, BookOpen, Box, FileText, Package, Plus, Upload } from 'lucide-react';
+import {
+  BarChart,
+  BookOpen,
+  Box,
+  FileText,
+  Package,
+  Plus,
+  Upload,
+  MessageSquare,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { FeedbackAdmin } from '@/components/admin/FeedbackAdmin';
 
 export const Admin = () => {
   // Mock data
@@ -97,6 +107,7 @@ export const Admin = () => {
           <TabsTrigger value='addons'>Addons</TabsTrigger>
           <TabsTrigger value='schematics'>Schematics</TabsTrigger>
           <TabsTrigger value='blog'>Blog</TabsTrigger>
+          <TabsTrigger value='feedback'>Feedback</TabsTrigger>
           <TabsTrigger value='analytics'>Analytics</TabsTrigger>
         </TabsList>
 
@@ -350,6 +361,11 @@ export const Admin = () => {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          {/* Feedback Tab */}
+          <TabsContent value='feedback' className='h-150'>
+            <FeedbackAdmin />
           </TabsContent>
 
           {/* Analytics Tab */}

@@ -5,6 +5,8 @@ import LanguageSwitcher from '@/components/features/settings/LanguageSwitcher.ts
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button.tsx';
 import { useNavigate } from 'react-router-dom';
+import { FeedbackWidget } from '@/components/FeedbackWidget';
+import MinecraftIcon from '@/components/utility/MinecraftIcon';
 
 interface FooterProps {
   className?: string;
@@ -22,6 +24,8 @@ const Footer = ({ className }: FooterProps) => {
           <div className='flex items-center gap-2'>
             <img src={logoSrc} alt='Blueprint Site Logo' className='w-8' />
             <h4 className='text-lg font-bold'>Blueprint</h4>
+            {/* Feedback bug icon button */}
+            <FeedbackWidget renderAsIconButton />
           </div>
           <h6 className='text-xs font-normal'>
             {t('footer.found-bug')}{' '}

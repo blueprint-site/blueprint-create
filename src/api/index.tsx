@@ -20,14 +20,12 @@ export {
   useUpdateAddon,
 } from './appwrite/useAddons';
 
-// Modrinth API endpoints
 export {
-  useFetchModrinthProject,
-  useFetchModrinthVersions,
-  useFetchModrinthDependencies,
-  useModrinthProfile,
-  useModrinthProjects,
-} from './external/useModrinth';
+  useSubmitFeedback,
+  useFetchFeedback,
+  useUpdateFeedbackStatus,
+  useDeleteFeedback,
+} from './appwrite/useFeedback';
 
 export {
   useBlogTags,
