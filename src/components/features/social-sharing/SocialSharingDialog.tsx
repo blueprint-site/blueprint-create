@@ -9,7 +9,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { Share2 } from 'lucide-react';
-import { EnhancedSocialSharing } from './EnhancedSocialSharing';
+import { SocialSharing } from './SocialSharing';
 
 export interface SocialSharingDialogProps {
   /** The title of the content to share */
@@ -60,7 +60,6 @@ export const SocialSharingDialog = ({
 }: SocialSharingDialogProps) => {
   const [internalOpen, setInternalOpen] = useState(false);
 
-  // Use external control if provided, otherwise use internal state
   const isOpen = open !== undefined ? open : internalOpen;
   const setIsOpen = onOpenChange || setInternalOpen;
 
@@ -80,14 +79,14 @@ export const SocialSharingDialog = ({
         </DialogHeader>
 
         <div className='mt-4'>
-          <EnhancedSocialSharing
+          <SocialSharing
             title={title}
             description={description}
-            details={false} // Don't show the "Share on socials" header in dialog
+            details={false}
             size={iconSize}
             variant={sharingVariant}
             showCopyLink={showCopyLink}
-            showShareDialog={false} // We're already in a dialog
+            showShareDialog={false}
           />
         </div>
       </DialogContent>
