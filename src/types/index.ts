@@ -15,6 +15,13 @@ export type {
 } from '@/types/appwrite';
 
 export type {
+  FeedbackType,
+  FeedbackStatus,
+  FeedbackSubmission,
+  FeedbackRecord,
+} from '@/types/feedback';
+
+export type {
   AddonWithParsedFields,
   AddonCompatibilityData,
   AddonDependency,
