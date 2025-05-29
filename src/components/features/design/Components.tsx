@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import BlueprintCard from '@/components/ui/blueprint-card';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -96,7 +97,7 @@ const ComponentSection = () => {
       {/* Cards */}
       <div className='space-y-4'>
         <h2 className='text-2xl font-semibold'>Cards</h2>
-        <div className='grid gap-6 md:grid-cols-2'>
+        <div className='flex flex-wrap gap-4'>
           <Card>
             <CardHeader>
               <CardTitle>Default Card</CardTitle>
@@ -111,25 +112,49 @@ const ComponentSection = () => {
               <Button>Action</Button>
             </CardFooter>
           </Card>
+        </div>
+        <h2 className='text-2xl font-semibold'>Blueprint Cards</h2>
+        {/* Small */}
+        <h3 className='mt-4 text-xl font-semibold'>Small</h3>
+        <div className='flex flex-wrap gap-4'>
+          <BlueprintCard size='small' className='h-24 w-24'>
+            Small - square
+          </BlueprintCard>
+          <BlueprintCard size='small' className='h-20 w-32'>
+            Small - landscape
+          </BlueprintCard>
+          <BlueprintCard size='small' className='h-32 w-20'>
+            Small - portrait
+          </BlueprintCard>
+        </div>
+        {/* Medium */}
+        <h3 className='mt-4 text-xl font-semibold'>Medium</h3>
+        <div className='flex flex-wrap gap-4'>
+          <BlueprintCard size='medium' className='h-48 w-48'>
+            Medium - square
+          </BlueprintCard>
+          <BlueprintCard size='medium' className='h-40 w-64'>
+            Medium - landscape
+          </BlueprintCard>
+          <BlueprintCard size='medium' className='h-64 w-40'>
+            Medium - portrait
+          </BlueprintCard>
+        </div>
+        {/* Large */}
+        <h3 className='mt-4 text-xl font-semibold'>Large</h3>
+        <div className='flex flex-wrap gap-4'>
+          <BlueprintCard size='large' className='h-72 w-72'>
+            Large - square
+          </BlueprintCard>
+          <BlueprintCard size='large' className='h-64 w-96'>
+            Large - landscape
+          </BlueprintCard>
+          <BlueprintCard size='large' className='h-96 w-64'>
+            Large - portrait
+          </BlueprintCard>
+        </div>
 
-          <Card className='bg-blueprint'>
-            <CardHeader>
-              <CardTitle>Blueprint Card (WIP)</CardTitle>
-              <CardDescription>
-                A card component designed to mimic the in-game blueprint item
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>
-                This card will be styled to look like a blueprint item in the game. It has a unique
-                design and layout.
-              </p>
-            </CardContent>
-            <CardFooter>
-              <Button>Action</Button>
-            </CardFooter>
-          </Card>
-
+        <div>
           <Card>
             <CardHeader>
               <div className='flex items-center gap-4'>
