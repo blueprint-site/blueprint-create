@@ -39,8 +39,16 @@ export const SchematicsDetailsHeader = ({ schematic }: SchematicsDetailsHeaderPr
   return (
     <Card className='mt-8'>
       <CardHeader className='text-center'>
-        <div className='flex w-full justify-between'>
-          <div className='flex items-center justify-start gap-4'>
+        <div className='flex w-full flex-col md:flex-row md:items-center md:justify-between'>
+          <div className='mx-auto'>
+            <CardTitle>
+              <h1 className='text-2xl font-bold md:text-3xl'>{schematic.title}</h1>
+            </CardTitle>
+            <CardDescription className='text-foreground-muted'>
+              By {schematic.authors.join(', ')}
+            </CardDescription>
+          </div>
+          <div className='mt-4 flex items-center gap-4 md:mt-0'>
             {isUploadedByUser && (
               <>
                 {createdAtTimestamp && !isTimerComplete ? (
@@ -60,11 +68,6 @@ export const SchematicsDetailsHeader = ({ schematic }: SchematicsDetailsHeaderPr
                 )}
               </>
             )}
-          </div>
-          <div className='flex items-center justify-end gap-4'>
-            {/* <Button variant='default' className='transition-all duration-300 hover:shadow-lg'>
-              <Share className='mr-2' /> Share
-            </Button> */}
             <Button
               onClick={() => {
                 openUrl(schematic.schematic_url);
@@ -79,12 +82,12 @@ export const SchematicsDetailsHeader = ({ schematic }: SchematicsDetailsHeaderPr
           </div>
         </div>
 
-        <CardTitle>
-          <h1 className='text-2xl font-bold md:text-3xl'>{schematic.title}</h1>
-        </CardTitle>
-        <CardDescription className='text-foreground-muted'>
-          By {schematic.authors.join(', ')}
-        </CardDescription>
+        {/*<CardTitle>*/}
+        {/*  <h1 className='text-2xl font-bold md:text-3xl'>{schematic.title}</h1>*/}
+        {/*</CardTitle>*/}
+        {/*<CardDescription className='text-foreground-muted'>*/}
+        {/*  By {schematic.authors.join(', ')}*/}
+        {/*</CardDescription>*/}
       </CardHeader>
     </Card>
   );
