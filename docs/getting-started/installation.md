@@ -163,11 +163,12 @@ The application uses an `env.js` file loaded at runtime to configure environment
 
 ```javascript
 window._env_ = {
+  APP_BASE_URL: "http://localhost",
+  APP_PORT: 5174,
   APP_APPWRITE_URL: "http://localhost:8000/v1",
   APP_APPWRITE_PROJECT_ID: "your-project-id",
   APP_MEILISEARCH_URL: "http://localhost:7700",
-  APP_MEILISEARCH_API_KEY: "your-api-key",
-  APP_URL: "http://localhost:5173"
+  APP_MEILISEARCH_API_KEY: "your-api-key"
 };
 ```
 
