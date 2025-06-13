@@ -6,6 +6,10 @@ import { useQuery } from '@tanstack/react-query';
 import { databases } from '@/config/appwrite.ts';
 import { Query } from 'appwrite';
 
+const DATABASE_ID = '67b1dc430020b4fb23e3';
+const SCHEMATICS_COLLECTION_ID = '67b2310d00356b0cb53c';
+const ADDONS_COLLECTION_ID = '67b1dc4b000762a0ccc6';
+
 /**
  * Interface for public user data (limited fields for privacy)
  */
@@ -57,7 +61,11 @@ export const usePublicUserSchematics = (userId?: string) => {
 
       try {
         const filters = [Query.equal('user_id', userId)];
-        const response = await databases.listDocuments('main', 'schematics', filters);
+        const response = await databases.listDocuments(
+          DATABASE_ID,
+          SCHEMATICS_COLLECTION_ID,
+          filters
+        );
         return response.documents;
       } catch (error) {
         console.error('Error fetching public user schematics:', error);
@@ -82,7 +90,7 @@ export const usePublicUserAddons = (userId?: string) => {
 
       try {
         const filters = [Query.equal('user_id', userId)];
-        const response = await databases.listDocuments('main', 'addons', filters);
+        const response = await databases.listDocuments(DATABASE_ID, ADDONS_COLLECTION_ID, filters);
         return response.documents;
       } catch (error) {
         console.error('Error fetching public user addons:', error);
