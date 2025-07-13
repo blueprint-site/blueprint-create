@@ -21,11 +21,14 @@ Blueprint requires the following environment variables:
 
 | Variable | Description | Example |
 |----------|-------------|---------|
+| `APP_BASE_URL` | Base URL of the application (without port) | `http://localhost` or `https://blueprint-create.com` |
+| `APP_PORT` | Port number the application runs on | `5174` or `80` |
 | `APP_APPWRITE_URL` | URL to the Appwrite instance | `https://cloud.appwrite.io/v1` |
 | `APP_APPWRITE_PROJECT_ID` | Appwrite project ID | `64f8c91a9b6c4` |
 | `APP_MEILISEARCH_URL` | URL to the Meilisearch instance | `https://ms-12345678-blueprint.a.searchythingy.com` |
 | `APP_MEILISEARCH_API_KEY` | Meilisearch API key | `b2b7f6e37d4d9c8a1e5f3b2a7c6e9d8` |
-| `APP_URL` | URL where the application is hosted | `http://localhost:5173` |
+
+> **Note**: While OAuth redirects use `window.location.origin` for dynamic URL detection, `APP_BASE_URL` and `APP_PORT` are available for CORS configuration, API callbacks, email templates, and other use cases that require knowing the application's URL.
 
 ## Setting Up Environment Configuration
 
@@ -35,11 +38,12 @@ For local development, create a `public/env.js` file with the following structur
 
 ```javascript
 window._env_ = {
+  APP_BASE_URL: "http://localhost",
+  APP_PORT: 5174,
   APP_APPWRITE_URL: "http://localhost:8000/v1",  // or your cloud Appwrite URL
   APP_APPWRITE_PROJECT_ID: "your-project-id",
   APP_MEILISEARCH_URL: "http://localhost:7700",  // or your cloud Meilisearch URL
-  APP_MEILISEARCH_API_KEY: "your-api-key",
-  APP_URL: "http://localhost:5173"
+  APP_MEILISEARCH_API_KEY: "your-api-key"
 };
 ```
 
@@ -90,11 +94,12 @@ For production deployment, you need to:
 
 ```javascript
 window._env_ = {
+  APP_BASE_URL: "https://blueprint-create.com",
+  APP_PORT: 443,
   APP_APPWRITE_URL: "https://cloud.appwrite.io/v1",
   APP_APPWRITE_PROJECT_ID: "production-project-id",
   APP_MEILISEARCH_URL: "https://production-meilisearch-url",
-  APP_MEILISEARCH_API_KEY: "production-api-key",
-  APP_URL: "https://blueprint-create.com"
+  APP_MEILISEARCH_API_KEY: "production-api-key"
 };
 ```
 
@@ -112,11 +117,12 @@ The `entrypoint.sh` script handles this:
 # Create env.js with environment variables
 cat > /usr/share/nginx/html/env.js << EOF
 window._env_ = {
+  APP_BASE_URL: "${APP_BASE_URL}",
+  APP_PORT: "${APP_PORT}",
   APP_APPWRITE_URL: "${APPWRITE_URL}",
   APP_APPWRITE_PROJECT_ID: "${APPWRITE_PROJECT_ID}",
   APP_MEILISEARCH_URL: "${MEILISEARCH_URL}",
-  APP_MEILISEARCH_API_KEY: "${MEILISEARCH_API_KEY}",
-  APP_URL: "${APP_URL}"
+  APP_MEILISEARCH_API_KEY: "${MEILISEARCH_API_KEY}"
 };
 EOF
 
@@ -128,11 +134,12 @@ When running the Docker container, pass the environment variables:
 
 ```bash
 docker run -p 80:80 \
+  -e APP_BASE_URL=https://blueprint-create.com \
+  -e APP_PORT=443 \
   -e APPWRITE_URL=https://cloud.appwrite.io/v1 \
   -e APPWRITE_PROJECT_ID=production-project-id \
   -e MEILISEARCH_URL=https://production-meilisearch-url \
   -e MEILISEARCH_API_KEY=production-api-key \
-  -e APP_URL=https://blueprint-create.com \
   blueprint-app
 ```
 
@@ -165,11 +172,12 @@ To get TypeScript type checking for environment variables, the project includes 
 ```typescript
 interface Window {
   _env_?: {
+    APP_BASE_URL: string;
+    APP_PORT: number;
     APP_APPWRITE_URL: string;
     APP_APPWRITE_PROJECT_ID: string;
     APP_MEILISEARCH_URL: string;
     APP_MEILISEARCH_API_KEY: string;
-    APP_URL: string;
   };
 }
 ```
@@ -189,5 +197,6 @@ interface Window {
    - Verify the services are running and accessible
 
 3. **OAuth redirection issues**
-   - Ensure the `APP_URL` is set correctly
-   - Check that the OAuth providers are configured with the correct redirect URLs
+   - OAuth redirects now use dynamic URL detection (`window.location.origin`)
+   - Ensure OAuth providers are configured with the correct redirect URLs for your domain
+   - Check that the OAuth success/error routes (`/auth/success`, `/auth/error`) are properly configured

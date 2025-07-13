@@ -198,8 +198,8 @@ export const useUserStore = create<UserState>((set, get) => ({
         discord: OAuthProvider.Discord,
       };
       const oauthProvider = providerMap[provider];
-      const successUrl = window._env_?.APP_URL + '/auth/success';
-      const errorUrl = window._env_?.APP_URL + '/auth/error';
+      const successUrl = `${window.location.origin}/auth/success`;
+      const errorUrl = `${window.location.origin}/auth/error`;
       account.createOAuth2Session(oauthProvider, successUrl, errorUrl);
       return Promise.resolve();
     } catch (error) {

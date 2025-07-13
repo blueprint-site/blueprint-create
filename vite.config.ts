@@ -93,6 +93,9 @@ export default defineConfig(({ mode }) => ({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    port: Number(process.env.VITE_DEV_PORT) || 5174,
+  },
   envPrefix: 'APP',
   define: {
     'process.env.NODE_ENV': JSON.stringify(mode),
