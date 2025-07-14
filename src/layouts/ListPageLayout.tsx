@@ -81,7 +81,7 @@ export function ListPageLayout({
       {/* Main Content */}
       <main
         id='main'
-        className={cn('flex h-screen w-full flex-col justify-between overflow-scroll pt-16')}
+        className={cn('flex h-screen w-full flex-col justify-between overflow-y-scroll pt-16')}
       >
         <div
           className={`flex-1 p-8 ${isDarkMode ? 'bg-shadow_steel_casing' : 'bg-refined_radiance_casing'}`}
