@@ -1,5 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { cn } from '@/config/utils.ts';
+import { Button } from '@/components/ui/button';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 // Define supported language codes as a type
 type LanguageCode =
@@ -17,11 +29,9 @@ type LanguageCode =
   | 'uk'
   | 'pl';
 
-type Direction = 'up' | 'down';
-
 // Flag icons mapping with proper typing
 const languageFlags: Record<LanguageCode, string> = {
-  en: 'en',
+  en: '🇺🇸',
   fr: '🇫🇷',
   es: '🇪🇸',
   de: '🇩🇪',
@@ -32,8 +42,8 @@ const languageFlags: Record<LanguageCode, string> = {
   pt: '🇵🇹',
   ja: '🇯🇵',
   ru: '🇷🇺',
-  pl: 'pl',
-  uk: 'uk',
+  pl: '🇵🇱',
+  uk: '🇺🇦',
 };
 
 // Language names in their native form
@@ -49,24 +59,20 @@ const languageNames: Record<LanguageCode, string> = {
   pt: 'Português',
   ja: '日本語',
   ru: 'Русский',
-  pl: 'Polish',
-  uk: 'ukrainian',
+  pl: 'Polski',
+  uk: 'Українська',
 };
 
 interface LanguageSwitcherProps {
   className?: string;
-  direction?: Direction;
 }
 
-const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
-  className = '',
-  direction = 'down',
-}) => {
+const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ className = '' }) => {
   const { i18n } = useTranslation();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [currentLanguage, setCurrentLanguage] = useState<LanguageCode>(
     (i18n.language as LanguageCode) || 'en'
   );
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const language = i18n.language as string;
@@ -78,61 +84,64 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
     document.documentElement.dir = validLanguage === 'ar' ? 'rtl' : 'ltr';
   }, [i18n.language]);
 
-  const changeLanguage = (language: LanguageCode): void => {
-    i18n.changeLanguage(language);
-    setCurrentLanguage(language);
-    setIsOpen(false);
-    localStorage.setItem('preferred-language', language);
+  const changeLanguage = (language: string): void => {
+    const lang = language as LanguageCode;
+    i18n.changeLanguage(lang);
+    setCurrentLanguage(lang);
+    localStorage.setItem('preferred-language', lang);
   };
 
-  return (
-    <div className={`relative ${className}`}>
-      {/* Language selector button */}
-      <button
-        className='flex items-center space-x-2 rounded-md border border-gray-300 px-3 py-2 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700'
-        onClick={() => setIsOpen(!isOpen)}
-        aria-expanded={isOpen}
-        aria-haspopup='listbox'
-      >
-        <span>{languageFlags[currentLanguage]}</span>
-        <span>{languageNames[currentLanguage]}</span>
-        <svg
-          className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-          xmlns='http://www.w3.org/2000/svg'
-          viewBox='0 0 20 20'
-          fill='currentColor'
-        >
-          <path
-            fillRule='evenodd'
-            d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z'
-            clipRule='evenodd'
-          />
-        </svg>
-      </button>
+  const languages = Object.keys(languageNames) as Array<LanguageCode>;
 
-      {/* Dropdown menu */}
-      {isOpen && (
-        <div
-          className={`ring-opacity-5 absolute z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black focus:outline-none dark:bg-gray-800 ${direction === 'up' ? 'bottom-full mb-2' : 'top-full mt-2'}`}
-        >
-          <div className='py-1' role='listbox'>
-            {(Object.keys(languageNames) as Array<LanguageCode>).map((lang) => (
-              <button
-                key={lang}
-                onClick={() => changeLanguage(lang)}
-                className={`flex w-full items-center px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                  currentLanguage === lang ? 'bg-gray-100 dark:bg-gray-700' : ''
-                }`}
-                role='option'
-                aria-selected={currentLanguage === lang}
-              >
-                <span className='mr-2'>{languageFlags[lang]}</span>
-                <span>{languageNames[lang]}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+  return (
+    <div className={className}>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant='outline'
+            role='combobox'
+            aria-expanded={open}
+            className='w-48 justify-between'
+          >
+            <div className='flex items-center space-x-2'>
+              <span>{languageFlags[currentLanguage]}</span>
+              <span>{languageNames[currentLanguage]}</span>
+            </div>
+            <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className='w-48 p-0'>
+          <Command>
+            <CommandInput placeholder='Search language...' className='h-9' />
+            <CommandList>
+              <CommandEmpty>No language found.</CommandEmpty>
+              <CommandGroup>
+                {languages.map((lang) => (
+                  <CommandItem
+                    key={lang}
+                    value={lang}
+                    onSelect={(currentValue) => {
+                      changeLanguage(currentValue);
+                      setOpen(false);
+                    }}
+                  >
+                    <div className='flex items-center space-x-2'>
+                      <span>{languageFlags[lang]}</span>
+                      <span>{languageNames[lang]}</span>
+                    </div>
+                    <Check
+                      className={cn(
+                        'ml-auto h-4 w-4',
+                        currentLanguage === lang ? 'opacity-100' : 'opacity-0'
+                      )}
+                    />
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 };

@@ -38,7 +38,7 @@ const RotatingCogwheel = () => {
   const [clickCount, setClickCount] = useState(0);
   const { width } = useWindowSize();
   const { isDarkMode } = useThemeStore();
-  const size = Math.min(width * 0.28, 400);
+  const size = Math.min(width * 0.28, 350);
   const offset = size / 2.35;
 
   useEffect(() => {
@@ -83,7 +83,7 @@ const RotatingCogwheel = () => {
         width: size,
         height: size,
         bottom: -offset,
-        right: -offset,
+        left: -offset,
       }}
       onClick={handleClick}
     >

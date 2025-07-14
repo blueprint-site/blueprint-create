@@ -1,11 +1,12 @@
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.tsx';
 import TimerProgress from '@/components/utility/TimerProgress.tsx';
-import { Download, Hourglass, Share } from 'lucide-react';
+import { Download, Hourglass } from 'lucide-react';
 import { Button } from '@/components/ui/button.tsx';
 import { useEffect, useState } from 'react';
 import { useUserStore } from '@/api/stores/userStore';
 import type { Schematic } from '@/types';
 import { useIncrementDownloads } from '@/api/appwrite/useSchematics';
+import { SocialSharingDialog } from '@/components/features/social-sharing/SocialSharingDialog';
 
 export interface SchematicsDetailsHeaderProps {
   schematic: Schematic;
@@ -68,6 +69,18 @@ export const SchematicsDetailsHeader = ({ schematic }: SchematicsDetailsHeaderPr
                 )}
               </>
             )}
+          </div>
+          <div className='flex items-center justify-end gap-4'>
+            <SocialSharingDialog
+              title={schematic.title}
+              description={`Check out this amazing Minecraft schematic: ${schematic.title} by ${schematic.authors.join(', ')}`}
+              triggerText='Share'
+              triggerVariant='default'
+              showTriggerIcon={true}
+              dialogTitle={`Share "${schematic.title}"`}
+              dialogDescription='Share this schematic with your friends and the community!'
+              triggerClassName='transition-all duration-300 hover:shadow-lg'
+            />
             <Button
               onClick={() => {
                 openUrl(schematic.schematic_url);
