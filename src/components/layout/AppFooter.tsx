@@ -30,35 +30,35 @@ const CompactTwoTierFooter = ({ className }: FooterProps) => {
             <div className='flex flex-wrap items-center justify-center gap-3 md:gap-4'>
               <Button
                 variant='link'
-                onClick={() => navigate('addons')}
+                onClick={() => navigate('/addons')}
                 className='h-auto p-1 text-sm'
               >
                 {t('navigation.label.addons')}
               </Button>
               <Button
                 variant='link'
-                onClick={() => navigate('schematics')}
+                onClick={() => navigate('/schematics')}
                 className='h-auto p-1 text-sm'
               >
                 {t('navigation.label.schematics')}
               </Button>
               <Button
                 variant='link'
-                onClick={() => navigate('blog')}
+                onClick={() => navigate('/blog')}
                 className='h-auto p-1 text-sm'
               >
                 {t('navigation.label.blog')}
               </Button>
               <Button
                 variant='link'
-                onClick={() => navigate('about')}
+                onClick={() => navigate('/about')}
                 className='h-auto p-1 text-sm'
               >
                 {t('navigation.label.about')}
               </Button>
               <Button
                 variant='link'
-                onClick={() => navigate('legal')}
+                onClick={() => navigate('/legal')}
                 className='h-auto p-1 text-sm'
               >
                 {t('navigation.label.legal')}
