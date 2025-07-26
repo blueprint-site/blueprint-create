@@ -18,8 +18,9 @@ export const MatrixTabContent: React.FC<MatrixTabContentProps> = ({
   isCompatible,
   loaders = [],
 }) => {
-  // Normalize and deduplicate loader names
-  const normalizedLoaders = loaders
+  // Normalize and deduplicate loader names - ensure loaders is always an array
+  const safeLoaders = Array.isArray(loaders) ? loaders : [];
+  const normalizedLoaders = safeLoaders
     .map(normalizeLoaderName)
     .filter((value, index, self) => self.indexOf(value) === index);
 
@@ -46,7 +47,7 @@ export const MatrixTabContent: React.FC<MatrixTabContentProps> = ({
             </tr>
           </thead>
           <tbody>
-            {minecraftVersions.map((mcVersion) => (
+            {(minecraftVersions || []).map((mcVersion) => (
               <tr key={mcVersion} className='border-t'>
                 <td className='p-2 font-medium'>{mcVersion}</td>
                 {standardLoaders.map((loader) => {

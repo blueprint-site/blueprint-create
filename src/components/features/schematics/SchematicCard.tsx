@@ -24,8 +24,9 @@ interface SchematicCardProps {
 
 const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
   const navigate = useNavigate();
-  const renderVersionBadges = (versions: string[]) => {
-    return versions.map((version, i) => (
+  const renderVersionBadges = (versions: string[] | null | undefined) => {
+    const safeVersions = Array.isArray(versions) ? versions : [];
+    return safeVersions.map((version, i) => (
       <Badge key={`mc-version-${version}-${i}`} variant='accent'>
         {version}
       </Badge>

@@ -23,7 +23,7 @@ export interface Addon extends Models.Document {
   description: string;
   slug: string;
   author: string;
-  categories: string[];
+  categories: string[] | null;
   downloads: number;
   icon: string;
   created_at: string | null;

@@ -23,7 +23,7 @@ export const SummaryTabContent: React.FC<SummaryTabContentProps> = ({
         <div>
           <h4 className='mb-2 text-sm font-medium'>Minecraft Versions</h4>
           <div className='flex flex-wrap gap-2'>
-            {minecraftVersions.map((version) => (
+            {(minecraftVersions || []).map((version) => (
               <Badge key={version} variant='default'>
                 {version}
               </Badge>
@@ -36,11 +36,11 @@ export const SummaryTabContent: React.FC<SummaryTabContentProps> = ({
           <ModLoaders loaders={uniqueLoaders} />
         </div>
 
-        {createVersions.length > 0 && (
+        {(createVersions || []).length > 0 && (
           <div>
             <h4 className='mb-2 text-sm font-medium'>Create Versions</h4>
             <div className='flex flex-wrap gap-2'>
-              {createVersions.map((version) => {
+              {(createVersions || []).map((version) => {
                 return (
                   <Badge key={version} variant='accent'>
                     {version}
@@ -80,17 +80,18 @@ export const SummaryTabContent: React.FC<SummaryTabContentProps> = ({
               </div>
 
               <div className='mt-2 flex flex-wrap gap-2'>
-                {featuredVersion.game_versions.map((version: string) => (
+                {(featuredVersion.game_versions || []).map((version: string) => (
                   <Badge key={version} variant='outline' className='text-xs'>
                     MC {version}
                   </Badge>
                 ))}
 
-                {featuredVersion.loaders.map((loader: string) => (
-                  <Badge key={loader} variant='outline' className='text-xs'>
-                    {loader}
-                  </Badge>
-                ))}
+                {Array.isArray(featuredVersion.loaders) &&
+                  featuredVersion.loaders.map((loader: string) => (
+                    <Badge key={loader} variant='outline' className='text-xs'>
+                      {loader}
+                    </Badge>
+                  ))}
               </div>
             </div>
           </div>

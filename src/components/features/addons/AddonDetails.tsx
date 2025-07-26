@@ -49,8 +49,54 @@ export default function AddonDetails() {
     return <AddonDetailsLoading />;
   }
 
-  const curseforgeObject = addon.curseforge_raw ? JSON.parse(addon.curseforge_raw) : null;
-  const modrinthObject = addon.modrinth_raw ? JSON.parse(addon.modrinth_raw) : null;
+  // Safely parse JSON objects with error handling
+  let curseforgeObject = null;
+  if (addon.curseforge_raw) {
+    try {
+      curseforgeObject = JSON.parse(addon.curseforge_raw);
+    } catch (error) {
+      console.error('Failed to parse curseforge_raw JSON:', error);
+      curseforgeObject = null;
+    }
+  }
+
+  let modrinthObject = null;
+  if (addon.modrinth_raw) {
+    try {
+      // Skip processing if JSON appears to be truncated (exactly 256 chars is suspicious)
+      if (addon.modrinth_raw.length === 256) {
+        console.warn(
+          'AddonDetails: Skipping modrinth_raw parsing - appears to be truncated at 256 characters'
+        );
+        modrinthObject = null;
+      } else if (
+        !addon.modrinth_raw.trim().endsWith('}') &&
+        !addon.modrinth_raw.trim().endsWith(']')
+      ) {
+        // Check if the JSON string seems to be truncated
+        console.warn('AddonDetails: Modrinth JSON appears to be truncated:', {
+          length: addon.modrinth_raw.length,
+          ending: addon.modrinth_raw.slice(-50),
+        });
+        modrinthObject = null;
+      } else {
+        modrinthObject = JSON.parse(addon.modrinth_raw);
+      }
+    } catch (error) {
+      console.error('Failed to parse modrinth_raw JSON in AddonDetails:', {
+        error: error,
+        errorMessage: error instanceof Error ? error.message : 'Unknown error',
+        jsonLength: addon.modrinth_raw.length,
+        jsonStart: addon.modrinth_raw.substring(0, 100),
+        jsonEnd: addon.modrinth_raw.substring(addon.modrinth_raw.length - 100),
+        // Check for common JSON issues
+        hasUnterminatedString:
+          addon.modrinth_raw.includes('"') && !addon.modrinth_raw.endsWith('"'),
+        lastChar: addon.modrinth_raw.slice(-1),
+      });
+      modrinthObject = null;
+    }
+  }
   const createVersions = getAddonCreateVersionsFromVersions(versions);
 
   // Build the integrated data object with proper types

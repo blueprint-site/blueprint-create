@@ -11,8 +11,9 @@ Appwrite requires the following environment variables, typically set via `/publi
 ```javascript
 // public/env.js
 window._env_ = {
-  APP_APPWRITE_URL: "https://your-appwrite-instance.com/v1", // Your Appwrite API endpoint
-  APP_APPWRITE_PROJECT_ID: "your-project-id",              // Your Appwrite project ID
+  APPWRITE_URL: "https://your-appwrite-instance.com/v1", // Your Appwrite API endpoint
+  APPWRITE_PROJECT_ID: "your-project-id",              // Your Appwrite project ID
+  APPWRITE_MANAGE_USERS_FUNCTION_ID: "your-function-id", // Function ID for user management
   // ... other variables
 };
 ```
@@ -29,8 +30,8 @@ import { Client, Account, Databases, Storage, Functions, ID } from 'appwrite';
 
 export const client = new Client();
 
-const url = window._env_?.APP_APPWRITE_URL || '';
-const projectId = window._env_?.APP_APPWRITE_PROJECT_ID || '';
+const url = window._env_?.APPWRITE_URL || '';
+const projectId = window._env_?.APPWRITE_PROJECT_ID || '';
 
 // Basic client setup
 client.setEndpoint(url).setProject(projectId);

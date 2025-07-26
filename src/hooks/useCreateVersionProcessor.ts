@@ -111,8 +111,9 @@ export function useVersionDisplay(versionInfo: VersionInfo | null, loaders: stri
     const filteredMinecraftVersions =
       versionInfo.game_versions?.filter((version) => /^\d+\.\d+(\.\d+)?$/.test(version)) || [];
 
-    // Get unique loaders
-    const uniqueLoaders = [...new Set(loaders.map((loader) => loader.toLowerCase()))];
+    // Get unique loaders - ensure loaders is always an array
+    const safeLoaders = Array.isArray(loaders) ? loaders : [];
+    const uniqueLoaders = [...new Set(safeLoaders.map((loader) => loader.toLowerCase()))];
 
     // Sort versions by date
     const sortedVersions = [...versionInfo.versions].sort((a, b) => {

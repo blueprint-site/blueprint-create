@@ -15,9 +15,31 @@ const COLLECTION_ID = '67b1dc4b000762a0ccc6';
 function parseJsonField<T>(jsonString: string | null): T | null {
   if (!jsonString) return null;
   try {
+    // Skip processing if JSON appears to be truncated (exactly 256 chars is suspicious)
+    if (jsonString.length === 256) {
+      console.warn(
+        'parseJsonField: Skipping JSON parsing - appears to be truncated at 256 characters'
+      );
+      return null;
+    }
+
+    // Check if the JSON string seems to be truncated or malformed
+    if (!jsonString.trim().endsWith('}') && !jsonString.trim().endsWith(']')) {
+      console.warn('JSON appears to be truncated in parseJsonField:', {
+        length: jsonString.length,
+        ending: jsonString.slice(-20),
+      });
+      return null;
+    }
     return JSON.parse(jsonString) as T;
   } catch (e) {
-    console.error('Failed to parse JSON', e);
+    console.error('Failed to parse JSON in parseJsonField:', {
+      error: e,
+      errorMessage: e instanceof Error ? e.message : 'Unknown error',
+      jsonLength: jsonString.length,
+      jsonStart: jsonString.substring(0, 100),
+      jsonEnd: jsonString.substring(jsonString.length - 100),
+    });
     return null;
   }
 }
