@@ -5,8 +5,8 @@ import { ID, Query } from 'appwrite';
 import { toast } from '@/hooks/useToast';
 import type { Models } from 'appwrite';
 
-const DATABASE_ID = '67e6ec5c0032a90a14e6';
-const COLLECTION_ID = '67ed41fb000467814396';
+const DATABASE_ID = 'main';
+const COLLECTION_ID = 'featured_addons';
 
 // Fetching only active addons
 export const useFetchFeaturedAddons = (onlyActive: boolean) => {

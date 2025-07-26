@@ -5,8 +5,8 @@ import { Query } from 'appwrite';
 import type { SchematicTag } from '@/types';
 import { schematicTagSchema, type SchematicTagFormValues } from '@/schemas/tag.schema';
 
-const DATABASE_ID = '67b1dc430020b4fb23e3';
-const COLLECTION_ID = '67bf59d30021b5c117f5';
+const DATABASE_ID = 'main';
+const COLLECTION_ID = 'schematics_tags';
 
 /**
  * Hook to fetch all schematic tags

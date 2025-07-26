@@ -5,8 +5,8 @@ import { Query } from 'appwrite';
 import type { Addon, AddonWithParsedFields, CurseForgeRawObject, ModrinthRawObject } from '@/types';
 import { UpdateAddonSchema } from '@/schemas/addon.schema';
 
-const DATABASE_ID = '67b1dc430020b4fb23e3';
-const COLLECTION_ID = '67b1dc4b000762a0ccc6';
+const DATABASE_ID = 'main';
+const COLLECTION_ID = 'addons';
 
 /**
  * Helper function to parse JSON strings from Appwrite
