@@ -76,7 +76,7 @@ export const OptimizedAddonsTable = () => {
     isFetching,
   } = useAdminAddons(
     {
-      search: filterType === 'history' || search.trim() ? '' : '', // Don't search in useAdminAddons when using global search
+      search: filterType === 'history' || search.trim() !== '' ? '' : undefined, // Don't search in useAdminAddons when using global search
       reviewStatus: filterType === 'history' ? 'all' : filterType,
     },
     currentPage,
@@ -227,7 +227,7 @@ export const OptimizedAddonsTable = () => {
 
       // Always refetch after undo to ensure consistency
       refetch();
-    } catch (error) {
+    } catch {
       toast({
         variant: 'destructive',
         title: 'Undo failed',
@@ -277,7 +277,7 @@ export const OptimizedAddonsTable = () => {
 
       // Force a refetch to get updated data
       refetch();
-    } catch (error) {
+    } catch {
       toast({
         variant: 'destructive',
         title: 'Update failed',
@@ -330,7 +330,7 @@ export const OptimizedAddonsTable = () => {
 
       // Force a refetch to get updated data
       refetch();
-    } catch (error) {
+    } catch {
       toast({
         variant: 'destructive',
         title: 'Update failed',

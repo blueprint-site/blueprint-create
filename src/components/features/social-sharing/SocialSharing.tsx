@@ -3,8 +3,6 @@ import {
   FacebookIcon,
   FacebookShareButton,
   TwitterShareButton,
-  RedditIcon,
-  RedditShareButton,
   XIcon,
   BlueskyShareButton,
   BlueskyIcon,

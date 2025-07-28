@@ -1,12 +1,9 @@
 // src/routes/adminRoutes.tsx
 import type { RouteObject } from 'react-router';
-import type { ComponentType } from 'react';
-import React, { lazy, Suspense } from 'react';
+import { lazy } from 'react';
 
 import ProtectedRoute from '@/components/utility/ProtectedRoute';
 import { UserManagement } from '@/components/features/admin/users/UserManagement';
-import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
-import { RouteErrorBoundary } from '@/components/error/RouteErrorBoundary';
 
 // LAZY IMPORT Logs Li st
 const LogsList = lazy(() =>
@@ -76,24 +73,6 @@ const AutoAddFeaturedAddon = lazy(() =>
     default: mod.default,
   }))
 );
-/**
- * Creates a protected admin route with consistent error handling and loading states
- */
-function createAdminRoute(
-  Component: React.LazyExoticComponent<ComponentType<unknown>> | ComponentType<unknown>,
-  role: string = 'admin'
-): RouteObject {
-  return {
-    element: (
-      <ProtectedRoute requiredRole={role}>
-        <Suspense fallback={<LoadingOverlay />}>
-          {typeof Component === 'function' ? <Component /> : Component}
-        </Suspense>
-      </ProtectedRoute>
-    ),
-    errorElement: <RouteErrorBoundary />,
-  };
-}
 
 export const AdminRoutes: RouteObject[] = [
   {
