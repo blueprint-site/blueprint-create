@@ -5,8 +5,8 @@ import { Query } from 'appwrite';
 import type { Addon, AddonWithParsedFields, CurseForgeRawObject, ModrinthRawObject } from '@/types';
 import { UpdateAddonSchema } from '@/schemas/addon.schema';
 
-const DATABASE_ID = '67b1dc430020b4fb23e3';
-const COLLECTION_ID = '67b1dc4b000762a0ccc6';
+const DATABASE_ID = 'main';
+const COLLECTION_ID = 'addons';
 
 /**
  * Helper function to parse JSON strings from Appwrite
@@ -15,9 +15,31 @@ const COLLECTION_ID = '67b1dc4b000762a0ccc6';
 function parseJsonField<T>(jsonString: string | null): T | null {
   if (!jsonString) return null;
   try {
+    // Skip processing if JSON appears to be truncated (exactly 256 chars is suspicious)
+    if (jsonString.length === 256) {
+      console.warn(
+        'parseJsonField: Skipping JSON parsing - appears to be truncated at 256 characters'
+      );
+      return null;
+    }
+
+    // Check if the JSON string seems to be truncated or malformed
+    if (!jsonString.trim().endsWith('}') && !jsonString.trim().endsWith(']')) {
+      console.warn('JSON appears to be truncated in parseJsonField:', {
+        length: jsonString.length,
+        ending: jsonString.slice(-20),
+      });
+      return null;
+    }
     return JSON.parse(jsonString) as T;
   } catch (e) {
-    console.error('Failed to parse JSON', e);
+    console.error('Failed to parse JSON in parseJsonField:', {
+      error: e,
+      errorMessage: e instanceof Error ? e.message : 'Unknown error',
+      jsonLength: jsonString.length,
+      jsonStart: jsonString.substring(0, 100),
+      jsonEnd: jsonString.substring(jsonString.length - 100),
+    });
     return null;
   }
 }
@@ -130,6 +152,80 @@ export const useFetchAllAddons = () => {
 };
 
 /**
+ * Optimized hook for admin addon management with efficient pagination
+ * @param filters Object containing filter criteria (search, reviewStatus, etc.)
+ * @param page Current page number (1-based)
+ * @param limit Number of items per page
+ */
+export const useAdminAddons = (
+  filters: {
+    search?: string;
+    reviewStatus?: 'all' | 'reviewed' | 'unreviewed' | 'unsorted';
+    isValid?: boolean;
+  } = {},
+  page: number = 1,
+  limit: number = 25
+) => {
+  return useQuery({
+    queryKey: ['addons', 'admin', filters, page, limit],
+    queryFn: async () => {
+      const queries = [
+        Query.limit(limit),
+        Query.offset((page - 1) * limit),
+        Query.orderDesc('$createdAt'), // Show newest first for admin review
+      ];
+
+      // Add filter queries based on criteria
+      if (filters.reviewStatus === 'all') {
+        // Show only approved/valid addons
+        queries.push(Query.equal('isValid', true));
+      } else if (filters.reviewStatus === 'reviewed') {
+        queries.push(Query.equal('isChecked', true));
+      } else if (filters.reviewStatus === 'unreviewed') {
+        queries.push(Query.equal('isChecked', false));
+      } else if (filters.reviewStatus === 'unsorted') {
+        // Show addons that are not valid/approved (need sorting)
+        queries.push(Query.equal('isValid', false));
+      }
+
+      if (filters.isValid !== undefined) {
+        queries.push(Query.equal('isValid', filters.isValid));
+      }
+
+      // For search, we'll handle it client-side for now
+      // In a real production app, you'd want server-side search with Meilisearch
+      const response = await databases.listDocuments<Addon>(DATABASE_ID, COLLECTION_ID, queries);
+
+      let addons = response.documents.map(addParsedFields);
+
+      // Client-side search filtering
+      if (filters.search) {
+        const searchTerm = filters.search.toLowerCase();
+        addons = addons.filter(
+          (addon) =>
+            addon.name.toLowerCase().includes(searchTerm) ||
+            addon.author?.toLowerCase().includes(searchTerm) ||
+            addon.description?.toLowerCase().includes(searchTerm)
+        );
+      }
+
+      const totalPages = Math.ceil(response.total / limit);
+
+      return {
+        addons,
+        total: response.total,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1,
+        currentPage: page,
+      };
+    },
+    staleTime: 1000 * 60 * 2, // 2 minutes - shorter cache for admin data
+    placeholderData: (previousData) => previousData, // Keep previous data while loading
+  });
+};
+
+/**
  * Hook to fetch paginated addons
  * @param page Current page number
  * @param limit Number of items per page
@@ -161,6 +257,58 @@ export const useFetchAddons = (page: number, limit: number = 10) => {
       }
     },
     staleTime: 1000 * 60 * 5,
+  });
+};
+
+/**
+ * Hook to search addons globally across the entire database
+ * @param searchTerm The search term to use
+ * @param page Current page number (1-based)
+ * @param limit Number of items per page
+ */
+export const useSearchAddons = (searchTerm: string, page: number = 1, limit: number = 25) => {
+  return useQuery({
+    queryKey: ['addons', 'search', searchTerm, page, limit],
+    queryFn: async () => {
+      try {
+        const queries = [
+          Query.limit(limit),
+          Query.offset((page - 1) * limit),
+          Query.orderDesc('$createdAt'),
+        ];
+
+        // Add search queries if search term is provided
+        if (searchTerm.trim()) {
+          // Search in name, description, and authors fields
+          queries.push(
+            Query.or([
+              Query.search('name', searchTerm.trim()),
+              Query.search('description', searchTerm.trim()),
+              Query.search('authors', searchTerm.trim()),
+            ])
+          );
+        }
+
+        const response = await databases.listDocuments<Addon>(DATABASE_ID, COLLECTION_ID, queries);
+
+        const addons = response.documents.map(addParsedFields);
+        const totalPages = Math.ceil(response.total / limit);
+
+        return {
+          addons,
+          total: response.total,
+          totalPages,
+          hasNextPage: page < totalPages,
+          hasPreviousPage: page > 1,
+          currentPage: page,
+        };
+      } catch (error) {
+        console.error('Error searching addons:', error);
+        throw new Error('Failed to search addons');
+      }
+    },
+    enabled: searchTerm.trim().length > 0, // Only search if there's a search term
+    staleTime: 1000 * 60 * 2, // 2 minutes cache
   });
 };
 

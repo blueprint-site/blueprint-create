@@ -1,7 +1,10 @@
 import { Badge } from '@/components/ui/badge.tsx';
 import { memo } from 'react';
+import { MODLOADER_OPTIONS } from '@/data/modloaders';
+import { ensureArray } from '@/utils/arrayUtils';
 
-const MODLOADERS = ['forge', 'fabric', 'neoforge', 'quilt'];
+// Extract just the values from MODLOADER_OPTIONS for filtering
+const MODLOADERS = MODLOADER_OPTIONS.map((option) => option.value.toLowerCase());
 
 const toTitleCase = (str: string) => {
   return str
@@ -11,13 +14,18 @@ const toTitleCase = (str: string) => {
 };
 
 interface AddonCategoriesProps {
-  categories: string[];
+  categories: string[] | null | undefined;
 }
 
 const CategoryBadges = ({ categories }: AddonCategoriesProps) => {
+  // Ensure categories is always an array
+  const safeCategories = ensureArray(categories);
+
+  if (safeCategories.length === 0) return null;
+
   const processedCategories = [
     ...new Set(
-      categories.filter((cat) => !MODLOADERS.includes(cat)).map((cat) => cat.toLowerCase())
+      safeCategories.filter((cat) => !MODLOADERS.includes(cat)).map((cat) => cat.toLowerCase())
     ),
   ].map(toTitleCase);
 

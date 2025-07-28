@@ -15,8 +15,8 @@ export interface AddonVersion {
   id: string;
   name: string;
   version_number: string;
-  game_versions: string[];
-  loaders: string[];
+  game_versions: string[] | null;
+  loaders: string[] | null;
   dependencies?: ModrinthVersionDependency[];
   date_published: string;
   featured?: boolean;

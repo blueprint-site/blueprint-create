@@ -5,8 +5,8 @@ import { Query } from 'appwrite';
 import type { BlogTag } from '@/types';
 import { blogTagSchema, type BlogTagFormValues } from '@/schemas/tag.schema';
 
-const DATABASE_ID = '67b1dc430020b4fb23e3';
-const COLLECTION_ID = '67b2326100053d0e304f';
+const DATABASE_ID = 'main';
+const COLLECTION_ID = 'blog_tags';
 
 /**
  * Hook to fetch all blog tags

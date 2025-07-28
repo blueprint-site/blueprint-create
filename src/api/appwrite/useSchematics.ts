@@ -18,8 +18,8 @@ import type { Schematic } from '@/types';
 import { createSchematicSchema, updateSchematicSchema } from '@/schemas/schematic.schema';
 
 // Appwrite database configuration
-const DATABASE_ID = '67b1dc430020b4fb23e3';
-const COLLECTION_ID = '67b2310d00356b0cb53c';
+const DATABASE_ID = 'main';
+const COLLECTION_ID = 'schematics';
 
 /**
  * Query hook to fetch a single schematic by its ID.
