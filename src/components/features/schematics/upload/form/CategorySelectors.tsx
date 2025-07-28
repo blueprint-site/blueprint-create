@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import type { Control, UseFormReturn } from 'react-hook-form';
 import { useWatch } from 'react-hook-form';
 import { FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -20,8 +20,12 @@ interface CategorySelectorsProps {
 }
 
 export function CategorySelectors({ control, form }: CategorySelectorsProps) {
-  const formCategories = useWatch({ control: form.control, name: 'categories' }) || [];
-  const formSubCategories = useWatch({ control: form.control, name: 'sub_categories' }) || [];
+  const rawFormCategories = useWatch({ control: form.control, name: 'categories' });
+  const rawFormSubCategories = useWatch({ control: form.control, name: 'sub_categories' });
+
+  const formCategories = useMemo(() => rawFormCategories || [], [rawFormCategories]);
+  const formSubCategories = useMemo(() => rawFormSubCategories || [], [rawFormSubCategories]);
+
   const [selectedCategories, setSelectedCategories] = useState<string[]>(formCategories);
   const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(formSubCategories);
 
@@ -36,12 +40,17 @@ export function CategorySelectors({ control, form }: CategorySelectorsProps) {
 
   // Watch for external form value changes
   useEffect(() => {
-    if (JSON.stringify(formCategories) !== JSON.stringify(selectedCategories)) {
+    const formCategoriesStr = JSON.stringify(formCategories);
+    const formSubCategoriesStr = JSON.stringify(formSubCategories);
+    const selectedCategoriesStr = JSON.stringify(selectedCategories);
+    const selectedSubCategoriesStr = JSON.stringify(selectedSubCategories);
+
+    if (formCategoriesStr !== selectedCategoriesStr) {
       console.log('formCategories effect', formCategories);
       setSelectedCategories(formCategories);
     }
 
-    if (JSON.stringify(formSubCategories) !== JSON.stringify(selectedSubCategories)) {
+    if (formSubCategoriesStr !== selectedSubCategoriesStr) {
       console.log('formSubCategories effect', formSubCategories);
       setSelectedSubCategories(formSubCategories);
     }

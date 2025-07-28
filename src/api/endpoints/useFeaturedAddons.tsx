@@ -82,8 +82,8 @@ export const useCreateFeaturedAddon = () => {
     },
     onError: (error) => {
       toast({
-        title: 'Error',
-        description: 'Failed to create featured addon',
+        title: 'Error: ' + error.name,
+        description: 'Failed to create featured addon: ' + error.message,
         variant: 'destructive',
       });
     },

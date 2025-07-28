@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { toast } from '@/hooks/useToast';
 import { useUpdateFeaturedAddon, useDeleteFeaturedAddon } from '@/api/endpoints/useFeaturedAddons';
 import type { DropResult, DroppableProvided, DraggableProvided } from '@hello-pangea/dnd';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
@@ -35,16 +34,20 @@ export default function FeaturedAddonsList() {
     // Update display order for all items
     items.forEach((item, index) => {
       updateFeaturedAddon({
-        ...item,
-        display_order: index,
+        id: item.$id,
+        addon: {
+          display_order: index,
+        },
       });
     });
   };
 
   const handleToggleActive = async (addon: FeaturedAddon) => {
     updateFeaturedAddon({
-      ...addon,
-      active: !addon.active,
+      id: addon.$id,
+      addon: {
+        active: !addon.active,
+      },
     });
   };
 

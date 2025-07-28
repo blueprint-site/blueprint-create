@@ -227,7 +227,7 @@ export const OptimizedAddonsTable = () => {
 
       // Always refetch after undo to ensure consistency
       refetch();
-    } catch (error) {
+    } catch {
       toast({
         variant: 'destructive',
         title: 'Undo failed',
@@ -277,7 +277,7 @@ export const OptimizedAddonsTable = () => {
 
       // Force a refetch to get updated data
       refetch();
-    } catch (error) {
+    } catch {
       toast({
         variant: 'destructive',
         title: 'Update failed',
@@ -330,7 +330,7 @@ export const OptimizedAddonsTable = () => {
 
       // Force a refetch to get updated data
       refetch();
-    } catch (error) {
+    } catch {
       toast({
         variant: 'destructive',
         title: 'Update failed',

@@ -1,13 +1,7 @@
 import Autoplay from 'embla-carousel-autoplay';
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  type CarouselApi,
-} from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -16,21 +10,7 @@ import { toast } from '@/hooks';
 import { OctagonX } from 'lucide-react';
 
 const AddonsCarousel = () => {
-  const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
-
-  const { data: addons, isLoading, error } = useFetchFeaturedAddons();
-
-  useEffect(() => {
-    if (!api) return;
-
-    const updateCurrent = () => setCurrent(api.selectedScrollSnap());
-    api.on('select', updateCurrent);
-
-    return () => {
-      api.off('select', updateCurrent);
-    };
-  }, [api]);
+  const { data: addons, isLoading, error } = useFetchFeaturedAddons(true);
 
   if (error) {
     toast({
@@ -55,11 +35,7 @@ const AddonsCarousel = () => {
 
   return (
     <div className='w-full'>
-      <Carousel
-        setApi={setApi}
-        opts={{ align: 'start', loop: true }}
-        plugins={[Autoplay({ delay: 5000 })]}
-      >
+      <Carousel opts={{ align: 'start', loop: true }} plugins={[Autoplay({ delay: 5000 })]}>
         <CarouselContent>
           {addons.map((addon, index) => (
             <CarouselItem key={index}>
