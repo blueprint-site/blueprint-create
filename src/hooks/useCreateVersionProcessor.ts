@@ -126,7 +126,7 @@ export function useVersionDisplay(versionInfo: VersionInfo | null, loaders: stri
     // Compatibility checker function
     const isCompatible = (mcVersion: string, loader: string) => {
       return versionInfo.versions.some(
-        (version) => version.game_versions.includes(mcVersion) && version.loaders.includes(loader)
+        (version) => version.game_versions?.includes(mcVersion) && version.loaders?.includes(loader)
       );
     };
 
