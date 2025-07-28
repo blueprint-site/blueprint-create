@@ -76,7 +76,7 @@ export const OptimizedAddonsTable = () => {
     isFetching,
   } = useAdminAddons(
     {
-      search: filterType === 'history' || search.trim() ? '' : '', // Don't search in useAdminAddons when using global search
+      search: filterType === 'history' || search.trim() !== '' ? '' : undefined, // Don't search in useAdminAddons when using global search
       reviewStatus: filterType === 'history' ? 'all' : filterType,
     },
     currentPage,
