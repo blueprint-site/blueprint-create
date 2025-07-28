@@ -33,7 +33,9 @@ const Gallery: React.FC<GalleryProps> = ({
       thumbApi.scrollTo(selected);
     };
     mainApi.on('select', onMainSelect);
-    return () => mainApi.off('select', onMainSelect);
+    return () => {
+      mainApi.off('select', onMainSelect);
+    };
   }, [mainApi, thumbApi]);
 
   // Sync main carousel when thumbnail is clicked
