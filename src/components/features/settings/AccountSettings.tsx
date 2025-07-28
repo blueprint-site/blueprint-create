@@ -44,7 +44,7 @@ export default function AccountSettings() {
         <p className='text-foreground-muted text-sm'>
           {t('settings.user-settings.account.language.description')}
         </p>
-        <LanguageSwitcher direction={'down'} />
+        <LanguageSwitcher />
       </section>
 
       <section className={'space-y-4'}>

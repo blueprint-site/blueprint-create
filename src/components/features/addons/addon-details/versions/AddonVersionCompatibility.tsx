@@ -52,8 +52,8 @@ export const AddonVersionCompatibility: React.FC<AddonVersionCompatibilityProps>
     // Check if any version supports this combination
     return versions.some((version) => {
       return (
-        version.game_versions.includes(mcVersion) &&
-        version.loaders.some((l) => l.toLowerCase() === normalizedLoader)
+        version.game_versions?.includes(mcVersion) &&
+        version.loaders?.some((l) => l.toLowerCase() === normalizedLoader)
       );
     });
   };

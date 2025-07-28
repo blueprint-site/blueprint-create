@@ -18,7 +18,7 @@ interface BlueprintCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const BlueprintCard = React.forwardRef<HTMLDivElement, BlueprintCardProps>(
-  ({ size = 'small', className, children, ...props }, ref) => {
+  ({ size = 'small', className, children, ...props }, _ref) => {
     const cardRef = useRef<HTMLDivElement>(null);
     const [currentWidth, setCurrentWidth] = useState(128);
 
