@@ -154,17 +154,21 @@ Stores feature flags for controlling application features. See `FeatureFlag` typ
 
 Appwrite's native user management is extended using the `prefs` field. User data is accessed via `account.get()` and typed using `User` and `UserPreferences` from `src/types/appwrite.ts`.
 
+**🔒 Security Note**: User preferences are client-accessible and should **NOT** store sensitive data. Use Appwrite Teams for secure role management.
+
 **Key Preference Fields (`prefs` object):**
 - `theme`: 'light' | 'dark' | undefined - User's preferred theme
 - `language`: string | undefined - Preferred language code
 - `notificationsEnabled`: boolean | undefined - Notification preference
 - `avatar`: string | undefined - URL or identifier for custom avatar
 - `bio`: string | undefined - User's biography
-- `roles`: string[] | undefined - Custom application roles (e.g., 'admin', 'moderator')
+- `roles`: string[] | undefined - ⚠️ **DEPRECATED**: Use Appwrite Teams instead for security
 - `easterEggs`: object | null | undefined - Easter egg tracking
 - `betaTester`: object | undefined (`BetaTesterPrefs`) - Beta program status and access
 
-See `docs/api/appwrite-user-model.md` for detailed usage.
+**Secure Role Management**: Use Appwrite Teams for roles and permissions instead of storing them in preferences.
+
+See `docs/api/appwrite-user-model.md` for detailed usage and security best practices.
 
 ## Authentication
 

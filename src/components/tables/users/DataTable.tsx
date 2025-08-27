@@ -33,8 +33,8 @@ import type { User as BaseUser } from '@/types'; // Import your base User type
 
 // --- Define or import Team IDs and mapping ---
 // It's better to import these from a shared config file
-const ADMIN_TEAM_ID = '67aee1ab00037d3646b9';
-const BETA_TESTER_TEAM_ID = '67f959e9001e4967667e';
+const ADMIN_TEAM_ID = 'admin';
+const BETA_TESTER_TEAM_ID = 'beta_testers';
 
 // Maps Team IDs to displayable Role Names
 const teamIdToRoleName: Record<string, string> = {

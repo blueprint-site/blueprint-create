@@ -66,6 +66,7 @@ export const useCreateFeaturedAddon = () => {
           COLLECTION_ID,
           ID.unique(),
           data
+          // Usuń uprawnienia - użyj domyślnych z kolekcji
         );
         return response;
       } catch (err) {

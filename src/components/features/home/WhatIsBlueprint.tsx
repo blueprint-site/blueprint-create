@@ -58,14 +58,14 @@ const WhatIsBlueprint = () => {
 
   return (
     <Card className='font-minecraft bg-blueprint container rounded-none py-6 md:rounded-xl md:py-12'>
-      <div className='text-blueprint-foreground flex flex-col items-center space-y-5 text-center'>
+      <div className='flex flex-col items-center space-y-5 text-center text-white'>
         <div className='text-3xl font-bold tracking-tighter sm:text-4xl md:py-4 md:text-5xl'>
           {t('home.info.about.title')}
         </div>
 
-        <p className='font-italic text-xl'>{t('home.info.about.description')}</p>
+        <p className='font-italic text-xl text-white'>{t('home.info.about.description')}</p>
 
-        <div className='flex items-center justify-center gap-4 px-2'>
+        <div className='flex items-center justify-center gap-4 px-2 text-white'>
           {/* Addons Icon */}
           <a
             href='/addons'
@@ -79,7 +79,7 @@ const WhatIsBlueprint = () => {
               alt='Addon Icon'
               className='w-8 cursor-pointer object-contain sm:w-10 md:w-14 lg:w-20'
             />
-            <div className='text-md mt-2 md:text-lg'>Addons</div>
+            <div className='text-md mt-2 text-white md:text-lg'>Addons</div>
           </a>
 
           <span className='flex items-center justify-center px-2 text-3xl select-none md:text-5xl'>
@@ -99,7 +99,7 @@ const WhatIsBlueprint = () => {
               alt='Schematic Icon'
               className='w-8 cursor-pointer object-contain sm:w-10 md:w-14 lg:w-20'
             />
-            <div className='text-md mt-2 md:text-lg'>Schematics</div>
+            <div className='text-md mt-2 text-white md:text-lg'>Schematics</div>
           </a>
 
           <span className='flex items-center justify-center px-2 text-3xl font-extrabold select-none md:text-5xl'>

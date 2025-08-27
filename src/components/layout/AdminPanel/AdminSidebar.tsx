@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BookOpen, Bot, Feather, Map, Puzzle, Settings2, SquareTerminal, Star } from 'lucide-react';
+import { Feather, Map, Puzzle, SquareTerminal, Star } from 'lucide-react';
 
 import { NavMain } from '@/components/layout/AdminPanel/NavMain.tsx';
 import { NavUser } from '@/components/layout/AdminPanel/NavUser.tsx';
@@ -42,22 +42,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ],
       },
       {
-        title: 'Modules',
-        url: '#',
-        icon: Bot,
-        isActive:
-          pathSegments[1] === 'addons' ||
-          pathSegments[1] === 'schematics' ||
-          pathSegments[1] === 'blogs' ||
-          pathSegments[1] === 'users',
-        items: [
-          { title: 'Stats', url: '/admin/stats' },
-          { title: 'Logs', url: '/admin/logs' },
-        ],
-      },
-      {
         title: 'Addons',
-        url: '#',
+        url: '/admin/addons',
         icon: Puzzle,
         isActive: pathSegments[1] === 'addons',
         items: [
@@ -78,7 +64,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       },
       {
         title: 'Blogs',
-        url: '#',
+        url: '/admin/blogs',
         icon: Feather,
         isActive: pathSegments[1] === 'blogs',
         items: [
@@ -88,41 +74,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       },
       {
         title: 'Schematics',
-        url: '#',
+        url: '/admin/schematics',
         icon: Map,
         isActive: pathSegments[1] === 'schematics',
         items: [{ title: 'List', url: '/admin/schematics/list' }],
       },
       {
         title: 'User',
-        url: '#',
+        url: '/admin/users',
         icon: Map,
         isActive: pathSegments[1] === 'users',
         items: [{ title: 'List', url: '/admin/users' }],
-      },
-      {
-        title: 'Documentation',
-        url: '#',
-        icon: BookOpen,
-        isActive: pathSegments[1] === 'documentation',
-        items: [
-          { title: 'Introduction', url: '#' },
-          { title: 'Get Started', url: '#' },
-          { title: 'Tutorials', url: '#' },
-          { title: 'Changelog', url: '#' },
-        ],
-      },
-      {
-        title: 'Settings',
-        url: '#',
-        icon: Settings2,
-        isActive: pathSegments[1] === 'settings',
-        items: [
-          { title: 'General', url: '#' },
-          { title: 'Team', url: '#' },
-          { title: 'Billing', url: '#' },
-          { title: 'Limits', url: '#' },
-        ],
       },
     ],
   };
@@ -144,6 +106,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
+        <a
+          href='/'
+          className='bg-blueprint w-full justify-center rounded-md p-2 text-center text-black'
+        >
+          Go back to site
+        </a>
         <NavUser user={data.user} />
       </SidebarFooter>
       <SidebarRail />

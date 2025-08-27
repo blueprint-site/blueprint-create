@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { account } from '@/config/appwrite';
+import { account, teams } from '@/config/appwrite';
 import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
 import AuthError from '@/pages/auth/AuthError.tsx';
+import type { UserPreferences } from '@/types/appwrite';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -33,10 +34,34 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole 
       authCache.current.isAuthenticated = true;
 
       if (requiredRole) {
+        // Map role names to team IDs
+        const ADMIN_TEAM_ID = 'admin';
+        const roleToTeamId: Record<string, string> = {
+          admin: ADMIN_TEAM_ID,
+          // Add other role mappings as needed
+        };
+
+        // Check if user has role in preferences first
         const user = await account.get();
-        console.log(user);
-        const userRoles = user.labels || [];
-        const hasRole = userRoles.includes(requiredRole);
+        const userRoles = (user.prefs as UserPreferences)?.roles || [];
+        const hasPrefsRole = userRoles.includes(requiredRole);
+
+        // Check team membership for admin role
+        let hasTeamRole = false;
+        if (roleToTeamId[requiredRole]) {
+          try {
+            // Check if user is a member of the admin team
+            const teamMemberships = await teams.listMemberships(roleToTeamId[requiredRole]);
+            hasTeamRole = teamMemberships.memberships.some(
+              (membership) => membership.userId === user.$id
+            );
+          } catch (error) {
+            console.error('Error checking team membership:', error);
+            hasTeamRole = false;
+          }
+        }
+
+        const hasRole = hasPrefsRole || hasTeamRole;
         setHasRequiredRole(hasRole);
         authCache.current.hasRequiredRole[requiredRole] = hasRole;
       }
