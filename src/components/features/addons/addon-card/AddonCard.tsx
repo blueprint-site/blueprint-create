@@ -94,7 +94,7 @@ const AddonCard = ({ addon }: AddonListItemProps) => {
         name: addon.name || 'MISSING',
         displayName: getDisplayName(addon),
         slug: addon.slug,
-        author: addon.author,
+        authors: addon.authors,
       },
       rawDataInfo: {
         curseforge_raw_type: typeof addon.curseforge_raw,
@@ -215,7 +215,7 @@ const AddonCard = ({ addon }: AddonListItemProps) => {
               </div>
 
               <AddonStats
-                author={addon.author}
+                authors={addon.authors}
                 downloads={addon.downloads}
                 claimed_by={addon.claimed_by}
               />
