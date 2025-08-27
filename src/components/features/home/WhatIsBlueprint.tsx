@@ -24,7 +24,7 @@ const WhatIsBlueprint = () => {
 
   const [rotationDegrees, setRotationDegrees] = useState(0);
   const [clickCount, setClickCount] = useState(0);
-  const clickTimerRef = useRef<number | null>(null);
+  const clickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleLogoClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const newClickCount = clickCount + 1;
