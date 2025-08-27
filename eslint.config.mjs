@@ -31,7 +31,7 @@ export default defineConfig([
     'cli/**',
     '**/node_modules/',
     'public/**',
-    'functions/**'
+    'functions/**',
   ]),
 
   // Base JavaScript config (ESLint recommended)
@@ -45,7 +45,7 @@ export default defineConfig([
       // Disable rules that aren't applicable to React 19
       'react/react-in-jsx-scope': 'off',
       'react/jsx-uses-react': 'off',
-    }
+    },
   },
 
   // Base config for all files with React-related rules
@@ -73,15 +73,15 @@ export default defineConfig([
         },
       },
     },
-    rules: {      
+    rules: {
       // React Refresh rules
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       'react-compiler/react-compiler': 'error',
-      
+
       // React Hooks recommended rules
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
-      
+
       // Disable the index as key rule
       'react/no-array-index-key': 'off',
     },
@@ -91,12 +91,12 @@ export default defineConfig([
       },
     },
   },
-  
+
   // TypeScript specific configuration using recommended rules
   {
     files: ['**/*.{ts,tsx}'],
     plugins: {
-      '@typescript-eslint': tsPlugin
+      '@typescript-eslint': tsPlugin,
     },
     languageOptions: {
       parser: tsParser,
@@ -122,7 +122,7 @@ export default defineConfig([
   {
     files: ['vite.config.ts'],
     plugins: {
-      '@typescript-eslint': tsPlugin
+      '@typescript-eslint': tsPlugin,
     },
     languageOptions: {
       parser: tsParser,

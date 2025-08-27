@@ -11,8 +11,8 @@ import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
 import type { AdminUser } from '@/api/appwrite/useUsers'; // Import the user type
 
-const ADMIN_TEAM_ID = '67aee1ab00037d3646b9';
-const BETA_TESTER_TEAM_ID = '67f959e9001e4967667e';
+const ADMIN_TEAM_ID = 'admin';
+const BETA_TESTER_TEAM_ID = 'beta_testers';
 
 interface UserActionsDropdownProps {
   user: AdminUser;

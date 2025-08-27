@@ -1,6 +1,6 @@
 import DevinsBadges from '@/components/utility/DevinsBadges';
 import neoforge from '@/assets/neoforge_46h.png';
-import { normalizeLoaderName } from '@/data/modloaders';
+import { normalizeLoaderName, STANDARD_LOADER_DISPLAY } from '@/data/modloaders';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ensureArray } from '@/utils/arrayUtils';
 
@@ -12,21 +12,33 @@ const ModLoaderDisplay = ({ loaders = [] }: { loaders: string[] | null | undefin
     return <div>No mod loaders found!</div>;
   }
 
-  // Create a map of standardized names to their lowercase values
-  // This is needed because DevinsBadges expects lowercase loader names
-  const loaderDisplayMap = new Map(
-    Array.from(new Set(safeLoaders.map((loader) => loader.toLowerCase()))).map((loader) => [
-      normalizeLoaderName(loader),
-      loader.toLowerCase(),
-    ])
+  // Convert to lowercase and deduplicate case-insensitive duplicates
+  const lowerCaseLoaders = Array.from(
+    new Set(
+      safeLoaders
+        .filter((loader) => loader && typeof loader === 'string')
+        .map((loader) => loader.toLowerCase())
+    )
   );
 
-  // Get a sorted array of unique normalized loader names
-  const uniqueLoaders = Array.from(loaderDisplayMap.keys()).sort((a, b) => a.localeCompare(b));
+  // Check if "all" is present
+  const hasAll = lowerCaseLoaders.includes('all');
 
-  // If "All" is present, show all four loaders instead
-  const hasAll = uniqueLoaders.includes('All');
-  const displayLoaders = hasAll ? ['Forge', 'Fabric', 'Quilt', 'NeoForge'] : uniqueLoaders;
+  // If "All" is present, show all standard loaders
+  let displayLoaders: string[];
+  if (hasAll) {
+    displayLoaders = ['Forge', 'Fabric', 'Quilt', 'NeoForge'];
+  } else {
+    // Map to proper display names using STANDARD_LOADER_DISPLAY
+    displayLoaders = lowerCaseLoaders
+      .map((loader) => STANDARD_LOADER_DISPLAY[loader] || normalizeLoaderName(loader))
+      .sort((a, b) => a.localeCompare(b));
+  }
+
+  // Create a map of display names to their lowercase values for DevinsBadges
+  const loaderDisplayMap = new Map(
+    displayLoaders.map((displayName) => [displayName, displayName.toLowerCase()])
+  );
 
   return (
     <div className='flex flex-row gap-2'>

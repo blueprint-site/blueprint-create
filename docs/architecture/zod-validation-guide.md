@@ -129,15 +129,52 @@ async function enableBetaAccess(newFeatures: string[]) {
 
 ## Common Patterns
 
-### Checking User Roles
+### Checking User Roles (Secure Method)
 
 ```typescript
 import { useUserStore } from '@/api/stores/userStore';
+import { teams } from '@/config/appwrite';
 
 function UserProfile() {
   const user = useUserStore((state) => state.user);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  // Safely check roles from preferences
+  useEffect(() => {
+    if (user?.$id) {
+      checkAdminRole(user.$id).then(setIsAdmin);
+    }
+  }, [user?.$id]);
+
+  const checkAdminRole = async (userId: string): Promise<boolean> => {
+    try {
+      const ADMIN_TEAM_ID = '67aee1ab00037d3646b9';
+      const teamMemberships = await teams.listMemberships(ADMIN_TEAM_ID);
+      return teamMemberships.memberships.some(
+        membership => membership.userId === userId
+      );
+    } catch (error) {
+      console.error('Error checking admin role:', error);
+      return false;
+    }
+  };
+
+  return (
+    <div>
+      <p>Welcome, {user?.name ?? 'Guest'}</p>
+      {isAdmin && <p>Admin controls available.</p>}
+    </div>
+  );
+}
+```
+
+### Legacy Role Checking (Deprecated)
+
+```typescript
+// ❌ DEPRECATED: Don't use preferences for roles (insecure)
+function UserProfileLegacy() {
+  const user = useUserStore((state) => state.user);
+
+  // This is insecure - preferences are client-accessible
   const isAdmin = user?.prefs?.roles?.includes('admin') || false;
   const isModerator = user?.prefs?.roles?.includes('moderator') || false;
 

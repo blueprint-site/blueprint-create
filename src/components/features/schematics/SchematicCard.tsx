@@ -12,6 +12,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card.tsx';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip.tsx';
 import ModLoaders from '../addons/addon-card/ModLoaders';
 
 import { useIncrementDownloads } from '@/api/appwrite/useSchematics';
@@ -24,6 +30,16 @@ interface SchematicCardProps {
 
 const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
   const navigate = useNavigate();
+
+  // Check if debug mode is enabled
+  const isDebugMode = () => {
+    try {
+      return localStorage.getItem('debug') === 'true';
+    } catch {
+      return false;
+    }
+  };
+
   const renderVersionBadges = (versions: string[] | null | undefined) => {
     const safeVersions = Array.isArray(versions) ? versions : [];
     return safeVersions.map((version, i) => (
@@ -40,7 +56,11 @@ const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
     navigate(schematic.schematic_url);
   };
 
-  return (
+  const formatSchematicData = () => {
+    return JSON.stringify(schematic, null, 2);
+  };
+
+  const cardContent = (
     <Card
       className='bg flex h-full cursor-pointer flex-col rounded-lg transition-shadow hover:shadow-lg'
       onClick={onClick}
@@ -78,6 +98,21 @@ const SchematicCard = ({ schematic, onClick }: SchematicCardProps) => {
       </CardFooter>
     </Card>
   );
+
+  if (isDebugMode()) {
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>{cardContent}</TooltipTrigger>
+          <TooltipContent side='right' className='max-h-96 max-w-md overflow-auto'>
+            <pre className='text-xs whitespace-pre-wrap'>{formatSchematicData()}</pre>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  }
+
+  return cardContent;
 };
 
 export default SchematicCard;

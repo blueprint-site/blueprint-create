@@ -1,5 +1,6 @@
 import type { Models } from 'appwrite';
-
+import type { ModrinthRawObject } from './addons/modrinth';
+import type { CurseForgeRawObject } from './addons/curseforge';
 /**
  * Type definitions for Appwrite document structures
  *
@@ -22,19 +23,19 @@ export interface Addon extends Models.Document {
   name: string;
   description: string;
   slug: string;
-  author: string;
-  categories: string[] | null;
+  authors: string[];
+  categories: string[] | string | null;
   downloads: number;
   icon: string;
   created_at: string | null;
   updated_at: string | null;
-  curseforge_raw: string | null;
-  modrinth_raw: string | null;
+  curseforge_raw: CurseForgeRawObject | string | null;
+  modrinth_raw: ModrinthRawObject | string | null;
   sources: string[];
   isValid: boolean;
-  loaders: string[] | null;
+  loaders: string[] | string | null;
   isChecked: boolean;
-  minecraft_versions: string[] | null;
+  minecraft_versions: string[] | string | null;
   create_versions: string[] | null;
   claimed_by: string | null;
 }
