@@ -184,9 +184,12 @@ const AddonCard = ({ addon }: AddonListItemProps) => {
     return [];
   };
 
+  // Sprawdzanie czy debug jest włączony w localStorage
+  const isDebug = typeof window !== 'undefined' && window.localStorage.getItem('debug') === 'true';
+
   return (
     <TooltipProvider delayDuration={500}>
-      <Tooltip>
+      <Tooltip open={isDebug ? undefined : false}>
         <TooltipTrigger asChild>
           <Card className='flex h-full flex-col overflow-hidden hover:shadow-xs'>
             <CardHeader
@@ -228,15 +231,17 @@ const AddonCard = ({ addon }: AddonListItemProps) => {
             </CardContent>
           </Card>
         </TooltipTrigger>
-        <TooltipContent
-          side='right'
-          className='bg-surface-2 max-h-96 max-w-lg overflow-auto border p-4'
-        >
-          <div className='text-xs'>
-            <div className='mb-2 font-semibold'>Raw Addon Data (Debug):</div>
-            <pre className='font-mono text-xs whitespace-pre-wrap'>{formatAddonData(addon)}</pre>
-          </div>
-        </TooltipContent>
+        {isDebug && (
+          <TooltipContent
+            side='right'
+            className='bg-surface-2 max-h-96 max-w-lg overflow-auto border p-4'
+          >
+            <div className='text-xs'>
+              <div className='mb-2 font-semibold'>Raw Addon Data (Debug):</div>
+              <pre className='font-mono text-xs whitespace-pre-wrap'>{formatAddonData(addon)}</pre>
+            </div>
+          </TooltipContent>
+        )}
       </Tooltip>
     </TooltipProvider>
   );

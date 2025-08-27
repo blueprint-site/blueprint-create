@@ -9,6 +9,7 @@ import OldLogo from '@/assets/legacy_logo.webp';
 import AddonIcon from '@/assets/sprite-icons/minecart_coupling.webp';
 import SchematicIcon from '@/assets/sprite-icons/schematic.webp';
 import { Card } from '@/components/ui/card';
+import { toast } from 'sonner';
 
 const WhatIsBlueprint = () => {
   const { t } = useTranslation();
@@ -22,8 +23,41 @@ const WhatIsBlueprint = () => {
   const isAnimatingRef = useRef(false);
 
   const [rotationDegrees, setRotationDegrees] = useState(0);
+  const [clickCount, setClickCount] = useState(0);
+  const clickTimerRef = useRef<number | null>(null);
 
   const handleLogoClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const newClickCount = clickCount + 1;
+    setClickCount(newClickCount);
+
+    if (clickTimerRef.current) {
+      clearTimeout(clickTimerRef.current);
+    }
+
+    clickTimerRef.current = setTimeout(() => {
+      setClickCount(0);
+      clickTimerRef.current = null;
+    }, 5000);
+
+    if (newClickCount === 5) {
+      if (localStorage.getItem('debug') !== 'true') {
+        toast.success('Debug mode toggled!');
+        localStorage.setItem('debug', 'true');
+        setClickCount(0);
+        if (clickTimerRef.current) {
+          clearTimeout(clickTimerRef.current);
+          clickTimerRef.current = null;
+        }
+      } else {
+        toast.success('Debug mode UNtoggled!');
+        localStorage.removeItem('debug');
+        setClickCount(0);
+        if (clickTimerRef.current) {
+          clearTimeout(clickTimerRef.current);
+          clickTimerRef.current = null;
+        }
+      }
+    }
     e.preventDefault();
     e.stopPropagation();
 
@@ -45,7 +79,7 @@ const WhatIsBlueprint = () => {
     }, 450);
   };
 
-  // Clean up animation styles on unmount
+  // Clean up animation styles and timer on unmount
   useEffect(() => {
     const currentRef = logoRef.current;
     return () => {
@@ -53,13 +87,16 @@ const WhatIsBlueprint = () => {
         currentRef.style.transition = '';
         currentRef.style.transform = '';
       }
+      if (clickTimerRef.current) {
+        clearTimeout(clickTimerRef.current);
+      }
     };
   }, []);
 
   return (
     <Card className='font-minecraft bg-blueprint container rounded-none py-6 md:rounded-xl md:py-12'>
       <div className='flex flex-col items-center space-y-5 text-center text-white'>
-        <div className='text-3xl font-bold tracking-tighter sm:text-4xl md:py-4 md:text-5xl'>
+        <div className='cursor-pointer text-3xl font-bold tracking-tighter sm:text-4xl md:py-4 md:text-5xl'>
           {t('home.info.about.title')}
         </div>
 
