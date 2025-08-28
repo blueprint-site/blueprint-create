@@ -1,4 +1,5 @@
 'use no memo';
+
 import {
   useFetchFeaturedAddons,
   useUpdateFeaturedAddon,
@@ -8,6 +9,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, PlusIcon } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DataTable } from '@/components/tables/addonChecks/data-table';
+
 import { Button } from '@/components/ui/button.tsx';
 import { toast } from '@/hooks';
 import type { FeaturedAddon } from '@/types';
