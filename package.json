@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "host": "vite --host",
-    "build": "tsc --noEmit && vite build",
+    "build": "NODE_OPTIONS='--max-old-space-size=4096' tsc --noEmit && vite build",
+    "build:ci": "NODE_OPTIONS='--max-old-space-size=2048' tsc --noEmit && vite build",
     "prebuild": "npm run lint",
     "fix": "npm run lint --fix",
     "analyze": "vite build --mode analyze",
