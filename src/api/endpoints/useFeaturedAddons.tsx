@@ -110,14 +110,20 @@ export const useUpdateFeaturedAddon = () => {
   return useMutation({
     mutationFn: async ({ id, addon }: UpdateFeaturedAddonArgs): Promise<Models.Document> => {
       try {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $id,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $collectionId,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $databaseId,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $createdAt,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $updatedAt,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $permissions,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $sequence,
           ...updateData
         } = addon;

@@ -150,14 +150,20 @@ export const useSaveSchematics = () => {
             throw new Error('Invalid schematic data for creation');
           }
 
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             $id,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             $collectionId,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             $databaseId,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             $createdAt,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             $updatedAt,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             $permissions,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             $sequence,
             ...createData
           } = schematic;

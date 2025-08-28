@@ -169,27 +169,39 @@ export const useSaveBlog = () => {
       const serializedBlog = serializeJsonFields(blog);
 
       if (blog.$id) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $id,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $collectionId,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $databaseId,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $createdAt,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $updatedAt,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $permissions,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $sequence,
           ...updateData
         } = serializedBlog;
         return await databases.updateDocument(DATABASE_ID, COLLECTION_ID, blog.$id, updateData);
       } else {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $id,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $collectionId,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $databaseId,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $createdAt,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $updatedAt,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $permissions,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           $sequence,
           ...createData
         } = serializedBlog;
