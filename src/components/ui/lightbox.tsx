@@ -34,7 +34,6 @@ const Lightbox: React.FC<LightboxProps> = ({
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [lastPosition, setLastPosition] = useState({ x: 0, y: 0 });
   const [velocity, setVelocity] = useState({ x: 0, y: 0 });
-  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
   
@@ -48,7 +47,6 @@ const Lightbox: React.FC<LightboxProps> = ({
     setPosition({ x: 0, y: 0 });
     setLastPosition({ x: 0, y: 0 });
     setVelocity({ x: 0, y: 0 });
-    setTouchStart(null);
     setImageLoading(true);
     setImageError(false);
   }, [currentIndex]);
@@ -129,7 +127,6 @@ const Lightbox: React.FC<LightboxProps> = ({
     setPosition({ x: 0, y: 0 });
     setLastPosition({ x: 0, y: 0 });
     setVelocity({ x: 0, y: 0 });
-    setTouchStart(null);
   }, []);
 
   // Handle mouse drag for panning - much more responsive implementation
@@ -210,7 +207,6 @@ const Lightbox: React.FC<LightboxProps> = ({
     
     setIsDragging(true);
     setVelocity({ x: 0, y: 0 });
-    setTouchStart({ x: touch.clientX, y: touch.clientY });
     setDragStart({ 
       x: touchX - position.x, 
       y: touchY - position.y 
@@ -242,7 +238,6 @@ const Lightbox: React.FC<LightboxProps> = ({
   const handleTouchEnd = useCallback(() => {
     if (!isDragging) return;
     setIsDragging(false);
-    setTouchStart(null);
     
     // Apply stronger momentum for touch
     if (Math.abs(velocity.x) > 1 || Math.abs(velocity.y) > 1) {

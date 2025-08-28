@@ -56,7 +56,7 @@ const Gallery: React.FC<GalleryProps> = ({
   }, [enableLightbox, lightboxOpen, current, images.length, mainApi]);
 
   return (
-    <div className="">
+    <div className={className}>
       {/* Main image carousel */}
       <Carousel setApi={setMainApi} opts={{ startIndex: initialIndex }} aria-label="Image gallery">
         <CarouselContent>

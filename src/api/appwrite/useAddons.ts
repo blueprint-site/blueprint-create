@@ -51,13 +51,23 @@ function addParsedFields(addon: Addon): AddonWithParsedFields {
   const addonWithParsed: AddonWithParsedFields = { ...addon };
 
   if (addon.curseforge_raw) {
-    addonWithParsed.curseforge_raw_parsed = parseJsonField<CurseForgeRawObject>(
-      addon.curseforge_raw
-    );
+    // Handle case where curseforge_raw might already be an object or a string
+    if (typeof addon.curseforge_raw === 'string') {
+      addonWithParsed.curseforge_raw_parsed = parseJsonField<CurseForgeRawObject>(
+        addon.curseforge_raw
+      );
+    } else {
+      addonWithParsed.curseforge_raw_parsed = addon.curseforge_raw;
+    }
   }
 
   if (addon.modrinth_raw) {
-    addonWithParsed.modrinth_raw_parsed = parseJsonField<ModrinthRawObject>(addon.modrinth_raw);
+    // Handle case where modrinth_raw might already be an object or a string
+    if (typeof addon.modrinth_raw === 'string') {
+      addonWithParsed.modrinth_raw_parsed = parseJsonField<ModrinthRawObject>(addon.modrinth_raw);
+    } else {
+      addonWithParsed.modrinth_raw_parsed = addon.modrinth_raw;
+    }
   }
 
   return addonWithParsed;
