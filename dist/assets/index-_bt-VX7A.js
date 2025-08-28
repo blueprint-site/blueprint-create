@@ -1,0 +1,1 @@
+import{j as s}from"./radix-x8H_F-uE.js";import{c as r}from"./index-CV_NrdTx.js";import"./tanstack-aN5NUOUd.js";import"./animation-RShxBXpy.js";const e=()=>{const t=r.c(1);let o;return t[0]===Symbol.for("react.memo_cache_sentinel")?(o=s.jsx("div",{children:"AdminLogsList works!"}),t[0]=o):o=t[0],o},p={LogsList:e};export{e as LogsList,p as default};

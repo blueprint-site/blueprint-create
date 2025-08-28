@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite",
     "host": "vite --host",
-    "build": "NODE_OPTIONS='--max-old-space-size=4096' tsc --noEmit && vite build",
-    "build:ci": "NODE_OPTIONS='--max-old-space-size=2048' tsc --noEmit && vite build",
+    "build": "cross-env NODE_OPTIONS=--max-old-space-size=4096 tsc --noEmit && vite build",
+    "build:ci": "cross-env NODE_OPTIONS=--max-old-space-size=2048 tsc --noEmit && vite build",
     "prebuild": "npm run lint",
     "fix": "npm run lint --fix",
     "analyze": "vite build --mode analyze",
@@ -118,6 +118,7 @@
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.32.1",
     "@vitejs/plugin-react": "^4.5.0",
+    "cross-env": "^10.0.0",
     "dependency-cruiser": "^16.10.2",
     "eslint": "^9.27.0",
     "eslint-plugin-react": "^7.37.5",

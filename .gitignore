@@ -4,8 +4,6 @@ node_modules
 .pnp.js
 
 # Build outputs
-dist
-dist-ssr
 *.local
 .vite
 *.tsbuildinfo
@@ -23,7 +21,9 @@ lerna-debug.log*
 .env
 .env.local
 .env.*.local
-env.*
+# Keep env.js.example but ignore actual env.js in root (not in public/dist)
+/env.js
+!/public/env.js.example
 # Editor directories
 .vscode/*
 .idea
