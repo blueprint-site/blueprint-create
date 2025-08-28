@@ -71,7 +71,7 @@ export default function AddonDetails() {
   // Handle optional data gracefully
   const createVersions = versions ? getAddonCreateVersionsFromVersions(versions) : [];
 
-  // Build the integrated data object with proper types
+  // Build integrated data object with proper types
   const data: IntegratedAddonData = {
     ...addon,
     curseforgeObject: curseforgeObject || undefined,
