@@ -11,103 +11,75 @@ import {
   useFetchModrinthVersions,
   useFetchModrinthDependencies,
 } from '@/api';
-
-import type { IntegratedAddonData } from '@/types';
+import type { IntegratedAddonData, CurseForgeRawObject, ModrinthRawObject } from '@/types';
 import { getAddonCreateVersionsFromVersions } from '@/utils/createCompatibility';
 
 export default function AddonDetails() {
   const { slug } = useParams<{ slug: string }>();
 
-  const { data: addon, isLoading: isLoadingAddon, error: errorAddon } = useFetchAddonBySlug(slug);
-
+  // Always call hooks in the same order - move hooks before early returns
   const {
-    data: modrinthProject,
-    isLoading: isLoadingModrinth,
-    error: errorModrinth,
-  } = useFetchModrinthProject(slug);
+    data: addon,
+    isLoading: isLoadingAddon,
+    error: errorAddon,
+  } = useFetchAddonBySlug(slug || '');
 
-  const {
-    data: versions,
-    isLoading: isLoadingVersions,
-    error: errorVersions,
-  } = useFetchModrinthVersions(slug);
+  const { data: modrinthProject, isLoading: isLoadingModrinth } = useFetchModrinthProject(
+    slug || ''
+  );
 
-  const {
-    data: dependencies,
-    isLoading: isLoadingDependencies,
-    error: errorDependencies,
-  } = useFetchModrinthDependencies(slug);
+  const { data: versions } = useFetchModrinthVersions(slug || '');
 
-  const error = errorAddon || errorModrinth || errorVersions || errorDependencies;
+  const { data: dependencies } = useFetchModrinthDependencies(slug || '');
 
-  if (error) return <AddonDetailsError error={error} />;
+  // Validate slug parameter after hooks
+  if (!slug) {
+    return <AddonDetailsError error={new Error('No addon slug provided in URL')} />;
+  }
 
-  const isLoading =
-    isLoadingAddon || isLoadingModrinth || isLoadingVersions || isLoadingDependencies;
+  // Prioritize critical errors - addon data is most important
+  const criticalError = errorAddon;
+  if (criticalError) {
+    return <AddonDetailsError error={criticalError} />;
+  }
 
-  if (isLoading || !addon || !modrinthProject || !versions || !dependencies) {
+  // Check for required data more intelligently
+  const hasRequiredData = addon && modrinthProject;
+  const isLoadingCriticalData = isLoadingAddon || isLoadingModrinth;
+
+  if (isLoadingCriticalData || !hasRequiredData) {
     return <AddonDetailsLoading />;
   }
 
   // Safely parse JSON objects with error handling
-  let curseforgeObject = null;
-  if (addon.curseforge_raw) {
+  function parseJsonSafely<T>(jsonData: string | object | null): T | null {
+    if (!jsonData) return null;
+    if (typeof jsonData === 'object') return jsonData as T;
+    if (typeof jsonData !== 'string') return null;
+
     try {
-      curseforgeObject = JSON.parse(addon.curseforge_raw);
+      return JSON.parse(jsonData) as T;
     } catch (error) {
-      console.error('Failed to parse curseforge_raw JSON:', error);
-      curseforgeObject = null;
+      console.error('Failed to parse JSON:', error);
+      return null;
     }
   }
 
-  let modrinthObject = null;
-  if (addon.modrinth_raw) {
-    try {
-      // Skip processing if JSON appears to be truncated (exactly 256 chars is suspicious)
-      if (addon.modrinth_raw.length === 256) {
-        console.warn(
-          'AddonDetails: Skipping modrinth_raw parsing - appears to be truncated at 256 characters'
-        );
-        modrinthObject = null;
-      } else if (
-        !addon.modrinth_raw.trim().endsWith('}') &&
-        !addon.modrinth_raw.trim().endsWith(']')
-      ) {
-        // Check if the JSON string seems to be truncated
-        console.warn('AddonDetails: Modrinth JSON appears to be truncated:', {
-          length: addon.modrinth_raw.length,
-          ending: addon.modrinth_raw.slice(-50),
-        });
-        modrinthObject = null;
-      } else {
-        modrinthObject = JSON.parse(addon.modrinth_raw);
-      }
-    } catch (error) {
-      console.error('Failed to parse modrinth_raw JSON in AddonDetails:', {
-        error: error,
-        errorMessage: error instanceof Error ? error.message : 'Unknown error',
-        jsonLength: addon.modrinth_raw.length,
-        jsonStart: addon.modrinth_raw.substring(0, 100),
-        jsonEnd: addon.modrinth_raw.substring(addon.modrinth_raw.length - 100),
-        // Check for common JSON issues
-        hasUnterminatedString:
-          addon.modrinth_raw.includes('"') && !addon.modrinth_raw.endsWith('"'),
-        lastChar: addon.modrinth_raw.slice(-1),
-      });
-      modrinthObject = null;
-    }
-  }
-  const createVersions = getAddonCreateVersionsFromVersions(versions);
+  const curseforgeObject = parseJsonSafely<CurseForgeRawObject>(addon.curseforge_raw);
+  const modrinthObject = parseJsonSafely<ModrinthRawObject>(addon.modrinth_raw);
+
+  // Handle optional data gracefully
+  const createVersions = versions ? getAddonCreateVersionsFromVersions(versions) : [];
 
   // Build the integrated data object with proper types
   const data: IntegratedAddonData = {
     ...addon,
-    curseforgeObject,
-    modrinthObject,
+    curseforgeObject: curseforgeObject || undefined,
+    modrinthObject: modrinthObject || undefined,
     modrinth: {
       ...modrinthProject,
-      versions: versions,
-      dependencies: dependencies.projects || [],
+      versions: versions || null,
+      dependencies: dependencies?.projects || [],
     },
   };
 

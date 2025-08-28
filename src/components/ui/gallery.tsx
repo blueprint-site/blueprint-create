@@ -56,7 +56,7 @@ const Gallery: React.FC<GalleryProps> = ({
   }, [enableLightbox, lightboxOpen, current, images.length, mainApi]);
 
   return (
-    <div className={className}>
+    <div className="">
       {/* Main image carousel */}
       <Carousel setApi={setMainApi} opts={{ startIndex: initialIndex }} aria-label="Image gallery">
         <CarouselContent>
@@ -86,7 +86,7 @@ const Gallery: React.FC<GalleryProps> = ({
       <Carousel setApi={setThumbApi} opts={{ dragFree: true, startIndex: initialIndex }} aria-label="Image thumbnails">
         <CarouselContent>
           {images.map((image, index) => (
-            <CarouselItem key={index} className="basis-1/6 flex justify-center items-center aspect-video">
+            <CarouselItem key={index} className="basis-1/7 flex justify-center items-center aspect-video">
               <button
                 onClick={() => onThumbClick(index)}
                 className={current === index ? 'ring-2 ring-primary' : ''}
@@ -105,6 +105,7 @@ const Gallery: React.FC<GalleryProps> = ({
           images={images}
           currentIndex={current}
           onClose={() => setLightboxOpen(false)}
+          alt={alt}
         />
       )}
     </div>
