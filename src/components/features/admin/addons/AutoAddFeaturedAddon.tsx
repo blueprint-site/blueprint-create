@@ -42,7 +42,7 @@ function GalleryImageItem({ imageUrl, index, isSelected, onSelect }: GalleryImag
         setIsFullRes(false);
         console.log(`[GalleryImageItem - ${index}] Full res check error for: ${rawUrl}`);
       });
-  }, [rawUrl]);
+  }, [rawUrl, index]);
 
   return (
     <button
