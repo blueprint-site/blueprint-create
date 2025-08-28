@@ -36,7 +36,7 @@ const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsViewProps)
     addon.modrinthObject?.date_modified ??
     addon.curseforgeObject?.dateModified ??
     '';
-  const authors = addon.curseforgeObject?.authors ?? addon.author;
+  const authors = addon.curseforgeObject?.authors ?? addon.authors?.join(', ') ?? '';
 
   const externalLinks: ExternalLink[] = [
     {
@@ -82,8 +82,20 @@ const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsViewProps)
             <div>
               <AddonVersionCompatibility
                 versions={addon.modrinth.versions ?? []}
-                minecraftVersions={addon.minecraft_versions ?? []}
-                loaders={addon.loaders ?? []}
+                minecraftVersions={
+                  Array.isArray(addon.minecraft_versions)
+                    ? addon.minecraft_versions
+                    : addon.minecraft_versions
+                      ? [addon.minecraft_versions]
+                      : []
+                }
+                loaders={
+                  Array.isArray(addon.loaders)
+                    ? addon.loaders
+                    : addon.loaders
+                      ? [addon.loaders]
+                      : []
+                }
                 createVersions={createVersions}
                 isLoading={false}
               />
@@ -95,11 +107,14 @@ const AddonDetailsView = ({ addon, createVersions = [] }: AddonDetailsViewProps)
               <div>
                 <h3 className='mb-4 text-lg font-semibold'>Categories</h3>
                 <div className='flex flex-wrap gap-2'>
-                  {addon.categories.map((category: string) => (
-                    <Badge key={category} variant='default'>
-                      {category}
-                    </Badge>
-                  ))}
+                  {addon.categories &&
+                    (Array.isArray(addon.categories) ? addon.categories : [addon.categories]).map(
+                      (category: string) => (
+                        <Badge key={category} variant='default'>
+                          {category}
+                        </Badge>
+                      )
+                    )}
                 </div>
               </div>
 

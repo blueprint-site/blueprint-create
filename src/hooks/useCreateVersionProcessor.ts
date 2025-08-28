@@ -77,7 +77,11 @@ export function useVersionProcessor(addon: IntegratedAddonData | null, gameVersi
       description: addon?.description,
       dependencies: addon?.modrinth.dependencies as AddonDependency[] | undefined,
       versions: addon?.modrinth.versions ?? [],
-      minecraft_versions: addon?.minecraft_versions ?? [],
+      minecraft_versions: Array.isArray(addon?.minecraft_versions)
+        ? addon.minecraft_versions
+        : addon?.minecraft_versions
+          ? [addon.minecraft_versions]
+          : [],
     };
 
     // Use the dedicated Create compatibility function to get standardized Create versions

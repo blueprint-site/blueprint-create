@@ -14,6 +14,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from '@/hooks';
 import { databases, ID } from '@/config/appwrite.ts';
 import { Query } from 'appwrite';
+import type { Models } from 'appwrite';
 import type { Schematic } from '@/types';
 import { createSchematicSchema, updateSchematicSchema } from '@/schemas/schematic.schema';
 
@@ -149,11 +150,22 @@ export const useSaveSchematics = () => {
             throw new Error('Invalid schematic data for creation');
           }
 
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const {
+            $id,
+            $collectionId,
+            $databaseId,
+            $createdAt,
+            $updatedAt,
+            $permissions,
+            $sequence,
+            ...createData
+          } = schematic;
           return databases.createDocument<Schematic>(
             DATABASE_ID,
             COLLECTION_ID,
             ID.unique(),
-            schematic
+            createData as Omit<Schematic, keyof Models.Document>
           );
         }
 

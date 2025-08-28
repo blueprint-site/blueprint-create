@@ -169,14 +169,31 @@ export const useSaveBlog = () => {
       const serializedBlog = serializeJsonFields(blog);
 
       if (blog.$id) {
-        return await databases.updateDocument(DATABASE_ID, COLLECTION_ID, blog.$id, serializedBlog);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const {
+          $id,
+          $collectionId,
+          $databaseId,
+          $createdAt,
+          $updatedAt,
+          $permissions,
+          $sequence,
+          ...updateData
+        } = serializedBlog;
+        return await databases.updateDocument(DATABASE_ID, COLLECTION_ID, blog.$id, updateData);
       } else {
-        return await databases.createDocument(
-          DATABASE_ID,
-          COLLECTION_ID,
-          ID.unique(),
-          serializedBlog
-        );
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const {
+          $id,
+          $collectionId,
+          $databaseId,
+          $createdAt,
+          $updatedAt,
+          $permissions,
+          $sequence,
+          ...createData
+        } = serializedBlog;
+        return await databases.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), createData);
       }
     },
     onSuccess: () => {

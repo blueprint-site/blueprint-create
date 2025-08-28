@@ -59,7 +59,18 @@ export const useCreateFeaturedAddon = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: Omit<FeaturedAddon, '$id' | '$createdAt' | '$updatedAt'>) => {
+    mutationFn: async (
+      data: Omit<
+        FeaturedAddon,
+        | '$id'
+        | '$createdAt'
+        | '$updatedAt'
+        | '$sequence'
+        | '$collectionId'
+        | '$databaseId'
+        | '$permissions'
+      >
+    ) => {
       try {
         const response = await databases.createDocument<FeaturedAddon>(
           DATABASE_ID,
@@ -99,7 +110,18 @@ export const useUpdateFeaturedAddon = () => {
   return useMutation({
     mutationFn: async ({ id, addon }: UpdateFeaturedAddonArgs): Promise<Models.Document> => {
       try {
-        const response = await databases.updateDocument(DATABASE_ID, COLLECTION_ID, id, addon);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const {
+          $id,
+          $collectionId,
+          $databaseId,
+          $createdAt,
+          $updatedAt,
+          $permissions,
+          $sequence,
+          ...updateData
+        } = addon;
+        const response = await databases.updateDocument(DATABASE_ID, COLLECTION_ID, id, updateData);
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
           title: 'Featured addon updated',

@@ -36,7 +36,7 @@ export const AddonsTable = () => {
     const matchesSearch =
       search === '' ||
       addon.name.toLowerCase().includes(search.toLowerCase()) ||
-      addon.author?.toLowerCase().includes(search.toLowerCase()) ||
+      addon.authors?.join(', ').toLowerCase().includes(search.toLowerCase()) ||
       addon.description?.toLowerCase().includes(search.toLowerCase());
 
     if (filterType === 'unchecked') {
@@ -167,7 +167,9 @@ export const AddonsTable = () => {
       accessorKey: 'author',
       header: 'Author',
       cell: ({ row }) => (
-        <div className='text-muted-foreground text-sm'>{row.original.author || 'Unknown'}</div>
+        <div className='text-muted-foreground text-sm'>
+          {row.original.authors?.join(', ') || 'Unknown'}
+        </div>
       ),
     },
     {
