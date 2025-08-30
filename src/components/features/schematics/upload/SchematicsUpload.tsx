@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { storage } from '@/config/appwrite';
+import { STORAGE_BUCKETS } from '@/config/storage';
 import { useUserStore } from '@/api/stores/userStore';
-import { SchematicUploadForm } from './SchematicUploadForm';
+import { SchematicUploadForm } from './SchematicUploadFormTabbed';
 import { SchematicPreview } from './SchematicUploadPreview';
 import { generateSlug } from '../utils/generateSlug';
 import { useSaveSchematics, useFetchSchematic } from '@/api/appwrite/useSchematics';
@@ -28,20 +29,36 @@ function SchematicsUpload() {
     modloaders: [],
     categories: [],
     sub_categories: [],
+    dimensions: undefined,
+    materials: undefined,
+    complexity: undefined,
+    requirements: undefined,
   });
 
   useEffect(() => {
     if (id === undefined) {
       setIsNew(true);
       setDataReady(true);
+    } else if (!isLoadingExisting) {
+      // If we have an ID and loading is done
+      if (existingSchematic) {
+        // Check if user owns this schematic
+        if (existingSchematic.user_id !== user?.$id) {
+          alert("You don't have permission to edit this schematic");
+          navigate('/profile');
+          return;
+        }
+        setIsNew(false);
+        setFormValues(existingSchematic);
+        setImagePreviewUrls(existingSchematic.image_urls || []);
+        setDataReady(true);
+      } else {
+        // Schematic not found
+        alert('Schematic not found');
+        navigate('/profile');
+      }
     }
-    if (existingSchematic) {
-      setIsNew(false);
-      setFormValues(existingSchematic);
-      setImagePreviewUrls(existingSchematic.image_urls || []);
-      setDataReady(true); // Définir que les données sont prêtes après mise à jour
-    }
-  }, [id, existingSchematic]);
+  }, [id, existingSchematic, isLoadingExisting, user?.$id, navigate]);
 
   if (loading || isLoadingExisting || !dataReady) {
     return <SchematicUploadLoadingOverlay message='Loading schematic...' />;
@@ -60,6 +77,8 @@ function SchematicsUpload() {
   };
 
   const onSubmit = async (data: SchematicFormValues): Promise<void> => {
+    console.log('onSubmit called with data:', data);
+
     if (!user) {
       alert('You must be logged in to upload schematics');
       return;
@@ -75,18 +94,22 @@ function SchematicsUpload() {
       let schematicUrl = existingSchematic?.schematic_url;
       if (data.schematicFile) {
         const uploadedSchematic = await storage.createFile(
-          '67b2241e0032c25c8216',
+          STORAGE_BUCKETS.SCHEMATICS_FILES,
           'unique()',
           data.schematicFile
         );
         schematicUrl = storage
-          .getFileDownload('67b2241e0032c25c8216', uploadedSchematic.$id)
+          .getFileDownload(STORAGE_BUCKETS.SCHEMATICS_FILES, uploadedSchematic.$id)
           .toString();
       }
 
       const uploadedImages = await Promise.all(
         data.imageFiles.map(async (file: File) => {
-          const uploadedFile = await storage.createFile('67b22481001e99d90888', 'unique()', file);
+          const uploadedFile = await storage.createFile(
+            STORAGE_BUCKETS.SCHEMATICS,
+            'unique()',
+            file
+          );
           return uploadedFile.$id;
         })
       );
@@ -94,7 +117,7 @@ function SchematicsUpload() {
       const imageUrls =
         uploadedImages.length > 0
           ? uploadedImages.map((id) =>
-              storage.getFilePreview('67b22481001e99d90888', id).toString()
+              storage.getFilePreview(STORAGE_BUCKETS.SCHEMATICS, id).toString()
             )
           : existingSchematic?.image_urls || [];
 
@@ -113,15 +136,55 @@ function SchematicsUpload() {
         modloaders: data.modloaders,
         categories: data.categories,
         sub_categories: data.sub_categories || [],
+        subcategories: data.sub_categories || [], // Duplicate for Meilisearch compatibility
         slug,
         status: 'published',
         downloads: existingSchematic?.downloads || 0,
         likes: existingSchematic?.likes || 0,
+        // New fields for advanced filtering - using flat structure for Appwrite
+        dimensions_width: data.dimensions?.width || existingSchematic?.dimensions_width || 0,
+        dimensions_height: data.dimensions?.height || existingSchematic?.dimensions_height || 0,
+        dimensions_depth: data.dimensions?.depth || existingSchematic?.dimensions_depth || 0,
+        dimensions_blockCount:
+          data.dimensions?.blockCount || existingSchematic?.dimensions_blockCount || 0,
+        materials_primary: (data.materials?.primary && data.materials.primary.length > 0
+          ? typeof data.materials.primary[0] === 'string'
+            ? data.materials.primary
+            : (data.materials.primary as (string | { name: string })[]).map((m) =>
+                typeof m === 'string' ? m : m.name
+              )
+          : existingSchematic?.materials_primary || []) as string[],
+        materials_hasModded:
+          data.materials?.hasModded || existingSchematic?.materials_hasModded || false,
+        complexity_level:
+          data.complexity?.level || existingSchematic?.complexity_level || 'moderate',
+        complexity_buildTime:
+          data.complexity?.buildTime || existingSchematic?.complexity_buildTime || 30,
+        requirements_mods: (data.requirements?.mods && data.requirements.mods.length > 0
+          ? typeof data.requirements.mods[0] === 'string'
+            ? data.requirements.mods
+            : (data.requirements.mods as (string | { name: string })[]).map((m) =>
+                typeof m === 'string' ? m : m.name
+              )
+          : existingSchematic?.requirements_mods || []) as string[],
+        requirements_minecraftVersion:
+          data.game_versions?.[0] || existingSchematic?.requirements_minecraftVersion || '',
+        requirements_hasRedstone:
+          data.requirements?.hasRedstone || existingSchematic?.requirements_hasRedstone || false,
+        requirements_hasCommandBlocks:
+          data.requirements?.hasCommandBlocks ||
+          existingSchematic?.requirements_hasCommandBlocks ||
+          false,
+        isValid: true,
+        featured: existingSchematic?.featured || false,
+        rating: existingSchematic?.rating || 0,
+        uploadDate: existingSchematic?.uploadDate || new Date().toISOString(),
       });
 
       navigate(`/schematics/${document.$id}/${slug}`);
     } catch (error) {
       console.error('Error submitting form:', error);
+      alert('Failed to upload schematic: ' + (error as Error).message);
     } finally {
       setLoading(false);
     }
@@ -156,6 +219,10 @@ function SchematicsUpload() {
             user={user}
             categories={formValues.categories || []}
             subCategories={formValues.sub_categories || []}
+            dimensions={formValues.dimensions}
+            materials={formValues.materials}
+            complexity={formValues.complexity}
+            requirements={formValues.requirements}
           />
         </div>
       </div>

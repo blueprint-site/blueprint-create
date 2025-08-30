@@ -17,6 +17,36 @@ export const schematicFormSchema = z.object({
   modloaders: z.array(z.string()).min(1, 'Select at least one modloader'),
   categories: z.array(z.string()).min(1, 'Select at least one category'),
   sub_categories: z.array(z.string()).optional(),
+  // New fields for advanced filtering
+  dimensions: z
+    .object({
+      width: z.number().positive('Width must be positive').optional(),
+      height: z.number().positive('Height must be positive').optional(),
+      depth: z.number().positive('Depth must be positive').optional(),
+      blockCount: z.number().positive('Block count must be positive').optional(),
+    })
+    .optional(),
+  materials: z
+    .object({
+      primary: z.array(z.string()).optional(),
+      mainBuilding: z.array(z.string()).optional(), // Main building materials detected from NBT
+      hasModded: z.boolean().optional(),
+    })
+    .optional(),
+  complexity: z
+    .object({
+      level: z.enum(['simple', 'moderate', 'complex', 'extreme']).optional(),
+      buildTime: z.number().positive('Build time must be positive').optional(),
+    })
+    .optional(),
+  requirements: z
+    .object({
+      mods: z.array(z.string()).optional(),
+      modsDetected: z.array(z.string()).optional(), // Auto-detected mods from NBT
+      hasRedstone: z.boolean().optional(),
+      hasCommandBlocks: z.boolean().optional(),
+    })
+    .optional(),
 });
 
 // Schema for API operations - creating a new schematic
@@ -32,8 +62,43 @@ export const createSchematicSchema = z.object({
   modloaders: z.array(z.string()),
   categories: z.array(z.string()).min(1, 'At least one category is required'),
   sub_categories: z.array(z.string()).optional(),
+  subcategories: z.array(z.string()).optional(), // Alternative naming for Meilisearch
   slug: z.string(),
   status: z.enum(['draft', 'published', 'archived']).default('published'),
+  // New fields for advanced filtering
+  dimensions: z
+    .object({
+      width: z.number().positive().optional(),
+      height: z.number().positive().optional(),
+      depth: z.number().positive().optional(),
+      blockCount: z.number().positive().optional(),
+    })
+    .optional(),
+  materials: z
+    .object({
+      primary: z.array(z.string()).optional(),
+      mainBuilding: z.array(z.string()).optional(), // Main building materials detected from NBT
+      hasModded: z.boolean().optional(),
+    })
+    .optional(),
+  complexity: z
+    .object({
+      level: z.enum(['simple', 'moderate', 'complex', 'extreme']).optional(),
+      buildTime: z.number().positive().optional(),
+    })
+    .optional(),
+  requirements: z
+    .object({
+      mods: z.array(z.string()).optional(),
+      minecraftVersion: z.string().optional(),
+      hasRedstone: z.boolean().optional(),
+      hasCommandBlocks: z.boolean().optional(),
+    })
+    .optional(),
+  rating: z.number().min(0).max(5).optional(),
+  featured: z.boolean().optional(),
+  isValid: z.boolean().default(true),
+  uploadDate: z.string().optional(),
 });
 
 // Schema for API operations - updating an existing schematic

@@ -1,7 +1,7 @@
-import { SchematicsDetailsMain } from '@/components/features/schematics/schematic-details';
+import { SchematicsDetailsEnhancedClean } from '@/components/features/schematics/schematic-details/SchematicsDetailsEnhancedClean';
 
 const SchematicDetailsPage = () => {
-  return <SchematicsDetailsMain />;
+  return <SchematicsDetailsEnhancedClean />;
 };
 
 export default SchematicDetailsPage;

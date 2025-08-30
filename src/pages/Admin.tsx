@@ -7,7 +7,14 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
+import { AdminDashboard } from './AdminDashboard';
+
 export const Admin = () => {
+  return <AdminDashboard />;
+};
+
+// Old component kept for reference - remove when ready
+export const AdminOld = () => {
   // Mock data
   const recentAddons = [
     {

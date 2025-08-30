@@ -85,12 +85,13 @@ export default defineConfig(({ mode }) => ({
     }),
   ].filter(Boolean),
   optimizeDeps: {
-    include: ['react', 'react-dom', 'framer-motion', 'lucide-react'],
+    include: ['react', 'react-dom', 'framer-motion', 'lucide-react', 'buffer', 'prismarine-nbt'],
     exclude: ['@tanstack/react-query'],
   },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      buffer: 'buffer',
     },
   },
   server: {
@@ -99,5 +100,6 @@ export default defineConfig(({ mode }) => ({
   envPrefix: 'APP',
   define: {
     'process.env.NODE_ENV': JSON.stringify(mode),
+    global: 'globalThis',
   },
 }));

@@ -46,10 +46,10 @@ const AddAddon = lazy(() =>
 const AdminAddonsMain = lazy(() =>
   import('@/components/features/admin/addons').then((m) => ({ default: m.AdminAddonsMain }))
 );
-// LAZY IMPORT OptimizedAddonsTable
-const OptimizedAddonsTable = lazy(() =>
+// LAZY IMPORT OptimizedAddonsTableV3
+const OptimizedAddonsTableV3 = lazy(() =>
   import('@/components/features/admin/addons').then((mod) => ({
-    default: mod.OptimizedAddonsTable,
+    default: mod.OptimizedAddonsTableV3,
   }))
 );
 
@@ -119,7 +119,7 @@ export const AdminRoutes: RouteObject[] = [
     path: 'admin/addons/list',
     element: (
       <ProtectedRoute requiredRole={'admin'}>
-        <OptimizedAddonsTable />
+        <OptimizedAddonsTableV3 />
       </ProtectedRoute>
     ),
   },

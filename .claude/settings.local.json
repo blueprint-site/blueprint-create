@@ -1,7 +1,36 @@
 {
   "permissions": {
-    "allow": ["Bash(npm run build:*)"],
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run type-check:*)",
+      "mcp__appwrite__databases_list",
+      "mcp__appwrite__databases_list_collections",
+      "mcp__appwrite__databases_create_integer_attribute",
+      "mcp__appwrite__databases_create_string_attribute",
+      "mcp__appwrite__databases_create_boolean_attribute",
+      "mcp__appwrite__databases_create_enum_attribute",
+      "Bash(npm install:*)",
+      "mcp__browsermcp__browser_navigate",
+      "mcp__browsermcp__browser_wait",
+      "mcp__browsermcp__browser_snapshot",
+      "mcp__browsermcp__browser_screenshot",
+      "Bash(npm search:*)",
+      "mcp__appwrite__functions_list",
+      "mcp__appwrite__functions_create",
+      "mcp__appwrite__functions_create_deployment",
+      "Bash(appwrite:*)",
+      "Bash(zip:*)",
+      "Bash(tar:*)",
+      "Bash(node:*)",
+      "mcp__appwrite__databases_get_collection",
+      "mcp__appwrite__teams_get",
+      "mcp__appwrite__teams_list_memberships",
+      "Bash(npx tsc:*)",
+      "Bash(npm run lint:*)"
+    ],
     "deny": [],
     "ask": []
-  }
+  },
+  "enabledMcpjsonServers": ["browsermcp", "appwrite", "shadcn"]
 }

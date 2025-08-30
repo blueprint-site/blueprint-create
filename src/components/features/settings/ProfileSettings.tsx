@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea.tsx';
 import imageCompression from 'browser-image-compression';
 import { useUserStore } from '@/api/stores/userStore';
 import { account, storage } from '@/config/appwrite.ts';
+import { STORAGE_BUCKETS } from '@/config/storage.ts';
 import logMessage from '@/components/utility/logs/sendLogs.tsx';
 import { useTranslation } from 'react-i18next';
 
@@ -69,6 +70,7 @@ export default function ProfileSettings() {
 
       try {
         setIsLoading(true);
+        setError(null);
 
         const options = {
           maxSizeMB: 1,
@@ -82,44 +84,68 @@ export default function ProfileSettings() {
         });
 
         logMessage('Image compressed successfully.', 0, 'action');
+
+        // Delete old avatar if it exists - improved regex for Appwrite URLs
         if (profile.avatar) {
-          const fileIdRegex = /\/files\/([^/]+)/;
-          const match = fileIdRegex.exec(profile.avatar);
-          const oldFileId = match?.[1];
+          // Match various Appwrite URL patterns: /files/{fileId} or preview URLs
+          const fileIdRegex = /\/files\/([^/?]+)/;
+          const previewRegex = /\/storage\/buckets\/[^/]+\/files\/([^/?]+)\/preview/;
+
+          let oldFileId = fileIdRegex.exec(profile.avatar)?.[1];
+          if (!oldFileId) {
+            oldFileId = previewRegex.exec(profile.avatar)?.[1];
+          }
+
           if (oldFileId) {
-            logMessage(`Old image file id found (${oldFileId}) !`, 0, 'action');
+            logMessage(`Old image file id found (${oldFileId})!`, 0, 'action');
             try {
-              await storage.deleteFile('67aee2b30000b9e21407', oldFileId);
-              logMessage(`Old image have been deleted (${oldFileId}) !`, 0, 'action');
-            } catch {
-              logMessage(`Error while deleting old file (${oldFileId}) !`, 3, 'action');
+              await storage.deleteFile(STORAGE_BUCKETS.AVATARS, oldFileId);
+              logMessage(`Old image deleted successfully (${oldFileId})!`, 0, 'action');
+            } catch (deleteError) {
+              logMessage(
+                `Error while deleting old file (${oldFileId}): ${deleteError}`,
+                3,
+                'action'
+              );
+              // Don't fail the upload if deletion fails
             }
           } else {
-            logMessage(`Any file found , skipping suppression ! (${oldFileId}) !`, 0, 'action');
+            logMessage('No valid file ID found in avatar URL, skipping deletion', 1, 'action');
           }
         }
 
         const fileId = crypto.randomUUID();
         const response = await storage.createFile(
-          '67aee2b30000b9e21407',
+          STORAGE_BUCKETS.AVATARS,
           fileId,
           compressedFileAsFile
         );
 
-        const avatarUrl = storage.getFilePreview('67aee2b30000b9e21407', response.$id).toString();
-        console.log(avatarUrl);
+        const avatarUrl = storage.getFilePreview(STORAGE_BUCKETS.AVATARS, response.$id).toString();
+        logMessage(`New avatar URL generated: ${avatarUrl}`, 0, 'action');
+
+        // Update profile state first
         setProfile((prev) => ({ ...prev, avatar: avatarUrl }));
-      } catch {
-        logMessage('Error while uploading avatar image', 3, 'action');
+
+        // Then save to preferences
+        await updatePreferences({
+          theme: preferences?.theme ?? 'light',
+          language: preferences?.language ?? 'en',
+          notificationsEnabled: preferences?.notificationsEnabled || false,
+          roles: preferences?.roles || [],
+          bio: profile.bio,
+          avatar: avatarUrl, // Use the new avatar URL
+        });
+
+        logMessage('Avatar upload and save completed successfully', 0, 'action');
+      } catch (uploadError) {
+        logMessage(`Error while uploading avatar image: ${uploadError}`, 3, 'action');
         setError('Error while uploading avatar image');
       } finally {
         setIsLoading(false);
-        handleSave().then(() => {
-          logMessage('Saving of the image done', 0, 'action');
-        });
       }
     },
-    [profile.avatar, handleSave]
+    [profile.avatar, profile.bio, preferences, updatePreferences]
   );
 
   if (error) {

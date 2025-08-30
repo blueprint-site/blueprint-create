@@ -3,16 +3,41 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Form } from '@/components/ui/form';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Loader2, Info, CheckCircle, Upload, Sparkles } from 'lucide-react';
 import { FileUploadField } from './form/FileUploadField';
 import { FormMarkdownEditor } from './form/FormMarkdownEditor';
 import { MultiSelectCheckboxGroup } from './form/MultiSelectCheckboxGroup';
 import { FormInput } from './form/FormInput';
 import { CategorySelectors } from './form/CategorySelectors';
+import { CompactMaterialSelector } from './form/CompactMaterialSelector';
+import { CompactModSelector } from './form/CompactModSelector';
 import type { Schematic, SchematicFormValues } from '@/types'; // From canonical types
 import { schematicFormSchema } from '@/schemas/schematic.schema';
 import { MODLOADER_OPTIONS, CREATE_VERSIONS, MINECRAFT_VERSIONS } from '@/data';
 import { storage } from '@/config/appwrite.ts';
+import { parseNBTFile, type SchematicMetadata } from '@/utils/nbtParser';
+import { parseNBTWithFunction } from '@/api/appwrite/useNBTParser';
+import { toast } from 'sonner';
 interface SchematicUploadFormProps {
   onSubmit: (data: SchematicFormValues) => Promise<void>;
   onValueChange?: (field: keyof SchematicFormValues, value: unknown) => void;
@@ -68,6 +93,16 @@ export function SchematicUploadForm({
 }: SchematicUploadFormProps) {
   const [schematicFilePreview, setSchematicFilePreview] = useState<File | null>(null);
   const [imageFilePreviews, setImageFilePreviews] = useState<File[]>([]);
+  const [schematicMetadata, setSchematicMetadata] = useState<SchematicMetadata | null>(null);
+  const [isParsingNBT, setIsParsingNBT] = useState(false);
+  const [detectedBlocks, setDetectedBlocks] = useState<
+    Array<{
+      name: string;
+      count: number;
+      percentage?: number;
+    }>
+  >([]);
+
   const minecraftVersions = MINECRAFT_VERSIONS;
   const createVersions = Object.values(CREATE_VERSIONS).map((version) => ({
     value: version.value,
@@ -86,6 +121,28 @@ export function SchematicUploadForm({
       imageFiles: [],
       categories: initialData?.categories || [''],
       sub_categories: initialData?.sub_categories || [''],
+      // Advanced fields
+      dimensions: initialData?.dimensions || {
+        width: undefined,
+        height: undefined,
+        depth: undefined,
+        blockCount: undefined,
+      },
+      materials: initialData?.materials || {
+        primary: [],
+        mainBuilding: [],
+        hasModded: false,
+      },
+      complexity: initialData?.complexity || {
+        level: undefined,
+        buildTime: undefined,
+      },
+      requirements: initialData?.requirements || {
+        mods: [],
+        modsDetected: [],
+        hasRedstone: false,
+        hasCommandBlocks: false,
+      },
     },
     mode: 'onChange',
   });
@@ -164,6 +221,117 @@ export function SchematicUploadForm({
     return () => subscription.unsubscribe();
   }, [form, onValueChange]);
 
+  const handleNBTFileUpload = async (file: File) => {
+    setIsParsingNBT(true);
+    try {
+      // Try server-side parsing first (Appwrite function)
+      let metadata = await parseNBTWithFunction(file);
+
+      // Fallback to client-side parsing if server-side fails
+      if (!metadata) {
+        console.log('Server-side parsing failed, trying client-side...');
+        metadata = await parseNBTFile(file);
+      }
+
+      if (metadata) {
+        setSchematicMetadata(metadata);
+
+        // Process detected blocks for the material selector
+        const totalBlocks = metadata.dimensions.blockCount || 1;
+        const processedBlocks = metadata.blocks
+          .map((block) => ({
+            name: block.name,
+            count: block.count,
+            percentage: (block.count / totalBlocks) * 100,
+          }))
+          .sort((a, b) => b.count - a.count);
+
+        setDetectedBlocks(processedBlocks);
+
+        // Auto-populate form fields with extracted data
+        form.setValue('dimensions', {
+          width: metadata.dimensions.width,
+          height: metadata.dimensions.height,
+          depth: metadata.dimensions.depth,
+          blockCount: metadata.dimensions.blockCount,
+        });
+
+        // Handle both old and new data formats for materials
+        const primaryMaterials =
+          Array.isArray(metadata.materials.primary) && metadata.materials.primary.length > 0
+            ? metadata.materials.primary.map((mat) =>
+                typeof mat === 'object' ? mat.displayName || mat.name : mat
+              )
+            : metadata.materials.primary || [];
+
+        // Extract main building materials from mostUsed blocks if available
+        const mainBuildingMaterials = metadata.materials.mostUsed
+          ? metadata.materials.mostUsed.map((block) => block.name.toLowerCase())
+          : primaryMaterials;
+
+        form.setValue('materials', {
+          primary: Array.isArray(primaryMaterials)
+            ? primaryMaterials.filter((m) => typeof m === 'string')
+            : [],
+          mainBuilding: Array.isArray(mainBuildingMaterials)
+            ? mainBuildingMaterials.map((m) => (typeof m === 'string' ? m : m.name))
+            : [],
+          hasModded: metadata.materials.hasModded,
+        });
+
+        form.setValue('complexity', {
+          level: metadata.complexity.level,
+          buildTime: metadata.complexity.estimatedBuildTime,
+        });
+
+        // Handle enhanced mod requirements format
+        const requiredMods =
+          Array.isArray(metadata.requirements.mods) && metadata.requirements.mods.length > 0
+            ? metadata.requirements.mods.map((mod) => (typeof mod === 'object' ? mod.name : mod))
+            : metadata.requirements.mods || [];
+
+        form.setValue('requirements', {
+          mods: Array.isArray(requiredMods)
+            ? requiredMods.filter((m) => typeof m === 'string')
+            : [],
+          modsDetected: Array.isArray(requiredMods)
+            ? requiredMods.filter((m) => typeof m === 'string')
+            : [], // Store detected mods separately
+          hasRedstone: metadata.requirements.hasRedstone,
+          hasCommandBlocks: metadata.requirements.hasCommandBlocks,
+        });
+
+        // Show success toast with summary
+        if (metadata.dimensions.blockCount > 0) {
+          const modCount = requiredMods?.length || 0;
+          const blockTypeCount = metadata.blockStats?.total || metadata.blocks.length;
+
+          toast.success('Schematic analyzed successfully!', {
+            description: `${metadata.dimensions.blockCount.toLocaleString()} blocks, ${blockTypeCount} types${modCount > 0 ? `, ${modCount} mods required` : ', vanilla only'}`,
+          });
+        } else {
+          toast.warning('Basic file validation complete', {
+            description: 'Full analysis may require server-side processing for compressed files',
+          });
+        }
+
+        // Log detailed information for debugging
+        console.log('Schematic metadata extracted:', metadata);
+      } else {
+        toast.error('Failed to parse NBT file', {
+          description: 'The file might be corrupted or in an unsupported format',
+        });
+      }
+    } catch (error) {
+      console.error('Error parsing NBT file:', error);
+      toast.error('Error analyzing schematic', {
+        description: 'An error occurred while processing the file',
+      });
+    } finally {
+      setIsParsingNBT(false);
+    }
+  };
+
   const handleFormSubmit = form.handleSubmit(async (data) => {
     try {
       console.log('Submitting form:', data);
@@ -173,17 +341,110 @@ export function SchematicUploadForm({
     }
   });
 
+  // Check if minimum required fields are filled
+  const watchedFields = form.watch();
+  const isFormValid = !!(
+    watchedFields.title &&
+    watchedFields.description &&
+    (watchedFields.schematicFile || existingData?.schematic_url) &&
+    watchedFields.categories?.length > 0 &&
+    watchedFields.game_versions?.length > 0
+  );
+
+  // Get tab completion status
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Schematic Information</CardTitle>
-        <CardDescription>
-          Fill out the details about your schematic to share with the community
-        </CardDescription>
+      <CardHeader className='pb-4'>
+        <div className='flex items-center justify-between'>
+          <div>
+            <CardTitle>Schematic Information</CardTitle>
+            <CardDescription>
+              Fill out the details about your schematic to share with the community
+            </CardDescription>
+          </div>
+          <Button type='submit' form='schematic-form' disabled={!isFormValid} className='gap-2'>
+            <Upload className='h-4 w-4' />
+            {isNew ? 'Upload Schematic' : 'Update Schematic'}
+          </Button>
+        </div>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={handleFormSubmit} className='space-y-6'>
+          <form id='schematic-form' onSubmit={handleFormSubmit} className='space-y-6'>
+            {/* NBT Parsing Status */}
+            {isParsingNBT && (
+              <Alert>
+                <Loader2 className='h-4 w-4 animate-spin' />
+                <AlertTitle>Analyzing Schematic</AlertTitle>
+                <AlertDescription>
+                  Scanning NBT file to extract block information and dimensions...
+                </AlertDescription>
+              </Alert>
+            )}
+
+            {/* Display extracted metadata */}
+            {schematicMetadata && !isParsingNBT && (
+              <Alert>
+                <Info className='h-4 w-4' />
+                <AlertTitle>Schematic Analysis Complete</AlertTitle>
+                <AlertDescription className='mt-2 space-y-2'>
+                  <div className='grid grid-cols-2 gap-2 text-sm'>
+                    <div>
+                      <strong>Dimensions:</strong> {schematicMetadata.dimensions.width} ×{' '}
+                      {schematicMetadata.dimensions.height} × {schematicMetadata.dimensions.depth}
+                    </div>
+                    <div>
+                      <strong>Total Blocks:</strong>{' '}
+                      {schematicMetadata.dimensions.blockCount.toLocaleString()}
+                    </div>
+                    <div>
+                      <strong>Block Types:</strong>{' '}
+                      {schematicMetadata.blockStats?.total || schematicMetadata.blocks.length}
+                    </div>
+                    <div>
+                      <strong>Complexity:</strong> {schematicMetadata.complexity.level}
+                    </div>
+                    {schematicMetadata.blockStats && (
+                      <div>
+                        <strong>Vanilla/Modded:</strong> {schematicMetadata.blockStats.vanilla}/
+                        {schematicMetadata.blockStats.modded}
+                      </div>
+                    )}
+                    {schematicMetadata.complexity.estimatedBuildTime && (
+                      <div>
+                        <strong>Build Time:</strong> ~
+                        {schematicMetadata.complexity.estimatedBuildTime} min
+                      </div>
+                    )}
+                    {schematicMetadata.requirements.mods &&
+                      schematicMetadata.requirements.mods.length > 0 && (
+                        <div className='col-span-2'>
+                          <strong>Required Mods:</strong>{' '}
+                          {Array.isArray(schematicMetadata.requirements.mods)
+                            ? schematicMetadata.requirements.mods
+                                .map((mod) => (typeof mod === 'object' ? mod.name : mod))
+                                .join(', ')
+                            : ''}
+                        </div>
+                      )}
+                    {schematicMetadata.materials.primary &&
+                      schematicMetadata.materials.primary.length > 0 && (
+                        <div className='col-span-2'>
+                          <strong>Primary Materials:</strong>{' '}
+                          {Array.isArray(schematicMetadata.materials.primary)
+                            ? schematicMetadata.materials.primary
+                                .map((mat) =>
+                                  typeof mat === 'object' ? mat.displayName || mat.name : mat
+                                )
+                                .join(', ')
+                            : ''}
+                        </div>
+                      )}
+                  </div>
+                </AlertDescription>
+              </Alert>
+            )}
+
             <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
               <FileUploadField
                 name='schematicFile'
@@ -192,10 +453,15 @@ export function SchematicUploadForm({
                 accept={{ 'application/octet-stream': ['.nbt'] }}
                 maxFiles={1}
                 value={schematicFilePreview ? [schematicFilePreview] : []}
-                onValueChange={(files) => {
+                onValueChange={async (files) => {
                   const file = files?.[0] ?? null;
                   setSchematicFilePreview(file);
                   form.setValue('schematicFile', file as File);
+
+                  // Parse NBT file when uploaded
+                  if (file) {
+                    await handleNBTFileUpload(file);
+                  }
                 }}
               />
 
@@ -255,6 +521,286 @@ export function SchematicUploadForm({
                 description='Select compatible modloaders'
                 options={modloaders}
               />
+            </div>
+
+            {/* Compact Material and Mod Selectors */}
+            <div className='space-y-6'>
+              {/* Materials Section */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Building Materials</CardTitle>
+                  <CardDescription>
+                    Select the primary materials used in this schematic
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <CompactMaterialSelector control={form.control} detectedBlocks={detectedBlocks} />
+                </CardContent>
+              </Card>
+
+              {/* Requirements Section */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Mod Requirements</CardTitle>
+                  <CardDescription>
+                    Specify which mods are needed to use this schematic
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className='space-y-4'>
+                  <CompactModSelector
+                    control={form.control}
+                    detectedMods={
+                      schematicMetadata?.requirements?.mods
+                        ? Array.isArray(schematicMetadata.requirements.mods)
+                          ? schematicMetadata.requirements.mods.map((mod) =>
+                              typeof mod === 'string' ? mod : mod.name
+                            )
+                          : []
+                        : []
+                    }
+                  />
+
+                  {/* Special Requirements Checkboxes */}
+                  <div className='space-y-3 border-t pt-4'>
+                    <FormField
+                      control={form.control}
+                      name='requirements.hasRedstone'
+                      render={({ field }) => (
+                        <FormItem className='flex flex-row items-start space-y-0 space-x-3'>
+                          <FormControl>
+                            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                          </FormControl>
+                          <div className='space-y-1 leading-none'>
+                            <FormLabel>Contains Redstone Circuits</FormLabel>
+                            <FormDescription>
+                              Check if this schematic includes redstone contraptions
+                            </FormDescription>
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name='requirements.hasCommandBlocks'
+                      render={({ field }) => (
+                        <FormItem className='flex flex-row items-start space-y-0 space-x-3'>
+                          <FormControl>
+                            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                          </FormControl>
+                          <div className='space-y-1 leading-none'>
+                            <FormLabel>Contains Command Blocks</FormLabel>
+                            <FormDescription>
+                              Check if this schematic uses command blocks
+                            </FormDescription>
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name='materials.hasModded'
+                      render={({ field }) => (
+                        <FormItem className='flex flex-row items-start space-y-0 space-x-3'>
+                          <FormControl>
+                            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                          </FormControl>
+                          <div className='space-y-1 leading-none'>
+                            <FormLabel>Contains Modded Blocks</FormLabel>
+                            <FormDescription>
+                              Check if this schematic includes blocks from mods
+                            </FormDescription>
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Dimensions Card */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className='flex items-center gap-2'>
+                    Dimensions
+                    {schematicMetadata && (
+                      <Badge variant='secondary' className='gap-1'>
+                        <Sparkles className='h-3 w-3' />
+                        Auto-detected
+                      </Badge>
+                    )}
+                  </CardTitle>
+                  <CardDescription>
+                    {schematicMetadata
+                      ? 'Dimensions automatically detected from your NBT file'
+                      : 'Specify the size of your schematic (optional)'}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className='grid grid-cols-2 gap-4'>
+                  <FormField
+                    control={form.control}
+                    name='dimensions.width'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Width (blocks)</FormLabel>
+                        <FormControl>
+                          <Input
+                            type='number'
+                            placeholder='e.g., 32'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(e.target.value ? parseInt(e.target.value) : undefined)
+                            }
+                            value={field.value || ''}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name='dimensions.height'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Height (blocks)</FormLabel>
+                        <FormControl>
+                          <Input
+                            type='number'
+                            placeholder='e.g., 64'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(e.target.value ? parseInt(e.target.value) : undefined)
+                            }
+                            value={field.value || ''}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name='dimensions.depth'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Depth (blocks)</FormLabel>
+                        <FormControl>
+                          <Input
+                            type='number'
+                            placeholder='e.g., 32'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(e.target.value ? parseInt(e.target.value) : undefined)
+                            }
+                            value={field.value || ''}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name='dimensions.blockCount'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Total Block Count</FormLabel>
+                        <FormControl>
+                          <Input
+                            type='number'
+                            placeholder='e.g., 5000'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(e.target.value ? parseInt(e.target.value) : undefined)
+                            }
+                            value={field.value || ''}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </CardContent>
+              </Card>
+
+              {/* Complexity Card */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className='flex items-center gap-2'>
+                    Complexity
+                    {schematicMetadata?.complexity && (
+                      <Badge variant='secondary' className='gap-1'>
+                        <CheckCircle className='h-3 w-3' />
+                        Auto-calculated
+                      </Badge>
+                    )}
+                  </CardTitle>
+                  <CardDescription>
+                    {schematicMetadata?.complexity
+                      ? 'Complexity automatically calculated based on NBT analysis'
+                      : 'Help users understand the difficulty of building this schematic'}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className='space-y-4'>
+                  <FormField
+                    control={form.control}
+                    name='complexity.level'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Complexity Level</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value || ''}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder='Select complexity level' />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value='simple'>Simple - Easy to build</SelectItem>
+                            <SelectItem value='moderate'>
+                              Moderate - Some experience needed
+                            </SelectItem>
+                            <SelectItem value='complex'>
+                              Complex - Advanced building skills required
+                            </SelectItem>
+                            <SelectItem value='extreme'>Extreme - Expert level only</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name='complexity.buildTime'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Estimated Build Time (minutes)</FormLabel>
+                        <FormControl>
+                          <Input
+                            type='number'
+                            placeholder='e.g., 30'
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(e.target.value ? parseInt(e.target.value) : undefined)
+                            }
+                            value={field.value || ''}
+                          />
+                        </FormControl>
+                        <FormDescription>
+                          Approximate time for an experienced player to build
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </CardContent>
+              </Card>
             </div>
 
             <Button
