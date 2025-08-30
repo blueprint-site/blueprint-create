@@ -30,7 +30,7 @@ export const useSubmitFeedback = () => {
           );
 
           // Get the download URL
-          screenshotUrl = storage.getFileDownload(STORAGE_BUCKET_ID, uploadResult.$id);
+          screenshotUrl = storage.getFileDownload(STORAGE_BUCKET_ID, uploadResult.$id).href;
         }
 
         // Create feedback document
