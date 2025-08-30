@@ -4,7 +4,7 @@ import type { FeedbackRecord, FeedbackSubmission } from '@/types/feedback';
 import { Query } from 'appwrite';
 import { toast } from '@/hooks';
 
-const DATABASE_ID = '67b1dc430020b4fb23e3';
+const DATABASE_ID = 'main';
 const COLLECTION_ID = 'feedback'; // This will need to be created in Appwrite
 const STORAGE_BUCKET_ID = 'feedback-screenshots'; // This will need to be created in Appwrite
 
@@ -45,6 +45,7 @@ export const useSubmitFeedback = () => {
             screenshot: screenshotUrl,
             status: 'open',
             createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
             userAgent: navigator.userAgent,
             timestamp: Date.now(),
           }

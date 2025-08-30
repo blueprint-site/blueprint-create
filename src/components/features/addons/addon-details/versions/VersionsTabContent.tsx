@@ -49,7 +49,7 @@ export const VersionsTabContent: React.FC<VersionsTabContentProps> = ({ sortedVe
                 <div>
                   <h4 className='mb-2 text-sm font-medium'>Minecraft Versions</h4>
                   <div className='flex flex-wrap gap-2'>
-                    {version.game_versions.map((mcVersion) => (
+                    {(version.game_versions || []).map((mcVersion) => (
                       <Badge key={mcVersion} variant='outline'>
                         {mcVersion}
                       </Badge>

@@ -33,7 +33,9 @@ const Gallery: React.FC<GalleryProps> = ({
       thumbApi.scrollTo(selected);
     };
     mainApi.on('select', onMainSelect);
-    return () => mainApi.off('select', onMainSelect);
+    return () => {
+      mainApi.off('select', onMainSelect);
+    };
   }, [mainApi, thumbApi]);
 
   // Sync main carousel when thumbnail is clicked
@@ -84,7 +86,7 @@ const Gallery: React.FC<GalleryProps> = ({
       <Carousel setApi={setThumbApi} opts={{ dragFree: true, startIndex: initialIndex }} aria-label="Image thumbnails">
         <CarouselContent>
           {images.map((image, index) => (
-            <CarouselItem key={index} className="basis-1/6 flex justify-center items-center aspect-video">
+            <CarouselItem key={index} className="basis-1/7 flex justify-center items-center aspect-video">
               <button
                 onClick={() => onThumbClick(index)}
                 className={current === index ? 'ring-2 ring-primary' : ''}
@@ -103,6 +105,7 @@ const Gallery: React.FC<GalleryProps> = ({
           images={images}
           currentIndex={current}
           onClose={() => setLightboxOpen(false)}
+          alt={alt}
         />
       )}
     </div>

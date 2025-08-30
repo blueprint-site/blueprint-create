@@ -11,8 +11,9 @@ Appwrite requires the following environment variables, typically set via `/publi
 ```javascript
 // public/env.js
 window._env_ = {
-  APP_APPWRITE_URL: "https://your-appwrite-instance.com/v1", // Your Appwrite API endpoint
-  APP_APPWRITE_PROJECT_ID: "your-project-id",              // Your Appwrite project ID
+  APPWRITE_URL: "https://your-appwrite-instance.com/v1", // Your Appwrite API endpoint
+  APPWRITE_PROJECT_ID: "your-project-id",              // Your Appwrite project ID
+  APPWRITE_MANAGE_USERS_FUNCTION_ID: "your-function-id", // Function ID for user management
   // ... other variables
 };
 ```
@@ -29,8 +30,8 @@ import { Client, Account, Databases, Storage, Functions, ID } from 'appwrite';
 
 export const client = new Client();
 
-const url = window._env_?.APP_APPWRITE_URL || '';
-const projectId = window._env_?.APP_APPWRITE_PROJECT_ID || '';
+const url = window._env_?.APPWRITE_URL || '';
+const projectId = window._env_?.APPWRITE_PROJECT_ID || '';
 
 // Basic client setup
 client.setEndpoint(url).setProject(projectId);
@@ -153,17 +154,21 @@ Stores feature flags for controlling application features. See `FeatureFlag` typ
 
 Appwrite's native user management is extended using the `prefs` field. User data is accessed via `account.get()` and typed using `User` and `UserPreferences` from `src/types/appwrite.ts`.
 
+**🔒 Security Note**: User preferences are client-accessible and should **NOT** store sensitive data. Use Appwrite Teams for secure role management.
+
 **Key Preference Fields (`prefs` object):**
 - `theme`: 'light' | 'dark' | undefined - User's preferred theme
 - `language`: string | undefined - Preferred language code
 - `notificationsEnabled`: boolean | undefined - Notification preference
 - `avatar`: string | undefined - URL or identifier for custom avatar
 - `bio`: string | undefined - User's biography
-- `roles`: string[] | undefined - Custom application roles (e.g., 'admin', 'moderator')
+- `roles`: string[] | undefined - ⚠️ **DEPRECATED**: Use Appwrite Teams instead for security
 - `easterEggs`: object | null | undefined - Easter egg tracking
 - `betaTester`: object | undefined (`BetaTesterPrefs`) - Beta program status and access
 
-See `docs/api/appwrite-user-model.md` for detailed usage.
+**Secure Role Management**: Use Appwrite Teams for roles and permissions instead of storing them in preferences.
+
+See `docs/api/appwrite-user-model.md` for detailed usage and security best practices.
 
 ## Authentication
 

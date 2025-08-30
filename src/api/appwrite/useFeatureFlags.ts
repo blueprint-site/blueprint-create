@@ -3,10 +3,11 @@ import { databases } from '@/config/appwrite';
 import { Query } from 'appwrite';
 import type { FeatureFlag } from '@/types';
 
+// TODO: Make feature flags work
 /**
  * Constants for database and collection IDs
  */
-const DATABASE_ID = '67b1dc430020b4fb23e3';
+const DATABASE_ID = 'main';
 const COLLECTION_ID = '67b232540003ed4d8e4f';
 const STALE_TIME = 5 * 60 * 1000; // 5 minutes
 

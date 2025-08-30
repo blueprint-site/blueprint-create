@@ -38,9 +38,37 @@ function processAddon(addon: Addon): AddonWithParsedFields {
 
   if (typeof processed.modrinth_raw === 'string') {
     try {
+      // Skip processing if JSON appears to be truncated (exactly 256 chars is suspicious)
+      if (processed.modrinth_raw.length === 256) {
+        console.warn('Skipping modrinth_raw parsing - appears to be truncated at 256 characters');
+        processed.modrinth_raw_parsed = null;
+        return processed;
+      }
+
+      // Check if the JSON string seems to be truncated
+      if (
+        processed.modrinth_raw.length > 0 &&
+        !processed.modrinth_raw.trim().endsWith('}') &&
+        !processed.modrinth_raw.trim().endsWith(']')
+      ) {
+        console.warn('Modrinth JSON appears to be truncated:', {
+          length: processed.modrinth_raw.length,
+          ending: processed.modrinth_raw.slice(-20),
+        });
+        // Don't try to parse obviously truncated JSON
+        processed.modrinth_raw_parsed = null;
+        return processed;
+      }
+
       processed.modrinth_raw_parsed = JSON.parse(processed.modrinth_raw) as ModrinthRawObject;
     } catch (e) {
-      console.error('Failed to parse modrinth_raw JSON', e);
+      console.error('Failed to parse modrinth_raw JSON in search:', {
+        error: e,
+        errorMessage: e instanceof Error ? e.message : 'Unknown error',
+        jsonLength: processed.modrinth_raw.length,
+        jsonStart: processed.modrinth_raw.substring(0, 100),
+        jsonEnd: processed.modrinth_raw.substring(processed.modrinth_raw.length - 100),
+      });
       processed.modrinth_raw_parsed = null;
     }
   }

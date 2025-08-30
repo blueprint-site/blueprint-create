@@ -36,8 +36,7 @@ interface UpdateTeamParams {
   add: boolean;
 }
 
-const MANAGE_USERS_FUNCTION_ID =
-  window._env_?.APPWRITE_MANAGE_USERS_FUNCTION_ID ?? '67f99445001dd9278180';
+const MANAGE_USERS_FUNCTION_ID = window._env_?.APPWRITE_MANAGE_USERS_FUNCTION_ID ?? 'manage_users';
 
 const adminUserKeys = {
   all: ['admin', 'users'] as const,

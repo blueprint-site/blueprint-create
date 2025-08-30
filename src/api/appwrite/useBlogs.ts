@@ -5,8 +5,8 @@ import { ID, Query } from 'appwrite';
 import { parseJsonFields, serializeJsonFields } from '../utils/json-fields';
 import { toast } from '@/hooks';
 
-const DATABASE_ID = '67b1dc430020b4fb23e3';
-const COLLECTION_ID = '67b232540003ed4d8e4f';
+const DATABASE_ID = 'main';
+const COLLECTION_ID = 'blogs';
 
 /**
  * Hook to fetch a single blog by ID.

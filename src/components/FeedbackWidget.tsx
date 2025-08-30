@@ -16,11 +16,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { useFeedback } from '@/hooks/useFeedback';
 import type { FeedbackType } from '@/types/feedback';
+import { Input } from '@/components/ui/input';
 
 // Feedback types
 const FEEDBACK_TYPES = [
@@ -73,7 +73,8 @@ export const FeedbackWidget = ({ renderAsIconButton = false }: FeedbackWidgetPro
     }
   };
 
-  const FeedbackDialogContent = () => (
+  // Render helper instead of inline component to avoid remount on each keystroke
+  const renderFeedbackDialogContent = () => (
     <DialogContent className='sm:max-w-md'>
       <DialogHeader>
         <DialogTitle className='flex items-center gap-2'>
@@ -83,7 +84,7 @@ export const FeedbackWidget = ({ renderAsIconButton = false }: FeedbackWidgetPro
       </DialogHeader>
       <form onSubmit={handleSubmit} className='space-y-4'>
         <div className='space-y-2'>
-          <Label htmlFor='feedback-type'>Feedback Type</Label>
+          <Label>Feedback Type</Label>
           <Select
             value={feedbackType}
             onValueChange={(value: FeedbackType) => setFeedbackType(value)}
@@ -108,7 +109,7 @@ export const FeedbackWidget = ({ renderAsIconButton = false }: FeedbackWidgetPro
         </div>
 
         <div className='space-y-2'>
-          <Label htmlFor='message'>Message</Label>
+          <Label>Message</Label>
           <Textarea
             id='message'
             placeholder='Describe the issue or suggestion...'
@@ -120,7 +121,7 @@ export const FeedbackWidget = ({ renderAsIconButton = false }: FeedbackWidgetPro
         </div>
 
         <div className='space-y-2'>
-          <Label htmlFor='screenshot'>Screenshot (optional)</Label>
+          <Label>Screenshot (optional)</Label>
           <div className='flex items-center gap-2'>
             <Input
               id='screenshot'
@@ -187,7 +188,7 @@ export const FeedbackWidget = ({ renderAsIconButton = false }: FeedbackWidgetPro
             <MessageSquare className='h-4 w-4' />
           </Button>
         </DialogTrigger>
-        <FeedbackDialogContent />
+        {renderFeedbackDialogContent()}
       </Dialog>
     );
   }
@@ -202,7 +203,7 @@ export const FeedbackWidget = ({ renderAsIconButton = false }: FeedbackWidgetPro
           <MessageSquare className='h-5 w-5' />
         </Button>
       </DialogTrigger>
-      <FeedbackDialogContent />
+      {renderFeedbackDialogContent()}
     </Dialog>
   );
 };

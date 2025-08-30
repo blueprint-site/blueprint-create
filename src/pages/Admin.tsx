@@ -1,4 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   BarChart,
@@ -16,8 +17,18 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { FeedbackAdmin } from '@/components/admin/FeedbackAdmin';
+import { useFetchFeedback } from '@/api';
+import type { FeedbackRecord } from '@/types';
+
+// Returns true if any feedback item has status === 'open'
+function checkIsThereFeedback(feedback?: FeedbackRecord[]): boolean {
+  return Array.isArray(feedback) && feedback.some((f) => f.status === 'open');
+}
 
 export const Admin = () => {
+  // Feedback data from Appwrite
+  const { data: feedback } = useFetchFeedback();
+  const hasOpenFeedback = checkIsThereFeedback(feedback);
   // Mock data
   const recentAddons = [
     {
@@ -99,22 +110,37 @@ export const Admin = () => {
     },
   ];
 
+  const [activeTab, setActiveTab] = useState<
+    'addons' | 'schematics' | 'blog' | 'feedback' | 'analytics'
+  >('addons');
+
   return (
-    <div className='flex flex-col p-4'>
+    <div className='flex h-full flex-col'>
       {/* Tabs sections - takes up remaining height */}
-      <Tabs defaultValue='addons' className='flex flex-1 flex-col'>
+      <Tabs
+        value={activeTab}
+        onValueChange={(v) => setActiveTab(v as typeof activeTab)}
+        className='flex h-full flex-1 flex-col'
+      >
         <TabsList className='mb-2'>
           <TabsTrigger value='addons'>Addons</TabsTrigger>
           <TabsTrigger value='schematics'>Schematics</TabsTrigger>
           <TabsTrigger value='blog'>Blog</TabsTrigger>
-          <TabsTrigger value='feedback'>Feedback</TabsTrigger>
+          <TabsTrigger value='feedback'>
+            <span>Feedback</span>
+            {hasOpenFeedback && activeTab !== 'feedback' && (
+              <Badge variant='destructive' className='ml-2 animate-ping'>
+                LOOK
+              </Badge>
+            )}
+          </TabsTrigger>
           <TabsTrigger value='analytics'>Analytics</TabsTrigger>
         </TabsList>
 
         {/* Tab Content Container - make this scrollable if needed */}
-        <div className='flex-1 overflow-hidden'>
+        <div className='flex-1 overflow-y-auto'>
           {/* Addons Tab */}
-          <TabsContent value='addons' className='h-100'>
+          <TabsContent value='addons' className='m-0 h-full'>
             <div className='grid h-full grid-cols-3 gap-4'>
               <Card>
                 <CardHeader className='pb-1'>
@@ -200,7 +226,7 @@ export const Admin = () => {
           </TabsContent>
 
           {/* Schematics Tab */}
-          <TabsContent value='schematics' className='h-100'>
+          <TabsContent value='schematics' className='m-0 h-full'>
             <div className='grid h-full grid-cols-3 gap-4'>
               <Card>
                 <CardHeader className='pb-1'>
@@ -289,7 +315,7 @@ export const Admin = () => {
           </TabsContent>
 
           {/* Blog Tab */}
-          <TabsContent value='blog' className='h-100'>
+          <TabsContent value='blog' className='m-0 h-full'>
             <div className='grid h-full grid-cols-2 gap-4'>
               <Card>
                 <CardHeader className='pb-1'>
@@ -332,7 +358,7 @@ export const Admin = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className='p-0'>
-                  <ScrollArea className='h-100 px-6'>
+                  <ScrollArea className='h-64 px-6'>
                     <div className='space-y-3 py-4'>
                       <Button className='w-full justify-start'>
                         <Plus className='mr-2 h-4 w-4' />
@@ -369,7 +395,7 @@ export const Admin = () => {
           </TabsContent>
 
           {/* Analytics Tab */}
-          <TabsContent value='analytics' className='h-150'>
+          <TabsContent value='analytics' className='m-0 h-full'>
             <div className='grid h-full grid-cols-2 gap-4'>
               <Card className='col-span-2 row-span-1'>
                 <CardHeader className='pb-1'>
@@ -393,7 +419,7 @@ export const Admin = () => {
                   <CardDescription className='text-xs'>Download distribution</CardDescription>
                 </CardHeader>
                 <CardContent className='p-0'>
-                  <ScrollArea className='h-100 px-6'>
+                  <ScrollArea className='h-64 px-6'>
                     <div className='space-y-3 py-4'>
                       <div className='space-y-1'>
                         <div className='flex items-center justify-between'>
@@ -434,7 +460,7 @@ export const Admin = () => {
                   <CardDescription className='text-xs'>Traffic sources</CardDescription>
                 </CardHeader>
                 <CardContent className='p-0'>
-                  <ScrollArea className='h-100 px-6'>
+                  <ScrollArea className='h-64 px-6'>
                     <div className='space-y-3 py-4'>
                       <div className='space-y-1'>
                         <div className='flex items-center justify-between'>

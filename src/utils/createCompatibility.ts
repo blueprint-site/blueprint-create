@@ -71,7 +71,7 @@ export function getAddonCreateVersionsFromVersions(versions: AddonVersion[] = []
   if (createVersions.size === 0) {
     // Collect all Minecraft versions
     const allGameVersions = new Set<string>();
-    versions.forEach((v) => v.game_versions.forEach((gv) => allGameVersions.add(gv)));
+    versions.forEach((v) => v.game_versions?.forEach((gv) => allGameVersions.add(gv)));
 
     // Map Minecraft versions to Create versions
     Array.from(allGameVersions).forEach((mcVersion) => {

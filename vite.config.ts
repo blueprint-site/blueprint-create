@@ -7,7 +7,7 @@ import imagemin from 'vite-plugin-imagemin';
 import checker from 'vite-plugin-checker';
 import { visualizer } from 'rollup-plugin-visualizer';
 import viteCompression from 'vite-plugin-compression';
-import pkg from './package.json' assert { type: 'json' };
+import pkg from './package.json' with { type: 'json' };
 import tailwindcss from '@tailwindcss/vite';
 
 interface ReactCompilerConfig {
@@ -92,6 +92,9 @@ export default defineConfig(({ mode }) => ({
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
+  },
+  server: {
+    port: Number(process.env.VITE_DEV_PORT) || 5174,
   },
   envPrefix: 'APP',
   define: {

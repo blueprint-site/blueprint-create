@@ -25,13 +25,19 @@ npm install
 
 3. **Create environment configuration**
 
-Create a `.env` file in the project root with the following variables:
+Create an `env.js` file in the project root with the following variables:
 
-```
-APP_APPWRITE_URL=your_appwrite_url
-APP_APPWRITE_PROJECT_ID=your_project_id
-APP_MEILISEARCH_URL=your_meilisearch_url
-APP_MEILISEARCH_API_KEY=your_api_key
+```javascript
+window._env_ = {
+  APP_URL: "http://localhost:5173",
+  APP_BASE_URL: "http://localhost",
+  APP_PORT: 5173,
+  APPWRITE_URL: "your_appwrite_url",
+  APPWRITE_PROJECT_ID: "your_project_id",
+  APPWRITE_MANAGE_USERS_FUNCTION_ID: "your_function_id",
+  MEILISEARCH_URL: "your_meilisearch_url",
+  MEILISEARCH_API_KEY: "your_api_key"
+};
 ```
 
 4. **Start the development server**
@@ -163,11 +169,14 @@ The application uses an `env.js` file loaded at runtime to configure environment
 
 ```javascript
 window._env_ = {
-  APP_APPWRITE_URL: "http://localhost:8000/v1",
-  APP_APPWRITE_PROJECT_ID: "your-project-id",
-  APP_MEILISEARCH_URL: "http://localhost:7700",
-  APP_MEILISEARCH_API_KEY: "your-api-key",
-  APP_URL: "http://localhost:5173"
+  APP_URL: "http://localhost:5173",
+  APP_BASE_URL: "http://localhost",
+  APP_PORT: 5173,
+  APPWRITE_URL: "http://localhost:8000/v1",
+  APPWRITE_PROJECT_ID: "your-project-id",
+  APPWRITE_MANAGE_USERS_FUNCTION_ID: "your-function-id",
+  MEILISEARCH_URL: "http://localhost:7700",
+  MEILISEARCH_API_KEY: "your-api-key"
 };
 ```
 

@@ -2,7 +2,7 @@
 import '@/config/i18n';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
-import { Toaster } from '@/components/ui/toaster.tsx';
+import { Toaster } from 'sonner';
 import { useUserStore } from '@/api/stores/userStore';
 import { routes } from './routes';
 import { Suspense, useEffect, useState } from 'react';

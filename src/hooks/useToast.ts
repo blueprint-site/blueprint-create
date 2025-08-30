@@ -1,6 +1,6 @@
 // Inspired by react-hot-toast library
 import type { ToastActionElement, ToastProps } from '@/components/ui/toast.tsx';
-import type { ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 
 const TOAST_LIMIT = 1;

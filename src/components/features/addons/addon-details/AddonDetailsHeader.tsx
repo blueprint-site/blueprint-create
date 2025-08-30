@@ -24,20 +24,20 @@ const AddonDetailsHeader = ({
           <div className='flex items-center justify-between'>
             <h1 className='mb-2 text-3xl font-bold'>{name}</h1>
           </div>
-          <p className='text-muted-foreground text-md'>{description}</p>
+          <p className='text-md'>{description}</p>
         </div>
       </div>
 
       {/* Stats Section */}
-      <div className='flex flex-wrap items-center gap-4'>
+      <div className='flex flex-wrap items-center gap-4 opacity-70'>
         <div className='flex items-center gap-2'>
-          <Download className='text-muted-foreground h-4 w-4' />
-          <span className='text-muted-foreground'>{downloads.toLocaleString()} downloads</span>
+          <Download className='h-4 w-4' />
+          <span className=''>{downloads.toLocaleString()} downloads</span>
         </div>
         {follows > 0 && (
           <div className='flex items-center gap-2'>
-            <Heart className='text-muted-foreground h-4 w-4' />
-            <span className='text-muted-foreground'>{follows.toLocaleString()} followers</span>
+            <Heart className='h-4 w-4' />
+            <span className=''>{follows.toLocaleString()} followers</span>
           </div>
         )}
       </div>

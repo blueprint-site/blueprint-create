@@ -11,57 +11,75 @@ import {
   useFetchModrinthVersions,
   useFetchModrinthDependencies,
 } from '@/api';
-
-import type { IntegratedAddonData } from '@/types';
+import type { IntegratedAddonData, CurseForgeRawObject, ModrinthRawObject } from '@/types';
 import { getAddonCreateVersionsFromVersions } from '@/utils/createCompatibility';
 
 export default function AddonDetails() {
   const { slug } = useParams<{ slug: string }>();
 
-  const { data: addon, isLoading: isLoadingAddon, error: errorAddon } = useFetchAddonBySlug(slug);
-
+  // Always call hooks in the same order - move hooks before early returns
   const {
-    data: modrinthProject,
-    isLoading: isLoadingModrinth,
-    error: errorModrinth,
-  } = useFetchModrinthProject(slug);
+    data: addon,
+    isLoading: isLoadingAddon,
+    error: errorAddon,
+  } = useFetchAddonBySlug(slug || '');
 
-  const {
-    data: versions,
-    isLoading: isLoadingVersions,
-    error: errorVersions,
-  } = useFetchModrinthVersions(slug);
+  const { data: modrinthProject, isLoading: isLoadingModrinth } = useFetchModrinthProject(
+    slug || ''
+  );
 
-  const {
-    data: dependencies,
-    isLoading: isLoadingDependencies,
-    error: errorDependencies,
-  } = useFetchModrinthDependencies(slug);
+  const { data: versions } = useFetchModrinthVersions(slug || '');
 
-  const error = errorAddon || errorModrinth || errorVersions || errorDependencies;
+  const { data: dependencies } = useFetchModrinthDependencies(slug || '');
 
-  if (error) return <AddonDetailsError error={error} />;
+  // Validate slug parameter after hooks
+  if (!slug) {
+    return <AddonDetailsError error={new Error('No addon slug provided in URL')} />;
+  }
 
-  const isLoading =
-    isLoadingAddon || isLoadingModrinth || isLoadingVersions || isLoadingDependencies;
+  // Prioritize critical errors - addon data is most important
+  const criticalError = errorAddon;
+  if (criticalError) {
+    return <AddonDetailsError error={criticalError} />;
+  }
 
-  if (isLoading || !addon || !modrinthProject || !versions || !dependencies) {
+  // Check for required data more intelligently
+  const hasRequiredData = addon && modrinthProject;
+  const isLoadingCriticalData = isLoadingAddon || isLoadingModrinth;
+
+  if (isLoadingCriticalData || !hasRequiredData) {
     return <AddonDetailsLoading />;
   }
 
-  const curseforgeObject = addon.curseforge_raw ? JSON.parse(addon.curseforge_raw) : null;
-  const modrinthObject = addon.modrinth_raw ? JSON.parse(addon.modrinth_raw) : null;
-  const createVersions = getAddonCreateVersionsFromVersions(versions);
+  // Safely parse JSON objects with error handling
+  function parseJsonSafely<T>(jsonData: string | object | null): T | null {
+    if (!jsonData) return null;
+    if (typeof jsonData === 'object') return jsonData as T;
+    if (typeof jsonData !== 'string') return null;
 
-  // Build the integrated data object with proper types
+    try {
+      return JSON.parse(jsonData) as T;
+    } catch (error) {
+      console.error('Failed to parse JSON:', error);
+      return null;
+    }
+  }
+
+  const curseforgeObject = parseJsonSafely<CurseForgeRawObject>(addon.curseforge_raw);
+  const modrinthObject = parseJsonSafely<ModrinthRawObject>(addon.modrinth_raw);
+
+  // Handle optional data gracefully
+  const createVersions = versions ? getAddonCreateVersionsFromVersions(versions) : [];
+
+  // Build integrated data object with proper types
   const data: IntegratedAddonData = {
     ...addon,
-    curseforgeObject,
-    modrinthObject,
+    curseforgeObject: curseforgeObject || undefined,
+    modrinthObject: modrinthObject || undefined,
     modrinth: {
       ...modrinthProject,
-      versions: versions,
-      dependencies: dependencies.projects || [],
+      versions: versions || null,
+      dependencies: dependencies?.projects || [],
     },
   };
 
