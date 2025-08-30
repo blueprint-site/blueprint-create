@@ -19,7 +19,7 @@ export function useFeedback() {
 
   return {
     submitFeedback,
-    loading: submitFeedbackMutation.isPending,
+    loading: submitFeedbackMutation.isLoading,
     error: submitFeedbackMutation.error,
     data: submitFeedbackMutation.data,
   };
