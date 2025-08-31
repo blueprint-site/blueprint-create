@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchAddons } from '@/api';
 import { ListPageLayout } from '@/layouts/ListPageLayout';
 import { ItemGrid } from '@/components/layout/ItemGrid';
@@ -11,6 +11,7 @@ import type { Addon } from '@/types';
 const AddonsList = () => {
   const [page, setPage] = useState(1);
   const [allAddons, setAllAddons] = useState<Addon[]>([]);
+  const previousHitsRef = useRef<string>('');
 
   // Use the new filter hook
   const {
@@ -61,24 +62,33 @@ const AddonsList = () => {
   useEffect(() => {
     setAllAddons([]);
     setPage(1);
+    previousHitsRef.current = ''; // Reset the hits identifier
   }, [filterString, searchQuery, filters.sort]);
 
   // Append new addons to the accumulated list
   useEffect(() => {
     if (hits && hits.length > 0) {
-      console.log(`New hits fetched: ${hits.length} items`);
-      if (page === 1) {
-        setAllAddons(hits);
-      } else {
-        setAllAddons((prev) => {
-          // Check if we already have these items to prevent duplicates
-          const existingIds = new Set(prev.map((addon) => addon.$id));
-          const newItems = hits.filter((addon) => !existingIds.has(addon.$id));
-          if (newItems.length > 0) {
-            return [...prev, ...newItems];
-          }
-          return prev;
-        });
+      // Create a stable identifier for the current hits
+      const hitsIdentifier = hits.map((h) => h.$id).join(',');
+
+      // Only update if the hits have actually changed
+      if (hitsIdentifier !== previousHitsRef.current) {
+        previousHitsRef.current = hitsIdentifier;
+        console.log(`New hits fetched: ${hits.length} items`);
+
+        if (page === 1) {
+          setAllAddons(hits);
+        } else {
+          setAllAddons((prev) => {
+            // Check if we already have these items to prevent duplicates
+            const existingIds = new Set(prev.map((addon) => addon.$id));
+            const newItems = hits.filter((addon) => !existingIds.has(addon.$id));
+            if (newItems.length > 0) {
+              return [...prev, ...newItems];
+            }
+            return prev;
+          });
+        }
       }
     }
   }, [hits, page]);

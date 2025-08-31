@@ -1,5 +1,5 @@
 import CogwheelImage from '@/assets/cogwheel.png';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import logMessage from '@/components/utility/logs/sendLogs.tsx';
 import {
   Drawer,
@@ -40,39 +40,60 @@ const RotatingCogwheel = () => {
   const { isDarkMode } = useThemeStore();
   const size = Math.min(width * 0.28, 350);
   const offset = size / 2.35;
+  const rotationRef = useRef(0);
+  const animationFrameRef = useRef<number | null>(null);
 
+  // Combined rotation effect with both scroll and animation
   useEffect(() => {
     const main = document.getElementById('main');
-    if (!main) return;
+    let lastScrollTop = main?.scrollTop || 0;
+    let lastTime = Date.now();
+    let updateTimer: ReturnType<typeof setInterval> | null = null;
 
-    let lastScrollTop = main.scrollTop;
-
-    const handleScroll = () => {
-      const scrollTop = main.scrollTop;
-      const delta = scrollTop - lastScrollTop;
-      lastScrollTop = scrollTop;
-      setRotation((prev) => {
-        const newRotation = prev + delta / 10;
-        // Keep rotation within reasonable bounds
-        if (newRotation > 360) return newRotation % 360;
-        if (newRotation < 0) return 360 + (newRotation % 360);
-        return newRotation;
-      });
+    // Update the actual state periodically
+    const updateRotationState = () => {
+      setRotation(rotationRef.current % 360);
     };
 
-    main.addEventListener('scroll', handleScroll);
-    return () => main.removeEventListener('scroll', handleScroll);
-  }, []);
+    // Animation frame for continuous rotation
+    const animate = () => {
+      const currentTime = Date.now();
+      const deltaTime = currentTime - lastTime;
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRotation((prev) => {
-        const newRotation = prev + 0.1;
-        // Reset to 0 when reaching 360 to prevent large numbers
-        return newRotation >= 360 ? 0 : newRotation;
-      });
-    }, 50);
-    return () => clearInterval(interval);
+      // Update rotation ref continuously
+      if (deltaTime >= 50) {
+        lastTime = currentTime;
+        rotationRef.current += 0.5;
+
+        // Add scroll-based rotation if main exists
+        if (main) {
+          const scrollTop = main.scrollTop;
+          const scrollDelta = scrollTop - lastScrollTop;
+          if (Math.abs(scrollDelta) > 0.5) {
+            rotationRef.current += scrollDelta / 10;
+            lastScrollTop = scrollTop;
+          }
+        }
+      }
+
+      animationFrameRef.current = requestAnimationFrame(animate);
+    };
+
+    // Start animation
+    animationFrameRef.current = requestAnimationFrame(animate);
+
+    // Update state periodically (every 100ms) instead of on every frame
+    updateTimer = setInterval(updateRotationState, 100);
+
+    // Cleanup
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      if (updateTimer) {
+        clearInterval(updateTimer);
+      }
+    };
   }, []);
 
   const handleClick = () => {
