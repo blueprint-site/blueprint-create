@@ -34,6 +34,7 @@ export const ScrollingAddonBackground = ({
   const [isLoading, setIsLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const previousHitsRef = useRef<string>('');
+  const isProcessingRef = useRef(false);
 
   // Addon dimensions for calculations
   const addonWidth = 50;
@@ -53,44 +54,50 @@ export const ScrollingAddonBackground = ({
     limit,
   });
 
-  // Create a stable identifier and memoized hits to prevent unnecessary re-renders
+  // Create a stable identifier to prevent unnecessary re-renders
   const hitsIdentifier = useMemo(() => {
     if (!hits || hits.length === 0) return '';
     return hits.map((h) => h.$id).join(',');
   }, [hits]);
 
-  // Memoize the hits array to prevent reference changes
-  const memoizedHits = useMemo(() => hits || [], [hits]);
-
   // Update addons when data is fetched
   useEffect(() => {
-    if (memoizedHits.length === 0) {
+    if (!hits || hits.length === 0) {
       if (!isLoadingAddons) {
         setIsLoading(false);
       }
       return;
     }
 
+    // Prevent concurrent processing
+    if (isProcessingRef.current) return;
+
     // Only update if the hits have actually changed
     if (hitsIdentifier !== previousHitsRef.current) {
+      isProcessingRef.current = true;
       previousHitsRef.current = hitsIdentifier;
 
       setAllAddons((prev) => {
         // Only update if we have new data
         if (page === 1) {
-          return memoizedHits;
+          return hits;
         }
         // Check if we already have these items to prevent duplicates
         const existingIds = new Set(prev.map((addon) => addon.$id));
-        const newItems = memoizedHits.filter((addon) => !existingIds.has(addon.$id));
+        const newItems = hits.filter((addon) => !existingIds.has(addon.$id));
         if (newItems.length > 0) {
           return [...prev, ...newItems];
         }
         return prev;
       });
       setIsLoading(false);
+
+      // Reset processing flag after a small delay to allow state to settle
+      setTimeout(() => {
+        isProcessingRef.current = false;
+      }, 100);
     }
-  }, [hitsIdentifier, memoizedHits, page, isLoadingAddons]);
+  }, [hitsIdentifier, hits, page, isLoadingAddons]);
 
   // Initialize dimensions and set up ResizeObserver
   useEffect(() => {
