@@ -35,6 +35,7 @@ export const ScrollingAddonBackground = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const previousHitsRef = useRef<string>('');
   const isProcessingRef = useRef(false);
+  const updateTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Addon dimensions for calculations
   const addonWidth = 50;
@@ -60,7 +61,7 @@ export const ScrollingAddonBackground = ({
     return hits.map((h) => h.$id).join(',');
   }, [hits]);
 
-  // Update addons when data is fetched
+  // Update addons when data is fetched with debouncing
   useEffect(() => {
     if (!hits || hits.length === 0) {
       if (!isLoadingAddons) {
@@ -69,34 +70,47 @@ export const ScrollingAddonBackground = ({
       return;
     }
 
-    // Prevent concurrent processing
-    if (isProcessingRef.current) return;
-
-    // Only update if the hits have actually changed
-    if (hitsIdentifier !== previousHitsRef.current) {
-      isProcessingRef.current = true;
-      previousHitsRef.current = hitsIdentifier;
-
-      setAllAddons((prev) => {
-        // Only update if we have new data
-        if (page === 1) {
-          return hits;
-        }
-        // Check if we already have these items to prevent duplicates
-        const existingIds = new Set(prev.map((addon) => addon.$id));
-        const newItems = hits.filter((addon) => !existingIds.has(addon.$id));
-        if (newItems.length > 0) {
-          return [...prev, ...newItems];
-        }
-        return prev;
-      });
-      setIsLoading(false);
-
-      // Reset processing flag after a small delay to allow state to settle
-      setTimeout(() => {
-        isProcessingRef.current = false;
-      }, 100);
+    // Clear any pending update
+    if (updateTimeoutRef.current) {
+      clearTimeout(updateTimeoutRef.current);
     }
+
+    // Debounce the update to prevent rapid successive calls
+    updateTimeoutRef.current = setTimeout(() => {
+      // Prevent concurrent processing
+      if (isProcessingRef.current) return;
+
+      // Only update if the hits have actually changed
+      if (hitsIdentifier !== previousHitsRef.current) {
+        isProcessingRef.current = true;
+        previousHitsRef.current = hitsIdentifier;
+
+        setAllAddons((prev) => {
+          // Only update if we have new data
+          if (page === 1) {
+            return hits;
+          }
+          // Check if we already have these items to prevent duplicates
+          const existingIds = new Set(prev.map((addon) => addon.$id));
+          const newItems = hits.filter((addon) => !existingIds.has(addon.$id));
+          if (newItems.length > 0) {
+            return [...prev, ...newItems];
+          }
+          return prev;
+        });
+        setIsLoading(false);
+
+        // Reset processing flag
+        isProcessingRef.current = false;
+      }
+    }, 50); // Small debounce delay
+
+    // Cleanup
+    return () => {
+      if (updateTimeoutRef.current) {
+        clearTimeout(updateTimeoutRef.current);
+      }
+    };
   }, [hitsIdentifier, hits, page, isLoadingAddons]);
 
   // Initialize dimensions and set up ResizeObserver
