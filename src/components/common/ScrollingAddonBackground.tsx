@@ -53,36 +53,41 @@ export const ScrollingAddonBackground = ({
     limit,
   });
 
+  // Create a stable identifier for hits to prevent unnecessary re-renders
+  const hitsIdentifier = useMemo(() => {
+    if (!hits || hits.length === 0) return '';
+    return hits.map((h) => h.$id).join(',');
+  }, [hits]);
+
   // Update addons when data is fetched
   useEffect(() => {
-    if (hits && hits.length > 0) {
-      // Create a stable identifier for the current hits
-      const hitsIdentifier = hits.map((h) => h.$id).join(',');
-
-      // Only update if the hits have actually changed
-      if (hitsIdentifier !== previousHitsRef.current) {
-        previousHitsRef.current = hitsIdentifier;
-
-        setAllAddons((prev) => {
-          // Only update if we have new data
-          if (page === 1) {
-            return hits;
-          }
-          // Check if we already have these items to prevent duplicates
-          const existingIds = new Set(prev.map((addon) => addon.$id));
-          const newItems = hits.filter((addon) => !existingIds.has(addon.$id));
-          if (newItems.length > 0) {
-            return [...prev, ...newItems];
-          }
-          return prev;
-        });
+    if (!hits || hits.length === 0) {
+      if (!isLoadingAddons) {
         setIsLoading(false);
       }
-    } else if (hits && hits.length === 0 && !isLoadingAddons) {
-      // No data was returned from the API, but the request finished
+      return;
+    }
+
+    // Only update if the hits have actually changed
+    if (hitsIdentifier !== previousHitsRef.current) {
+      previousHitsRef.current = hitsIdentifier;
+
+      setAllAddons((prev) => {
+        // Only update if we have new data
+        if (page === 1) {
+          return hits;
+        }
+        // Check if we already have these items to prevent duplicates
+        const existingIds = new Set(prev.map((addon) => addon.$id));
+        const newItems = hits.filter((addon) => !existingIds.has(addon.$id));
+        if (newItems.length > 0) {
+          return [...prev, ...newItems];
+        }
+        return prev;
+      });
       setIsLoading(false);
     }
-  }, [hits, page, isLoadingAddons]);
+  }, [hitsIdentifier, hits, page, isLoadingAddons]);
 
   // Initialize dimensions and set up ResizeObserver
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useSearchAddons } from '@/api';
 import { ListPageLayout } from '@/layouts/ListPageLayout';
 import { ItemGrid } from '@/components/layout/ItemGrid';
@@ -46,6 +46,12 @@ const AddonsList = () => {
     includeFacets: true,
   });
 
+  // Create a stable identifier for hits to prevent unnecessary re-renders
+  const hitsIdentifier = useMemo(() => {
+    if (!hits || hits.length === 0) return '';
+    return hits.map((h) => h.$id).join(',');
+  }, [hits]);
+
   // Use the useInfiniteScroll hook
   const { sentinelRef, loadingMore } = useInfiniteScroll({
     loading: isLoading || isFetching,
@@ -67,31 +73,28 @@ const AddonsList = () => {
 
   // Append new addons to the accumulated list
   useEffect(() => {
-    if (hits && hits.length > 0) {
-      // Create a stable identifier for the current hits
-      const hitsIdentifier = hits.map((h) => h.$id).join(',');
+    if (!hits || hits.length === 0 || !hitsIdentifier) return;
 
-      // Only update if the hits have actually changed
-      if (hitsIdentifier !== previousHitsRef.current) {
-        previousHitsRef.current = hitsIdentifier;
-        console.log(`New hits fetched: ${hits.length} items`);
+    // Only update if the hits have actually changed
+    if (hitsIdentifier !== previousHitsRef.current) {
+      previousHitsRef.current = hitsIdentifier;
+      console.log(`New hits fetched: ${hits.length} items`);
 
-        if (page === 1) {
-          setAllAddons(hits);
-        } else {
-          setAllAddons((prev) => {
-            // Check if we already have these items to prevent duplicates
-            const existingIds = new Set(prev.map((addon) => addon.$id));
-            const newItems = hits.filter((addon) => !existingIds.has(addon.$id));
-            if (newItems.length > 0) {
-              return [...prev, ...newItems];
-            }
-            return prev;
-          });
-        }
+      if (page === 1) {
+        setAllAddons(hits);
+      } else {
+        setAllAddons((prev) => {
+          // Check if we already have these items to prevent duplicates
+          const existingIds = new Set(prev.map((addon) => addon.$id));
+          const newItems = hits.filter((addon) => !existingIds.has(addon.$id));
+          if (newItems.length > 0) {
+            return [...prev, ...newItems];
+          }
+          return prev;
+        });
       }
     }
-  }, [hits, page]);
+  }, [hitsIdentifier, hits, page]);
 
   const handleResetFilters = () => {
     clearFilters();
