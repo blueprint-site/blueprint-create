@@ -15,10 +15,10 @@ export const useBlogEditor = ({ blogId, userId, userName }: UseBlogEditorProps) 
   const navigate = useNavigate();
   const { toast } = useToast();
   const isNew = blogId === 'new';
-  
+
   const { data: blog, isLoading } = useFetchBlog(blogId);
   const saveBlogMutation = useSaveBlog();
-  
+
   const [blogState, setBlogState] = useState<Partial<Blog> | null>(null);
   const [isDirty, setIsDirty] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -54,15 +54,21 @@ export const useBlogEditor = ({ blogId, userId, userName }: UseBlogEditorProps) 
   }, []);
 
   // Handle input changes
-  const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    handleFieldChange(name as keyof Blog, value);
-  }, [handleFieldChange]);
+  const handleInputChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { name, value } = e.target;
+      handleFieldChange(name as keyof Blog, value);
+    },
+    [handleFieldChange]
+  );
 
   // Handle tags change
-  const handleTagsChange = useCallback((selectedTags: BlogTag[]) => {
-    handleFieldChange('tags', selectedTags);
-  }, [handleFieldChange]);
+  const handleTagsChange = useCallback(
+    (selectedTags: BlogTag[]) => {
+      handleFieldChange('tags', selectedTags);
+    },
+    [handleFieldChange]
+  );
 
   // Validate blog data
   const validateBlog = useCallback(() => {
@@ -107,7 +113,7 @@ export const useBlogEditor = ({ blogId, userId, userName }: UseBlogEditorProps) 
           title: 'Success',
           description: `Blog "${blogState!.title}" has been saved successfully!`,
         });
-        
+
         // If it was new, navigate to edit mode with the new ID
         if (isNew && savedBlog.$id) {
           navigate(`/admin/blogs/editor/${savedBlog.$id}`, { replace: true });
@@ -126,7 +132,7 @@ export const useBlogEditor = ({ blogId, userId, userName }: UseBlogEditorProps) 
   // Auto-save draft
   const autoSaveDraft = useCallback(() => {
     if (!isDirty || !blogState || blogState.status !== 'draft') return;
-    
+
     if (blogState.title && blogState.content) {
       handleSave();
     }

@@ -40,7 +40,7 @@ export const FullScreenMarkdownEditor = ({
   placeholder,
 }: FullScreenMarkdownEditorProps) => {
   const { isDarkMode } = useThemeStore();
-  
+
   const plugins = [
     headingsPlugin(),
     markdownShortcutPlugin(),
@@ -51,7 +51,7 @@ export const FullScreenMarkdownEditor = ({
     linkPlugin(),
     linkDialogPlugin(),
     codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
-    codeMirrorPlugin({ 
+    codeMirrorPlugin({
       codeBlockLanguages: {
         js: 'JavaScript',
         javascript: 'JavaScript',
@@ -66,7 +66,7 @@ export const FullScreenMarkdownEditor = ({
         sql: 'SQL',
         bash: 'Bash',
         shell: 'Shell',
-      }
+      },
     }),
     imagePlugin({
       imageUploadHandler: handleImageUpload,
@@ -90,9 +90,9 @@ export const FullScreenMarkdownEditor = ({
   ];
 
   return (
-    <div className='h-full flex flex-col'>
+    <div className='flex h-full flex-col'>
       <MDXEditor
-        className={`${isDarkMode ? 'dark-theme' : ''} flex-1 flex flex-col min-h-0`}
+        className={`${isDarkMode ? 'dark-theme' : ''} flex min-h-0 flex-1 flex-col`}
         markdown={value || ''}
         onChange={onChange}
         plugins={plugins}

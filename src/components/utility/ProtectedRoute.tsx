@@ -8,7 +8,7 @@ import type { UserPreferences } from '@/types/appwrite';
 // Global authentication cache stored in window to persist across HMR and navigation
 const getGlobalAuthCache = () => {
   if (typeof window === 'undefined') return null;
-  
+
   if (!window.__authCache) {
     window.__authCache = {
       isAuthenticated: null as boolean | null,
@@ -36,18 +36,24 @@ interface ProtectedRouteProps {
   useMinimalLoading?: boolean;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole, useMinimalLoading = false }) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  children,
+  requiredRole,
+  useMinimalLoading = false,
+}) => {
   // Generate unique instance ID for debugging
   const instanceId = useRef(Math.random().toString(36).substr(2, 9));
-  
+
   // Get cache and check validity
   const authCache = getGlobalAuthCache();
   const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
-  const isCacheValid = !!(authCache && 
-                          authCache.timestamp && 
-                          (Date.now() - authCache.timestamp < CACHE_DURATION) &&
-                          authCache.isAuthenticated !== null);
-  
+  const isCacheValid = !!(
+    authCache &&
+    authCache.timestamp &&
+    Date.now() - authCache.timestamp < CACHE_DURATION &&
+    authCache.isAuthenticated !== null
+  );
+
   // Debug logging
   console.log(`ProtectedRoute[${instanceId.current}] mount - cache state:`, {
     requiredRole,
@@ -56,32 +62,37 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole,
     isAuthenticated: authCache?.isAuthenticated,
     timestamp: authCache?.timestamp,
     hasRequiredRole: authCache?.hasRequiredRole,
-    isCacheValid
+    isCacheValid,
   });
-  
+
   // Initialize state from cache if available AND valid
   // For admin role, if cache exists but role isn't cached yet, assume true
-  const initialAuth = isCacheValid && authCache.isAuthenticated === true ? true : 
-                      isCacheValid && authCache.isAuthenticated === false ? false : null;
-  const initialRole = requiredRole && isCacheValid && authCache.hasRequiredRole[requiredRole] !== undefined
-    ? authCache.hasRequiredRole[requiredRole]
-    : true; // Default to true to prevent loading flash
-  
-  console.log(`ProtectedRoute[${instanceId.current}] initial states:`, { 
-    initialAuth, 
-    initialRole, 
-    requiredRole, 
+  const initialAuth =
+    isCacheValid && authCache.isAuthenticated === true
+      ? true
+      : isCacheValid && authCache.isAuthenticated === false
+        ? false
+        : null;
+  const initialRole =
+    requiredRole && isCacheValid && authCache.hasRequiredRole[requiredRole] !== undefined
+      ? authCache.hasRequiredRole[requiredRole]
+      : true; // Default to true to prevent loading flash
+
+  console.log(`ProtectedRoute[${instanceId.current}] initial states:`, {
+    initialAuth,
+    initialRole,
+    requiredRole,
     isCacheValid,
-    cacheAge: authCache?.timestamp ? Date.now() - authCache.timestamp : null 
+    cacheAge: authCache?.timestamp ? Date.now() - authCache.timestamp : null,
   });
-  
+
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(initialAuth);
   const [hasRequiredRole, setHasRequiredRole] = useState<boolean>(initialRole);
 
   const checkSession = useCallback(async () => {
     const cache = getGlobalAuthCache();
     if (!cache) return;
-    
+
     try {
       const session = await account.getSession('current');
 
@@ -136,38 +147,46 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole,
   useEffect(() => {
     // Skip if we already have valid authentication from cache
     if (isCacheValid && authCache?.isAuthenticated === true) {
-      console.log(`ProtectedRoute[${instanceId.current}] skipping auth check - valid cache with authenticated user`);
+      console.log(
+        `ProtectedRoute[${instanceId.current}] skipping auth check - valid cache with authenticated user`
+      );
       return;
     }
-    
+
     const cache = getGlobalAuthCache();
     if (!cache) {
       checkSession();
       return;
     }
-    
+
     // Check if the cache needs refresh
     const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes in milliseconds
     if (
       cache.isAuthenticated === null ||
       !cache.timestamp ||
-      (Date.now() - cache.timestamp > CACHE_DURATION)
+      Date.now() - cache.timestamp > CACHE_DURATION
     ) {
-      console.log(`ProtectedRoute[${instanceId.current}] cache expired or missing, checking session`);
+      console.log(
+        `ProtectedRoute[${instanceId.current}] cache expired or missing, checking session`
+      );
       checkSession();
       cache.timestamp = Date.now();
     }
   }, [checkSession, requiredRole, isCacheValid, authCache?.isAuthenticated]);
 
-  console.log(`ProtectedRoute[${instanceId.current}] render check:`, { isAuthenticated, hasRequiredRole, requiredRole });
-  
+  console.log(`ProtectedRoute[${instanceId.current}] render check:`, {
+    isAuthenticated,
+    hasRequiredRole,
+    requiredRole,
+  });
+
   // Only show loading if we truly don't know the auth state
   if (isAuthenticated === null) {
     console.log(`ProtectedRoute[${instanceId.current}] SHOWING LOADING - isAuthenticated is null`);
     return useMinimalLoading ? (
-      <MinimalLoadingOverlay message="Verifying authentication..." />
+      <MinimalLoadingOverlay message='Verifying authentication...' />
     ) : (
-      <LoadingOverlay message="Verifying authentication..." />
+      <LoadingOverlay message='Verifying authentication...' />
     );
   }
 

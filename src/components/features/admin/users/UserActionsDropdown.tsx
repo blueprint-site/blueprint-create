@@ -8,12 +8,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { 
-  MoreHorizontal, 
-  Edit, 
-  Trash2, 
-  KeyRound, 
-  UserCheck, 
+import {
+  MoreHorizontal,
+  Edit,
+  Trash2,
+  KeyRound,
+  UserCheck,
   UserX,
   Shield,
   ShieldOff,
@@ -22,7 +22,7 @@ import {
   Ban,
   ShieldBan,
   Crown,
-  Star
+  Star,
 } from 'lucide-react';
 import type { AdminUser } from '@/api/appwrite/useUsers';
 
@@ -54,7 +54,7 @@ export const UserActionsDropdown: React.FC<UserActionsDropdownProps> = ({
   const labels = user.labels ?? [];
   const teamIds = user.teamIds ?? [];
   const userId = user.$id;
-  
+
   // Check if user has roles based on labels (no underscores in Appwrite labels)
   const isBetaTester = labels.includes('betatester') || teamIds.includes(BETA_TESTER_TEAM_ID);
   const isAdmin = labels.includes('admin') || teamIds.includes(ADMIN_TEAM_ID);
@@ -81,9 +81,9 @@ export const UserActionsDropdown: React.FC<UserActionsDropdownProps> = ({
           <MoreHorizontal className='h-4 w-4' />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='end' className="w-56">
+      <DropdownMenuContent align='end' className='w-56'>
         <DropdownMenuLabel>User Actions</DropdownMenuLabel>
-        
+
         {/* Edit and View Actions */}
         <DropdownMenuSeparator />
         {onEdit && (
@@ -94,11 +94,11 @@ export const UserActionsDropdown: React.FC<UserActionsDropdownProps> = ({
             }}
             disabled={isUpdatingTeam}
           >
-            <Edit className="mr-2 h-4 w-4" />
+            <Edit className='mr-2 h-4 w-4' />
             Edit User
           </DropdownMenuItem>
         )}
-        
+
         {/* Account Actions */}
         <DropdownMenuSeparator />
         {onToggleStatus && (
@@ -111,18 +111,18 @@ export const UserActionsDropdown: React.FC<UserActionsDropdownProps> = ({
           >
             {isEnabled ? (
               <>
-                <UserX className="mr-2 h-4 w-4" />
+                <UserX className='mr-2 h-4 w-4' />
                 Disable Account
               </>
             ) : (
               <>
-                <UserCheck className="mr-2 h-4 w-4" />
+                <UserCheck className='mr-2 h-4 w-4' />
                 Enable Account
               </>
             )}
           </DropdownMenuItem>
         )}
-        
+
         {onResetPassword && (
           <DropdownMenuItem
             onClick={(e) => {
@@ -131,11 +131,11 @@ export const UserActionsDropdown: React.FC<UserActionsDropdownProps> = ({
             }}
             disabled={isUpdatingTeam}
           >
-            <KeyRound className="mr-2 h-4 w-4" />
+            <KeyRound className='mr-2 h-4 w-4' />
             Reset Password
           </DropdownMenuItem>
         )}
-        
+
         <DropdownMenuItem
           onClick={(e) => {
             e.stopPropagation();
@@ -146,17 +146,17 @@ export const UserActionsDropdown: React.FC<UserActionsDropdownProps> = ({
         >
           {isBanned ? (
             <>
-              <ShieldBan className="mr-2 h-4 w-4" />
+              <ShieldBan className='mr-2 h-4 w-4' />
               Unban User
             </>
           ) : (
             <>
-              <Ban className="mr-2 h-4 w-4" />
+              <Ban className='mr-2 h-4 w-4' />
               Ban User
             </>
           )}
         </DropdownMenuItem>
-        
+
         {/* Role Management */}
         <DropdownMenuSeparator />
         <DropdownMenuItem
@@ -168,17 +168,17 @@ export const UserActionsDropdown: React.FC<UserActionsDropdownProps> = ({
         >
           {isAdmin ? (
             <>
-              <ShieldOff className="mr-2 h-4 w-4" />
+              <ShieldOff className='mr-2 h-4 w-4' />
               Remove Admin Role
             </>
           ) : (
             <>
-              <Shield className="mr-2 h-4 w-4" />
+              <Shield className='mr-2 h-4 w-4' />
               Make Admin
             </>
           )}
         </DropdownMenuItem>
-        
+
         <DropdownMenuItem
           onClick={(e) => {
             e.stopPropagation();
@@ -188,17 +188,17 @@ export const UserActionsDropdown: React.FC<UserActionsDropdownProps> = ({
         >
           {isBetaTester ? (
             <>
-              <FlaskConicalOff className="mr-2 h-4 w-4" />
+              <FlaskConicalOff className='mr-2 h-4 w-4' />
               Remove Beta Tester
             </>
           ) : (
             <>
-              <FlaskConical className="mr-2 h-4 w-4" />
+              <FlaskConical className='mr-2 h-4 w-4' />
               Add Beta Tester
             </>
           )}
         </DropdownMenuItem>
-        
+
         <DropdownMenuItem
           onClick={(e) => {
             e.stopPropagation();
@@ -206,10 +206,10 @@ export const UserActionsDropdown: React.FC<UserActionsDropdownProps> = ({
           }}
           disabled={isUpdatingTeam}
         >
-          <Crown className="mr-2 h-4 w-4" />
+          <Crown className='mr-2 h-4 w-4' />
           {isPremium ? 'Remove Premium' : 'Add Premium'}
         </DropdownMenuItem>
-        
+
         <DropdownMenuItem
           onClick={(e) => {
             e.stopPropagation();
@@ -217,10 +217,10 @@ export const UserActionsDropdown: React.FC<UserActionsDropdownProps> = ({
           }}
           disabled={isUpdatingTeam}
         >
-          <Star className="mr-2 h-4 w-4" />
+          <Star className='mr-2 h-4 w-4' />
           {isMvp ? 'Remove MVP' : 'Add MVP'}
         </DropdownMenuItem>
-        
+
         {/* Danger Zone */}
         {onDelete && (
           <>
@@ -231,9 +231,9 @@ export const UserActionsDropdown: React.FC<UserActionsDropdownProps> = ({
                 onDelete(user);
               }}
               disabled={isUpdatingTeam}
-              className="text-destructive focus:text-destructive"
+              className='text-destructive focus:text-destructive'
             >
-              <Trash2 className="mr-2 h-4 w-4" />
+              <Trash2 className='mr-2 h-4 w-4' />
               Delete User
             </DropdownMenuItem>
           </>

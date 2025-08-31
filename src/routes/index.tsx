@@ -142,7 +142,7 @@ export const routes: RouteObject[] = [
   },
   {
     element: (
-      <ProtectedRoute requiredRole="admin" useMinimalLoading={true}>
+      <ProtectedRoute requiredRole='admin' useMinimalLoading={true}>
         <AdminPanelLayout />
       </ProtectedRoute>
     ),

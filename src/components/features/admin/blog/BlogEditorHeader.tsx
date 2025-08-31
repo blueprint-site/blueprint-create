@@ -1,14 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Save, 
-  Loader2, 
-  Eye, 
-  ArrowLeft,
-  FileText,
-  Calendar,
-  Maximize2
-} from 'lucide-react';
+import { Save, Loader2, Eye, ArrowLeft, FileText, Calendar, Maximize2 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router';
 import type { Blog } from '@/types';
 import { format } from 'date-fns';
@@ -43,7 +35,7 @@ export const BlogEditorHeader = ({
   };
 
   return (
-    <div className='sticky top-0 z-10 bg-background border-b'>
+    <div className='bg-background sticky top-0 z-10 border-b'>
       <div className='flex items-center justify-between px-4 py-3'>
         <div className='flex items-center gap-4'>
           <Button
@@ -54,15 +46,15 @@ export const BlogEditorHeader = ({
           >
             <ArrowLeft className='h-4 w-4' />
           </Button>
-          
+
           <div className='flex items-center gap-2'>
-            <FileText className='h-5 w-5 text-muted-foreground' />
+            <FileText className='text-muted-foreground h-5 w-5' />
             <div>
               <h1 className='text-lg font-semibold'>
                 {isNew ? 'Create New Blog Post' : 'Edit Blog Post'}
               </h1>
               {blogState?.title && (
-                <p className='text-sm text-muted-foreground'>{blogState.title}</p>
+                <p className='text-muted-foreground text-sm'>{blogState.title}</p>
               )}
             </div>
           </div>
@@ -73,7 +65,7 @@ export const BlogEditorHeader = ({
                 {blogState.status || 'draft'}
               </Badge>
               {blogState.$createdAt && (
-                <div className='flex items-center gap-1 text-xs text-muted-foreground'>
+                <div className='text-muted-foreground flex items-center gap-1 text-xs'>
                   <Calendar className='h-3 w-3' />
                   {format(new Date(blogState.$createdAt), 'MMM dd, yyyy')}
                 </div>
@@ -92,7 +84,7 @@ export const BlogEditorHeader = ({
             <Maximize2 className='h-4 w-4' />
             <span className='ml-2 hidden sm:inline'>Full Screen</span>
           </Button>
-          
+
           {onPreview && (
             <Button
               variant='outline'
@@ -103,11 +95,8 @@ export const BlogEditorHeader = ({
               Preview
             </Button>
           )}
-          
-          <Button 
-            onClick={onSave} 
-            disabled={isSaving || !blogState?.title || !blogState?.content}
-          >
+
+          <Button onClick={onSave} disabled={isSaving || !blogState?.title || !blogState?.content}>
             {isSaving ? (
               <>
                 <Loader2 className='mr-2 h-4 w-4 animate-spin' />

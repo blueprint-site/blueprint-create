@@ -10,58 +10,49 @@ interface StatusBadgeProps {
   className?: string;
 }
 
-export const StatusBadge: React.FC<StatusBadgeProps> = ({ 
-  status, 
-  labels = [], 
+export const StatusBadge: React.FC<StatusBadgeProps> = ({
+  status,
+  labels = [],
   emailVerification = false,
-  className 
+  className,
 }) => {
   // Check if user is banned (you can add a 'banned' label in the backend)
   const isBanned = labels.includes('banned');
-  
+
   // Determine the status type
   if (isBanned) {
     return (
-      <Badge 
-        variant="destructive" 
-        className={cn("gap-1", className)}
-      >
-        <Ban className="h-3 w-3" />
+      <Badge variant='destructive' className={cn('gap-1', className)}>
+        <Ban className='h-3 w-3' />
         Banned
       </Badge>
     );
   }
-  
+
   if (status === false) {
     return (
-      <Badge 
-        variant="secondary" 
-        className={cn("gap-1", className)}
-      >
-        <XCircle className="h-3 w-3" />
+      <Badge variant='secondary' className={cn('gap-1', className)}>
+        <XCircle className='h-3 w-3' />
         Disabled
       </Badge>
     );
   }
-  
+
   if (!emailVerification) {
     return (
-      <Badge 
-        variant="outline" 
-        className={cn("gap-1 border-yellow-500 text-yellow-700 dark:text-yellow-400", className)}
+      <Badge
+        variant='outline'
+        className={cn('gap-1 border-yellow-500 text-yellow-700 dark:text-yellow-400', className)}
       >
-        <AlertCircle className="h-3 w-3" />
+        <AlertCircle className='h-3 w-3' />
         Unverified
       </Badge>
     );
   }
-  
+
   return (
-    <Badge 
-      variant="default" 
-      className={cn("gap-1 bg-green-500 hover:bg-green-600", className)}
-    >
-      <CheckCircle className="h-3 w-3" />
+    <Badge variant='default' className={cn('gap-1 bg-green-500 hover:bg-green-600', className)}>
+      <CheckCircle className='h-3 w-3' />
       Active
     </Badge>
   );

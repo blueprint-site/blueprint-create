@@ -7,11 +7,11 @@ import { UsersDataTable } from '@/components/tables/users/DataTable';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import type { AdminUser } from '@/api/appwrite/useUsers';
-import { 
-  useFetchUsers, 
-  useUpdateUserTeam, 
+import {
+  useFetchUsers,
+  useUpdateUserTeam,
   useUpdateUserStatus,
-  useResetUserPassword 
+  useResetUserPassword,
 } from '@/api/appwrite/useUsers';
 import { useState } from 'react';
 
@@ -58,7 +58,7 @@ export const UserManagement = () => {
     const newStatus = user.status === false ? true : false;
     updateUserStatus({
       userId: user.$id,
-      status: newStatus
+      status: newStatus,
     });
   };
 
@@ -93,7 +93,7 @@ export const UserManagement = () => {
       accessorKey: 'status',
       header: ({ column }) => <SortableHeader column={column} title='Status' />,
       cell: ({ row }) => (
-        <StatusBadge 
+        <StatusBadge
           status={row.original.status}
           labels={row.original.labels}
           emailVerification={row.original.emailVerification}
@@ -191,17 +191,10 @@ export const UserManagement = () => {
       {isFetching && !isLoading && <p>Checking for updates...</p>}
 
       {/* CRUD Modals */}
-      <CreateUserModal
-        isOpen={createModalOpen}
-        onOpenChange={setCreateModalOpen}
-      />
-      
-      <EditUserModal
-        isOpen={editModalOpen}
-        onOpenChange={setEditModalOpen}
-        user={selectedUser}
-      />
-      
+      <CreateUserModal isOpen={createModalOpen} onOpenChange={setCreateModalOpen} />
+
+      <EditUserModal isOpen={editModalOpen} onOpenChange={setEditModalOpen} user={selectedUser} />
+
       <DeleteUserDialog
         isOpen={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}

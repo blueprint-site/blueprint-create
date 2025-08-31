@@ -25,7 +25,7 @@ export const BlogEditorPreview = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className='max-w-4xl max-h-[90vh]'>
+      <DialogContent className='max-h-[90vh] max-w-4xl'>
         <DialogHeader>
           <DialogTitle>Blog Preview</DialogTitle>
         </DialogHeader>
@@ -33,20 +33,20 @@ export const BlogEditorPreview = ({
           <article className='prose prose-gray dark:prose-invert max-w-none p-6'>
             {/* Cover Image */}
             {blogState.img_url && (
-              <div className='mb-6 -mx-6 -mt-6'>
+              <div className='-mx-6 -mt-6 mb-6'>
                 <img
                   src={blogState.img_url}
                   alt={blogState.title || 'Blog cover'}
-                  className='w-full h-64 object-cover rounded-t-lg'
+                  className='h-64 w-full rounded-t-lg object-cover'
                 />
               </div>
             )}
 
             {/* Title */}
-            <h1 className='text-3xl font-bold mb-4'>{blogState.title || 'Untitled'}</h1>
+            <h1 className='mb-4 text-3xl font-bold'>{blogState.title || 'Untitled'}</h1>
 
             {/* Metadata */}
-            <div className='flex items-center gap-4 mb-6 text-sm text-muted-foreground'>
+            <div className='text-muted-foreground mb-6 flex items-center gap-4 text-sm'>
               <div className='flex items-center gap-2'>
                 <Avatar className='h-8 w-8'>
                   <AvatarImage src={currentUser?.prefs?.avatar} />
@@ -64,7 +64,7 @@ export const BlogEditorPreview = ({
 
             {/* Tags */}
             {blogState.tags && blogState.tags.length > 0 && (
-              <div className='flex flex-wrap gap-2 mb-6'>
+              <div className='mb-6 flex flex-wrap gap-2'>
                 {blogState.tags.map((tag, index) => (
                   <Badge key={index} variant='secondary'>
                     {typeof tag === 'object' ? tag.value : tag}

@@ -4,7 +4,7 @@ import { Shield, Star, Crown, TestTube } from 'lucide-react';
 
 const getRoleBadge = (label: string): React.ReactNode | null => {
   const key = label.toLowerCase();
-  
+
   switch (key) {
     case 'admin':
       return (
@@ -13,8 +13,8 @@ const getRoleBadge = (label: string): React.ReactNode | null => {
           Admin
         </Badge>
       );
-    case 'betatester':  // No underscores in Appwrite labels
-    case 'beta_tester':  // Keep for backwards compatibility
+    case 'betatester': // No underscores in Appwrite labels
+    case 'beta_tester': // Keep for backwards compatibility
       return (
         <Badge key={label} variant='secondary'>
           <TestTube className='mr-1 h-3 w-3' />

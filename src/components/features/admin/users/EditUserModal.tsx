@@ -31,14 +31,10 @@ const AVAILABLE_ROLES = [
   { id: 'mvp', label: 'MVP', variant: 'outline' as const },
 ];
 
-export const EditUserModal: React.FC<EditUserModalProps> = ({
-  isOpen,
-  onOpenChange,
-  user,
-}) => {
+export const EditUserModal: React.FC<EditUserModalProps> = ({ isOpen, onOpenChange, user }) => {
   const { mutate: updateUser, isPending: isUpdating } = useUpdateUser();
   const { mutate: updateStatus, isPending: isUpdatingStatus } = useUpdateUserStatus();
-  
+
   const [formData, setFormData] = useState<UpdateUserData>({
     name: '',
     email: '',
@@ -48,7 +44,7 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
     emailVerification: false,
     phoneVerification: false,
   });
-  
+
   const [errors, setErrors] = useState<Partial<Record<keyof UpdateUserData, string>>>({});
 
   // Update form when user changes
@@ -68,35 +64,35 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
 
   const validateForm = (): boolean => {
     const newErrors: Partial<Record<keyof UpdateUserData, string>> = {};
-    
+
     if (formData.name !== undefined && !formData.name.trim()) {
       newErrors.name = 'Name cannot be empty';
     }
-    
+
     if (formData.email !== undefined && formData.email.trim()) {
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
         newErrors.email = 'Invalid email format';
       }
     }
-    
+
     if (formData.phone && !/^\+?[1-9]\d{1,14}$/.test(formData.phone.replace(/\s/g, ''))) {
       newErrors.phone = 'Invalid phone number format';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!user || !validateForm()) {
       return;
     }
-    
+
     // Only send changed fields
     const updates: UpdateUserData = {};
-    
+
     if (formData.name !== user.name) updates.name = formData.name;
     if (formData.email !== user.email) updates.email = formData.email;
     if (formData.phone !== user.phone) updates.phone = formData.phone;
@@ -109,12 +105,12 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
     if (formData.phoneVerification !== user.phoneVerification) {
       updates.phoneVerification = formData.phoneVerification;
     }
-    
+
     // Handle status separately if changed
     if (formData.status !== user.status) {
       updateStatus({ userId: user.$id, status: formData.status || false });
     }
-    
+
     // Only update if there are changes
     if (Object.keys(updates).length > 0) {
       updateUser(
@@ -132,19 +128,22 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
   };
 
   const handleRoleToggle = (role: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       labels: prev.labels?.includes(role)
-        ? prev.labels.filter(r => r !== role)
+        ? prev.labels.filter((r) => r !== role)
         : [...(prev.labels || []), role],
     }));
   };
 
-  const handleInputChange = (field: keyof UpdateUserData, value: string | boolean | string[] | undefined) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  const handleInputChange = (
+    field: keyof UpdateUserData,
+    value: string | boolean | string[] | undefined
+  ) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
     // Clear error for this field when user starts typing
     if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: undefined }));
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
   };
 
@@ -152,137 +151,119 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
 
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
+      <SheetContent className='w-full overflow-y-auto sm:max-w-lg'>
         <form onSubmit={handleSubmit}>
           <SheetHeader>
             <SheetTitle>Edit User</SheetTitle>
-            <SheetDescription>
-              Update user information and manage roles.
-            </SheetDescription>
+            <SheetDescription>Update user information and manage roles.</SheetDescription>
           </SheetHeader>
-          
-          <div className="grid gap-4 py-4">
+
+          <div className='grid gap-4 py-4'>
             {/* User ID (Read-only) */}
-            <div className="grid gap-2">
+            <div className='grid gap-2'>
               <Label>User ID</Label>
-              <div className="flex items-center gap-2">
-                <Input value={user.$id} disabled className="font-mono text-xs" />
-                <Badge variant="outline">Read-only</Badge>
+              <div className='flex items-center gap-2'>
+                <Input value={user.$id} disabled className='font-mono text-xs' />
+                <Badge variant='outline'>Read-only</Badge>
               </div>
             </div>
-            
+
             <Separator />
-            
+
             {/* Name Field */}
-            <div className="grid gap-2">
-              <Label htmlFor="name">Name</Label>
+            <div className='grid gap-2'>
+              <Label htmlFor='name'>Name</Label>
               <Input
-                id="name"
+                id='name'
                 value={formData.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
-                placeholder="John Doe"
+                placeholder='John Doe'
                 disabled={isUpdating || isUpdatingStatus}
               />
-              {errors.name && (
-                <span className="text-sm text-destructive">{errors.name}</span>
-              )}
+              {errors.name && <span className='text-destructive text-sm'>{errors.name}</span>}
             </div>
-            
+
             {/* Email Field */}
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+            <div className='grid gap-2'>
+              <Label htmlFor='email'>Email</Label>
               <Input
-                id="email"
-                type="email"
+                id='email'
+                type='email'
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
-                placeholder="john@example.com"
+                placeholder='john@example.com'
                 disabled={isUpdating || isUpdatingStatus}
               />
-              {errors.email && (
-                <span className="text-sm text-destructive">{errors.email}</span>
-              )}
+              {errors.email && <span className='text-destructive text-sm'>{errors.email}</span>}
             </div>
-            
+
             {/* Phone Field */}
-            <div className="grid gap-2">
-              <Label htmlFor="phone">Phone</Label>
+            <div className='grid gap-2'>
+              <Label htmlFor='phone'>Phone</Label>
               <Input
-                id="phone"
-                type="tel"
+                id='phone'
+                type='tel'
                 value={formData.phone}
                 onChange={(e) => handleInputChange('phone', e.target.value)}
-                placeholder="+1234567890"
+                placeholder='+1234567890'
                 disabled={isUpdating || isUpdatingStatus}
               />
-              {errors.phone && (
-                <span className="text-sm text-destructive">{errors.phone}</span>
-              )}
+              {errors.phone && <span className='text-destructive text-sm'>{errors.phone}</span>}
             </div>
-            
+
             <Separator />
-            
+
             {/* Account Status */}
-            <div className="flex items-center justify-between">
-              <div className="grid gap-1">
-                <Label htmlFor="status">Account Status</Label>
-                <span className="text-sm text-muted-foreground">
-                  Enable or disable user access
-                </span>
+            <div className='flex items-center justify-between'>
+              <div className='grid gap-1'>
+                <Label htmlFor='status'>Account Status</Label>
+                <span className='text-muted-foreground text-sm'>Enable or disable user access</span>
               </div>
               <Switch
-                id="status"
+                id='status'
                 checked={formData.status}
                 onCheckedChange={(checked) => handleInputChange('status', checked)}
                 disabled={isUpdating || isUpdatingStatus}
               />
             </div>
-            
+
             {/* Email Verification */}
-            <div className="flex items-center justify-between">
-              <div className="grid gap-1">
-                <Label htmlFor="emailVerification">Email Verified</Label>
-                <span className="text-sm text-muted-foreground">
-                  Mark email as verified
-                </span>
+            <div className='flex items-center justify-between'>
+              <div className='grid gap-1'>
+                <Label htmlFor='emailVerification'>Email Verified</Label>
+                <span className='text-muted-foreground text-sm'>Mark email as verified</span>
               </div>
               <Switch
-                id="emailVerification"
+                id='emailVerification'
                 checked={formData.emailVerification}
-                onCheckedChange={(checked) => 
-                  handleInputChange('emailVerification', checked)
-                }
+                onCheckedChange={(checked) => handleInputChange('emailVerification', checked)}
                 disabled={isUpdating || isUpdatingStatus}
               />
             </div>
-            
+
             {/* Phone Verification */}
-            <div className="flex items-center justify-between">
-              <div className="grid gap-1">
-                <Label htmlFor="phoneVerification">Phone Verified</Label>
-                <span className="text-sm text-muted-foreground">
-                  Mark phone as verified
-                </span>
+            <div className='flex items-center justify-between'>
+              <div className='grid gap-1'>
+                <Label htmlFor='phoneVerification'>Phone Verified</Label>
+                <span className='text-muted-foreground text-sm'>Mark phone as verified</span>
               </div>
               <Switch
-                id="phoneVerification"
+                id='phoneVerification'
                 checked={formData.phoneVerification}
-                onCheckedChange={(checked) => 
-                  handleInputChange('phoneVerification', checked)
-                }
+                onCheckedChange={(checked) => handleInputChange('phoneVerification', checked)}
                 disabled={isUpdating || isUpdatingStatus}
               />
             </div>
-            
+
             <Separator />
-            
+
             {/* Roles */}
-            <div className="grid gap-2">
+            <div className='grid gap-2'>
               <Label>Roles & Labels</Label>
-              <div className="space-y-2">
+              <div className='space-y-2'>
                 {AVAILABLE_ROLES.map((role) => (
-                  <div key={role.id} className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
+                  <div key={role.id} className='flex items-center justify-between'>
+                    <div className='flex items-center space-x-2'>
                       <Checkbox
                         id={`edit-${role.id}`}
                         checked={formData.labels?.includes(role.id) || false}
@@ -291,7 +272,7 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
                       />
                       <Label
                         htmlFor={`edit-${role.id}`}
-                        className="text-sm font-normal cursor-pointer"
+                        className='cursor-pointer text-sm font-normal'
                       >
                         {role.label}
                       </Label>
@@ -303,37 +284,37 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
                 ))}
               </div>
             </div>
-            
+
             {/* Account Dates (Read-only) */}
             <Separator />
-            <div className="grid gap-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Created:</span>
+            <div className='grid gap-2 text-sm'>
+              <div className='flex justify-between'>
+                <span className='text-muted-foreground'>Created:</span>
                 <span>{new Date(user.$createdAt).toLocaleString()}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Last Updated:</span>
+              <div className='flex justify-between'>
+                <span className='text-muted-foreground'>Last Updated:</span>
                 <span>{new Date(user.$updatedAt).toLocaleString()}</span>
               </div>
               {user.accessedAt && (
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Last Active:</span>
+                <div className='flex justify-between'>
+                  <span className='text-muted-foreground'>Last Active:</span>
                   <span>{new Date(user.accessedAt).toLocaleString()}</span>
                 </div>
               )}
             </div>
           </div>
-          
-          <SheetFooter className="mt-6">
+
+          <SheetFooter className='mt-6'>
             <Button
-              type="button"
-              variant="outline"
+              type='button'
+              variant='outline'
               onClick={() => onOpenChange(false)}
               disabled={isUpdating || isUpdatingStatus}
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isUpdating || isUpdatingStatus}>
+            <Button type='submit' disabled={isUpdating || isUpdatingStatus}>
               {isUpdating || isUpdatingStatus ? 'Updating...' : 'Save Changes'}
             </Button>
           </SheetFooter>

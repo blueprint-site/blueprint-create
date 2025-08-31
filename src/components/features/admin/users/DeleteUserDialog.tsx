@@ -29,7 +29,7 @@ export const DeleteUserDialog: React.FC<DeleteUserDialogProps> = ({
 
   const handleDelete = () => {
     if (!user) return;
-    
+
     deleteUser(user.$id, {
       onSuccess: () => {
         onOpenChange(false);
@@ -43,37 +43,37 @@ export const DeleteUserDialog: React.FC<DeleteUserDialogProps> = ({
     <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className="flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-destructive" />
+          <AlertDialogTitle className='flex items-center gap-2'>
+            <AlertTriangle className='text-destructive h-5 w-5' />
             Delete User Account
           </AlertDialogTitle>
           <AlertDialogDescription asChild>
-            <div className="space-y-3">
+            <div className='space-y-3'>
               <p>
-                Are you sure you want to permanently delete this user account?
-                This action cannot be undone.
+                Are you sure you want to permanently delete this user account? This action cannot be
+                undone.
               </p>
-              
-              <div className="rounded-lg border p-3 bg-muted/50">
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="font-medium">Name:</span>
+
+              <div className='bg-muted/50 rounded-lg border p-3'>
+                <div className='space-y-2 text-sm'>
+                  <div className='flex justify-between'>
+                    <span className='font-medium'>Name:</span>
                     <span>{user.name || 'N/A'}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium">Email:</span>
+                  <div className='flex justify-between'>
+                    <span className='font-medium'>Email:</span>
                     <span>{user.email}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium">User ID:</span>
-                    <span className="font-mono text-xs">{user.$id}</span>
+                  <div className='flex justify-between'>
+                    <span className='font-medium'>User ID:</span>
+                    <span className='font-mono text-xs'>{user.$id}</span>
                   </div>
                   {user.labels && user.labels.length > 0 && (
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Roles:</span>
-                      <div className="flex gap-1">
+                    <div className='flex items-center justify-between'>
+                      <span className='font-medium'>Roles:</span>
+                      <div className='flex gap-1'>
                         {user.labels.map((label) => (
-                          <Badge key={label} variant="outline" className="text-xs">
+                          <Badge key={label} variant='outline' className='text-xs'>
                             {label}
                           </Badge>
                         ))}
@@ -82,12 +82,12 @@ export const DeleteUserDialog: React.FC<DeleteUserDialogProps> = ({
                   )}
                 </div>
               </div>
-              
-              <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-3">
-                <p className="text-sm text-destructive font-medium">
+
+              <div className='border-destructive/50 bg-destructive/10 rounded-lg border p-3'>
+                <p className='text-destructive text-sm font-medium'>
                   ⚠️ Warning: This will permanently delete:
                 </p>
-                <ul className="text-sm text-muted-foreground mt-1 ml-4 list-disc">
+                <ul className='text-muted-foreground mt-1 ml-4 list-disc text-sm'>
                   <li>User account and profile</li>
                   <li>All user sessions</li>
                   <li>User preferences and settings</li>
@@ -102,7 +102,7 @@ export const DeleteUserDialog: React.FC<DeleteUserDialogProps> = ({
           <AlertDialogAction
             onClick={handleDelete}
             disabled={isPending}
-            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            className='bg-destructive text-destructive-foreground hover:bg-destructive/90'
           >
             {isPending ? 'Deleting...' : 'Delete User'}
           </AlertDialogAction>

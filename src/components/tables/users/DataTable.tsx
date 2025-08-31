@@ -192,11 +192,7 @@ export function UsersDataTable<TData extends User, TValue>({
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && 'selected'}
-                    className={`transition-colors
-                      ${row.original.labels?.includes('banned') ? 'bg-red-50 dark:bg-red-950/20 border-l-4 border-l-red-500' : ''}
-                      ${row.original.status === false && !row.original.labels?.includes('banned') ? 'bg-gray-50 dark:bg-gray-900/20 opacity-75' : ''}
-                      ${!row.original.emailVerification && row.original.status !== false ? 'bg-yellow-50/50 dark:bg-yellow-950/10' : ''}
-                    `}
+                    className={`transition-colors ${row.original.labels?.includes('banned') ? 'border-l-4 border-l-red-500 bg-red-50 dark:bg-red-950/20' : ''} ${row.original.status === false && !row.original.labels?.includes('banned') ? 'bg-gray-50 opacity-75 dark:bg-gray-900/20' : ''} ${!row.original.emailVerification && row.original.status !== false ? 'bg-yellow-50/50 dark:bg-yellow-950/10' : ''} `}
                     style={{
                       display: manuallyFilteredRows.find((fr) => fr.id === row.id) ? '' : 'none',
                     }}
@@ -208,7 +204,7 @@ export function UsersDataTable<TData extends User, TValue>({
                     ))}
                   </TableRow>
                 );
-                
+
                 // Use custom row renderer if provided, otherwise use default
                 return renderRow ? renderRow(row, defaultRow) : defaultRow;
               })

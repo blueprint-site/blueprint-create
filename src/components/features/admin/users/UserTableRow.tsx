@@ -7,11 +7,11 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
-import { 
-  Edit, 
-  Trash2, 
-  KeyRound, 
-  UserCheck, 
+import {
+  Edit,
+  Trash2,
+  KeyRound,
+  UserCheck,
   UserX,
   Shield,
   ShieldOff,
@@ -20,7 +20,7 @@ import {
   Ban,
   ShieldBan,
   Crown,
-  Star
+  Star,
 } from 'lucide-react';
 import { flexRender } from '@tanstack/react-table';
 import type { Row } from '@tanstack/react-table';
@@ -48,7 +48,7 @@ export function UserTableRow<TData extends AdminUser>({
   const user = row.original;
   const labels = user.labels ?? [];
   const userId = user.$id;
-  
+
   // Check if user has roles based on labels (no underscores in Appwrite labels)
   const isBetaTester = labels.includes('betatester');
   const isAdmin = labels.includes('admin');
@@ -93,52 +93,43 @@ export function UserTableRow<TData extends AdminUser>({
           ))}
         </TableRow>
       </ContextMenuTrigger>
-      <ContextMenuContent className="w-56">
+      <ContextMenuContent className='w-56'>
         <ContextMenuLabel>User Actions</ContextMenuLabel>
-        
+
         {/* Edit and View Actions */}
         <ContextMenuSeparator />
         {onEdit && (
-          <ContextMenuItem
-            onClick={() => onEdit(user)}
-            disabled={isUpdatingTeam}
-          >
-            <Edit className="mr-2 h-4 w-4" />
+          <ContextMenuItem onClick={() => onEdit(user)} disabled={isUpdatingTeam}>
+            <Edit className='mr-2 h-4 w-4' />
             Edit User
           </ContextMenuItem>
         )}
-        
+
         {/* Account Actions */}
         <ContextMenuSeparator />
         {onToggleStatus && (
-          <ContextMenuItem
-            onClick={() => onToggleStatus(user)}
-            disabled={isUpdatingTeam}
-          >
+          <ContextMenuItem onClick={() => onToggleStatus(user)} disabled={isUpdatingTeam}>
             {isEnabled ? (
               <>
-                <UserX className="mr-2 h-4 w-4" />
+                <UserX className='mr-2 h-4 w-4' />
                 Disable Account
               </>
             ) : (
               <>
-                <UserCheck className="mr-2 h-4 w-4" />
+                <UserCheck className='mr-2 h-4 w-4' />
                 Enable Account
               </>
             )}
           </ContextMenuItem>
         )}
-        
+
         {onResetPassword && (
-          <ContextMenuItem
-            onClick={() => onResetPassword(user)}
-            disabled={isUpdatingTeam}
-          >
-            <KeyRound className="mr-2 h-4 w-4" />
+          <ContextMenuItem onClick={() => onResetPassword(user)} disabled={isUpdatingTeam}>
+            <KeyRound className='mr-2 h-4 w-4' />
             Reset Password
           </ContextMenuItem>
         )}
-        
+
         <ContextMenuItem
           onClick={() => handleUpdate('banned', !isBanned)}
           disabled={isUpdatingTeam}
@@ -146,69 +137,63 @@ export function UserTableRow<TData extends AdminUser>({
         >
           {isBanned ? (
             <>
-              <ShieldBan className="mr-2 h-4 w-4" />
+              <ShieldBan className='mr-2 h-4 w-4' />
               Unban User
             </>
           ) : (
             <>
-              <Ban className="mr-2 h-4 w-4" />
+              <Ban className='mr-2 h-4 w-4' />
               Ban User
             </>
           )}
         </ContextMenuItem>
-        
+
         {/* Role Management */}
         <ContextMenuSeparator />
-        <ContextMenuItem
-          onClick={() => handleUpdate('admin', !isAdmin)}
-          disabled={isUpdatingTeam}
-        >
+        <ContextMenuItem onClick={() => handleUpdate('admin', !isAdmin)} disabled={isUpdatingTeam}>
           {isAdmin ? (
             <>
-              <ShieldOff className="mr-2 h-4 w-4" />
+              <ShieldOff className='mr-2 h-4 w-4' />
               Remove Admin Role
             </>
           ) : (
             <>
-              <Shield className="mr-2 h-4 w-4" />
+              <Shield className='mr-2 h-4 w-4' />
               Make Admin
             </>
           )}
         </ContextMenuItem>
-        
+
         <ContextMenuItem
           onClick={() => handleUpdate('beta_tester', !isBetaTester)}
           disabled={isUpdatingTeam}
         >
           {isBetaTester ? (
             <>
-              <FlaskConicalOff className="mr-2 h-4 w-4" />
+              <FlaskConicalOff className='mr-2 h-4 w-4' />
               Remove Beta Tester
             </>
           ) : (
             <>
-              <FlaskConical className="mr-2 h-4 w-4" />
+              <FlaskConical className='mr-2 h-4 w-4' />
               Add Beta Tester
             </>
           )}
         </ContextMenuItem>
-        
+
         <ContextMenuItem
           onClick={() => handleUpdate('premium', !isPremium)}
           disabled={isUpdatingTeam}
         >
-          <Crown className="mr-2 h-4 w-4" />
+          <Crown className='mr-2 h-4 w-4' />
           {isPremium ? 'Remove Premium' : 'Add Premium'}
         </ContextMenuItem>
-        
-        <ContextMenuItem
-          onClick={() => handleUpdate('mvp', !isMvp)}
-          disabled={isUpdatingTeam}
-        >
-          <Star className="mr-2 h-4 w-4" />
+
+        <ContextMenuItem onClick={() => handleUpdate('mvp', !isMvp)} disabled={isUpdatingTeam}>
+          <Star className='mr-2 h-4 w-4' />
           {isMvp ? 'Remove MVP' : 'Add MVP'}
         </ContextMenuItem>
-        
+
         {/* Danger Zone */}
         {onDelete && (
           <>
@@ -216,9 +201,9 @@ export function UserTableRow<TData extends AdminUser>({
             <ContextMenuItem
               onClick={() => onDelete(user)}
               disabled={isUpdatingTeam}
-              className="text-destructive focus:text-destructive"
+              className='text-destructive focus:text-destructive'
             >
-              <Trash2 className="mr-2 h-4 w-4" />
+              <Trash2 className='mr-2 h-4 w-4' />
               Delete User
             </ContextMenuItem>
           </>

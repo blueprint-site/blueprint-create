@@ -32,17 +32,20 @@ export interface UserListParams {
 const MANAGE_USERS_FUNCTION_ID = window._env_?.APPWRITE_MANAGE_USERS_FUNCTION_ID ?? 'manage-users';
 
 // Helper function to call the Appwrite function with authentication
-async function callUserManagementFunction<T = unknown>(action: string, payload: Record<string, unknown> | CreateUserData = {}): Promise<T> {
+async function callUserManagementFunction<T = unknown>(
+  action: string,
+  payload: Record<string, unknown> | CreateUserData = {}
+): Promise<T> {
   try {
     // Create JWT for authentication
     const jwt = await account.createJWT();
-    
+
     // Prepare the request payload
     const requestPayload = {
       action,
-      payload
+      payload,
     };
-    
+
     // Execute the function
     const result = await functions.createExecution(
       MANAGE_USERS_FUNCTION_ID,
@@ -55,7 +58,7 @@ async function callUserManagementFunction<T = unknown>(action: string, payload: 
         'Content-Type': 'application/json',
       }
     );
-    
+
     // Check if execution was successful
     if (result.status !== 'completed') {
       const errorDetails = result.errors
@@ -63,15 +66,15 @@ async function callUserManagementFunction<T = unknown>(action: string, payload: 
         : ` Status Code: ${result.responseStatusCode}. Response: ${result.responseBody}`;
       throw new Error(`Function execution failed with status: ${result.status}.${errorDetails}`);
     }
-    
+
     // Parse the response
     const responseBody = JSON.parse(result.responseBody);
-    
+
     // Check if the operation was successful
     if (!responseBody.success) {
       throw new Error(responseBody.message || `Failed to execute ${action}`);
     }
-    
+
     return responseBody.data;
   } catch (error) {
     console.error(`Error in ${action}:`, error);
@@ -87,78 +90,78 @@ export const userManagementService = {
       search: params.search,
       limit: params.limit ?? 25,
       offset: params.offset ?? 0,
-      queries: params.queries ?? []
+      queries: params.queries ?? [],
     });
   },
-  
+
   // Get a single user by ID
   async getUser(userId: string) {
     return callUserManagementFunction('getUser', { userId });
   },
-  
+
   // Create a new user
   async createUser(userData: CreateUserData) {
     return callUserManagementFunction('createUser', userData);
   },
-  
+
   // Update user information
   async updateUser(userId: string, updates: UpdateUserData) {
     return callUserManagementFunction('updateUser', {
       userId,
-      updates
+      updates,
     });
   },
-  
+
   // Delete a user
   async deleteUser(userId: string) {
     return callUserManagementFunction('deleteUser', { userId });
   },
-  
+
   // Update user status (enable/disable)
   async updateUserStatus(userId: string, status: boolean) {
     return callUserManagementFunction('updateUserStatus', {
       userId,
-      status
+      status,
     });
   },
-  
+
   // Update user labels (roles)
   async updateUserLabels(userId: string, labels: string[]) {
     return callUserManagementFunction('updateUserLabels', {
       userId,
-      labels
+      labels,
     });
   },
-  
+
   // Update user email verification
   async updateEmailVerification(userId: string, verified: boolean) {
     return callUserManagementFunction('updateEmailVerification', {
       userId,
-      emailVerification: verified
+      emailVerification: verified,
     });
   },
-  
+
   // Reset user password (generates new password)
   async resetUserPassword(userId: string) {
     return callUserManagementFunction('resetUserPassword', { userId });
   },
-  
+
   // Update team membership (existing functionality)
   async updateTeamMembership(userId: string, teamId: string, add: boolean) {
     return callUserManagementFunction('updateTeamMembership', {
       userId,
       teamId,
-      add
+      add,
     });
   },
-  
+
   // Get user sessions
   async getUserSessions(userId: string) {
     return callUserManagementFunction('getUserSessions', { userId });
   },
-  
+
   // Delete all user sessions (force logout)
   async deleteUserSessions(userId: string) {
     return callUserManagementFunction('deleteUserSessions', { userId });
-  }
+  },
 };

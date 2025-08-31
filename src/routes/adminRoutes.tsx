@@ -4,7 +4,11 @@ import type { RouteObject } from 'react-router';
 // Direct imports for all admin components (no lazy loading to eliminate Suspense animations)
 import { UserManagement } from '@/components/features/admin/users/UserManagement';
 import { Admin } from '@/pages';
-import { OptimizedAddonsTableV3, AdminAddonsMain, AddAddon } from '@/components/features/admin/addons';
+import {
+  OptimizedAddonsTableV3,
+  AdminAddonsMain,
+  AddAddon,
+} from '@/components/features/admin/addons';
 import { AdminBlogMain, BlogList } from '@/components/features/admin/blog';
 import { LogsList } from '@/components/features/admin/AdminLogs';
 import { BlogEditor } from '@/components/features/admin/blog';

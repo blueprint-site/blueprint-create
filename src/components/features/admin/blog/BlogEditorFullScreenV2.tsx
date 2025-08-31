@@ -13,18 +13,24 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { 
-  Save, 
-  Loader2, 
-  Eye, 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Save,
+  Loader2,
+  Eye,
   ArrowLeft,
   Settings2,
   Maximize2,
   Minimize2,
   Image as ImageIcon,
   Tags,
-  FileText
+  FileText,
 } from 'lucide-react';
 import { FullScreenMarkdownEditor } from './FullScreenMarkdownEditor';
 import ImageUploader from '@/components/utility/ImageUploader';
@@ -35,11 +41,11 @@ export const BlogEditorFullScreenV2 = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
-  
+
   // UI state
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [, setIsFullScreen] = useState(false);
-  
+
   // Blog tags management
   const { data: blogTags = [], isLoading: isLoadingTags } = useBlogTags();
   const createTagMutation = useCreateBlogTag();
@@ -108,7 +114,7 @@ export const BlogEditorFullScreenV2 = () => {
   // Loading state
   if (isLoading) {
     return (
-      <div className='h-screen w-screen flex items-center justify-center'>
+      <div className='flex h-screen w-screen items-center justify-center'>
         <div className='space-y-4'>
           <Skeleton className='h-8 w-64' />
           <Skeleton className='h-96 w-[600px]' />
@@ -120,11 +126,9 @@ export const BlogEditorFullScreenV2 = () => {
   // Error state
   if (!user) {
     return (
-      <div className='h-screen w-screen flex items-center justify-center'>
+      <div className='flex h-screen w-screen items-center justify-center'>
         <Alert variant='destructive' className='max-w-md'>
-          <AlertDescription>
-            You must be logged in to create or edit blog posts.
-          </AlertDescription>
+          <AlertDescription>You must be logged in to create or edit blog posts.</AlertDescription>
         </Alert>
       </div>
     );
@@ -133,7 +137,7 @@ export const BlogEditorFullScreenV2 = () => {
   return (
     <div className={styles.fullScreenEditor}>
       {/* Compact Header */}
-      <header className='h-11 border-b flex items-center justify-between px-3 bg-background/80 backdrop-blur'>
+      <header className='bg-background/80 flex h-11 items-center justify-between border-b px-3 backdrop-blur'>
         <div className='flex items-center gap-2'>
           <Button
             variant='ghost'
@@ -141,12 +145,12 @@ export const BlogEditorFullScreenV2 = () => {
             className='h-8 px-2'
             onClick={() => navigate('/admin/blogs')}
           >
-            <ArrowLeft className='h-4 w-4 mr-1' />
+            <ArrowLeft className='mr-1 h-4 w-4' />
             Back
           </Button>
-          
+
           {isDirty && (
-            <Badge variant='outline' className='text-xs h-5'>
+            <Badge variant='outline' className='h-5 text-xs'>
               Unsaved
             </Badge>
           )}
@@ -159,14 +163,14 @@ export const BlogEditorFullScreenV2 = () => {
             className='h-8 px-2'
             onClick={() => navigate(`/admin/blogs/editor/${id}`)}
           >
-            <Minimize2 className='h-4 w-4 mr-1' />
+            <Minimize2 className='mr-1 h-4 w-4' />
             <span className='hidden sm:inline'>Standard</span>
           </Button>
 
           <Button
             variant='ghost'
             size='sm'
-            className='h-8 px-2 hidden md:inline-flex'
+            className='hidden h-8 px-2 md:inline-flex'
             onClick={toggleFullScreen}
           >
             <Maximize2 className='h-4 w-4' />
@@ -190,18 +194,18 @@ export const BlogEditorFullScreenV2 = () => {
           >
             <Eye className='h-4 w-4' />
           </Button>
-          
-          <Button 
+
+          <Button
             size='sm'
-            className='h-8 px-3 ml-2'
-            onClick={handleSave} 
+            className='ml-2 h-8 px-3'
+            onClick={handleSave}
             disabled={isSaving || !blogState?.title || !blogState?.content}
           >
             {isSaving ? (
               <Loader2 className='h-3 w-3 animate-spin' />
             ) : (
               <>
-                <Save className='h-3 w-3 mr-1' />
+                <Save className='mr-1 h-3 w-3' />
                 Save
               </>
             )}
@@ -210,15 +214,15 @@ export const BlogEditorFullScreenV2 = () => {
       </header>
 
       {/* Main Editor */}
-      <main className='flex-1 flex flex-col overflow-hidden'>
+      <main className='flex flex-1 flex-col overflow-hidden'>
         {/* Title */}
-        <div className='px-6 py-3 flex-shrink-0 border-b'>
+        <div className='flex-shrink-0 border-b px-6 py-3'>
           <input
             type='text'
             value={blogState?.title || ''}
             onChange={handleTitleChange}
             placeholder='Enter your blog title...'
-            className='w-full text-3xl font-bold bg-transparent border-none outline-none placeholder:text-muted-foreground/30'
+            className='placeholder:text-muted-foreground/30 w-full border-none bg-transparent text-3xl font-bold outline-none'
             name='title'
           />
         </div>
@@ -236,31 +240,36 @@ export const BlogEditorFullScreenV2 = () => {
       {/* Settings Sidebar */}
       <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
         <SheetContent side='right' className='w-[380px] p-0'>
-          <SheetHeader className='px-4 py-3 border-b'>
+          <SheetHeader className='border-b px-4 py-3'>
             <SheetTitle className='text-base'>Post Settings</SheetTitle>
           </SheetHeader>
-          
+
           <ScrollArea className='h-[calc(100vh-3.5rem)]'>
             <Tabs defaultValue='details' className='w-full'>
-              <TabsList className='grid w-full grid-cols-3 mx-4 mt-3' style={{ width: 'calc(100% - 2rem)' }}>
+              <TabsList
+                className='mx-4 mt-3 grid w-full grid-cols-3'
+                style={{ width: 'calc(100% - 2rem)' }}
+              >
                 <TabsTrigger value='details' className='text-xs'>
-                  <FileText className='h-3 w-3 mr-1' />
+                  <FileText className='mr-1 h-3 w-3' />
                   Details
                 </TabsTrigger>
                 <TabsTrigger value='media' className='text-xs'>
-                  <ImageIcon className='h-3 w-3 mr-1' />
+                  <ImageIcon className='mr-1 h-3 w-3' />
                   Media
                 </TabsTrigger>
                 <TabsTrigger value='tags' className='text-xs'>
-                  <Tags className='h-3 w-3 mr-1' />
+                  <Tags className='mr-1 h-3 w-3' />
                   Tags
                 </TabsTrigger>
               </TabsList>
 
               <div className='px-4 py-3'>
-                <TabsContent value='details' className='space-y-3 mt-3'>
+                <TabsContent value='details' className='mt-3 space-y-3'>
                   <div className='space-y-1.5'>
-                    <Label htmlFor='slug' className='text-xs'>URL Slug</Label>
+                    <Label htmlFor='slug' className='text-xs'>
+                      URL Slug
+                    </Label>
                     <Input
                       id='slug'
                       name='slug'
@@ -272,10 +281,14 @@ export const BlogEditorFullScreenV2 = () => {
                   </div>
 
                   <div className='space-y-1.5'>
-                    <Label htmlFor='status' className='text-xs'>Status</Label>
+                    <Label htmlFor='status' className='text-xs'>
+                      Status
+                    </Label>
                     <Select
                       value={blogState?.status || 'draft'}
-                      onValueChange={(value) => handleFieldChange('status', value as 'draft' | 'published')}
+                      onValueChange={(value) =>
+                        handleFieldChange('status', value as 'draft' | 'published')
+                      }
                     >
                       <SelectTrigger id='status' className='h-8 text-sm'>
                         <SelectValue />
@@ -288,7 +301,7 @@ export const BlogEditorFullScreenV2 = () => {
                   </div>
                 </TabsContent>
 
-                <TabsContent value='media' className='space-y-3 mt-3'>
+                <TabsContent value='media' className='mt-3 space-y-3'>
                   <div className='space-y-1.5'>
                     <Label className='text-xs'>Cover Image</Label>
                     <ImageUploader
@@ -298,7 +311,7 @@ export const BlogEditorFullScreenV2 = () => {
                   </div>
                 </TabsContent>
 
-                <TabsContent value='tags' className='space-y-3 mt-3'>
+                <TabsContent value='tags' className='mt-3 space-y-3'>
                   <div className='space-y-1.5'>
                     <Label className='text-xs'>Tags</Label>
                     <TagSelector

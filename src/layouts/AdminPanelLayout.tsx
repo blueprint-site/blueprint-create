@@ -31,9 +31,7 @@ const Layout = () => {
                   const isLast = index === pathSegments.length - 1;
                   return (
                     <React.Fragment key={`breadcrumb-${index}`}>
-                      {index > 0 && (
-                        <BreadcrumbSeparator className='hidden md:block' />
-                      )}
+                      {index > 0 && <BreadcrumbSeparator className='hidden md:block' />}
                       <BreadcrumbItem className={'cursor-pointer'}>
                         {isLast ? (
                           <BreadcrumbPage>{segment}</BreadcrumbPage>
