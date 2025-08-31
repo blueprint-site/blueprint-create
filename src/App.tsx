@@ -5,7 +5,7 @@ import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
 import { Toaster } from 'sonner';
 import { useUserStore } from '@/api/stores/userStore';
 import { routes } from './routes';
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import 'minecraft-textures-library/src/templates/create-textures.css';
 import CookieDialog from './components/utility/CookieDialog.tsx';
 
@@ -53,13 +53,11 @@ const App = () => {
   }
 
   return (
-    <Suspense fallback={<LoadingOverlay />}>
-      <>
-        <RouterProvider router={router} />
-        <CookieDialog variant='default' />
-      </>
+    <>
+      <RouterProvider router={router} />
+      <CookieDialog variant='default' />
       <Toaster />
-    </Suspense>
+    </>
   );
 };
 

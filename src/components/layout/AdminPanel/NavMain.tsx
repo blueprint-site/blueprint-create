@@ -1,6 +1,7 @@
 'use client';
 
 import { ChevronRight, type LucideIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 import {
   Collapsible,
@@ -58,9 +59,9 @@ export function NavMain({
                         asChild
                         className={subItem.isActive ? 'bg-success-foreground/10' : undefined}
                       >
-                        <a href={subItem.url}>
+                        <Link to={subItem.url}>
                           <span>{subItem.title}</span>
-                        </a>
+                        </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}

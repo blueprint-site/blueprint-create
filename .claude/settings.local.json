@@ -27,10 +27,29 @@
       "mcp__appwrite__teams_get",
       "mcp__appwrite__teams_list_memberships",
       "Bash(npx tsc:*)",
-      "Bash(npm run lint:*)"
+      "Bash(npm run lint:*)",
+      "mcp__appwrite__users_list",
+      "mcp__browsermcp__browser_get_console_logs",
+      "mcp__browsermcp__browser_click",
+      "mcp__appwrite__functions_create_variable",
+      "mcp__appwrite__functions_update",
+      "mcp__appwrite__functions_get",
+      "mcp__appwrite__functions_create_execution",
+      "mcp__appwrite__functions_get_deployment",
+      "mcp__appwrite__functions_list_variables",
+      "mcp__appwrite__functions_delete_variable",
+      "mcp__appwrite__functions_update_variable",
+      "WebFetch(domain:appwrite.io)",
+      "mcp__appwrite__functions_get_variable",
+      "mcp__appwrite__users_update_labels",
+      "mcp__appwrite__functions_update_function_deployment"
     ],
     "deny": [],
     "ask": []
   },
-  "enabledMcpjsonServers": ["browsermcp", "appwrite", "shadcn"]
+  "enabledMcpjsonServers": [
+    "browsermcp",
+    "appwrite",
+    "shadcn"
+  ]
 }

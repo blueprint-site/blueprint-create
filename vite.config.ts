@@ -85,7 +85,7 @@ export default defineConfig(({ mode }) => ({
     }),
   ].filter(Boolean),
   optimizeDeps: {
-    include: ['react', 'react-dom', 'framer-motion', 'lucide-react', 'buffer', 'prismarine-nbt'],
+    include: ['react', 'react-dom', 'framer-motion', 'lucide-react', 'buffer'],
     exclude: ['@tanstack/react-query'],
   },
   resolve: {

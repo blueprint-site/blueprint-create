@@ -21,26 +21,17 @@ import {
   ArrowLeft,
   ArrowRight,
   Shield,
-  AlertTriangle,
   ExternalLink,
-  Clock,
-  CheckCircle2,
-  Eye,
-  EyeOff,
   RefreshCw,
   Maximize2,
-  Minimize2,
-  ChevronLeft,
-  ChevronRight,
-  Globe,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button.tsx';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Link } from 'react-router';
-import { Separator } from '@/components/ui/separator';
 import { cn } from '@/config/utils';
+import FullscreenAddonReview from './FullscreenAddonReview';
 
 interface ReviewAction {
   id: string;
@@ -52,13 +43,13 @@ interface ReviewAction {
   timestamp: number;
 }
 
-type FilterType = 'all' | 'reviewed' | 'unreviewed' | 'unsorted';
+type FilterType = 'all' | 'reviewed' | 'unreviewed';
 
 export const OptimizedAddonsTableV3 = () => {
   // Core state
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState('');
-  const [filterType, setFilterType] = useState<FilterType>('unsorted');
+  const [filterType, setFilterType] = useState<FilterType>('unreviewed');
 
   // Review mode state
   const [isReviewMode, setIsReviewMode] = useState(false);
@@ -72,6 +63,7 @@ export const OptimizedAddonsTableV3 = () => {
   const tableRef = useRef<HTMLDivElement>(null);
 
   // Optimized data fetching with proper dependencies
+  // When in review mode, always fetch unreviewed addons
   const {
     data: addonData,
     isLoading,
@@ -81,7 +73,7 @@ export const OptimizedAddonsTableV3 = () => {
     isFetching,
   } = useAdminAddons(
     {
-      reviewStatus: filterType,
+      reviewStatus: isReviewMode ? 'unreviewed' : filterType,
     },
     currentPage,
     PAGE_SIZE
@@ -116,17 +108,20 @@ export const OptimizedAddonsTableV3 = () => {
   const isCurrentlyFetching = search.trim() ? isSearchFetching : isFetching;
 
   // Get addons that need review for review mode
+  // When in review mode, the data is already filtered at query level
   const addonsNeedingReview = useMemo(() => {
-    return filteredAddons.filter((addon: Addon) => !addon.isChecked || !addon.isValid);
-  }, [filteredAddons]);
+    // If we're in review mode, the API already filters for unreviewed addons
+    // So we just return the filtered addons (minus hidden ones)
+    return isReviewMode
+      ? filteredAddons
+      : filteredAddons.filter((addon: Addon) => !addon.isChecked);
+  }, [filteredAddons, isReviewMode]);
 
   // Reset states when filters change
   useEffect(() => {
     setCurrentPage(1);
     setSelectedAddonIndex(0);
-    if (filterType !== 'unsorted') {
-      setHiddenAddonIds(new Set());
-    }
+    setHiddenAddonIds(new Set());
   }, [search, filterType]);
 
   // Auto-adjust selected index when addons change
@@ -368,700 +363,13 @@ export const OptimizedAddonsTableV3 = () => {
     }
   }, [selectedAddonIndex, isReviewMode, isFullscreenReview]);
 
-  // Fullscreen Review Component
-  const FullscreenReview = () => {
-    const targetAddons = isReviewMode ? addonsNeedingReview : filteredAddons;
-    const currentAddon = targetAddons[selectedAddonIndex];
+  // Deleted old FullscreenReview component - now using FullscreenAddonReview
 
-    if (!currentAddon) return null;
-
-    // Generate addon URL for iframe
-    const getAddonUrl = (addon: Addon) => {
-      try {
-        if (addon.modrinth_raw) {
-          const modrinthData =
-            typeof addon.modrinth_raw === 'string'
-              ? JSON.parse(addon.modrinth_raw)
-              : addon.modrinth_raw;
-          if (modrinthData?.slug) {
-            return `https://modrinth.com/mod/${modrinthData.slug}`;
-          }
-        }
-        if (addon.curseforge_raw) {
-          const curseforgeData =
-            typeof addon.curseforge_raw === 'string'
-              ? JSON.parse(addon.curseforge_raw)
-              : addon.curseforge_raw;
-          if (curseforgeData?.links?.websiteUrl) {
-            return curseforgeData.links.websiteUrl;
-          }
-        }
-      } catch (error) {
-        console.warn('Failed to parse addon URLs:', error);
-      }
-      return null;
-    };
-
-    const addonUrl = getAddonUrl(currentAddon);
-
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className='bg-background fixed inset-0 z-50 flex flex-col'
-      >
-        {/* Header */}
-        <div className='bg-card flex items-center justify-between border-b p-4'>
-          <div className='flex items-center gap-4'>
-            <Button variant='outline' size='sm' onClick={() => setIsFullscreenReview(false)}>
-              <Minimize2 className='mr-2 h-4 w-4' />
-              Exit Fullscreen
-            </Button>
-
-            <div className='flex items-center gap-2'>
-              <Avatar className='h-8 w-8'>
-                <AvatarImage src={currentAddon.icon || ''} />
-                <AvatarFallback>{currentAddon.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <div>
-                <h2 className='font-semibold'>{currentAddon.name}</h2>
-                <p className='text-muted-foreground text-sm'>
-                  {currentAddon.authors?.join(', ') || 'Unknown'}
-                </p>
-              </div>
-            </div>
-
-            <Badge variant={currentAddon.isValid ? 'default' : 'destructive'}>
-              {currentAddon.isValid ? 'Active' : 'Inactive'}
-            </Badge>
-
-            <Badge variant={currentAddon.isChecked ? 'default' : 'secondary'}>
-              {currentAddon.isChecked ? 'Reviewed' : 'Needs Review'}
-            </Badge>
-          </div>
-
-          <div className='flex items-center gap-2'>
-            <span className='text-muted-foreground text-sm'>
-              {selectedAddonIndex + 1} of {targetAddons.length}
-            </span>
-
-            <Button
-              variant='outline'
-              size='sm'
-              onClick={() => navigateReview('prev')}
-              disabled={selectedAddonIndex === 0}
-            >
-              <ChevronLeft className='h-4 w-4' />
-            </Button>
-
-            <Button
-              variant='outline'
-              size='sm'
-              onClick={() => navigateReview('next')}
-              disabled={selectedAddonIndex === targetAddons.length - 1}
-            >
-              <ChevronRight className='h-4 w-4' />
-            </Button>
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className='flex flex-1'>
-          {/* Left Panel - Addon Info & Actions */}
-          <div className='bg-card w-96 overflow-y-auto border-r p-6'>
-            <div className='space-y-6'>
-              {/* Addon Details */}
-              <div>
-                <h3 className='mb-3 font-semibold'>Addon Information</h3>
-                <div className='space-y-3'>
-                  <div>
-                    <label className='text-sm font-medium'>Description</label>
-                    <p className='text-muted-foreground mt-1 text-sm'>
-                      {currentAddon.description || 'No description available'}
-                    </p>
-                  </div>
-
-                  <div>
-                    <label className='text-sm font-medium'>Categories</label>
-                    <div className='mt-1 flex flex-wrap gap-1'>
-                      {(Array.isArray(currentAddon.categories) ? currentAddon.categories : []).map(
-                        (cat: string) => (
-                          <Badge key={cat} variant='outline' className='text-xs'>
-                            {cat}
-                          </Badge>
-                        )
-                      )}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className='text-sm font-medium'>Downloads</label>
-                    <p className='text-muted-foreground mt-1 flex items-center gap-1 text-sm'>
-                      <Download className='h-4 w-4' />
-                      {currentAddon.downloads?.toLocaleString() || '0'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <Separator />
-
-              {/* Actions */}
-              <div>
-                <h3 className='mb-3 font-semibold'>Review Actions</h3>
-                <div className='space-y-4'>
-                  {/* Review Status */}
-                  <div className='space-y-2'>
-                    <div className='flex items-center gap-2'>
-                      <Checkbox
-                        checked={currentAddon.isChecked}
-                        onCheckedChange={(checked) =>
-                          handleReviewStatusChange(currentAddon, checked === true, true)
-                        }
-                        disabled={isUpdating || hasPermissionError}
-                      />
-                      <label className='text-sm font-medium'>Mark as Reviewed</label>
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  {/* Enable/Disable */}
-                  <div className='space-y-2'>
-                    <div className='flex items-center gap-2'>
-                      <Switch
-                        checked={currentAddon.isValid}
-                        onCheckedChange={(checked) =>
-                          handleValidityChange(currentAddon, checked, true)
-                        }
-                        disabled={isUpdating || hasPermissionError}
-                      />
-                      <label className='text-sm font-medium'>
-                        {currentAddon.isValid ? 'Enabled' : 'Disabled'}
-                      </label>
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  {/* Quick Actions */}
-                  <div className='grid grid-cols-2 gap-2'>
-                    <Button
-                      size='sm'
-                      onClick={() => handleReviewStatusChange(currentAddon, true, true)}
-                      disabled={currentAddon.isChecked || isUpdating || hasPermissionError}
-                      className='bg-green-600 hover:bg-green-700'
-                    >
-                      <CheckCircle2 className='mr-1 h-4 w-4' />
-                      Approve
-                    </Button>
-
-                    <Button
-                      size='sm'
-                      variant='outline'
-                      onClick={() => handleValidityChange(currentAddon, true, true)}
-                      disabled={currentAddon.isValid || isUpdating || hasPermissionError}
-                    >
-                      <Eye className='mr-1 h-4 w-4' />
-                      Enable
-                    </Button>
-
-                    <Button
-                      size='sm'
-                      variant='outline'
-                      onClick={() => handleValidityChange(currentAddon, false, true)}
-                      disabled={!currentAddon.isValid || isUpdating || hasPermissionError}
-                    >
-                      <EyeOff className='mr-1 h-4 w-4' />
-                      Disable
-                    </Button>
-
-                    <Button
-                      size='sm'
-                      variant='outline'
-                      onClick={() => handleReviewStatusChange(currentAddon, false, true)}
-                      disabled={isUpdating || hasPermissionError}
-                    >
-                      <AlertTriangle className='mr-1 h-4 w-4' />
-                      Needs Work
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Panel - Addon Details */}
-          <div className='flex flex-1 flex-col overflow-hidden'>
-            <div className='bg-muted/50 flex items-center justify-between border-b p-4'>
-              <div className='flex items-center gap-2'>
-                <Globe className='h-4 w-4' />
-                <span className='font-medium'>Addon Details</span>
-              </div>
-              {addonUrl && (
-                <Button size='sm' variant='default' asChild>
-                  <Link to={addonUrl} target='_blank'>
-                    <ExternalLink className='mr-2 h-4 w-4' />
-                    View on {addonUrl.includes('modrinth') ? 'Modrinth' : 'CurseForge'}
-                  </Link>
-                </Button>
-              )}
-            </div>
-
-            <div className='flex-1 overflow-y-auto p-6'>
-              <div className='max-w-2xl space-y-6'>
-                {/* Rich Addon Info from Raw Data */}
-                {(() => {
-                  let rawData = null;
-                  let platform = null;
-
-                  // Try to get parsed data from modrinth_raw or curseforge_raw
-                  try {
-                    if (currentAddon.modrinth_raw) {
-                      rawData =
-                        typeof currentAddon.modrinth_raw === 'string'
-                          ? JSON.parse(currentAddon.modrinth_raw)
-                          : currentAddon.modrinth_raw;
-                      platform = 'Modrinth';
-                    } else if (currentAddon.curseforge_raw) {
-                      rawData =
-                        typeof currentAddon.curseforge_raw === 'string'
-                          ? JSON.parse(currentAddon.curseforge_raw)
-                          : currentAddon.curseforge_raw;
-                      platform = 'CurseForge';
-                    }
-                  } catch (error) {
-                    console.warn('Failed to parse raw addon data:', error);
-                  }
-
-                  return (
-                    <>
-                      {/* Main Description */}
-                      <div>
-                        <div className='mb-3 flex items-center gap-2'>
-                          <h3 className='text-lg font-semibold'>Description</h3>
-                          {platform && (
-                            <Badge variant='outline' className='text-xs'>
-                              From {platform}
-                            </Badge>
-                          )}
-                        </div>
-                        <p className='text-muted-foreground leading-relaxed'>
-                          {rawData?.description ||
-                            currentAddon.description ||
-                            'No description available for this addon.'}
-                        </p>
-                      </div>
-
-                      {/* Gallery/Screenshots */}
-                      {rawData?.gallery && rawData.gallery.length > 0 && (
-                        <div>
-                          <h4 className='mb-3 font-semibold'>Screenshots</h4>
-                          <div className='grid grid-cols-2 gap-2'>
-                            {rawData.gallery
-                              .slice(0, 4)
-                              .map(
-                                (
-                                  image: { url?: string; title?: string } | string,
-                                  index: number
-                                ) => (
-                                  <div key={index} className='group relative'>
-                                    <img
-                                      src={typeof image === 'string' ? image : image.url || ''}
-                                      alt={
-                                        typeof image === 'string'
-                                          ? `Screenshot ${index + 1}`
-                                          : image.title || `Screenshot ${index + 1}`
-                                      }
-                                      className='h-32 w-full cursor-pointer rounded-md border object-cover transition-transform hover:scale-105'
-                                    />
-                                    {typeof image !== 'string' && image.title && (
-                                      <div className='absolute inset-x-0 bottom-0 rounded-b-md bg-black/70 p-2 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100'>
-                                        {typeof image !== 'string' ? image.title : ''}
-                                      </div>
-                                    )}
-                                  </div>
-                                )
-                              )}
-                            {rawData.gallery.length > 4 && (
-                              <div className='bg-muted flex h-32 items-center justify-center rounded-md border border-dashed'>
-                                <span className='text-muted-foreground text-sm'>
-                                  +{rawData.gallery.length - 4} more images
-                                </span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Project Details */}
-                      {rawData && (
-                        <div className='space-y-4'>
-                          <h4 className='font-semibold'>Project Information</h4>
-
-                          <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-                            {/* License */}
-                            {rawData.license && (
-                              <div>
-                                <label className='text-sm font-medium'>License</label>
-                                <p className='text-muted-foreground mt-1 text-sm'>
-                                  {rawData.license.name || rawData.license.id || rawData.license}
-                                </p>
-                              </div>
-                            )}
-
-                            {/* Project Type */}
-                            {rawData.project_type && (
-                              <div>
-                                <label className='text-sm font-medium'>Project Type</label>
-                                <Badge variant='secondary' className='mt-1'>
-                                  {rawData.project_type}
-                                </Badge>
-                              </div>
-                            )}
-
-                            {/* Status */}
-                            {rawData.status && (
-                              <div>
-                                <label className='text-sm font-medium'>Status</label>
-                                <Badge
-                                  variant={rawData.status === 'approved' ? 'default' : 'secondary'}
-                                  className='mt-1'
-                                >
-                                  {rawData.status}
-                                </Badge>
-                              </div>
-                            )}
-
-                            {/* Client/Server Side */}
-                            {(rawData.client_side || rawData.server_side) && (
-                              <div>
-                                <label className='text-sm font-medium'>Compatibility</label>
-                                <div className='mt-1 flex gap-2'>
-                                  {rawData.client_side && (
-                                    <Badge variant='outline'>Client: {rawData.client_side}</Badge>
-                                  )}
-                                  {rawData.server_side && (
-                                    <Badge variant='outline'>Server: {rawData.server_side}</Badge>
-                                  )}
-                                </div>
-                              </div>
-                            )}
-                          </div>
-
-                          {/* Team Members */}
-                          {rawData.team && rawData.team.length > 0 && (
-                            <div>
-                              <h5 className='mb-2 font-medium'>Team Members</h5>
-                              <div className='space-y-2'>
-                                {rawData.team.map(
-                                  (
-                                    member: {
-                                      user?: { avatar_url?: string; username?: string };
-                                      name?: string;
-                                      role?: string;
-                                    },
-                                    index: number
-                                  ) => (
-                                    <div key={index} className='flex items-center gap-2 text-sm'>
-                                      {member.user?.avatar_url && (
-                                        <img
-                                          src={member.user.avatar_url}
-                                          alt={member.user.username}
-                                          className='h-6 w-6 rounded-full'
-                                        />
-                                      )}
-                                      <span className='font-medium'>
-                                        {member.user?.username || member.name}
-                                      </span>
-                                      <Badge variant='outline' className='text-xs'>
-                                        {member.role}
-                                      </Badge>
-                                    </div>
-                                  )
-                                )}
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Donation URLs */}
-                          {rawData.donation_urls && rawData.donation_urls.length > 0 && (
-                            <div>
-                              <h5 className='mb-2 font-medium'>Support the Developer</h5>
-                              <div className='flex flex-wrap gap-2'>
-                                {rawData.donation_urls.map(
-                                  (donation: { url: string; platform?: string }, index: number) => (
-                                    <Button key={index} variant='outline' size='sm' asChild>
-                                      <Link to={donation.url} target='_blank'>
-                                        {donation.platform || 'Donate'}
-                                      </Link>
-                                    </Button>
-                                  )
-                                )}
-                              </div>
-                            </div>
-                          )}
-
-                          {/* External Links */}
-                          {(rawData.issues_url ||
-                            rawData.source_url ||
-                            rawData.wiki_url ||
-                            rawData.discord_url) && (
-                            <div>
-                              <h5 className='mb-2 font-medium'>External Links</h5>
-                              <div className='grid grid-cols-2 gap-2'>
-                                {rawData.issues_url && (
-                                  <Button variant='outline' size='sm' asChild>
-                                    <Link to={rawData.issues_url} target='_blank'>
-                                      🐛 Issues
-                                    </Link>
-                                  </Button>
-                                )}
-                                {rawData.source_url && (
-                                  <Button variant='outline' size='sm' asChild>
-                                    <Link to={rawData.source_url} target='_blank'>
-                                      💻 Source Code
-                                    </Link>
-                                  </Button>
-                                )}
-                                {rawData.wiki_url && (
-                                  <Button variant='outline' size='sm' asChild>
-                                    <Link to={rawData.wiki_url} target='_blank'>
-                                      📖 Wiki
-                                    </Link>
-                                  </Button>
-                                )}
-                                {rawData.discord_url && (
-                                  <Button variant='outline' size='sm' asChild>
-                                    <Link to={rawData.discord_url} target='_blank'>
-                                      💬 Discord
-                                    </Link>
-                                  </Button>
-                                )}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </>
-                  );
-                })()}
-
-                {/* Technical Details */}
-                <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-                  {/* Categories */}
-                  {currentAddon.categories && currentAddon.categories.length > 0 && (
-                    <div>
-                      <h4 className='mb-2 font-semibold'>Categories</h4>
-                      <div className='flex flex-wrap gap-2'>
-                        {(Array.isArray(currentAddon.categories)
-                          ? currentAddon.categories
-                          : []
-                        ).map((category: string) => (
-                          <Badge key={category} variant='secondary'>
-                            {category
-                              .replace(/[-_]/g, ' ')
-                              .replace(/\b\w/g, (l: string) => l.toUpperCase())}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Minecraft Versions */}
-                  {currentAddon.minecraft_versions &&
-                    currentAddon.minecraft_versions.length > 0 && (
-                      <div>
-                        <h4 className='mb-2 font-semibold'>Minecraft Versions</h4>
-                        <div className='flex flex-wrap gap-1'>
-                          {(Array.isArray(currentAddon.minecraft_versions)
-                            ? currentAddon.minecraft_versions
-                            : []
-                          )
-                            .slice(0, 8)
-                            .map((version: string) => (
-                              <Badge key={version} variant='outline' className='text-xs'>
-                                {version}
-                              </Badge>
-                            ))}
-                          {currentAddon.minecraft_versions.length > 8 && (
-                            <Badge variant='outline' className='text-xs'>
-                              +{currentAddon.minecraft_versions.length - 8} more
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-                    )}
-
-                  {/* Mod Loaders */}
-                  {currentAddon.loaders && currentAddon.loaders.length > 0 && (
-                    <div>
-                      <h4 className='mb-2 font-semibold'>Mod Loaders</h4>
-                      <div className='flex flex-wrap gap-2'>
-                        {(Array.isArray(currentAddon.loaders) ? currentAddon.loaders : []).map(
-                          (loader: string) => (
-                            <Badge key={loader} variant='secondary'>
-                              {loader}
-                            </Badge>
-                          )
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Create Versions */}
-                  {currentAddon.create_versions && currentAddon.create_versions.length > 0 && (
-                    <div>
-                      <h4 className='mb-2 font-semibold'>Create Mod Versions</h4>
-                      <div className='flex flex-wrap gap-1'>
-                        {currentAddon.create_versions.map((version: string) => (
-                          <Badge key={version} variant='outline' className='text-xs'>
-                            {version}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Statistics */}
-                <div>
-                  <h4 className='mb-3 font-semibold'>Statistics</h4>
-                  <div className='grid grid-cols-1 gap-4 sm:grid-cols-3'>
-                    <Card className='p-4'>
-                      <div className='flex items-center gap-2'>
-                        <Download className='text-primary h-5 w-5' />
-                        <div>
-                          <div className='font-medium'>
-                            {currentAddon.downloads?.toLocaleString() || '0'}
-                          </div>
-                          <div className='text-muted-foreground text-sm'>Downloads</div>
-                        </div>
-                      </div>
-                    </Card>
-
-                    <Card className='p-4'>
-                      <div className='flex items-center gap-2'>
-                        <Clock className='text-primary h-5 w-5' />
-                        <div>
-                          <div className='font-medium'>
-                            {currentAddon.created_at
-                              ? new Date(currentAddon.created_at).toLocaleDateString()
-                              : 'Unknown'}
-                          </div>
-                          <div className='text-muted-foreground text-sm'>Created</div>
-                        </div>
-                      </div>
-                    </Card>
-
-                    <Card className='p-4'>
-                      <div className='flex items-center gap-2'>
-                        <RefreshCw className='text-primary h-5 w-5' />
-                        <div>
-                          <div className='font-medium'>
-                            {currentAddon.updated_at
-                              ? new Date(currentAddon.updated_at).toLocaleDateString()
-                              : 'Unknown'}
-                          </div>
-                          <div className='text-muted-foreground text-sm'>Updated</div>
-                        </div>
-                      </div>
-                    </Card>
-                  </div>
-                </div>
-
-                {/* Raw Data Sources */}
-                <div className='space-y-4'>
-                  <h4 className='font-semibold'>Data Sources</h4>
-                  <div className='grid gap-2'>
-                    {currentAddon.modrinth_id && (
-                      <div className='flex items-center gap-2 text-sm'>
-                        <Badge variant='outline'>Modrinth</Badge>
-                        <span className='font-mono text-xs'>{currentAddon.modrinth_id}</span>
-                      </div>
-                    )}
-                    {currentAddon.curseforge_id && (
-                      <div className='flex items-center gap-2 text-sm'>
-                        <Badge variant='outline'>CurseForge</Badge>
-                        <span className='font-mono text-xs'>{currentAddon.curseforge_id}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Claimed Status */}
-                {currentAddon.claimed_by && (
-                  <div>
-                    <h4 className='mb-2 font-semibold'>Claim Status</h4>
-                    <div className='flex items-center gap-2'>
-                      <Badge variant='secondary'>Claimed</Badge>
-                      <span className='text-muted-foreground text-sm'>
-                        by {currentAddon.claimed_by}
-                      </span>
-                    </div>
-                  </div>
-                )}
-
-                {/* Quick Access */}
-                {addonUrl && (
-                  <Card className='from-primary/5 to-primary/10 border-primary/20 bg-gradient-to-r p-4'>
-                    <div className='flex items-center justify-between'>
-                      <div>
-                        <h4 className='font-semibold'>View Full Details</h4>
-                        <p className='text-muted-foreground text-sm'>
-                          Open this addon&apos;s page in a new tab to see all details, images, and
-                          versions.
-                        </p>
-                      </div>
-                      <Button asChild>
-                        <Link to={addonUrl} target='_blank'>
-                          <ExternalLink className='mr-2 h-4 w-4' />
-                          Open Page
-                        </Link>
-                      </Button>
-                    </div>
-                  </Card>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer with shortcuts */}
-        <div className='bg-card border-t p-4'>
-          <div className='flex justify-center'>
-            <div className='text-muted-foreground grid grid-cols-4 gap-4 text-xs'>
-              <div>
-                <kbd className='bg-background rounded px-2 py-1'>A</kbd> Approve
-              </div>
-              <div>
-                <kbd className='bg-background rounded px-2 py-1'>E</kbd> Enable
-              </div>
-              <div>
-                <kbd className='bg-background rounded px-2 py-1'>X</kbd> Disable
-              </div>
-              <div>
-                <kbd className='bg-background rounded px-2 py-1'>←/→</kbd> Navigate
-              </div>
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    );
-  };
-
-  // Simple filter buttons (no tabs)
   const FilterButtons = () => {
     const filters: { key: FilterType; label: string; count?: number }[] = [
       {
-        key: 'unsorted',
-        label: 'Needs Review',
-        count: addonData?.addons?.filter((a: Addon) => !a.isValid).length,
-      },
-      {
         key: 'unreviewed',
-        label: 'Unreviewed',
+        label: 'Needs Review',
         count: addonData?.addons?.filter((a: Addon) => !a.isChecked).length,
       },
       { key: 'reviewed', label: 'Reviewed' },
@@ -1080,7 +388,7 @@ export const OptimizedAddonsTableV3 = () => {
           >
             {label}
             {count !== undefined && count > 0 && (
-              <Badge variant={key === 'unsorted' ? 'destructive' : 'secondary'} className='ml-1'>
+              <Badge variant={key === 'unreviewed' ? 'destructive' : 'secondary'} className='ml-1'>
                 {count}
               </Badge>
             )}
@@ -1415,7 +723,29 @@ export const OptimizedAddonsTableV3 = () => {
       </div>
 
       {/* Fullscreen Review Mode */}
-      <AnimatePresence>{isFullscreenReview && <FullscreenReview />}</AnimatePresence>
+      <AnimatePresence>
+        {isFullscreenReview &&
+          (() => {
+            const targetAddons = isReviewMode ? addonsNeedingReview : filteredAddons;
+            const currentAddon = targetAddons[selectedAddonIndex];
+
+            if (!currentAddon) return null;
+
+            return (
+              <FullscreenAddonReview
+                addon={currentAddon}
+                selectedIndex={selectedAddonIndex}
+                totalAddons={targetAddons.length}
+                onClose={() => setIsFullscreenReview(false)}
+                onNavigate={navigateReview}
+                onReviewStatusChange={handleReviewStatusChange}
+                onValidityChange={handleValidityChange}
+                isUpdating={isUpdating}
+                hasPermissionError={hasPermissionError}
+              />
+            );
+          })()}
+      </AnimatePresence>
     </>
   );
 };

@@ -1,6 +1,7 @@
 // src/components/tables/users/DataTable.tsx
 
 'use client';
+import type { ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -10,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import type { ColumnDef, ColumnFiltersState, SortingState } from '@tanstack/react-table';
+import type { ColumnDef, ColumnFiltersState, SortingState, Row } from '@tanstack/react-table';
 import {
   getFilteredRowModel,
   flexRender,
@@ -71,6 +72,7 @@ interface DataTableProps<TData extends User, TValue> {
   readonly searchPlaceholder?: string;
   readonly searchField?: keyof TData;
   readonly isFetching?: boolean; // Add prop for fetching state indication
+  readonly renderRow?: (row: Row<TData>, defaultRow: ReactNode) => ReactNode; // Custom row renderer
 }
 
 export function UsersDataTable<TData extends User, TValue>({
@@ -79,6 +81,7 @@ export function UsersDataTable<TData extends User, TValue>({
   searchPlaceholder = 'Filter users...',
   searchField = 'name' as keyof TData,
   isFetching,
+  renderRow,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -184,29 +187,31 @@ export function UsersDataTable<TData extends User, TValue>({
           <TableBody>
             {/* Render rows from the paginated view of manually filtered data */}
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                // Check if this row ID exists in our manually filtered set before rendering
-                // This seems overly complex - let's rethink pagination interaction
-                // --- Simplified approach: Render rows from the manually filtered data directly (pagination needs adjustment) ---
-                // Let's assume pagination applies to the MANUALLY filtered rows for now.
-                // This might require passing manuallyFilteredRows to useReactTable or handling pagination outside.
-                // --- Easiest Fix: Display the filtered rows and handle pagination on THAT set ---
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                  // Filter visibility based on manual filter results BEFORE pagination is applied by Tanstack
-                  // This might be inefficient. Let's adjust pagination controls instead.
-                  style={{
-                    display: manuallyFilteredRows.find((fr) => fr.id === row.id) ? '' : 'none',
-                  }} // Hide rows not in manual filter (Inefficient)
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
+              table.getRowModel().rows.map((row) => {
+                const defaultRow = (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                    className={`transition-colors
+                      ${row.original.labels?.includes('banned') ? 'bg-red-50 dark:bg-red-950/20 border-l-4 border-l-red-500' : ''}
+                      ${row.original.status === false && !row.original.labels?.includes('banned') ? 'bg-gray-50 dark:bg-gray-900/20 opacity-75' : ''}
+                      ${!row.original.emailVerification && row.original.status !== false ? 'bg-yellow-50/50 dark:bg-yellow-950/10' : ''}
+                    `}
+                    style={{
+                      display: manuallyFilteredRows.find((fr) => fr.id === row.id) ? '' : 'none',
+                    }}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                );
+                
+                // Use custom row renderer if provided, otherwise use default
+                return renderRow ? renderRow(row, defaultRow) : defaultRow;
+              })
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className='h-24 text-center'>

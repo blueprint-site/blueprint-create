@@ -118,7 +118,7 @@ const UserSchematicList = () => {
   // Update search query in filters
   useEffect(() => {
     updateFilter('query', searchQuery);
-  }, [searchQuery]);
+  }, [searchQuery, updateFilter]);
 
   // Modified filters to include user_id
   const userFilters = {
@@ -139,7 +139,7 @@ const UserSchematicList = () => {
     enableFacets: true,
   });
 
-  const hits = searchData?.hits || [];
+  const hits = React.useMemo(() => searchData?.hits || [], [searchData]);
   const hasNextPage = searchData ? page * ITEMS_PER_PAGE < searchData.estimatedTotalHits : false;
   const isFetching = isLoading;
 
@@ -178,7 +178,7 @@ const UserSchematicList = () => {
         });
       }
     }
-  }, [hits?.length, page]);
+  }, [hits, page]);
 
   const handleResetFilters = () => {
     clearFilters();

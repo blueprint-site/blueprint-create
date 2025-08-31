@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Feather, Map, Puzzle, SquareTerminal, Star } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 import { NavMain } from '@/components/layout/AdminPanel/NavMain.tsx';
 import { NavUser } from '@/components/layout/AdminPanel/NavUser.tsx';
@@ -106,12 +107,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <a
-          href='/'
+        <Link
+          to='/'
           className='bg-blueprint w-full justify-center rounded-md p-2 text-center text-black'
         >
           Go back to site
-        </a>
+        </Link>
         <NavUser user={data.user} />
       </SidebarFooter>
       <SidebarRail />

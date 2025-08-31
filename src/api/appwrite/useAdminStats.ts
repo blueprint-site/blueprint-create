@@ -38,41 +38,82 @@ export const useAdminStats = () => {
     queryKey: ['admin', 'stats'],
     queryFn: async () => {
       // Get current date info for time-based queries
-      // const now = new Date();
-      // const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      const now = new Date();
+      const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
       // const dayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
-      // Fetch users stats
-      const usersResponse = await teams.listMemberships('admin', [Query.limit(100)]);
-      const totalUsers = usersResponse.total;
+      // Fetch users stats from team memberships
+      // Since we can't access users collection directly from client SDK,
+      // we use team memberships as a proxy for user count
+      let totalUsers = 0;
+      let newUsersThisWeek = 0;
 
-      // Fetch addons stats
-      const addonsResponse = await databases.listDocuments(DATABASE_ID, 'addons', [
-        Query.limit(1000),
+      try {
+        // Get total team members count
+        const teamMembersResponse = await teams.listMemberships('blueprint', [
+          Query.limit(100), // Get more to check registration dates
+        ]);
+        totalUsers = teamMembersResponse.total;
+
+        // Count new members this week
+        if (teamMembersResponse.memberships) {
+          newUsersThisWeek = teamMembersResponse.memberships.filter((membership) => {
+            const joinedDate = new Date(membership.$createdAt);
+            return joinedDate >= weekAgo;
+          }).length;
+        }
+      } catch (error) {
+        console.warn('Could not fetch team membership count:', error);
+        // Set to 0 if can't fetch
+        totalUsers = 0;
+        newUsersThisWeek = 0;
+      }
+
+      // Fetch total addons count first
+      const totalAddonsResponse = await databases.listDocuments(DATABASE_ID, 'addons', [
+        Query.limit(1), // Just to get total
       ]);
-      const validatedAddons = addonsResponse.documents.filter((a) => a.isValid === true).length;
-      const pendingAddons = addonsResponse.documents.filter((a) => !a.isChecked).length;
+
+      // Fetch validated addons count
+      const validatedAddonsResponse = await databases.listDocuments(DATABASE_ID, 'addons', [
+        Query.equal('isValid', true),
+        Query.limit(1), // Just to get count
+      ]);
+
+      // Fetch pending (unchecked) addons count
+      const pendingAddonsResponse = await databases.listDocuments(DATABASE_ID, 'addons', [
+        Query.equal('isChecked', false),
+        Query.limit(1), // Just to get count
+      ]);
 
       // Fetch featured addons
       const featuredAddonsResponse = await databases.listDocuments(DATABASE_ID, 'featured_addons', [
         Query.equal('active', true),
+        Query.limit(100),
       ]);
 
-      // Fetch schematics stats
-      const schematicsResponse = await databases.listDocuments(DATABASE_ID, 'schematics', [
-        Query.limit(1000),
+      // Fetch total schematics count
+      const totalSchematicsResponse = await databases.listDocuments(DATABASE_ID, 'schematics', [
+        Query.limit(1), // Just to get total
       ]);
 
-      const featuredSchematics = schematicsResponse.documents.filter(
-        (s) => s.featured === true
-      ).length;
-      const totalSchematicDownloads = schematicsResponse.documents.reduce(
+      // Fetch featured schematics count
+      const featuredSchematicsResponse = await databases.listDocuments(DATABASE_ID, 'schematics', [
+        Query.equal('featured', true),
+        Query.limit(1), // Just to get count
+      ]);
+
+      // Calculate total downloads (need to fetch actual documents for this)
+      const schematicsForDownloads = await databases.listDocuments(DATABASE_ID, 'schematics', [
+        Query.limit(500), // Fetch reasonable amount for calculation
+      ]);
+      const totalSchematicDownloads = schematicsForDownloads.documents.reduce(
         (sum, s) => sum + (s.downloads || 0),
         0
       );
 
       // Calculate average complexity
-      const complexityLevels = schematicsResponse.documents
+      const complexityLevels = schematicsForDownloads.documents
         .map((s) => s.complexity_level)
         .filter(Boolean);
       const complexityCounts: Record<string, number> = {};
@@ -82,36 +123,51 @@ export const useAdminStats = () => {
       const mostCommonComplexity =
         Object.entries(complexityCounts).sort(([, a], [, b]) => b - a)[0]?.[0] || 'moderate';
 
-      // Fetch blogs stats
-      const blogsResponse = await databases.listDocuments(DATABASE_ID, 'blogs', [
-        Query.limit(1000),
+      // Fetch total blogs count
+      const totalBlogsResponse = await databases.listDocuments(DATABASE_ID, 'blogs', [
+        Query.limit(1), // Just to get total
       ]);
-      const publishedBlogs = blogsResponse.documents.filter((b) => b.status === 'published').length;
-      const draftBlogs = blogsResponse.documents.filter((b) => b.status === 'draft').length;
-      const totalBlogLikes = blogsResponse.documents.reduce((sum, b) => sum + (b.likes || 0), 0);
+
+      // Fetch published blogs count
+      const publishedBlogsResponse = await databases.listDocuments(DATABASE_ID, 'blogs', [
+        Query.equal('status', 'published'),
+        Query.limit(1), // Just to get count
+      ]);
+
+      // Fetch draft blogs count
+      const draftBlogsResponse = await databases.listDocuments(DATABASE_ID, 'blogs', [
+        Query.equal('status', 'draft'),
+        Query.limit(1), // Just to get count
+      ]);
+
+      // Calculate total likes (need to fetch actual documents)
+      const blogsForLikes = await databases.listDocuments(DATABASE_ID, 'blogs', [
+        Query.limit(500), // Fetch reasonable amount for calculation
+      ]);
+      const totalBlogLikes = blogsForLikes.documents.reduce((sum, b) => sum + (b.likes || 0), 0);
 
       return {
         users: {
           total: totalUsers,
-          newThisWeek: 0, // Would need to track registration dates
+          newThisWeek: newUsersThisWeek,
           activeToday: 0, // Would need session tracking
         },
         addons: {
-          total: addonsResponse.total,
-          validated: validatedAddons,
-          pending: pendingAddons,
+          total: totalAddonsResponse.total,
+          validated: validatedAddonsResponse.total,
+          pending: pendingAddonsResponse.total,
           featured: featuredAddonsResponse.total,
         },
         schematics: {
-          total: schematicsResponse.total,
-          featured: featuredSchematics,
+          total: totalSchematicsResponse.total,
+          featured: featuredSchematicsResponse.total,
           totalDownloads: totalSchematicDownloads,
           averageComplexity: mostCommonComplexity,
         },
         blogs: {
-          total: blogsResponse.total,
-          published: publishedBlogs,
-          draft: draftBlogs,
+          total: totalBlogsResponse.total,
+          published: publishedBlogsResponse.total,
+          draft: draftBlogsResponse.total,
           totalLikes: totalBlogLikes,
         },
       };

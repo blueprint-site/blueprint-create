@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "browsermcp": {
+      "command": "cmd",
+      "args": ["/c", "npx", "@browsermcp/mcp@latest"]
+    },
+    "appwrite": {
+      "command": "uvx",
+      "args": ["mcp-server-appwrite", "--all"],
+      "env": {
+        "APPWRITE_PROJECT_ID": "683770670016d1661c37",
+        "APPWRITE_API_KEY": "standard_e5154d14fd631413a4d45014c643a80eb2f44c3cbb91caa3d967fe2b850ddb99e672dd1dfd2d9fff279c42c2a2442e13d95b4a469019e8c0f6c247985005d2ee64d19dd9fbf1978b688f6fd58aa40d93a72dccd8091178dc2a27626dcbf9a0bb2a15dee106bdeaf56bab34cfdf22750ea2e51f9d3672e5bde84a3e426b7eedb4",
+        "APPWRITE_ENDPOINT": "https://api.blueprint-create.com/v1"
+      }
+    },
+    "shadcn": {
+      "command": "cmd",
+      "args": ["/c", "npx", "shadcn@latest", "mcp"]
+    }
+  }
+}

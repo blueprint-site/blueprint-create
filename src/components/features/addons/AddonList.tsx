@@ -81,7 +81,7 @@ const AddonsList = () => {
         });
       }
     }
-  }, [hits?.length, page]); // Use hits.length instead of hits to avoid reference changes
+  }, [hits, page]);
 
   const handleResetFilters = () => {
     clearFilters();

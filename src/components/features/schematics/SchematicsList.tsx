@@ -1,5 +1,5 @@
 // src/pages/schematics/SchematicsList.tsx
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router';
 import { SchematicCardAdapter } from '@/components/features/schematics/SchematicCardAdapter';
 import { buttonVariants } from '@/components/ui/button';
@@ -35,7 +35,7 @@ function SchematicsList() {
   // Update search query in filters
   useEffect(() => {
     updateFilter('query', searchQuery);
-  }, [searchQuery]);
+  }, [searchQuery, updateFilter]);
 
   const {
     data: searchData,
@@ -48,7 +48,7 @@ function SchematicsList() {
     enableFacets: true,
   });
 
-  const hits = searchData?.hits || [];
+  const hits = React.useMemo(() => searchData?.hits || [], [searchData]);
   const hasNextPage = searchData ? page * ITEMS_PER_PAGE < searchData.estimatedTotalHits : false;
   const isFetching = isLoading;
 
@@ -90,7 +90,7 @@ function SchematicsList() {
         });
       }
     }
-  }, [hits?.length, page]); // Use hits.length instead of hits to avoid reference changes
+  }, [hits, page]);
 
   const handleResetFilters = () => {
     clearFilters();
