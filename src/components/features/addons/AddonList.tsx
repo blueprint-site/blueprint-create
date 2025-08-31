@@ -46,11 +46,14 @@ const AddonsList = () => {
     includeFacets: true,
   });
 
-  // Create a stable identifier for hits to prevent unnecessary re-renders
+  // Create a stable identifier and memoized hits to prevent unnecessary re-renders
   const hitsIdentifier = useMemo(() => {
     if (!hits || hits.length === 0) return '';
     return hits.map((h) => h.$id).join(',');
   }, [hits]);
+
+  // Memoize the hits array to prevent reference changes
+  const memoizedHits = useMemo(() => hits || [], [hits]);
 
   // Use the useInfiniteScroll hook
   const { sentinelRef, loadingMore } = useInfiniteScroll({
@@ -73,20 +76,20 @@ const AddonsList = () => {
 
   // Append new addons to the accumulated list
   useEffect(() => {
-    if (!hits || hits.length === 0 || !hitsIdentifier) return;
+    if (memoizedHits.length === 0 || !hitsIdentifier) return;
 
     // Only update if the hits have actually changed
     if (hitsIdentifier !== previousHitsRef.current) {
       previousHitsRef.current = hitsIdentifier;
-      console.log(`New hits fetched: ${hits.length} items`);
+      console.log(`New hits fetched: ${memoizedHits.length} items`);
 
       if (page === 1) {
-        setAllAddons(hits);
+        setAllAddons(memoizedHits);
       } else {
         setAllAddons((prev) => {
           // Check if we already have these items to prevent duplicates
           const existingIds = new Set(prev.map((addon) => addon.$id));
-          const newItems = hits.filter((addon) => !existingIds.has(addon.$id));
+          const newItems = memoizedHits.filter((addon) => !existingIds.has(addon.$id));
           if (newItems.length > 0) {
             return [...prev, ...newItems];
           }
@@ -94,7 +97,7 @@ const AddonsList = () => {
         });
       }
     }
-  }, [hitsIdentifier, hits, page]);
+  }, [hitsIdentifier, memoizedHits, page]);
 
   const handleResetFilters = () => {
     clearFilters();

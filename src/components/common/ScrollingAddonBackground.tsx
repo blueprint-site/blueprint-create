@@ -53,15 +53,18 @@ export const ScrollingAddonBackground = ({
     limit,
   });
 
-  // Create a stable identifier for hits to prevent unnecessary re-renders
+  // Create a stable identifier and memoized hits to prevent unnecessary re-renders
   const hitsIdentifier = useMemo(() => {
     if (!hits || hits.length === 0) return '';
     return hits.map((h) => h.$id).join(',');
   }, [hits]);
 
+  // Memoize the hits array to prevent reference changes
+  const memoizedHits = useMemo(() => hits || [], [hits]);
+
   // Update addons when data is fetched
   useEffect(() => {
-    if (!hits || hits.length === 0) {
+    if (memoizedHits.length === 0) {
       if (!isLoadingAddons) {
         setIsLoading(false);
       }
@@ -75,11 +78,11 @@ export const ScrollingAddonBackground = ({
       setAllAddons((prev) => {
         // Only update if we have new data
         if (page === 1) {
-          return hits;
+          return memoizedHits;
         }
         // Check if we already have these items to prevent duplicates
         const existingIds = new Set(prev.map((addon) => addon.$id));
-        const newItems = hits.filter((addon) => !existingIds.has(addon.$id));
+        const newItems = memoizedHits.filter((addon) => !existingIds.has(addon.$id));
         if (newItems.length > 0) {
           return [...prev, ...newItems];
         }
@@ -87,7 +90,7 @@ export const ScrollingAddonBackground = ({
       });
       setIsLoading(false);
     }
-  }, [hitsIdentifier, hits, page, isLoadingAddons]);
+  }, [hitsIdentifier, memoizedHits, page, isLoadingAddons]);
 
   // Initialize dimensions and set up ResizeObserver
   useEffect(() => {
