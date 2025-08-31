@@ -11,9 +11,10 @@ import type { Addon } from '@/types';
 const AddonsList = () => {
   const [page, setPage] = useState(1);
   const [allAddons, setAllAddons] = useState<Addon[]>([]);
-  const previousHitsRef = useRef<string>('');
-  const isProcessingRef = useRef(false);
-  const updateTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastProcessedDataRef = useRef<{
+    identifier: string;
+    page: number;
+  }>({ identifier: '', page: 0 });
 
   // Use the new filter hook
   const {
@@ -60,7 +61,6 @@ const AddonsList = () => {
     hasMore: hasNextPage,
     onLoadMore: () => {
       if (hasNextPage && !isFetching) {
-        console.log('Loading more addons. Current page:', page);
         setPage((prev) => prev + 1);
       }
     },
@@ -70,60 +70,38 @@ const AddonsList = () => {
   useEffect(() => {
     setAllAddons([]);
     setPage(1);
-    previousHitsRef.current = ''; // Reset the hits identifier
-    isProcessingRef.current = false; // Reset processing flag
-    // Clear any pending updates
-    if (updateTimeoutRef.current) {
-      clearTimeout(updateTimeoutRef.current);
-      updateTimeoutRef.current = null;
-    }
+    lastProcessedDataRef.current = { identifier: '', page: 0 };
   }, [filterString, searchQuery, filters.sort]);
 
-  // Append new addons to the accumulated list with debouncing
+  // Append new addons to the accumulated list
   useEffect(() => {
     if (!hits || hits.length === 0 || !hitsIdentifier) return;
 
-    // Clear any pending update
-    if (updateTimeoutRef.current) {
-      clearTimeout(updateTimeoutRef.current);
+    // Check if we've already processed this exact data
+    const isDuplicate =
+      lastProcessedDataRef.current.identifier === hitsIdentifier &&
+      lastProcessedDataRef.current.page === page;
+
+    if (isDuplicate) {
+      return; // Skip if we've already processed this exact data
     }
 
-    // Debounce the update to prevent rapid successive calls
-    updateTimeoutRef.current = setTimeout(() => {
-      // Prevent concurrent processing
-      if (isProcessingRef.current) return;
+    // Update the last processed data
+    lastProcessedDataRef.current = { identifier: hitsIdentifier, page };
 
-      // Only update if the hits have actually changed
-      if (hitsIdentifier !== previousHitsRef.current) {
-        isProcessingRef.current = true;
-        previousHitsRef.current = hitsIdentifier;
-        console.log(`New hits fetched: ${hits.length} items`);
-
-        if (page === 1) {
-          setAllAddons(hits);
-        } else {
-          setAllAddons((prev) => {
-            // Check if we already have these items to prevent duplicates
-            const existingIds = new Set(prev.map((addon) => addon.$id));
-            const newItems = hits.filter((addon) => !existingIds.has(addon.$id));
-            if (newItems.length > 0) {
-              return [...prev, ...newItems];
-            }
-            return prev;
-          });
+    if (page === 1) {
+      setAllAddons(hits);
+    } else {
+      setAllAddons((prev) => {
+        // Check if we already have these items to prevent duplicates
+        const existingIds = new Set(prev.map((addon) => addon.$id));
+        const newItems = hits.filter((addon) => !existingIds.has(addon.$id));
+        if (newItems.length > 0) {
+          return [...prev, ...newItems];
         }
-
-        // Reset processing flag
-        isProcessingRef.current = false;
-      }
-    }, 50); // Small debounce delay
-
-    // Cleanup
-    return () => {
-      if (updateTimeoutRef.current) {
-        clearTimeout(updateTimeoutRef.current);
-      }
-    };
+        return prev;
+      });
+    }
   }, [hitsIdentifier, hits, page]);
 
   const handleResetFilters = () => {
