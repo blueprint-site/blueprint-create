@@ -3,11 +3,11 @@
     "navigation": {
       "label": {
         "addons": "Addons",
-        "schematics": "In den Warenkorb",
+        "schematics": "Baupläne",
         "about": "Über uns",
         "login": "Anmelden",
         "blog": "Blog",
-        "legal": "Rechtlich",
+        "legal": "Rechtliches",
         "privacy": "Datenschutz",
         "terms": "Bedingungen"
       },
@@ -21,7 +21,7 @@
       "profile": "Profil",
       "settings": "Einstellungen",
       "admin": "Admin-Panel",
-      "logout": "Anmeldung"
+      "logout": "Abmeldung"
     },
     "awards": {
       "banner": {
@@ -34,32 +34,32 @@
       "info": {
         "about": {
           "title": "Was ist Blueprint?",
-          "description": "Blueprint ist eine Website zum Erstellen von Mod-Ressourcen, um Addons, Schaltpläne und vieles mehr zu finden!"
+          "description": "Blueprint ist eine Create-Mod Ressourcen Webseite, auf welcher du Addons, Baupläne und mehr finden kannst."
         },
         "forCreator": {
-          "title": "Für Schöpfer",
+          "title": "Für Entwickler",
           "description": "Wir sind hier, um Ihre Addons in der Blueprint Community zu präsentieren",
           "card": {
             "title": "Findest du dein Addon nicht?",
-            "description": "Lassen Sie uns wissen und wir helfen, Ihre Addon aufgeführt zu bekommen",
-            "content": "Unser Addon Scanvorgang ist vollautomatisch. Kontaktieren Sie uns, um einen Rescan anzufordern und Ihr Addon in unserem Verzeichnis enthalten zu bekommen.",
+            "description": "Lass es uns wissen und wir helfen, dein Addon aufgenommen zu bekommen",
+            "content": "Unser Addon Scanvorgang ist vollautomatisch. Kontaktieren Sie uns, um einen Rescan anzufordern, sodass dein Addon in unserer Datenbank vorhanden ist.",
             "button": "E-Mail an uns"
           }
         },
         "usefulLinks": {
           "title": "Nützliche Links",
-          "description": "Wesentliche Ressourcen für Mod-Entwickler und Benutzer erstellen",
+          "description": "Essenzielle Ressourcen für Mod-Entwickler und Benutzer",
           "link1": {
-            "title": "Erstellen von Mod Wiki",
+            "title": "Create Mod Wiki",
             "description": "Vollständige Dokumentation und Anleitungen"
           },
           "link2": {
-            "title": "Mod erstellen (Forge)",
-            "description": "Forge modloader herunterladen"
+            "title": "Create Mod (Forge)",
+            "description": "Create für den Forge-Modloader herunterladen"
           },
           "link3": {
-            "title": "Mod erstellen (Fabric)",
-            "description": "Herunterladen für Fabric modloader"
+            "title": "Create Mod (Fabric)",
+            "description": "Create für den Fabric-Modloader herunterladen"
           }
         }
       }
@@ -70,19 +70,19 @@
       },
       "dropdown": {
         "modloader": {
-          "select": "Wählen Sie Modloader",
+          "select": "Modloader auswählen",
           "all": "Alle Modloader"
         },
         "version": {
-          "select": "Wählen Sie die Version",
+          "select": "Version auswählen",
           "all": "Alle Versionen"
         }
       },
       "label": {
         "downloads": "Downloads",
-        "description": "Warenbezeichnung",
+        "description": "Beschreibung",
         "categories": "Kategorien",
-        "followers": "Folgen",
+        "followers": "Follower",
         "authors": "Erstellt von",
         "note": "Anmerkung"
       },
@@ -95,33 +95,33 @@
       "mainTitle": "Über Blueprint",
       "subTitle": "Unsere Mission",
       "content1": "Blueprint entstand aus dem Erkennen der Notwendigkeit einer zentralisierten Plattform, die der Create Mod Community effektiv dient. Wir bauten diese Website mit modernen Web-Technologien, um eine robuste Lösung für die Entdeckung und Weitergabe von Inhalten zu bieten.",
-      "content2": "Unser Ziel ist es, die Erstellung von Mod-Ressourcen in einem barrierefreien Ort zu konsolidieren - Addon-Entwickler mit Benutzern zu verbinden und ein einfaches Teilen von Kontrainditionsdesigns zu ermöglichen. Wir wollen die Entdeckbarkeit verbessern und die Zusammenarbeit innerhalb der Gemeinschaft fördern.",
+      "content2": "Unser Ziel ist es, die Erstellung von Mod-Ressourcen in einem barrierefreien Ort zu konsolidieren - und dadurch Addon-Entwickler mit Benutzern zu verbinden und ein einfaches Teilen von Maschinen zu ermöglichen. Wir wollen die Entdeckbarkeit verbessern und die Zusammenarbeit innerhalb der Community fördern.",
       "cards": {
         "card1": {
-          "title": "Entdecken Sie Addons",
-          "description": "Durchsuchen und verwalten Sie das wachsende Ökosystem von Create Mod Erweiterungen.",
-          "link": "Entdecken Sie Addons"
+          "title": "Addons entdecken",
+          "description": "Durchsuche und verwalte das wachsende Ökosystem von Create-Mod Addons.",
+          "link": "Addons entdecken"
         },
         "card2": {
-          "title": "Auf den Wunschzettel",
-          "description": "Laden Sie Ihre automatisierten Kontraptions- und Engineering-Designs hoch und präsentieren Sie diese.",
-          "link": "Besuchen Sie Schematics"
+          "title": "Teile Kreationen",
+          "description": "Lade Baupläne hoch und zeige der Welt deine Kreationen.",
+          "link": "Schau dir Baupläne an"
         },
         "card3": {
-          "title": "Unsere Community",
-          "description": "Verbinden Sie mit anderen Enthusiasten erstellen und zum Ökosystem beitragen.",
+          "title": "Trete unserer Community bei",
+          "description": "Verbinde die mit Create-Mod Enthusiasten und trage zum Ökosystem bei.",
           "link": "Mehr erfahren"
         }
       },
       "socialsCard": {
         "title": "Kontakt aufnehmen!",
         "card1": {
-          "title": "In den Warenkorb",
-          "description": "Für Updates, schnüffelpeeks und Ausgabe Berichterstattung."
+          "title": "Discord Server",
+          "description": "Für Updates, Vorschaue und Problemmeldungen."
         },
         "card2": {
           "title": "GitHub",
-          "description": "Für die Jungs da draußen!"
+          "description": "Für die Entwickler da draußen!"
         },
         "card3": {
           "title": "E-Mail senden",
@@ -131,7 +131,7 @@
       "contributions": {
         "title": "Beiträge",
         "subtitle": {
-          "main": "Dank unserer großartigen Mitarbeiter. Ohne dich wäre das nicht möglich gewesen ❤",
+          "main": "Danke an unsere großartigen Mitarbeiter. Ohne euch wäre das nicht möglich gewesen ❤",
           "api": "Auch ein großer Dank an diejenigen, die uns geholfen haben, die API zu bauen"
         }
       }
@@ -147,39 +147,39 @@
           },
           "data": {
             "title": "Kontodaten",
-            "description": "Alle Ihre Daten abrufen!",
-            "button": "Meine Daten"
+            "description": "Alle Kontodaten abrufen!",
+            "button": "Meine Daten erhalten"
           },
           "auth": {
             "title": "Authentifizierungsanbieter verwalten",
-            "description": "Fügen oder entfernen Sie Sign-on-Methoden von Ihrem Konto, einschließlich GitHub, GitLab, Microsoft, Discord, Steam und Google."
+            "description": "Verbinde oder entferne Anmeldeoptionen von deinem Account, unter anderem Github, Discord, Google und Steam."
           },
           "sessions": {
-            "title": "Verwalten von Sitzungen",
-            "description": "Sehen Sie Ihre Sitzungsmulde all Ihr Gerät!",
-            "actual": "Tatsächlich",
-            "not-provided": "Nicht vorgesehen",
+            "title": "Sitzungen verwalten",
+            "description": "Alle aktive Sitzungen",
+            "actual": "Aktuelle Sitzung",
+            "not-provided": "Nicht abrufbar",
             "device": "Gerät",
             "brand": "Marke",
             "name": "Name",
-            "created_at": "Erstellt bei",
-            "expire": "Entfällt"
+            "created_at": "Erstellt am",
+            "expire": "Aktiv bis"
           }
         },
         "display": {
           "title": "Anzeigeeinstellungen",
           "theme": {
-            "title": "Thema",
-            "description": "Wählen Sie zwischen hellem und dunklem Modus für die Seitenschnittstelle.",
-            "dark-mode": "Dark Mode",
-            "light-mode": "Lichtmodus"
+            "title": "Helligkeit",
+            "description": "Wählen Sie zwischen hellem und dunklem Modus für die Seite.",
+            "dark-mode": "Dunkler Modus",
+            "light-mode": "Heller Modus"
           },
           "easter-eggs": {
             "title": "Ostereier",
-            "description": "Entdecken und toggle spezielle Features versteckt während der gesamten Anwendung.",
+            "description": "Entdecke und aktiviere in der gesamten Webseite versteckte Sonderfunktionen.",
             "locked": "Gesperrt",
-            "unlocked": "Entriegelt",
-            "keep-exploring": "Entdecken Sie weitere Ostereier!"
+            "unlocked": "Freigeschaltet",
+            "keep-exploring": "Entdecke weitere Ostereier!"
           }
         },
         "public-profile": {
@@ -194,12 +194,12 @@
             "description": "Ein einzigartiger case-insensitiver Name, um Ihr Profil zu identifizieren."
           },
           "bio": {
-            "title": "Biozid",
+            "title": "Bio",
             "description": "Eine kurze Beschreibung, um jedem etwas über Sie zu erzählen."
           },
           "actions": {
             "save": "Änderungen speichern",
-            "visit": "Besuchen Sie Ihr Profil"
+            "visit": "Eigenes Profil anschauen"
           }
         }
       }
@@ -207,7 +207,7 @@
     "easter-eggs": {
       "legacyLogo": {
         "name": "Legacy Logo",
-        "description": "Ersetzt das aktuelle Blueprint Logo mit dem klassischen Legacy-Logo.",
+        "description": "Ersetzt das aktuelle Blueprint Logo mit dem klassischen Logo.",
         "hint": "Klicken Sie auf Dinge, die unsere Identität repräsentieren."
       }
     },
@@ -215,15 +215,15 @@
       "page-not-found": {
         "title": "Seite nicht gefunden",
         "description1": "Ups! Die gesuchte Seite existiert nicht oder wurde verschoben.",
-        "description2": "Wenn Sie glauben, dass dies ein Fehler E-Mail an uns ist",
-        "action": "Zurück zu Home"
+        "description2": "Wenn Sie glauben, dass dies ein Fehler ist, kontaktiere uns mit folgender E-Mail",
+        "action": "Zurück zur Startseite"
       }
     },
     "footer": {
-      "found-bug": "Einen Fehler gefunden? Berichten Sie es",
+      "found-bug": "Du hast einen Fehler gefunden? Melde ihn hier:",
       "github-issues": "GitHub Probleme",
-      "mojang-warning": "NICHT EIN AMTLICHER MINECRAFT SERVICE. NICHT GENEHMIGT ODER MIT MOJANG ODER MICROSOFT.",
-      "create-warning": "Nicht mit dem Erstellen von Mod-Team oder einem der Addons in irgendeiner Weise verbunden."
+      "mojang-warning": "KEIN OFFIZIELLER MINECRAFT SERVICE. NICHT GENEHMIGT ODER MIT MOJANG ODER MICROSOFT VERBUNDEN.",
+      "create-warning": "Nicht mit dem Create Mod-Team oder einem der Addons in irgendeiner Weise verbunden."
     }
   }
 }
