@@ -38,6 +38,7 @@ import { SchematicVoting } from '@/components/features/schematics/SchematicVotin
 import { useUserStore } from '@/api/stores/userStore';
 import { useIncrementDownloads, useFetchSchematic } from '@/api/appwrite/useSchematics';
 import { useParams, useNavigate } from 'react-router';
+import { useStatsTracking } from '@/providers/StatsTrackingProvider';
 import { cn } from '@/config/utils';
 
 const ComplexityBadge = ({ level }: { level: string }) => {
@@ -94,6 +95,7 @@ export const SchematicsDetailsEnhancedClean = () => {
   const { data: schematic, isLoading } = useFetchSchematic(id);
   const { mutate: incrementDownloads } = useIncrementDownloads();
   const user = useUserStore((state) => state.user);
+  const { trackDownload } = useStatsTracking();
   const [isTimerComplete, setIsTimerComplete] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
 
@@ -130,6 +132,11 @@ export const SchematicsDetailsEnhancedClean = () => {
   const handleDownload = () => {
     window.open(schematic.schematic_url, '_blank');
     incrementDownloads(schematic.$id);
+    
+    // Track download stats
+    if (schematic.user_id) {
+      trackDownload(schematic.user_id, schematic.$id);
+    }
   };
 
   // Calculate complexity score

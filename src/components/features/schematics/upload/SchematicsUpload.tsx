@@ -9,6 +9,10 @@ import { generateSlug } from '../utils/generateSlug';
 import { useSaveSchematics, useFetchSchematic } from '@/api/appwrite/useSchematics';
 import type { SchematicFormValues } from '@/types';
 import SchematicUploadLoadingOverlay from '@/components/loading-overlays/SchematicUploadLoadingOverlay';
+import { compressImageToWebP, calculateCompressionStats } from '@/utils/imageCompression';
+import { formatEcoToast, getCompressionLoadingMessage } from '@/utils/ecoFacts';
+import { toast } from 'sonner';
+import { Leaf } from 'lucide-react';
 
 function SchematicsUpload() {
   const navigate = useNavigate();
@@ -91,33 +95,88 @@ function SchematicsUpload() {
 
     setLoading(true);
     try {
+      // Upload schematic NBT file
       let schematicUrl = existingSchematic?.schematic_url;
       if (data.schematicFile) {
+        toast.info('Uploading schematic file...');
         const uploadedSchematic = await storage.createFile(
-          STORAGE_BUCKETS.SCHEMATICS_FILES,
+          STORAGE_BUCKETS.SCHEMATICS_NBT,
           'unique()',
           data.schematicFile
         );
         schematicUrl = storage
-          .getFileDownload(STORAGE_BUCKETS.SCHEMATICS_FILES, uploadedSchematic.$id)
+          .getFileDownload(STORAGE_BUCKETS.SCHEMATICS_NBT, uploadedSchematic.$id)
           .toString();
       }
 
+      // Compress and upload preview images
+      toast.info(getCompressionLoadingMessage());
+      
+      let totalOriginalSize = 0;
+      let totalCompressedSize = 0;
+      
       const uploadedImages = await Promise.all(
         data.imageFiles.map(async (file: File) => {
-          const uploadedFile = await storage.createFile(
-            STORAGE_BUCKETS.SCHEMATICS,
-            'unique()',
-            file
-          );
-          return uploadedFile.$id;
+          try {
+            // Compress image to WebP with balanced quality
+            const originalSize = file.size;
+            totalOriginalSize += originalSize;
+            
+            const compressedFile = await compressImageToWebP(
+              file, 
+              85, // Quality: 85 for good balance between quality and size
+              1920, // Max width
+              1080  // Max height
+            );
+            
+            totalCompressedSize += compressedFile.size;
+            
+            // Calculate and log compression stats
+            const stats = calculateCompressionStats(originalSize, compressedFile.size);
+            console.log(`Image compressed: ${stats.originalSize} → ${stats.compressedSize} (saved ${stats.compressionRatio})`);
+            
+            // Upload compressed file
+            const uploadedFile = await storage.createFile(
+              STORAGE_BUCKETS.SCHEMATICS_PREVIEWS,
+              'unique()',
+              compressedFile
+            );
+            return uploadedFile.$id;
+          } catch (compressionError) {
+            console.warn('Compression failed, uploading original:', compressionError);
+            // Track original size even if compression fails
+            totalCompressedSize += file.size;
+            // Fallback to original if compression fails
+            const uploadedFile = await storage.createFile(
+              STORAGE_BUCKETS.SCHEMATICS_PREVIEWS,
+              'unique()',
+              file
+            );
+            return uploadedFile.$id;
+          }
         })
       );
+
+      if (uploadedImages.length > 0 && totalCompressedSize > 0) {
+        // Show eco-friendly message if we compressed images
+        const ecoMessage = formatEcoToast(
+          totalOriginalSize,
+          totalCompressedSize,
+          uploadedImages.length
+        );
+        toast.success(ecoMessage.title, {
+          description: ecoMessage.description,
+          duration: 8000,
+          icon: <Leaf className="text-green-500" />
+        });
+      } else if (uploadedImages.length > 0) {
+        toast.success(`${uploadedImages.length} images uploaded successfully`);
+      }
 
       const imageUrls =
         uploadedImages.length > 0
           ? uploadedImages.map((id) =>
-              storage.getFilePreview(STORAGE_BUCKETS.SCHEMATICS, id).toString()
+              storage.getFilePreview(STORAGE_BUCKETS.SCHEMATICS_PREVIEWS, id).toString()
             )
           : existingSchematic?.image_urls || [];
 

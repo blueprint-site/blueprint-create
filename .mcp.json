@@ -9,7 +9,7 @@
       "args": ["mcp-server-appwrite", "--all"],
       "env": {
         "APPWRITE_PROJECT_ID": "683770670016d1661c37",
-        "APPWRITE_API_KEY": "standard_e5154d14fd631413a4d45014c643a80eb2f44c3cbb91caa3d967fe2b850ddb99e672dd1dfd2d9fff279c42c2a2442e13d95b4a469019e8c0f6c247985005d2ee64d19dd9fbf1978b688f6fd58aa40d93a72dccd8091178dc2a27626dcbf9a0bb2a15dee106bdeaf56bab34cfdf22750ea2e51f9d3672e5bde84a3e426b7eedb4",
+        "APPWRITE_API_KEY": "standard_52150009a9442fde1aaa171128478ea377158de8a6e25f5a3f797e1f1de6efc24d664a67ca1e15918871da00c577b2a0b1ced2b0ddd60f8c5f8a64175a688198fead8a641031876aa3bd4391feb26d1156284834027badbdb43f0d1344bcb9b7c1919b88f2dee39aa36cd8a9f61245af5bd21d310b2f21798058e4a2283b10cf",
         "APPWRITE_ENDPOINT": "https://api.blueprint-create.com/v1"
       }
     },

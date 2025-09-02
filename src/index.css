@@ -3,6 +3,19 @@
 
 @custom-variant dark (.dark &);
 
+/* Badge Shape Clip Paths */
+.clip-hexagon {
+  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+}
+
+.clip-shield {
+  clip-path: polygon(50% 0%, 100% 20%, 100% 70%, 50% 100%, 0% 70%, 0% 20%);
+}
+
+.clip-star {
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
 /* Root CSS Variables - HSL values wrapped in hsl() */
 :root {
   --background: hsl(220 14% 96%);

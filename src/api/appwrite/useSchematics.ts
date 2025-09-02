@@ -12,11 +12,12 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from '@/hooks';
-import { databases, ID } from '@/config/appwrite.ts';
+import { databases, ID, storage } from '@/config/appwrite.ts';
 import { Query } from 'appwrite';
 import type { Models } from 'appwrite';
 import type { Schematic } from '@/types';
 import { createSchematicSchema, updateSchematicSchema } from '@/schemas/schematic.schema';
+import { extractSchematicFiles } from '@/utils/extractFileIdFromUrl';
 
 // Appwrite database configuration
 const DATABASE_ID = 'main';
@@ -108,25 +109,49 @@ export const useDeleteSchematics = (user_id?: string) => {
   return useMutation({
     mutationFn: async (id: string) => {
       try {
+        // First, fetch the schematic to get file references
+        const schematic = await databases.getDocument<Schematic>(DATABASE_ID, COLLECTION_ID, id);
+        
+        // Extract all file references from the schematic
+        const filesToDelete = extractSchematicFiles(schematic);
+        
+        console.log(`Deleting schematic ${id} with ${filesToDelete.length} associated files`);
+        
+        // Delete all associated files
+        const deletePromises = filesToDelete.map(async ({ bucketId, fileId }) => {
+          try {
+            await storage.deleteFile(bucketId, fileId);
+            console.log(`Deleted file ${fileId} from bucket ${bucketId}`);
+          } catch (error) {
+            console.error(`Failed to delete file ${fileId} from bucket ${bucketId}:`, error);
+            // Continue with deletion even if some files fail
+          }
+        });
+        
+        await Promise.allSettled(deletePromises);
+        
+        // Now delete the schematic document
         const response = await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
+        
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
-          title: '✅ Schematics deleted ✅',
+          title: '✅ Schematic and associated files deleted ✅',
         });
 
         return response;
       } catch (error) {
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
-          title: '❌ Error deleting the Schematics ❌',
+          title: '❌ Error deleting the Schematic ❌',
         });
-        console.error('Error deleting Schematics:', error);
+        console.error('Error deleting Schematic:', error);
 
         throw error;
       }
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['usersSchematics', user_id] });
+      await queryClient.invalidateQueries({ queryKey: ['schematics'] });
     },
   });
 };

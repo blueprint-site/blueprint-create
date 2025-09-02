@@ -278,7 +278,7 @@ export const FilterPanel = ({
       <Collapsible open={expandedSections.categories}>
         <CollapsibleTrigger
           onClick={() => toggleSection('categories')}
-          className='hover:bg-accent flex w-full items-center justify-between rounded-md px-2 py-1'
+          className='hover:bg-accent cursor-pointer flex w-full items-center justify-between rounded-md px-2 py-1'
         >
           <span className='text-sm font-medium'>Categories</span>
           {expandedSections.categories ? (
@@ -307,7 +307,7 @@ export const FilterPanel = ({
       <Collapsible open={expandedSections.loaders}>
         <CollapsibleTrigger
           onClick={() => toggleSection('loaders')}
-          className='hover:bg-accent flex w-full items-center justify-between rounded-md px-2 py-1'
+          className='hover:bg-accent cursor-pointer flex w-full items-center justify-between rounded-md px-2 py-1'
         >
           <span className='text-sm font-medium'>Mod Loaders</span>
           {expandedSections.loaders ? (
@@ -334,7 +334,7 @@ export const FilterPanel = ({
       <Collapsible open={expandedSections.versions}>
         <CollapsibleTrigger
           onClick={() => toggleSection('versions')}
-          className='hover:bg-accent flex w-full items-center justify-between rounded-md px-2 py-1'
+          className='hover:bg-accent cursor-pointer flex w-full items-center justify-between rounded-md px-2 py-1'
         >
           <span className='text-sm font-medium'>Minecraft Versions</span>
           {expandedSections.versions ? (
@@ -366,7 +366,7 @@ export const FilterPanel = ({
         <Collapsible open={expandedSections.authors}>
           <CollapsibleTrigger
             onClick={() => toggleSection('authors')}
-            className='hover:bg-accent flex w-full items-center justify-between rounded-md px-2 py-1'
+            className='hover:bg-accent cursor-pointer flex w-full items-center justify-between rounded-md px-2 py-1'
           >
             <span className='text-sm font-medium'>Authors</span>
             {expandedSections.authors ? (

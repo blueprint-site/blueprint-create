@@ -13,6 +13,7 @@ import {
 import { cn } from '@/config/utils';
 import { useToggleSchematicLike, useRateSchematic } from '@/api/appwrite/useSchematicVoting';
 import { useUserStore } from '@/api/stores/userStore';
+import { useStatsTracking } from '@/providers/StatsTrackingProvider';
 import type { Schematic } from '@/types';
 
 interface SchematicVotingProps {
@@ -31,6 +32,7 @@ export const SchematicVoting = ({
   const user = useUserStore((state) => state.user);
   const { mutate: toggleLike, isPending: isLiking } = useToggleSchematicLike();
   const { mutate: rateSchematic, isPending: isRating } = useRateSchematic();
+  const { trackLike } = useStatsTracking();
 
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(schematic.likes || 0);
@@ -61,6 +63,11 @@ export const SchematicVoting = ({
       currentLikes: likeCount,
       likedBy: schematic.liked_by || [],
     });
+
+    // Track the like if we're adding a like (not removing)
+    if (!isLiked && schematic.user_id) {
+      trackLike(schematic.user_id, schematic.$id);
+    }
 
     // Optimistic update
     setIsLiked(!isLiked);
@@ -200,6 +207,7 @@ export const SchematicVoting = ({
 export const SchematicVotingCompact = ({ schematic }: { schematic: Schematic }) => {
   const user = useUserStore((state) => state.user);
   const { mutate: toggleLike, isPending } = useToggleSchematicLike();
+  const { trackLike } = useStatsTracking();
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(schematic.likes || 0);
 
@@ -220,6 +228,11 @@ export const SchematicVotingCompact = ({ schematic }: { schematic: Schematic }) 
       currentLikes: likeCount,
       likedBy: schematic.liked_by || [],
     });
+
+    // Track the like if we're adding a like (not removing)
+    if (!isLiked && schematic.user_id) {
+      trackLike(schematic.user_id, schematic.$id);
+    }
 
     // Optimistic update
     setIsLiked(!isLiked);

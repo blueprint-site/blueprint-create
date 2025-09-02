@@ -8,6 +8,8 @@ import { routes } from './routes';
 import { useEffect, useState } from 'react';
 import 'minecraft-textures-library/src/templates/create-textures.css';
 import CookieDialog from './components/utility/CookieDialog.tsx';
+import { StatsTrackingProvider } from '@/providers/StatsTrackingProvider';
+import { AchievementNotificationProvider } from '@/providers/AchievementNotificationProvider';
 
 const App = () => {
   const fetchUser = useUserStore((state) => state.fetchUser);
@@ -54,9 +56,13 @@ const App = () => {
 
   return (
     <>
-      <RouterProvider router={router} />
-      <CookieDialog variant='default' />
-      <Toaster />
+      <StatsTrackingProvider>
+        <AchievementNotificationProvider>
+          <RouterProvider router={router} />
+          <CookieDialog variant='default' />
+          <Toaster />
+        </AchievementNotificationProvider>
+      </StatsTrackingProvider>
     </>
   );
 };

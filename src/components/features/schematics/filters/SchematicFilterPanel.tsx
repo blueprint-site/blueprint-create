@@ -268,7 +268,7 @@ export const SchematicFilterPanel = ({
         <Collapsible open={expandedSections.categories}>
           <CollapsibleTrigger
             onClick={() => toggleSection('categories')}
-            className='hover:bg-accent flex w-full items-center justify-between rounded-md px-2 py-1'
+            className='hover:bg-accent cursor-pointer flex w-full items-center justify-between rounded-md px-2 py-1'
           >
             <span className='text-sm font-medium'>Categories</span>
             {expandedSections.categories ? (
@@ -299,7 +299,7 @@ export const SchematicFilterPanel = ({
         <Collapsible open={expandedSections.materials}>
           <CollapsibleTrigger
             onClick={() => toggleSection('materials')}
-            className='hover:bg-accent flex w-full items-center justify-between rounded-md px-2 py-1'
+            className='hover:bg-accent cursor-pointer flex w-full items-center justify-between rounded-md px-2 py-1'
           >
             <span className='text-sm font-medium'>Materials</span>
             {expandedSections.materials ? (
@@ -333,7 +333,7 @@ export const SchematicFilterPanel = ({
         <Collapsible open={expandedSections.complexity}>
           <CollapsibleTrigger
             onClick={() => toggleSection('complexity')}
-            className='hover:bg-accent flex w-full items-center justify-between rounded-md px-2 py-1'
+            className='hover:bg-accent cursor-pointer flex w-full items-center justify-between rounded-md px-2 py-1'
           >
             <span className='text-sm font-medium'>Complexity</span>
             {expandedSections.complexity ? (
@@ -366,7 +366,7 @@ export const SchematicFilterPanel = ({
         <Collapsible open={expandedSections.compatibility}>
           <CollapsibleTrigger
             onClick={() => toggleSection('compatibility')}
-            className='hover:bg-accent flex w-full items-center justify-between rounded-md px-2 py-1'
+            className='hover:bg-accent cursor-pointer flex w-full items-center justify-between rounded-md px-2 py-1'
           >
             <span className='text-sm font-medium'>Required Mods</span>
             {expandedSections.compatibility ? (

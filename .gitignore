@@ -48,3 +48,7 @@ appwrite.json
 /package-lock.json
 .claude
 claude.md
+/.claude/
+/.github/
+/.husky/
+.mcp.json

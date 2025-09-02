@@ -18,6 +18,11 @@ import { AddonStatsWrapper } from '@/components/features/admin/stats';
 import { AddFeaturedAddon } from '@/components/features/admin/addons/AddFeaturedAddon';
 import FeaturedAddonsList from '@/components/features/admin/addons/FeaturedAddonsList';
 import AutoAddFeaturedAddon from '@/components/features/admin/addons/AutoAddFeaturedAddon';
+import { BadgeManagement } from '@/pages/admin/BadgeManagement';
+import { GlobalStats } from '@/pages/admin/GlobalStats';
+import { RewardRules } from '@/pages/admin/RewardRules';
+import { UserAchievements } from '@/pages/admin/UserAchievements';
+import { BadgeDebug } from '@/pages/admin/BadgeDebug';
 
 export const AdminRoutes: RouteObject[] = [
   {
@@ -79,5 +84,25 @@ export const AdminRoutes: RouteObject[] = [
   {
     path: 'admin/users',
     element: <UserManagement />,
+  },
+  {
+    path: 'admin/badges',
+    element: <BadgeManagement />,
+  },
+  {
+    path: 'admin/rewards/stats',
+    element: <GlobalStats />,
+  },
+  {
+    path: 'admin/rewards/rules',
+    element: <RewardRules />,
+  },
+  {
+    path: 'admin/rewards/achievements',
+    element: <UserAchievements />,
+  },
+  {
+    path: 'admin/rewards/debug',
+    element: <BadgeDebug />,
   },
 ];
