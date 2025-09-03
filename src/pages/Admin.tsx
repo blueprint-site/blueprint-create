@@ -1,15 +1,34 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BarChart, BookOpen, Box, FileText, Package, Plus, Upload } from 'lucide-react';
+import {
+  BarChart,
+  BookOpen,
+  Box,
+  FileText,
+  Package,
+  Plus,
+  Upload,
+  MessageSquare,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { FeedbackAdmin } from '@/components/admin/FeedbackAdmin';
+import { useFetchFeedback } from '@/api';
+import type { FeedbackRecord } from '@/types';
+
+// Returns true if any feedback item has status === 'open'
+function checkIsThereFeedback(feedback?: FeedbackRecord[]): boolean {
+  return Array.isArray(feedback) && feedback.some((f) => f.status === 'open');
+}
 
 import { AdminDashboard } from './AdminDashboard';
 
 export const Admin = () => {
+
   return <AdminDashboard />;
 };
 
@@ -96,14 +115,30 @@ export const AdminOld = () => {
     },
   ];
 
+  const [activeTab, setActiveTab] = useState<
+    'addons' | 'schematics' | 'blog' | 'feedback' | 'analytics'
+  >('addons');
+
   return (
     <div className='flex h-full flex-col'>
       {/* Tabs sections - takes up remaining height */}
-      <Tabs defaultValue='addons' className='flex h-full flex-1 flex-col'>
+      <Tabs
+        value={activeTab}
+        onValueChange={(v) => setActiveTab(v as typeof activeTab)}
+        className='flex h-full flex-1 flex-col'
+      >
         <TabsList className='mb-2'>
           <TabsTrigger value='addons'>Addons</TabsTrigger>
           <TabsTrigger value='schematics'>Schematics</TabsTrigger>
           <TabsTrigger value='blog'>Blog</TabsTrigger>
+          <TabsTrigger value='feedback'>
+            <span>Feedback</span>
+            {hasOpenFeedback && activeTab !== 'feedback' && (
+              <Badge variant='destructive' className='ml-2 animate-ping'>
+                LOOK
+              </Badge>
+            )}
+          </TabsTrigger>
           <TabsTrigger value='analytics'>Analytics</TabsTrigger>
         </TabsList>
 
@@ -357,6 +392,11 @@ export const AdminOld = () => {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          {/* Feedback Tab */}
+          <TabsContent value='feedback' className='h-150'>
+            <FeedbackAdmin />
           </TabsContent>
 
           {/* Analytics Tab */}

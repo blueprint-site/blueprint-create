@@ -1,10 +1,10 @@
-// PROPOSAL 2: Compact Two-Tier Footer - Complete Implementation
 import { cn } from '@/config/utils.ts';
 import { useLogo } from '@/hooks';
 import LanguageSwitcher from '@/components/features/settings/LanguageSwitcher.tsx';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button.tsx';
 import { useNavigate } from 'react-router-dom';
+import { FeedbackWidget } from '@/components/FeedbackWidget';
 import { Bug } from 'lucide-react';
 import { SiGithub } from '@icons-pack/react-simple-icons';
 
@@ -66,6 +66,7 @@ const CompactTwoTierFooter = ({ className }: FooterProps) => {
             </div>
 
             <div className='flex items-center justify-center gap-3 md:justify-end'>
+              <FeedbackWidget renderAsIconButton />
               <Button variant='link' size='sm' asChild>
                 <a
                   href='https://github.com/blueprint-site/blueprint-create'
