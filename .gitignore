@@ -50,14 +50,21 @@ coverage
 functions/*
 appwrite.json
 /package-lock.json
+
+# Claude AI related
 .claude
-claude.md
 /.claude/
-/.github/
-/.husky/
-.mcp.json
-/CLAUDE_AGENTS.md
-/nul
 .claude/*
+CLAUDE.md
+/CLAUDE_AGENTS.md
+docs/claude/
+
+# GitHub/Git related
+/.github/
 .github/*
+/.husky/
 .husky/*
+
+# Other
+.mcp.json
+/nul
