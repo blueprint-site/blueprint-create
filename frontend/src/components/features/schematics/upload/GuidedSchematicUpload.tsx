@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogOverlay } from '@/components/ui/dialog';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
+import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import { Progress } from '@/components/ui/progress';
 import {
   ChevronLeft,
@@ -451,6 +452,12 @@ export const GuidedSchematicUpload: React.FC<GuidedSchematicUploadProps> = ({
                 e.preventDefault();
               }}
             >
+              <VisuallyHidden.Root>
+                <DialogPrimitive.Title>Upload Schematic</DialogPrimitive.Title>
+                <DialogPrimitive.Description>
+                  Upload your schematic file step by step
+                </DialogPrimitive.Description>
+              </VisuallyHidden.Root>
               <FormProvider {...methods}>
                 <form onSubmit={handleSubmit(onSubmit)} className='relative'>
                   <motion.div

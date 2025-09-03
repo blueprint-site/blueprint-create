@@ -36,20 +36,20 @@ export function StepMods() {
             <FormDescription>Choose compatible Create Mod versions</FormDescription>
             <ScrollArea className='h-32 rounded-md border p-3'>
               <div className='grid grid-cols-2 gap-2'>
-                {CREATE_VERSIONS.map((versionInfo) => (
-                  <div key={versionInfo.version} className='flex items-center space-x-2'>
+                {Object.values(CREATE_VERSIONS).map((versionInfo) => (
+                  <div key={versionInfo.value} className='flex items-center space-x-2'>
                     <Checkbox
-                      checked={field.value?.includes(versionInfo.version)}
+                      checked={field.value?.includes(versionInfo.value) || false}
                       onCheckedChange={(checked) => {
                         const current = field.value || [];
                         if (checked) {
-                          field.onChange([...current, versionInfo.version]);
+                          field.onChange([...current, versionInfo.value]);
                         } else {
-                          field.onChange(current.filter((v: string) => v !== versionInfo.version));
+                          field.onChange(current.filter((v: string) => v !== versionInfo.value));
                         }
                       }}
                     />
-                    <label className='text-sm'>{versionInfo.version}</label>
+                    <label className='text-sm'>{versionInfo.label}</label>
                   </div>
                 ))}
               </div>
@@ -70,7 +70,7 @@ export function StepMods() {
               {MOD_LOADERS.map((loader) => (
                 <div key={loader} className='flex items-center space-x-2'>
                   <Checkbox
-                    checked={field.value?.includes(loader)}
+                    checked={field.value?.includes(loader) || false}
                     onCheckedChange={(checked) => {
                       const current = field.value || [];
                       if (checked) {

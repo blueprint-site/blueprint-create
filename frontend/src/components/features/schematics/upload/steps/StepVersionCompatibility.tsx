@@ -47,8 +47,8 @@ export const StepVersionCompatibility: React.FC = () => {
   } = useFormContext<SchematicFormValues>();
 
   // Watch form values
-  const watchedMinecraftVersions = watch('minecraftVersions') || [];
-  const watchedCreateVersions = watch('createVersions') || [];
+  const watchedMinecraftVersions = watch('game_versions') || [];
+  const watchedCreateVersions = watch('create_versions') || [];
   const watchedModloaders = watch('modloaders') || [];
 
   // State for select all
@@ -128,7 +128,7 @@ export const StepVersionCompatibility: React.FC = () => {
       newVersions = [...currentVersions, version];
     }
 
-    setValue('minecraftVersions', newVersions, { shouldValidate: true });
+    setValue('game_versions', newVersions, { shouldValidate: true });
 
     // Auto-update Create versions based on compatibility
     const newAvailableCreate = new Set<string>();
@@ -143,18 +143,18 @@ export const StepVersionCompatibility: React.FC = () => {
     const filteredCreateVersions = watchedCreateVersions.filter((cv) => newAvailableCreate.has(cv));
 
     if (filteredCreateVersions.length !== watchedCreateVersions.length) {
-      setValue('createVersions', filteredCreateVersions);
+      setValue('create_versions', filteredCreateVersions);
     }
   };
 
   // Handle select all Minecraft versions
   const handleSelectAllMinecraft = () => {
     if (selectAllMinecraft) {
-      setValue('minecraftVersions', []);
+      setValue('game_versions', []);
       setSelectAllMinecraft(false);
     } else {
       const allVersions = MINECRAFT_VERSIONS.filter((v) => v.value !== 'All').map((v) => v.value);
-      setValue('minecraftVersions', allVersions, { shouldValidate: true });
+      setValue('game_versions', allVersions, { shouldValidate: true });
       setSelectAllMinecraft(true);
     }
   };
@@ -171,16 +171,16 @@ export const StepVersionCompatibility: React.FC = () => {
       newVersions = [...currentVersions, version];
     }
 
-    setValue('createVersions', newVersions, { shouldValidate: true });
+    setValue('create_versions', newVersions, { shouldValidate: true });
   };
 
   // Handle select all Create versions
   const handleSelectAllCreate = () => {
     if (selectAllCreate) {
-      setValue('createVersions', []);
+      setValue('create_versions', []);
       setSelectAllCreate(false);
     } else {
-      setValue('createVersions', availableCreateVersions, { shouldValidate: true });
+      setValue('create_versions', availableCreateVersions, { shouldValidate: true });
       setSelectAllCreate(true);
     }
   };

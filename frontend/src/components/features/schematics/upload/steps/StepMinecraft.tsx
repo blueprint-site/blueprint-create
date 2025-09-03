@@ -19,8 +19,10 @@ export function StepMinecraft() {
   const { control } = useFormContext<SchematicFormValues>();
 
   // Group versions by major release for better organization
-  const latestVersions = MINECRAFT_VERSIONS.slice(0, 5);
-  const olderVersions = MINECRAFT_VERSIONS.slice(5);
+  // Filter out "All" option and then slice
+  const allVersions = MINECRAFT_VERSIONS.filter((v) => v.value !== 'All');
+  const latestVersions = allVersions.slice(0, 5);
+  const olderVersions = allVersions.slice(5);
 
   return (
     <div className='space-y-6'>
@@ -45,19 +47,19 @@ export function StepMinecraft() {
                 <p className='mb-2 text-sm font-medium'>Recent Versions</p>
                 <div className='grid grid-cols-2 gap-2'>
                   {latestVersions.map((version) => (
-                    <div key={version} className='flex items-center space-x-2'>
+                    <div key={version.value} className='flex items-center space-x-2'>
                       <Checkbox
-                        checked={field.value?.includes(version)}
+                        checked={field.value?.includes(version.value) || false}
                         onCheckedChange={(checked) => {
                           const current = field.value || [];
                           if (checked) {
-                            field.onChange([...current, version]);
+                            field.onChange([...current, version.value]);
                           } else {
-                            field.onChange(current.filter((v: string) => v !== version));
+                            field.onChange(current.filter((v: string) => v !== version.value));
                           }
                         }}
                       />
-                      <label className='text-sm font-medium'>{version}</label>
+                      <label className='text-sm font-medium'>{version.label}</label>
                     </div>
                   ))}
                 </div>
@@ -68,19 +70,19 @@ export function StepMinecraft() {
                 <ScrollArea className='h-32 rounded-md border p-3'>
                   <div className='grid grid-cols-2 gap-2'>
                     {olderVersions.map((version) => (
-                      <div key={version} className='flex items-center space-x-2'>
+                      <div key={version.value} className='flex items-center space-x-2'>
                         <Checkbox
-                          checked={field.value?.includes(version)}
+                          checked={field.value?.includes(version.value) || false}
                           onCheckedChange={(checked) => {
                             const current = field.value || [];
                             if (checked) {
-                              field.onChange([...current, version]);
+                              field.onChange([...current, version.value]);
                             } else {
-                              field.onChange(current.filter((v: string) => v !== version));
+                              field.onChange(current.filter((v: string) => v !== version.value));
                             }
                           }}
                         />
-                        <label className='text-sm'>{version}</label>
+                        <label className='text-sm'>{version.label}</label>
                       </div>
                     ))}
                   </div>

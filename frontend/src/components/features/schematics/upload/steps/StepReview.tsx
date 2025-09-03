@@ -66,8 +66,8 @@ export const StepReview: React.FC<StepReviewProps> = ({ onEditStep }) => {
         );
       case 'versions':
         return !!(
-          formData.minecraftVersions?.length > 0 &&
-          formData.createVersions?.length > 0 &&
+          formData.game_versions?.length > 0 &&
+          formData.create_versions?.length > 0 &&
           formData.modloaders?.length > 0
         );
       case 'technical':
@@ -285,16 +285,16 @@ export const StepReview: React.FC<StepReviewProps> = ({ onEditStep }) => {
               <Gamepad2 className='text-muted-foreground h-4 w-4' />
               Minecraft Versions
             </div>
-            {formData.minecraftVersions && formData.minecraftVersions.length > 0 ? (
+            {formData.game_versions && formData.game_versions.length > 0 ? (
               <div className='flex flex-wrap gap-1 pl-6'>
-                {formData.minecraftVersions.slice(0, 8).map((v) => (
+                {formData.game_versions.slice(0, 8).map((v) => (
                   <Badge key={v} variant='secondary' className='text-xs'>
                     {v}
                   </Badge>
                 ))}
-                {formData.minecraftVersions.length > 8 && (
+                {formData.game_versions.length > 8 && (
                   <Badge variant='secondary' className='text-xs'>
-                    +{formData.minecraftVersions.length - 8} more
+                    +{formData.game_versions.length - 8} more
                   </Badge>
                 )}
               </div>
@@ -309,9 +309,9 @@ export const StepReview: React.FC<StepReviewProps> = ({ onEditStep }) => {
               <Package className='text-muted-foreground h-4 w-4' />
               Create Mod Versions
             </div>
-            {formData.createVersions && formData.createVersions.length > 0 ? (
+            {formData.create_versions && formData.create_versions.length > 0 ? (
               <div className='flex flex-wrap gap-1 pl-6'>
-                {formData.createVersions.map((v) => (
+                {formData.create_versions.map((v) => (
                   <Badge key={v} variant='secondary' className='text-xs'>
                     Create {CREATE_VERSIONS[v]?.label || v}
                   </Badge>

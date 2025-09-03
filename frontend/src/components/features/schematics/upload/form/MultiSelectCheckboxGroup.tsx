@@ -45,7 +45,7 @@ export function MultiSelectCheckboxGroup({
                 <FormItem className='flex items-center space-y-0 space-x-3' key={option.value}>
                   <FormControl>
                     <Checkbox
-                      checked={values.includes(option.value)}
+                      checked={values?.includes(option.value) || false}
                       onCheckedChange={(checked) => {
                         if (checked) {
                           field.onChange([...values, option.value]);
