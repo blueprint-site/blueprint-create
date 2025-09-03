@@ -68,7 +68,10 @@
       "mcp__appwrite__databases_delete_document",
       "mcp__appwrite__databases_delete_documents",
       "mcp__appwrite__users_get",
-      "Bash(npx vite:*)"
+      "Bash(npx vite:*)",
+      "Bash(mv:*)",
+      "Bash(rm:*)",
+      "Bash(npm cache clean:*)"
     ],
     "deny": [],
     "ask": []

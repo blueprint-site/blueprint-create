@@ -1,0 +1,107 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - VITE_APPWRITE_URL=${VITE_APPWRITE_URL}
+      - VITE_APPWRITE_PROJECT_ID=${VITE_APPWRITE_PROJECT_ID}
+      - VITE_MEILISEARCH_URL=${VITE_MEILISEARCH_URL}
+      - VITE_MEILISEARCH_API_KEY=${VITE_MEILISEARCH_API_KEY}
+    command: npm run dev:host
+    networks:
+      - blueprint-network
+
+  meilisearch:
+    image: getmeili/meilisearch:latest
+    ports:
+      - "7700:7700"
+    environment:
+      - MEILI_MASTER_KEY=${MEILI_MASTER_KEY:-masterKey}
+      - MEILI_ENV=development
+    volumes:
+      - meilisearch_data:/meili_data
+    networks:
+      - blueprint-network
+
+  appwrite:
+    image: appwrite/appwrite:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - _APP_ENV=development
+      - _APP_OPENSSL_KEY_V1=${_APP_OPENSSL_KEY_V1}
+      - _APP_DOMAIN=${_APP_DOMAIN:-localhost}
+      - _APP_DOMAIN_TARGET=${_APP_DOMAIN_TARGET:-localhost}
+      - _APP_REDIS_HOST=redis
+      - _APP_REDIS_PORT=6379
+      - _APP_DB_HOST=mariadb
+      - _APP_DB_PORT=3306
+      - _APP_DB_SCHEMA=appwrite
+      - _APP_DB_USER=appwrite
+      - _APP_DB_PASS=${_APP_DB_PASS:-password}
+    volumes:
+      - appwrite-uploads:/storage/uploads
+      - appwrite-cache:/storage/cache
+      - appwrite-config:/storage/config
+      - appwrite-certificates:/storage/certificates
+      - appwrite-functions:/storage/functions
+    depends_on:
+      - mariadb
+      - redis
+    networks:
+      - blueprint-network
+
+  mariadb:
+    image: mariadb:10
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-rootpassword}
+      - MYSQL_DATABASE=appwrite
+      - MYSQL_USER=appwrite
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-password}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - blueprint-network
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - blueprint-network
+
+  maildev:
+    image: maildev/maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+    networks:
+      - blueprint-network
+
+volumes:
+  meilisearch_data:
+  appwrite-uploads:
+  appwrite-cache:
+  appwrite-config:
+  appwrite-certificates:
+  appwrite-functions:
+  mariadb_data:
+  redis_data:
+
+networks:
+  blueprint-network:
+    driver: bridge

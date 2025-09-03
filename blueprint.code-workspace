@@ -1,0 +1,98 @@
+{
+  "folders": [
+    {
+      "name": "Root",
+      "path": "."
+    },
+    {
+      "name": "Frontend",
+      "path": "./frontend"
+    },
+    {
+      "name": "Backend Functions",
+      "path": "./backend/appwrite/functions"
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+    "eslint.workingDirectories": [
+      "./frontend"
+    ],
+    "typescript.tsdk": "frontend/node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.turbo": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/build": true,
+      "**/.turbo": true,
+      "**/coverage": true
+    },
+    "npm.packageManager": "npm",
+    "npm.scriptExplorerAction": "run",
+    "terminal.integrated.env.windows": {
+      "NODE_ENV": "development"
+    },
+    "terminal.integrated.env.linux": {
+      "NODE_ENV": "development"
+    },
+    "terminal.integrated.env.osx": {
+      "NODE_ENV": "development"
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+      "bradlc.vscode-tailwindcss",
+      "dsznajder.es7-react-js-snippets",
+      "ms-vscode.vscode-typescript-tsd",
+      "christian-kohler.npm-intellisense",
+      "christian-kohler.path-intellisense",
+      "mikestead.dotenv",
+      "usernamehw.errorlens",
+      "wix.vscode-import-cost",
+      "yoavbls.pretty-ts-errors",
+      "streetsidesoftware.code-spell-checker",
+      "ms-azuretools.vscode-docker",
+      "github.copilot",
+      "eamodio.gitlens"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "chrome",
+        "request": "launch",
+        "name": "Launch Chrome against localhost",
+        "url": "http://localhost:5173",
+        "webRoot": "${workspaceFolder}/frontend",
+        "sourceMaps": true
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Debug Backend Function",
+        "skipFiles": ["<node_internals>/**"],
+        "program": "${workspaceFolder}/backend/appwrite/functions/${input:functionName}/index.js"
+      }
+    ],
+    "inputs": [
+      {
+        "id": "functionName",
+        "type": "promptString",
+        "description": "Enter the function name to debug",
+        "default": "manage-users"
+      }
+    ]
+  }
+}
