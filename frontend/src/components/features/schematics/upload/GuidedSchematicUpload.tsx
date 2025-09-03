@@ -427,11 +427,30 @@ export const GuidedSchematicUpload: React.FC<GuidedSchematicUploadProps> = ({
   return (
     <AnimatePresence mode='wait'>
       {isOpen && (
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <Dialog
+          open={isOpen}
+          onOpenChange={(open) => {
+            // Only allow closing through the close button or Escape key, not by clicking outside
+            if (!open) {
+              // This will be triggered by Escape key
+              handleClose();
+            }
+          }}
+        >
           <DialogOverlay className='fixed inset-0 z-50 bg-black/80 backdrop-blur-sm' />
 
           <DialogPrimitive.Portal>
-            <DialogPrimitive.Content className='data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 w-full max-w-4xl translate-x-[-50%] translate-y-[-50%] border-0 bg-transparent p-0 shadow-none'>
+            <DialogPrimitive.Content
+              className='data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 w-full max-w-4xl translate-x-[-50%] translate-y-[-50%] border-0 bg-transparent p-0 shadow-none'
+              onPointerDownOutside={(e) => {
+                // Prevent closing when clicking outside
+                e.preventDefault();
+              }}
+              onInteractOutside={(e) => {
+                // Prevent any interaction outside from closing the dialog
+                e.preventDefault();
+              }}
+            >
               <FormProvider {...methods}>
                 <form onSubmit={handleSubmit(onSubmit)} className='relative'>
                   <motion.div
