@@ -1,161 +1,121 @@
-import type { ChangeEvent } from 'react';
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import type { Blog, BlogTag } from '@/types';
 import { useUserStore } from '@/api/stores/userStore';
-import ImageUploader from '@/components/utility/ImageUploader';
-import MarkdownEditor from '@/components/utility/MarkdownEditor';
-import TagSelector from '@/components/utility/TagSelector';
-import { useToast } from '@/hooks';
-import { useFetchBlog, useSaveBlog, useBlogTags, useCreateBlogTag, useDeleteBlogTag } from '@/api';
+import { useBlogTags, useCreateBlogTag, useDeleteBlogTag } from '@/api';
+import { useBlogEditor } from './hooks/useBlogEditor';
+import { BlogEditorHeader } from './BlogEditorHeader';
+import { BlogEditorForm } from './BlogEditorForm';
+import { BlogEditorPreview } from './BlogEditorPreview';
+import { Skeleton } from '@/components/ui/skeleton';
+import { AlertCircle } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useEffect } from 'react';
 
 export const BlogEditor = () => {
   const { id } = useParams<{ id: string }>();
-  const isNew = id === 'new';
-  const { toast } = useToast();
   const user = useUserStore((state) => state.user);
-  const { data: blog, isLoading } = useFetchBlog(id);
-  const saveBlogMutation = useSaveBlog();
-  const [blogState, setBlogState] = useState<Partial<Blog> | null>(null);
 
+  // Blog tags management
   const { data: blogTags = [], isLoading: isLoadingTags } = useBlogTags();
   const createTagMutation = useCreateBlogTag();
   const deleteTagMutation = useDeleteBlogTag();
 
+  // Blog editor hook
+  const {
+    blogState,
+    isLoading,
+    isSaving,
+    isDirty,
+    isNew,
+    isPreviewOpen,
+    handleFieldChange,
+    handleInputChange,
+    handleTagsChange,
+    handleSave,
+    handlePreview,
+    handleClosePreview,
+    autoSaveDraft,
+  } = useBlogEditor({
+    blogId: id,
+    userId: user?.$id,
+    userName: user?.name,
+  });
+
+  // Auto-save every 30 seconds for drafts
   useEffect(() => {
-    if (!user) return;
+    const interval = setInterval(() => {
+      autoSaveDraft();
+    }, 30000);
 
-    if (id && !isNew && blog) {
-      setBlogState(blog);
-    } else {
-      setBlogState({
-        title: '',
-        content: '',
-        slug: '',
-        img_url: '',
-        status: 'draft',
-        tags: [],
-        likes: 0,
-        authors_uuid: [user?.$id || ''],
-        authors: [user?.name || ''],
-      });
-    }
-  }, [id, blog, isNew, user]);
+    return () => clearInterval(interval);
+  }, [autoSaveDraft]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setBlogState((prev) => (prev ? { ...prev, [name]: value } : null));
-  };
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className='h-full w-full space-y-4 p-4'>
+        <Skeleton className='h-16 w-full' />
+        <div className='grid gap-4 md:grid-cols-2'>
+          <Skeleton className='h-64' />
+          <Skeleton className='h-64' />
+        </div>
+        <Skeleton className='h-96 w-full' />
+      </div>
+    );
+  }
 
-  const handleTagsChange = (selectedTags: BlogTag[]) => {
-    setBlogState((prev) => (prev ? { ...prev, tags: selectedTags } : null));
-  };
-
-  const handleSave = async () => {
-    if (!blogState || !blogState.title || !blogState.content) {
-      toast({
-        className: 'bg-surface-3 border-ring text-foreground',
-        title: '⚠️ Missing Fields ⚠️',
-        description: 'Title and content are required!',
-      });
-      return;
-    }
-    saveBlogMutation.mutate(blogState, {
-      onSuccess: () => {
-        toast({
-          className: 'bg-surface-3 border-ring text-foreground',
-          title: '✅ Success ✅',
-          description: `${blogState.title} has been saved successfully!`,
-        });
-      },
-      onError: () => {
-        toast({
-          className: 'bg-surface-3 border-ring text-foreground',
-          title: '❌ Error ❌',
-          description: `Failed to save ${blogState.title}. Please try again!`,
-        });
-      },
-    });
-  };
-
-  if (isLoading) return <div>Loading...</div>;
+  // Error state - no user
+  if (!user) {
+    return (
+      <Alert variant='destructive' className='m-4'>
+        <AlertCircle className='h-4 w-4' />
+        <AlertDescription>You must be logged in to create or edit blog posts.</AlertDescription>
+      </Alert>
+    );
+  }
 
   return (
-    <Card className='h-full w-full space-y-4 p-4'>
-      {/* Header button */}
-      <div className='flex justify-end'>
-        <Button onClick={handleSave} disabled={saveBlogMutation.isPending}>
-          {saveBlogMutation.isPending ? 'Saving...' : 'Save'}
-        </Button>
-      </div>
+    <div className='flex h-full w-full flex-col'>
+      {/* Fixed Header */}
+      <BlogEditorHeader
+        blogState={blogState}
+        isNew={isNew}
+        isSaving={isSaving}
+        onSave={handleSave}
+        onPreview={handlePreview}
+      />
 
-      {/* Inputs + Image */}
-      <div className='flex w-full flex-col gap-6 md:flex-row md:items-start'>
-        {/* Left: Inputs */}
-        <div className='grid flex-1 grid-cols-1 gap-4 md:grid-cols-2'>
-          <div className='space-y-2'>
-            <Label htmlFor='title'>Title</Label>
-            <Input
-              id='title'
-              name='title'
-              value={blogState?.title || ''}
-              onChange={handleChange}
-              placeholder='Enter a title'
-            />
-          </div>
-          <div className='space-y-2'>
-            <Label htmlFor='slug'>Slug</Label>
-            <Input
-              id='slug'
-              name='slug'
-              value={blogState?.slug || ''}
-              onChange={handleChange}
-              placeholder='auto-generated-slug'
-            />
-          </div>
-          <div className='space-y-2 md:col-span-2'>
-            <Label>Tags</Label>
-            <TagSelector
-              tags={blogTags}
-              selectedTags={blogState?.tags || []}
-              isLoading={isLoadingTags}
-              onCreate={createTagMutation.mutateAsync}
-              onDelete={deleteTagMutation.mutateAsync}
-              onChange={handleTagsChange}
-            />
-          </div>
-        </div>
+      {/* Scrollable Content */}
+      <div className='flex-1 overflow-y-auto'>
+        <div className='container mx-auto max-w-5xl p-4 pb-8'>
+          {isDirty && (
+            <Alert className='mb-4'>
+              <AlertCircle className='h-4 w-4' />
+              <AlertDescription>
+                You have unsaved changes. Remember to save your work!
+              </AlertDescription>
+            </Alert>
+          )}
 
-        {/* Right: Cover image */}
-        <div className='w-full space-y-2 md:w-1/3'>
-          <Label>Cover Image</Label>
-          <div className='flex flex-col gap-2'>
-            <ImageUploader
-              value={blogState?.img_url}
-              onChange={(base64) =>
-                setBlogState((prev) => (prev ? { ...prev, img_url: base64 ?? undefined } : null))
-              }
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Markdown Editor */}
-      <div className='space-y-2'>
-        <Label className='text-base'>Content</Label>
-        <div className='rounded-md border'>
-          <MarkdownEditor
-            value={blogState?.content ?? ''}
-            onChange={(value) =>
-              setBlogState((prev) => (prev ? { ...prev, content: value ?? undefined } : null))
-            }
+          <BlogEditorForm
+            blogState={blogState}
+            blogTags={blogTags}
+            isLoadingTags={isLoadingTags}
+            onFieldChange={handleFieldChange}
+            onInputChange={handleInputChange}
+            onTagsChange={handleTagsChange}
+            onCreateTag={createTagMutation.mutateAsync}
+            onDeleteTag={deleteTagMutation.mutateAsync}
           />
         </div>
       </div>
-    </Card>
+
+      {/* Preview Modal */}
+      <BlogEditorPreview
+        isOpen={isPreviewOpen}
+        onClose={handleClosePreview}
+        blogState={blogState}
+        currentUser={user}
+      />
+    </div>
   );
 };

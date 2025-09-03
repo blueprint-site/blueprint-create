@@ -7,12 +7,12 @@ import AddonStats from './AddonStats';
 import ModPageLinks from './ModPageLinks';
 import ModLoaders from './ModLoaders';
 
-import type { Addon } from '@/types';
+import type { AddonWithParsedFields } from '@/types/addons/addon-details';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface AddonListItemProps {
-  addon: Addon;
+  addon: AddonWithParsedFields;
 }
 
 const AddonCard = ({ addon }: AddonListItemProps) => {
@@ -33,7 +33,7 @@ const AddonCard = ({ addon }: AddonListItemProps) => {
   }, [addon.curseforge_raw, addon.modrinth_raw]);
 
   // Get display name with fallbacks
-  const getDisplayName = (addon: Addon): string => {
+  const getDisplayName = (addon: AddonWithParsedFields): string => {
     // First, try the direct name field
     if (addon.name) return addon.name;
 
@@ -88,7 +88,7 @@ const AddonCard = ({ addon }: AddonListItemProps) => {
   };
 
   // Format the addon data for display - temporary debugging feature
-  const formatAddonData = (addon: Addon) => {
+  const formatAddonData = (addon: AddonWithParsedFields) => {
     const debugInfo = {
       basicInfo: {
         name: addon.name || 'MISSING',

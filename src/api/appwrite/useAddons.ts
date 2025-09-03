@@ -214,7 +214,7 @@ export const useAdminAddons = (
         addons = addons.filter(
           (addon) =>
             addon.name.toLowerCase().includes(searchTerm) ||
-            addon.author?.toLowerCase().includes(searchTerm) ||
+            addon.authors?.join(', ').toLowerCase().includes(searchTerm) ||
             addon.description?.toLowerCase().includes(searchTerm)
         );
       }

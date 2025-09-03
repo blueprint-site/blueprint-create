@@ -59,7 +59,18 @@ export const useCreateFeaturedAddon = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: Omit<FeaturedAddon, '$id' | '$createdAt' | '$updatedAt'>) => {
+    mutationFn: async (
+      data: Omit<
+        FeaturedAddon,
+        | '$id'
+        | '$createdAt'
+        | '$updatedAt'
+        | '$sequence'
+        | '$collectionId'
+        | '$databaseId'
+        | '$permissions'
+      >
+    ) => {
       try {
         const response = await databases.createDocument<FeaturedAddon>(
           DATABASE_ID,
@@ -99,7 +110,24 @@ export const useUpdateFeaturedAddon = () => {
   return useMutation({
     mutationFn: async ({ id, addon }: UpdateFeaturedAddonArgs): Promise<Models.Document> => {
       try {
-        const response = await databases.updateDocument(DATABASE_ID, COLLECTION_ID, id, addon);
+        const {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          $id,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          $collectionId,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          $databaseId,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          $createdAt,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          $updatedAt,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          $permissions,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          $sequence,
+          ...updateData
+        } = addon;
+        const response = await databases.updateDocument(DATABASE_ID, COLLECTION_ID, id, updateData);
         toast({
           className: 'bg-surface-3 border-ring text-foreground',
           title: 'Featured addon updated',

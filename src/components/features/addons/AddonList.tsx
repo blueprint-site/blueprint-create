@@ -1,31 +1,35 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useSearchAddons } from '@/api';
 import { ListPageLayout } from '@/layouts/ListPageLayout';
-import { SelectFilter } from '@/components/layout/SelectFilter';
 import { ItemGrid } from '@/components/layout/ItemGrid';
 import AddonCard from '@/components/features/addons/addon-card/AddonCard.tsx';
+import { FilterPanel } from '@/components/features/addons/filters/FilterPanel';
 import { useInfiniteScroll } from '@/hooks';
-import { useListPageFilters } from '@/hooks/useListPageFilters';
+import { useAddonFilters } from '@/hooks/useAddonFilters';
 import type { Addon } from '@/types';
 
 const AddonsList = () => {
   const [page, setPage] = useState(1);
-  const [category, setCategory] = useState('');
-  const [loaders, setLoaders] = useState('');
-  const [version, setVersion] = useState('');
   const [allAddons, setAllAddons] = useState<Addon[]>([]);
+  const lastProcessedDataRef = useRef<{
+    identifier: string;
+    page: number;
+  }>({ identifier: '', page: 0 });
 
-  // Search functionality
+  // Use the new filter hook
   const {
-    searchValue,
-    handleSearchChange,
-    resetFilters: resetSearchFilters,
-  } = useListPageFilters({
-    onFilterChange: () => {
-      setPage(1);
-      setAllAddons([]);
-    },
-  });
+    filters,
+    facets,
+    allFacets,
+    filterString,
+    searchQuery,
+    setSearchQuery,
+    updateFilter,
+    clearFilters,
+    applyPreset,
+    hasActiveFilters,
+    activeFilterCount,
+  } = useAddonFilters();
 
   // Set a consistent item limit for all fetches
   const ITEMS_PER_PAGE = 16;
@@ -35,14 +39,21 @@ const AddonsList = () => {
     isLoading,
     isFetching,
     hasNextPage,
+    facetDistribution,
   } = useSearchAddons({
-    query: searchValue,
+    query: searchQuery,
     page,
-    category,
-    version,
-    loaders,
+    filterString,
+    sort: filters.sort,
     limit: ITEMS_PER_PAGE,
+    includeFacets: true,
   });
+
+  // Create a stable identifier to prevent unnecessary re-renders
+  const hitsIdentifier = useMemo(() => {
+    if (!hits || hits.length === 0) return '';
+    return hits.map((h) => h.$id).join(',');
+  }, [hits]);
 
   // Use the useInfiniteScroll hook
   const { sentinelRef, loadingMore } = useInfiniteScroll({
@@ -50,7 +61,6 @@ const AddonsList = () => {
     hasMore: hasNextPage,
     onLoadMore: () => {
       if (hasNextPage && !isFetching) {
-        console.log('Loading more addons. Current page:', page);
         setPage((prev) => prev + 1);
       }
     },
@@ -60,87 +70,70 @@ const AddonsList = () => {
   useEffect(() => {
     setAllAddons([]);
     setPage(1);
-  }, [searchValue, category, loaders, version]);
+    lastProcessedDataRef.current = { identifier: '', page: 0 };
+  }, [filterString, searchQuery, filters.sort]);
 
   // Append new addons to the accumulated list
   useEffect(() => {
-    if (hits && hits.length > 0) {
-      console.log(`New hits fetched: ${hits.length} items`);
-      if (page === 1) {
-        setAllAddons(hits);
-      } else {
-        setAllAddons((prev) => [...prev, ...hits]);
-      }
-    }
-  }, [hits, page]);
+    if (!hits || hits.length === 0 || !hitsIdentifier) return;
 
-  const resetFilters = () => {
-    resetSearchFilters();
-    setCategory('');
-    setLoaders('');
-    setVersion('');
+    // Check if we've already processed this exact data
+    const isDuplicate =
+      lastProcessedDataRef.current.identifier === hitsIdentifier &&
+      lastProcessedDataRef.current.page === page;
+
+    if (isDuplicate) {
+      return; // Skip if we've already processed this exact data
+    }
+
+    // Update the last processed data
+    lastProcessedDataRef.current = { identifier: hitsIdentifier, page };
+
+    if (page === 1) {
+      setAllAddons(hits);
+    } else {
+      setAllAddons((prev) => {
+        // Check if we already have these items to prevent duplicates
+        const existingIds = new Set(prev.map((addon) => addon.$id));
+        const newItems = hits.filter((addon) => !existingIds.has(addon.$id));
+        if (newItems.length > 0) {
+          return [...prev, ...newItems];
+        }
+        return prev;
+      });
+    }
+  }, [hitsIdentifier, hits, page]);
+
+  const handleResetFilters = () => {
+    clearFilters();
     setPage(1);
     setAllAddons([]);
   };
-
-  // Check if there are active filters
-  const hasActiveFilters =
-    category !== '' || loaders !== '' || version !== '' || searchValue !== '';
 
   // Simple render function - no need for animation wrapper since ItemGrid handles it
   const renderAddon = (addon: Addon) => {
     return <AddonCard key={addon.$id} addon={addon} />;
   };
 
-  // Filter options
-  const categoryOptions = [
-    { value: 'all', label: 'All' },
-    { value: 'tech', label: 'Tech' },
-    { value: 'energy', label: 'Energy' },
-    { value: 'magic', label: 'Magic' },
-  ];
-
-  const loaderOptions = [
-    { value: 'all', label: 'All' },
-    { value: 'Forge', label: 'Forge' },
-    { value: 'Fabric', label: 'Fabric' },
-    { value: 'NeoForge', label: 'NeoForge' },
-    { value: 'Quilt', label: 'Quilt' },
-  ];
-
-  const versionOptions = [
-    { value: 'all', label: 'All' },
-    { value: '1.18.2', label: '1.18.2' },
-    { value: '1.19.2', label: '1.19.2' },
-    { value: '1.21.1', label: '1.21.1' },
-  ];
-
+  // Filter panel content - use allFacets for showing all available options
   const filtersContent = (
-    <>
-      <SelectFilter
-        label='Category'
-        value={category}
-        onChange={setCategory}
-        options={categoryOptions}
-      />
-      <SelectFilter label='Loaders' value={loaders} onChange={setLoaders} options={loaderOptions} />
-      <SelectFilter
-        label='Version'
-        value={version}
-        onChange={setVersion}
-        options={versionOptions}
-      />
-    </>
+    <FilterPanel
+      filters={filters}
+      facets={allFacets || facetDistribution || facets}
+      onFilterChange={updateFilter}
+      onClearFilters={clearFilters}
+      onApplyPreset={applyPreset}
+    />
   );
 
   return (
     <ListPageLayout
-      searchValue={searchValue}
-      onSearchChange={handleSearchChange}
+      searchValue={searchQuery}
+      onSearchChange={setSearchQuery}
       searchPlaceholder='Search addons...'
       filters={filtersContent}
-      onResetFilters={resetFilters}
-      filterTitle='Addon Filters'
+      onResetFilters={handleResetFilters}
+      filterTitle={`Addon Filters${activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}`}
       hasActiveFilters={hasActiveFilters}
     >
       <ItemGrid
@@ -148,7 +141,7 @@ const AddonsList = () => {
         renderItem={renderAddon}
         isLoading={isLoading && page === 1} // Only show loading state for initial page
         isError={false}
-        emptyMessage='No addons found.'
+        emptyMessage='No addons found matching your filters.'
         infiniteScrollEnabled={true}
         loadingMore={loadingMore}
         sentinelRef={sentinelRef}

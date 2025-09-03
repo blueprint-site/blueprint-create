@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Feather, Map, Puzzle, SquareTerminal, Star } from 'lucide-react';
+import { Award, Feather, Map, Puzzle, SquareTerminal, Star, Users } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 import { NavMain } from '@/components/layout/AdminPanel/NavMain.tsx';
 import { NavUser } from '@/components/layout/AdminPanel/NavUser.tsx';
@@ -80,11 +81,25 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         items: [{ title: 'List', url: '/admin/schematics/list' }],
       },
       {
-        title: 'User',
+        title: 'Users',
         url: '/admin/users',
-        icon: Map,
+        icon: Users,
         isActive: pathSegments[1] === 'users',
-        items: [{ title: 'List', url: '/admin/users' }],
+        items: [
+          { title: 'List', url: '/admin/users' },
+        ],
+      },
+      {
+        title: 'Rewards',
+        url: '/admin/rewards',
+        icon: Award,
+        isActive: pathSegments[1] === 'rewards',
+        items: [
+          { title: 'Global Stats', url: '/admin/rewards/stats' },
+          { title: 'Badges', url: '/admin/badges' },
+          { title: 'Badge Rules', url: '/admin/rewards/rules' },
+          { title: 'User Achievements', url: '/admin/rewards/achievements' },
+        ],
       },
     ],
   };
@@ -106,12 +121,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <a
-          href='/'
+        <Link
+          to='/'
           className='bg-blueprint w-full justify-center rounded-md p-2 text-center text-black'
         >
           Go back to site
-        </a>
+        </Link>
         <NavUser user={data.user} />
       </SidebarFooter>
       <SidebarRail />

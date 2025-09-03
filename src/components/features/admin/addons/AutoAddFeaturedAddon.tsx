@@ -138,7 +138,11 @@ export default function AutoAddFeaturedAddon() {
       display_order: displayOrder,
       slug: selectedAddon.slug,
       active: isActive,
-      category: selectedAddon.categories || [],
+      category: Array.isArray(selectedAddon.categories)
+        ? selectedAddon.categories
+        : selectedAddon.categories
+          ? [selectedAddon.categories]
+          : null,
     };
 
     createFeaturedAddon(newFeaturedAddon, {

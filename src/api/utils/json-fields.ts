@@ -1,7 +1,6 @@
 import type { Blog, RawBlog } from '@/types';
-import type { Models } from 'appwrite';
 
-type JsonFieldsInput = Models.Document | RawBlog | Partial<Blog> | Record<string, unknown>;
+type JsonFieldsInput = RawBlog | Partial<Blog> | Record<string, unknown>;
 
 /**
  * Parse JSON fields in a blog document from database format to application format

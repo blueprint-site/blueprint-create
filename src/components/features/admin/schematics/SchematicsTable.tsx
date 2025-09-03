@@ -1,5 +1,5 @@
 import { Badge } from '@/components/ui/badge';
-import { useFetchSchematics } from '@/api/appwrite/useSchematics.ts';
+import { useFetchSchematics, useDeleteSchematics } from '@/api/appwrite/useSchematics.ts';
 import { useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { DataTable } from '@/components/tables/addonChecks/data-table';
@@ -23,21 +23,29 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Trash, Ban, MoreVertical } from 'lucide-react';
 import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
 
 export const SchematicsTable = () => {
   const [page, setPage] = useState(1);
   const { data, isLoading, isError, error } = useFetchSchematics();
+  const deleteSchematic = useDeleteSchematics();
   const navigate = useNavigate();
+  
   // Handle navigation to schematic detail page
   const handleRowClick = (slug: string, id: string) => {
-    navigate(`/schematics/${id}/${slug}`); // ⬅️ navigation propre
+    navigate(`/schematics/${id}/${slug}`);
   };
+  
   // Handle delete schematic action
-  const handleDelete = (schematic: Schematic) => {
-    if (confirm(`Are you sure you want to delete "${schematic.title}"?`)) {
-      console.log('Deleting schematic:', schematic);
-      // Implement your delete logic here
-      // e.g. deleteSchematic(schematic.$id).then(() => refetch());
+  const handleDelete = async (schematic: Schematic) => {
+    if (confirm(`Are you sure you want to delete "${schematic.title}"? This will also delete all associated files.`)) {
+      try {
+        await deleteSchematic.mutateAsync(schematic.$id);
+        toast.success('Schematic and all associated files deleted successfully');
+      } catch (error) {
+        console.error('Error deleting schematic:', error);
+        toast.error('Failed to delete schematic');
+      }
     }
   };
 

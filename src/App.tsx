@@ -5,9 +5,11 @@ import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
 import { Toaster } from 'sonner';
 import { useUserStore } from '@/api/stores/userStore';
 import { routes } from './routes';
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import 'minecraft-textures-library/src/templates/create-textures.css';
 import CookieDialog from './components/utility/CookieDialog.tsx';
+import { StatsTrackingProvider } from '@/providers/StatsTrackingProvider';
+import { AchievementNotificationProvider } from '@/providers/AchievementNotificationProvider';
 
 const App = () => {
   const fetchUser = useUserStore((state) => state.fetchUser);
@@ -53,13 +55,15 @@ const App = () => {
   }
 
   return (
-    <Suspense fallback={<LoadingOverlay />}>
-      <>
-        <RouterProvider router={router} />
-        <CookieDialog variant='default' />
-      </>
-      <Toaster />
-    </Suspense>
+    <>
+      <StatsTrackingProvider>
+        <AchievementNotificationProvider>
+          <RouterProvider router={router} />
+          <CookieDialog variant='default' />
+          <Toaster />
+        </AchievementNotificationProvider>
+      </StatsTrackingProvider>
+    </>
   );
 };
 

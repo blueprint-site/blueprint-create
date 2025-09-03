@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef, useMemo } from 'react';
 import type { Addon } from '@/types';
 import { useSearchAddons } from '@/api';
-import { Info } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
+// import { Info } from 'lucide-react';
+// import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
 export interface ScrollingAddonBackgroundProps {
   title?: string;
@@ -33,6 +33,10 @@ export const ScrollingAddonBackground = ({
   });
   const [isLoading, setIsLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
+  const lastProcessedDataRef = useRef<{
+    identifier: string;
+    page: number;
+  }>({ identifier: '', page: 0 });
 
   // Addon dimensions for calculations
   const addonWidth = 50;
@@ -52,16 +56,48 @@ export const ScrollingAddonBackground = ({
     limit,
   });
 
+  // Create a stable identifier to prevent unnecessary re-renders
+  const hitsIdentifier = useMemo(() => {
+    if (!hits || hits.length === 0) return '';
+    return hits.map((h) => h.$id).join(',');
+  }, [hits]);
+
   // Update addons when data is fetched
   useEffect(() => {
-    if (hits && hits.length > 0) {
-      setAllAddons((prev) => (page === 1 ? hits : [...prev, ...hits]));
-      setIsLoading(false);
-    } else if (hits && hits.length === 0 && !isLoadingAddons) {
-      // No data was returned from the API, but the request finished
-      setIsLoading(false);
+    if (!hits || hits.length === 0) {
+      if (!isLoadingAddons) {
+        setIsLoading(false);
+      }
+      return;
     }
-  }, [hits, page, isLoadingAddons]);
+
+    // Check if we've already processed this exact data
+    const isDuplicate =
+      lastProcessedDataRef.current.identifier === hitsIdentifier &&
+      lastProcessedDataRef.current.page === page;
+
+    if (isDuplicate) {
+      return; // Skip if we've already processed this exact data
+    }
+
+    // Update the last processed data
+    lastProcessedDataRef.current = { identifier: hitsIdentifier, page };
+
+    setAllAddons((prev) => {
+      // Only update if we have new data
+      if (page === 1) {
+        return hits;
+      }
+      // Check if we already have these items to prevent duplicates
+      const existingIds = new Set(prev.map((addon) => addon.$id));
+      const newItems = hits.filter((addon) => !existingIds.has(addon.$id));
+      if (newItems.length > 0) {
+        return [...prev, ...newItems];
+      }
+      return prev;
+    });
+    setIsLoading(false);
+  }, [hitsIdentifier, hits, page, isLoadingAddons]);
 
   // Initialize dimensions and set up ResizeObserver
   useEffect(() => {
@@ -214,39 +250,43 @@ export const ScrollingAddonBackground = ({
 
       <div className='absolute inset-0'>
         <div className='flex h-full w-full flex-col overflow-hidden'>
-          {displayGrid?.map((row, rowIndex) => (
-            <div
-              key={`row-${rowIndex}-${row[0]?.key || rowIndex}`}
-              className='flex w-fit whitespace-nowrap'
-              style={{
-                animation: `scrollRow ${animationDuration}s linear infinite`,
-                animationDelay: `${((rowIndex % 2) * -animationDuration) / 2}s`,
-              }}
-            >
-              {row.map((addon) =>
-                addon.icon ? (
-                  <img
-                    key={addon.key}
-                    src={addon.icon}
-                    alt={addon.name || 'Addon icon'}
-                    className={`mr-[5px] mb-[5px] h-[50px] w-[50px] rounded-full object-contain ${hasVersion(addon.create_versions, '0.6') ? '' : 'opacity-70 grayscale'}`}
-                    loading='lazy'
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src =
-                        'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"%3E%3Crect width="50" height="50" fill="%23555555" rx="25" /%3E%3C/svg%3E';
-                      (e.target as HTMLImageElement).className =
-                        'mr-[5px] mb-[5px] h-[50px] w-[50px] rounded-full opacity-30';
-                    }}
-                  />
-                ) : (
-                  <div
-                    key={addon.key}
-                    className='mr-[5px] mb-[5px] h-[50px] w-[50px] rounded-full bg-gray-500 opacity-30'
-                  />
-                )
-              )}
-            </div>
-          ))}
+          {displayGrid?.map((row, rowIndex) => {
+            const rowKey = `row-${rowIndex}`;
+            return (
+              <div
+                key={rowKey}
+                className='flex w-fit whitespace-nowrap'
+                style={{
+                  animation: `scrollRow ${animationDuration}s linear infinite`,
+                  animationDelay: `${((rowIndex % 2) * -animationDuration) / 2}s`,
+                }}
+              >
+                {row.map((addon, colIndex) => {
+                  const itemKey = `${rowKey}-col-${colIndex}`;
+                  return addon.icon ? (
+                    <img
+                      key={itemKey}
+                      src={addon.icon}
+                      alt={addon.name || 'Addon icon'}
+                      className={`mr-[5px] mb-[5px] h-[50px] w-[50px] rounded-full object-contain ${hasVersion(addon.create_versions, '0.6') ? '' : 'opacity-70 grayscale'}`}
+                      loading='lazy'
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src =
+                          'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"%3E%3Crect width="50" height="50" fill="%23555555" rx="25" /%3E%3C/svg%3E';
+                        (e.target as HTMLImageElement).className =
+                          'mr-[5px] mb-[5px] h-[50px] w-[50px] rounded-full opacity-30';
+                      }}
+                    />
+                  ) : (
+                    <div
+                      key={itemKey}
+                      className='mr-[5px] mb-[5px] h-[50px] w-[50px] rounded-full bg-gray-500 opacity-30'
+                    />
+                  );
+                })}
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -267,16 +307,19 @@ export const ScrollingAddonBackground = ({
         </p>
       </div>
 
-      <div className='absolute top-2 right-2 flex items-center'>
+      {/* Temporarily removed tooltip to fix infinite loop issue */}
+      {/* <div className='absolute top-2 right-2 flex items-center'>
         <TooltipProvider delayDuration={100}>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Info className='h-4 w-4 cursor-pointer text-white' />
+              <div className='cursor-pointer'>
+                <Info className='h-4 w-4 text-white' />
+              </div>
             </TooltipTrigger>
             <TooltipContent>Grayed icons do not support Create 0.6</TooltipContent>
           </Tooltip>
         </TooltipProvider>
-      </div>
+      </div> */}
     </div>
   );
 };

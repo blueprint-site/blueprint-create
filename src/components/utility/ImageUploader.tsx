@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { UploadCloud, XCircle } from 'lucide-react';
 import { storage } from '@/config/appwrite.ts';
+import { STORAGE_BUCKETS } from '@/config/storage.ts';
 import { ID } from 'appwrite';
 
 interface ImageUploaderProps {
@@ -30,14 +31,14 @@ const ImageUploader: FC<ImageUploaderProps> = ({ value, onChange }) => {
       try {
         // Upload file to Appwrite bucket
         const response = await storage.createFile(
-          '67b478dd00221462624e', // Bucket ID
+          STORAGE_BUCKETS.IMAGES, // Bucket ID
           ID.unique(),
           file
         );
         const fileId = response.$id;
 
         // Directly get the view URL using getFileView
-        const viewUrl = storage.getFilePreview('67b478dd00221462624e', fileId);
+        const viewUrl = storage.getFilePreview(STORAGE_BUCKETS.IMAGES, fileId);
 
         setPreview(viewUrl); // Use the returned URL directly
         setImageUrl(viewUrl); // Store the preview URL

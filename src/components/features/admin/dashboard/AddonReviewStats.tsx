@@ -5,9 +5,16 @@ import { useAdminAddons } from '@/api/appwrite/useAddons';
 import { CheckCircle, Clock, AlertTriangle, Package } from 'lucide-react';
 
 export const AddonReviewStats = () => {
-  // Fetch unreviewed addons count
+  // Fetch unreviewed addons count (isChecked = false)
   const { data: unreviewedData } = useAdminAddons(
     { reviewStatus: 'unreviewed' },
+    1,
+    1 // Only need count, not actual data
+  );
+
+  // Fetch reviewed addons count (isChecked = true)
+  const { data: reviewedData } = useAdminAddons(
+    { reviewStatus: 'reviewed' },
     1,
     1 // Only need count, not actual data
   );
@@ -16,8 +23,8 @@ export const AddonReviewStats = () => {
   const { data: totalData } = useAdminAddons({}, 1, 1);
 
   const unreviewedCount = unreviewedData?.total || 0;
+  const reviewedCount = reviewedData?.total || 0;
   const totalCount = totalData?.total || 0;
-  const reviewedCount = totalCount - unreviewedCount;
   const reviewProgress = totalCount > 0 ? (reviewedCount / totalCount) * 100 : 0;
 
   return (

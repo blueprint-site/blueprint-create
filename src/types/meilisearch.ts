@@ -1,5 +1,5 @@
 import type { Blog, RawBlog, Addon, Schematic } from './appwrite';
-import type { SearchResponse, Hits } from 'meilisearch';
+import type { SearchResponse, Hits, FacetDistribution } from 'meilisearch';
 
 /**
  * Type definitions for Meilisearch responses
@@ -46,6 +46,7 @@ export interface SearchResult<T> {
   totalHits: number;
   page: number;
   limit?: number;
+  facetDistribution?: FacetDistribution;
 }
 
 // Define search result types using the generic SearchResult

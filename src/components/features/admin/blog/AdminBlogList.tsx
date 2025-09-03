@@ -1,6 +1,6 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { MoreHorizontal, ArrowUpDown } from 'lucide-react';
+import { MoreHorizontal, ArrowUpDown, Edit, Maximize2 } from 'lucide-react';
 import { AdminBlogTable } from '@/components/tables/blog/AdminBlogTable.tsx';
 import {
   DropdownMenu,
@@ -8,14 +8,17 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx';
 import { useDeleteBlog, useFetchBlogs, useSaveBlog } from '@/api';
+import { useNavigate } from 'react-router';
 import type { Blog } from '@/types';
 
 export const BlogList = () => {
   const { data: blogs, isLoading, error } = useFetchBlogs();
+  const navigate = useNavigate();
 
   const { mutateAsync: deleteBlog } = useDeleteBlog();
   const { mutateAsync: saveBlog } = useSaveBlog();
@@ -115,7 +118,26 @@ export const BlogList = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end'>
-            <DropdownMenuLabel>Actions 🚀</DropdownMenuLabel>
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/admin/blogs/editor/${row.original.$id}`);
+              }}
+            >
+              <Edit className='mr-2 h-4 w-4' />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/admin/blogs/editor-fullscreen/${row.original.$id}`);
+              }}
+            >
+              <Maximize2 className='mr-2 h-4 w-4' />
+              Edit Full Screen
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             {row.original.status === 'draft' ? (
               <DropdownMenuItem
                 onClick={(e) => {
@@ -135,11 +157,13 @@ export const BlogList = () => {
                 Unpublish 📋
               </DropdownMenuItem>
             )}
+            <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={(e) => {
                 e.stopPropagation();
                 handleDelete(row.original.$id);
               }}
+              className='text-destructive'
             >
               Delete ❌
             </DropdownMenuItem>

@@ -1,4 +1,5 @@
-import { Outlet, useLocation } from 'react-router';
+import React from 'react';
+import { Outlet, useLocation, Link } from 'react-router';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Separator } from '@radix-ui/react-separator';
 import {
@@ -29,18 +30,18 @@ const Layout = () => {
                   const url = `/${pathSegments.slice(0, index + 1).join('/')}`;
                   const isLast = index === pathSegments.length - 1;
                   return (
-                    <>
-                      <BreadcrumbSeparator key={`separator-${index}`} className='hidden md:block' />
-                      <BreadcrumbItem className={'cursor-pointer'} key={`item-${index}`}>
+                    <React.Fragment key={`breadcrumb-${index}`}>
+                      {index > 0 && <BreadcrumbSeparator className='hidden md:block' />}
+                      <BreadcrumbItem className={'cursor-pointer'}>
                         {isLast ? (
                           <BreadcrumbPage>{segment}</BreadcrumbPage>
                         ) : (
-                          <BreadcrumbLink href={url} className={'cursor-pointer'}>
-                            {segment}
+                          <BreadcrumbLink asChild className={'cursor-pointer'}>
+                            <Link to={url}>{segment}</Link>
                           </BreadcrumbLink>
                         )}
                       </BreadcrumbItem>
-                    </>
+                    </React.Fragment>
                   );
                 })}
               </BreadcrumbList>

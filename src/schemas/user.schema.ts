@@ -39,6 +39,11 @@ export const UpdateUserPreferencesSchema = z.object({
   easterEggs: EasterEggsSchema.optional(),
 });
 
+/**
+ * Schema for user badges
+ */
+export const UserBadgesSchema = z.array(z.string());
+
 // Easter Egg types
 export interface EasterEggDefinition {
   id: string;

@@ -30,7 +30,9 @@ export interface Addon extends Models.Document {
   created_at: string | null;
   updated_at: string | null;
   curseforge_raw: CurseForgeRawObject | string | null;
+  curseforge_id?: string;
   modrinth_raw: ModrinthRawObject | string | null;
+  modrinth_id?: string;
   sources: string[];
   isValid: boolean;
   loaders: string[] | string | null;
@@ -55,10 +57,53 @@ export interface Schematic extends Models.Document {
   modloaders: string[];
   categories: string[];
   sub_categories?: string[];
+  subcategories?: string[]; // Alternative naming for Meilisearch compatibility
   slug: string;
   downloads: number;
   status: 'draft' | 'published' | 'archived';
   likes: number;
+  liked_by?: string[];
+  // New fields for advanced filtering - stored as flat structure in database
+  dimensions_width?: number;
+  dimensions_height?: number;
+  dimensions_depth?: number;
+  dimensions_blockCount?: number;
+  materials_primary?: string[];
+  materials_mainBuilding?: string[];
+  materials_hasModded?: boolean;
+  complexity_level?: 'simple' | 'moderate' | 'complex' | 'extreme';
+  complexity_buildTime?: number;
+  requirements_mods?: string[];
+  requirements_modsDetected?: string[];
+  requirements_minecraftVersion?: string;
+  requirements_hasRedstone?: boolean;
+  requirements_hasCommandBlocks?: boolean;
+  // Nested structure for form/display (not stored in DB)
+  dimensions?: {
+    width: number;
+    height: number;
+    depth: number;
+    blockCount: number;
+  };
+  materials?: {
+    primary: string[];
+    hasModded: boolean;
+  };
+  complexity?: {
+    level: 'simple' | 'moderate' | 'complex' | 'extreme';
+    buildTime: number; // Estimated build time in minutes
+  };
+  requirements?: {
+    mods: string[];
+    minecraftVersion: string;
+    hasRedstone: boolean;
+    hasCommandBlocks: boolean;
+  };
+  rating?: number;
+  totalRatings?: number;
+  featured?: boolean;
+  isValid?: boolean;
+  uploadDate?: string;
 }
 
 /**

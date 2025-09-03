@@ -1,36 +1,48 @@
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
-import { Shield } from 'lucide-react';
+import { Shield, Star, Crown, TestTube } from 'lucide-react';
 
-const ADMIN_TEAM_ID = 'admin';
-const BETA_TESTER_TEAM_ID = 'beta_testers';
+const getRoleBadge = (label: string): React.ReactNode | null => {
+  const key = label.toLowerCase();
 
-const teamIdToRoleNameMap: Record<string, string> = {
-  [ADMIN_TEAM_ID]: 'Admin',
-  [BETA_TESTER_TEAM_ID]: 'Beta Tester',
-};
-
-const getRoleBadge = (teamId: string): React.ReactNode | null => {
-  const roleName = teamIdToRoleNameMap[teamId];
-  if (!roleName) return null;
-
-  if (roleName === 'Admin') {
-    return (
-      <Badge key={teamId} variant='destructive'>
-        <Shield className='mr-1 h-3 w-3' />
-        Admin
-      </Badge>
-    );
+  switch (key) {
+    case 'admin':
+      return (
+        <Badge key={label} variant='destructive'>
+          <Shield className='mr-1 h-3 w-3' />
+          Admin
+        </Badge>
+      );
+    case 'betatester': // No underscores in Appwrite labels
+    case 'beta_tester': // Keep for backwards compatibility
+      return (
+        <Badge key={label} variant='secondary'>
+          <TestTube className='mr-1 h-3 w-3' />
+          Beta Tester
+        </Badge>
+      );
+    case 'premium':
+      return (
+        <Badge key={label} variant='default'>
+          <Star className='mr-1 h-3 w-3' />
+          Premium
+        </Badge>
+      );
+    case 'mvp':
+      return (
+        <Badge key={label} variant='outline'>
+          <Crown className='mr-1 h-3 w-3' />
+          MVP
+        </Badge>
+      );
+    default:
+      // For any other labels, show them as is
+      return (
+        <Badge key={label} variant='outline'>
+          {label}
+        </Badge>
+      );
   }
-  if (roleName === 'Beta Tester') {
-    return (
-      <Badge key={teamId} variant='secondary'>
-        Beta Tester
-      </Badge>
-    );
-  }
-
-  return null;
 };
 
 interface RolesCellProps {

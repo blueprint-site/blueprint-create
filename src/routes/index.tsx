@@ -15,6 +15,7 @@ import BaseLayout from '@/layouts/BaseLayout';
 import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
 import { gameRoutes } from '@/routes/gamesRoutes.tsx';
 import { RouteErrorBoundary } from '@/components/error/RouteErrorBoundary';
+import ProtectedRoute from '@/components/utility/ProtectedRoute';
 
 const BlogList = lazy(() => import('@/pages/blog/Blog'));
 const SchematicsList = lazy(() => import('@/pages/schematics/SchematicsList'));
@@ -28,7 +29,7 @@ const About = lazy(() => import('@/pages/About'));
 const Design = lazy(() => import('@/pages/Design'));
 const Legal = lazy(() => import('@/pages/Legal'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
-const AdminPanelLayout = lazy(() => import('@/layouts/AdminPanelLayout'));
+import AdminPanelLayout from '@/layouts/AdminPanelLayout';
 const Changelogs = lazy(() => import('@/pages/Changelogs'));
 const ChangelogsEditor = lazy(
   () => import('@/components/features/changelogs/ChangelogsEditor.tsx')
@@ -40,13 +41,16 @@ const ChangelogsEditor = lazy(
 // src/routes/index.tsx
 function createProtectedRoute(
   Component: React.LazyExoticComponent<ComponentType<unknown>> | ComponentType<unknown>,
-  additionalProps: Partial<Omit<RouteObject, 'element' | 'errorElement' | 'index'>> = {}
+  additionalProps: Partial<Omit<RouteObject, 'element' | 'errorElement' | 'index'>> = {},
+  useSuspense: boolean = true
 ): RouteObject {
   const baseRoute: RouteObject = {
-    element: (
+    element: useSuspense ? (
       <Suspense fallback={<LoadingOverlay />}>
         <Component />
       </Suspense>
+    ) : (
+      <Component />
     ),
     errorElement: <RouteErrorBoundary />,
     index: undefined,
@@ -137,7 +141,11 @@ export const routes: RouteObject[] = [
     ...createProtectedRoute(BlogList),
   },
   {
-    element: <AdminPanelLayout />,
+    element: (
+      <ProtectedRoute requiredRole='admin' useMinimalLoading={true}>
+        <AdminPanelLayout />
+      </ProtectedRoute>
+    ),
     errorElement: <RouteErrorBoundary />,
     children: [...AdminRoutes],
   },

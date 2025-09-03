@@ -25,10 +25,15 @@ function checkIsThereFeedback(feedback?: FeedbackRecord[]): boolean {
   return Array.isArray(feedback) && feedback.some((f) => f.status === 'open');
 }
 
+import { AdminDashboard } from './AdminDashboard';
+
 export const Admin = () => {
-  // Feedback data from Appwrite
-  const { data: feedback } = useFetchFeedback();
-  const hasOpenFeedback = checkIsThereFeedback(feedback);
+
+  return <AdminDashboard />;
+};
+
+// Old component kept for reference - remove when ready
+export const AdminOld = () => {
   // Mock data
   const recentAddons = [
     {

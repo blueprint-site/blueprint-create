@@ -1,57 +1,56 @@
 // src/pages/schematics/SchematicsList.tsx
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router';
-import SchematicCard from '@/components/features/schematics/SchematicCard';
-import { useSearchSchematics } from '@/api';
+import { SchematicCardAdapter } from '@/components/features/schematics/SchematicCardAdapter';
 import { buttonVariants } from '@/components/ui/button';
 import { Upload } from 'lucide-react';
 import { ListPageLayout } from '@/layouts/ListPageLayout';
-import { SelectFilter } from '@/components/layout/SelectFilter';
 import { ItemGrid } from '@/components/layout/ItemGrid';
-import { useSchematicFilters } from '@/hooks';
 import { useInfiniteScroll } from '@/hooks';
-import type { Schematic } from '@/types';
+import { useAdvancedSchematicFilters } from '@/hooks/useAdvancedSchematicFilters';
+import { useSearchSchematicsAdvanced } from '@/api/meilisearch/useSearchSchematicsAdvanced';
+import { SchematicFilterPanel } from '@/components/features/schematics/filters/SchematicFilterPanel';
+import type { SchematicSearchResult } from '@/types/schematicSearch';
 
 function SchematicsList() {
   const navigate = useNavigate();
-  const [allSchematics, setAllSchematics] = useState<Schematic[]>([]);
-  const [page, setPage] = useState(1); // Add separate page state
+  const [page, setPage] = useState(1);
+  const [allSchematics, setAllSchematics] = useState<SchematicSearchResult[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
+  // Use the new advanced filter hook
   const {
     filters,
-    setQuery,
-    setCategory,
-    setSubCategory,
-    setCreateVersion,
-    setVersion,
-    setLoaders,
-    resetFilters,
-    categoryOptions,
-    createVersionOptions,
-    subCategoryOptions,
-    versionOptions,
-    loaderOptions,
-    hasSubCategories,
-  } = useSchematicFilters();
+    facets,
+    filterString,
+    hasActiveFilters,
+    updateFilter,
+    applyPreset,
+    clearFilters,
+  } = useAdvancedSchematicFilters();
 
-  // Search functionality that integrates with schematic filters
-  const handleSearchChange = (value: string) => {
-    setQuery(value);
-    setPage(1);
-    setAllSchematics([]);
-  };
+  // Set a consistent item limit for all fetches
+  const ITEMS_PER_PAGE = 16;
 
-  // Modify to use the separate page state
+  // Update search query in filters
+  useEffect(() => {
+    updateFilter('query', searchQuery);
+  }, [searchQuery, updateFilter]);
+
   const {
-    data: schematics,
+    data: searchData,
     isLoading,
     isError,
-    isFetching,
-    hasNextPage,
-  } = useSearchSchematics({
-    ...filters,
-    page: page, // Use the local page state
+  } = useSearchSchematicsAdvanced({
+    filters: { ...filters, query: searchQuery },
+    page,
+    limit: ITEMS_PER_PAGE,
+    enableFacets: true,
   });
+
+  const hits = React.useMemo(() => searchData?.hits || [], [searchData]);
+  const hasNextPage = searchData ? page * ITEMS_PER_PAGE < searchData.estimatedTotalHits : false;
+  const isFetching = isLoading;
 
   // Use the useInfiniteScroll hook
   const { sentinelRef, loadingMore } = useInfiniteScroll({
@@ -60,7 +59,7 @@ function SchematicsList() {
     onLoadMore: () => {
       if (hasNextPage && !isFetching) {
         console.log('Loading more schematics. Current page:', page);
-        setPage((prevPage) => prevPage + 1); // Increment local page state
+        setPage((prev) => prev + 1);
       }
     },
   });
@@ -68,83 +67,70 @@ function SchematicsList() {
   // Reset accumulated schematics when filters change (except page)
   useEffect(() => {
     setAllSchematics([]);
-    setPage(1); // Reset to first page when filters change
-  }, [
-    filters.query,
-    filters.category,
-    filters.subCategory,
-    filters.version,
-    filters.loaders,
-    filters.createVersion,
-  ]);
+    setPage(1);
+  }, [filterString, searchQuery, filters.sort]);
 
   // Append new schematics to the accumulated list
   useEffect(() => {
-    if (schematics && schematics.length > 0) {
+    if (hits && hits.length > 0) {
+      console.log(`New hits fetched: ${hits.length} items`);
       if (page === 1) {
-        setAllSchematics(schematics);
+        setAllSchematics(hits as SchematicSearchResult[]);
       } else {
-        setAllSchematics((prev) => [...prev, ...schematics]);
+        setAllSchematics((prev) => {
+          // Check if we already have these items to prevent duplicates
+          const existingIds = new Set(prev.map((schematic) => schematic.$id || schematic.id));
+          const newItems = hits.filter(
+            (schematic: SchematicSearchResult) => !existingIds.has(schematic.$id || schematic.id)
+          );
+          if (newItems.length > 0) {
+            return [...prev, ...(newItems as SchematicSearchResult[])];
+          }
+          return prev;
+        });
       }
     }
-  }, [schematics, page]);
+  }, [hits, page]);
 
-  // Handle filter reset
   const handleResetFilters = () => {
-    resetFilters();
+    clearFilters();
     setPage(1);
     setAllSchematics([]);
   };
 
-  // Check if there are active filters
-  const hasActiveFilters =
-    filters.category !== '' ||
-    filters.subCategory !== '' ||
-    filters.version !== '' ||
-    filters.loaders !== '' ||
-    filters.createVersion !== '' ||
-    filters.query !== '';
+  // Simple render function - no need for animation wrapper since ItemGrid handles it
+  const renderSchematic = (schematic: SchematicSearchResult) => {
+    const schematicId = schematic.$id || schematic.id;
+    return (
+      <SchematicCardAdapter
+        key={schematicId}
+        schematic={schematic}
+        onClick={() => navigate(`../schematics/${schematicId}/${schematic.slug}`)}
+      />
+    );
+  };
 
+  // Get active filter count
+  const activeFilterCount = [
+    filters.categories.length,
+    filters.subcategories.length,
+    filters.materials.primary.length,
+    filters.complexity.levels.length,
+    filters.compatibility.requiredMods.length,
+    filters.dimensions.width.min || filters.dimensions.width.max ? 1 : 0,
+    filters.dimensions.height.min || filters.dimensions.height.max ? 1 : 0,
+    filters.dimensions.blockCount.min || filters.dimensions.blockCount.max ? 1 : 0,
+  ].reduce((a, b) => a + b, 0);
+
+  // Filter panel content - using the new SchematicFilterPanel
   const filtersContent = (
-    <>
-      <SelectFilter
-        label='Category'
-        value={filters.category}
-        onChange={setCategory}
-        options={categoryOptions}
-        placeholder={'Select Category'}
-      />
-
-      {/* Only show subcategories if available */}
-      {hasSubCategories && (
-        <SelectFilter
-          label='Subcategory'
-          value={filters.subCategory || ''}
-          onChange={setSubCategory}
-          options={subCategoryOptions}
-        />
-      )}
-
-      <SelectFilter
-        label='Version'
-        value={filters.version}
-        onChange={setVersion}
-        options={versionOptions}
-      />
-
-      <SelectFilter
-        label='Loaders'
-        value={filters.loaders}
-        onChange={setLoaders}
-        options={loaderOptions}
-      />
-      <SelectFilter
-        label='Create version'
-        value={filters.createVersion}
-        onChange={setCreateVersion}
-        options={createVersionOptions}
-      />
-    </>
+    <SchematicFilterPanel
+      filters={filters}
+      facets={facets}
+      onFilterChange={updateFilter}
+      onClearFilters={clearFilters}
+      onApplyPreset={applyPreset}
+    />
   );
 
   const headerContent = (
@@ -155,31 +141,30 @@ function SchematicsList() {
 
   return (
     <ListPageLayout
-      searchValue={filters.query}
-      onSearchChange={handleSearchChange}
+      searchValue={searchQuery}
+      onSearchChange={setSearchQuery}
       searchPlaceholder='Search schematics...'
       filters={filtersContent}
       onResetFilters={handleResetFilters}
-      filterTitle='Schematic Filters'
+      filterTitle={`Schematic Filters${activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}`}
       hasActiveFilters={hasActiveFilters}
       headerContent={headerContent}
     >
       <ItemGrid
         items={allSchematics}
-        renderItem={(schematic) => (
-          <SchematicCard
-            key={schematic.$id}
-            schematic={schematic}
-            onClick={() => navigate(`../schematics/${schematic.$id}/${schematic.slug}`)}
-          />
-        )}
-        isLoading={isLoading && page === 1}
+        renderItem={renderSchematic}
+        isLoading={isLoading && page === 1} // Only show loading state for initial page
         isError={isError}
-        emptyMessage='No schematics found.'
+        emptyMessage='No schematics found matching your filters.'
         errorMessage='Oops! Failed to load schematics.'
         infiniteScrollEnabled={true}
         loadingMore={loadingMore}
         sentinelRef={sentinelRef}
+        animationEnabled={true} // Toggle animations on/off
+        animationDelay={0.1} // Control the stagger delay
+        animationDuration={0.4} // Control the animation duration
+        staggerItemCount={ITEMS_PER_PAGE} // Match to our items per page
+        skeletonCount={ITEMS_PER_PAGE} // Show the right number of skeletons
       />
     </ListPageLayout>
   );

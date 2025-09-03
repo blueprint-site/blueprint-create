@@ -62,6 +62,14 @@ export type {
   SearchSchematicsProps,
 } from '@/schemas/schematic.schema';
 
+export type {
+  SchematicMetadata,
+  BlockData,
+  MaterialData,
+  ModStats,
+  MostUsedBlock,
+} from '@/utils/nbtParser';
+
 export type { FeatureFlagKey } from '@/schemas/featureFlag.schema';
 
 export type {

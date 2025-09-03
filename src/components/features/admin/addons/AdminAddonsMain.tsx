@@ -1,5 +1,5 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { OptimizedAddonsTable, FeaturedAddonsTable } from '@/components/features/admin/addons';
+import { OptimizedAddonsTableV3, FeaturedAddonsTable } from '@/components/features/admin/addons';
 
 export const AdminAddonsMain = () => {
   return (
@@ -13,7 +13,7 @@ export const AdminAddonsMain = () => {
         </TabsTrigger>
       </TabsList>
       <TabsContent value='addons'>
-        <OptimizedAddonsTable />
+        <OptimizedAddonsTableV3 />
       </TabsContent>
       <TabsContent value='featured'>
         <FeaturedAddonsTable />

@@ -1,13 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Upload, User2 } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Input } from '@/components/ui/input.tsx';
 import { Label } from '@/components/ui/label.tsx';
 import { Textarea } from '@/components/ui/textarea.tsx';
-import imageCompression from 'browser-image-compression';
+import ProfileImageUpload from '@/components/features/profile/ProfileImageUpload';
 import { useUserStore } from '@/api/stores/userStore';
-import { account, storage } from '@/config/appwrite.ts';
+import { account } from '@/config/appwrite.ts';
 import logMessage from '@/components/utility/logs/sendLogs.tsx';
 import { useTranslation } from 'react-i18next';
 
@@ -62,65 +60,22 @@ export default function ProfileSettings() {
     }
   }, [preferences, profile, updatePreferences]);
 
-  const onUploadImage = useCallback(
-    async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
+  const handleAvatarChange = useCallback(async (avatarUrl: string) => {
+    // Update profile state
+    setProfile((prev) => ({ ...prev, avatar: avatarUrl }));
 
-      try {
-        setIsLoading(true);
+    // Save to preferences
+    await updatePreferences({
+      theme: preferences?.theme ?? 'light',
+      language: preferences?.language ?? 'en',
+      notificationsEnabled: preferences?.notificationsEnabled || false,
+      roles: preferences?.roles || [],
+      bio: profile.bio,
+      avatar: avatarUrl,
+    });
 
-        const options = {
-          maxSizeMB: 1,
-          maxWidthOrHeight: 500,
-          useWebWorker: true,
-        };
-
-        const compressedFile = await imageCompression(file, options);
-        const compressedFileAsFile = new File([compressedFile], file.name, {
-          type: compressedFile.type,
-        });
-
-        logMessage('Image compressed successfully.', 0, 'action');
-        if (profile.avatar) {
-          const fileIdRegex = /\/files\/([^/]+)/;
-          const match = fileIdRegex.exec(profile.avatar);
-          const oldFileId = match?.[1];
-          if (oldFileId) {
-            logMessage(`Old image file id found (${oldFileId}) !`, 0, 'action');
-            try {
-              await storage.deleteFile('67aee2b30000b9e21407', oldFileId);
-              logMessage(`Old image have been deleted (${oldFileId}) !`, 0, 'action');
-            } catch {
-              logMessage(`Error while deleting old file (${oldFileId}) !`, 3, 'action');
-            }
-          } else {
-            logMessage(`Any file found , skipping suppression ! (${oldFileId}) !`, 0, 'action');
-          }
-        }
-
-        const fileId = crypto.randomUUID();
-        const response = await storage.createFile(
-          '67aee2b30000b9e21407',
-          fileId,
-          compressedFileAsFile
-        );
-
-        const avatarUrl = storage.getFilePreview('67aee2b30000b9e21407', response.$id).toString();
-        console.log(avatarUrl);
-        setProfile((prev) => ({ ...prev, avatar: avatarUrl }));
-      } catch {
-        logMessage('Error while uploading avatar image', 3, 'action');
-        setError('Error while uploading avatar image');
-      } finally {
-        setIsLoading(false);
-        handleSave().then(() => {
-          logMessage('Saving of the image done', 0, 'action');
-        });
-      }
-    },
-    [profile.avatar, handleSave]
-  );
+    logMessage('Avatar updated successfully', 0, 'action');
+  }, [profile.bio, preferences, updatePreferences]);
 
   if (error) {
     return <div className='text-destructive'>{error}</div>;
@@ -144,34 +99,14 @@ export default function ProfileSettings() {
 
       <div className='space-y-4'>
         <div>
-          <h3 className='mb-2 text-lg font-semibold'>
+          <h3 className='mb-4 text-lg font-semibold'>
             {t('settings.user-settings.public-profile.picture.title')}
           </h3>
-          <div className='flex items-center gap-4'>
-            <Avatar className='h-16 w-16'>
-              <AvatarImage src={profile.avatar} />
-              <AvatarFallback>
-                <User2 className='h-8 w-8' />
-              </AvatarFallback>
-            </Avatar>
-            <div>
-              <Label htmlFor='picture' className='cursor-pointer'>
-                <div className='bg-secondary hover:bg-secondary/80 text-secondary-foreground flex items-center gap-2 rounded-md px-4 py-2 text-sm'>
-                  <Upload className='h-4 w-4' />
-                  {t('settings.user-settings.public-profile.picture.upload')}
-                </div>
-                <input
-                  title='picture'
-                  id='picture'
-                  type='file'
-                  className='hidden'
-                  accept='image/*'
-                  onChange={onUploadImage}
-                  disabled={isLoading}
-                />
-              </Label>
-            </div>
-          </div>
+          <ProfileImageUpload
+            currentAvatar={profile.avatar}
+            onAvatarChange={handleAvatarChange}
+            disabled={isLoading}
+          />
         </div>
 
         <div>
