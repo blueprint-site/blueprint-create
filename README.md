@@ -1,7 +1,7 @@
 # Blueprint
 
 <div align="center">
-  <img src="/src/assets/logo.webp" alt="Blueprint Logo" width="200" />
+  <img src="frontend/src/assets/logo.webp" alt="Blueprint Logo" width="200" />
   <h1>Blueprint</h1>
   <p>The central hub for Create Mod content</p>
 </div>
