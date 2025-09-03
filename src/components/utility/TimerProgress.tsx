@@ -57,7 +57,7 @@ const TimerProgress = ({
         {icon || <Clock className='h-6 w-6 text-gray-500' />}
         <span className='text-lg font-semibold'>{formatTime(timeLeft)}</span>
       </HoverCardTrigger>
-      <HoverCardContent className='w-64 space-y-2'>
+      <HoverCardContent className='w-64 space-y-2' align='center' sideOffset={5}>
         <div className='text-sm'>Time Remaining</div>
         <Progress value={progress} className='w-full' />
         <p className='text-sm'>{description ?? 'This timer is counting down.'}</p>

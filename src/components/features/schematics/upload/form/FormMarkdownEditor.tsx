@@ -9,6 +9,8 @@ interface FormMarkdownEditorProps {
   control: Control<SchematicFormValues>;
   label: string;
   description: string;
+  placeholder?: string;
+  minLength?: number;
   onValueChange?: (value: string) => void;
 }
 
@@ -17,13 +19,15 @@ export function FormMarkdownEditor({
   control,
   label,
   description,
+  placeholder,
+  minLength,
   onValueChange,
 }: FormMarkdownEditorProps) {
   return (
     <FormField
       control={control}
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
@@ -42,9 +46,15 @@ export function FormMarkdownEditor({
               showThematicBreak={false}
               showLists={false}
               showUndoRedo={false}
-              placeholder={description}
+              placeholder={placeholder || description}
+              className={fieldState.error ? 'border-red-500' : ''}
             />
           </FormControl>
+          {minLength && (!field.value || (field.value as string).length < minLength) && (
+            <p className='mt-1 text-sm text-red-500'>
+              Description must be at least {minLength} characters
+            </p>
+          )}
           <FormMessage />
         </FormItem>
       )}

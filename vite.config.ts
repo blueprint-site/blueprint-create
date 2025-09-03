@@ -4,7 +4,6 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import imagemin from 'vite-plugin-imagemin';
-import checker from 'vite-plugin-checker';
 import { visualizer } from 'rollup-plugin-visualizer';
 import viteCompression from 'vite-plugin-compression';
 import pkg from './package.json' with { type: 'json' };

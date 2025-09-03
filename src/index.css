@@ -13,7 +13,42 @@
 }
 
 .clip-star {
-  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+}
+
+/* Badge Shape Clip Paths */
+.clip-hexagon {
+  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+}
+
+.clip-shield {
+  clip-path: polygon(50% 0%, 100% 20%, 100% 70%, 50% 100%, 0% 70%, 0% 20%);
+}
+
+.clip-star {
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
 }
 
 /* Root CSS Variables - HSL values wrapped in hsl() */
@@ -436,4 +471,89 @@ body::-webkit-scrollbar {
 .radix-select-trigger:not([data-placeholder]) [data-state='checked'],
 .radix-select-value:not([data-placeholder]) {
   color: var(--color-foreground, #fafafa) !important;
+}
+
+/* Markdown Editor Placeholder Styling */
+/* Target MDXEditor's actual placeholder element */
+.mdxeditor-root-contenteditable[data-lexical-editor]:before {
+  color: hsl(220 13% 45%) !important;
+  opacity: 0.7 !important;
+}
+
+/* MDXEditor placeholder paragraph */
+.mdxeditor p[data-placeholder]:empty::before,
+.mdxeditor p.editor-paragraph:empty::before {
+  content: attr(data-placeholder);
+  color: hsl(220 13% 45%) !important;
+  opacity: 0.7 !important;
+  pointer-events: none;
+}
+
+/* MDXEditor contenteditable with placeholder */
+div[contenteditable='true'].markdown-editor p:first-child:empty::before,
+div[contenteditable='true'].markdown-editor > p:only-child:empty::before {
+  content: 'Describe how your contraption works...';
+  color: hsl(220 13% 45%) !important;
+  opacity: 0.7 !important;
+  pointer-events: none;
+}
+
+/* Target the actual MDXEditor root element placeholder */
+.mdxeditor .mdxeditor-root-contenteditable p:first-child[data-placeholder]:empty::before {
+  color: hsl(220 13% 45%) !important;
+  opacity: 0.7 !important;
+}
+
+/* Override theme styles */
+.dark-theme .mdxeditor p[data-placeholder]:empty::before,
+.dark-theme div[contenteditable='true'].markdown-editor p:first-child:empty::before {
+  color: hsl(220 13% 45%) !important;
+  opacity: 0.7 !important;
+}
+
+/* Global MDXEditor placeholder override */
+.mdxeditor [data-placeholder]::before {
+  color: hsl(220 13% 45%) !important;
+  opacity: 0.7 !important;
+}
+
+/* Lexical editor placeholder styling - most important one */
+.mdxeditor .editor-placeholder {
+  color: #999 !important;
+  overflow: hidden;
+  position: absolute;
+  text-overflow: ellipsis;
+  top: 0;
+  left: 0;
+  font-size: inherit;
+  user-select: none;
+  display: inline-block;
+  pointer-events: none;
+  opacity: 0.8 !important;
+}
+
+/* Target the contenteditable when empty */
+.mdxeditor [contenteditable='true']:empty::before {
+  content: attr(placeholder);
+  color: #999 !important;
+  opacity: 0.7 !important;
+  pointer-events: none;
+}
+
+/* MDXEditor with Lexical - target the actual placeholder element */
+.mdxeditor-root-contenteditable .editor-placeholder,
+.markdown-editor .editor-placeholder {
+  color: #999 !important;
+  opacity: 0.8 !important;
+}
+
+/* Force override all placeholder text in the app */
+body .mdxeditor .editor-placeholder {
+  color: rgb(156, 163, 175) !important; /* Tailwind gray-400 */
+}
+
+/* Dark mode placeholder */
+.dark .mdxeditor .editor-placeholder,
+.dark-theme .mdxeditor .editor-placeholder {
+  color: rgb(107, 114, 128) !important; /* Tailwind gray-500 */
 }

@@ -220,7 +220,7 @@ const MarkdownEditor = ({
       onChange={onChange}
       plugins={plugins}
       placeholder={placeholder || 'Write something...'}
-      contentEditableClassName='min-h-32 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs placeholder:text-foreground-muted focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm'
+      contentEditableClassName='markdown-editor min-h-32 w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm'
     />
   );
 };

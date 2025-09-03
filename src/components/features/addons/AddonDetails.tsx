@@ -5,12 +5,12 @@ import AddonDetailsError from './addon-details/AddonDetailsError';
 import AddonDetailsLoading from './addon-details/AddonDetailsLoading';
 import AddonDetailsView from './addon-details/AddonDetailsView';
 
+import { useFetchAddonBySlug } from '@/api';
 import {
-  useFetchAddonBySlug,
   useFetchModrinthProject,
   useFetchModrinthVersions,
   useFetchModrinthDependencies,
-} from '@/api';
+} from '@/api/external/useModrinth';
 import type { IntegratedAddonData, CurseForgeRawObject, ModrinthRawObject } from '@/types';
 import { getAddonCreateVersionsFromVersions } from '@/utils/createCompatibility';
 

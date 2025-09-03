@@ -37,7 +37,12 @@ export const MINECRAFT_VERSIONS = [
   {
     value: '1.20.1',
     label: '1.20.1',
-    metadata: { compatibility: ['forge'] },
+    metadata: { compatibility: ['forge', 'fabric'] },
+  },
+  {
+    value: '1.21.1',
+    label: '1.21.1',
+    metadata: { compatibility: ['forge', 'fabric', 'neoforge'] },
   },
 ] as const;
 
