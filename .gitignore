@@ -7,6 +7,9 @@ node_modules
 *.local
 .vite
 *.tsbuildinfo
+dist/
+frontend/dist/
+*.tar.gz
 
 # Logs
 logs
@@ -21,9 +24,10 @@ lerna-debug.log*
 .env
 .env.local
 .env.*.local
-# Keep env.js.example but ignore actual env.js in root (not in public/dist)
-/env.js
-!/public/env.js.example
+# Ignore all env.js files except examples
+env.js
+!env.js.example
+!**/env.js.example
 # Editor directories
 .vscode/*
 .idea
