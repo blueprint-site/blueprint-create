@@ -54,3 +54,6 @@ claude.md
 .mcp.json
 /CLAUDE_AGENTS.md
 /nul
+.claude/*
+.github/*
+.husky/*
