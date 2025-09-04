@@ -36,20 +36,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         isActive: pathSegments[0] === 'admin' && pathSegments[1] === undefined,
         items: [
           {
-            title: 'Admin',
+            title: 'Overview',
             url: '/admin',
             isActive: pathSegments[0] === 'admin' && pathSegments[1] === undefined,
           },
         ],
       },
       {
-        title: 'Addons',
+        title: 'Addon Management',
         url: '/admin/addons',
         icon: Puzzle,
         isActive: pathSegments[1] === 'addons',
         items: [
-          { title: 'List', url: '/admin/addons/list' },
-          { title: 'Add', url: '/admin/addons/add' },
+          { title: 'Dashboard', url: '/admin/addons' },
+          { title: 'Review Queue', url: '/admin/addons/review' },
+          { title: 'Kanban Board', url: '/admin/addons/kanban' },
+          { title: 'List View', url: '/admin/addons/list' },
+          { title: 'Add New', url: '/admin/addons/add' },
         ],
       },
       {
@@ -111,7 +114,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </div>
           <div>
             <b>Blueprint</b>
-            <p>Admin Panel</p>
           </div>
         </div>
       </SidebarHeader>

@@ -4,9 +4,11 @@ import type { RouteObject } from 'react-router';
 // Direct imports for all admin components (no lazy loading to eliminate Suspense animations)
 import { UserManagement } from '@/components/features/admin/users/UserManagement';
 import { Admin } from '@/pages';
+import { EnhancedAdminDashboard } from '@/components/features/admin/EnhancedAdminDashboard';
 import {
-  OptimizedAddonsTableV3,
-  AdminAddonsMain,
+  SmartReviewQueue,
+  AddonsKanban,
+  ManualAddForm,
   AddAddon,
 } from '@/components/features/admin/addons';
 import { AdminBlogMain, BlogList } from '@/components/features/admin/blog';
@@ -47,11 +49,19 @@ export const AdminRoutes: RouteObject[] = [
   },
   {
     path: 'admin/addons',
-    element: <AdminAddonsMain />,
+    element: <EnhancedAdminDashboard />,
   },
   {
     path: 'admin/addons/list',
-    element: <OptimizedAddonsTableV3 />,
+    element: <EnhancedAdminDashboard />,
+  },
+  {
+    path: 'admin/addons/review',
+    element: <EnhancedAdminDashboard />,
+  },
+  {
+    path: 'admin/addons/kanban',
+    element: <EnhancedAdminDashboard />,
   },
   {
     path: 'admin/blogs',
@@ -63,7 +73,7 @@ export const AdminRoutes: RouteObject[] = [
   },
   {
     path: 'admin/addons/add',
-    element: <AddAddon />,
+    element: <EnhancedAdminDashboard />,
   },
   {
     path: 'admin/featured-addons/add',

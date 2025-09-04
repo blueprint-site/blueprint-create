@@ -1,29 +1,23 @@
-// IMPORTS
-import { AddAddon } from '@/components/features/admin/addons/AddAddon.tsx';
-import { AddonsTable } from '@/components/features/admin/addons/AddonsTable.tsx';
-import { OptimizedAddonsTable } from '@/components/features/admin/addons/OptimizedAddonsTable.tsx';
-import { OptimizedAddonsTableV2 } from '@/components/features/admin/addons/OptimizedAddonsTableV2.tsx';
-import { OptimizedAddonsTableV3 } from '@/components/features/admin/addons/OptimizedAddonsTableV3.tsx';
-import { AdminAddonsMain } from '@/components/features/admin/addons/AdminAddonsMain.tsx';
-import { FeaturedAddonsTable } from '@/components/features/admin/addons/FeaturesAddonsTable.tsx';
+// Export all addon management components
 
-// EXPORT FOR LAZY LOAD
-export { AddAddon };
-export { AddonsTable };
-export { OptimizedAddonsTable };
-export { OptimizedAddonsTableV2 };
-export { OptimizedAddonsTableV3 };
-export { AdminAddonsMain };
-export { FeaturedAddonsTable };
+// New components for enhanced admin
+export { ValidationScore } from './ValidationScore';
+export { SmartReviewQueue } from './SmartReviewQueue';
+export { ManualAddForm } from './ManualAddForm';
+export { AddonsKanbanSimple as AddonsKanban } from './AddonsKanbanSimple';
+export { BulkOperationsPanel } from './BulkOperationsPanel';
+export { ReviewInterface } from './ReviewInterface';
 
-// EXPORT FOR USAGE
-const AdminAddon = {
-  AddAddon,
-  AddonsTable,
-  OptimizedAddonsTable,
-  OptimizedAddonsTableV2,
-  OptimizedAddonsTableV3,
-  AdminAddonsMain,
-  FeaturedAddonsTable,
-};
-export default AdminAddon;
+// Existing components
+export { AddAddon } from './AddAddon';
+export { AddFeaturedAddon } from './AddFeaturedAddon';
+export { default as AddFeaturedAddonForm } from './AddFeaturedAddonForm';
+export { AddonsTable } from './AddonsTable';
+export { AdminAddonsMain } from './AdminAddonsMain';
+export { default as AutoAddFeaturedAddon } from './AutoAddFeaturedAddon';
+export { default as FeaturedAddonsList } from './FeaturedAddonsList';
+export { FeaturedAddonsTable } from './FeaturesAddonsTable';
+export { default as FullscreenAddonReview } from './FullscreenAddonReview';
+export { OptimizedAddonsTable } from './OptimizedAddonsTable';
+export { OptimizedAddonsTableV2 } from './OptimizedAddonsTableV2';
+export { OptimizedAddonsTableV3 } from './OptimizedAddonsTableV3';

@@ -1,1 +1,0 @@
-import{j as r}from"./radix-B0d9A4Hp.js";import{c as o}from"./index-DqfNU3ry.js";import"./tanstack-BKPRn8Ud.js";import"./animation-tNjqXOyv.js";function c(){const e=o.c(1);let t;return e[0]===Symbol.for("react.memo_cache_sentinel")?(t=r.jsx("div",{children:" tester Main work"}),e[0]=t):t=e[0],t}export{c as default};
