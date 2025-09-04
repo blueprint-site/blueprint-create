@@ -249,12 +249,19 @@ export function SchematicUploadForm({
         setDetectedBlocks(processedBlocks);
 
         // Auto-populate form fields with extracted data
+        // Dimensions - as object
         form.setValue('dimensions', {
           width: metadata.dimensions.width,
           height: metadata.dimensions.height,
           depth: metadata.dimensions.depth,
           blockCount: metadata.dimensions.blockCount,
         });
+
+        // Also set individual fields for backward compatibility
+        form.setValue('width', metadata.dimensions.width);
+        form.setValue('height', metadata.dimensions.height);
+        form.setValue('depth', metadata.dimensions.depth);
+        form.setValue('totalBlocks', metadata.dimensions.blockCount);
 
         // Handle both old and new data formats for materials
         const primaryMaterials =
@@ -269,16 +276,25 @@ export function SchematicUploadForm({
           ? metadata.materials.mostUsed.map((block) => block.name.toLowerCase())
           : primaryMaterials;
 
+        // Materials - as object with primary and mainBuilding arrays
+        const allMaterials = [
+          ...new Set([
+            ...primaryMaterials.filter((m) => typeof m === 'string'),
+            ...mainBuildingMaterials
+              .filter((m) => typeof m === 'string' || typeof m?.name === 'string')
+              .map((m) => (typeof m === 'string' ? m : m.name)),
+          ]),
+        ];
         form.setValue('materials', {
-          primary: Array.isArray(primaryMaterials)
-            ? primaryMaterials.filter((m) => typeof m === 'string')
-            : [],
-          mainBuilding: Array.isArray(mainBuildingMaterials)
-            ? mainBuildingMaterials.map((m) => (typeof m === 'string' ? m : m.name))
-            : [],
-          hasModded: metadata.materials.hasModded,
+          primary: allMaterials,
+          mainBuilding: mainBuildingMaterials
+            .filter((m) => typeof m === 'string' || typeof m?.name === 'string')
+            .map((m) => (typeof m === 'string' ? m : m.name)),
+          hasModded: metadata.materials.hasModded || false,
         });
+        form.setValue('hasModdedBlocks', metadata.materials.hasModded || false);
 
+        // Complexity - as object
         form.setValue('complexity', {
           level: metadata.complexity.level,
           buildTime: metadata.complexity.estimatedBuildTime,
@@ -290,15 +306,13 @@ export function SchematicUploadForm({
             ? metadata.requirements.mods.map((mod) => (typeof mod === 'object' ? mod.name : mod))
             : metadata.requirements.mods || [];
 
+        // Requirements - as object
         form.setValue('requirements', {
           mods: Array.isArray(requiredMods)
             ? requiredMods.filter((m) => typeof m === 'string')
             : [],
-          modsDetected: Array.isArray(requiredMods)
-            ? requiredMods.filter((m) => typeof m === 'string')
-            : [], // Store detected mods separately
-          hasRedstone: metadata.requirements.hasRedstone,
-          hasCommandBlocks: metadata.requirements.hasCommandBlocks,
+          hasRedstone: metadata.requirements.hasRedstone || false,
+          hasCommandBlocks: metadata.requirements.hasCommandBlocks || false,
         });
 
         // Show success toast with summary

@@ -56,6 +56,13 @@ export const useSearchSchematics = ({
       id,
     ],
     queryFn: async () => {
+      if (!searchClient) {
+        return {
+          schematics: [],
+          totalPages: 0,
+          currentPage: 1,
+        };
+      }
       const index = searchClient.index('schematics');
       const result = (await index.search(query, {
         limit: 20,

@@ -167,6 +167,13 @@ export const useSearchAddons = ({
     ],
     queryFn: async () => {
       try {
+        if (!searchClient) {
+          return {
+            hits: [],
+            totalHits: 0,
+            facetDistribution: undefined,
+          };
+        }
         const index = searchClient.index('addons');
 
         const searchOptions: Record<string, unknown> = {

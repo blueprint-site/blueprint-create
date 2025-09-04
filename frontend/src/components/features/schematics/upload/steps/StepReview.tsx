@@ -188,18 +188,34 @@ export const StepReview: React.FC<StepReviewProps> = ({ onEditStep }) => {
                 </p>
                 <ScrollArea className='mt-2 h-20 w-full'>
                   <div className='flex gap-2'>
-                    {formData.imageFiles.map((file, index) => (
-                      <div key={index} className='group relative'>
-                        <div className='bg-muted flex h-16 w-16 items-center justify-center rounded border'>
-                          <Image className='text-muted-foreground h-8 w-8' />
+                    {formData.imageFiles.map((file, index) => {
+                      const imageUrl = file instanceof File ? URL.createObjectURL(file) : '';
+                      return (
+                        <div key={index} className='group relative'>
+                          <div className='bg-muted flex h-16 w-16 items-center justify-center overflow-hidden rounded border'>
+                            {imageUrl ? (
+                              <img
+                                src={imageUrl}
+                                alt={`Preview ${index + 1}`}
+                                className='h-full w-full object-cover'
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                  e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                                }}
+                              />
+                            ) : null}
+                            <Image
+                              className={`text-muted-foreground h-8 w-8 ${imageUrl ? 'hidden' : ''}`}
+                            />
+                          </div>
+                          {index === 0 && (
+                            <Badge className='absolute -top-1 -right-1 text-xs' variant='default'>
+                              Thumb
+                            </Badge>
+                          )}
                         </div>
-                        {index === 0 && (
-                          <Badge className='absolute -top-1 -right-1 text-xs' variant='default'>
-                            Thumb
-                          </Badge>
-                        )}
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </ScrollArea>
               </div>

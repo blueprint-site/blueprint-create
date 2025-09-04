@@ -57,43 +57,89 @@ export function StepFile() {
 
           // Extract dimensions
           if (metadata.dimensions) {
+            setValue('dimensions', {
+              width: metadata.dimensions.width,
+              height: metadata.dimensions.height,
+              depth: metadata.dimensions.depth,
+              blockCount: metadata.dimensions.blockCount,
+            });
+
+            // Also set individual fields for backward compatibility with TechnicalDetails step
             setValue('width', metadata.dimensions.width);
             setValue('height', metadata.dimensions.height);
             setValue('depth', metadata.dimensions.depth);
+            setValue('totalBlocks', metadata.dimensions.blockCount);
+
             extractedInfo.dimensions = metadata.dimensions;
+            extractedInfo.blockCount = metadata.dimensions.blockCount;
           }
 
-          // Extract block count
-          if (metadata.blockCount) {
-            setValue('totalBlocks', metadata.blockCount);
-            extractedInfo.blockCount = metadata.blockCount;
+          // Extract materials (from primary or mostUsed)
+          if (metadata.materials) {
+            const materialsList = [];
+
+            // Try to get materials from primary array
+            if (Array.isArray(metadata.materials.primary)) {
+              metadata.materials.primary.forEach((mat) => {
+                const materialName = typeof mat === 'object' ? mat.displayName || mat.name : mat;
+                if (materialName && typeof materialName === 'string') {
+                  materialsList.push(materialName);
+                }
+              });
+            }
+
+            // Add most used blocks if available
+            if (metadata.materials.mostUsed) {
+              metadata.materials.mostUsed.slice(0, 10).forEach((block) => {
+                if (!materialsList.includes(block.name)) {
+                  materialsList.push(block.name);
+                }
+              });
+            }
+
+            if (materialsList.length > 0) {
+              setValue('materials', {
+                primary: materialsList,
+                hasModded: metadata.materials.hasModded || false,
+              });
+              extractedInfo.materialCount = materialsList.length;
+            }
+
+            // Set modded blocks flag
+            if (metadata.materials.hasModded) {
+              setValue('hasModdedBlocks', true);
+            }
           }
 
-          // Extract materials (top 10 most used)
-          if (metadata.materials && metadata.materials.length > 0) {
-            const topMaterials = metadata.materials
-              .sort((a, b) => b.count - a.count)
-              .slice(0, 10)
-              .map((m) => m.name);
-            setValue('materials', topMaterials);
-            extractedInfo.materialCount = metadata.materials.length;
+          // Extract complexity
+          if (metadata.complexity) {
+            setValue('complexity', {
+              level: metadata.complexity.level,
+              buildTime: metadata.complexity.estimatedBuildTime,
+            });
           }
 
-          // Check for modded blocks
-          if (metadata.moddedBlocks && metadata.moddedBlocks.length > 0) {
-            setValue('hasModdedBlocks', true);
-            const uniqueMods = [...new Set(metadata.moddedBlocks.map((b) => b.modId))];
-            setValue('requiredMods', uniqueMods);
-          }
+          // Extract requirements
+          if (metadata.requirements) {
+            const modsList = Array.isArray(metadata.requirements.mods)
+              ? metadata.requirements.mods
+                  .map((mod) => (typeof mod === 'object' ? mod.name : mod))
+                  .filter((name) => name && typeof name === 'string')
+              : [];
 
-          // Check for redstone
-          if (metadata.hasRedstone) {
-            setValue('hasRedstone', true);
-          }
+            setValue('requirements', {
+              mods: modsList,
+              hasRedstone: metadata.requirements.hasRedstone || false,
+              hasCommandBlocks: metadata.requirements.hasCommandBlocks || false,
+            });
 
-          // Check for command blocks
-          if (metadata.hasCommandBlocks) {
-            setValue('hasCommandBlocks', true);
+            // Also set individual flags for backward compatibility
+            if (metadata.requirements.hasRedstone) {
+              setValue('hasRedstone', true);
+            }
+            if (metadata.requirements.hasCommandBlocks) {
+              setValue('hasCommandBlocks', true);
+            }
           }
 
           setExtractedData(extractedInfo);

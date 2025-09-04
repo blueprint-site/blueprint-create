@@ -35,6 +35,17 @@ export const useSearchSchematicsAdvanced = ({
   return useQuery({
     queryKey: ['search-schematics-advanced', filters, page, limit],
     queryFn: async (): Promise<SchematicSearchResponse> => {
+      if (!searchClient) {
+        return {
+          hits: [],
+          estimatedTotalHits: 0,
+          processingTimeMs: 0,
+          query: filters.query || '',
+          limit,
+          offset: (page - 1) * limit,
+          facetDistribution: {},
+        };
+      }
       const index = searchClient.index('schematics');
 
       const searchParams: Record<string, unknown> = {
@@ -147,6 +158,17 @@ export const useSearchSchematicsInfinite = ({
   return useInfiniteQuery({
     queryKey: ['search-schematics-infinite', filters, limit],
     queryFn: async ({ pageParam = 1 }): Promise<SchematicSearchResponse> => {
+      if (!searchClient) {
+        return {
+          hits: [],
+          estimatedTotalHits: 0,
+          processingTimeMs: 0,
+          query: filters.query || '',
+          limit,
+          offset: (pageParam - 1) * limit,
+          facetDistribution: {},
+        };
+      }
       const index = searchClient.index('schematics');
 
       const searchParams: Record<string, unknown> = {
@@ -247,6 +269,7 @@ export const useSchematicSuggestions = (query: string, limit: number = 5) => {
     queryKey: ['schematic-suggestions', query, limit],
     queryFn: async () => {
       if (!query || query.length < 2) return [];
+      if (!searchClient) return [];
 
       const index = searchClient.index('schematics');
 
@@ -272,6 +295,7 @@ export const useFeaturedSchematics = (limit: number = 6) => {
   return useQuery({
     queryKey: ['featured-schematics', limit],
     queryFn: async () => {
+      if (!searchClient) return [];
       const index = searchClient.index('schematics');
 
       const results = await index.search('', {
@@ -307,6 +331,7 @@ export const usePopularSchematicsByCategory = (category: string, limit: number =
   return useQuery({
     queryKey: ['popular-schematics-category', category, limit],
     queryFn: async () => {
+      if (!searchClient) return [];
       const index = searchClient.index('schematics');
 
       const results = await index.search('', {
@@ -344,6 +369,7 @@ export const useSimilarSchematics = (
     queryKey: ['similar-schematics', schematicId, categories, limit],
     queryFn: async () => {
       if (!categories || categories.length === 0) return [];
+      if (!searchClient) return [];
 
       const index = searchClient.index('schematics');
 

@@ -182,7 +182,8 @@ export const StepTechnicalDetails: React.FC = () => {
   const [customMod, setCustomMod] = useState('');
 
   // Watch form values
-  const watchedMaterials = watch('materials') || [];
+  const watchedMaterialsObject = watch('materials') || {};
+  const watchedMaterials = watchedMaterialsObject.primary || [];
   const watchedRequiredMods = watch('requiredMods') || [];
   const watchedWidth = watch('width');
   const watchedHeight = watch('height');
@@ -206,13 +207,19 @@ export const StepTechnicalDetails: React.FC = () => {
       newMaterials = [...currentMaterials, material];
     }
 
-    setValue('materials', newMaterials);
+    setValue('materials', {
+      ...watchedMaterialsObject,
+      primary: newMaterials,
+    });
   };
 
   // Add custom material
   const handleAddCustomMaterial = () => {
     if (customMaterial && !watchedMaterials.includes(customMaterial)) {
-      setValue('materials', [...watchedMaterials, customMaterial]);
+      setValue('materials', {
+        ...watchedMaterialsObject,
+        primary: [...watchedMaterials, customMaterial],
+      });
       setCustomMaterial('');
     }
   };

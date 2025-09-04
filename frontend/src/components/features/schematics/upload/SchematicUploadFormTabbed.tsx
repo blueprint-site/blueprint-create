@@ -257,13 +257,20 @@ export function SchematicUploadForm({
 
         setDetectedBlocks(processedBlocks);
 
-        // Auto-populate form fields
+        // Auto-populate form fields with correct field names
+        // Dimensions - as object
         form.setValue('dimensions', {
           width: metadata.dimensions.width,
           height: metadata.dimensions.height,
           depth: metadata.dimensions.depth,
           blockCount: metadata.dimensions.blockCount,
         });
+
+        // Also set individual fields for backward compatibility
+        form.setValue('width', metadata.dimensions.width);
+        form.setValue('height', metadata.dimensions.height);
+        form.setValue('depth', metadata.dimensions.depth);
+        form.setValue('totalBlocks', metadata.dimensions.blockCount);
 
         const primaryMaterials =
           Array.isArray(metadata.materials.primary) && metadata.materials.primary.length > 0
@@ -276,8 +283,9 @@ export function SchematicUploadForm({
           primary: Array.isArray(primaryMaterials)
             ? primaryMaterials.filter((m) => typeof m === 'string')
             : [],
-          hasModded: metadata.materials.hasModded,
+          hasModded: metadata.materials.hasModded || false,
         });
+        form.setValue('hasModdedBlocks', metadata.materials.hasModded || false);
 
         form.setValue('complexity', {
           level: metadata.complexity.level,
@@ -293,11 +301,8 @@ export function SchematicUploadForm({
           mods: Array.isArray(requiredMods)
             ? requiredMods.filter((m) => typeof m === 'string')
             : [],
-          modsDetected: Array.isArray(requiredMods)
-            ? requiredMods.filter((m) => typeof m === 'string')
-            : [],
-          hasRedstone: metadata.requirements.hasRedstone,
-          hasCommandBlocks: metadata.requirements.hasCommandBlocks,
+          hasRedstone: metadata.requirements.hasRedstone || false,
+          hasCommandBlocks: metadata.requirements.hasCommandBlocks || false,
         });
 
         if (metadata.dimensions.blockCount > 0) {

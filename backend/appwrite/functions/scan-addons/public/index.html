@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liste of mods</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #242424;
+        color: white;
+      }
+      #mod-list {
+        list-style-type: none;
+        padding: 0;
+      }
+      #mod-list li {
+        padding: 10px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+      }
+      #search-bar {
+        padding: 10px;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      #result-count {
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+      .json-button {
+        background-color: #007bff;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+      .json-button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>List of create mods</h1>
+
+    <input type="text" id="search-bar" placeholder="search mods..." />
+
+    <p id="result-count">0 results found</p>
+
+    <ul id="mod-list"></ul>
+
+    <script>
+      const searchBar = document.getElementById("search-bar");
+      const modList = document.getElementById("mod-list");
+      const resultCount = document.getElementById("result-count");
+
+      // Fonction pour récupérer les mods à partir du serveur
+      async function fetchMods(searchTerm = "") {
+        const response = await fetch(`/mods?searchTerm=${searchTerm}`);
+        const mods = await response.json();
+
+        // Mise à jour du nombre de résultats
+        resultCount.innerText = `${mods.length} result found`;
+
+        // Affichage des mods dans la liste
+        modList.innerHTML = ""; // Réinitialiser la liste
+        mods.forEach((mod) => {
+          const li = document.createElement("li");
+          li.innerHTML = `
+        <h3>${mod.name}</h3>
+        <p>${mod.description}</p>
+        <p><strong>Source:</strong> ${mod.source}</p>
+        <button class="json-button" onclick="toggleJson(${mod.id})">Display JSON</button>
+        <pre id="json-${mod.id}" style="display:none;"></pre>
+      `;
+          modList.appendChild(li);
+        });
+      }
+
+      // Fonction pour afficher les données JSON du mod
+      function toggleJson(modId) {
+        const jsonElement = document.getElementById(`json-${modId}`);
+        const modData = document.querySelector(
+          `#mod-list li:nth-child(${modId})`,
+        );
+        const modJson = {
+          name: modData.querySelector("h3").innerText,
+          description: modData.querySelector("p").innerText,
+          source: modData.querySelector("strong").innerText,
+        };
+        jsonElement.innerText = JSON.stringify(modJson, null, 2);
+        jsonElement.style.display =
+          jsonElement.style.display === "none" ? "block" : "none";
+      }
+
+      // Événement pour filtrer la recherche en fonction du texte tapé
+      searchBar.addEventListener("input", () => {
+        const searchTerm = searchBar.value;
+        fetchMods(searchTerm); // Récupérer les mods en fonction du terme de recherche
+      });
+
+      // Charger les mods au chargement de la page
+      fetchMods();
+    </script>
+  </body>
+</html>

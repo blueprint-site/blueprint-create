@@ -223,7 +223,7 @@ export const GuidedSchematicUpload: React.FC<GuidedSchematicUploadProps> = ({
     watch,
     handleSubmit,
     setValue,
-    formState: { isDirty },
+    formState: { isDirty, errors },
   } = methods;
   const watchedValues = watch();
 
@@ -334,6 +334,9 @@ export const GuidedSchematicUpload: React.FC<GuidedSchematicUploadProps> = ({
 
   // Form submission
   const onSubmit = async (data: SchematicFormValues) => {
+    console.log('Submit button clicked, data:', data);
+    console.log('Form errors:', errors);
+
     if (!user) {
       toast({
         title: 'Authentication Required',
@@ -459,7 +462,17 @@ export const GuidedSchematicUpload: React.FC<GuidedSchematicUploadProps> = ({
                 </DialogPrimitive.Description>
               </VisuallyHidden.Root>
               <FormProvider {...methods}>
-                <form onSubmit={handleSubmit(onSubmit)} className='relative'>
+                <form
+                  onSubmit={handleSubmit(onSubmit, (errors) => {
+                    console.log('Form validation errors:', errors);
+                    toast({
+                      title: 'Validation Error',
+                      description: 'Please check all required fields',
+                      variant: 'destructive',
+                    });
+                  })}
+                  className='relative'
+                >
                   <motion.div
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
@@ -765,6 +778,12 @@ export const GuidedSchematicUpload: React.FC<GuidedSchematicUploadProps> = ({
                                   type='submit'
                                   disabled={isSubmitting || !isStepValid(currentStep)}
                                   className='gap-2'
+                                  onClick={() => {
+                                    console.log('Upload button clicked');
+                                    console.log('isSubmitting:', isSubmitting);
+                                    console.log('isStepValid:', isStepValid(currentStep));
+                                    console.log('Current form values:', watchedValues);
+                                  }}
                                 >
                                   {isSubmitting ? (
                                     <>
