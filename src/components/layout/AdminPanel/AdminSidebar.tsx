@@ -48,7 +48,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         icon: Puzzle,
         isActive: pathSegments[1] === 'addons',
         items: [
-          { title: 'List', url: '/admin/addons/list' },
+          { title: 'List & Review', url: '/admin/addons/list' },
           { title: 'Add', url: '/admin/addons/add' },
         ],
       },
@@ -59,8 +59,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         isActive: pathSegments[1] === 'featured-addons',
         items: [
           { title: 'List/Remove', url: '/admin/featured-addons/list' },
-          { title: 'Add', url: '/admin/featured-addons/add' },
-          { title: 'Auto Add', url: '/admin/featured-addons/auto-add' },
+          { title: 'Add (recommended)', url: '/admin/featured-addons/auto-add' },
+          { title: 'Add (manually)', url: '/admin/featured-addons/add' },
         ],
       },
       {
@@ -70,7 +70,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         isActive: pathSegments[1] === 'blogs',
         items: [
           { title: 'List', url: '/admin/blogs/list' },
-          { title: 'Add', url: '/admin/blogs/editor/new' },
+          { title: 'Write new', url: '/admin/blogs/editor/new' },
         ],
       },
       {
@@ -85,12 +85,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         url: '/admin/users',
         icon: Users,
         isActive: pathSegments[1] === 'users',
-        items: [
-          { title: 'List', url: '/admin/users' },
-        ],
+        items: [{ title: 'List', url: '/admin/users' }],
       },
       {
-        title: 'Rewards',
+        title: 'Badges & Stats',
         url: '/admin/rewards',
         icon: Award,
         isActive: pathSegments[1] === 'rewards',

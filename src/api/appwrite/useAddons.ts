@@ -332,22 +332,32 @@ export const useUpdateAddon = () => {
   return useMutation({
     mutationFn: async ({ addonId, data }: { addonId: string; data: Partial<Addon> }) => {
       try {
+        console.log('🔧 useUpdateAddon called with:', { addonId, data });
+
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { curseforge_raw, modrinth_raw, ...dataWithoutRaw } = data;
+        console.log('🔧 Data without raw fields:', dataWithoutRaw);
+
         const validationResult = UpdateAddonSchema.safeParse(dataWithoutRaw);
+        console.log('🔧 Validation result:', validationResult);
 
         if (!validationResult.success) {
-          console.error('Validation error:', validationResult.error.format());
+          console.error('❌ Validation error:', validationResult.error.format());
+          throw new Error(`Validation failed: ${JSON.stringify(validationResult.error.format())}`);
         }
 
         const updateData = { ...validationResult.data };
+        console.log('🔧 Final update data:', updateData);
 
-        return await databases.updateDocument<Addon>(
+        const result = await databases.updateDocument<Addon>(
           DATABASE_ID,
           COLLECTION_ID,
           addonId,
           updateData
         );
+
+        console.log('✅ Database update result:', result);
+        return result;
       } catch (error) {
         console.error('Error updating addon:', error);
         throw error;
