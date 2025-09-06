@@ -332,14 +332,10 @@ export const useUpdateAddon = () => {
   return useMutation({
     mutationFn: async ({ addonId, data }: { addonId: string; data: Partial<Addon> }) => {
       try {
-        console.log('🔧 useUpdateAddon called with:', { addonId, data });
-
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { curseforge_raw, modrinth_raw, ...dataWithoutRaw } = data;
-        console.log('🔧 Data without raw fields:', dataWithoutRaw);
 
         const validationResult = UpdateAddonSchema.safeParse(dataWithoutRaw);
-        console.log('🔧 Validation result:', validationResult);
 
         if (!validationResult.success) {
           console.error('❌ Validation error:', validationResult.error.format());
@@ -347,7 +343,6 @@ export const useUpdateAddon = () => {
         }
 
         const updateData = { ...validationResult.data };
-        console.log('🔧 Final update data:', updateData);
 
         const result = await databases.updateDocument<Addon>(
           DATABASE_ID,
@@ -356,7 +351,6 @@ export const useUpdateAddon = () => {
           updateData
         );
 
-        console.log('✅ Database update result:', result);
         return result;
       } catch (error) {
         console.error('Error updating addon:', error);
