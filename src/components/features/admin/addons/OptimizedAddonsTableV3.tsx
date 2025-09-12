@@ -322,7 +322,7 @@ export const OptimizedAddonsTableV3 = () => {
         const targetAddons = isReviewMode ? addonsNeedingReview : filteredAddons;
         const currentAddon = targetAddons[selectedAddonIndex];
         if (currentAddon) {
-          handleReviewStatusChange(currentAddon, false, true);
+          handleReviewStatusChange(currentAddon, true, true);
         }
       },
       onEnable: () => {

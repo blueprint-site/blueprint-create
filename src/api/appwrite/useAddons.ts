@@ -334,20 +334,24 @@ export const useUpdateAddon = () => {
       try {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { curseforge_raw, modrinth_raw, ...dataWithoutRaw } = data;
+
         const validationResult = UpdateAddonSchema.safeParse(dataWithoutRaw);
 
         if (!validationResult.success) {
-          console.error('Validation error:', validationResult.error.format());
+          console.error('❌ Validation error:', validationResult.error.format());
+          throw new Error(`Validation failed: ${JSON.stringify(validationResult.error.format())}`);
         }
 
         const updateData = { ...validationResult.data };
 
-        return await databases.updateDocument<Addon>(
+        const result = await databases.updateDocument<Addon>(
           DATABASE_ID,
           COLLECTION_ID,
           addonId,
           updateData
         );
+
+        return result;
       } catch (error) {
         console.error('Error updating addon:', error);
         throw error;
