@@ -1,13 +1,3 @@
-# Dependencies
-node_modules
-.pnp
-.pnp.js
-
-# Build outputs
-*.local
-.vite
-*.tsbuildinfo
-
 # Logs
 logs
 *.log
@@ -17,38 +7,18 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Environment variables
-.env
-.env.local
-.env.*.local
-# Keep env.js.example but ignore actual env.js in root (not in public/dist)
-/env.js
-!/public/env.js.example
-# Editor directories
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
 .vscode/*
+!.vscode/extensions.json
 .idea
+.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Testing
-coverage
-.nyc_output
-
-# Debug
-.debug
-functions/*
-appwrite.json
-/package-lock.json
-.claude
-claude.md
-/.claude/
-/.github/
-/.husky/
-.mcp.json

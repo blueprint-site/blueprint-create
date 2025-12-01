@@ -1,70 +1,35 @@
-// Keep your current App.tsx as is
-import '@/config/i18n';
-import { createBrowserRouter, RouterProvider } from 'react-router';
-import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
-import { Toaster } from 'sonner';
-import { useUserStore } from '@/api/stores/userStore';
-import { routes } from './routes';
-import { useEffect, useState } from 'react';
-import 'minecraft-textures-library/src/templates/create-textures.css';
-import CookieDialog from './components/utility/CookieDialog.tsx';
-import { StatsTrackingProvider } from '@/providers/StatsTrackingProvider';
-import { AchievementNotificationProvider } from '@/providers/AchievementNotificationProvider';
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import './App.css'
 
-const App = () => {
-  const fetchUser = useUserStore((state) => state.fetchUser);
-  const [envLoaded, setEnvLoaded] = useState(false);
-  const [router, setRouter] = useState<ReturnType<typeof createBrowserRouter> | null>(null);
-
-  // Fetch user data after component mounts
-  useEffect(() => {
-    if (envLoaded) {
-      fetchUser().catch((error) => {
-        console.error('Failed to fetch user data:', error);
-      });
-    }
-  }, [fetchUser, envLoaded]);
-
-  useEffect(() => {
-    const loadEnv = () => {
-      const script = document.createElement('script');
-      script.src = `/env.js?version=${new Date().getTime()}`;
-      script.onload = () => {
-        console.log('env.js loaded');
-        setEnvLoaded(true);
-      };
-      script.onerror = () => {
-        console.error('❌ Error while loading `env.js`');
-      };
-      document.head.appendChild(script);
-    };
-
-    loadEnv();
-  }, []);
-
-  // Create router after env is loaded
-  useEffect(() => {
-    if (envLoaded) {
-      const newRouter = createBrowserRouter(routes);
-      setRouter(newRouter);
-    }
-  }, [envLoaded]);
-
-  if (!envLoaded || !router) {
-    return <LoadingOverlay />;
-  }
+function App() {
+  const [count, setCount] = useState(0)
 
   return (
     <>
-      <StatsTrackingProvider>
-        <AchievementNotificationProvider>
-          <RouterProvider router={router} />
-          <CookieDialog variant='default' />
-          <Toaster />
-        </AchievementNotificationProvider>
-      </StatsTrackingProvider>
+      <div>
+        <a href="https://vite.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      <h1>Vite + React</h1>
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.tsx</code> and save to test HMR
+        </p>
+      </div>
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
     </>
-  );
-};
+  )
+}
 
-export default App;
+export default App

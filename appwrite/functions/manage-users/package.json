@@ -1,9 +1,0 @@
-{
-  "name": "manage-users",
-  "version": "1.0.0",
-  "description": "User management function for admin operations",
-  "main": "index.js",
-  "dependencies": {
-    "node-appwrite": "^14.0.0"
-  }
-}

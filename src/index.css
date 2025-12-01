@@ -1,559 +1,68 @@
-@import 'tailwindcss';
-@import '@/styles/addon-markdown.css';
-
-@custom-variant dark (.dark &);
-
-/* Badge Shape Clip Paths */
-.clip-hexagon {
-  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
-}
-
-.clip-shield {
-  clip-path: polygon(50% 0%, 100% 20%, 100% 70%, 50% 100%, 0% 70%, 0% 20%);
-}
-
-.clip-star {
-  clip-path: polygon(
-    50% 0%,
-    61% 35%,
-    98% 35%,
-    68% 57%,
-    79% 91%,
-    50% 70%,
-    21% 91%,
-    32% 57%,
-    2% 35%,
-    39% 35%
-  );
-}
-
-/* Badge Shape Clip Paths */
-.clip-hexagon {
-  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
-}
-
-.clip-shield {
-  clip-path: polygon(50% 0%, 100% 20%, 100% 70%, 50% 100%, 0% 70%, 0% 20%);
-}
-
-.clip-star {
-  clip-path: polygon(
-    50% 0%,
-    61% 35%,
-    98% 35%,
-    68% 57%,
-    79% 91%,
-    50% 70%,
-    21% 91%,
-    32% 57%,
-    2% 35%,
-    39% 35%
-  );
-}
-
-/* Root CSS Variables - HSL values wrapped in hsl() */
 :root {
-  --background: hsl(220 14% 96%);
-  --foreground: hsl(220 15% 18%);
-  --foreground-muted: hsl(220 15% 23%);
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
 
-  --blueprint: hsl(220 100% 75%);
-  --blueprint-foreground: hsl(0 0% 16%);
-  --blueprint-foreground-muted: hsl(0 0% 13%);
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
 
-  --semantic-foreground: hsl(0 0% 98%);
-  --semantic-foreground-muted: hsl(0 0% 90%);
-
-  --primary: hsl(220 90% 56%);
-  --primary-foreground: var(--semantic-foreground);
-
-  --secondary: hsl(215 30% 45%);
-  --secondary-foreground: var(--semantic-foreground);
-
-  --accent: hsl(265 58% 45%);
-  --accent-foreground: hsl(0 0% 98%);
-
-  --success: hsl(86 36% 36%);
-  --success-foreground: var(--semantic-foreground);
-
-  --warning: hsl(49 100% 34%);
-  --warning-foreground: var(--semantic-foreground);
-
-  --destructive: hsl(3 57% 36%);
-  --destructive-foreground: var(--semantic-foreground);
-
-  --muted: hsl(220 13% 50%);
-  --muted-foreground: hsl(220 13% 45%);
-
-  --surface-1: hsl(220 13% 95%);
-  --surface-2: hsl(220 13% 85%);
-  --surface-3: hsl(220 13% 79%);
-
-  --card: var(--surface-1);
-  --card-foreground: var(--foreground);
-  --card-foreground-muted: var(--muted);
-
-  --popover: var(--surface-1);
-  --popover-foreground: hsl(220 13% 3.9%);
-
-  --border: var(--surface-3);
-  --input: var(--muted);
-  --ring: var(--primary);
-
-  --sidebar-background: var(--surface-1);
-  --sidebar-foreground: var(--foreground);
-  --sidebar-primary: var(--primary);
-  --sidebar-primary-foreground: var(--primary-foreground);
-  --sidebar-accent: var(--surface-2);
-  --sidebar-accent-foreground: var(--foreground);
-  --sidebar-border: var(--surface-3);
-  --sidebar-ring: var(--primary);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.dark {
-  --background: hsl(222 14% 10%);
-  --foreground: hsl(220 15% 97%);
-  --foreground-muted: hsl(220 13% 70%);
-
-  --blueprint: hsl(220 100% 75%);
-  --blueprint-foreground: hsl(0 0% 16%);
-  --blueprint-foreground-muted: hsl(0 0% 13%);
-
-  --surface-1: hsl(222 14% 12%);
-  --surface-2: hsl(222 14% 16%);
-  --surface-3: hsl(222 14% 22%);
-
-  --semantic-foreground: hsl(0 0% 98%);
-  --semantic-foreground-muted: hsl(0 0% 90%);
-
-  --primary: hsl(220 80% 54%);
-  --primary-foreground: var(--foreground);
-
-  --secondary: hsl(215 60% 55%);
-  --secondary-foreground: var(--semantic-foreground);
-
-  --accent: hsl(265 58% 52%);
-  --accent-foreground: var(--semantic-foreground);
-
-  --success: hsl(86 36% 33%);
-  --success-foreground: var(--semantic-foreground);
-
-  --warning: hsl(49 100% 30%);
-  --warning-foreground: var(--semantic-foreground);
-
-  --destructive: hsl(3 57% 33%);
-  --destructive-foreground: var(--semantic-foreground);
-
-  --muted: hsl(220 13% 50%);
-  --muted-foreground: hsl(220 13% 45%);
-
-  --border: var(--surface-3);
-  --input: var(--muted);
-  --ring: var(--primary);
-
-  --card: var(--surface-1);
-  --card-foreground: var(--foreground);
-  --card-foreground-muted: var(--muted);
-
-  --popover: var(--surface-1);
-  --popover-foreground: var(--foreground);
-
-  --sidebar-background: var(--surface-1);
-  --sidebar-foreground: var(--foreground);
-  --sidebar-primary: var(--primary);
-  --sidebar-primary-foreground: var(--primary-foreground);
-  --sidebar-accent: var(--surface-2);
-  --sidebar-accent-foreground: var(--foreground);
-  --sidebar-border: var(--surface-3);
-  --sidebar-ring: var(--primary);
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
 }
 
-@theme inline {
-  --font-minecraft: Minecraft, system-ui, sans-serif;
-
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-foreground-muted: var(--foreground-muted);
-  --color-blueprint: var(--blueprint);
-  --color-blueprint-foreground: var(--blueprint-foreground);
-  --color-blueprint-foreground-muted: var(--blueprint-foreground-muted);
-  --color-semantic-foreground: var(--semantic-foreground);
-  --color-semantic-foreground-muted: var(--semantic-foreground-muted);
-  --color-surface-1: var(--surface-1);
-  --color-surface-2: var(--surface-2);
-  --color-surface-3: var(--surface-3);
-
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-
-  --color-success: var(--success);
-  --color-success-foreground: var(--success-foreground);
-
-  --color-warning: var(--warning);
-  --color-warning-foreground: var(--warning-foreground);
-
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-card-foreground-muted: var(--card-foreground-muted);
-
-  --color-sidebar: var(--sidebar-background);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-
-  --radius: 0.5rem;
-
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
-
-  --animate-rainbow: rainbow 4s linear infinite;
-  --animate-pulseScale: pulseScale 1s ease-in-out infinite;
-
-  @keyframes rainbow {
-    0% {
-      filter: hue-rotate(0deg);
-    }
-    100% {
-      filter: hue-rotate(360deg);
-    }
-  }
-
-  @keyframes pulseScale {
-    0%,
-    100% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.04);
-    }
-  }
-}
-
-@utility container {
-  margin-inline: auto;
-  padding-inline: 2rem;
-}
-
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
-  }
-}
-
-@layer utilities {
-  @font-face {
-    font-family: 'Minecraft';
-    src: url('/src/assets/fonts/MinecraftRegular/MinecraftRegular.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Minecraft';
-    src: url('/src/assets/fonts/MinecraftRegular/MinecraftBold.otf') format('opentype');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Minecraft';
-    src: url('/src/assets/fonts/MinecraftRegular/MinecraftItalic.otf') format('opentype');
-    font-weight: normal;
-    font-style: italic;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Minecraft';
-    src: url('/src/assets/fonts/MinecraftRegular/MinecraftBoldItalic.otf') format('opentype');
-    font-weight: bold;
-    font-style: italic;
-    font-display: swap;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-  h1 {
-    @apply font-minecraft text-5xl font-bold md:text-6xl lg:text-7xl;
-  }
-  h2 {
-    @apply font-minecraft text-4xl font-bold md:text-5xl lg:text-6xl;
-  }
-  h3 {
-    @apply font-minecraft text-3xl font-bold md:text-4xl lg:text-5xl;
-  }
-  h4 {
-    @apply font-minecraft text-2xl md:text-3xl lg:text-4xl;
-  }
-  h5 {
-    @apply font-minecraft text-xl md:text-2xl lg:text-3xl;
-  }
-  h6 {
-    @apply font-minecraft text-lg md:text-xl lg:text-2xl;
-  }
-
-  p {
-    @apply text-foreground;
-  }
-  a {
-    @apply text-primary hover:text-primary/90 transition-colors;
-  }
-  section {
-    @apply py-8;
-  }
-}
-
-/* Prevent global scrolling */
-html,
 body {
-  height: 100%;
-  overflow: hidden;
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
 }
 
-/* Scrollable container */
-.scrollable-container {
-  overflow-y: auto;
-  height: 100%;
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: #7b9bf7 transparent; /* Firefox */
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
 }
 
-/* WebKit-based browsers (Chrome, Edge, Safari) */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-  margin: 20px 0;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #7b9bf7;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: #7393e2;
-}
-
-/* Edge case for older versions of Safari */
-body::-webkit-scrollbar {
-  width: 8px;
-}
-
-.deep-shadow {
-  box-shadow:
-    inset 0 0 100px rgba(0, 0, 0, 0.3),
-    inset 0 0 300px rgba(0, 0, 0, 0.6);
-}
-
-.pixelated {
-  image-rendering: pixelated;
-}
-
-.customMarkdown {
-  p,
-  li {
-    font-family: 'default', sans-serif;
-  }
-
-  h1 {
-    color: var(--color-primary);
-  }
-
-  h2,
-  h3 {
-    color: var(--color-secondary);
-    margin-top: 2vh;
-    margin-bottom: 2vh;
-  }
-  hr {
-    margin-top: 2vh;
-    margin-bottom: 2vh;
-  }
-  li {
-    margin-left: 5vh;
-  }
-  a {
-    color: var(--color-blueprint);
-    font-weight: bold;
-    text-decoration: none;
-  }
-  strong {
-    color: var(--color-secondary);
-  }
-}
-
-/* For manage markdown display in addons  */
-.prose > div.img-wrapper img {
-  max-height: 10rem;
-  width: auto;
-}
-.prose > div.img-wrapper p {
-  font-family: var(--font-mono), sans-serif;
-}
-.prose > div.img-wrapper ul {
-  font-family: var(--font-mono), sans-serif;
-}
-.prose ul > li::before {
-  content: '-';
-  margin-right: 0.5em;
-}
-.minecraft-btn {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMQAAAAPCAAAAACe4j/AAAAEuElEQVRIx1WWS5Ibuw5EtddrdRRJJE4iSKrb4c2/AUuy30iK+jEBHCTwAICMCgAKiGhKVQUwKzJHQo4mQGBy7AIvk1E2AQKhFt6bUGD1gILy0DkD4dmzACkGyzCScgFgQmLZr4LpQpC56QB2wgSYE8i1fd6xd1yPHIAKwAs14Undx2LIHK0X6vdFbzTa6CNBLQE8Y5rapn7oAl3KSDKC6cLfL6sLnIVG7ffnyUgvQ6rwLjUZdIVqWz0iEXXCZ+TJsV8feUdoPHDk+a/IeAbq0ldLT59jtHweHwmKS6gFSUYCqKcVsPami1pEnqolkCMBiAS87FXTICp03geYUr8TV8un3KuyC0BfTUzihOCdwjUya1bkT9VWe+AaFOoJzHdtERXRe/eulyEDhC6pjYwr+JQuIDU9/0wQBnJEAkd+9i6IRTJrV7YWnGfwLA6ESphkBoCu88M0YH1CTTOiRUpDdwpGkkP5yL9phhwn+QVxDarAXq513y9bLKgxBGR/CjDyMl4ECd6lO82CaMLbEHGHp1R8ePDERj392ssaCOigNjJ+dXXl6OLUFfVx6dA1BFJLlHpkUHPam095C3QJLIjn6OLIOB3xe0JS85Zd+govg1/z/UhtG3RdVW98yxNp5I0Vtf/U+6y/dJ/yHtSK4q7G9ARscC3/Df/kXTwiT3d6ovjEISLJIVEvBwWeCXlALZTbpy85xqWuf3sNiBBUmYjI+BqN6aNQqDWpipSYf3W1nOV/WALoykjIiCPreSn97UigsjZdPA5s3AmCDIxaVO0Fa1fV/qkaiijPPz/bEeRyLSBDI8K8j37TO8aH7vmOqUUQ1DboYhvqd+FlFGEo+2T75MbLGnjvPeu7Pl521Ap14dcR3h7p75qv4xieqnNDoyCPLt/yKkf5gOUXl+6S3d9Syq/982fz+fhpsm28C5EhJcxsWWQke6KoPMA7tqm7kKcrn6FLhWcoqCNCxDPyQ8wEKR73nIlEX8GpARSJX7/rzeNtWPD/Dl2IwtOYMwV7osGsHYJanzeU7KqIZVCTcrT0IEbyD4d1e1dkBtW2qLhLXK7a1ogDqsjI1DR4PY7nHEqfF9tn8HUJL+eQ/lGOXdwI1++57CqgmDaReM9CZYLAk4D4ymqti4KZI9Htz9OnrcuOhCQEqJfXaxHPAFG/l/ee1GFJPXmPryYUiUGPutnRGXkagmnjHk5RNpm7xxiclm6CjJEQ4+MD4xPmuT9Ef4b3YT3B51a7d4Np76PF0cavuC+SoaH6PlilipEakoJBJETWT3k7Hf+1REPj2fIx95t5ct6u9S5v3KM2fv2Ve29ax9yC98zT2IZot61MHyYtdPF92nguZ29xfcVxSu9Nj5Gl8G3wcVoW8n1Q/f6BHFEAyy5R2aRIdYH8XfV4453vHKcnqarXPD6mdrD0rlVV5xBPF2xuJM5Oo0SdaaqGMjJva7ii6bYv74IzPMo5pGebpu72ghypwTR+WWDuhQOkFijGyAzF3GXh11lEH0hkPINZivpTqLEtVm2j1hVcn/S0//q0es5dbyxOErxKivQ+bHotvzcT3/XztPf20XqG6fJZMePT2X6ts+nlm9LoSYHMiHuJjGXniB7v2fo/5qT4nuxYg6AAAAAASUVORK5CYII=);
-  font-family: 'Minecraft';
-  border-color: #aaa #565656 #565656 #aaa;
-  text-shadow: 3px 3px #4c4c4c;
-  border-radius: 0 0 0 0;
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
   cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
 }
 
-.minecraft-btn:hover {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMQAAAAPCAMAAACMV5AuAAAAVFBMVEVtd7ZteLZverdwerdwe7hxfLhyfbl0frl1f7p2gLt4grx6hLx7hb18hr5+iL+AisCBi8GCjMGEjsKGkMOHkcSIksSKk8WLlMWLlcaMlcaNlsePmMdwBHmVAAAEjElEQVRIx1WW27YbKw5F3Ul2GYTWFAJX+pyd///PfgDsTg0/mSqQ1k08AEAeDkAA7kXyDAeyu2QCWREgCGSvAAbIE/D9U2m8Ji4Drw0CEhP7EMiqBFxmDMBEkHvd5AziDsjoCKQXddUl1nuZgMZrf0PMdj1kgNY+Ay+CJPg8kj1rR3X/GS9kxaoJVFaB6QkxIX5TBX65mpAZGQH3HaoCFMj6/GxuYgDyTsyup1hfxwxVN+F08ANGANyf8jqAPaBpranJvhxV+VV08JGPVScmcL8W4EIuAFWFHMZrUkUfNC3WtIsEaFogMWJRl839MES61w1cjMUsI1fb7GKaoENMOdFNykzXPz2mlwekkXjV4ioO9b15rZWZd4AaCL9cxdSutl8buIOUkd8JTgAy01IKoFoFPhAZr65SbDHgxFIGKi5IpLaKdlafAHxaVWDt2SSZ24LQhEx6aLGyj7RtELDLiA7EiD72ehBiQJo5oPq1nOQMYGAIYoY2AwIrImaA+25P8vZRa0KgqrjnQIaACiom/1G9Sla3GUHVLl/mMl/mxeUPGT0T5seAeeAQtF9WV2F7cX4niJ4DYmBd12oh7jymyRkBuq6M81mQuExHVv313beo9VH3ojfM2zZ8AkTG8X7EeDs6OZw+mrY7E5l/gqQJmZx+YySQAi1/dqQZy0as4FL1d7nrcfd1kjWTX1ZIYESTUCnuPZE7+anrqcxlz3diUX2HowHCf15S3AvxrnhRxeMwtQACGYGKZ7wGjNl7vH73MHdP8s/vSXM0FiRqMnPowfbjRsfe6n7nZ/FGIyfgF6+A/t1XTrcWB3Q42AxkMOfMfuJotRPgqGqFMfB8KO6eN+BEpO8F2eLZ18YO0GUdmEDcXMcNey+XuOfvP5P35guSVxAzWRYUpIoSuZiJrJ/p4zPouw0pwX+6XwpIcyNWEcJ/uf5Svuyx+ncTfhmotEhIBPe/8f961F/jI5aQfSs3WFOwChnZZxPk+HQjZu/WBuDFVwobZnoLISBOdkmNLFPE9iadiImsgTcdTDKA8dj1qBT518Xcg6+6L0Yl/nqCLeH+b46InkCSETTBzEQBRoPEwS9lKVUkpEx426M3oIMHYQLhK/B6jHvgXw6if4+YM4mlJdWDpLw4MhHgjwBZgIt+ZJdAVENOEkiv6mY4yy5nFPjnQmGfGVy0IqP+cmbsWF7Se/rT+5ZBzHPdKfajHW2ouWldPJaoTDJ3GUYTNMV/IyaiPYqQuX0VPXK+ra3Mc8c5Wlkp4D/e5S5htjXU3HnPPJsBXraRM/rSpOMX99zMoVradRl9AMxJdVPIYgf8Rhu0DvLM739A5rmjJ51QcW9SFXjcvR85oYOhSKTsd65pqdKWIV59ZO/7kKTDJLbvYw9XVRIyTXKJdfm4rOjE18yT8IHM/euZa0Z0fLvBSIh7h925QLoXR80WNfnqOHHP7Qk5aj+dTLX4E3hhIkafoGd15/IDT/lPTVSVr233dy6OkJtiLm0yBu+byeE2Yc59pVrDdKyPjxgD4h6r6vcFwpYNHMxVBaE2ApmfyTTjf5jQnWRymG7iAAAAAElFTkSuQmCC);
-  border: 2px solid white;
-}
-
-/* Fix for Radix Select placeholder color */
-.radix-select-trigger [data-placeholder],
-.radix-select-value[data-placeholder],
-[data-placeholder] {
-  color: var(--color-foreground-muted, #888) !important;
-  opacity: 1 !important;
-}
-
-/* Fix for Radix Select selected value color */
-.radix-select-trigger:not([data-placeholder]) [data-state='checked'],
-.radix-select-value:not([data-placeholder]) {
-  color: var(--color-foreground, #fafafa) !important;
-}
-
-/* Markdown Editor Placeholder Styling */
-/* Target MDXEditor's actual placeholder element */
-.mdxeditor-root-contenteditable[data-lexical-editor]:before {
-  color: hsl(220 13% 45%) !important;
-  opacity: 0.7 !important;
-}
-
-/* MDXEditor placeholder paragraph */
-.mdxeditor p[data-placeholder]:empty::before,
-.mdxeditor p.editor-paragraph:empty::before {
-  content: attr(data-placeholder);
-  color: hsl(220 13% 45%) !important;
-  opacity: 0.7 !important;
-  pointer-events: none;
-}
-
-/* MDXEditor contenteditable with placeholder */
-div[contenteditable='true'].markdown-editor p:first-child:empty::before,
-div[contenteditable='true'].markdown-editor > p:only-child:empty::before {
-  content: 'Describe how your contraption works...';
-  color: hsl(220 13% 45%) !important;
-  opacity: 0.7 !important;
-  pointer-events: none;
-}
-
-/* Target the actual MDXEditor root element placeholder */
-.mdxeditor .mdxeditor-root-contenteditable p:first-child[data-placeholder]:empty::before {
-  color: hsl(220 13% 45%) !important;
-  opacity: 0.7 !important;
-}
-
-/* Override theme styles */
-.dark-theme .mdxeditor p[data-placeholder]:empty::before,
-.dark-theme div[contenteditable='true'].markdown-editor p:first-child:empty::before {
-  color: hsl(220 13% 45%) !important;
-  opacity: 0.7 !important;
-}
-
-/* Global MDXEditor placeholder override */
-.mdxeditor [data-placeholder]::before {
-  color: hsl(220 13% 45%) !important;
-  opacity: 0.7 !important;
-}
-
-/* Lexical editor placeholder styling - most important one */
-.mdxeditor .editor-placeholder {
-  color: #999 !important;
-  overflow: hidden;
-  position: absolute;
-  text-overflow: ellipsis;
-  top: 0;
-  left: 0;
-  font-size: inherit;
-  user-select: none;
-  display: inline-block;
-  pointer-events: none;
-  opacity: 0.8 !important;
-}
-
-/* Target the contenteditable when empty */
-.mdxeditor [contenteditable='true']:empty::before {
-  content: attr(placeholder);
-  color: #999 !important;
-  opacity: 0.7 !important;
-  pointer-events: none;
-}
-
-/* MDXEditor with Lexical - target the actual placeholder element */
-.mdxeditor-root-contenteditable .editor-placeholder,
-.markdown-editor .editor-placeholder {
-  color: #999 !important;
-  opacity: 0.8 !important;
-}
-
-/* Force override all placeholder text in the app */
-body .mdxeditor .editor-placeholder {
-  color: rgb(156, 163, 175) !important; /* Tailwind gray-400 */
-}
-
-/* Dark mode placeholder */
-.dark .mdxeditor .editor-placeholder,
-.dark-theme .mdxeditor .editor-placeholder {
-  color: rgb(107, 114, 128) !important; /* Tailwind gray-500 */
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
 }
