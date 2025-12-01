@@ -5,3 +5,4 @@ Documenting what ive seen and changes
 - made a new app with create-vite with a react-ts template
 - port in the old eslint config
 - fix eslint iside the package.json
+- installed tailwind with shadcn/ui
