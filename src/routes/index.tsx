@@ -4,7 +4,7 @@ import type { RouteObject } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 
 import Home from "../pages/Home/Home";
-import BaseLayout  from "@/layouts/baseLayout";
+import BaseLayout  from "@/layouts/BaseLayout";
 
 export const routes: RouteObject[] = [
 	{
