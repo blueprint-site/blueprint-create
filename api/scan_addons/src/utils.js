@@ -168,20 +168,20 @@ export function normalizeModData(mod, source, loadersList, categoriesList) {
 
     return {
       curseforge_id: mod.id?.toString() || '',
-      modrinth_id: null,
-      name: name,
-      description: mod.summary || mod.description || '',
-      slug: mod.slug || '',
-      sources: [source],
-      icon: mod.logo?.thumbnailUrl || '',
+      modrinth_id: null, //
+      name: name, //
+      description: mod.summary || mod.description || '', //
+      slug: mod.slug || '', //
+      sources: [source], //
+      icon: mod.logo?.thumbnailUrl || '', //
       created_at: mod.dateCreated || '',
       updated_at: mod.dateModified || '',
-      authors: (mod.authors || []).map((a) => a.name || ''),
-      categories: categories,
-      downloads: mod.downloadCount || 0,
-      curseforge_raw: JSON.stringify(mod),
-      minecraft_versions: minecraftVersions,
-      loaders: modLoaders,
+      authors: (mod.authors || []).map((a) => a.name || ''), //
+      categories: categories, //
+      downloads: mod.downloadCount || 0, //
+      curseforge_raw: JSON.stringify(mod), //
+      minecraft_versions: minecraftVersions, //
+      loaders: modLoaders, // 
     };
   } else if (source === 'Modrinth') {
     const categories = (mod.categories || []).filter(
