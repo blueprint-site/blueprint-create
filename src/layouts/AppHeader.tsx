@@ -14,7 +14,7 @@ const navigationItems = [
     href: '/about',
     icon: AboutIcon,
     label: 'About',
-  },
+  },  
 ];
 
 export default function AppHeader() {
