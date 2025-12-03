@@ -1,0 +1,31 @@
+{
+  "name": "scan-addons-function",
+  "version": "1.0.0",
+  "description": "Appwrite Function to scan and sync addons from CurseForge and Modrinth",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js",
+    "test": "node test-local.js",
+    "dev": "node --watch src/main.js"
+  },
+  "dependencies": {
+    "appwrite": "^17.0.0",
+    "axios": "^1.7.9",
+    "node-appwrite": "^16.0.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.7"
+  },
+  "keywords": [
+    "appwrite",
+    "function",
+    "addon",
+    "scanning",
+    "curseforge",
+    "modrinth",
+    "minecraft"
+  ],
+  "author": "Blueprint Create Team",
+  "license": "MIT"
+}

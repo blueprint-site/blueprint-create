@@ -1,6 +1,7 @@
 import {RouterProvider, createBrowserRouter} from "react-router-dom"
 import { routes } from "@/routes/index"
 import { ThemeProvider } from "./components/theme-provider"
+
 function App() {
   return (
     <>
@@ -10,5 +11,4 @@ function App() {
     </>
     )
 }
-
 export default App;

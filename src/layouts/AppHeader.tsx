@@ -1,7 +1,9 @@
 import AddonIcon from '@/assets/sprite-icons/minecart_coupling.webp';
 import AboutIcon from '@/assets/sprite-icons/goggles.webp';
 import Logo from '@/assets/logo.webp';
+import { ToggleTheme } from '@/components/theme-provider';
 import { NavLink } from 'react-router-dom';
+
 const navigationItems = [
   {
     href: '/addons',

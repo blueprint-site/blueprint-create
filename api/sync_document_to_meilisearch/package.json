@@ -1,0 +1,17 @@
+{
+  "name": "sync-document-to-meilisearch",
+  "version": "1.0.0",
+  "description": "Real-time document synchronization to Meilisearch on Appwrite database events",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "node-appwrite": "^13.0.0",
+    "meilisearch": "^0.39.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}

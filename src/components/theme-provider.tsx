@@ -63,6 +63,18 @@ export function ThemeProvider({
   )
 }
 
+export function ToggleTheme(goalTheme = "") {
+  const { theme, setTheme } = useTheme()
+  if (theme && (goalTheme === "light" || goalTheme === "dark" || goalTheme === "system")) {
+    setTheme(goalTheme)
+  }
+  else if (theme === "light") {
+    setTheme("dark")
+  } else {
+    setTheme("light")
+  }
+}
+
 export const useTheme = () => {
   const context = useContext(ThemeProviderContext)
 

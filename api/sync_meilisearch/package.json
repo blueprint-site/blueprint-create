@@ -1,0 +1,24 @@
+{
+  "name": "sync-meilisearch",
+  "version": "1.0.0",
+  "description": "Unified sync function for all Meilisearch indexes",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write .",
+    "start": "node src/main.js",
+    "test": "node test-local.js",
+    "test:full": "node test-local.js --force-full",
+    "serve": "node test-local.js --serve",
+    "serve:dev": "node test-local.js --serve --port=8080"
+  },
+  "keywords": [],
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "meilisearch": "^0.40.0",
+    "node-appwrite": "^12.0.1"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5"
+  }
+}
