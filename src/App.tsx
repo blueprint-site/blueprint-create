@@ -1,16 +1,22 @@
 import {RouterProvider, createBrowserRouter} from "react-router-dom"
 import { routes } from "@/routes/index"
 import { ThemeProvider } from "./components/theme-provider"
-import ThemeSwitch from "./components/ThemeSwitch"
+import ThemeSwitch from "@/components/ThemeSwitch"
+import { Toaster } from "@/components/ui/sonner"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
+const queryClient = new QueryClient()
 
 function App() {
   return (
     <>
-      <ThemeProvider>
-        <RouterProvider router={createBrowserRouter(routes)} />
-        <ThemeSwitch />
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <RouterProvider router={createBrowserRouter(routes)} />
+          <ThemeSwitch />
+          <Toaster />
+        </ThemeProvider>
+      </QueryClientProvider>
     </>
     )
 }
