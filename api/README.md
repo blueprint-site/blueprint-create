@@ -8,4 +8,4 @@ These files were created by:
 - yehorscode
 
 ### Original files
-Original (unmodified) files are inside the archive_v2functions branch. Please do not modify them.
+Original (unmodified) files are inside the `v2-old-archive` branch. Please do not modify them.
