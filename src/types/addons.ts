@@ -10,8 +10,6 @@ export const Addon = z.object({
     updated_at: z.string().nullable(), // is an appwrite date
     isValid: z.boolean(),
     isChecked: z.boolean(),
-    curseforge_raw: z.string().optional().nullable(),
-    modrinth_raw: z.string().optional(),
     sources: z.array(z.string()).nonempty().max(20),
     modrinth_id: z.string().max(50).optional(),
     curseforge_id: z.string().max(50).optional().nullable(),
