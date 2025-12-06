@@ -21,7 +21,7 @@ export default function AppHeader() {
   return (
     <nav className='font-minecraft font-bold bg-header text-foreground text-lg w-full flex items-center px-4 h-12 shadow-md dark:shadow-white/10 dark:shadow-md'>
       <NavLink to='/' className='flex items-center mr-8 hover:bg-accent transition-colors'>
-        <img src={Logo} alt='Blueprint logo' className='w-10 h-10 mr-2' />
+        <img src={Logo} alt='Blueprint logo' className='w-8 h-8 mr-2' />
         <span>Blueprint</span>
       </NavLink>
       <div className='flex items-center gap-5 ml-auto'>
@@ -31,7 +31,7 @@ export default function AppHeader() {
             to={item.href}
             className='flex items-center hover:bg-accent transition-colors'
           >
-            <img src={item.icon} alt={`${item.label} icon`} className='w-10 h-10 mr-2' />
+            <img src={item.icon} alt={`${item.label} icon`} className='w-8 h-8 mr-2' />
             <span>{item.label}</span>
           </NavLink>
         ))}

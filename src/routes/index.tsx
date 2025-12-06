@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom";
 
 import Home from "../pages/Home/Home";
 import BaseLayout  from "@/layouts/BaseLayout";
-import AddonsPage from "@/pages/Addons/Addons";
+import AddonsPage from "@/pages/Addons/AddonsPage";
 
 export const routes: RouteObject[] = [
 	{
