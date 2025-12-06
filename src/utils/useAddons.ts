@@ -1,5 +1,5 @@
 import { tablesDB } from "@/lib/appwrite";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Query } from "appwrite";
 import { toast } from "sonner";
 import { Addon } from "@/types/addons";
@@ -128,6 +128,39 @@ export const useSearchAddons = (searchTerm: string, page: number = 1, limit: num
                 toast.error(`Failed to fetch addons: ${e.message}`);
                 return []; 
             }
+        }
+    })
+}
+
+/**
+ * Updates selected fields of an addon (by id)
+ * @returns 
+ */
+export const useUpdateAddon = () => {
+    return useMutation({
+        mutationFn: async ({addonId, data}: {addonId: string, data: Partial<AddonType>}) => {
+            try {
+                const validation = Addon.partial().safeParse(data);
+                if (!validation.success) {
+                    throw new Error(validation.error.message);
+                }
+                const updateData = {...validation.data};
+                const result = await tablesDB.updateRow({
+                    databaseId: DATABASE_ID,
+                    tableId: COLLECTION_ID,
+                    rowId: addonId,
+                    data: updateData
+                })
+                return result;
+            }
+            catch (e: Error | any) {
+                console.error(e);
+                toast.error(`Failed to update addon: ${e.message}`);
+                return []; 
+            }
+        },
+        onSuccess: () => {
+            toast.success('Addon updated successfully');
         }
     })
 }

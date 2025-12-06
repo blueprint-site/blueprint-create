@@ -6,6 +6,7 @@ import { Navigate } from "react-router-dom";
 import Home from "../pages/Home/Home";
 import BaseLayout  from "@/layouts/BaseLayout";
 import AddonsPage from "@/pages/Addons/AddonsPage";
+import LoginPage from "@/pages/Auth/Login/LoginPage";
 
 export const routes: RouteObject[] = [
 	{
@@ -18,6 +19,10 @@ export const routes: RouteObject[] = [
             {
                 path: "/addons",
                 element: <AddonsPage />,
+            },
+            {
+                path: "/login",
+                element: <LoginPage />,
             },
 		],
 	},
