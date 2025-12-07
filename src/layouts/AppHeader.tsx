@@ -1,20 +1,19 @@
 import AddonIcon from '@/assets/sprite-icons/minecart_coupling.webp';
 import AboutIcon from '@/assets/sprite-icons/goggles.webp';
 import Logo from '@/assets/logo.webp';
-import { ToggleTheme } from '@/components/theme-provider';
 import { NavLink } from 'react-router-dom';
-
+// TODO: Implement about page
 const navigationItems = [
   {
     href: '/addons',
     icon: AddonIcon,
     label: 'Addons',
   },
-  {
-    href: '/about',
-    icon: AboutIcon,
-    label: 'About',
-  },  
+  // {
+  //   href: '/about',
+  //   icon: AboutIcon,
+  //   label: 'About',
+  // },
 ];
 
 export default function AppHeader() {

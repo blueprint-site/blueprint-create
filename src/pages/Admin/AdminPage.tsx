@@ -1,6 +1,6 @@
 import { useAdminAddons, useUpdateAddon } from '@/utils/useAddons';
-import { Addon } from '@/types/addons';
-import * as z from 'zod';
+import type { Addon } from '@/types/addons';
+import type * as z from 'zod';
 import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
 

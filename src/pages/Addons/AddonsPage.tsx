@@ -1,9 +1,7 @@
 import { useFetchAddons, useSearchAddons } from '@/utils/useAddons';
-import AddonCard from './AddonCard';
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -12,7 +10,9 @@ import {
 import AddonGrid from './AddonGrid';
 import { Input } from '@/components/ui/input';
 import { useEffect, useMemo, useState } from 'react';
-
+import type { Addon } from '@/types/addons';
+import type { z } from 'zod';
+type AddonType = z.infer<typeof Addon>;
 
 export default function AddonsPage() {
   const [page, setPage] = useState<number>(1);
@@ -24,29 +24,33 @@ export default function AddonsPage() {
     return () => clearTimeout(id);
   }, [search]);
 
-  const listResponse = debouncedSearch
-    ? useSearchAddons(debouncedSearch, page, limit)
-    : useFetchAddons(page, limit);
+  const searchResponse = useSearchAddons(debouncedSearch, page, limit);
+  const listResponse = useFetchAddons(page, limit);
 
-  const addons = useMemo(() => {
+  const addons: AddonType[] = useMemo(() => {
     if (debouncedSearch) {
-      const r = (listResponse as any).data;
-      return r?.addons ?? [];
+      const r = (searchResponse as unknown as { data?: { addons?: AddonType[] } }).data;
+      return (r?.addons ?? []) as AddonType[];
     }
-    return (listResponse as any).data ?? [];
-  }, [listResponse, debouncedSearch]);
+    return ((listResponse as unknown as { data?: AddonType[] }).data ?? []) as AddonType[];
+  }, [listResponse, searchResponse, debouncedSearch]);
 
   const totalPages = useMemo(() => {
-    if (debouncedSearch) return (listResponse as any).data?.totalPages ?? 0;
-    return (listResponse as any).data?.totalPages ?? Math.ceil(((listResponse as any).data?.length || 0) / limit);
-  }, [listResponse, debouncedSearch]);
+    if (debouncedSearch) {
+      const r = (searchResponse as unknown as { data?: { totalPages?: number } }).data;
+      return r?.totalPages ?? 0;
+    }
+    const lr = (listResponse as unknown as { data?: { totalPages?: number; length?: number } })
+      .data;
+    return lr?.totalPages ?? Math.ceil((lr?.length || 0) / limit);
+  }, [listResponse, searchResponse, debouncedSearch]);
 
   const isFirstPage = page === 1;
   const isLastPage = totalPages ? page >= totalPages : (addons?.length || 0) < limit;
 
   return (
-    <div className='xl:mx-40'>
-      <div className='bg-blueprint p-4'>
+    <div className='xl:mx-40 flex flex-col'>
+      <div className='bg-blueprint/50 p-4 flex flex-col items-start'>
         <Input
           placeholder='Search addons...'
           value={search}
@@ -56,6 +60,9 @@ export default function AddonsPage() {
           }}
           className='dark:text-white bg-gray-300!'
         />
+        <span className='text-xs opacity-80'>Note: Not all addons are reviewed yet. Some may be not reviewed yet. (and that feature isnt implemented yet) <br /></span>
+        <span className='text-xs opacity-80'>Disclaimer: this is a rewrite of the old codebase. Some functions are copied while most are new. Site isnt polished right now <br /></span>
+        <a href="" className='bg-blueprint text-black/70 font-minecraft px-10 py-1 mt-2 rounded hover:cursor-pointer'>Follow our discord for updates</a>
       </div>
       <div className='mt-2 -mb-2'>
         <Pagination>

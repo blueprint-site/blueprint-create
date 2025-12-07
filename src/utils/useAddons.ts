@@ -5,7 +5,6 @@ import { toast } from 'sonner';
 import { Addon } from '@/types/addons';
 import * as z from 'zod';
 
-// parses the zod type to react type
 type AddonType = z.infer<typeof Addon>;
 
 const DATABASE_ID = 'main';
@@ -31,12 +30,14 @@ export const useFetchAddon = (id?: string) => {
 
         const addon = Addon.parse(rawData);
         return addon;
-      } catch (error: Error | any) {
+      } catch (error: unknown) {
         if (error instanceof z.ZodError) {
           toast.error(`Addon data invalid: ${error.message}`);
           console.error('Zod validation error:', error.issues);
-        } else {
+        } else if (error instanceof Error) {
           toast.error(`Failed to fetch addon with id ${id}: ${error.message}`);
+        } else {
+          toast.error(`Failed to fetch addon with id ${id}`);
         }
         return null;
       }
@@ -57,13 +58,13 @@ export const useFetchAddons = (page: number, limit: number = 10) => {
   return useQuery({
     queryKey: ['addons', 'list', page, limit],
     queryFn: async (): Promise<
-      (AddonType[] & {
+      AddonType[] & {
         total: number;
         totalPages: number;
         hasNextPage: boolean;
         hasPreviousPage: boolean;
         currentPage: number;
-      })
+      }
     > => {
       try {
         const response = await tablesDB.listRows({
@@ -72,7 +73,9 @@ export const useFetchAddons = (page: number, limit: number = 10) => {
           queries: [Query.limit(limit), Query.offset((page - 1) * limit)],
         });
 
-        const validatedAddons = response.rows.map((doc: any) => Addon.parse(doc)) as AddonType[] & {
+        const validatedAddons = response.rows.map((doc: unknown) =>
+          Addon.parse(doc)
+        ) as AddonType[] & {
           total: number;
           totalPages: number;
           hasNextPage: boolean;
@@ -89,9 +92,10 @@ export const useFetchAddons = (page: number, limit: number = 10) => {
         validatedAddons.currentPage = page;
 
         return validatedAddons;
-      } catch (e: Error | any) {
+      } catch (e: unknown) {
         console.error(e);
-        toast.error(`Failed to fetch addons: ${e.message}`);
+        const message = e instanceof Error ? e.message : 'Unknown error';
+        toast.error(`Failed to fetch addons: ${message}`);
         const empty = [] as unknown as AddonType[] & {
           total: number;
           totalPages: number;
@@ -122,7 +126,17 @@ export const useFetchAddons = (page: number, limit: number = 10) => {
 export const useSearchAddons = (searchTerm: string, page: number = 1, limit: number = 10) => {
   return useQuery({
     queryKey: ['addons', 'search', searchTerm, page, limit],
-    queryFn: async () => {
+    queryFn: async (): Promise<
+      | {
+          addons: AddonType[];
+          total: number;
+          totalPages: number;
+          hasNextPage: boolean;
+          hasPreviousPage: boolean;
+          currentPage: number;
+        }
+      | []
+    > => {
       try {
         const queries = [
           Query.limit(limit),
@@ -142,7 +156,7 @@ export const useSearchAddons = (searchTerm: string, page: number = 1, limit: num
           tableId: COLLECTION_ID,
           queries,
         });
-        const validatedAddons = response.rows.map((doc: any) => Addon.parse(doc));
+        const validatedAddons = response.rows.map((doc: unknown) => Addon.parse(doc));
         const totalPages = Math.ceil(response.total / limit);
         return {
           addons: validatedAddons,
@@ -152,9 +166,10 @@ export const useSearchAddons = (searchTerm: string, page: number = 1, limit: num
           hasPreviousPage: page > 1,
           currentPage: page,
         };
-      } catch (e: Error | any) {
+      } catch (e: unknown) {
         console.error(e);
-        toast.error(`Failed to fetch addons: ${e.message}`);
+        const message = e instanceof Error ? e.message : 'Unknown error';
+        toast.error(`Failed to fetch addons: ${message}`);
         return [];
       }
     },
@@ -181,9 +196,10 @@ export const useUpdateAddon = () => {
           data: updateData,
         });
         return result;
-      } catch (e: Error | any) {
+      } catch (e: unknown) {
         console.error(e);
-        toast.error(`Failed to update addon: ${e.message}`);
+        const message = e instanceof Error ? e.message : 'Unknown error';
+        toast.error(`Failed to update addon: ${message}`);
         return [];
       }
     },
@@ -194,11 +210,11 @@ export const useUpdateAddon = () => {
 };
 
 /**
- * 
- * @param filters 
- * @param page 
- * @param limit 
- * @returns 
+ *
+ * @param filters
+ * @param page
+ * @param limit
+ * @returns
  */
 export const useAdminAddons = (
   filters: {
@@ -211,7 +227,14 @@ export const useAdminAddons = (
 ) => {
   return useQuery({
     queryKey: ['addons', 'admin', filters, page, limit],
-    queryFn: async () => {
+    queryFn: async (): Promise<{
+      addons: AddonType[];
+      total: number;
+      totalPages: number;
+      hasNextPage: boolean;
+      hasPreviousPage: boolean;
+      currentPage: number;
+    }> => {
       try {
         const queries = [
           Query.limit(limit),
@@ -238,7 +261,7 @@ export const useAdminAddons = (
           tableId: COLLECTION_ID,
           queries: queries,
         });
-        let addons = response.rows.map((doc: any) => Addon.parse(doc));
+        let addons = response.rows.map((doc: unknown) => Addon.parse(doc));
         if (filters.search) {
           const searchTerm = filters.search.toLowerCase();
           addons = addons.filter(
@@ -259,9 +282,10 @@ export const useAdminAddons = (
           hasPreviousPage: page > 1,
           currentPage: page,
         };
-      } catch (e: Error | any) {
+      } catch (e: unknown) {
         console.error(e);
-        toast.error(`Failed to fetch admin addons: ${e.message}`);
+        const message = e instanceof Error ? e.message : 'Unknown error';
+        toast.error(`Failed to fetch admin addons: ${message}`);
         return {
           addons: [],
           total: 0,

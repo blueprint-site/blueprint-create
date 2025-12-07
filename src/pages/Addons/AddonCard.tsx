@@ -1,6 +1,5 @@
-import { Addon } from '@/types/addons';
-import { z } from 'zod';
-import { ArrowDown } from 'lucide-react';
+import type { Addon } from '@/types/addons';
+import type { z } from 'zod';
 type AddonType = z.infer<typeof Addon>;
 
 interface AddonCardProps {
@@ -34,13 +33,25 @@ export default function AddonCard({ addon }: AddonCardProps) {
       <p>{new Intl.NumberFormat('pl-PL').format(addon.downloads)} downloads total</p>
       <p>On {addon.sources.join(' and ')}</p>
       <p>For {normalizeLoaders(addon.loaders)}</p>
-      <div className="gap-2 flex mt-2 font-minecraft">
-        {addon.sources.includes('Modrinth') && <button className='bg-green-400 px-5 hover:bg-blueprint transition-all'>
-          Modrinth
-        </button>}
-        {addon.sources.includes('CurseForge') && <button className='bg-orange-500 px-5 hover:bg-blueprint transition-all'>
-          CurseForge
-        </button>}
+      <div className='gap-2 flex mt-2 font-minecraft text-black'>
+        {addon.sources.includes('Modrinth') && (
+          <button
+            className='bg-green-400 px-5 hover:bg-blueprint transition-all'
+            onClick={() => window.open(`https://modrinth.com/mod/${addon.slug}`)}
+          >
+            Modrinth
+          </button>
+        )}
+        {addon.sources.includes('CurseForge') && (
+          <button
+            className='bg-orange-500 px-5 hover:bg-blueprint transition-all'
+            onClick={() =>
+              window.open(`https://www.curseforge.com/minecraft/mc-mods/${addon.slug}`)
+            }
+          >
+            CurseForge
+          </button>
+        )}
       </div>
     </div>
   );

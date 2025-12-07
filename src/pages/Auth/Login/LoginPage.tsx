@@ -30,6 +30,7 @@ export default function LoginPage() {
       }
     } catch (error) {
       toast.error('Login failed. Please check your credentials and try again.');
+      console.error('Login error:', error);
     }
 
     setIsLoading(false);
@@ -63,8 +64,8 @@ export default function LoginPage() {
           Login {isLoading && <Spinner />}
         </Button>
         <span className='opacity-50 -mt-3 text-sm font-minecraft font-light'>
-          Note: Currently login is only needed for admins. If you are a user, there's no purpose to
-          use it
+          Note: Currently login is only needed for admins. If you are a user, there&apos;s no
+          purpose to use it
         </span>
       </div>
       {/* <div className="h-20 w-40 bg-blueprint">
