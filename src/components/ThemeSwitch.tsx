@@ -12,7 +12,7 @@ export default function ThemeSwitch() {
     };
 
     return (
-        <div className="absolute bottom-2 z-10 right-2 bg-blueprint w-20 h-20 rounded">
+        <div className="fixed bottom-2 z-10 right-2 bg-blueprint w-20 h-20 rounded">
             <button onClick={toggleTheme} className="relative w-20 h-20">
                 <img 
                     src={LightIcon} 

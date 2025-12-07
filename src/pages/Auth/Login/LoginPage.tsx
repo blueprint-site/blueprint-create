@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { account } from '@/lib/appwrite';
 import { Spinner } from '@/components/ui/spinner';
 import { toast } from 'sonner';
+
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');

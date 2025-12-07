@@ -11,7 +11,7 @@ export const Addon = z.object({
     isValid: z.boolean(),
     isChecked: z.boolean(),
     sources: z.array(z.string()).nonempty().max(20),
-    modrinth_id: z.string().max(50).optional(),
+    modrinth_id: z.string().max(50).optional().nullable(),
     curseforge_id: z.string().max(50).optional().nullable(),
     claimed_by: z.string().max(256).optional(),
     downloads: z.number().default(0),
@@ -19,7 +19,7 @@ export const Addon = z.object({
     create_versions: z.array(z.string()).max(32).optional().nullable(),
     minecraft_versions: z.array(z.string()).nonempty().max(32),
     authors: z.array(z.string()).nonempty().max(100),
-    categories: z.array(z.string()).nonempty().max(120).optional(),
+    categories: z.array(z.string()).max(120).optional().default([]),
     stage: z.enum(["pending", "reviewing", "approved", "rejected", "archived"]).optional(),
     reviewedAt: z.string().optional().nullable(), // is an appwrite date
     lastValidated: z.string().optional().nullable(), // is an appwrite date
