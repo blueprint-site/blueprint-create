@@ -1,31 +1,12 @@
-import { Outlet } from 'react-router';
-
-import RotatingCogwheel from '@/components/common/Cogwheel';
-import AppFooter from '@/components/layout/AppFooter';
-import AppHeader from '@/components/layout/AppHeader';
-
-import { useThemeStore } from '@/api/stores/themeStore';
-
-const BaseLayout = () => {
-  const { isDarkMode } = useThemeStore();
-
+import { Outlet } from 'react-router-dom';
+import AppHeader from './AppHeader';
+export default function BaseLayout() {
   return (
-    <div
-      className={`bg-background text-foreground min-h-screen w-full ${isDarkMode ? 'dark' : ''}`}
-    >
+    <div className='bg-background text-foreground min-h-screen w-full'>
       <AppHeader />
-      <main id='main' className='flex h-screen flex-col justify-between overflow-y-auto pt-16'>
-        <div
-          className={`flex-1 ${isDarkMode ? 'bg-shadow_steel_casing' : 'bg-refined_radiance_casing'}`}
-        >
-          <Outlet />
-        </div>
-        <AppFooter />
-      </main>
-
-      <RotatingCogwheel />
+      <div>
+        <Outlet />
+      </div>
     </div>
   );
-};
-
-export default BaseLayout;
+}

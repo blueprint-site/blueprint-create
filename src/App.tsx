@@ -1,70 +1,23 @@
-// Keep your current App.tsx as is
-import '@/config/i18n';
-import { createBrowserRouter, RouterProvider } from 'react-router';
-import { LoadingOverlay } from '@/components/loading-overlays/LoadingOverlay';
-import { Toaster } from 'sonner';
-import { useUserStore } from '@/api/stores/userStore';
-import { routes } from './routes';
-import { useEffect, useState } from 'react';
-import 'minecraft-textures-library/src/templates/create-textures.css';
-import CookieDialog from './components/utility/CookieDialog.tsx';
-import { StatsTrackingProvider } from '@/providers/StatsTrackingProvider';
-import { AchievementNotificationProvider } from '@/providers/AchievementNotificationProvider';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { routes } from '@/routes/index';
+import { ThemeProvider } from './components/theme-provider';
+import ThemeSwitch from '@/components/ThemeSwitch';
+import { Toaster } from '@/components/ui/sonner';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-const App = () => {
-  const fetchUser = useUserStore((state) => state.fetchUser);
-  const [envLoaded, setEnvLoaded] = useState(false);
-  const [router, setRouter] = useState<ReturnType<typeof createBrowserRouter> | null>(null);
+const queryClient = new QueryClient();
 
-  // Fetch user data after component mounts
-  useEffect(() => {
-    if (envLoaded) {
-      fetchUser().catch((error) => {
-        console.error('Failed to fetch user data:', error);
-      });
-    }
-  }, [fetchUser, envLoaded]);
-
-  useEffect(() => {
-    const loadEnv = () => {
-      const script = document.createElement('script');
-      script.src = `/env.js?version=${new Date().getTime()}`;
-      script.onload = () => {
-        console.log('env.js loaded');
-        setEnvLoaded(true);
-      };
-      script.onerror = () => {
-        console.error('❌ Error while loading `env.js`');
-      };
-      document.head.appendChild(script);
-    };
-
-    loadEnv();
-  }, []);
-
-  // Create router after env is loaded
-  useEffect(() => {
-    if (envLoaded) {
-      const newRouter = createBrowserRouter(routes);
-      setRouter(newRouter);
-    }
-  }, [envLoaded]);
-
-  if (!envLoaded || !router) {
-    return <LoadingOverlay />;
-  }
-
+function App() {
   return (
     <>
-      <StatsTrackingProvider>
-        <AchievementNotificationProvider>
-          <RouterProvider router={router} />
-          <CookieDialog variant='default' />
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <RouterProvider router={createBrowserRouter(routes)} />
+          <ThemeSwitch />
           <Toaster />
-        </AchievementNotificationProvider>
-      </StatsTrackingProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
     </>
   );
-};
-
+}
 export default App;

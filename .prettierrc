@@ -12,6 +12,5 @@
   "endOfLine": "lf",
   "quoteProps": "as-needed",
   "proseWrap": "preserve",
-  "htmlWhitespaceSensitivity": "css",
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "htmlWhitespaceSensitivity": "css"
 }
