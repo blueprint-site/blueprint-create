@@ -62,7 +62,7 @@ export default function AddonsPage() {
         />
         <span className='text-xs opacity-80'>Note: Not all addons are reviewed yet. Some may be not reviewed yet. (and that feature isnt implemented yet) <br /></span>
         <span className='text-xs opacity-80'>Disclaimer: this is a rewrite of the old codebase. Some functions are copied while most are new. Site isnt polished right now <br /></span>
-        <a href="" className='bg-blueprint text-black/70 font-minecraft px-10 py-1 mt-2 rounded hover:cursor-pointer'>Follow our discord for updates</a>
+        <a href="https://discord.gg/SvFYYtFbky" className='bg-blueprint text-black/70 font-minecraft px-10 py-1 mt-2 rounded hover:cursor-pointer'>Follow our discord for updates</a>
       </div>
       <div className='mt-2 -mb-2'>
         <Pagination>
