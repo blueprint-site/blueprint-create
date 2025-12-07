@@ -1,5 +1,4 @@
 import AddonIcon from '@/assets/sprite-icons/minecart_coupling.webp';
-import AboutIcon from '@/assets/sprite-icons/goggles.webp';
 import Logo from '@/assets/logo.webp';
 import { NavLink } from 'react-router-dom';
 // TODO: Implement about page
