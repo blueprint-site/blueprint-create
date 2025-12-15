@@ -1,7 +1,7 @@
 import { useAdminAddons, useUpdateAddon } from '@/utils/useAddons';
 import type { Addon } from '@/types/addons';
 import type * as z from 'zod';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
 
 type AddonType = z.infer<typeof Addon>;
@@ -14,7 +14,7 @@ interface UndoAction {
 }
 
 export default function AdminPage() {
-  const { data, isLoading, error } = useAdminAddons({ reviewStatus: 'unreviewed' });
+  const { data, isLoading, error, refetch } = useAdminAddons({ reviewStatus: 'unreviewed' });
   const updateAddonMutation = useUpdateAddon();
 
   const [processedAddons, setProcessedAddons] = useState<Set<string>>(new Set());
@@ -28,6 +28,22 @@ export default function AdminPage() {
       return newHistory;
     });
   }, []);
+
+  function fetchAddons() {
+    if (!isLoading) {
+      void refetch();
+    }
+  }
+
+  useEffect(() => {
+    fetchAddons();
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading && !error && uncheckedAddons.length === 0) {
+      fetchAddons();
+    }
+  }, [uncheckedAddons.length, isLoading, error]);
 
   const enableAddon = useCallback(
     (addon: AddonType) => {
@@ -137,15 +153,15 @@ export default function AdminPage() {
   }, [undoHistory, updateAddonMutation]);
 
   return (
-    <div className='p-4'>
+    <div className='p-4 lg:px-50'>
       <div className='flex justify-between items-center mb-4'>
         <h1 className='text-2xl font-bold'>Admin Addons Page</h1>
         <div className='flex gap-2 items-center'>
-          <span className='text-sm text-gray-600'>Undo History: {undoHistory.length}/20</span>
+          <span className='text-sm'>Undo History: {undoHistory.length}/20</span>
           <button
             onClick={undoLastAction}
             disabled={undoHistory.length === 0 || updateAddonMutation.isPending}
-            className='bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 transition-all'
+            className='bg-accent text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 transition-all'
           >
             Undo Last Action
           </button>
@@ -172,7 +188,7 @@ export default function AdminPage() {
               {uncheckedAddons.map((addon: AddonType) => (
                 <li
                   key={addon.$id}
-                  className='mb-2 p-4 border rounded-lg shadow-sm bg-white flex gap-5'
+                  className='mb-2 p-4 border rounded-lg shadow-sm bg-blueprint flex gap-5'
                 >
                   <img
                     src={addon.icon}
@@ -180,15 +196,20 @@ export default function AdminPage() {
                     className='w-20 h-20 rounded object-cover shrink-0'
                   />
                   <div className='grow'>
-                    <h2 className='text-xl font-semibold'>{addon.name}</h2>
-                    <p className='text-gray-700 mb-2'>{addon.description}</p>
-                    <p className='text-sm text-gray-500 mb-2'>
-                      Authors: {addon.authors.join(', ')}
-                    </p>
-                    <p className='text-sm opacity-70 mb-3'>
-                      Status: {addon.isValid ? 'Valid' : 'Invalid'}, Is Checked:{' '}
-                      {addon.isChecked ? 'Yes' : 'No'}
-                    </p>
+                    <h2 className='text-xl text-black font-minecraft font-semibold'>
+                      {addon.name}
+                    </h2>
+                    <p className='text-black/70 mb-2'>{addon.description}</p>
+                    <div className='flex gap-3'>
+                      <p className='text-sm text-black/60 mb-2'>
+                        Authors: {addon.authors.join(', ')}
+                      </p>
+                      <p className='text-sm text-black opacity-70 mb-3'>
+                        Status: {addon.isValid ? 'Valid' : 'Invalid'}, Is Checked:{' '}
+                        {addon.isChecked ? 'Yes' : 'No'}
+                      </p>
+                    </div>
+
                     <div className='flex gap-3'>
                       <button
                         onClick={() => enableAddon(addon)}
