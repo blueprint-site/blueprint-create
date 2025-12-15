@@ -4,10 +4,10 @@ import Home from '../pages/Home/Home';
 import BaseLayout from '@/layouts/BaseLayout';
 import AddonsPage from '@/pages/Addons/AddonsPage';
 import LoginPage from '@/pages/Auth/Login/LoginPage';
-// import AdminPage from "@/pages/Admin/AdminPage";
-// import ProtectedRoute from "@/components/ProtectedRoute";
+import AdminPage from "@/pages/Admin/AdminPage";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import AuthManagerPage from '@/pages/Auth/AuthManager/AuthManagerPage';
 
-// TODO: Implement admin page
 export const routes: RouteObject[] = [
   {
     element: <BaseLayout />,
@@ -24,14 +24,18 @@ export const routes: RouteObject[] = [
         path: '/login',
         element: <LoginPage />,
       },
-      // {
-      //     path: "/admin",
-      //     element: (
-      //         <ProtectedRoute requiredRole="admin">
-      //             <AdminPage />
-      //         </ProtectedRoute>
-      //     ),
-      // },
+      {
+        path: '/auth',
+        element: <AuthManagerPage />
+      },
+      {
+          path: "/admin",
+          element: (
+              <ProtectedRoute requiredRole="admin">
+                  <AdminPage />
+              </ProtectedRoute>
+          ),
+      },
     ],
   },
 ];

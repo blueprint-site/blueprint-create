@@ -58,11 +58,26 @@ export default function AddonsPage() {
             setPage(1);
             setSearch(e.target.value);
           }}
-          className='dark:text-white bg-gray-300!'
+          className='bg-gray-200! dark:bg-gray-700!'
         />
-        <span className='text-xs opacity-80'>Note: Not all addons are reviewed yet. Some may be not reviewed yet. (and that feature isnt implemented yet) <br /></span>
-        <span className='text-xs opacity-80'>Disclaimer: this is a rewrite of the old codebase. Some functions are copied while most are new. Site isnt polished right now <br /></span>
-        <a href="https://discord.gg/SvFYYtFbky" className='bg-blueprint text-black/70 font-minecraft px-10 py-1 mt-2 rounded hover:cursor-pointer'>Follow our discord for updates</a>
+        <div className='flex gap-2 mt-2 justify-end w-full'>
+          <div className='flex flex-col'>
+            <span className='text-xs opacity-80'>
+              Note: Not all addons are reviewed yet. Some may be not reviewed yet. (and that feature
+              isnt implemented yet) <br />
+            </span>
+            <span className='text-xs opacity-80'>
+              Disclaimer: this is a rewrite of the old codebase. Some functions are copied while
+              most are new. Site isnt polished right now <br />
+            </span>
+          </div>
+          <button
+            onClick={() => window.open('https://discord.gg/SvFYYtFbky', '_blank')}
+            className='bg-accent ml-auto text-white text-xs font-minecraft px-3 py- hover:cursor-pointer'
+          >
+            Follow our discord for updates
+          </button>
+        </div>
       </div>
       <div className='mt-2 -mb-2'>
         <Pagination>

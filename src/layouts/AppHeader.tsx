@@ -21,6 +21,7 @@ export default function AppHeader() {
       <NavLink to='/' className='flex items-center mr-8 hover:bg-accent transition-colors'>
         <img src={Logo} alt='Blueprint logo' className='w-8 h-8 mr-2' />
         <span>Blueprint</span>
+        <span className='opacity-50 ml-1'>vRe</span>
       </NavLink>
       <div className='flex items-center gap-5 ml-auto'>
         {navigationItems.map((item) => (
@@ -34,6 +35,9 @@ export default function AppHeader() {
           </NavLink>
         ))}
       </div>
+      <NavLink to='/auth' className='flex items-center ml-5 hover:bg-accent transition-colors'>
+        <span>Account</span>
+      </NavLink>
     </nav>
   );
 }
