@@ -3,7 +3,7 @@ import type { Addon } from '@/types/addons';
 import type * as z from 'zod';
 import { useState, useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
-
+import { Link } from 'react-router-dom';
 type AddonType = z.infer<typeof Addon>;
 
 interface UndoAction {
@@ -152,10 +152,21 @@ export default function AdminPage() {
     );
   }, [undoHistory, updateAddonMutation]);
 
+  function getLink(addon: AddonType) {
+    if (addon.modrinth_id) {
+      return `https://modrinth.com/project/${addon.modrinth_id}`;
+    }
+    else if (!addon.modrinth_id && addon.curseforge_id) {
+      return `https://www.curseforge.com/minecraft/mc-mods/${addon.slug}`;
+    }
+    return null;
+  }
+
   return (
     <div className='p-4 lg:px-50'>
       <div className='flex justify-between items-center mb-4'>
         <h1 className='text-2xl font-bold'>Admin Addons Page</h1>
+        <span className='opacity-50'>Tip: Click on addons to open them</span>
         <div className='flex gap-2 items-center'>
           <span className='text-sm'>Undo History: {undoHistory.length}/20</span>
           <button
@@ -185,50 +196,63 @@ export default function AdminPage() {
             </div>
           ) : (
             <ul className='space-y-4'>
-              {uncheckedAddons.map((addon: AddonType) => (
-                <li
-                  key={addon.$id}
-                  className='mb-2 p-4 border rounded-lg shadow-sm bg-blueprint flex gap-5'
-                >
-                  <img
-                    src={addon.icon}
-                    alt={addon.name}
-                    className='w-20 h-20 rounded object-cover shrink-0'
-                  />
-                  <div className='grow'>
-                    <h2 className='text-xl text-black font-minecraft font-semibold'>
-                      {addon.name}
-                    </h2>
-                    <p className='text-black/70 mb-2'>{addon.description}</p>
-                    <div className='flex gap-3'>
-                      <p className='text-sm text-black/60 mb-2'>
-                        Authors: {addon.authors.join(', ')}
-                      </p>
-                      <p className='text-sm text-black opacity-70 mb-3'>
-                        Status: {addon.isValid ? 'Valid' : 'Invalid'}, Is Checked:{' '}
-                        {addon.isChecked ? 'Yes' : 'No'}
-                      </p>
-                    </div>
+              {uncheckedAddons.map((addon: AddonType) => {
+                const addonLink = getLink(addon);
+                const wrapperClasses = 'mb-2 p-4 border rounded-lg shadow-sm bg-blueprint flex gap-5';
+                const cardContent = (
+                  <>
+                    <img
+                      src={addon.icon}
+                      alt={addon.name}
+                      className='w-20 h-20 rounded object-cover shrink-0'
+                    />
+                    <div className='grow'>
+                      <h2 className='text-xl text-black font-minecraft font-semibold'>
+                        {addon.name}
+                      </h2>
+                      <p className='text-black/70 mb-2'>{addon.description}</p>
+                      <div className='flex gap-3'>
+                        <p className='text-sm text-black/60 mb-2'>
+                          Authors: {addon.authors.join(', ')}
+                        </p>
+                        <p className='text-sm text-black opacity-70 mb-3'>
+                          Status: {addon.isValid ? 'Valid' : 'Invalid'}, Is Checked:{' '}
+                          {addon.isChecked ? 'Yes' : 'No'}
+                        </p>
+                      </div>
 
-                    <div className='flex gap-3'>
-                      <button
-                        onClick={() => enableAddon(addon)}
-                        disabled={updateAddonMutation.isPending}
-                        className='bg-green-700 text-white font-minecraft px-5 py-2 rounded hover:bg-green-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all'
-                      >
-                        {updateAddonMutation.isPending ? 'Processing...' : 'Enable'}
-                      </button>
-                      <button
-                        onClick={() => reviewAddon(addon)}
-                        disabled={updateAddonMutation.isPending}
-                        className='bg-red-700 text-white font-minecraft px-5 py-2 rounded hover:bg-red-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all'
-                      >
-                        {updateAddonMutation.isPending ? 'Processing...' : 'Mark as Reviewed'}
-                      </button>
+                      <div className='flex gap-3'>
+                        <button
+                          onClick={() => enableAddon(addon)}
+                          disabled={updateAddonMutation.isPending}
+                          className='bg-green-700 text-white font-minecraft px-5 py-2 rounded hover:bg-green-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all'
+                        >
+                          {updateAddonMutation.isPending ? 'Processing...' : 'Enable'}
+                        </button>
+                        <button
+                          onClick={() => reviewAddon(addon)}
+                          disabled={updateAddonMutation.isPending}
+                          className='bg-red-700 text-white font-minecraft px-5 py-2 rounded hover:bg-red-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all'
+                        >
+                          {updateAddonMutation.isPending ? 'Processing...' : 'Mark as Reviewed'}
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </li>
-              ))}
+                  </>
+                );
+
+                return (
+                  <li key={addon.$id}>
+                    {addonLink ? (
+                      <Link to={addonLink} target="_blank" rel="noopener noreferrer" className={wrapperClasses}>
+                        {cardContent}
+                      </Link>
+                    ) : (
+                      <div className={wrapperClasses}>{cardContent}</div>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           )}
         </>
