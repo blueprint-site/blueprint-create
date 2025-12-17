@@ -7,6 +7,7 @@ import LoginPage from '@/pages/Auth/Login/LoginPage';
 import AdminPage from "@/pages/Admin/AdminPage";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthManagerPage from '@/pages/Auth/AuthManager/AuthManagerPage';
+import ExpandedAddonPage from '@/pages/Addons/ExpandedAddon/ExpandedAddonPage';
 
 export const routes: RouteObject[] = [
   {
@@ -17,8 +18,16 @@ export const routes: RouteObject[] = [
         element: <Home />,
       },
       {
+        path: '*',
+        element: <Home />,
+      },
+      {
         path: '/addons',
         element: <AddonsPage />,
+      },
+      {
+        path: '/addons/:slug',
+        element: <ExpandedAddonPage />,
       },
       {
         path: '/login',

@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
+        <ThemeProvider defaultTheme='dark'>
           <RouterProvider router={createBrowserRouter(routes)} />
           <ThemeSwitch />
           <Toaster />
