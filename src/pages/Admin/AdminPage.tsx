@@ -223,14 +223,22 @@ export default function AdminPage() {
 
                       <div className='flex gap-3'>
                         <button
-                          onClick={() => enableAddon(addon)}
+                          onClick={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            enableAddon(addon);
+                          }}
                           disabled={updateAddonMutation.isPending}
                           className='bg-green-700 text-white font-minecraft px-5 py-2 rounded hover:bg-green-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all'
                         >
                           {updateAddonMutation.isPending ? 'Processing...' : 'Enable'}
                         </button>
                         <button
-                          onClick={() => reviewAddon(addon)}
+                          onClick={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            reviewAddon(addon);
+                          }}
                           disabled={updateAddonMutation.isPending}
                           className='bg-red-700 text-white font-minecraft px-5 py-2 rounded hover:bg-red-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all'
                         >

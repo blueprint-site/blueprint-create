@@ -1,4 +1,5 @@
 import type { Addon } from '@/types/addons';
+import { Link } from 'react-router-dom';
 import type { z } from 'zod';
 type AddonType = z.infer<typeof Addon>;
 
@@ -26,7 +27,7 @@ export default function AddonCard({ addon }: AddonCardProps) {
     return normalized.join(' and ');
   }
   return (
-    <div className='bg-blueprint/50 p-4'>
+    <Link to={`/addons/${addon.slug}`} className='bg-blueprint/50 p-4 hover:scale-102 transition-all'>
       <img src={addon.icon} alt={addon.name} className='w-20' />
       <span className='font-minecraft text-lg font-semibold'>{addon.name}</span>
       <p className='mb-2 -mt-1'>{addon.description}</p>
@@ -53,6 +54,6 @@ export default function AddonCard({ addon }: AddonCardProps) {
           </button>
         )}
       </div>
-    </div>
+    </Link>
   );
 }
