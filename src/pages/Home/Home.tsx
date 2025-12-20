@@ -14,7 +14,7 @@ export default function Home() {
         </button>
       </div>
       <div className="p-4 bg-blueprint mt-10 dark:text-black">
-        <span>This is an in-progress release. More features are ported fast</span>
+        <span>This an in-progress release. More features are ported fast</span>
       </div>
     </div>
   );
