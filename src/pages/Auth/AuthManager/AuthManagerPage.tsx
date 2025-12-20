@@ -37,8 +37,9 @@ export default function AuthManagerPage() {
     try {
       const user = (await account.get()) as User;
       return isAdmin(user);
-    } catch (error: Error | any) {
-      toast.error('Error determining admin status: ' + error.message);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      toast.error('Error determining admin status: ' + message);
       console.log('Error determining admin status:', error);
       return false;
     }
@@ -54,8 +55,9 @@ export default function AuthManagerPage() {
         setIsLoggedIn(false);
         setIsAdminUser(false);
       })
-      .catch((error: Error | any) => {
-        toast.error('Error logging out: ' + error.message);
+      .catch((error: unknown) => {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        toast.error('Error logging out: ' + message);
       });
   }
 
