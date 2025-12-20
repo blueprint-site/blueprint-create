@@ -47,6 +47,49 @@ export const useFetchAddon = (id?: string) => {
   });
 };
 
+/**
+ * A function to fetch an addon by it's slug from database
+ * @param slug Addon's slug
+ * @returns One addon
+ */
+export const useFetchAddonBySlug = (slug?: string) => {
+  return useQuery({
+    queryKey: ['addon', slug],
+    queryFn: async (): Promise<AddonType | null> => {
+      if (!slug) return null;
+
+      try {
+        const response = await tablesDB.listRows({
+          databaseId: DATABASE_ID,
+          tableId: COLLECTION_ID,
+          queries: [Query.equal('slug', slug), Query.limit(1)],
+        });
+        const row = response.rows?.[0];
+
+        if (!row) {
+          toast.error(`Addon with slug ${slug} not found`);
+          return null;
+        }
+
+        const addon = Addon.parse(row);
+        return addon;
+      } catch (error: unknown) {
+        if (error instanceof z.ZodError) {
+          toast.error(`Addon data invalid: ${error.message}`);
+          console.error('Zod validation error:', error.issues);
+        } else if (error instanceof Error) {
+          toast.error(`Failed to fetch addon with slug ${slug}: ${error.message}`);
+        } else {
+          toast.error(`Failed to fetch addon with slug ${slug}`);
+        }
+        return null;
+      }
+    },
+    staleTime: 1000 * 60 * 60,
+    retry: false,
+  });
+};
+
 // This gets a page of addons
 /**
  * Fetch a page of addons
