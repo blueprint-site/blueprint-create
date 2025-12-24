@@ -191,6 +191,7 @@ export const useSearchAddons = (searchTerm: string, page: number = 1, limit: num
             Query.or([
               Query.search('name', searchTerm.trim()),
               Query.search('description', searchTerm.trim()),
+              Query.search('slug', searchTerm.trim()),
             ])
           );
         }
