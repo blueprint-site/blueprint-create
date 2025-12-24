@@ -4,6 +4,8 @@ import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import rehypeRaw from 'rehype-raw';
 
+// all this code is directly ported from v2 codebase
+
 interface ExpandedAddonDescriptionProps {
   description: string;
 }
