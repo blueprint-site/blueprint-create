@@ -28,12 +28,12 @@ export const ExpandedAddonDescription = ({ description = '' }: ExpandedAddonDesc
           remarkPlugins={[remarkGfm, remarkBreaks]}
           rehypePlugins={[rehypeRaw]}
           components={{
-            h1: ({ children }) => <h1 className='mb-4 text-3xl font-bold'>{children}</h1>,
-            h2: ({ children }) => <h2 className='mb-3 text-2xl font-semibold'>{children}</h2>,
-            h3: ({ children }) => <h3 className='mb-2 text-xl font-semibold'>{children}</h3>,
-            h4: ({ children }) => <h4 className='mb-2 text-lg font-semibold'>{children}</h4>,
-            h5: ({ children }) => <h5 className='mb-1 text-base font-semibold'>{children}</h5>,
-            h6: ({ children }) => <h6 className='mb-1 text-sm font-semibold'>{children}</h6>,
+            h1: ({ children }) => <h1 className='mb-4 text-3xl font-bold font-minecraft'>{children}</h1>,
+            h2: ({ children }) => <h2 className='mb-3 text-2xl font-semibold font-minecraft'>{children}</h2>,
+            h3: ({ children }) => <h3 className='mb-2 text-xl font-semibold font-minecraft'>{children}</h3>,
+            h4: ({ children }) => <h4 className='mb-2 text-lg font-semibold font-minecraft'>{children}</h4>,
+            h5: ({ children }) => <h5 className='mb-1 text-base font-semibold font-minecraft'>{children}</h5>,
+            h6: ({ children }) => <h6 className='mb-1 text-sm font-semibold font-minecraft'>{children}</h6>,
             p: ({ children }) => <p className='mb-4'>{children}</p>,
             ul: ({ children }) => <ul className='mb-4 list-inside list-disc'>{children}</ul>,
             ol: ({ children }) => <ol className='mb-4 list-inside list-decimal'>{children}</ol>,

@@ -1,12 +1,13 @@
 import { useParams } from 'react-router-dom';
 import { useFetchAddonBySlug } from '@/utils/useAddons';
 import { ExpandedAddonDescription } from './ExpandedAddonDescription';
-
+import { ExpandedAddonCompatibilityAndVersions } from './ExpandedAddonCompatibilityAndVersions';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 export default function ExpandedAddonPage() {
   const slug = useParams().slug?.toString();
   const addon = useFetchAddonBySlug(slug)?.data;
   return (
-    <div className='py-2 px-5 lg:px-20 xl:px-30 2xl:px-40'>
+    <div className='py-2 px-5 lg:px-5 xl:px-10 2xl:px-40'>
       <div className=''>
         {addon && (
           <div className=''>
@@ -20,16 +21,50 @@ export default function ExpandedAddonPage() {
           </div>
         )}
       </div>
-      {/* bottom container */}
-      <div className="flex ">
-        <div className="">
-          {addon && (
-            <div className="bg-blueprint/50 dark:bg-blueprint">
-              <ExpandedAddonDescription description={addon.body || ''} />
-            </div>
-          )}
+      {/* bottom container for lg+ screens*/}
+      <div className='hidden lg:block'>
+        <div className='flex gap-4 mt-10 flex-col lg:flex-row'>
+          <div className=''>
+            {addon && (
+              <div className='bg-blueprint/50 dark:bg-blueprint/90 w-full'>
+                <ExpandedAddonDescription description={addon.body || ''} />
+              </div>
+            )}
+          </div>
+          <div className=''>
+            {addon && (
+              <div className='bg-blueprint/50 dark:bg-blueprint/90'>
+                <ExpandedAddonCompatibilityAndVersions versions={addon.minecraft_versions} />
+              </div>
+            )}
+          </div>
         </div>
-        <div className=""></div>
+      </div>
+      <div className='lg:hidden'>
+        <div className='mt-10'>
+          <Tabs defaultValue='description' className='w-full'>
+            <TabsList>
+              <TabsTrigger value='description' className=''>
+                Description
+              </TabsTrigger>
+              <TabsTrigger value='compatibility'>Compatibility</TabsTrigger>
+            </TabsList>
+            <TabsContent value='description'>
+              {addon && (
+                <div className='bg-blueprint/50 dark:bg-blueprint/90 w-full'>
+                  <ExpandedAddonDescription description={addon.body || ''} />
+                </div>
+              )}
+            </TabsContent>
+            <TabsContent value='compatibility'>
+              {addon && (
+                <div className='bg-blueprint/50 dark:bg-blueprint/90'>
+                  <ExpandedAddonCompatibilityAndVersions versions={addon.minecraft_versions} />
+                </div>
+              )}
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
     </div>
   );
