@@ -3,7 +3,7 @@ import * as z from 'zod';
 export const Addon = z.object({
   $id: z.string(),
   name: z.string().max(150).nonempty(),
-  description: z.string().max(5000),
+  description: z.string().max(600), // this is the short description
   slug: z.string().max(120),
   icon: z.string().max(500),
   created_at: z.string().nullable(), // is an appwrite date
@@ -24,6 +24,7 @@ export const Addon = z.object({
   reviewedAt: z.string().optional().nullable(), // is an appwrite date
   lastValidated: z.string().optional().nullable(), // is an appwrite date
   reviewedBy: z.string().max(255).optional().nullable(),
+  body: z.string().max(8000).optional().nullable(), // this is the long description (body)
 });
 
 export const FeaturedAddon = z.object({

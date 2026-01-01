@@ -50,7 +50,7 @@ export default function AddonsPage() {
 
   return (
     <div className='xl:mx-40 flex flex-col'>
-      <div className='bg-blueprint/50 p-4 flex flex-col items-start'>
+      <div className='bg-blueprint/50 p-4 flex flex-col items-start border'>
         <Input
           placeholder='Search addons...'
           value={search}
@@ -73,7 +73,7 @@ export default function AddonsPage() {
           </div>
           <button
             onClick={() => window.open('https://discord.gg/SvFYYtFbky', '_blank')}
-            className='bg-accent ml-auto text-white text-xs font-minecraft px-3 py- hover:cursor-pointer'
+            className='bg-accent ml-auto text-white text-xs font-minecraft px-3 hover:cursor-pointer'
           >
             Follow our discord for updates
           </button>

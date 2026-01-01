@@ -1,6 +1,6 @@
 import { useTheme } from './theme-provider';
-import DarkIcon from '@/assets/sprite-icons/Lit_Empty_Blaze_Burner_(Soul).webp';
-import LightIcon from '@/assets/sprite-icons/Lit_Empty_Blaze_Burner.webp';
+import DarkIcon from '@/assets/sprite-icons/Lit_Empty_Blaze_Burner_Soul_100x100.webp';
+import LightIcon from '@/assets/sprite-icons/Lit_Empty_Blaze_Burner_100x100.webp';
 
 export default function ThemeSwitch() {
   const { theme, setTheme } = useTheme();
