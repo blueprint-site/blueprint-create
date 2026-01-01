@@ -1,4 +1,5 @@
-import { CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface ExpandedAddonCompatibilityAndVersionsProps {
   versions: string[];
@@ -6,13 +7,25 @@ interface ExpandedAddonCompatibilityAndVersionsProps {
 
 export const ExpandedAddonCompatibilityAndVersions = ({ versions = [] }: ExpandedAddonCompatibilityAndVersionsProps) => {
     return (
-        <CardContent className="py-6 flex w-80 text-black">
-            <div className="flex-col">
-                <h1 className="font-minecraft text-2xl">Versions:</h1>
-                <div className="flex flex-wrap gap-2">
-                    {Array.from(versions.keys()).map(version => <span className="bg-gray-300 rounded-2xl px-2 text-sm" key={version}>{versions[version]}</span>)}
-                </div>
-            </div>
-        </CardContent>
+        <div className="w-80 space-y-4">
+            <Card>
+                <CardHeader>
+                    <CardTitle className="font-minecraft text-2xl">Versions</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex flex-wrap gap-2">
+                        {versions.map(version => <Badge variant="secondary" key={version}>{version}</Badge>)}
+                    </div>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader>
+                    <CardTitle className="font-minecraft text-xl">Compatibility</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-sm text-muted-foreground">No compatibility information available.</p>
+                </CardContent>
+            </Card>
+        </div>
     )
 }

@@ -21,25 +21,26 @@ export default function ExpandedAddonPage() {
           </div>
         )}
       </div>
-      {/* bottom container for lg+ screens*/}
+      
       <div className='hidden lg:block'>
         <div className='flex gap-4 mt-10 flex-col lg:flex-row'>
           <div className=''>
             {addon && (
-              <div className='bg-blueprint/50 dark:bg-blueprint/90 w-full'>
+              <div className=' w-full'>
                 <ExpandedAddonDescription description={addon.body || ''} />
               </div>
             )}
           </div>
           <div className=''>
             {addon && (
-              <div className='bg-blueprint/50 dark:bg-blueprint/90'>
+              <div className=''>
                 <ExpandedAddonCompatibilityAndVersions versions={addon.minecraft_versions} />
               </div>
             )}
           </div>
         </div>
       </div>
+
       <div className='lg:hidden'>
         <div className='mt-10'>
           <Tabs defaultValue='description' className='w-full'>
@@ -58,7 +59,7 @@ export default function ExpandedAddonPage() {
             </TabsContent>
             <TabsContent value='compatibility'>
               {addon && (
-                <div className='bg-blueprint/50 dark:bg-blueprint/90'>
+                <div className=''>
                   <ExpandedAddonCompatibilityAndVersions versions={addon.minecraft_versions} />
                 </div>
               )}

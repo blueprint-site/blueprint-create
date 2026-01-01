@@ -50,7 +50,7 @@ export default function AddonsPage() {
 
   return (
     <div className='xl:mx-40 flex flex-col'>
-      <div className='bg-blueprint/50 p-4 flex flex-col items-start'>
+      <div className='bg-blueprint/50 p-4 flex flex-col items-start border'>
         <Input
           placeholder='Search addons...'
           value={search}
