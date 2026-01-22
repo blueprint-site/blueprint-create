@@ -18,9 +18,9 @@ export const ExpandedAddonDescription = ({ description = '' }: ExpandedAddonDesc
   }
 
   return (
-    <Card className=''>
-    <CardTitle className='px-6 pt-6 text-2xl font-minecraft'>Description</CardTitle>
-    <CardContent className='py-6 text-black '>
+    <Card className='text-white'>
+    <CardTitle className='px-6 text-2xl font-minecraft'>Description</CardTitle>
+    <CardContent className=''>
       <div className='markdown-body'>
         <ReactMarkdown
           remarkPlugins={[remarkGfm, remarkBreaks]}

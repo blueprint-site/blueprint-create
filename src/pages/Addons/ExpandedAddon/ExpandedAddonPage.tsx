@@ -52,7 +52,7 @@ export default function ExpandedAddonPage() {
             </TabsList>
             <TabsContent value='description'>
               {addon && (
-                <div className='bg-blueprint/50 dark:bg-blueprint/90 w-full'>
+                <div className=' w-full'>
                   <ExpandedAddonDescription description={addon.body || ''} />
                 </div>
               )}

@@ -50,7 +50,7 @@ export default function AddonsPage() {
 
   return (
     <div className='xl:mx-40 flex flex-col'>
-      <div className='bg-blueprint/50 p-4 flex flex-col items-start border'>
+      <div className='bg-surface-1 text-white p-4 flex flex-col items-start border'>
         <Input
           placeholder='Search addons...'
           value={search}
@@ -63,17 +63,16 @@ export default function AddonsPage() {
         <div className='flex gap-2 mt-2 justify-end w-full'>
           <div className='flex flex-col'>
             <span className='text-xs opacity-80'>
-              Note: Not all addons are reviewed yet. Some may be not reviewed yet. (and that feature
-              isnt implemented yet) <br />
+              Note: Not all addons are reviewed yet. Some may be not reviewed.<br />
             </span>
             <span className='text-xs opacity-80'>
               Disclaimer: this is a rewrite of the old codebase. Some functions are copied while
-              most are new. Site isnt polished right now <br />
+              most are new. Site isn't polished right now.<br />
             </span>
           </div>
           <button
             onClick={() => window.open('https://discord.gg/SvFYYtFbky', '_blank')}
-            className='bg-accent ml-auto text-white text-xs font-minecraft px-3 hover:cursor-pointer'
+            className='bg-surface-3 ml-auto text-black dark:text-white text-xs font-minecraft px-3 hover:cursor-pointer'
           >
             Follow our discord for updates
           </button>

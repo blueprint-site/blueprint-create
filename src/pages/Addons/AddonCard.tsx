@@ -27,17 +27,17 @@ export default function AddonCard({ addon }: AddonCardProps) {
     return normalized.join(' and ');
   }
   return (
-    <Link to={`/addons/${addon.slug}`} className='bg-blueprint/50 border p-4 hover:scale-102 transition-all'>
+    <Link to={`/addons/${addon.slug}`} className='bg-surface-1 border text-white p-4 hover:scale-102 transition-all'>
       <img src={addon.icon} alt={addon.name} className='w-20' />
       <span className='font-minecraft text-lg font-semibold'>{addon.name}</span>
       <p className='mb-2 -mt-1'>{addon.description}</p>
       <p>{new Intl.NumberFormat('pl-PL').format(addon.downloads)} downloads total</p>
       <p>On {addon.sources.join(' and ')}</p>
       <p>For {normalizeLoaders(addon.loaders)}</p>
-      <div className='gap-2 flex mt-2 font-minecraft text-black'>
+      <div className='gap-2 flex mt-2 font-minecraft'>
         {addon.sources.includes('Modrinth') && (
           <button
-            className='bg-green-400 px-5 hover:bg-blueprint transition-all'
+            className='bg-green-400 px-5 hover:bg-accent transition-all text-black'
             onClick={() => window.open(`https://modrinth.com/mod/${addon.slug}`)}
           >
             Modrinth
@@ -45,7 +45,7 @@ export default function AddonCard({ addon }: AddonCardProps) {
         )}
         {addon.sources.includes('CurseForge') && (
           <button
-            className='bg-orange-500 px-5 hover:bg-blueprint transition-all'
+            className='bg-orange-500 px-5 hover:bg-accent transition-all text-black'
             onClick={() =>
               window.open(`https://www.curseforge.com/minecraft/mc-mods/${addon.slug}`)
             }
