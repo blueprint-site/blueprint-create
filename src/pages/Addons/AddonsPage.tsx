@@ -67,7 +67,7 @@ export default function AddonsPage() {
             </span>
             <span className='text-xs opacity-80'>
               Disclaimer: this is a rewrite of the old codebase. Some functions are copied while
-              most are new. Site isnt polished right now.<br />
+              most are new. Site isn't polished right now.<br />
             </span>
           </div>
           <button

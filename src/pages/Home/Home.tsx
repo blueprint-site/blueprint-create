@@ -1,7 +1,7 @@
 export default function Home() {
   return (
     <div className='flex flex-col items-center justify-center min-h-screen'>
-      <div className='text-black flex items-baseline space-x-2 bg-surface-1 px-20 py-5'>
+      <div className='flex items-baseline space-x-2 bg-surface-1 px-20 py-5'>
         <span className='text-3xl font-minecraft font-bold text-white'>Blueprint</span>
         <span className='text-2xl opacity-70 text-surface-4 font-minecraft'>vRe</span>
       </div>
@@ -26,7 +26,7 @@ export default function Home() {
       <br />
       <div className='bg-surface-1 font-minecraft px-10 py-3 text-white'>
         <h1 className="text-xl">This is a text</h1>
-        <button className="bg-surface-2 p-2">this is a buton</button>
+        <button className="bg-surface-2 p-2">this is a button</button>
       </div> */}
     </div>
   );
