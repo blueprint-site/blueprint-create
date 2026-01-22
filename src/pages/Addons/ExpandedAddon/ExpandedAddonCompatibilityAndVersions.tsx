@@ -7,7 +7,7 @@ interface ExpandedAddonCompatibilityAndVersionsProps {
 
 export const ExpandedAddonCompatibilityAndVersions = ({ versions = [] }: ExpandedAddonCompatibilityAndVersionsProps) => {
     return (
-        <div className="w-80 space-y-4">
+        <div className="w-80 space-y-4 text-white">
             <Card>
                 <CardHeader>
                     <CardTitle className="font-minecraft text-2xl">Versions</CardTitle>
@@ -23,7 +23,7 @@ export const ExpandedAddonCompatibilityAndVersions = ({ versions = [] }: Expande
                     <CardTitle className="font-minecraft text-xl">Compatibility</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-sm text-muted-foreground">No compatibility information available.</p>
+                    <p className="text-sm">No compatibility information available.</p>
                 </CardContent>
             </Card>
         </div>

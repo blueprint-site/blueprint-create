@@ -42,6 +42,11 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-blueprint: var(--blueprint);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-surface-4: var(--surface-4);
+  --color-surface-5: var(--surface-5);
 }
 
 :root {
@@ -49,7 +54,7 @@
   --foreground: hsl(220 15% 18%);
   --foreground-muted: hsl(220 15% 23%);
 
-  --blueprint: hsl(220, 89%, 85%);
+  --blueprint: #b7ccfb;
   --blueprint-foreground: hsl(0 0% 16%);
   --blueprint-foreground-muted: hsl(0 0% 13%);
 
@@ -59,7 +64,7 @@
   --primary: hsl(220 90% 56%);
   --primary-foreground: var(--semantic-foreground);
 
-  --secondary: hsl(215 30% 45%);
+  --secondary: var(--color-accent);
   --secondary-foreground: var(--semantic-foreground);
 
   --accent: hsl(225, 97%, 65%);
@@ -71,18 +76,20 @@
   --warning: hsl(49 100% 34%);
   --warning-foreground: var(--semantic-foreground);
 
-  --destructive: hsl(3 57% 36%);
+  --destructive: hsl(3, 57%, 36%);
   --destructive-foreground: var(--semantic-foreground);
 
   --muted: hsl(220 13% 50%);
   --muted-foreground: hsl(220 13% 45%);
 
-  --surface-1: hsl(220 13% 95%);
-  --surface-2: hsl(220 13% 85%);
-  --surface-3: hsl(220 13% 79%);
+  --surface-1: #466cbc;
+  --surface-2: #638bdd;
+  --surface-3: #80aaff;
+  --surface-4: #aacbff;
+  --surface-5: #dcedff;
 
   --card: var(--surface-1);
-  --card-foreground: var(--foreground);
+  --card-foreground: var(--color-white);
   --card-foreground-muted: var(--muted);
 
   --popover: var(--surface-1);
@@ -107,7 +114,7 @@
   --foreground: hsl(220 15% 97%);
   --foreground-muted: hsl(220 13% 70%);
 
-  --blueprint: hsl(220 100% 75%);
+  --blueprint: #80aaff;
   --blueprint-foreground: hsl(0 0% 16%);
   --blueprint-foreground-muted: hsl(0 0% 13%);
 
@@ -121,7 +128,7 @@
   --primary: hsl(220 80% 54%);
   --primary-foreground: var(--foreground);
 
-  --secondary: hsl(215 60% 55%);
+  --secondary: var(--color-accent);
   --secondary-foreground: var(--semantic-foreground);
 
   --accent: hsl(225, 97%, 65%);
