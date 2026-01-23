@@ -1,0 +1,208 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-minecraft: Minecraft, system-ui, sans-serif;
+  --radius: 0.5rem;
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-blueprint: var(--blueprint);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-surface-4: var(--surface-4);
+  --color-surface-5: var(--surface-5);
+}
+
+:root {
+  --background: hsl(220 14% 96%);
+  --foreground: hsl(220 15% 18%);
+  --foreground-muted: hsl(220 15% 23%);
+
+  --blueprint: #b7ccfb;
+  --blueprint-foreground: hsl(0 0% 16%);
+  --blueprint-foreground-muted: hsl(0 0% 13%);
+
+  --semantic-foreground: hsl(0 0% 98%);
+  --semantic-foreground-muted: hsl(0 0% 90%);
+
+  --primary: hsl(220 90% 56%);
+  --primary-foreground: var(--semantic-foreground);
+
+  --secondary: var(--color-accent);
+  --secondary-foreground: var(--semantic-foreground);
+
+  --accent: hsl(225, 97%, 65%);
+  --accent-foreground: hsl(0 0% 98%);
+
+  --success: hsl(86 36% 36%);
+  --success-foreground: var(--semantic-foreground);
+
+  --warning: hsl(49 100% 34%);
+  --warning-foreground: var(--semantic-foreground);
+
+  --destructive: hsl(3, 57%, 36%);
+  --destructive-foreground: var(--semantic-foreground);
+
+  --muted: hsl(220 13% 50%);
+  --muted-foreground: hsl(220 13% 45%);
+
+  --surface-1: #466cbc;
+  --surface-2: #638bdd;
+  --surface-3: #80aaff;
+  --surface-4: #aacbff;
+  --surface-5: #dcedff;
+
+  --card: var(--surface-1);
+  --card-foreground: var(--color-white);
+  --card-foreground-muted: var(--muted);
+
+  --popover: var(--surface-1);
+  --popover-foreground: hsl(220 13% 3.9%);
+
+  --border: var(--surface-3);
+  --input: var(--muted);
+  --ring: var(--primary);
+
+  --sidebar-background: var(--surface-1);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--surface-2);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: var(--surface-3);
+  --sidebar-ring: var(--primary);
+}
+
+.dark {
+  --background: hsl(222 14% 10%);
+  --foreground: hsl(220 15% 97%);
+  --foreground-muted: hsl(220 13% 70%);
+
+  --blueprint: #80aaff;
+  --blueprint-foreground: hsl(0 0% 16%);
+  --blueprint-foreground-muted: hsl(0 0% 13%);
+
+  --surface-1: hsl(222 14% 12%);
+  --surface-2: hsl(222 14% 16%);
+  --surface-3: hsl(222 14% 22%);
+
+  --semantic-foreground: hsl(0 0% 98%);
+  --semantic-foreground-muted: hsl(0 0% 90%);
+
+  --primary: hsl(220 80% 54%);
+  --primary-foreground: var(--foreground);
+
+  --secondary: var(--color-accent);
+  --secondary-foreground: var(--semantic-foreground);
+
+  --accent: hsl(225, 97%, 65%);
+  --accent-foreground: var(--semantic-foreground);
+
+  --success: hsl(86, 55%, 31%);
+  --success-foreground: var(--semantic-foreground);
+
+  --warning: hsl(49 100% 30%);
+  --warning-foreground: var(--semantic-foreground);
+
+  --destructive: hsl(3 57% 33%);
+  --destructive-foreground: var(--semantic-foreground);
+
+  --muted: hsl(220 13% 50%);
+  --muted-foreground: hsl(220 13% 45%);
+
+  --border: var(--surface-3);
+  --input: var(--muted);
+  --ring: var(--primary);
+
+  --card: var(--surface-1);
+  --card-foreground: var(--foreground);
+  --card-foreground-muted: var(--muted);
+
+  --popover: var(--surface-1);
+  --popover-foreground: var(--foreground);
+
+  --sidebar-background: var(--surface-1);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--surface-2);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: var(--surface-3);
+  --sidebar-ring: var(--primary);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  @font-face {
+    font-family: 'Minecraft';
+    src: url('/src/assets/fonts/MinecraftRegular/MinecraftRegular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Minecraft';
+    src: url('/src/assets/fonts/MinecraftRegular/MinecraftBold.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Minecraft';
+    src: url('/src/assets/fonts/MinecraftRegular/MinecraftItalic.otf') format('opentype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Minecraft';
+    src: url('/src/assets/fonts/MinecraftRegular/MinecraftBoldItalic.otf') format('opentype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+  }
+}
