@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Blueprint - Schematic Viewer</title>
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="stylesheet" href="static/css/style.css">
+	<link rel="stylesheet" href="/static/css/viewer.css">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Blueprint"/>
+	<meta property="og:description" content="Your all in one Create website"/>
+	<meta property="og:url" content="https://blueprint-site.github.io/"/>
+	<meta property="og:image" content="https://blueprint-site.github.io/static/logo.webp"/>
+	<script src="/static/js/darkmode.js" defer></script>
+</head>
+<body>
+<nav>
+	<a class="logo" href="/"><img src="/static/logo.webp" alt="Logo">Blueprint</a>
+	<span style="flex-grow: 1;"></span>
+	<a href="/addons.html"><img src="/static/minecart_coupling.webp" alt="">Addons</a>
+	<a href="/schematics.html"><img src="/static/schematic.webp" alt="">Schematics</a>
+	<a href="#"><img src="/static/Clipboard.webp" alt="">About</a>
+</nav>
+<main>
+	<div id="dark-mode-toggle"></div>
+	<center>
+		<h1>Schematic Viewer</h1>
+		<input id="schematic-input" type="file" accept=".nbt" style="position: fixed; top: -100em">
+		<label for="schematic-input">
+			<div class="drop-zone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event)">
+				Drag and drop file here, or click to select one
+			</div>
+		</label>
+		<table>
+			<caption>Please notice, that the amount is not quite accurate, as each block for multi-blocks like beds and
+				doors are counted.
+			</caption>
+			<thead>
+			<tr>
+				<th>Block-ID</th>
+				<th>Amount</th>
+			</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</center>
+</main>
+<script src="/static/js/pnbt.js"></script>
+<script>
+    const nbt = require('prismarine-nbt');
+    const {Buffer} = require('buffer');
+
+    //When a file is selected, parse it
+    document.getElementById('schematic-input').addEventListener('change', function(e) {
+        parseFile(e.target.files[0]);
+    });
+
+
+    const dropHandler = async (ev) => {
+        console.log("File(s) dropped");
+
+        // Prevent default behavior (Prevent file from being opened)
+        ev.preventDefault();
+
+        if (ev.dataTransfer.items) {
+            // Use DataTransferItemList interface to access the file(s)
+            [...ev.dataTransfer.items].forEach(async (item, i) => {
+                // If dropped items aren't files, reject them
+                if (item.kind === "file") {
+                    const file = item.getAsFile();
+                    parseFile(file);
+                    console.log(`… file[${i}].name = ${file.name}`);
+                }
+            });
+        } else {
+            // Use DataTransfer interface to access the file(s)
+            [...ev.dataTransfer.files].forEach(async (file, i) => {
+                parseFile(file);
+                console.log(`… file[${i}].name = ${file.name}`);
+            });
+        }
+    }
+
+    const dragOverHandler = (ev) => {
+        console.log("File(s) in drop zone");
+
+        // Prevent default behavior (Prevent file from being opened)
+        ev.preventDefault();
+    }
+
+    const parseFile = async (file) => {
+        const buffer = await file.arrayBuffer();
+        const data = await nbt.parse(Buffer.from(buffer));
+
+        let amounts = {};
+
+        for (const item of data.parsed.value.palette.value.value) {
+            amounts[item.Name.value] = 0;
+        }
+
+        for (const block of data.parsed.value.blocks.value.value) {
+            amounts[data.parsed.value.palette.value.value[block.state.value].Name.value] += 1;
+        }
+
+        for (const key in amounts) {
+            const table = document.querySelector("tbody");
+            const tr = document.createElement("tr");
+            const blockId = document.createElement("td");
+            blockId.innerText = key;
+            const amount = document.createElement("td");
+            amount.innerText = amounts[key];
+            tr.appendChild(blockId);
+            tr.appendChild(amount);
+            table.appendChild(tr);
+        }
+
+        document.querySelector(".drop-zone").style.display = "none";
+        document.querySelector("table").style.visibility = "visible";
+    }
+</script>
+</body>
+</html>

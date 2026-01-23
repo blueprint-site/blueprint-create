@@ -1,0 +1,379 @@
+:root {
+    --main-background: #E5E7EB;
+    --dark-main-background: black;
+    --text-color: white;
+    --dark-text-color: black;
+    --container-background: #B3CAE5;
+    --dark-container-background: #527caf;
+}
+
+.twa-banner {
+    height: 4em;
+    width: 100%;
+    background-image: url("../twa_background.webp");
+    background-position: left center;
+    background-color: var(--container-background);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    animation: moveBackground 18s linear infinite;
+}
+
+@keyframes moveBackground {
+    0% {
+        background-position: left;
+    }
+    100% {
+        background-position: right;
+    }
+}
+
+
+body.dark-mode .side-box h3, h4 {
+    color: white;
+}
+
+body.dark-mode .side-box {
+    background-color: var(--dark-container-background);
+}
+
+body.dark-mode .side-box-dsc {
+    color: white;
+}
+
+body.dark-mode .discover-addons-background {
+    background-color: var(--dark-container-background);
+}
+
+body.dark-mode .discover-addons-line {
+    background-color: var(--dark-container-background);
+}
+
+body.dark-mode .home-more-addons-button {
+    background-color: var(--container-background);
+}
+
+body.dark-mode .more-addons-inside-text {
+    color: black;
+}
+
+body.dark-mode .site-info {
+    background-color: var(--dark-container-background);
+}
+
+body.dark-mode .site-info h2, h3, h4 {
+    color: whitesmoke;
+}
+
+body.dark-mode .blogpost:link {
+    color: rgb(177, 211, 255);
+}
+
+body.dark-mode.blogpost:visited {
+    color: rgb(177, 211, 255);
+}
+
+body.dark-mode .h3-blueprint, .h4-blueprint, .h2-blueprint {
+    color: black;
+}
+
+body.dark-mode .site-info h4 {
+    color: white;
+}
+body.dark-mode .site-info h2, h3, h4, .h3-blueprint {
+    color: white;
+}
+body.dark-mode .random-addon {
+    background-color: #527CAF;
+}
+.twa-banner-text * {
+    font-family: 'Minecraftia', Arial, Helvetica, sans-serif;
+}
+body.dark-mode .for-creators-imagebox {
+    background-color: #527CAF;
+}
+body.dark-mode .for-creators-textbox {
+    background-color: #527CAF;
+}
+body.dark-mode .for-creators h2 {
+    color: white;
+}
+body.dark-mode .for-creators h1 {
+    color: white;
+}
+
+
+.twa-banner-text {
+    font-family: 'Minecraftia', Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    color: black;
+    text-decoration: none;
+    margin-right: 30px;
+    font-size: auto;
+    padding-left: 0.5rem;
+    text-shadow: rgb(0, 0, 0, 0.4) 3px 3px 10px;
+}
+
+.home-slideshow-container {
+    display: flex;
+    align-items: top;
+    justify-content: center;
+}
+
+.home-slideshow-image {
+    width: 40vw;
+    height: 24vw;
+    position: relative;
+    border-radius: 1.9em;
+    transition: opacity 0.5s linear;
+}
+
+.home-slideshow-image.hidden {
+    opacity: 0.4;
+}
+
+.home-slideshow-image.visible {
+    opacity: 1;
+}
+
+.side-box {
+    width: 20vw;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 1.9em;
+    background-color: var(--container-background);
+    text-align: center;
+    vertical-align: sub;
+    margin-left: 1em;
+    padding: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    align-content: left;
+    transition: filter 0.3s linear;
+    transition: box-shadow 0.2s linear;
+}
+
+.side-box:hover {
+    filter: brightness(1.05);
+    cursor: pointer;
+}
+
+.side-box img {
+    max-height: 200px;
+    height: 7vw;
+    max-width: 200px;
+    position: relative;
+}
+
+.side-box-text {
+    font-size: 1.5vw;
+    color: black;
+}
+
+.side-box-dsc {
+    margin-top: -1vw;
+    font-size: 1.3vw;
+    font-family: Arial, Helvetica, sans-serif;
+    color: black;
+}
+
+
+.for-creators {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+}
+.for-creators-discord {
+    background-color: #5865F2;
+    padding: 0.7em;
+    border-radius: 1em;
+    color: white;
+    text-decoration: none;
+    transition: padding 0.1s linear;
+}
+.for-creators-email {
+    background-color: #6C49FC;
+    padding: 0.7em;
+    border-radius: 1em;
+    color: white;
+    text-decoration: none;
+    transition: padding 0.1s linear;
+}
+.for-creators-discord:visited {
+    color: white;
+}
+.for-creators-discord:hover {
+    padding: 0.5em;
+}
+.for-creators-email:visited {
+    color: white;
+}
+.for-creators-email:hover {
+    padding: 0.5em;
+}
+.for-creators-image {
+    width: 10em;
+    border-radius: 1.9em;
+    padding: 0.2em;
+    transition: width 0.1s linear;
+}
+.for-creators-image:hover {
+    width: 11em;
+}
+.for-creators-imagebox {
+    background-color: #B3CAE5;
+    width: fit-content;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, auto);
+    border-radius: 1.9em;
+}
+.for-creators-textbox {
+    width: 40em;
+    height: fit-content;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 1.9em;
+    background-color: #B3CAE5;
+    text-align: left;
+    vertical-align: sub;
+    padding: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.for-creators-header {
+    color: black;
+}
+.for-creators-dsc {
+    color: black;
+    margin-top: -1em;
+    font-weight: lighter;
+}
+.blogpost:link {
+    color: rgb(49, 79, 117);
+}
+
+.blogpost:visited {
+    color: rgb(49, 79, 117);
+}
+
+.addon:hover {
+    box-shadow: 10px 10px 10px rgb(0, 0, 0, 0.5);
+}
+
+.addon::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 1.9em;
+}
+
+.addon h3 {
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    position: relative; /* Ensure text appears above the pseudo-element */
+    z-index: 1; /* Ensure text is on top of the pseudo-element */
+    font-size: 1.5vw;
+    margin-top: -5px;
+    text-shadow: 3px 2px 10px black;
+}
+
+.addon h4 {
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    position: relative; /* Ensure text appears above the pseudo-element */
+    z-index: 1; /* Ensure text is on top of the pseudo-element */
+    font-size: 1.1vw;
+    margin-top: -0.8vw;
+    margin-bottom: -5px;
+    font-weight: 500;
+    text-shadow: 3px 2px 10px black;
+}
+
+.home-more-addons-button-container {
+    text-align: center; /* Center the button */
+}
+
+.home-more-addons-button {
+    display: inline-block;
+    padding: 0.4em;
+    background-color: #3e76b3;
+    color: white;
+    text-decoration: none;
+    border-radius: 1.9em;
+    transition: 0.2s ease;
+}
+
+.home-more-addons-button:hover {
+    background-color: #4985ce;
+}
+
+.more-addons-inside-text {
+    color: white;
+    font-size: 0.9em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.discover-addons-background {
+    background-color: var(--container-background);
+}
+
+.site-info {
+    display: block;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--container-background);
+}
+
+.h2-blueprint {
+    color: black;
+    font-size: 2em;
+}
+
+.h3-blueprint {
+    color: black;
+    font-size: 1.2rem;
+}
+
+.h4-blueprint {
+    color: black;
+    font-size: 1em;
+}
+.random-addon {
+    display: flex;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: var(--container-background);
+    width: fit-content;
+    margin: 0 auto;
+    border-radius: 1.9em;
+    padding: 20px;
+}
+.random-addon h3, h4, a{
+    color: black;
+}
+.random-addon h4 {
+    font-weight: lighter;
+    margin-top: -1em;
+}
+.random-addon-logo {
+    align-content: center;
+    width: 4em;
+}
+.modloaders {
+    display: inline;
+}
+.random-addon-header {
+    text-align: center;
+}
