@@ -1,0 +1,50 @@
+name: Assign Priority Label
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  assign-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract Priority and Apply Label
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issueBody = context.payload.issue.body;
+            const priorityRegex = /### Priority\s*\n\s*> (.*)/;
+            const match = issueBody.match(priorityRegex);
+            
+            if (match) {
+              const selectedOption = match[1].trim();
+              let priorityLabel;
+              
+              // Map friendly dropdown options to labels
+              if (selectedOption.startsWith("Critical")) priorityLabel = "priority: critical";
+              else if (selectedOption.startsWith("High")) priorityLabel = "priority: high";
+              else if (selectedOption.startsWith("Medium")) priorityLabel = "priority: medium";
+              else if (selectedOption.startsWith("Low")) priorityLabel = "priority: low";
+              
+              if (priorityLabel) {
+                // Remove any existing priority labels
+                const currentLabels = context.payload.issue.labels.map(l => l.name);
+                const otherPriorityLabels = currentLabels.filter(l => l.startsWith('priority:') && l !== priorityLabel);
+                
+                if (otherPriorityLabels.length > 0) {
+                  await github.rest.issues.removeLabel({
+                    issue_number: context.issue.number,
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    name: otherPriorityLabels[0]
+                  });
+                }
+                
+                // Add the new priority label
+                await github.rest.issues.addLabels({
+                  issue_number: context.issue.number,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  labels: [priorityLabel]
+                });
+              }
+            }
