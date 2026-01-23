@@ -8,13 +8,12 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const queryClient = new QueryClient();
 
-// TODO: CHANGE THE LIGHT TO DARK WHEN I FIX DARK MODE
 
 function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider defaultTheme='light'>
+        <ThemeProvider defaultTheme='system'>
           <RouterProvider router={createBrowserRouter(routes)} />
           <ThemeSwitch />
           <Toaster />
