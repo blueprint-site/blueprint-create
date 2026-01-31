@@ -17,11 +17,31 @@ export default function ExpandedAddonPage() {
                 <span className='font-minecraft text-4xl'>{addon.name}</span>
                 <span>{addon.description}</span>
               </div>
+              <div className='gap-2 flex-col flex mt-2 font-minecraft ml-auto'>
+                {addon.sources.includes('Modrinth') && (
+                  <button
+                    className='bg-green-400 px-5 hover:bg-accent transition-all text-black'
+                    onClick={() => window.open(`https://modrinth.com/mod/${addon.slug}`)}
+                  >
+                    Modrinth
+                  </button>
+                )}
+                {addon.sources.includes('CurseForge') && (
+                  <button
+                    className='bg-orange-500 px-5 hover:bg-accent transition-all text-black'
+                    onClick={() =>
+                      window.open(`https://www.curseforge.com/minecraft/mc-mods/${addon.slug}`)
+                    }
+                  >
+                    CurseForge
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         )}
       </div>
-      
+
       <div className='hidden lg:block'>
         <div className='flex gap-4 mt-10 flex-col lg:flex-row'>
           <div className=''>
