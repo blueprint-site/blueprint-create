@@ -7,10 +7,10 @@ export default function ExpandedAddonPage() {
   const slug = useParams().slug?.toString();
   const addon = useFetchAddonBySlug(slug)?.data;
   return (
-    <div className='py-2 px-5 lg:px-5 xl:px-10 2xl:px-40'>
+    <div className='py-5 px-5 lg:px-5 xl:px-10 2xl:px-40'>
       <div className=''>
         {addon && (
-          <div className=''>
+          <div className='bg-red-500 pt-20 pb-2 p-2s'>
             <div className='flex items-center gap-4'>
               <img src={addon.icon} alt={'Icon for ' + addon.name} className='w-20' />
               <div className='flex flex-col'>

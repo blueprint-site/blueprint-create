@@ -14,7 +14,7 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider defaultTheme='system'>
+        <ThemeProvider defaultTheme='system' storageKey='vite-ui-theme'>
           <RouterProvider router={createBrowserRouter(routes)} />
           <ThemeSwitch />
           <Toaster />
