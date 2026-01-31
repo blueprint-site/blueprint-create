@@ -2,7 +2,6 @@ import { useTheme } from './theme-provider';
 import DarkIcon from '@/assets/sprite-icons/Lit_Empty_Blaze_Burner_Soul_100x100.webp';
 import LightIcon from '@/assets/sprite-icons/Lit_Empty_Blaze_Burner_100x100.webp';
 import SystemIcon from '@/assets/sprite-icons/blazeburner_system.webp';
-import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
