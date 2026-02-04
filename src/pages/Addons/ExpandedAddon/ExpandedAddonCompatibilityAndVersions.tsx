@@ -33,7 +33,9 @@ export const ExpandedAddonCompatibilityAndVersions = ({ versions = [], authors =
                 </CardHeader>
                 <CardContent>
                     <div className="flex flex-wrap gap-2">
-                        {authors}
+                        {authors.map(author => (
+                            <Badge variant="secondary" key={author}>{author}</Badge>
+                        ))}
                     </div>
                 </CardContent>
             </Card>
