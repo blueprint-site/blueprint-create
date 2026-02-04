@@ -18,7 +18,7 @@ export const Addon = z.object({
   loaders: z.array(z.string()).max(64),
   create_versions: z.array(z.string()).max(32).optional().nullable(),
   minecraft_versions: z.array(z.string()).nonempty().max(32),
-  authors: z.array(z.string()).nonempty().max(100),
+  authors: z.array(z.string()).max(100),
   categories: z.array(z.string()).max(120).optional().default([]),
   stage: z.enum(['pending', 'reviewing', 'approved', 'rejected', 'archived']).optional(),
   reviewedAt: z.string().optional().nullable(), // is an appwrite date
