@@ -11,7 +11,7 @@ export const ExpandedAddonCompatibilityAndVersions = ({ versions = [], authors =
         <div className="w-80 space-y-4 text-white">
             <Card>
                 <CardHeader>
-                    <CardTitle className="font-minecraft text-2xl">Versions</CardTitle>
+                    <CardTitle className="font-minecraft text-xl">Versions</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="flex flex-wrap gap-2">
@@ -19,7 +19,7 @@ export const ExpandedAddonCompatibilityAndVersions = ({ versions = [], authors =
                     </div>
                 </CardContent>
             </Card>
-            <Card>x
+            <Card>
                 <CardHeader>
                     <CardTitle className="font-minecraft text-xl">Compatibility</CardTitle>
                 </CardHeader>
