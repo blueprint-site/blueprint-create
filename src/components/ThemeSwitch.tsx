@@ -40,7 +40,7 @@ export default function ThemeSwitch() {
         asChild
         className='fixed bottom-2 z-10 right-2 bg-surface-4 w-20 h-20 rounded'
       >
-        <button >
+        <button>
           {theme === 'dark' ? (
             <img src={DarkIcon} alt='Dark mode icon' />
           ) : theme === 'light' ? (
@@ -52,11 +52,26 @@ export default function ThemeSwitch() {
       </DropdownMenuTrigger>
       <DropdownMenuContent side='left' sideOffset={10}>
         <DropdownMenuGroup>
-          <DropdownMenuLabel className='opacity-50'>Select Theme</DropdownMenuLabel>
-          <DropdownMenuRadioGroup value={theme} onValueChange={setTheTheme}>
-            <DropdownMenuRadioItem value='light'>Light<img src={LightIcon} alt="Light mode icon" width={20} /></DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value='dark'>Dark<img src={DarkIcon} alt="Dark mode icon" width={20} /></DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value='system'>System<img src={SystemIcon} alt="System mode icon" width={20} /></DropdownMenuRadioItem>
+          <DropdownMenuLabel className='opacity-50 text-white'>Select Theme</DropdownMenuLabel>
+          <DropdownMenuRadioGroup value={theme} onValueChange={setTheTheme} className='text-white'>
+            <DropdownMenuRadioItem value='light'>
+              <span className='flex items-center gap-2'>
+                <span>Light</span>
+                <img src={LightIcon} alt='Light mode icon' width={20} />
+              </span>
+            </DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value='dark'>
+              <span className='flex items-center gap-2'>
+                <span>Dark</span>
+                <img src={DarkIcon} alt='Dark mode icon' width={20} />
+              </span>
+            </DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value='system'>
+              <span className='flex items-center gap-2'>
+                <span>System</span>
+                <img src={SystemIcon} alt='System mode icon' width={20} />
+              </span>
+            </DropdownMenuRadioItem>
           </DropdownMenuRadioGroup>
         </DropdownMenuGroup>
       </DropdownMenuContent>
