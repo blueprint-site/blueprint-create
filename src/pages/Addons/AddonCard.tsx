@@ -28,7 +28,7 @@ export default function AddonCard({ addon }: AddonCardProps) {
   }
   return (
     <Link to={`/addons/${addon.slug}`} className='bg-surface-1 border text-white p-4 hover:scale-102 transition-all'>
-      <img src={addon.icon} alt={addon.name} className='w-20' />
+      {addon.icon && <img src={addon.icon} alt={addon.name} className='w-20' />}
       <span className='font-minecraft text-lg font-semibold'>{addon.name}</span>
       <p className='mb-2 -mt-1'>{addon.description}</p>
       <p>{new Intl.NumberFormat('pl-PL').format(addon.downloads)} downloads total</p>

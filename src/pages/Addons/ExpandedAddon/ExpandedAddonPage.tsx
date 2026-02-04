@@ -12,7 +12,7 @@ export default function ExpandedAddonPage() {
         {addon && (
           <div className='bg-red-500 pt-20 pb-2 p-2s'>
             <div className='flex items-center gap-4'>
-              <img src={addon.icon} alt={'Icon for ' + addon.name} className='w-20' />
+              {addon.icon && <img src={addon.icon} alt={'Icon for ' + addon.name} className='w-20' />}
               <div className='flex flex-col'>
                 <span className='font-minecraft text-4xl'>{addon.name}</span>
                 <span>{addon.description}</span>
@@ -54,7 +54,7 @@ export default function ExpandedAddonPage() {
           <div className=''>
             {addon && (
               <div className=''>
-                <ExpandedAddonCompatibilityAndVersions versions={addon.minecraft_versions} />
+                <ExpandedAddonCompatibilityAndVersions versions={addon.minecraft_versions} authors={addon.authors}/>
               </div>
             )}
           </div>
@@ -68,7 +68,7 @@ export default function ExpandedAddonPage() {
               <TabsTrigger value='description' className=''>
                 Description
               </TabsTrigger>
-              <TabsTrigger value='compatibility'>Compatibility</TabsTrigger>
+              <TabsTrigger value='compatibility'>Versions & Info</TabsTrigger>
             </TabsList>
             <TabsContent value='description'>
               {addon && (
