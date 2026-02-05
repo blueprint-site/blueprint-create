@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import type { Addon } from '@/types/addons';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import type { z } from 'zod';
 type AddonType = z.infer<typeof Addon>;
@@ -11,6 +11,11 @@ interface AddonCardProps {
 
 export default function AddonCard({ addon }: AddonCardProps) {
   const [imgLoading, setImgLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    setImgLoading(true);
+  }, [addon.icon]);
+
   function normalizeLoaders(loaders: string[]): string {
     let normalized: string[] = [];
     for (let loader of loaders) {
