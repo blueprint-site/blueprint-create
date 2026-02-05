@@ -21,7 +21,7 @@ export default function AddonGrid({ data, isLoading = false }: AddonGridProps) {
         role='status'
         aria-live='polite'
       >
-        {Array.from({ length: 9 }).map((_, index) => (
+        {Array.from({ length: 12 }).map((_, index) => (
           <div
             key={`addon-skeleton-${index}`}
             className='bg-surface-1 border text-white p-4'
