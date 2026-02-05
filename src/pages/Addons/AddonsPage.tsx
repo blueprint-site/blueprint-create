@@ -43,6 +43,10 @@ export default function AddonsPage() {
   const searchResponse = useSearchAddons(debouncedSearch, page, limit);
   const listResponse = useFetchAddons(page, limit);
 
+  const isLoading = debouncedSearch
+    ? searchResponse.isLoading
+    : listResponse.isLoading;
+
   const addons: AddonType[] = useMemo(() => {
     if (debouncedSearch) {
       const r = (searchResponse as unknown as { data?: { addons?: AddonType[] } }).data;
@@ -125,7 +129,7 @@ export default function AddonsPage() {
           </PaginationContent>
         </Pagination>
       </div>
-      <AddonGrid data={addons || []} />
+      <AddonGrid data={addons || []} isLoading={isLoading} />
       <div className='mt-2 -mb-2'>
         <Pagination>
           <PaginationContent>
