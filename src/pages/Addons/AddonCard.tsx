@@ -37,6 +37,7 @@ export default function AddonCard({ addon }: AddonCardProps) {
           alt={addon.name}
           className='w-20'
           onLoad={() => setImgLoading(false)}
+          onError={() => setImgLoading(false)}
           style={{ display: imgLoading ? 'none' : 'block' }}
         />
       )}
