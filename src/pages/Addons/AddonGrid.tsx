@@ -14,7 +14,13 @@ type AddonGridProps = {
 export default function AddonGrid({ data, isLoading = false }: AddonGridProps) {
   if (isLoading) {
     return (
-      <div className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5'>
+      <div
+        className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5'
+        aria-busy='true'
+        aria-label='Loading addons'
+        role='status'
+        aria-live='polite'
+      >
         {Array.from({ length: 9 }).map((_, index) => (
           <div
             key={`addon-skeleton-${index}`}
