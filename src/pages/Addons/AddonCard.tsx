@@ -40,7 +40,9 @@ export default function AddonCard({ addon }: AddonCardProps) {
           style={{ display: imgLoading ? 'none' : 'block' }}
         />
       )}
-      {imgLoading && <Skeleton className='w-20 h-20 mb-3 rounded-full bg-surface-2' />}
+      {addon.icon && imgLoading && (
+        <Skeleton className='w-20 h-20 mb-3 rounded-full bg-surface-2' />
+      )}
       <span className='font-minecraft text-lg font-semibold'>{addon.name}</span>
       <p className='mb-2 -mt-1'>{addon.description}</p>
       <p>{new Intl.NumberFormat('pl-PL').format(addon.downloads)} downloads total</p>
