@@ -18,7 +18,7 @@ export const ExpandedAddonDescription = ({ description = '' }: ExpandedAddonDesc
   }
 
   return (
-    <Card className='text-white'>
+    <Card className='text-white '>
     <CardTitle className='px-6 text-2xl font-minecraft'>Description</CardTitle>
     <CardContent className=''>
       <div className='markdown-body'>
@@ -26,8 +26,8 @@ export const ExpandedAddonDescription = ({ description = '' }: ExpandedAddonDesc
           remarkPlugins={[remarkGfm, remarkBreaks]}
           rehypePlugins={[rehypeRaw]}
           components={{
-            div: ({ node, ...props }) => <div {...props} />,
-            a: ({ node, ...props }) => {
+            div: ({ ...props }) => <div {...props} />,
+            a: ({  ...props }) => {
               const href = props.href || '';
               if (href.startsWith('/linkout?remoteUrl=')) {
                 try {

@@ -45,16 +45,16 @@ export default function ExpandedAddonPage() {
 
       <div className='hidden lg:block'>
         <div className='flex gap-4 mt-10 flex-col lg:flex-row'>
-          <div className=''>
+          <div className='mr-auto w-full'>
             {addon && (
-              <div className=' w-full'>
+              <div className='w-full'>
                 <ExpandedAddonDescription description={addon.body || ''} />
               </div>
             )}
           </div>
           <div className=''>
             {addon && (
-              <div className=''>
+              <div className='ml-auto'>
                 <ExpandedAddonCompatibilityAndVersions versions={addon.minecraft_versions} authors={addon.authors}/>
               </div>
             )}
@@ -81,7 +81,7 @@ export default function ExpandedAddonPage() {
             <TabsContent value='compatibility'>
               {addon && (
                 <div className=''>
-                  <ExpandedAddonCompatibilityAndVersions versions={addon.minecraft_versions} />
+                  <ExpandedAddonCompatibilityAndVersions versions={addon.minecraft_versions} authors={addon.authors}/>
                 </div>
               )}
             </TabsContent>
