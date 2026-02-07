@@ -81,7 +81,7 @@ export default function ExpandedAddonPage() {
             <TabsContent value='compatibility'>
               {addon && (
                 <div className=''>
-                  <ExpandedAddonCompatibilityAndVersions versions={addon.minecraft_versions} />
+                  <ExpandedAddonCompatibilityAndVersions versions={addon.minecraft_versions} authors={addon.authors}/>
                 </div>
               )}
             </TabsContent>

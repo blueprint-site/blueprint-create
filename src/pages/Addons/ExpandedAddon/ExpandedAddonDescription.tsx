@@ -26,8 +26,8 @@ export const ExpandedAddonDescription = ({ description = '' }: ExpandedAddonDesc
           remarkPlugins={[remarkGfm, remarkBreaks]}
           rehypePlugins={[rehypeRaw]}
           components={{
-            div: ({ node, ...props }) => <div {...props} />,
-            a: ({ node, ...props }) => {
+            div: ({ ...props }) => <div {...props} />,
+            a: ({  ...props }) => {
               const href = props.href || '';
               if (href.startsWith('/linkout?remoteUrl=')) {
                 try {
