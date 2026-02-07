@@ -1,4 +1,6 @@
+import { Skeleton } from '@/components/ui/skeleton';
 import type { Addon } from '@/types/addons';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import type { z } from 'zod';
 type AddonType = z.infer<typeof Addon>;
@@ -8,6 +10,12 @@ interface AddonCardProps {
 }
 
 export default function AddonCard({ addon }: AddonCardProps) {
+  const [imgLoading, setImgLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    setImgLoading(true);
+  }, [addon.icon]);
+
   function normalizeLoaders(loaders: string[]): string {
     let normalized: string[] = [];
     for (let loader of loaders) {
@@ -28,7 +36,19 @@ export default function AddonCard({ addon }: AddonCardProps) {
   }
   return (
     <Link to={`/addons/${addon.slug}`} className='bg-surface-1 border text-white p-4 hover:scale-102 transition-all'>
-      <img src={addon.icon} alt={addon.name} className='w-20' />
+      {addon.icon && (
+        <img
+          src={addon.icon}
+          alt={addon.name}
+          className='w-20'
+          onLoad={() => setImgLoading(false)}
+          onError={() => setImgLoading(false)}
+          style={{ display: imgLoading ? 'none' : 'block' }}
+        />
+      )}
+      {addon.icon && imgLoading && (
+        <Skeleton className='w-20 h-20 mb-3 rounded-full bg-surface-2' />
+      )}
       <span className='font-minecraft text-lg font-semibold'>{addon.name}</span>
       <p className='mb-2 -mt-1'>{addon.description}</p>
       <p>{new Intl.NumberFormat('pl-PL').format(addon.downloads)} downloads total</p>

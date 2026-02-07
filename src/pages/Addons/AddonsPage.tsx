@@ -10,15 +10,31 @@ import {
 import AddonGrid from './AddonGrid';
 import { Input } from '@/components/ui/input';
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import type { Addon } from '@/types/addons';
 import type { z } from 'zod';
 type AddonType = z.infer<typeof Addon>;
 
 export default function AddonsPage() {
-  const [page, setPage] = useState<number>(1);
-  const [search, setSearch] = useState<string>('');
-  const [debouncedSearch, setDebouncedSearch] = useState<string>('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pageParam = parseInt(searchParams.get('page') || '1', 10);
+  const searchParam = searchParams.get('q') || '';
+  const [page, setPage] = useState<number>(pageParam);
+  const [search, setSearch] = useState<string>(searchParam);
+  const [debouncedSearch, setDebouncedSearch] = useState<string>(searchParam);
   const limit = 12;
+
+  useEffect(() => {
+    const params: Record<string, string> = {};
+    if (page > 1) {
+      params.page = page.toString();
+    }
+    if (search.trim()) {
+      params.q = search.trim();
+    }
+    setSearchParams(params);
+  }, [page, search, setSearchParams]);
+
   useEffect(() => {
     const id = setTimeout(() => setDebouncedSearch(search.trim()), 300);
     return () => clearTimeout(id);
@@ -26,6 +42,10 @@ export default function AddonsPage() {
 
   const searchResponse = useSearchAddons(debouncedSearch, page, limit);
   const listResponse = useFetchAddons(page, limit);
+
+  const isLoading = debouncedSearch
+    ? searchResponse.isLoading
+    : listResponse.isLoading;
 
   const addons: AddonType[] = useMemo(() => {
     if (debouncedSearch) {
@@ -109,7 +129,38 @@ export default function AddonsPage() {
           </PaginationContent>
         </Pagination>
       </div>
-      <AddonGrid data={addons || []} />
+      <AddonGrid data={addons || []} isLoading={isLoading} />
+      <div className='mt-2 -mb-2'>
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href='#'
+                aria-disabled={isFirstPage}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (!isFirstPage) setPage((p) => p - 1);
+                }}
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href='#' isActive>
+                {page}
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext
+                href='#'
+                aria-disabled={isLastPage}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (!isLastPage) setPage((p) => p + 1);
+                }}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
     </div>
   );
 }

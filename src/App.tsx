@@ -5,20 +5,21 @@ import ThemeSwitch from '@/components/ThemeSwitch';
 import { Toaster } from '@/components/ui/sonner';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { Analytics } from "@vercel/analytics/react"
 
 const queryClient = new QueryClient();
 
-// TODO: CHANGE THE LIGHT TO DARK WHEN I FIX DARK MODE
 
 function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider defaultTheme='light'>
+        <ThemeProvider defaultTheme='system' storageKey='vite-ui-theme'>
           <RouterProvider router={createBrowserRouter(routes)} />
           <ThemeSwitch />
           <Toaster />
           <SpeedInsights />
+          <Analytics />
         </ThemeProvider>
       </QueryClientProvider>
     </>
