@@ -18,7 +18,7 @@ export const ExpandedAddonDescription = ({ description = '' }: ExpandedAddonDesc
   }
 
   return (
-    <Card className='text-white'>
+    <Card className='text-white '>
     <CardTitle className='px-6 text-2xl font-minecraft'>Description</CardTitle>
     <CardContent className=''>
       <div className='markdown-body'>
