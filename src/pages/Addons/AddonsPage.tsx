@@ -9,10 +9,22 @@ import {
 } from '@/components/ui/pagination';
 import AddonGrid from './AddonGrid';
 import { Input } from '@/components/ui/input';
-import { useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import type { Addon } from '@/types/addons';
 import type { z } from 'zod';
+import {
+  Combobox,
+  ComboboxChip,
+  ComboboxChips,
+  ComboboxChipsInput,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxItem,
+  ComboboxList,
+  ComboboxValue,
+  useComboboxAnchor,
+} from '@/components/ui/combobox';
 type AddonType = z.infer<typeof Addon>;
 
 export default function AddonsPage() {
@@ -23,7 +35,8 @@ export default function AddonsPage() {
   const [search, setSearch] = useState<string>(searchParam);
   const [debouncedSearch, setDebouncedSearch] = useState<string>(searchParam);
   const limit = 12;
-
+  const vFilterMcVersions = ['1.18.2', '1.19.2', '1.20.1', '1.21.1'];
+  const anchor = useComboboxAnchor();
   useEffect(() => {
     const params: Record<string, string> = {};
     if (page > 1) {
@@ -43,9 +56,7 @@ export default function AddonsPage() {
   const searchResponse = useSearchAddons(debouncedSearch, page, limit);
   const listResponse = useFetchAddons(page, limit);
 
-  const isLoading = debouncedSearch
-    ? searchResponse.isLoading
-    : listResponse.isLoading;
+  const isLoading = debouncedSearch ? searchResponse.isLoading : listResponse.isLoading;
 
   const addons: AddonType[] = useMemo(() => {
     if (debouncedSearch) {
@@ -83,7 +94,8 @@ export default function AddonsPage() {
         <div className='flex gap-2 mt-2 justify-end w-full'>
           <div className='flex flex-col'>
             <span className='text-xs opacity-80'>
-              Note: Not all addons are reviewed yet. Some may be not reviewed.<br />
+              Note: Not all addons are reviewed yet. Some may be not reviewed.
+              <br />
             </span>
             <span className='text-xs opacity-80'>
               Disclaimer: this is a rewrite of the old codebase. Some functions are copied while
@@ -96,6 +108,35 @@ export default function AddonsPage() {
           >
             Follow our discord for updates
           </button>
+        </div>
+        <div className='w-full mt-4'>
+          <span className='text-xs opacity-80'>Filters:</span>
+          <div className='flex gap-2'>
+            <Combobox multiple autoHighlight items={vFilterMcVersions}>
+              <ComboboxChips ref={anchor} className='w-full max-w-xs'>
+                <ComboboxValue>
+                  {(values) => (
+                    <Fragment>
+                      {values.map((value: string) => (
+                        <ComboboxChip key={value}>{value}</ComboboxChip>
+                      ))}
+                      <ComboboxChipsInput placeholder='Filter by version...' />
+                    </Fragment>
+                  )}
+                </ComboboxValue>
+              </ComboboxChips>
+              <ComboboxContent anchor={anchor}>
+                <ComboboxEmpty>No versions found</ComboboxEmpty>
+                <ComboboxList>
+                  {(item) => (
+                    <ComboboxItem key={item} value={item}>
+                      {item}
+                    </ComboboxItem>
+                  )}
+                </ComboboxList>
+              </ComboboxContent>
+            </Combobox>
+          </div>
         </div>
       </div>
       <div className='mt-2 -mb-2'>

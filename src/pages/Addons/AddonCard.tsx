@@ -35,7 +35,10 @@ export default function AddonCard({ addon }: AddonCardProps) {
     return normalized.join(' and ');
   }
   return (
-    <Link to={`/addons/${addon.slug}`} className='bg-surface-1 border text-white p-4 hover:scale-102 transition-all'>
+    <Link
+      to={`/addons/${addon.slug}`}
+      className='bg-surface-1 border text-white p-4 hover:scale-102 transition-all'
+    >
       {addon.icon && (
         <img
           src={addon.icon}

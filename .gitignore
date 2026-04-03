@@ -11,7 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
-
+bun.lock
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -26,3 +26,4 @@ dist-ssr
 # Secure data
 .env
 .vercel
+.env*.local
