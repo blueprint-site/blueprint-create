@@ -1,4 +1,4 @@
-import { useFetchAddons, useSearchAddons } from '@/utils/useAddons';
+import { useFetchAddonsWithFilters, useSearchAddons } from '@/utils/useAddons';
 import {
   Pagination,
   PaginationContent,
@@ -9,20 +9,60 @@ import {
 } from '@/components/ui/pagination';
 import AddonGrid from './AddonGrid';
 import { Input } from '@/components/ui/input';
-import { useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import type { Addon } from '@/types/addons';
 import type { z } from 'zod';
+import {
+  Combobox,
+  ComboboxChip,
+  ComboboxChips,
+  ComboboxChipsInput,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxItem,
+  ComboboxList,
+  ComboboxValue,
+  useComboboxAnchor,
+} from '@/components/ui/combobox';
 type AddonType = z.infer<typeof Addon>;
+
+const parseListParam = (value: string | null) => (value ? value.split(',').filter(Boolean) : []);
+
+const arraysEqual = (a: string[], b: string[]) =>
+  a.length === b.length && a.every((value, index) => value === b[index]);
 
 export default function AddonsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const pageParam = parseInt(searchParams.get('page') || '1', 10);
+  const pageParamRaw = parseInt(searchParams.get('page') || '1', 10);
+  const pageParam = Number.isNaN(pageParamRaw) || pageParamRaw < 1 ? 1 : pageParamRaw;
   const searchParam = searchParams.get('q') || '';
+  const versionsFromUrl = parseListParam(searchParams.get('versions'));
+  const modloadersFromUrl = parseListParam(searchParams.get('modloaders'));
+  const searchParamsString = searchParams.toString();
+  const versionsFromUrlKey = versionsFromUrl.join(',');
+  const modloadersFromUrlKey = modloadersFromUrl.join(',');
   const [page, setPage] = useState<number>(pageParam);
   const [search, setSearch] = useState<string>(searchParam);
   const [debouncedSearch, setDebouncedSearch] = useState<string>(searchParam);
   const limit = 12;
+
+  const vFilterMcVersions = ['1.18.2', '1.19.2', '1.20.1', '1.21.1'];
+  const vFilterModloaders = ['Fabric', 'Forge', 'NeoForge', 'Quilt'];
+  const versionsAnchor = useComboboxAnchor();
+  const modloadersAnchor = useComboboxAnchor();
+
+  const [filterVersions, setFilterVersions] = useState<string[]>(versionsFromUrl);
+  const [filterModloaders, setFilterModloaders] = useState<string[]>(modloadersFromUrl);
+
+  useEffect(() => {
+    setPage((prev) => (prev === pageParam ? prev : pageParam));
+    setSearch((prev) => (prev === searchParam ? prev : searchParam));
+    setFilterVersions((prev) => (arraysEqual(prev, versionsFromUrl) ? prev : versionsFromUrl));
+    setFilterModloaders((prev) =>
+      arraysEqual(prev, modloadersFromUrl) ? prev : modloadersFromUrl
+    );
+  }, [pageParam, searchParam, versionsFromUrlKey, modloadersFromUrlKey]);
 
   useEffect(() => {
     const params: Record<string, string> = {};
@@ -32,20 +72,33 @@ export default function AddonsPage() {
     if (search.trim()) {
       params.q = search.trim();
     }
-    setSearchParams(params);
-  }, [page, search, setSearchParams]);
+    if (filterVersions.length) {
+      params.versions = filterVersions.join(',');
+    }
+    if (filterModloaders.length) {
+      params.modloaders = filterModloaders.join(',');
+    }
+    const nextParams = new URLSearchParams(params);
+    if (nextParams.toString() !== searchParamsString) {
+      setSearchParams(params, { replace: true });
+    }
+  }, [page, search, filterVersions, filterModloaders, searchParamsString, setSearchParams]);
 
   useEffect(() => {
     const id = setTimeout(() => setDebouncedSearch(search.trim()), 300);
     return () => clearTimeout(id);
   }, [search]);
 
-  const searchResponse = useSearchAddons(debouncedSearch, page, limit);
-  const listResponse = useFetchAddons(page, limit);
+  const searchResponse = useSearchAddons(
+    debouncedSearch,
+    page,
+    limit,
+    filterVersions,
+    filterModloaders
+  );
+  const listResponse = useFetchAddonsWithFilters(page, limit, filterVersions, filterModloaders);
 
-  const isLoading = debouncedSearch
-    ? searchResponse.isLoading
-    : listResponse.isLoading;
+  const isLoading = debouncedSearch ? searchResponse.isLoading : listResponse.isLoading;
 
   const addons: AddonType[] = useMemo(() => {
     if (debouncedSearch) {
@@ -83,7 +136,8 @@ export default function AddonsPage() {
         <div className='flex gap-2 mt-2 justify-end w-full'>
           <div className='flex flex-col'>
             <span className='text-xs opacity-80'>
-              Note: Not all addons are reviewed yet. Some may be not reviewed.<br />
+              Note: Not all addons are reviewed yet. Some may be not reviewed.
+              <br />
             </span>
             <span className='text-xs opacity-80'>
               Disclaimer: this is a rewrite of the old codebase. Some functions are copied while
@@ -96,6 +150,86 @@ export default function AddonsPage() {
           >
             Follow our discord for updates
           </button>
+        </div>
+        <div className='w-full mt-4'>
+          <span className='text-xs opacity-80'>Filters:</span>
+          <div className='flex gap-2'>
+            {/* versions */}
+            <Combobox
+              value={filterVersions}
+              onValueChange={(values) => {
+                setPage(1);
+                setFilterVersions(values);
+              }}
+              multiple
+              autoHighlight
+              items={vFilterMcVersions}
+            >
+              <ComboboxChips ref={versionsAnchor} className='w-full max-w-xs not-dark:bg-surface-2'>
+                <ComboboxValue>
+                  {(values) => (
+                    <Fragment>
+                      {values.map((value: string) => (
+                        <ComboboxChip className='not-dark:bg-surface-4' key={value}>
+                          {value}
+                        </ComboboxChip>
+                      ))}
+                      <ComboboxChipsInput placeholder='Filter by version...' />
+                    </Fragment>
+                  )}
+                </ComboboxValue>
+              </ComboboxChips>
+              <ComboboxContent anchor={versionsAnchor}>
+                <ComboboxEmpty>No versions found</ComboboxEmpty>
+                <ComboboxList className='not-dark:bg-surface-2 not-dark:text-white'>
+                  {(item) => (
+                    <ComboboxItem key={item} value={item}>
+                      {item}
+                    </ComboboxItem>
+                  )}
+                </ComboboxList>
+              </ComboboxContent>
+            </Combobox>
+            {/* loaders */}
+            <Combobox
+              value={filterModloaders}
+              multiple
+              autoHighlight
+              items={vFilterModloaders}
+              onValueChange={(values) => {
+                setPage(1);
+                setFilterModloaders(values);
+              }}
+            >
+              <ComboboxChips
+                ref={modloadersAnchor}
+                className='w-full max-w-xs not-dark:bg-surface-2'
+              >
+                <ComboboxValue>
+                  {(values) => (
+                    <Fragment>
+                      {values.map((value: string) => (
+                        <ComboboxChip className='not-dark:bg-surface-4' key={value}>
+                          {value}
+                        </ComboboxChip>
+                      ))}
+                      <ComboboxChipsInput placeholder='Filter by modloader...' />
+                    </Fragment>
+                  )}
+                </ComboboxValue>
+              </ComboboxChips>
+              <ComboboxContent anchor={modloadersAnchor}>
+                <ComboboxEmpty>No modloaders found</ComboboxEmpty>
+                <ComboboxList className='not-dark:bg-surface-2 not-dark:text-white'>
+                  {(item) => (
+                    <ComboboxItem key={item} value={item}>
+                      {item}
+                    </ComboboxItem>
+                  )}
+                </ComboboxList>
+              </ComboboxContent>
+            </Combobox>
+          </div>
         </div>
       </div>
       <div className='mt-2 -mb-2'>
@@ -129,7 +263,10 @@ export default function AddonsPage() {
           </PaginationContent>
         </Pagination>
       </div>
-      <AddonGrid data={addons || []} isLoading={isLoading} />
+      <AddonGrid
+        data={addons || []}
+        isLoading={isLoading}
+      />
       <div className='mt-2 -mb-2'>
         <Pagination>
           <PaginationContent>
