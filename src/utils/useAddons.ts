@@ -163,6 +163,13 @@ const normalizeLoaderFilter = (loaders: string[]) => {
   return loaders.map((loader) => loader.toLowerCase());
 };
 
+const LOADER_CASE_VARIANTS: Record<string, string[]> = {
+  fabric: ['fabric', 'Fabric'],
+  forge: ['forge', 'Forge'],
+  neoforge: ['neoforge', 'NeoForge'],
+  quilt: ['quilt', 'Quilt'],
+};
+
 const buildAddonFilterQueries = (versions: string[] = [], modloaders: string[] = []) => {
   const queries: string[] = [];
 
@@ -173,7 +180,10 @@ const buildAddonFilterQueries = (versions: string[] = [], modloaders: string[] =
 
   if (modloaders.length) {
     const normalizedLoaders = normalizeLoaderFilter(modloaders);
-    const loaderQueries = normalizedLoaders.map((loader) => Query.contains('loaders', loader));
+    const loaderQueries = normalizedLoaders.flatMap((loader) => {
+      const variants = LOADER_CASE_VARIANTS[loader] ?? [loader];
+      return variants.map((variant) => Query.contains('loaders', variant));
+    });
     queries.push(loaderQueries.length === 1 ? loaderQueries[0] : Query.or(loaderQueries));
   }
 
