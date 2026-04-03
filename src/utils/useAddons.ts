@@ -11,7 +11,7 @@ const DATABASE_ID = 'main';
 const COLLECTION_ID = 'addons';
 
 // This gets only one addon according to it's Appwrite document (row) id
-/** 
+/**
  @param id Appwrite Addon id (rowId)
  @returns Addon type (singular addon)
 */
@@ -159,16 +159,117 @@ export const useFetchAddons = (page: number, limit: number = 10) => {
   });
 };
 
+const normalizeLoaderFilter = (loaders: string[]) => {
+  return loaders.map((loader) => loader.toLowerCase());
+};
+
+const buildAddonFilterQueries = (versions: string[] = [], modloaders: string[] = []) => {
+  const queries: string[] = [];
+
+  if (versions.length) {
+    const versionQueries = versions.map((version) => Query.contains('minecraft_versions', version));
+    queries.push(versionQueries.length === 1 ? versionQueries[0] : Query.or(versionQueries));
+  }
+
+  if (modloaders.length) {
+    const normalizedLoaders = normalizeLoaderFilter(modloaders);
+    const loaderQueries = normalizedLoaders.map((loader) => Query.contains('loaders', loader));
+    queries.push(loaderQueries.length === 1 ? loaderQueries[0] : Query.or(loaderQueries));
+  }
+
+  return queries;
+};
+
+export const useFetchAddonsWithFilters = (
+  page: number,
+  limit: number = 10,
+  versions: string[] = [],
+  modloaders: string[] = []
+) => {
+  return useQuery({
+    queryKey: ['addons', 'list', page, limit, versions, modloaders],
+    queryFn: async (): Promise<
+      AddonType[] & {
+        total: number;
+        totalPages: number;
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+        currentPage: number;
+      }
+    > => {
+      try {
+        const response = await tablesDB.listRows({
+          databaseId: DATABASE_ID,
+          tableId: COLLECTION_ID,
+          queries: [
+            Query.limit(limit),
+            Query.offset((page - 1) * limit),
+            Query.orderDesc('downloads'),
+            ...buildAddonFilterQueries(versions, modloaders),
+          ],
+        });
+
+        const validatedAddons = response.rows.map((doc: unknown) =>
+          Addon.parse(doc)
+        ) as AddonType[] & {
+          total: number;
+          totalPages: number;
+          hasNextPage: boolean;
+          hasPreviousPage: boolean;
+          currentPage: number;
+        };
+
+        const total = response.total ?? 0;
+        const totalPages = Math.ceil(total / limit) || 0;
+        validatedAddons.total = total;
+        validatedAddons.totalPages = totalPages;
+        validatedAddons.hasNextPage = page < totalPages;
+        validatedAddons.hasPreviousPage = page > 1;
+        validatedAddons.currentPage = page;
+
+        return validatedAddons;
+      } catch (e: unknown) {
+        console.error(e);
+        const message = e instanceof Error ? e.message : 'Unknown error';
+        toast.error(`Failed to fetch addons: ${message}`);
+        const empty = [] as unknown as AddonType[] & {
+          total: number;
+          totalPages: number;
+          hasNextPage: boolean;
+          hasPreviousPage: boolean;
+          currentPage: number;
+        };
+        empty.total = 0;
+        empty.totalPages = 0;
+        empty.hasNextPage = false;
+        empty.hasPreviousPage = false;
+        empty.currentPage = page;
+        return empty;
+      }
+    },
+    retry: false,
+    staleTime: 1000 * 60 * 60,
+  });
+};
+
 /**
  *
  * @param searchTerm What to search for
  * @param page Page of the search
  * @param limit How many addons per page
+ * @param versions [] Versions to filter for
+ * @param modloaders [] Modloaders to filter for
  * @returns Addons[], total, totalPages, hasNextPage, hasPreviousPage
  */
-export const useSearchAddons = (searchTerm: string, page: number = 1, limit: number = 10) => {
+export const useSearchAddons = (
+  searchTerm: string,
+  page: number = 1,
+  limit: number = 10,
+  versions: string[] = [],
+  modloaders: string[] = []
+) => {
   return useQuery({
-    queryKey: ['addons', 'search', searchTerm, page, limit],
+    queryKey: ['addons', 'search', searchTerm, page, limit, versions, modloaders],
     queryFn: async (): Promise<
       | {
           addons: AddonType[];
@@ -185,6 +286,7 @@ export const useSearchAddons = (searchTerm: string, page: number = 1, limit: num
           Query.limit(limit),
           Query.offset((page - 1) * limit),
           Query.orderDesc('downloads'),
+          ...buildAddonFilterQueries(versions, modloaders),
         ];
         if (searchTerm.trim()) {
           queries.push(
