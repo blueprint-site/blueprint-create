@@ -35,32 +35,31 @@ export default function AddonCard({ addon }: AddonCardProps) {
     return normalized.join(' and ');
   }
   return (
-    <Link
-      to={`/addons/${addon.slug}`}
-      className='bg-surface-1 border text-white p-4 hover:scale-102 transition-all'
-    >
-      {addon.icon && (
-        <img
-          src={addon.icon}
-          alt={addon.name}
-          className='w-20'
-          onLoad={() => setImgLoading(false)}
-          onError={() => setImgLoading(false)}
-          style={{ display: imgLoading ? 'none' : 'block' }}
-        />
-      )}
-      {addon.icon && imgLoading && (
-        <Skeleton className='w-20 h-20 mb-3 rounded-full bg-surface-2' />
-      )}
-      <span className='font-minecraft text-lg font-semibold'>{addon.name}</span>
-      <p className='mb-2 -mt-1'>{addon.description}</p>
-      <p>{new Intl.NumberFormat('pl-PL').format(addon.downloads)} downloads total</p>
-      <p>On {addon.sources.join(' and ')}</p>
-      <p>For {normalizeLoaders(addon.loaders)}</p>
+    <div className='bg-surface-1 border text-white p-4 hover:scale-102 transition-all'>
+      <Link to={`/addons/${addon.slug}`} className='flex flex-col'>
+        {addon.icon && (
+          <img
+            src={addon.icon}
+            alt={addon.name}
+            className='w-20'
+            onLoad={() => setImgLoading(false)}
+            onError={() => setImgLoading(false)}
+            style={{ display: imgLoading ? 'none' : 'block' }}
+          />
+        )}
+        {addon.icon && imgLoading && (
+          <Skeleton className='w-20 h-20 mb-3 rounded-full bg-surface-2' />
+        )}
+        <span className='font-minecraft text-lg font-semibold mt-3'>{addon.name}</span>
+        <p className='mb-2 -mt-1'>{addon.description}</p>
+        <p>{new Intl.NumberFormat('pl-PL').format(addon.downloads)} downloads total</p>
+        <p>On {addon.sources.join(' and ')}</p>
+        <p>For {normalizeLoaders(addon.loaders)}</p>
+      </Link>
       <div className='gap-2 flex mt-2 font-minecraft'>
         {addon.sources.includes('Modrinth') && (
           <button
-            className='bg-green-400 px-5 hover:bg-accent transition-all text-black'
+            className='bg-green-400 hover:cursor-pointer px-5 hover:bg-accent transition-all text-black'
             onClick={() => window.open(`https://modrinth.com/mod/${addon.slug}`)}
           >
             Modrinth
@@ -68,7 +67,7 @@ export default function AddonCard({ addon }: AddonCardProps) {
         )}
         {addon.sources.includes('CurseForge') && (
           <button
-            className='bg-orange-500 px-5 hover:bg-accent transition-all text-black'
+            className='bg-orange-500 hover:cursor-pointer px-5 hover:bg-accent transition-all text-black'
             onClick={() =>
               window.open(`https://www.curseforge.com/minecraft/mc-mods/${addon.slug}`)
             }
@@ -77,6 +76,6 @@ export default function AddonCard({ addon }: AddonCardProps) {
           </button>
         )}
       </div>
-    </Link>
+    </div>
   );
 }
