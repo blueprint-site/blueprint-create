@@ -113,7 +113,11 @@ export const useFetchAddons = (page: number, limit: number = 10) => {
         const response = await tablesDB.listRows({
           databaseId: DATABASE_ID,
           tableId: COLLECTION_ID,
-          queries: [Query.limit(limit), Query.offset((page - 1) * limit)],
+          queries: [
+            Query.limit(limit),
+            Query.offset((page - 1) * limit),
+            Query.equal('isValid', true),
+          ],
         });
 
         const validatedAddons = response.rows.map((doc: unknown) =>
@@ -215,6 +219,7 @@ export const useFetchAddonsWithFilters = (
             Query.limit(limit),
             Query.offset((page - 1) * limit),
             Query.orderDesc('downloads'),
+            Query.equal('isValid', true),
             ...buildAddonFilterQueries(versions, modloaders),
           ],
         });
