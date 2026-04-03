@@ -1,6 +1,6 @@
 import Logo from '@/assets/logo_compressed.webp';
 export default function Footer() {
-  const commitSha = "7a2a3bbd718c2c65b66263d70ccb945178c84ff6";
+  const commitSha = import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA;
   const repositoryUrl = 'https://github.com/blueprint-site/blueprint-create';
   return (
     <div className='px-4 h-12 bg-header shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1),0_-2px_4px_-2px_rgba(0,0,0,0.1)] dark:shadow-[0_-4px_6px_-1px_rgba(255,255,255,0.1),0_-2px_4px_-2px_rgba(255,255,255,0.1)]'>
