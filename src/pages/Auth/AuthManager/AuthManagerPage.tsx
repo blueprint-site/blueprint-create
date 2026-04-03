@@ -13,7 +13,6 @@ export default function AuthManagerPage() {
     if (!(error instanceof AppwriteException)) return false;
     return error.code === 401 || error.type === 'user_scope_mismatch';
   }
-
   async function checkSession(): Promise<boolean> {
     try {
       const session = await account.getSession({ sessionId: 'current' });
