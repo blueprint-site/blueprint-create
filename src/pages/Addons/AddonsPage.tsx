@@ -2,6 +2,7 @@ import { useFetchAddonsWithFilters, useSearchAddons } from '@/utils/useAddons';
 import {
   Pagination,
   PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -25,6 +26,8 @@ import {
   ComboboxValue,
   useComboboxAnchor,
 } from '@/components/ui/combobox';
+import { Button } from '@/components/ui/button';
+
 type AddonType = z.infer<typeof Addon>;
 const parseListParam = (value: string | null) => (value ? value.split(',').filter(Boolean) : []);
 
@@ -84,7 +87,7 @@ export default function AddonsPage() {
   }, [page, search, filterVersions, filterModloaders, searchParamsString, setSearchParams]);
 
   useEffect(() => {
-    const id = setTimeout(() => setDebouncedSearch(search.trim()), 300);
+    const id = setTimeout(() => setDebouncedSearch(search.trim()), 500);
     return () => clearTimeout(id);
   }, [search]);
 
@@ -119,6 +122,76 @@ export default function AddonsPage() {
 
   const isFirstPage = page === 1;
   const isLastPage = totalPages ? page >= totalPages : (addons?.length || 0) < limit;
+  const totalPagesSafe = Math.max(totalPages, 1);
+  const pageItems = useMemo<Array<number | 'ellipsis'>>(() => {
+    if (totalPagesSafe <= 7) {
+      return Array.from({ length: totalPagesSafe }, (_, index) => index + 1);
+    }
+
+    if (page <= 3) {
+      return [1, 2, 3, 4, 'ellipsis', totalPagesSafe];
+    }
+
+    if (page >= totalPagesSafe - 2) {
+      return [
+        1,
+        'ellipsis',
+        totalPagesSafe - 3,
+        totalPagesSafe - 2,
+        totalPagesSafe - 1,
+        totalPagesSafe,
+      ];
+    }
+
+    return [1, 'ellipsis', page - 1, page, page + 1, 'ellipsis', totalPagesSafe];
+  }, [page, totalPagesSafe]);
+
+  const renderPagination = () => (
+    <Pagination>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious
+            href='#'
+            aria-disabled={isFirstPage}
+            className={isFirstPage ? 'pointer-events-none opacity-50' : undefined}
+            onClick={(e) => {
+              e.preventDefault();
+              if (!isFirstPage) setPage((p) => p - 1);
+            }}
+          />
+        </PaginationItem>
+        {pageItems.map((item, index) => (
+          <PaginationItem key={`${item}-${index}`}>
+            {item === 'ellipsis' ? (
+              <PaginationEllipsis />
+            ) : (
+              <PaginationLink
+                href='#'
+                isActive={item === page}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setPage(item);
+                }}
+              >
+                {item}
+              </PaginationLink>
+            )}
+          </PaginationItem>
+        ))}
+        <PaginationItem>
+          <PaginationNext
+            href='#'
+            aria-disabled={isLastPage}
+            className={isLastPage ? 'pointer-events-none opacity-50' : undefined}
+            onClick={(e) => {
+              e.preventDefault();
+              if (!isLastPage) setPage((p) => p + 1);
+            }}
+          />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  );
 
   return (
     <div className='xl:mx-40 flex flex-col'>
@@ -132,25 +205,8 @@ export default function AddonsPage() {
           }}
           className='bg-gray-200! dark:bg-gray-700!'
         />
-        <div className='flex gap-2 mt-2 justify-end w-full'>
-          <div className='flex flex-col'>
-            <span className='text-xs opacity-80'>
-              Note: Not all addons are reviewed yet. Some may be not reviewed.
-              <br />
-            </span>
-            <span className='text-xs opacity-80'>
-              Disclaimer: this is a rewrite of the old codebase. Some functions are copied while
-              most are new. Site isn`t polished right now.
-            </span>
-          </div>
-          <button
-            onClick={() => window.open('https://discord.gg/SvFYYtFbky', '_blank')}
-            className='bg-surface-3 ml-auto text-black dark:text-white text-xs font-minecraft px-3 hover:cursor-pointer'
-          >
-            Follow our discord for updates
-          </button>
-        </div>
-        <div className='w-full mt-4'>
+
+        <div className='w-full mt-2'>
           <span className='text-xs opacity-80 flex gap-1 items-center mb-1'>Filters:</span>
           <div className='flex gap-2'>
             {/* versions */}
@@ -231,69 +287,27 @@ export default function AddonsPage() {
           </div>
         </div>
       </div>
-      <div className='mt-2 -mb-2'>
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                href='#'
-                aria-disabled={isFirstPage}
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (!isFirstPage) setPage((p) => p - 1);
-                }}
-              />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href='#' isActive>
-                {page}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext
-                href='#'
-                aria-disabled={isLastPage}
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (!isLastPage) setPage((p) => p + 1);
-                }}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+      <div className='mt-2 -mb-2'>{renderPagination()}</div>
       <AddonGrid data={addons || []} isLoading={isLoading} />
-      <div className='mt-2 -mb-2'>
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                href='#'
-                aria-disabled={isFirstPage}
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (!isFirstPage) setPage((p) => p - 1);
-                }}
-              />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href='#' isActive>
-                {page}
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext
-                href='#'
-                aria-disabled={isLastPage}
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (!isLastPage) setPage((p) => p + 1);
-                }}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+      <div className='flex gap-2 mt-2 justify-end w-full'>
+        <div className='flex flex-col'>
+          <span className='text-xs opacity-80'>
+            Note: Not all addons are reviewed yet. Some may be not reviewed.
+            <br />
+          </span>
+          <span className='text-xs opacity-80'>
+            Disclaimer: this is a rewrite of the old codebase. Some functions are copied while most
+            are new. Site isn`t polished right now.
+          </span>
+        </div>
+        <Button
+          onClick={() => window.open('https://discord.gg/SvFYYtFbky', '_blank')}
+          className='bg-surface-3 ml-auto text-black dark:text-white text-xs font-minecraft px-3 hover:cursor-pointer'
+        >
+          Follow our discord for updates
+        </Button>
       </div>
+      <div className='mt-2 -mb-2'>{renderPagination()}</div>
     </div>
   );
 }
