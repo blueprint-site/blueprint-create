@@ -2,7 +2,8 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import rehypeRaw from 'rehype-raw';
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import rehypeHighlight from 'rehype-highlight';
+import { Card, CardContent, CardFooter, CardTitle } from '@/components/ui/card';
 interface ExpandedAddonDescriptionProps {
   description: string;
 }
@@ -19,37 +20,40 @@ export const ExpandedAddonDescription = ({ description = '' }: ExpandedAddonDesc
 
   return (
     <Card className='text-white '>
-    <CardTitle className='px-6 text-2xl font-minecraft'>Description</CardTitle>
-    <CardContent className=''>
-      <div className='markdown-body'>
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm, remarkBreaks]}
-          rehypePlugins={[rehypeRaw]}
-          components={{
-            div: ({ ...props }) => <div {...props} />,
-            a: ({  ...props }) => {
-              const href = props.href || '';
-              if (href.startsWith('/linkout?remoteUrl=')) {
-                try {
-                  const url = new URL(href, window.location.origin);
-                  const remoteUrl = url.searchParams.get('remoteUrl');
-                  if (remoteUrl) {
-                    const decodedUrl = decodeURIComponent(remoteUrl);
-                    return <a {...props} href={decodedUrl} />;
+      <CardTitle className='px-6 text-2xl font-minecraft'>Description</CardTitle>
+      <CardContent className=''>
+        <div className='markdown-body'>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm, remarkBreaks]}
+            rehypePlugins={[rehypeRaw, rehypeHighlight]}
+            components={{
+              div: ({ ...props }) => <div {...props} />,
+              a: ({ ...props }) => {
+                const href = props.href || '';
+                if (href.startsWith('/linkout?remoteUrl=')) {
+                  try {
+                    const url = new URL(href, window.location.origin);
+                    const remoteUrl = url.searchParams.get('remoteUrl');
+                    if (remoteUrl) {
+                      const decodedUrl = decodeURIComponent(remoteUrl);
+                      return <a {...props} href={decodedUrl} />;
+                    }
+                  } catch (error) {
+                    console.error('Error parsing linkout URL:', error);
                   }
-                } catch (error) {
-                  console.error('Error parsing linkout URL:', error);
                 }
-              }
-              return <a {...props} />;
-            },
-          }}
-        >
-          {description}
-        </ReactMarkdown>
-      </div>
-    </CardContent>
+                return <a {...props} className='underline text-blue-200' />;
+              },
+            }}
+          >
+            {description}
+          </ReactMarkdown>
+        </div>
+      </CardContent>
+      <CardFooter className='text-xs font-minecraft opacity-80'>
+        Note: any advertisements or affiliate links present in addon descriptions are added by the
+        their authors and not Blueprint
+      </CardFooter>
     </Card>
   );
 };
-

@@ -25,7 +25,7 @@ export const ExpandedAddonCompatibilityAndVersions = ({
   // console.log(dependency_data)
 
   return (
-    <div className='w-80 space-y-4 text-white'>
+    <div className='w-full space-y-4 text-white'>
       <Card>
         <CardHeader>
           <CardTitle className='font-minecraft text-xl'>
