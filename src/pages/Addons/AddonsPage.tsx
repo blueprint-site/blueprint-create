@@ -26,7 +26,6 @@ import {
   useComboboxAnchor,
 } from '@/components/ui/combobox';
 type AddonType = z.infer<typeof Addon>;
-
 const parseListParam = (value: string | null) => (value ? value.split(',').filter(Boolean) : []);
 
 const arraysEqual = (a: string[], b: string[]) =>
@@ -141,7 +140,7 @@ export default function AddonsPage() {
             </span>
             <span className='text-xs opacity-80'>
               Disclaimer: this is a rewrite of the old codebase. Some functions are copied while
-              most are new. Site isn't polished right now.
+              most are new. Site isn`t polished right now.
             </span>
           </div>
           <button
@@ -152,7 +151,7 @@ export default function AddonsPage() {
           </button>
         </div>
         <div className='w-full mt-4'>
-          <span className='text-xs opacity-80'>Filters:</span>
+          <span className='text-xs opacity-80 flex gap-1 items-center mb-1'>Filters:</span>
           <div className='flex gap-2'>
             {/* versions */}
             <Combobox
@@ -263,10 +262,7 @@ export default function AddonsPage() {
           </PaginationContent>
         </Pagination>
       </div>
-      <AddonGrid
-        data={addons || []}
-        isLoading={isLoading}
-      />
+      <AddonGrid data={addons || []} isLoading={isLoading} />
       <div className='mt-2 -mb-2'>
         <Pagination>
           <PaginationContent>

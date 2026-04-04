@@ -9,11 +9,15 @@ export default function ExpandedAddonPage() {
   return (
     <div className='py-5 px-5 lg:px-5 xl:px-10 2xl:px-40'>
       <div className=''>
-        <span className='opacity-50 text-xs font-minecraft'>This page's design is a work in progress. Expect it to get better!</span>
+        <span className='opacity-50 text-xs font-minecraft'>
+          This page`s design is a work in progress. Expect it to get better!
+        </span>
         {addon && (
           <div className='bg-linear-to-t text-white from-surface-3 to-surface-1 pt-20 pb-2 p-2 border'>
             <div className='flex items-center gap-4'>
-              {addon.icon && <img src={addon.icon} alt={'Icon for ' + addon.name} className='w-20' />}
+              {addon.icon && (
+                <img src={addon.icon} alt={'Icon for ' + addon.name} className='w-20' />
+              )}
               <div className='flex flex-col'>
                 <span className='font-minecraft text-4xl'>{addon.name}</span>
                 <span className='opacity-80 font-minecraft'>{addon.description}</span>
@@ -21,7 +25,7 @@ export default function ExpandedAddonPage() {
               <div className='gap-2 flex-col flex mt-2 font-minecraft ml-auto'>
                 {addon.sources.includes('Modrinth') && (
                   <button
-                    className='bg-green-400 px-5 hover:bg-accent transition-all text-black'
+                    className='bg-green-400 px-7 hover:cursor-pointer hover:bg-accent transition-all text-black'
                     onClick={() => window.open(`https://modrinth.com/mod/${addon.slug}`)}
                   >
                     Modrinth
@@ -29,7 +33,7 @@ export default function ExpandedAddonPage() {
                 )}
                 {addon.sources.includes('CurseForge') && (
                   <button
-                    className='bg-orange-500 px-5 hover:bg-accent transition-all text-black'
+                    className='bg-orange-500 px-7 hover:cursor-pointer hover:bg-accent transition-all text-black'
                     onClick={() =>
                       window.open(`https://www.curseforge.com/minecraft/mc-mods/${addon.slug}`)
                     }
@@ -55,7 +59,15 @@ export default function ExpandedAddonPage() {
           <div className=''>
             {addon && (
               <div className='ml-auto'>
-                <ExpandedAddonCompatibilityAndVersions versions={addon.minecraft_versions ?? []} authors={addon.authors ?? []}/>
+                <ExpandedAddonCompatibilityAndVersions
+                  versions={addon.minecraft_versions ?? []}
+                  authors={addon.authors ?? []}
+                  modloaders={addon.loaders ?? []}
+                  lastUpdated={addon.updated_at ?? undefined}
+                  modrinthId={addon.modrinth_id ?? undefined}
+                  curseforgeId={addon.curseforge_id ?? undefined}
+                  downloads={addon.downloads ?? 0}
+                />
               </div>
             )}
           </div>
@@ -81,7 +93,15 @@ export default function ExpandedAddonPage() {
             <TabsContent value='compatibility'>
               {addon && (
                 <div className=''>
-                  <ExpandedAddonCompatibilityAndVersions versions={addon.minecraft_versions ?? []} authors={addon.authors ?? []}/>
+                  <ExpandedAddonCompatibilityAndVersions
+                    versions={addon.minecraft_versions ?? []}
+                    authors={addon.authors ?? []}
+                    modloaders={addon.loaders ?? []}
+                    lastUpdated={addon.updated_at ?? undefined}
+                    modrinthId={addon.modrinth_id ?? undefined}
+                    curseforgeId={addon.curseforge_id ?? undefined}
+                    downloads={addon.downloads ?? 0}
+                  />
                 </div>
               )}
             </TabsContent>

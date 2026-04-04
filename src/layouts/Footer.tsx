@@ -1,6 +1,6 @@
 import Logo from '@/assets/logo_compressed.webp';
 export default function Footer() {
-  const commitSha = import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA;
+  const commitSha = import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA || 'dev_env';
   const repositoryUrl = 'https://github.com/blueprint-site/blueprint-create';
   return (
     <div className='px-4 h-12 bg-header shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1),0_-2px_4px_-2px_rgba(0,0,0,0.1)] dark:shadow-[0_-4px_6px_-1px_rgba(255,255,255,0.1),0_-2px_4px_-2px_rgba(255,255,255,0.1)]'>
@@ -22,7 +22,8 @@ export default function Footer() {
           <a
             href={`${repositoryUrl}/commit/${commitSha}`}
             target='_blank'
-            rel='noopener noreferrer' className='underline hover:cursor-pointer'
+            rel='noopener noreferrer'
+            className='underline hover:cursor-pointer'
           >
             Build: {commitSha.substring(0, 7)}
           </a>
