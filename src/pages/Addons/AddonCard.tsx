@@ -3,6 +3,7 @@ import type { Addon } from '@/types/addons';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import type { z } from 'zod';
+import { Download, Globe, FileCog } from 'lucide-react';
 type AddonType = z.infer<typeof Addon>;
 
 interface AddonCardProps {
@@ -35,7 +36,7 @@ export default function AddonCard({ addon }: AddonCardProps) {
     return normalized.join(' and ');
   }
   return (
-    <div className='bg-surface-1 border text-white p-4 hover:scale-102 transition-all'>
+    <div className='bg-surface-1 flex flex-col border text-white p-4 hover:scale-102 transition-all'>
       <Link to={`/addons/${addon.slug}`} className='flex flex-col'>
         {addon.icon && (
           <img
@@ -52,11 +53,20 @@ export default function AddonCard({ addon }: AddonCardProps) {
         )}
         <span className='font-minecraft text-lg font-semibold mt-3'>{addon.name}</span>
         <p className='mb-2 -mt-1'>{addon.description}</p>
-        <p>{new Intl.NumberFormat('pl-PL').format(addon.downloads)} downloads total</p>
-        <p>On {addon.sources.join(' and ')}</p>
-        <p>For {normalizeLoaders(addon.loaders)}</p>
+        <p className='flex items-center gap-1'>
+          <Download size={18} />
+          {new Intl.NumberFormat('pl-PL').format(addon.downloads)}
+        </p>
+        <p className='flex items-center gap-1'>
+          <Globe size={18} />
+          {addon.sources.join(' and ')}
+        </p>
+        <p className='flex items-center gap-1'>
+          <FileCog size={18} />
+          For {normalizeLoaders(addon.loaders)}
+        </p>
       </Link>
-      <div className='gap-2 flex mt-2 font-minecraft'>
+      <div className='gap-2 flex pt-2 font-minecraft mt-auto'>
         {addon.sources.includes('Modrinth') && (
           <button
             className='bg-green-400 hover:cursor-pointer px-5 hover:bg-accent transition-all text-black'

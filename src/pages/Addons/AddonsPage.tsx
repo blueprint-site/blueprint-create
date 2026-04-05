@@ -41,9 +41,11 @@ export default function AddonsPage() {
   const searchParam = searchParams.get('q') || '';
   const versionsFromUrl = parseListParam(searchParams.get('versions'));
   const modloadersFromUrl = parseListParam(searchParams.get('modloaders'));
+  const sitesFromUrl = parseListParam(searchParams.get('sites'));
   const searchParamsString = searchParams.toString();
   const versionsFromUrlKey = versionsFromUrl.join(',');
   const modloadersFromUrlKey = modloadersFromUrl.join(',');
+  const sitesFromUrlKey = sitesFromUrl.join(',');
   const [page, setPage] = useState<number>(pageParam);
   const [search, setSearch] = useState<string>(searchParam);
   const [debouncedSearch, setDebouncedSearch] = useState<string>(searchParam);
@@ -51,11 +53,14 @@ export default function AddonsPage() {
 
   const vFilterMcVersions = ['1.18.2', '1.19.2', '1.20.1', '1.21.1'];
   const vFilterModloaders = ['Fabric', 'Forge', 'NeoForge', 'Quilt'];
+  const vFilterSites = ['Modrinth', 'CurseForge'];
   const versionsAnchor = useComboboxAnchor();
   const modloadersAnchor = useComboboxAnchor();
+  const sitesAnchor = useComboboxAnchor();
 
   const [filterVersions, setFilterVersions] = useState<string[]>(versionsFromUrl);
   const [filterModloaders, setFilterModloaders] = useState<string[]>(modloadersFromUrl);
+  const [filterSites, setFilterSites] = useState<string[]>(sitesFromUrl);
 
   useEffect(() => {
     setPage((prev) => (prev === pageParam ? prev : pageParam));
@@ -64,7 +69,8 @@ export default function AddonsPage() {
     setFilterModloaders((prev) =>
       arraysEqual(prev, modloadersFromUrl) ? prev : modloadersFromUrl
     );
-  }, [pageParam, searchParam, versionsFromUrlKey, modloadersFromUrlKey]);
+    setFilterSites((prev) => (arraysEqual(prev, sitesFromUrl) ? prev : sitesFromUrl));
+  }, [pageParam, searchParam, versionsFromUrlKey, modloadersFromUrlKey, sitesFromUrlKey]);
 
   useEffect(() => {
     const params: Record<string, string> = {};
@@ -80,11 +86,22 @@ export default function AddonsPage() {
     if (filterModloaders.length) {
       params.modloaders = filterModloaders.join(',');
     }
+    if (filterSites.length) {
+      params.sites = filterSites.join(',');
+    }
     const nextParams = new URLSearchParams(params);
     if (nextParams.toString() !== searchParamsString) {
       setSearchParams(params, { replace: true });
     }
-  }, [page, search, filterVersions, filterModloaders, searchParamsString, setSearchParams]);
+  }, [
+    page,
+    search,
+    filterVersions,
+    filterSites,
+    filterModloaders,
+    searchParamsString,
+    setSearchParams,
+  ]);
 
   useEffect(() => {
     const id = setTimeout(() => setDebouncedSearch(search.trim()), 500);
@@ -96,9 +113,16 @@ export default function AddonsPage() {
     page,
     limit,
     filterVersions,
-    filterModloaders
+    filterModloaders,
+    filterSites
   );
-  const listResponse = useFetchAddonsWithFilters(page, limit, filterVersions, filterModloaders);
+  const listResponse = useFetchAddonsWithFilters(
+    page,
+    limit,
+    filterVersions,
+    filterModloaders,
+    filterSites
+  );
 
   const isLoading = debouncedSearch ? searchResponse.isLoading : listResponse.isLoading;
 
@@ -275,6 +299,42 @@ export default function AddonsPage() {
               </ComboboxChips>
               <ComboboxContent anchor={modloadersAnchor}>
                 <ComboboxEmpty>No modloaders found</ComboboxEmpty>
+                <ComboboxList className='not-dark:bg-surface-2 not-dark:text-white'>
+                  {(item) => (
+                    <ComboboxItem key={item} value={item}>
+                      {item}
+                    </ComboboxItem>
+                  )}
+                </ComboboxList>
+              </ComboboxContent>
+            </Combobox>
+            {/* platforms */}
+            <Combobox
+              value={filterSites}
+              multiple
+              autoHighlight
+              items={vFilterSites}
+              onValueChange={(values) => {
+                setPage(1);
+                setFilterSites(values);
+              }}
+            >
+              <ComboboxChips ref={sitesAnchor} className='w-full max-w-xs not-dark:bg-surface-2'>
+                <ComboboxValue>
+                  {(values) => (
+                    <Fragment>
+                      {values.map((value: string) => (
+                        <ComboboxChip className='not-dark:bg-surface-4' key={value}>
+                          {value}
+                        </ComboboxChip>
+                      ))}
+                      <ComboboxChipsInput placeholder='Filter by site...' />
+                    </Fragment>
+                  )}
+                </ComboboxValue>
+              </ComboboxChips>
+              <ComboboxContent anchor={sitesAnchor}>
+                <ComboboxEmpty>No sites found</ComboboxEmpty>
                 <ComboboxList className='not-dark:bg-surface-2 not-dark:text-white'>
                   {(item) => (
                     <ComboboxItem key={item} value={item}>

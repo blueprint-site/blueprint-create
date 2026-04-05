@@ -163,7 +163,11 @@ export const useFetchAddons = (page: number, limit: number = 10) => {
   });
 };
 
-const buildAddonFilterQueries = (versions: string[] = [], modloaders: string[] = []) => {
+const buildAddonFilterQueries = (
+  versions: string[] = [],
+  modloaders: string[] = [],
+  sites: string[] = []
+) => {
   const queries: string[] = [];
 
   if (versions.length) {
@@ -176,6 +180,11 @@ const buildAddonFilterQueries = (versions: string[] = [], modloaders: string[] =
     queries.push(loaderQueries.length === 1 ? loaderQueries[0] : Query.or(loaderQueries));
   }
 
+  if (sites.length) {
+    const siteQueries = sites.map((site) => Query.contains('sources', site));
+    queries.push(siteQueries.length === 1 ? siteQueries[0] : Query.or(siteQueries));
+  }
+
   return queries;
 };
 
@@ -183,10 +192,11 @@ export const useFetchAddonsWithFilters = (
   page: number,
   limit: number = 10,
   versions: string[] = [],
-  modloaders: string[] = []
+  modloaders: string[] = [],
+  sites: string[] = []
 ) => {
   return useQuery({
-    queryKey: ['addons', 'list', page, limit, versions, modloaders],
+    queryKey: ['addons', 'list', page, limit, versions, modloaders, sites],
     queryFn: async (): Promise<
       AddonType[] & {
         total: number;
@@ -205,7 +215,7 @@ export const useFetchAddonsWithFilters = (
             Query.offset((page - 1) * limit),
             Query.orderDesc('downloads'),
             Query.equal('isValid', true),
-            ...buildAddonFilterQueries(versions, modloaders),
+            ...buildAddonFilterQueries(versions, modloaders, sites),
           ],
         });
 
@@ -259,6 +269,7 @@ export const useFetchAddonsWithFilters = (
  * @param limit How many addons per page
  * @param versions [] Versions to filter for
  * @param modloaders [] Modloaders to filter for
+ * @param sites [] Sites to filter for
  * @returns Addons[], total, totalPages, hasNextPage, hasPreviousPage
  */
 export const useSearchAddons = (
@@ -266,10 +277,11 @@ export const useSearchAddons = (
   page: number = 1,
   limit: number = 10,
   versions: string[] = [],
-  modloaders: string[] = []
+  modloaders: string[] = [],
+  sites: string[] = []
 ) => {
   return useQuery({
-    queryKey: ['addons', 'search', searchTerm, page, limit, versions, modloaders],
+    queryKey: ['addons', 'search', searchTerm, page, limit, versions, modloaders, sites],
     queryFn: async (): Promise<
       | {
           addons: AddonType[];
@@ -286,7 +298,8 @@ export const useSearchAddons = (
           Query.limit(limit),
           Query.offset((page - 1) * limit),
           Query.orderDesc('downloads'),
-          ...buildAddonFilterQueries(versions, modloaders),
+          Query.equal('isValid', true),
+          ...buildAddonFilterQueries(versions, modloaders, sites),
         ];
         if (searchTerm.trim()) {
           queries.push(
