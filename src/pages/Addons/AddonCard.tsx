@@ -3,9 +3,9 @@ import type { Addon } from '@/types/addons';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import type { z } from 'zod';
-import { Download, Globe, FileCog } from 'lucide-react';
+import { Download, FileCog } from 'lucide-react';
 type AddonType = z.infer<typeof Addon>;
-
+import Humanize from 'humanize-plus';
 interface AddonCardProps {
   addon: AddonType;
 }
@@ -27,6 +27,8 @@ export default function AddonCard({ addon }: AddonCardProps) {
         normalizedLoader = 'Forge';
       } else if (loader.toLowerCase() === 'quilt') {
         normalizedLoader = 'Quilt';
+      } else if (loader.toLowerCase() === 'neoforge') {
+        normalizedLoader = 'NeoForge';
       }
 
       if (normalizedLoader && !normalized.includes(normalizedLoader)) {
@@ -55,12 +57,12 @@ export default function AddonCard({ addon }: AddonCardProps) {
         <p className='mb-2 -mt-1'>{addon.description}</p>
         <p className='flex items-center gap-1'>
           <Download size={18} />
-          {new Intl.NumberFormat('pl-PL').format(addon.downloads)}
+          {Humanize.compactInteger(addon.downloads, 1)}
         </p>
-        <p className='flex items-center gap-1'>
+        {/*<p className='flex items-center gap-1'>
           <Globe size={18} />
           {addon.sources.join(' and ')}
-        </p>
+        </p>*/}
         <p className='flex items-center gap-1'>
           <FileCog size={18} />
           For {normalizeLoaders(addon.loaders)}
