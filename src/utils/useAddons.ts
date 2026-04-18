@@ -9,6 +9,52 @@ type AddonType = z.infer<typeof Addon>;
 
 const DATABASE_ID = 'main';
 const COLLECTION_ID = 'addons';
+const modrinthDownloadsCache = new Map<string, number>();
+
+const fetchModrinthDownloads = async (modrinthId: string): Promise<number | null> => {
+  const cached = modrinthDownloadsCache.get(modrinthId);
+  if (cached !== undefined) {
+    return cached;
+  }
+
+  try {
+    const response = await fetch(`https://api.modrinth.com/v2/project/${modrinthId}`);
+    if (!response.ok) {
+      return null;
+    }
+
+    const data = (await response.json()) as { downloads?: unknown };
+    const value = data.downloads;
+    const parsed =
+      typeof value === 'number' ? value : typeof value === 'string' ? Number(value) : NaN;
+
+    if (!Number.isFinite(parsed) || parsed < 0) {
+      return null;
+    }
+
+    modrinthDownloadsCache.set(modrinthId, parsed);
+    return parsed;
+  } catch {
+    return null;
+  }
+};
+
+const withDownloadsFallback = async (addon: AddonType): Promise<AddonType> => {
+  if (addon.downloads > 0 || !addon.modrinth_id) {
+    return addon;
+  }
+
+  const modrinthDownloads = await fetchModrinthDownloads(addon.modrinth_id);
+  if (modrinthDownloads === null || modrinthDownloads <= 0) {
+    return addon;
+  }
+
+  return {
+    ...addon,
+    downloads: modrinthDownloads,
+    downloads_is_fallback: true,
+  };
+};
 
 // This gets only one addon according to it's Appwrite document (row) id
 /**
@@ -29,7 +75,7 @@ export const useFetchAddon = (id?: string) => {
         });
 
         const addon = Addon.parse(rawData);
-        return addon;
+        return await withDownloadsFallback(addon);
       } catch (error: unknown) {
         if (error instanceof z.ZodError) {
           toast.error(`Addon data invalid: ${error.message}`);
@@ -72,7 +118,7 @@ export const useFetchAddonBySlug = (slug?: string) => {
         }
 
         const addon = Addon.parse(row);
-        return addon;
+        return await withDownloadsFallback(addon);
       } catch (error: unknown) {
         if (error instanceof z.ZodError) {
           toast.error(`Addon data invalid: ${error.message}`);
@@ -120,9 +166,9 @@ export const useFetchAddons = (page: number, limit: number = 10) => {
           ],
         });
 
-        const validatedAddons = response.rows.map((doc: unknown) =>
-          Addon.parse(doc)
-        ) as AddonType[] & {
+        const parsedAddons = response.rows.map((doc: unknown) => Addon.parse(doc));
+        const enrichedAddons = await Promise.all(parsedAddons.map(withDownloadsFallback));
+        const validatedAddons = enrichedAddons as AddonType[] & {
           total: number;
           totalPages: number;
           hasNextPage: boolean;
@@ -219,9 +265,9 @@ export const useFetchAddonsWithFilters = (
           ],
         });
 
-        const validatedAddons = response.rows.map((doc: unknown) =>
-          Addon.parse(doc)
-        ) as AddonType[] & {
+        const parsedAddons = response.rows.map((doc: unknown) => Addon.parse(doc));
+        const enrichedAddons = await Promise.all(parsedAddons.map(withDownloadsFallback));
+        const validatedAddons = enrichedAddons as AddonType[] & {
           total: number;
           totalPages: number;
           hasNextPage: boolean;
@@ -315,7 +361,8 @@ export const useSearchAddons = (
           tableId: COLLECTION_ID,
           queries,
         });
-        const validatedAddons = response.rows.map((doc: unknown) => Addon.parse(doc));
+        const parsedAddons = response.rows.map((doc: unknown) => Addon.parse(doc));
+        const validatedAddons = await Promise.all(parsedAddons.map(withDownloadsFallback));
         const totalPages = Math.ceil(response.total / limit);
         return {
           addons: validatedAddons,
@@ -420,7 +467,8 @@ export const useAdminAddons = (
           tableId: COLLECTION_ID,
           queries: queries,
         });
-        let addons = response.rows.map((doc: unknown) => Addon.parse(doc));
+        const parsedAddons = response.rows.map((doc: unknown) => Addon.parse(doc));
+        let addons = await Promise.all(parsedAddons.map(withDownloadsFallback));
         if (filters.search) {
           const searchTerm = filters.search.toLowerCase();
           addons = addons.filter(

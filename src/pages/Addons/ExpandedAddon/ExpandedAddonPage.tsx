@@ -70,6 +70,7 @@ export default function ExpandedAddonPage() {
                   modrinthId={addon.modrinth_id ?? undefined}
                   curseforgeId={addon.curseforge_id ?? undefined}
                   downloads={addon.downloads ?? 0}
+                  downloadsIsFallback={addon.downloads_is_fallback ?? false}
                 />
               </div>
             )}
@@ -104,6 +105,7 @@ export default function ExpandedAddonPage() {
                     modrinthId={addon.modrinth_id ?? undefined}
                     curseforgeId={addon.curseforge_id ?? undefined}
                     downloads={addon.downloads ?? 0}
+                    downloadsIsFallback={addon.downloads_is_fallback ?? false}
                   />
                 </div>
               )}

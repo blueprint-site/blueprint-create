@@ -3,7 +3,7 @@ import type { Addon } from '@/types/addons';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import type { z } from 'zod';
-import { Download, FileCog } from 'lucide-react';
+import { Download, FileCog, AlertTriangle } from 'lucide-react';
 type AddonType = z.infer<typeof Addon>;
 import Humanize from 'humanize-plus';
 interface AddonCardProps {
@@ -58,6 +58,14 @@ export default function AddonCard({ addon }: AddonCardProps) {
         <p className='flex items-center gap-1'>
           <Download size={18} />
           {Humanize.compactInteger(addon.downloads, 1)}
+          {addon.downloads_is_fallback && (
+            <span
+              title='Downloads fetched from Modrinth as fallback'
+              aria-label='Downloads fallback from Modrinth'
+            >
+              <AlertTriangle size={14} className='text-amber-400' />
+            </span>
+          )}
         </p>
         {/*<p className='flex items-center gap-1'>
           <Globe size={18} />

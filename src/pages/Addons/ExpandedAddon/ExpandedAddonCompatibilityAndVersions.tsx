@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 // import { fetchModrinthModDependencies } from "@/utils/getExternalAddon";
-import { Download, FileCog, History, Users, Database } from 'lucide-react';
+import { Download, FileCog, History, Users, Database, AlertTriangle } from 'lucide-react';
 interface ExpandedAddonCompatibilityAndVersionsProps {
   versions: string[];
   authors?: string[];
@@ -10,6 +10,7 @@ interface ExpandedAddonCompatibilityAndVersionsProps {
   modrinthId?: string;
   curseforgeId?: string;
   downloads?: number;
+  downloadsIsFallback?: boolean;
 }
 
 export const ExpandedAddonCompatibilityAndVersions = ({
@@ -20,6 +21,7 @@ export const ExpandedAddonCompatibilityAndVersions = ({
   modrinthId = undefined,
   curseforgeId = undefined,
   downloads = 0,
+  downloadsIsFallback = false,
 }: ExpandedAddonCompatibilityAndVersionsProps) => {
   // const dependency_data = fetchModrinthModDependencies('create')
   // console.log(dependency_data)
@@ -78,7 +80,17 @@ export const ExpandedAddonCompatibilityAndVersions = ({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className='text-sm'>{downloads.toLocaleString()} downloads</p>
+          <p className='text-sm flex items-center gap-1'>
+            {downloads.toLocaleString()} downloads
+            {downloadsIsFallback && (
+              <span
+                title='Downloads fetched from Modrinth as fallback'
+                aria-label='Downloads fallback from Modrinth'
+              >
+                <AlertTriangle size={14} className='text-amber-400' />
+              </span>
+            )}
+          </p>
         </CardContent>
       </Card>
       <Card>
