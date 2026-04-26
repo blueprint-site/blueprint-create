@@ -12,17 +12,34 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 type FeaturedAddonType = z.infer<typeof FeaturedAddon>;
+import Autoplay from 'embla-carousel-autoplay';
+import type { CarouselApi } from '@/components/ui/carousel';
 
 export default function Home() {
   const navigate = useNavigate();
   const { data } = useGetFeaturedAddons();
   const [addons, setAddons] = useState<FeaturedAddonType[]>([]);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+
   useEffect(() => {
     if (data) {
       const parsedAddons = z.array(FeaturedAddon).parse(data);
       setAddons(parsedAddons);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setCurrent(api.selectedScrollSnap());
+
+    api.on('select', () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
 
   return (
     <div className='flex flex-col min-h-full gap-7'>
@@ -48,7 +65,12 @@ export default function Home() {
         <span className='font-bold font-minecraft text-3xl'>Welcome to Blueprint!</span>
         <span className='font-minecraft'>Check out these featured addons</span>
         {(addons.length > 0 && (
-          <Carousel orientation='horizontal' className='mx-auto flex w-full max-w-5xl flex-col'>
+          <Carousel
+            setApi={setApi}
+            plugins={[Autoplay({ delay: 2500 })]}
+            orientation='horizontal'
+            className='mx-auto flex w-full max-w-5xl flex-col'
+          >
             <CarouselContent>
               {addons.map((addon) => (
                 <CarouselItem key={addon.$id} className=''>
@@ -88,6 +110,17 @@ export default function Home() {
             </CarouselContent>
             <div className='mt-4 flex items-center justify-center gap-3'>
               <CarouselPrevious className='static! translate-y-0!' />
+              {addons.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => api?.scrollTo(index)}
+                  className={`hover:cursor-pointer rounded-full w-4 h-4 transition-all ${
+                    index === current ? 'bg-surface-4' : 'bg-foreground/20'
+                  }`}
+                >
+                  {' '}
+                </button>
+              ))}
               <CarouselNext className='static! translate-y-0!' />
             </div>
           </Carousel>
