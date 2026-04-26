@@ -507,3 +507,24 @@ export const useAdminAddons = (
     staleTime: 1000 * 60 * 2,
   });
 };
+
+export const useGetFeaturedAddons = () => {
+  return useQuery({
+    queryKey: ['featured_addons'],
+    queryFn: async () => {
+      try {
+        const response = await tablesDB.listRows({
+          databaseId: DATABASE_ID,
+          tableId: 'featured_addons',
+        });
+        const addons = response.rows;
+        return addons;
+      } catch (e: unknown) {
+        console.error(e);
+        const message = e instanceof Error ? e.message : 'Unknown error';
+        toast.error(`Failed to fetch featured addons: ${message}`);
+        return [];
+      }
+    },
+  });
+};
