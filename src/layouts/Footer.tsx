@@ -12,6 +12,14 @@ export default function Footer() {
         </div>
         <div className='ml-auto flex mr-20 gap-2 font-minecraft opacity-80'>
           <a
+            href='https://binocular.yehor.pl.eu.org/q/IJeglsZka'
+            target='_blank'
+            rel='noopener noreferrer'
+            className='underline hover:cursor-pointer'
+          >
+            Analytics for traffic
+          </a>
+          <a
             href={repositoryUrl}
             target='_blank'
             rel='noopener noreferrer'
