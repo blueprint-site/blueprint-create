@@ -52,7 +52,6 @@ const withDownloadsFallback = async (addon: AddonType): Promise<AddonType> => {
   return {
     ...addon,
     downloads: modrinthDownloads,
-    downloads_is_fallback: true,
   };
 };
 

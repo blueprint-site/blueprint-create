@@ -15,7 +15,6 @@ export const Addon = z.object({
   curseforge_id: z.string().max(50).optional().nullable(),
   claimed_by: z.string().max(256).optional(),
   downloads: z.number().default(0),
-  downloads_is_fallback: z.boolean().optional().default(false),
   loaders: z.array(z.string()).max(64),
   create_versions: z.array(z.string()).optional().nullable(),
   minecraft_versions: z.array(z.string()).nullable(),
