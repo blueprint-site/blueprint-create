@@ -50,7 +50,7 @@ export const routes: RouteObject[] = [
       {
         path: '/admin/review',
         element: (
-          <ProtectedRoute requiredRole='admin'>
+          <ProtectedRoute requiredRole='reviewer'>
             <AdminReviewAddons />
           </ProtectedRoute>
         ),
@@ -58,7 +58,7 @@ export const routes: RouteObject[] = [
       {
         path: '/admin/featured',
         element: (
-          <ProtectedRoute requiredRole='admin'>
+          <ProtectedRoute requiredRole='moderator'>
             <AdminFeaturedAddons />
           </ProtectedRoute>
         ),

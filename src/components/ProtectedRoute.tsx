@@ -65,7 +65,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
       <div className='flex items-center justify-center min-h-screen'>
         <div className=' bg-destructive/30 p-10'>
           <h1 className='text-3xl font-bold text-red-600 font-minecraft'>Access Denied</h1>
-          <p className='mt-2'>You don&apos;t have permission to access this page.</p>
+          <p className='mt-2'>You don&apos;t have permission to access this page. You need to have <code>{requiredRole}</code></p>
           <p className='text-sm mt-1 opacity-80 dark:opacity-50 font-minecraft'>
             Required role: admin
           </p>
