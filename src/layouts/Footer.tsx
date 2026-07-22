@@ -1,9 +1,10 @@
 import Logo from '@/assets/logo_compressed.webp';
+import { Separator } from '@/components/ui/separator';
 export default function Footer() {
   const commitSha = import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA || 'dev_env';
   const repositoryUrl = 'https://github.com/blueprint-site/blueprint-create';
   return (
-    <div className='px-4 h-12 bg-header shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1),0_-2px_4px_-2px_rgba(0,0,0,0.1)] dark:shadow-[0_-4px_6px_-1px_rgba(255,255,255,0.1),0_-2px_4px_-2px_rgba(255,255,255,0.1)]'>
+    <div className='px-4 h-12 mt-10 bg-header shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1),0_-2px_4px_-2px_rgba(0,0,0,0.1)] dark:shadow-[0_-4px_6px_-1px_rgba(255,255,255,0.1),0_-2px_4px_-2px_rgba(255,255,255,0.1)]'>
       <div className='flex items-center py-4'>
         <img src={Logo} alt='' className='h-10 w-10 mr-2' />
         <div className='flex flex-col'>
@@ -17,7 +18,7 @@ export default function Footer() {
             rel='noopener noreferrer'
             className='underline hover:cursor-pointer'
           >
-            Analytics for traffic
+            Traffic analytics
           </a>
           <a
             href={repositoryUrl}
@@ -26,6 +27,14 @@ export default function Footer() {
             className='underline hover:cursor-pointer'
           >
             Github
+          </a>
+          <a
+            href='/admin'
+            target='_blank'
+            rel='noopener noreferrer'
+            className='underline hover:cursor-pointer'
+          >
+            Admin
           </a>
           <a
             href={`${repositoryUrl}/commit/${commitSha}`}

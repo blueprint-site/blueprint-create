@@ -35,9 +35,9 @@ export default function AppHeader() {
           </NavLink>
         ))}
       </div>
-      <NavLink to='/auth' className='flex items-center ml-5 hover:bg-accent transition-colors'>
+      {/*<NavLink to='/auth' className='flex items-center ml-5 hover:bg-accent transition-colors'>
         <span>Account</span>
-      </NavLink>
+      </NavLink>*/}
     </nav>
   );
 }

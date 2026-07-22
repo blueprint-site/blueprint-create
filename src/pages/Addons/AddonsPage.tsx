@@ -218,7 +218,7 @@ export default function AddonsPage() {
   );
 
   return (
-    <div className='xl:mx-40 flex flex-col'>
+    <div className=' flex flex-col'>
       <div className='bg-surface-1 text-white p-4 flex flex-col items-start border'>
         <Input
           placeholder='Search addons...'

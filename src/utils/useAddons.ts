@@ -1,8 +1,8 @@
 import { tablesDB } from '@/lib/appwrite';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Query } from 'appwrite';
+import { ID, Query } from 'appwrite';
 import { toast } from 'sonner';
-import { Addon } from '@/types/addons';
+import { Addon, FeaturedAddon } from '@/types/addons';
 import * as z from 'zod';
 
 type AddonType = z.infer<typeof Addon>;
@@ -517,7 +517,8 @@ export const useGetFeaturedAddons = () => {
           tableId: 'featured_addons',
         });
         const addons = response.rows;
-        return addons;
+        const parsedAddons = z.array(FeaturedAddon).parse(addons);
+        return parsedAddons;
       } catch (e: unknown) {
         console.error(e);
         const message = e instanceof Error ? e.message : 'Unknown error';
@@ -526,4 +527,42 @@ export const useGetFeaturedAddons = () => {
       }
     },
   });
+};
+
+export const deleteFeaturedAddon = (addonId: string) => {
+		const request = tablesDB
+			.deleteRow({
+				databaseId: DATABASE_ID,
+				tableId: 'featured_addons',
+				rowId: addonId,
+			})
+			.then(() => {
+				toast.success('Featured addon deleted successfully');
+			});
+		return request;
+};
+
+export const addFeaturedAddon = (addon: {
+  addon_id: string; // slug
+  display_order: number;
+  banner_url: string;
+  title: string;
+  description: string;
+  image_url: string;
+  active: true;
+  slug: string;
+}) => {
+	try {
+		const response = tablesDB.createRow({
+			databaseId: DATABASE_ID,
+			tableId: 'featured_addons',
+			rowId: ID.unique(),
+			data: addon,
+		});
+		return response
+	}
+	catch (e) {
+		console.error(e)
+		throw e;
+	}
 };
