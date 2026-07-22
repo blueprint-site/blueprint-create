@@ -1,5 +1,5 @@
 import * as z from 'zod';
-import axios from 'axios';
+// import axios from 'axios';
 export const ModrinthMod = z.object({
   slug: z.string(),
   title: z.string(),
@@ -41,15 +41,15 @@ export const ModrinthModDependecies = z.object({
   versions: z.array(z.string()),
 });
 
-function fetchModrinthMod(slug: string) {
+// function fetchModrinthMod(slug: string) {
     
-}
+// }
 
-export function fetchModrinthModDependencies(slug: string) {
-    const response = axios.get(`https://api.modrinth.com/v2/project/${slug}/dependencies`)
-    .then(
-        (response) => {
-            return ModrinthModDependecies.parse(response.data);
-        }
-    )
-}
+// export function fetchModrinthModDependencies(slug: string) {
+//     const response = axios.get(`https://api.modrinth.com/v2/project/${slug}/dependencies`)
+//     .then(
+//         (response) => {
+//             return ModrinthModDependecies.parse(response.data);
+//         }
+//     )
+// }

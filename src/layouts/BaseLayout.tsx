@@ -5,7 +5,7 @@ export default function BaseLayout() {
   return (
     <div className='bg-background text-foreground min-h-screen w-full flex flex-col'>
       <AppHeader />
-      <div className='flex-1 mb-10'>
+      <div className='flex-1 mx-auto w-full max-w-300'>
         <Outlet />
       </div>
       <Footer />

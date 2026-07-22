@@ -1,14 +1,59 @@
 import { tablesDB } from '@/lib/appwrite';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Query } from 'appwrite';
+import { ID, Query } from 'appwrite';
 import { toast } from 'sonner';
-import { Addon } from '@/types/addons';
+import { Addon, FeaturedAddon } from '@/types/addons';
 import * as z from 'zod';
 
 type AddonType = z.infer<typeof Addon>;
 
 const DATABASE_ID = 'main';
 const COLLECTION_ID = 'addons';
+const modrinthDownloadsCache = new Map<string, number>();
+
+const fetchModrinthDownloads = async (modrinthId: string): Promise<number | null> => {
+  const cached = modrinthDownloadsCache.get(modrinthId);
+  if (cached !== undefined) {
+    return cached;
+  }
+
+  try {
+    const response = await fetch(`https://api.modrinth.com/v2/project/${modrinthId}`);
+    if (!response.ok) {
+      return null;
+    }
+
+    const data = (await response.json()) as { downloads?: unknown };
+    const value = data.downloads;
+    const parsed =
+      typeof value === 'number' ? value : typeof value === 'string' ? Number(value) : NaN;
+
+    if (!Number.isFinite(parsed) || parsed < 0) {
+      return null;
+    }
+
+    modrinthDownloadsCache.set(modrinthId, parsed);
+    return parsed;
+  } catch {
+    return null;
+  }
+};
+
+const withDownloadsFallback = async (addon: AddonType): Promise<AddonType> => {
+  if (addon.downloads > 0 || !addon.modrinth_id) {
+    return addon;
+  }
+
+  const modrinthDownloads = await fetchModrinthDownloads(addon.modrinth_id);
+  if (modrinthDownloads === null || modrinthDownloads <= 0) {
+    return addon;
+  }
+
+  return {
+    ...addon,
+    downloads: modrinthDownloads,
+  };
+};
 
 // This gets only one addon according to it's Appwrite document (row) id
 /**
@@ -29,7 +74,7 @@ export const useFetchAddon = (id?: string) => {
         });
 
         const addon = Addon.parse(rawData);
-        return addon;
+        return await withDownloadsFallback(addon);
       } catch (error: unknown) {
         if (error instanceof z.ZodError) {
           toast.error(`Addon data invalid: ${error.message}`);
@@ -72,7 +117,7 @@ export const useFetchAddonBySlug = (slug?: string) => {
         }
 
         const addon = Addon.parse(row);
-        return addon;
+        return await withDownloadsFallback(addon);
       } catch (error: unknown) {
         if (error instanceof z.ZodError) {
           toast.error(`Addon data invalid: ${error.message}`);
@@ -113,12 +158,16 @@ export const useFetchAddons = (page: number, limit: number = 10) => {
         const response = await tablesDB.listRows({
           databaseId: DATABASE_ID,
           tableId: COLLECTION_ID,
-          queries: [Query.limit(limit), Query.offset((page - 1) * limit)],
+          queries: [
+            Query.limit(limit),
+            Query.offset((page - 1) * limit),
+            Query.equal('isValid', true),
+          ],
         });
 
-        const validatedAddons = response.rows.map((doc: unknown) =>
-          Addon.parse(doc)
-        ) as AddonType[] & {
+        const parsedAddons = response.rows.map((doc: unknown) => Addon.parse(doc));
+        const enrichedAddons = await Promise.all(parsedAddons.map(withDownloadsFallback));
+        const validatedAddons = enrichedAddons as AddonType[] & {
           total: number;
           totalPages: number;
           hasNextPage: boolean;
@@ -159,18 +208,11 @@ export const useFetchAddons = (page: number, limit: number = 10) => {
   });
 };
 
-const normalizeLoaderFilter = (loaders: string[]) => {
-  return loaders.map((loader) => loader.toLowerCase());
-};
-
-const LOADER_CASE_VARIANTS: Record<string, string[]> = {
-  fabric: ['fabric', 'Fabric'],
-  forge: ['forge', 'Forge'],
-  neoforge: ['neoforge', 'NeoForge'],
-  quilt: ['quilt', 'Quilt'],
-};
-
-const buildAddonFilterQueries = (versions: string[] = [], modloaders: string[] = []) => {
+const buildAddonFilterQueries = (
+  versions: string[] = [],
+  modloaders: string[] = [],
+  sites: string[] = []
+) => {
   const queries: string[] = [];
 
   if (versions.length) {
@@ -179,12 +221,13 @@ const buildAddonFilterQueries = (versions: string[] = [], modloaders: string[] =
   }
 
   if (modloaders.length) {
-    const normalizedLoaders = normalizeLoaderFilter(modloaders);
-    const loaderQueries = normalizedLoaders.flatMap((loader) => {
-      const variants = LOADER_CASE_VARIANTS[loader] ?? [loader];
-      return variants.map((variant) => Query.contains('loaders', variant));
-    });
+    const loaderQueries = modloaders.map((loader) => Query.contains('loaders', loader));
     queries.push(loaderQueries.length === 1 ? loaderQueries[0] : Query.or(loaderQueries));
+  }
+
+  if (sites.length) {
+    const siteQueries = sites.map((site) => Query.contains('sources', site));
+    queries.push(siteQueries.length === 1 ? siteQueries[0] : Query.or(siteQueries));
   }
 
   return queries;
@@ -194,10 +237,11 @@ export const useFetchAddonsWithFilters = (
   page: number,
   limit: number = 10,
   versions: string[] = [],
-  modloaders: string[] = []
+  modloaders: string[] = [],
+  sites: string[] = []
 ) => {
   return useQuery({
-    queryKey: ['addons', 'list', page, limit, versions, modloaders],
+    queryKey: ['addons', 'list', page, limit, versions, modloaders, sites],
     queryFn: async (): Promise<
       AddonType[] & {
         total: number;
@@ -215,13 +259,14 @@ export const useFetchAddonsWithFilters = (
             Query.limit(limit),
             Query.offset((page - 1) * limit),
             Query.orderDesc('downloads'),
-            ...buildAddonFilterQueries(versions, modloaders),
+            Query.equal('isValid', true),
+            ...buildAddonFilterQueries(versions, modloaders, sites),
           ],
         });
 
-        const validatedAddons = response.rows.map((doc: unknown) =>
-          Addon.parse(doc)
-        ) as AddonType[] & {
+        const parsedAddons = response.rows.map((doc: unknown) => Addon.parse(doc));
+        const enrichedAddons = await Promise.all(parsedAddons.map(withDownloadsFallback));
+        const validatedAddons = enrichedAddons as AddonType[] & {
           total: number;
           totalPages: number;
           hasNextPage: boolean;
@@ -269,6 +314,7 @@ export const useFetchAddonsWithFilters = (
  * @param limit How many addons per page
  * @param versions [] Versions to filter for
  * @param modloaders [] Modloaders to filter for
+ * @param sites [] Sites to filter for
  * @returns Addons[], total, totalPages, hasNextPage, hasPreviousPage
  */
 export const useSearchAddons = (
@@ -276,10 +322,11 @@ export const useSearchAddons = (
   page: number = 1,
   limit: number = 10,
   versions: string[] = [],
-  modloaders: string[] = []
+  modloaders: string[] = [],
+  sites: string[] = []
 ) => {
   return useQuery({
-    queryKey: ['addons', 'search', searchTerm, page, limit, versions, modloaders],
+    queryKey: ['addons', 'search', searchTerm, page, limit, versions, modloaders, sites],
     queryFn: async (): Promise<
       | {
           addons: AddonType[];
@@ -296,7 +343,8 @@ export const useSearchAddons = (
           Query.limit(limit),
           Query.offset((page - 1) * limit),
           Query.orderDesc('downloads'),
-          ...buildAddonFilterQueries(versions, modloaders),
+          Query.equal('isValid', true),
+          ...buildAddonFilterQueries(versions, modloaders, sites),
         ];
         if (searchTerm.trim()) {
           queries.push(
@@ -312,7 +360,8 @@ export const useSearchAddons = (
           tableId: COLLECTION_ID,
           queries,
         });
-        const validatedAddons = response.rows.map((doc: unknown) => Addon.parse(doc));
+        const parsedAddons = response.rows.map((doc: unknown) => Addon.parse(doc));
+        const validatedAddons = await Promise.all(parsedAddons.map(withDownloadsFallback));
         const totalPages = Math.ceil(response.total / limit);
         return {
           addons: validatedAddons,
@@ -417,7 +466,8 @@ export const useAdminAddons = (
           tableId: COLLECTION_ID,
           queries: queries,
         });
-        let addons = response.rows.map((doc: unknown) => Addon.parse(doc));
+        const parsedAddons = response.rows.map((doc: unknown) => Addon.parse(doc));
+        let addons = await Promise.all(parsedAddons.map(withDownloadsFallback));
         if (filters.search) {
           const searchTerm = filters.search.toLowerCase();
           addons = addons.filter(
@@ -455,4 +505,64 @@ export const useAdminAddons = (
     retry: false,
     staleTime: 1000 * 60 * 2,
   });
+};
+
+export const useGetFeaturedAddons = () => {
+  return useQuery({
+    queryKey: ['featured_addons'],
+    queryFn: async () => {
+      try {
+        const response = await tablesDB.listRows({
+          databaseId: DATABASE_ID,
+          tableId: 'featured_addons',
+        });
+        const addons = response.rows;
+        const parsedAddons = z.array(FeaturedAddon).parse(addons);
+        return parsedAddons;
+      } catch (e: unknown) {
+        console.error(e);
+        const message = e instanceof Error ? e.message : 'Unknown error';
+        toast.error(`Failed to fetch featured addons: ${message}`);
+        return [];
+      }
+    },
+  });
+};
+
+export const deleteFeaturedAddon = (addonId: string) => {
+		const request = tablesDB
+			.deleteRow({
+				databaseId: DATABASE_ID,
+				tableId: 'featured_addons',
+				rowId: addonId,
+			})
+			.then(() => {
+				toast.success('Featured addon deleted successfully');
+			});
+		return request;
+};
+
+export const addFeaturedAddon = (addon: {
+  addon_id: string; // slug
+  display_order: number;
+  banner_url: string;
+  title: string;
+  description: string;
+  image_url: string;
+  active: true;
+  slug: string;
+}) => {
+	try {
+		const response = tablesDB.createRow({
+			databaseId: DATABASE_ID,
+			tableId: 'featured_addons',
+			rowId: ID.unique(),
+			data: addon,
+		});
+		return response
+	}
+	catch (e) {
+		console.error(e)
+		throw e;
+	}
 };

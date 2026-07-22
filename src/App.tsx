@@ -4,9 +4,6 @@ import { ThemeProvider } from './components/theme-provider';
 import ThemeSwitch from '@/components/ThemeSwitch';
 import { Toaster } from '@/components/ui/sonner';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { SpeedInsights } from "@vercel/speed-insights/react";
-import { Analytics } from "@vercel/analytics/react"
-
 const queryClient = new QueryClient();
 
 
@@ -18,8 +15,6 @@ function App() {
           <RouterProvider router={createBrowserRouter(routes)} />
           <ThemeSwitch />
           <Toaster />
-          <SpeedInsights />
-          <Analytics />
         </ThemeProvider>
       </QueryClientProvider>
     </>
