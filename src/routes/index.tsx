@@ -58,7 +58,7 @@ export const routes: RouteObject[] = [
       {
         path: '/admin/featured',
         element: (
-          <ProtectedRoute requiredRole='moderator'>
+          <ProtectedRoute requiredRole='addonAdder'>
             <AdminFeaturedAddons />
           </ProtectedRoute>
         ),

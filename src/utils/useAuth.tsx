@@ -40,6 +40,8 @@ export const CACHE_DURATION_MS = 30 * 60 * 1000;
 
 const ROLE_TO_TEAM_ID: Record<string, string> = {
   admin: 'admin',
+  reviewer: 'reviewer',
+  addonAdder: 'addonAdder',
 };
 
 export interface CachedAuthState {
