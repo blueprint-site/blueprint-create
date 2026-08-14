@@ -7,7 +7,7 @@ export default function ExpandedAddonPage() {
   const slug = useParams().slug?.toString();
   const addon = useFetchAddonBySlug(slug)?.data;
   return (
-    <div className='py-5 px-5 lg:px-5 xl:px-10 2xl:px-40'>
+    <div className='py-5 px-5 lg:px-5 xl:px-10 2xl:px-20'>
       <div className=''>
         <span className='opacity-50 text-xs font-minecraft'>
           This page`s design is a work in progress. Expect it to get better!
