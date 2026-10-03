@@ -45,7 +45,7 @@ export const ExpandedAddonCompatibilityAndVersions = ({
           </div>
         </CardContent>
       </Card>
-      <Card>
+      <Card className=''>
         <CardHeader>
           <CardTitle className='font-minecraft text-xl'>
             <FileCog />
