@@ -14,7 +14,7 @@ import {
 type FeaturedAddonType = z.infer<typeof FeaturedAddon>;
 import Autoplay from 'embla-carousel-autoplay';
 import type { CarouselApi } from '@/components/ui/carousel';
-
+import logo from '@/assets/logo.webp';
 export default function Home() {
   const navigate = useNavigate();
   const { data } = useGetFeaturedAddons();
@@ -139,6 +139,20 @@ export default function Home() {
           </Button>
         </div>
       </div>
+      <section className='w-full bg-surface-1 p-5 text-md'>
+        <div className='flex items-center mb-3'>
+          <h2 className='font-minecraft text-2xl font-bold flex'>What is Blueprint? </h2>{' '}
+          <img src={logo} className='h-10 ml-2' />
+        </div>
+        <p>
+          Blueprint is a data collection tool. We get data from Modrinth and CurseForge via their
+          API&apos;s, parse it, merge duplicated and review them (by a human)
+        </p>
+        <p>
+          All that data gets sent to an appwrite instance to be stored and queried from the
+          frontend! (the site you are currently on)
+        </p>
+      </section>
       {/*<div className='flex items-baseline space-x-2 bg-surface-1 px-20 py-5'>
         <span className='text-3xl font-minecraft font-bold text-white'>Blueprint</span>
         <span className='text-2xl opacity-70 text-surface-4 font-minecraft'>vRe</span>
